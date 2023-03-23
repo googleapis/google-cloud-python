@@ -525,7 +525,6 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                     The request object. A request message for
                 TargetPools.AddHealthCheck. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -638,7 +637,6 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                     The request object. A request message for
                 TargetPools.AddInstance. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -749,7 +747,6 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                     The request object. A request message for
                 TargetPools.AggregatedList. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -836,7 +833,6 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                     The request object. A request message for
                 TargetPools.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -938,7 +934,6 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                     The request object. A request message for
                 TargetPools.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1033,7 +1028,6 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                     The request object. A request message for
                 TargetPools.GetHealth. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1129,7 +1123,6 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                     The request object. A request message for
                 TargetPools.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1240,7 +1233,6 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                     The request object. A request message for
                 TargetPools.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1329,7 +1321,6 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                     The request object. A request message for
                 TargetPools.RemoveHealthCheck. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1442,7 +1433,6 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                     The request object. A request message for
                 TargetPools.RemoveInstance. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1553,7 +1543,6 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                     The request object. A request message for
                 TargetPools.SetBackup. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

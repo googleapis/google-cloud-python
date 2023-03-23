@@ -353,7 +353,6 @@ class GlobalOperationsRestTransport(GlobalOperationsTransport):
                     The request object. A request message for
                 GlobalOperations.AggregatedList. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -440,7 +439,6 @@ class GlobalOperationsRestTransport(GlobalOperationsTransport):
                     The request object. A request message for
                 GlobalOperations.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -530,7 +528,6 @@ class GlobalOperationsRestTransport(GlobalOperationsTransport):
                     The request object. A request message for
                 GlobalOperations.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -632,7 +629,6 @@ class GlobalOperationsRestTransport(GlobalOperationsTransport):
                     The request object. A request message for
                 GlobalOperations.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -721,7 +717,6 @@ class GlobalOperationsRestTransport(GlobalOperationsTransport):
                     The request object. A request message for
                 GlobalOperations.Wait. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

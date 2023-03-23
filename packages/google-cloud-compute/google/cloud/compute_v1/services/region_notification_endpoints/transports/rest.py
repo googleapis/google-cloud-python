@@ -328,7 +328,6 @@ class RegionNotificationEndpointsRestTransport(RegionNotificationEndpointsTransp
                     The request object. A request message for
                 RegionNotificationEndpoints.Delete. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -430,7 +429,6 @@ class RegionNotificationEndpointsRestTransport(RegionNotificationEndpointsTransp
                     The request object. A request message for
                 RegionNotificationEndpoints.Get. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -524,7 +522,6 @@ class RegionNotificationEndpointsRestTransport(RegionNotificationEndpointsTransp
                     The request object. A request message for
                 RegionNotificationEndpoints.Insert. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -635,7 +632,6 @@ class RegionNotificationEndpointsRestTransport(RegionNotificationEndpointsTransp
                     The request object. A request message for
                 RegionNotificationEndpoints.List. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

@@ -430,7 +430,6 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
                     The request object. A request message for
                 GlobalNetworkEndpointGroups.AttachNetworkEndpoints.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -547,7 +546,6 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
                     The request object. A request message for
                 GlobalNetworkEndpointGroups.Delete. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -649,7 +647,6 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
                     The request object. A request message for
                 GlobalNetworkEndpointGroups.DetachNetworkEndpoints.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -766,7 +763,6 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
                     The request object. A request message for
                 GlobalNetworkEndpointGroups.Get. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -864,7 +860,6 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
                     The request object. A request message for
                 GlobalNetworkEndpointGroups.Insert. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -975,7 +970,6 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
                     The request object. A request message for
                 GlobalNetworkEndpointGroups.List. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1062,7 +1056,6 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
                     The request object. A request message for
                 GlobalNetworkEndpointGroups.ListNetworkEndpoints.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

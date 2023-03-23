@@ -255,7 +255,6 @@ class RegionsRestTransport(RegionsTransport):
                 request (~.compute.GetRegionRequest):
                     The request object. A request message for Regions.Get.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -345,7 +344,6 @@ class RegionsRestTransport(RegionsTransport):
                 request (~.compute.ListRegionsRequest):
                     The request object. A request message for Regions.List.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

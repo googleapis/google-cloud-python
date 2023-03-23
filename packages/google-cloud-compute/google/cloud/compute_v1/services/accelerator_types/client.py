@@ -438,8 +438,8 @@ class AcceleratorTypesClient(metaclass=AcceleratorTypesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListAcceleratorTypesRequest, dict]):
                 The request object. A request message for
-                AcceleratorTypes.AggregatedList. See the method
-                description for details.
+                AcceleratorTypes.AggregatedList. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -525,8 +525,8 @@ class AcceleratorTypesClient(metaclass=AcceleratorTypesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetAcceleratorTypeRequest, dict]):
                 The request object. A request message for
-                AcceleratorTypes.Get. See the method description for
-                details.
+                AcceleratorTypes.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -632,8 +632,8 @@ class AcceleratorTypesClient(metaclass=AcceleratorTypesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListAcceleratorTypesRequest, dict]):
                 The request object. A request message for
-                AcceleratorTypes.List. See the method description for
-                details.
+                AcceleratorTypes.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

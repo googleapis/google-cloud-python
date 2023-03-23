@@ -435,8 +435,8 @@ class RoutersClient(metaclass=RoutersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListRoutersRequest, dict]):
                 The request object. A request message for
-                Routers.AggregatedList. See the method description for
-                details.
+                Routers.AggregatedList. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -522,8 +522,8 @@ class RoutersClient(metaclass=RoutersClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRouterRequest, dict]):
-                The request object. A request message for
-                Routers.Delete. See the method description for details.
+                The request object. A request message for Routers.Delete.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -620,8 +620,8 @@ class RoutersClient(metaclass=RoutersClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRouterRequest, dict]):
-                The request object. A request message for
-                Routers.Delete. See the method description for details.
+                The request object. A request message for Routers.Delete.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -844,8 +844,8 @@ class RoutersClient(metaclass=RoutersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetNatMappingInfoRoutersRequest, dict]):
                 The request object. A request message for
-                Routers.GetNatMappingInfo. See the method description
-                for details.
+                Routers.GetNatMappingInfo. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -957,8 +957,8 @@ class RoutersClient(metaclass=RoutersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetRouterStatusRouterRequest, dict]):
                 The request object. A request message for
-                Routers.GetRouterStatus. See the method description for
-                details.
+                Routers.GetRouterStatus. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1052,8 +1052,8 @@ class RoutersClient(metaclass=RoutersClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRouterRequest, dict]):
-                The request object. A request message for
-                Routers.Insert. See the method description for details.
+                The request object. A request message for Routers.Insert.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1148,8 +1148,8 @@ class RoutersClient(metaclass=RoutersClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRouterRequest, dict]):
-                The request object. A request message for
-                Routers.Insert. See the method description for details.
+                The request object. A request message for Routers.Insert.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1610,7 +1610,8 @@ class RoutersClient(metaclass=RoutersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PreviewRouterRequest, dict]):
                 The request object. A request message for
-                Routers.Preview. See the method description for details.
+                Routers.Preview. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1716,8 +1717,8 @@ class RoutersClient(metaclass=RoutersClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateRouterRequest, dict]):
-                The request object. A request message for
-                Routers.Update. See the method description for details.
+                The request object. A request message for Routers.Update.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1827,8 +1828,8 @@ class RoutersClient(metaclass=RoutersClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateRouterRequest, dict]):
-                The request object. A request message for
-                Routers.Update. See the method description for details.
+                The request object. A request message for Routers.Update.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

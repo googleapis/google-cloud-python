@@ -633,8 +633,8 @@ class RoutesClient(metaclass=RoutesClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetRouteRequest, dict]):
-                The request object. A request message for Routes.Get.
-                See the method description for details.
+                The request object. A request message for Routes.Get. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

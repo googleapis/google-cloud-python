@@ -380,7 +380,6 @@ class RegionSslPoliciesRestTransport(RegionSslPoliciesTransport):
                     The request object. A request message for
                 RegionSslPolicies.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -482,7 +481,6 @@ class RegionSslPoliciesRestTransport(RegionSslPoliciesTransport):
                     The request object. A request message for
                 RegionSslPolicies.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -575,7 +573,6 @@ class RegionSslPoliciesRestTransport(RegionSslPoliciesTransport):
                     The request object. A request message for
                 RegionSslPolicies.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -686,7 +683,6 @@ class RegionSslPoliciesRestTransport(RegionSslPoliciesTransport):
                     The request object. A request message for
                 RegionSslPolicies.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -773,7 +769,6 @@ class RegionSslPoliciesRestTransport(RegionSslPoliciesTransport):
                     The request object. A request message for
                 RegionSslPolicies.ListAvailableFeatures.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -864,7 +859,6 @@ class RegionSslPoliciesRestTransport(RegionSslPoliciesTransport):
                     The request object. A request message for
                 RegionSslPolicies.Patch. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

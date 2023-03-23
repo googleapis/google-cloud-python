@@ -414,7 +414,6 @@ class RegionTargetHttpsProxiesRestTransport(RegionTargetHttpsProxiesTransport):
                     The request object. A request message for
                 RegionTargetHttpsProxies.Delete. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -516,7 +515,6 @@ class RegionTargetHttpsProxiesRestTransport(RegionTargetHttpsProxiesTransport):
                     The request object. A request message for
                 RegionTargetHttpsProxies.Get. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -615,7 +613,6 @@ class RegionTargetHttpsProxiesRestTransport(RegionTargetHttpsProxiesTransport):
                     The request object. A request message for
                 RegionTargetHttpsProxies.Insert. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -726,7 +723,6 @@ class RegionTargetHttpsProxiesRestTransport(RegionTargetHttpsProxiesTransport):
                     The request object. A request message for
                 RegionTargetHttpsProxies.List. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -815,7 +811,6 @@ class RegionTargetHttpsProxiesRestTransport(RegionTargetHttpsProxiesTransport):
                     The request object. A request message for
                 RegionTargetHttpsProxies.Patch. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -926,7 +921,6 @@ class RegionTargetHttpsProxiesRestTransport(RegionTargetHttpsProxiesTransport):
                     The request object. A request message for
                 RegionTargetHttpsProxies.SetSslCertificates.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1041,7 +1035,6 @@ class RegionTargetHttpsProxiesRestTransport(RegionTargetHttpsProxiesTransport):
                     The request object. A request message for
                 RegionTargetHttpsProxies.SetUrlMap. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

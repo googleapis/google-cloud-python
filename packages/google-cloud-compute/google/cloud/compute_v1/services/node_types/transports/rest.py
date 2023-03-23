@@ -287,7 +287,6 @@ class NodeTypesRestTransport(NodeTypesTransport):
                     The request object. A request message for
                 NodeTypes.AggregatedList. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -373,7 +372,6 @@ class NodeTypesRestTransport(NodeTypesTransport):
                 request (~.compute.GetNodeTypeRequest):
                     The request object. A request message for NodeTypes.Get.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -469,7 +467,6 @@ class NodeTypesRestTransport(NodeTypesTransport):
                 request (~.compute.ListNodeTypesRequest):
                     The request object. A request message for NodeTypes.List.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

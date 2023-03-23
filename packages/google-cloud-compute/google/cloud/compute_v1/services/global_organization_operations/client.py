@@ -438,8 +438,8 @@ class GlobalOrganizationOperationsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteGlobalOrganizationOperationRequest, dict]):
                 The request object. A request message for
-                GlobalOrganizationOperations.Delete. See the method
-                description for details.
+                GlobalOrganizationOperations.Delete. See
+                the method description for details.
             operation (str):
                 Name of the Operations resource to
                 delete.
@@ -521,8 +521,8 @@ class GlobalOrganizationOperationsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.GetGlobalOrganizationOperationRequest, dict]):
                 The request object. A request message for
-                GlobalOrganizationOperations.Get. See the method
-                description for details.
+                GlobalOrganizationOperations.Get. See
+                the method description for details.
             operation (str):
                 Name of the Operations resource to
                 return.
@@ -615,8 +615,8 @@ class GlobalOrganizationOperationsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.ListGlobalOrganizationOperationsRequest, dict]):
                 The request object. A request message for
-                GlobalOrganizationOperations.List. See the method
-                description for details.
+                GlobalOrganizationOperations.List. See
+                the method description for details.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

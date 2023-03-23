@@ -626,7 +626,6 @@ class BackendServicesRestTransport(BackendServicesTransport):
                     The request object. A request message for
                 BackendServices.AddSignedUrlKey. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -739,7 +738,6 @@ class BackendServicesRestTransport(BackendServicesTransport):
                     The request object. A request message for
                 BackendServices.AggregatedList. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -828,7 +826,6 @@ class BackendServicesRestTransport(BackendServicesTransport):
                     The request object. A request message for
                 BackendServices.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -932,7 +929,6 @@ class BackendServicesRestTransport(BackendServicesTransport):
                     The request object. A request message for
                 BackendServices.DeleteSignedUrlKey. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1036,7 +1032,6 @@ class BackendServicesRestTransport(BackendServicesTransport):
                     The request object. A request message for
                 BackendServices.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1138,7 +1133,6 @@ class BackendServicesRestTransport(BackendServicesTransport):
                     The request object. A request message for
                 BackendServices.GetHealth. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1234,7 +1228,6 @@ class BackendServicesRestTransport(BackendServicesTransport):
                     The request object. A request message for
                 BackendServices.GetIamPolicy. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1362,7 +1355,6 @@ class BackendServicesRestTransport(BackendServicesTransport):
                     The request object. A request message for
                 BackendServices.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1473,7 +1465,6 @@ class BackendServicesRestTransport(BackendServicesTransport):
                     The request object. A request message for
                 BackendServices.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1562,7 +1553,6 @@ class BackendServicesRestTransport(BackendServicesTransport):
                     The request object. A request message for
                 BackendServices.Patch. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1673,7 +1663,6 @@ class BackendServicesRestTransport(BackendServicesTransport):
                     The request object. A request message for
                 BackendServices.SetEdgeSecurityPolicy.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1786,7 +1775,6 @@ class BackendServicesRestTransport(BackendServicesTransport):
                     The request object. A request message for
                 BackendServices.SetIamPolicy. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1923,7 +1911,6 @@ class BackendServicesRestTransport(BackendServicesTransport):
                     The request object. A request message for
                 BackendServices.SetSecurityPolicy. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2036,7 +2023,6 @@ class BackendServicesRestTransport(BackendServicesTransport):
                     The request object. A request message for
                 BackendServices.Update. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

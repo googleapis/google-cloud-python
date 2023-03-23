@@ -437,8 +437,8 @@ class ImageFamilyViewsClient(metaclass=ImageFamilyViewsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetImageFamilyViewRequest, dict]):
                 The request object. A request message for
-                ImageFamilyViews.Get. See the method description for
-                details.
+                ImageFamilyViews.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

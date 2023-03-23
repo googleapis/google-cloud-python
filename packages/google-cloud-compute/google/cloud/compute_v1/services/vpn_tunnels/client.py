@@ -435,8 +435,8 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListVpnTunnelsRequest, dict]):
                 The request object. A request message for
-                VpnTunnels.AggregatedList. See the method description
-                for details.
+                VpnTunnels.AggregatedList. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -522,8 +522,8 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteVpnTunnelRequest, dict]):
                 The request object. A request message for
-                VpnTunnels.Delete. See the method description for
-                details.
+                VpnTunnels.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -621,8 +621,8 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteVpnTunnelRequest, dict]):
                 The request object. A request message for
-                VpnTunnels.Delete. See the method description for
-                details.
+                VpnTunnels.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -744,8 +744,8 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetVpnTunnelRequest, dict]):
-                The request object. A request message for
-                VpnTunnels.Get. See the method description for details.
+                The request object. A request message for VpnTunnels.Get.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -845,8 +845,8 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertVpnTunnelRequest, dict]):
                 The request object. A request message for
-                VpnTunnels.Insert. See the method description for
-                details.
+                VpnTunnels.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -942,8 +942,8 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertVpnTunnelRequest, dict]):
                 The request object. A request message for
-                VpnTunnels.Insert. See the method description for
-                details.
+                VpnTunnels.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1063,7 +1063,8 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListVpnTunnelsRequest, dict]):
                 The request object. A request message for
-                VpnTunnels.List. See the method description for details.
+                VpnTunnels.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1167,8 +1168,8 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsVpnTunnelRequest, dict]):
                 The request object. A request message for
-                VpnTunnels.SetLabels. See the method description for
-                details.
+                VpnTunnels.SetLabels. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1281,8 +1282,8 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsVpnTunnelRequest, dict]):
                 The request object. A request message for
-                VpnTunnels.SetLabels. See the method description for
-                details.
+                VpnTunnels.SetLabels. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

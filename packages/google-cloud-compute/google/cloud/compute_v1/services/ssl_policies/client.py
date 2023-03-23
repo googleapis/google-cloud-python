@@ -436,8 +436,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListSslPoliciesRequest, dict]):
                 The request object. A request message for
-                SslPolicies.AggregatedList. See the method description
-                for details.
+                SslPolicies.AggregatedList. See the
+                method description for details.
             project (str):
                 Name of the project scoping this
                 request.
@@ -526,8 +526,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteSslPolicyRequest, dict]):
                 The request object. A request message for
-                SslPolicies.Delete. See the method description for
-                details.
+                SslPolicies.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -619,8 +619,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteSslPolicyRequest, dict]):
                 The request object. A request message for
-                SslPolicies.Delete. See the method description for
-                details.
+                SslPolicies.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -735,7 +735,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetSslPolicyRequest, dict]):
                 The request object. A request message for
-                SslPolicies.Get. See the method description for details.
+                SslPolicies.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -829,8 +830,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertSslPolicyRequest, dict]):
                 The request object. A request message for
-                SslPolicies.Insert. See the method description for
-                details.
+                SslPolicies.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -912,8 +913,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertSslPolicyRequest, dict]):
                 The request object. A request message for
-                SslPolicies.Insert. See the method description for
-                details.
+                SslPolicies.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1019,8 +1020,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListSslPoliciesRequest, dict]):
                 The request object. A request message for
-                SslPolicies.List. See the method description for
-                details.
+                SslPolicies.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1107,8 +1108,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListAvailableFeaturesSslPoliciesRequest, dict]):
                 The request object. A request message for
-                SslPolicies.ListAvailableFeatures. See the method
-                description for details.
+                SslPolicies.ListAvailableFeatures. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1183,8 +1184,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchSslPolicyRequest, dict]):
                 The request object. A request message for
-                SslPolicies.Patch. See the method description for
-                details.
+                SslPolicies.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1283,8 +1284,8 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchSslPolicyRequest, dict]):
                 The request object. A request message for
-                SslPolicies.Patch. See the method description for
-                details.
+                SslPolicies.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

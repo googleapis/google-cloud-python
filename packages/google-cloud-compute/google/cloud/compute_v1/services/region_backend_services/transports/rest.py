@@ -471,7 +471,6 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
                     The request object. A request message for
                 RegionBackendServices.Delete. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -573,7 +572,6 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
                     The request object. A request message for
                 RegionBackendServices.Get. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -675,7 +673,6 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
                     The request object. A request message for
                 RegionBackendServices.GetHealth. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -771,7 +768,6 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
                     The request object. A request message for
                 RegionBackendServices.GetIamPolicy. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -899,7 +895,6 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
                     The request object. A request message for
                 RegionBackendServices.Insert. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1010,7 +1005,6 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
                     The request object. A request message for
                 RegionBackendServices.List. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1099,7 +1093,6 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
                     The request object. A request message for
                 RegionBackendServices.Patch. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1210,7 +1203,6 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
                     The request object. A request message for
                 RegionBackendServices.SetIamPolicy. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1347,7 +1339,6 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
                     The request object. A request message for
                 RegionBackendServices.Update. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

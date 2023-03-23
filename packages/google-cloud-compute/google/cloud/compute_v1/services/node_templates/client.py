@@ -437,8 +437,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListNodeTemplatesRequest, dict]):
                 The request object. A request message for
-                NodeTemplates.AggregatedList. See the method description
-                for details.
+                NodeTemplates.AggregatedList. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -524,8 +524,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNodeTemplateRequest, dict]):
                 The request object. A request message for
-                NodeTemplates.Delete. See the method description for
-                details.
+                NodeTemplates.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -625,8 +625,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNodeTemplateRequest, dict]):
                 The request object. A request message for
-                NodeTemplates.Delete. See the method description for
-                details.
+                NodeTemplates.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -751,8 +751,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetNodeTemplateRequest, dict]):
                 The request object. A request message for
-                NodeTemplates.Get. See the method description for
-                details.
+                NodeTemplates.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -854,8 +854,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyNodeTemplateRequest, dict]):
                 The request object. A request message for
-                NodeTemplates.GetIamPolicy. See the method description
-                for details.
+                NodeTemplates.GetIamPolicy. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -994,8 +994,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNodeTemplateRequest, dict]):
                 The request object. A request message for
-                NodeTemplates.Insert. See the method description for
-                details.
+                NodeTemplates.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1093,8 +1093,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNodeTemplateRequest, dict]):
                 The request object. A request message for
-                NodeTemplates.Insert. See the method description for
-                details.
+                NodeTemplates.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1216,8 +1216,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListNodeTemplatesRequest, dict]):
                 The request object. A request message for
-                NodeTemplates.List. See the method description for
-                details.
+                NodeTemplates.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1322,8 +1322,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyNodeTemplateRequest, dict]):
                 The request object. A request message for
-                NodeTemplates.SetIamPolicy. See the method description
-                for details.
+                NodeTemplates.SetIamPolicy. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1478,8 +1478,8 @@ class NodeTemplatesClient(metaclass=NodeTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsNodeTemplateRequest, dict]):
                 The request object. A request message for
-                NodeTemplates.TestIamPermissions. See the method
-                description for details.
+                NodeTemplates.TestIamPermissions. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

@@ -441,8 +441,8 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionTargetHttpProxyRequest, dict]):
                 The request object. A request message for
-                RegionTargetHttpProxies.Delete. See the method
-                description for details.
+                RegionTargetHttpProxies.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -544,8 +544,8 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionTargetHttpProxyRequest, dict]):
                 The request object. A request message for
-                RegionTargetHttpProxies.Delete. See the method
-                description for details.
+                RegionTargetHttpProxies.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -671,8 +671,8 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionTargetHttpProxyRequest, dict]):
                 The request object. A request message for
-                RegionTargetHttpProxies.Get. See the method description
-                for details.
+                RegionTargetHttpProxies.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -787,8 +787,8 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionTargetHttpProxyRequest, dict]):
                 The request object. A request message for
-                RegionTargetHttpProxies.Insert. See the method
-                description for details.
+                RegionTargetHttpProxies.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -889,8 +889,8 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionTargetHttpProxyRequest, dict]):
                 The request object. A request message for
-                RegionTargetHttpProxies.Insert. See the method
-                description for details.
+                RegionTargetHttpProxies.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1015,8 +1015,8 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionTargetHttpProxiesRequest, dict]):
                 The request object. A request message for
-                RegionTargetHttpProxies.List. See the method description
-                for details.
+                RegionTargetHttpProxies.List. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1120,8 +1120,8 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.SetUrlMapRegionTargetHttpProxyRequest, dict]):
                 The request object. A request message for
-                RegionTargetHttpProxies.SetUrlMap. See the method
-                description for details.
+                RegionTargetHttpProxies.SetUrlMap. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1233,8 +1233,8 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.SetUrlMapRegionTargetHttpProxyRequest, dict]):
                 The request object. A request message for
-                RegionTargetHttpProxies.SetUrlMap. See the method
-                description for details.
+                RegionTargetHttpProxies.SetUrlMap. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

@@ -637,8 +637,8 @@ class ImagesClient(metaclass=ImagesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeprecateImageRequest, dict]):
                 The request object. A request message for
-                Images.Deprecate. See the method description for
-                details.
+                Images.Deprecate. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -735,8 +735,8 @@ class ImagesClient(metaclass=ImagesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeprecateImageRequest, dict]):
                 The request object. A request message for
-                Images.Deprecate. See the method description for
-                details.
+                Images.Deprecate. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -853,8 +853,8 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetImageRequest, dict]):
-                The request object. A request message for Images.Get.
-                See the method description for details.
+                The request object. A request message for Images.Get. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -945,8 +945,8 @@ class ImagesClient(metaclass=ImagesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetFromFamilyImageRequest, dict]):
                 The request object. A request message for
-                Images.GetFromFamily. See the method description for
-                details.
+                Images.GetFromFamily. See the method
+                description for details.
             project (str):
                 The image project that the image
                 belongs to. For example, to get a CentOS
@@ -1042,8 +1042,8 @@ class ImagesClient(metaclass=ImagesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyImageRequest, dict]):
                 The request object. A request message for
-                Images.GetIamPolicy. See the method description for
-                details.
+                Images.GetIamPolicy. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1674,8 +1674,8 @@ class ImagesClient(metaclass=ImagesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyImageRequest, dict]):
                 The request object. A request message for
-                Images.SetIamPolicy. See the method description for
-                details.
+                Images.SetIamPolicy. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1817,8 +1817,8 @@ class ImagesClient(metaclass=ImagesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsImageRequest, dict]):
                 The request object. A request message for
-                Images.SetLabels. See the method description for
-                details.
+                Images.SetLabels. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1922,8 +1922,8 @@ class ImagesClient(metaclass=ImagesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsImageRequest, dict]):
                 The request object. A request message for
-                Images.SetLabels. See the method description for
-                details.
+                Images.SetLabels. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2051,8 +2051,8 @@ class ImagesClient(metaclass=ImagesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsImageRequest, dict]):
                 The request object. A request message for
-                Images.TestIamPermissions. See the method description
-                for details.
+                Images.TestIamPermissions. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

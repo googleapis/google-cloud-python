@@ -415,7 +415,6 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
                     The request object. A request message for
                 InterconnectAttachments.AggregatedList.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -504,7 +503,6 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
                     The request object. A request message for
                 InterconnectAttachments.Delete. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -606,7 +604,6 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
                     The request object. A request message for
                 InterconnectAttachments.Get. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -701,7 +698,6 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
                     The request object. A request message for
                 InterconnectAttachments.Insert. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -812,7 +808,6 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
                     The request object. A request message for
                 InterconnectAttachments.List. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -902,7 +897,6 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
                     The request object. A request message for
                 InterconnectAttachments.Patch. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1013,7 +1007,6 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
                     The request object. A request message for
                 InterconnectAttachments.SetLabels. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

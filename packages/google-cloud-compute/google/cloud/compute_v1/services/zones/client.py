@@ -523,8 +523,8 @@ class ZonesClient(metaclass=ZonesClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListZonesRequest, dict]):
-                The request object. A request message for Zones.List.
-                See the method description for details.
+                The request object. A request message for Zones.List. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

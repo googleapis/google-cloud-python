@@ -439,8 +439,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddPeeringNetworkRequest, dict]):
                 The request object. A request message for
-                Networks.AddPeering. See the method description for
-                details.
+                Networks.AddPeering. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -543,8 +543,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddPeeringNetworkRequest, dict]):
                 The request object. A request message for
-                Networks.AddPeering. See the method description for
-                details.
+                Networks.AddPeering. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -668,7 +668,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNetworkRequest, dict]):
                 The request object. A request message for
-                Networks.Delete. See the method description for details.
+                Networks.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -755,7 +756,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNetworkRequest, dict]):
                 The request object. A request message for
-                Networks.Delete. See the method description for details.
+                Networks.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -958,8 +960,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetEffectiveFirewallsNetworkRequest, dict]):
                 The request object. A request message for
-                Networks.GetEffectiveFirewalls. See the method
-                description for details.
+                Networks.GetEffectiveFirewalls. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1045,7 +1047,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNetworkRequest, dict]):
                 The request object. A request message for
-                Networks.Insert. See the method description for details.
+                Networks.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1128,7 +1131,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNetworkRequest, dict]):
                 The request object. A request message for
-                Networks.Insert. See the method description for details.
+                Networks.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1321,8 +1325,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListPeeringRoutesNetworksRequest, dict]):
                 The request object. A request message for
-                Networks.ListPeeringRoutes. See the method description
-                for details.
+                Networks.ListPeeringRoutes. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1421,8 +1425,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchNetworkRequest, dict]):
-                The request object. A request message for
-                Networks.Patch. See the method description for details.
+                The request object. A request message for Networks.Patch.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1518,8 +1522,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchNetworkRequest, dict]):
-                The request object. A request message for
-                Networks.Patch. See the method description for details.
+                The request object. A request message for Networks.Patch.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1640,8 +1644,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemovePeeringNetworkRequest, dict]):
                 The request object. A request message for
-                Networks.RemovePeering. See the method description for
-                details.
+                Networks.RemovePeering. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1744,8 +1748,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemovePeeringNetworkRequest, dict]):
                 The request object. A request message for
-                Networks.RemovePeering. See the method description for
-                details.
+                Networks.RemovePeering. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1870,8 +1874,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SwitchToCustomModeNetworkRequest, dict]):
                 The request object. A request message for
-                Networks.SwitchToCustomMode. See the method description
-                for details.
+                Networks.SwitchToCustomMode. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1959,8 +1963,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SwitchToCustomModeNetworkRequest, dict]):
                 The request object. A request message for
-                Networks.SwitchToCustomMode. See the method description
-                for details.
+                Networks.SwitchToCustomMode. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2077,8 +2081,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdatePeeringNetworkRequest, dict]):
                 The request object. A request message for
-                Networks.UpdatePeering. See the method description for
-                details.
+                Networks.UpdatePeering. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2184,8 +2188,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdatePeeringNetworkRequest, dict]):
                 The request object. A request message for
-                Networks.UpdatePeering. See the method description for
-                details.
+                Networks.UpdatePeering. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

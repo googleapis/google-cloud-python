@@ -616,7 +616,6 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                     The request object. A request message for
                 NodeGroups.AddNodes. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -727,7 +726,6 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                     The request object. A request message for
                 NodeGroups.AggregatedList. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -814,7 +812,6 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                     The request object. A request message for
                 NodeGroups.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -916,7 +913,6 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                     The request object. A request message for
                 NodeGroups.DeleteNodes. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1026,7 +1022,6 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 request (~.compute.GetNodeGroupRequest):
                     The request object. A request message for NodeGroups.Get.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1124,7 +1119,6 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                     The request object. A request message for
                 NodeGroups.GetIamPolicy. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1254,7 +1248,6 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                     The request object. A request message for
                 NodeGroups.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1365,7 +1358,6 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                     The request object. A request message for
                 NodeGroups.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1452,7 +1444,6 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                     The request object. A request message for
                 NodeGroups.ListNodes. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1539,7 +1530,6 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                     The request object. A request message for
                 NodeGroups.Patch. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1650,7 +1640,6 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                     The request object. A request message for
                 NodeGroups.SetIamPolicy. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1787,7 +1776,6 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                     The request object. A request message for
                 NodeGroups.SetNodeTemplate. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1901,7 +1889,6 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                         The request object. A request message for
                     NodeGroups.SimulateMaintenanceEvent. See
                     the method description for details.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2014,7 +2001,6 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                     The request object. A request message for
                 NodeGroups.TestIamPermissions. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

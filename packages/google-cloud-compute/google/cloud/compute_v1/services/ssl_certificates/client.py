@@ -440,8 +440,8 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListSslCertificatesRequest, dict]):
                 The request object. A request message for
-                SslCertificates.AggregatedList. See the method
-                description for details.
+                SslCertificates.AggregatedList. See the
+                method description for details.
             project (str):
                 Name of the project scoping this
                 request.
@@ -528,8 +528,8 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteSslCertificateRequest, dict]):
                 The request object. A request message for
-                SslCertificates.Delete. See the method description for
-                details.
+                SslCertificates.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -618,8 +618,8 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteSslCertificateRequest, dict]):
                 The request object. A request message for
-                SslCertificates.Delete. See the method description for
-                details.
+                SslCertificates.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -732,8 +732,8 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetSslCertificateRequest, dict]):
                 The request object. A request message for
-                SslCertificates.Get. See the method description for
-                details.
+                SslCertificates.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -837,8 +837,8 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertSslCertificateRequest, dict]):
                 The request object. A request message for
-                SslCertificates.Insert. See the method description for
-                details.
+                SslCertificates.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -921,8 +921,8 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertSslCertificateRequest, dict]):
                 The request object. A request message for
-                SslCertificates.Insert. See the method description for
-                details.
+                SslCertificates.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1028,8 +1028,8 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListSslCertificatesRequest, dict]):
                 The request object. A request message for
-                SslCertificates.List. See the method description for
-                details.
+                SslCertificates.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

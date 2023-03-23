@@ -440,8 +440,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddHealthCheckTargetPoolRequest, dict]):
                 The request object. A request message for
-                TargetPools.AddHealthCheck. See the method description
-                for details.
+                TargetPools.AddHealthCheck. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -560,8 +560,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddHealthCheckTargetPoolRequest, dict]):
                 The request object. A request message for
-                TargetPools.AddHealthCheck. See the method description
-                for details.
+                TargetPools.AddHealthCheck. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -705,8 +705,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddInstanceTargetPoolRequest, dict]):
                 The request object. A request message for
-                TargetPools.AddInstance. See the method description for
-                details.
+                TargetPools.AddInstance. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -820,8 +820,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddInstanceTargetPoolRequest, dict]):
                 The request object. A request message for
-                TargetPools.AddInstance. See the method description for
-                details.
+                TargetPools.AddInstance. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -955,8 +955,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListTargetPoolsRequest, dict]):
                 The request object. A request message for
-                TargetPools.AggregatedList. See the method description
-                for details.
+                TargetPools.AggregatedList. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1042,8 +1042,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteTargetPoolRequest, dict]):
                 The request object. A request message for
-                TargetPools.Delete. See the method description for
-                details.
+                TargetPools.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1143,8 +1143,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteTargetPoolRequest, dict]):
                 The request object. A request message for
-                TargetPools.Delete. See the method description for
-                details.
+                TargetPools.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1269,7 +1269,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetTargetPoolRequest, dict]):
                 The request object. A request message for
-                TargetPools.Get. See the method description for details.
+                TargetPools.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1378,8 +1379,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetHealthTargetPoolRequest, dict]):
                 The request object. A request message for
-                TargetPools.GetHealth. See the method description for
-                details.
+                TargetPools.GetHealth. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1487,8 +1488,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertTargetPoolRequest, dict]):
                 The request object. A request message for
-                TargetPools.Insert. See the method description for
-                details.
+                TargetPools.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1586,8 +1587,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertTargetPoolRequest, dict]):
                 The request object. A request message for
-                TargetPools.Insert. See the method description for
-                details.
+                TargetPools.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1709,8 +1710,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListTargetPoolsRequest, dict]):
                 The request object. A request message for
-                TargetPools.List. See the method description for
-                details.
+                TargetPools.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1817,8 +1818,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveHealthCheckTargetPoolRequest, dict]):
                 The request object. A request message for
-                TargetPools.RemoveHealthCheck. See the method
-                description for details.
+                TargetPools.RemoveHealthCheck. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1937,8 +1938,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveHealthCheckTargetPoolRequest, dict]):
                 The request object. A request message for
-                TargetPools.RemoveHealthCheck. See the method
-                description for details.
+                TargetPools.RemoveHealthCheck. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2080,8 +2081,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveInstanceTargetPoolRequest, dict]):
                 The request object. A request message for
-                TargetPools.RemoveInstance. See the method description
-                for details.
+                TargetPools.RemoveInstance. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2200,8 +2201,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveInstanceTargetPoolRequest, dict]):
                 The request object. A request message for
-                TargetPools.RemoveInstance. See the method description
-                for details.
+                TargetPools.RemoveInstance. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2343,8 +2344,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetBackupTargetPoolRequest, dict]):
                 The request object. A request message for
-                TargetPools.SetBackup. See the method description for
-                details.
+                TargetPools.SetBackup. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2454,8 +2455,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetBackupTargetPoolRequest, dict]):
                 The request object. A request message for
-                TargetPools.SetBackup. See the method description for
-                details.
+                TargetPools.SetBackup. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

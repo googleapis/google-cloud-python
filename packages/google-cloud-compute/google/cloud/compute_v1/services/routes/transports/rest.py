@@ -309,7 +309,6 @@ class RoutesRestTransport(RoutesTransport):
                 request (~.compute.DeleteRouteRequest):
                     The request object. A request message for Routes.Delete.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -410,7 +409,6 @@ class RoutesRestTransport(RoutesTransport):
                 request (~.compute.GetRouteRequest):
                     The request object. A request message for Routes.Get. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -502,7 +500,6 @@ class RoutesRestTransport(RoutesTransport):
                 request (~.compute.InsertRouteRequest):
                     The request object. A request message for Routes.Insert.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -612,7 +609,6 @@ class RoutesRestTransport(RoutesTransport):
                 request (~.compute.ListRoutesRequest):
                     The request object. A request message for Routes.List.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

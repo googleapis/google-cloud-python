@@ -440,8 +440,8 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListNetworkEndpointGroupsRequest, dict]):
                 The request object. A request message for
-                NetworkEndpointGroups.AggregatedList. See the method
-                description for details.
+                NetworkEndpointGroups.AggregatedList.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -533,8 +533,8 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AttachNetworkEndpointsNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                NetworkEndpointGroups.AttachNetworkEndpoints. See the
-                method description for details.
+                NetworkEndpointGroups.AttachNetworkEndpoints.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -661,8 +661,8 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AttachNetworkEndpointsNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                NetworkEndpointGroups.AttachNetworkEndpoints. See the
-                method description for details.
+                NetworkEndpointGroups.AttachNetworkEndpoints.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -814,8 +814,8 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                NetworkEndpointGroups.Delete. See the method description
-                for details.
+                NetworkEndpointGroups.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -923,8 +923,8 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                NetworkEndpointGroups.Delete. See the method description
-                for details.
+                NetworkEndpointGroups.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1057,8 +1057,8 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DetachNetworkEndpointsNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                NetworkEndpointGroups.DetachNetworkEndpoints. See the
-                method description for details.
+                NetworkEndpointGroups.DetachNetworkEndpoints.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1185,8 +1185,8 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DetachNetworkEndpointsNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                NetworkEndpointGroups.DetachNetworkEndpoints. See the
-                method description for details.
+                NetworkEndpointGroups.DetachNetworkEndpoints.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1332,8 +1332,8 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                NetworkEndpointGroups.Get. See the method description
-                for details.
+                NetworkEndpointGroups.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1447,8 +1447,8 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                NetworkEndpointGroups.Insert. See the method description
-                for details.
+                NetworkEndpointGroups.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1552,8 +1552,8 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                NetworkEndpointGroups.Insert. See the method description
-                for details.
+                NetworkEndpointGroups.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1678,8 +1678,8 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListNetworkEndpointGroupsRequest, dict]):
                 The request object. A request message for
-                NetworkEndpointGroups.List. See the method description
-                for details.
+                NetworkEndpointGroups.List. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1786,8 +1786,8 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListNetworkEndpointsNetworkEndpointGroupsRequest, dict]):
                 The request object. A request message for
-                NetworkEndpointGroups.ListNetworkEndpoints. See the
-                method description for details.
+                NetworkEndpointGroups.ListNetworkEndpoints.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1924,8 +1924,8 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                NetworkEndpointGroups.TestIamPermissions. See the method
-                description for details.
+                NetworkEndpointGroups.TestIamPermissions.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

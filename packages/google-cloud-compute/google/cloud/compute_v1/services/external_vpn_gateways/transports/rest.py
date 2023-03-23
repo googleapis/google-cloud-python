@@ -384,7 +384,6 @@ class ExternalVpnGatewaysRestTransport(ExternalVpnGatewaysTransport):
                     The request object. A request message for
                 ExternalVpnGateways.Delete. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -486,7 +485,6 @@ class ExternalVpnGatewaysRestTransport(ExternalVpnGatewaysTransport):
                     The request object. A request message for
                 ExternalVpnGateways.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -587,7 +585,6 @@ class ExternalVpnGatewaysRestTransport(ExternalVpnGatewaysTransport):
                     The request object. A request message for
                 ExternalVpnGateways.Insert. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -698,7 +695,6 @@ class ExternalVpnGatewaysRestTransport(ExternalVpnGatewaysTransport):
                     The request object. A request message for
                 ExternalVpnGateways.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -787,7 +783,6 @@ class ExternalVpnGatewaysRestTransport(ExternalVpnGatewaysTransport):
                     The request object. A request message for
                 ExternalVpnGateways.SetLabels. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -898,7 +893,6 @@ class ExternalVpnGatewaysRestTransport(ExternalVpnGatewaysTransport):
                     The request object. A request message for
                 ExternalVpnGateways.TestIamPermissions.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

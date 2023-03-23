@@ -439,8 +439,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddRuleSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.AddRule. See the method description for
-                details.
+                SecurityPolicies.AddRule. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -539,8 +539,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddRuleSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.AddRule. See the method description for
-                details.
+                SecurityPolicies.AddRule. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -664,8 +664,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListSecurityPoliciesRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.AggregatedList. See the method
-                description for details.
+                SecurityPolicies.AggregatedList. See the
+                method description for details.
             project (str):
                 Name of the project scoping this
                 request.
@@ -752,8 +752,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.Delete. See the method description for
-                details.
+                SecurityPolicies.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -842,8 +842,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.Delete. See the method description for
-                details.
+                SecurityPolicies.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -957,8 +957,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.Get. See the method description for
-                details.
+                SecurityPolicies.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1049,8 +1049,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetRuleSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.GetRule. See the method description for
-                details.
+                SecurityPolicies.GetRule. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1142,8 +1142,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.Insert. See the method description for
-                details.
+                SecurityPolicies.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1226,8 +1226,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.Insert. See the method description for
-                details.
+                SecurityPolicies.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1333,8 +1333,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListSecurityPoliciesRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.List. See the method description for
-                details.
+                SecurityPolicies.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1421,8 +1421,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListPreconfiguredExpressionSetsSecurityPoliciesRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.ListPreconfiguredExpressionSets. See
-                the method description for details.
+                SecurityPolicies.ListPreconfiguredExpressionSets.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1507,8 +1507,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.Patch. See the method description for
-                details.
+                SecurityPolicies.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1610,8 +1610,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.Patch. See the method description for
-                details.
+                SecurityPolicies.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1732,8 +1732,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRuleSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.PatchRule. See the method description
-                for details.
+                SecurityPolicies.PatchRule. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1832,8 +1832,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRuleSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.PatchRule. See the method description
-                for details.
+                SecurityPolicies.PatchRule. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1955,8 +1955,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveRuleSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.RemoveRule. See the method description
-                for details.
+                SecurityPolicies.RemoveRule. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2045,8 +2045,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveRuleSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.RemoveRule. See the method description
-                for details.
+                SecurityPolicies.RemoveRule. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2163,8 +2163,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.SetLabels. See the method description
-                for details.
+                SecurityPolicies.SetLabels. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2268,8 +2268,8 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                SecurityPolicies.SetLabels. See the method description
-                for details.
+                SecurityPolicies.SetLabels. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

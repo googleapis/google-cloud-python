@@ -461,8 +461,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.AbandonInstancesRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.AbandonInstances. See the
-                method description for details.
+                RegionInstanceGroupManagers.AbandonInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -601,8 +601,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.AbandonInstancesRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.AbandonInstances. See the
-                method description for details.
+                RegionInstanceGroupManagers.AbandonInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -754,8 +754,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.ApplyUpdatesToInstances. See
-                the method description for details.
+                RegionInstanceGroupManagers.ApplyUpdatesToInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -888,8 +888,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.ApplyUpdatesToInstances. See
-                the method description for details.
+                RegionInstanceGroupManagers.ApplyUpdatesToInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1051,8 +1051,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.CreateInstancesRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.CreateInstances. See the
-                method description for details.
+                RegionInstanceGroupManagers.CreateInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1186,8 +1186,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.CreateInstancesRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.CreateInstances. See the
-                method description for details.
+                RegionInstanceGroupManagers.CreateInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1337,8 +1337,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.Delete. See the method
-                description for details.
+                RegionInstanceGroupManagers.Delete. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1441,8 +1441,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.Delete. See the method
-                description for details.
+                RegionInstanceGroupManagers.Delete. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1586,8 +1586,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstancesRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.DeleteInstances. See the
-                method description for details.
+                RegionInstanceGroupManagers.DeleteInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1725,8 +1725,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstancesRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.DeleteInstances. See the
-                method description for details.
+                RegionInstanceGroupManagers.DeleteInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2166,8 +2166,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.Get. See the method
-                description for details.
+                RegionInstanceGroupManagers.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2285,8 +2285,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.Insert. See the method
-                description for details.
+                RegionInstanceGroupManagers.Insert. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2396,8 +2396,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.Insert. See the method
-                description for details.
+                RegionInstanceGroupManagers.Insert. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2523,8 +2523,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionInstanceGroupManagersRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.List. See the method
-                description for details.
+                RegionInstanceGroupManagers.List. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2630,8 +2630,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.ListErrorsRegionInstanceGroupManagersRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.ListErrors. See the method
-                description for details.
+                RegionInstanceGroupManagers.ListErrors.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2753,8 +2753,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.ListManagedInstancesRegionInstanceGroupManagersRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.ListManagedInstances. See
-                the method description for details.
+                RegionInstanceGroupManagers.ListManagedInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2874,8 +2874,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.ListPerInstanceConfigsRegionInstanceGroupManagersRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.ListPerInstanceConfigs. See
-                the method description for details.
+                RegionInstanceGroupManagers.ListPerInstanceConfigs.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3007,8 +3007,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.Patch. See the method
-                description for details.
+                RegionInstanceGroupManagers.Patch. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3135,8 +3135,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.Patch. See the method
-                description for details.
+                RegionInstanceGroupManagers.Patch. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3282,8 +3282,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.PatchPerInstanceConfigs. See
-                the method description for details.
+                RegionInstanceGroupManagers.PatchPerInstanceConfigs.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3418,8 +3418,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.PatchPerInstanceConfigs. See
-                the method description for details.
+                RegionInstanceGroupManagers.PatchPerInstanceConfigs.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3587,8 +3587,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.RecreateInstancesRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.RecreateInstances. See the
-                method description for details.
+                RegionInstanceGroupManagers.RecreateInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3724,8 +3724,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.RecreateInstancesRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.RecreateInstances. See the
-                method description for details.
+                RegionInstanceGroupManagers.RecreateInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3883,8 +3883,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.ResizeRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.Resize. See the method
-                description for details.
+                RegionInstanceGroupManagers.Resize. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4006,8 +4006,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.ResizeRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.Resize. See the method
-                description for details.
+                RegionInstanceGroupManagers.Resize. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4146,8 +4146,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.SetInstanceTemplateRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.SetInstanceTemplate. See the
-                method description for details.
+                RegionInstanceGroupManagers.SetInstanceTemplate.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4274,8 +4274,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.SetInstanceTemplateRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.SetInstanceTemplate. See the
-                method description for details.
+                RegionInstanceGroupManagers.SetInstanceTemplate.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4427,8 +4427,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.SetTargetPoolsRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.SetTargetPools. See the
-                method description for details.
+                RegionInstanceGroupManagers.SetTargetPools.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4554,8 +4554,8 @@ class RegionInstanceGroupManagersClient(
         Args:
             request (Union[google.cloud.compute_v1.types.SetTargetPoolsRegionInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroupManagers.SetTargetPools. See the
-                method description for details.
+                RegionInstanceGroupManagers.SetTargetPools.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

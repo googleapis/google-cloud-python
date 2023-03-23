@@ -440,8 +440,8 @@ class TargetHttpProxiesClient(metaclass=TargetHttpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListTargetHttpProxiesRequest, dict]):
                 The request object. A request message for
-                TargetHttpProxies.AggregatedList. See the method
-                description for details.
+                TargetHttpProxies.AggregatedList. See
+                the method description for details.
             project (str):
                 Name of the project scoping this
                 request.
@@ -528,8 +528,8 @@ class TargetHttpProxiesClient(metaclass=TargetHttpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteTargetHttpProxyRequest, dict]):
                 The request object. A request message for
-                TargetHttpProxies.Delete. See the method description for
-                details.
+                TargetHttpProxies.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -618,8 +618,8 @@ class TargetHttpProxiesClient(metaclass=TargetHttpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteTargetHttpProxyRequest, dict]):
                 The request object. A request message for
-                TargetHttpProxies.Delete. See the method description for
-                details.
+                TargetHttpProxies.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -732,8 +732,8 @@ class TargetHttpProxiesClient(metaclass=TargetHttpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetTargetHttpProxyRequest, dict]):
                 The request object. A request message for
-                TargetHttpProxies.Get. See the method description for
-                details.
+                TargetHttpProxies.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -834,8 +834,8 @@ class TargetHttpProxiesClient(metaclass=TargetHttpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertTargetHttpProxyRequest, dict]):
                 The request object. A request message for
-                TargetHttpProxies.Insert. See the method description for
-                details.
+                TargetHttpProxies.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -918,8 +918,8 @@ class TargetHttpProxiesClient(metaclass=TargetHttpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertTargetHttpProxyRequest, dict]):
                 The request object. A request message for
-                TargetHttpProxies.Insert. See the method description for
-                details.
+                TargetHttpProxies.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1025,8 +1025,8 @@ class TargetHttpProxiesClient(metaclass=TargetHttpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListTargetHttpProxiesRequest, dict]):
                 The request object. A request message for
-                TargetHttpProxies.List. See the method description for
-                details.
+                TargetHttpProxies.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1116,8 +1116,8 @@ class TargetHttpProxiesClient(metaclass=TargetHttpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchTargetHttpProxyRequest, dict]):
                 The request object. A request message for
-                TargetHttpProxies.Patch. See the method description for
-                details.
+                TargetHttpProxies.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1219,8 +1219,8 @@ class TargetHttpProxiesClient(metaclass=TargetHttpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchTargetHttpProxyRequest, dict]):
                 The request object. A request message for
-                TargetHttpProxies.Patch. See the method description for
-                details.
+                TargetHttpProxies.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1343,8 +1343,8 @@ class TargetHttpProxiesClient(metaclass=TargetHttpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetUrlMapTargetHttpProxyRequest, dict]):
                 The request object. A request message for
-                TargetHttpProxies.SetUrlMap. See the method description
-                for details.
+                TargetHttpProxies.SetUrlMap. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1443,8 +1443,8 @@ class TargetHttpProxiesClient(metaclass=TargetHttpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetUrlMapTargetHttpProxyRequest, dict]):
                 The request object. A request message for
-                TargetHttpProxies.SetUrlMap. See the method description
-                for details.
+                TargetHttpProxies.SetUrlMap. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

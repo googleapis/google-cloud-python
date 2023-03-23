@@ -441,8 +441,8 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListServiceAttachmentsRequest, dict]):
                 The request object. A request message for
-                ServiceAttachments.AggregatedList. See the method
-                description for details.
+                ServiceAttachments.AggregatedList. See
+                the method description for details.
             project (str):
                 Name of the project scoping this
                 request.
@@ -533,8 +533,8 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteServiceAttachmentRequest, dict]):
                 The request object. A request message for
-                ServiceAttachments.Delete. See the method description
-                for details.
+                ServiceAttachments.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -633,8 +633,8 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteServiceAttachmentRequest, dict]):
                 The request object. A request message for
-                ServiceAttachments.Delete. See the method description
-                for details.
+                ServiceAttachments.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -758,8 +758,8 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetServiceAttachmentRequest, dict]):
                 The request object. A request message for
-                ServiceAttachments.Get. See the method description for
-                details.
+                ServiceAttachments.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -867,8 +867,8 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyServiceAttachmentRequest, dict]):
                 The request object. A request message for
-                ServiceAttachments.GetIamPolicy. See the method
-                description for details.
+                ServiceAttachments.GetIamPolicy. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1008,8 +1008,8 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertServiceAttachmentRequest, dict]):
                 The request object. A request message for
-                ServiceAttachments.Insert. See the method description
-                for details.
+                ServiceAttachments.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1106,8 +1106,8 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertServiceAttachmentRequest, dict]):
                 The request object. A request message for
-                ServiceAttachments.Insert. See the method description
-                for details.
+                ServiceAttachments.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1227,8 +1227,8 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListServiceAttachmentsRequest, dict]):
                 The request object. A request message for
-                ServiceAttachments.List. See the method description for
-                details.
+                ServiceAttachments.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1330,8 +1330,8 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchServiceAttachmentRequest, dict]):
                 The request object. A request message for
-                ServiceAttachments.Patch. See the method description for
-                details.
+                ServiceAttachments.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1446,8 +1446,8 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchServiceAttachmentRequest, dict]):
                 The request object. A request message for
-                ServiceAttachments.Patch. See the method description for
-                details.
+                ServiceAttachments.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1589,8 +1589,8 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyServiceAttachmentRequest, dict]):
                 The request object. A request message for
-                ServiceAttachments.SetIamPolicy. See the method
-                description for details.
+                ServiceAttachments.SetIamPolicy. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1745,8 +1745,8 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsServiceAttachmentRequest, dict]):
                 The request object. A request message for
-                ServiceAttachments.TestIamPermissions. See the method
-                description for details.
+                ServiceAttachments.TestIamPermissions.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

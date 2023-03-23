@@ -440,8 +440,8 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListInterconnectAttachmentsRequest, dict]):
                 The request object. A request message for
-                InterconnectAttachments.AggregatedList. See the method
-                description for details.
+                InterconnectAttachments.AggregatedList.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -531,8 +531,8 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInterconnectAttachmentRequest, dict]):
                 The request object. A request message for
-                InterconnectAttachments.Delete. See the method
-                description for details.
+                InterconnectAttachments.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -632,8 +632,8 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInterconnectAttachmentRequest, dict]):
                 The request object. A request message for
-                InterconnectAttachments.Delete. See the method
-                description for details.
+                InterconnectAttachments.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -756,8 +756,8 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.GetInterconnectAttachmentRequest, dict]):
                 The request object. A request message for
-                InterconnectAttachments.Get. See the method description
-                for details.
+                InterconnectAttachments.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -866,8 +866,8 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.InsertInterconnectAttachmentRequest, dict]):
                 The request object. A request message for
-                InterconnectAttachments.Insert. See the method
-                description for details.
+                InterconnectAttachments.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -969,8 +969,8 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.InsertInterconnectAttachmentRequest, dict]):
                 The request object. A request message for
-                InterconnectAttachments.Insert. See the method
-                description for details.
+                InterconnectAttachments.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1094,8 +1094,8 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.ListInterconnectAttachmentsRequest, dict]):
                 The request object. A request message for
-                InterconnectAttachments.List. See the method description
-                for details.
+                InterconnectAttachments.List. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1203,8 +1203,8 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.PatchInterconnectAttachmentRequest, dict]):
                 The request object. A request message for
-                InterconnectAttachments.Patch. See the method
-                description for details.
+                InterconnectAttachments.Patch. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1323,8 +1323,8 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.PatchInterconnectAttachmentRequest, dict]):
                 The request object. A request message for
-                InterconnectAttachments.Patch. See the method
-                description for details.
+                InterconnectAttachments.Patch. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1467,8 +1467,8 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsInterconnectAttachmentRequest, dict]):
                 The request object. A request message for
-                InterconnectAttachments.SetLabels. See the method
-                description for details.
+                InterconnectAttachments.SetLabels. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1584,8 +1584,8 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsInterconnectAttachmentRequest, dict]):
                 The request object. A request message for
-                InterconnectAttachments.SetLabels. See the method
-                description for details.
+                InterconnectAttachments.SetLabels. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

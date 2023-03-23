@@ -447,8 +447,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.AddAssociationRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.AddAssociation. See the
-                method description for details.
+                RegionNetworkFirewallPolicies.AddAssociation.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -567,8 +567,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.AddAssociationRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.AddAssociation. See the
-                method description for details.
+                RegionNetworkFirewallPolicies.AddAssociation.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -709,8 +709,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.AddRuleRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.AddRule. See the method
-                description for details.
+                RegionNetworkFirewallPolicies.AddRule.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -822,8 +822,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.AddRuleRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.AddRule. See the method
-                description for details.
+                RegionNetworkFirewallPolicies.AddRule.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -960,8 +960,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.CloneRulesRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.CloneRules. See the method
-                description for details.
+                RegionNetworkFirewallPolicies.CloneRules.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1066,8 +1066,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.CloneRulesRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.CloneRules. See the method
-                description for details.
+                RegionNetworkFirewallPolicies.CloneRules.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1196,8 +1196,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.Delete. See the method
-                description for details.
+                RegionNetworkFirewallPolicies.Delete.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1299,8 +1299,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.Delete. See the method
-                description for details.
+                RegionNetworkFirewallPolicies.Delete.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1427,8 +1427,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.Get. See the method
-                description for details.
+                RegionNetworkFirewallPolicies.Get. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1528,8 +1528,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.GetAssociationRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.GetAssociation. See the
-                method description for details.
+                RegionNetworkFirewallPolicies.GetAssociation.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1631,8 +1631,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.GetEffectiveFirewallsRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.GetEffectiveFirewalls. See
-                the method description for details.
+                RegionNetworkFirewallPolicies.GetEffectiveFirewalls.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1734,8 +1734,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.GetIamPolicy. See the
-                method description for details.
+                RegionNetworkFirewallPolicies.GetIamPolicy.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1877,8 +1877,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.GetRuleRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.GetRule. See the method
-                description for details.
+                RegionNetworkFirewallPolicies.GetRule.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1983,8 +1983,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.Insert. See the method
-                description for details.
+                RegionNetworkFirewallPolicies.Insert.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2084,8 +2084,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.Insert. See the method
-                description for details.
+                RegionNetworkFirewallPolicies.Insert.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2210,8 +2210,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionNetworkFirewallPoliciesRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.List. See the method
-                description for details.
+                RegionNetworkFirewallPolicies.List. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2314,8 +2314,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.Patch. See the method
-                description for details.
+                RegionNetworkFirewallPolicies.Patch. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2427,8 +2427,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.Patch. See the method
-                description for details.
+                RegionNetworkFirewallPolicies.Patch. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2565,8 +2565,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRuleRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.PatchRule. See the method
-                description for details.
+                RegionNetworkFirewallPolicies.PatchRule.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2678,8 +2678,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRuleRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.PatchRule. See the method
-                description for details.
+                RegionNetworkFirewallPolicies.PatchRule.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2816,8 +2816,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveAssociationRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.RemoveAssociation. See the
-                method description for details.
+                RegionNetworkFirewallPolicies.RemoveAssociation.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2924,8 +2924,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveAssociationRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.RemoveAssociation. See the
-                method description for details.
+                RegionNetworkFirewallPolicies.RemoveAssociation.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3056,8 +3056,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveRuleRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.RemoveRule. See the method
-                description for details.
+                RegionNetworkFirewallPolicies.RemoveRule.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3161,8 +3161,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveRuleRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.RemoveRule. See the method
-                description for details.
+                RegionNetworkFirewallPolicies.RemoveRule.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3295,8 +3295,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.SetIamPolicy. See the
-                method description for details.
+                RegionNetworkFirewallPolicies.SetIamPolicy.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3453,8 +3453,8 @@ class RegionNetworkFirewallPoliciesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsRegionNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                RegionNetworkFirewallPolicies.TestIamPermissions. See
-                the method description for details.
+                RegionNetworkFirewallPolicies.TestIamPermissions.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

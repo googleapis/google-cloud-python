@@ -440,8 +440,8 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListTargetTcpProxiesRequest, dict]):
                 The request object. A request message for
-                TargetTcpProxies.AggregatedList. See the method
-                description for details.
+                TargetTcpProxies.AggregatedList. See the
+                method description for details.
             project (str):
                 Name of the project scoping this
                 request.
@@ -528,8 +528,8 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteTargetTcpProxyRequest, dict]):
                 The request object. A request message for
-                TargetTcpProxies.Delete. See the method description for
-                details.
+                TargetTcpProxies.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -618,8 +618,8 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteTargetTcpProxyRequest, dict]):
                 The request object. A request message for
-                TargetTcpProxies.Delete. See the method description for
-                details.
+                TargetTcpProxies.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -732,8 +732,8 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetTargetTcpProxyRequest, dict]):
                 The request object. A request message for
-                TargetTcpProxies.Get. See the method description for
-                details.
+                TargetTcpProxies.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -829,8 +829,8 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertTargetTcpProxyRequest, dict]):
                 The request object. A request message for
-                TargetTcpProxies.Insert. See the method description for
-                details.
+                TargetTcpProxies.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -913,8 +913,8 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertTargetTcpProxyRequest, dict]):
                 The request object. A request message for
-                TargetTcpProxies.Insert. See the method description for
-                details.
+                TargetTcpProxies.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1020,8 +1020,8 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListTargetTcpProxiesRequest, dict]):
                 The request object. A request message for
-                TargetTcpProxies.List. See the method description for
-                details.
+                TargetTcpProxies.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1113,8 +1113,8 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetBackendServiceTargetTcpProxyRequest, dict]):
                 The request object. A request message for
-                TargetTcpProxies.SetBackendService. See the method
-                description for details.
+                TargetTcpProxies.SetBackendService. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1224,8 +1224,8 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetBackendServiceTargetTcpProxyRequest, dict]):
                 The request object. A request message for
-                TargetTcpProxies.SetBackendService. See the method
-                description for details.
+                TargetTcpProxies.SetBackendService. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1359,8 +1359,8 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetProxyHeaderTargetTcpProxyRequest, dict]):
                 The request object. A request message for
-                TargetTcpProxies.SetProxyHeader. See the method
-                description for details.
+                TargetTcpProxies.SetProxyHeader. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1469,8 +1469,8 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetProxyHeaderTargetTcpProxyRequest, dict]):
                 The request object. A request message for
-                TargetTcpProxies.SetProxyHeader. See the method
-                description for details.
+                TargetTcpProxies.SetProxyHeader. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

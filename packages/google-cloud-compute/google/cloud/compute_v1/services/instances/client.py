@@ -440,8 +440,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddAccessConfigInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.AddAccessConfig. See the method description
-                for details.
+                Instances.AddAccessConfig. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -560,8 +560,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddAccessConfigInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.AddAccessConfig. See the method description
-                for details.
+                Instances.AddAccessConfig. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -709,8 +709,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddResourcePoliciesInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.AddResourcePolicies. See the method
-                description for details.
+                Instances.AddResourcePolicies. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -826,8 +826,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddResourcePoliciesInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.AddResourcePolicies. See the method
-                description for details.
+                Instances.AddResourcePolicies. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -963,8 +963,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListInstancesRequest, dict]):
                 The request object. A request message for
-                Instances.AggregatedList. See the method description for
-                details.
+                Instances.AggregatedList. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1055,8 +1055,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AttachDiskInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.AttachDisk. See the method description for
-                details.
+                Instances.AttachDisk. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1166,8 +1166,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AttachDiskInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.AttachDisk. See the method description for
-                details.
+                Instances.AttachDisk. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1301,8 +1301,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.BulkInsertInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.BulkInsert. See the method description for
-                details.
+                Instances.BulkInsert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1407,8 +1407,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.BulkInsertInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.BulkInsert. See the method description for
-                details.
+                Instances.BulkInsert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1535,8 +1535,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.Delete. See the method description for
-                details.
+                Instances.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1637,8 +1637,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.Delete. See the method description for
-                details.
+                Instances.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1768,8 +1768,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteAccessConfigInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.DeleteAccessConfig. See the method description
-                for details.
+                Instances.DeleteAccessConfig. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1890,8 +1890,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteAccessConfigInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.DeleteAccessConfig. See the method description
-                for details.
+                Instances.DeleteAccessConfig. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2033,8 +2033,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DetachDiskInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.DetachDisk. See the method description for
-                details.
+                Instances.DetachDisk. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2144,8 +2144,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DetachDiskInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.DetachDisk. See the method description for
-                details.
+                Instances.DetachDisk. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2386,8 +2386,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetEffectiveFirewallsInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.GetEffectiveFirewalls. See the method
-                description for details.
+                Instances.GetEffectiveFirewalls. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2496,8 +2496,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetGuestAttributesInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.GetGuestAttributes. See the method description
-                for details.
+                Instances.GetGuestAttributes. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2596,8 +2596,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.GetIamPolicy. See the method description for
-                details.
+                Instances.GetIamPolicy. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2735,8 +2735,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetScreenshotInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.GetScreenshot. See the method description for
-                details.
+                Instances.GetScreenshot. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2837,8 +2837,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetSerialPortOutputInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.GetSerialPortOutput. See the method
-                description for details.
+                Instances.GetSerialPortOutput. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2938,8 +2938,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetShieldedInstanceIdentityInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.GetShieldedInstanceIdentity. See the method
-                description for details.
+                Instances.GetShieldedInstanceIdentity.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3040,8 +3040,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.Insert. See the method description for
-                details.
+                Instances.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3139,8 +3139,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.Insert. See the method description for
-                details.
+                Instances.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3261,8 +3261,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListInstancesRequest, dict]):
-                The request object. A request message for
-                Instances.List. See the method description for details.
+                The request object. A request message for Instances.List.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3368,8 +3368,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListReferrersInstancesRequest, dict]):
                 The request object. A request message for
-                Instances.ListReferrers. See the method description for
-                details.
+                Instances.ListReferrers. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3488,8 +3488,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveResourcePoliciesInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.RemoveResourcePolicies. See the method
-                description for details.
+                Instances.RemoveResourcePolicies. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3608,8 +3608,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveResourcePoliciesInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.RemoveResourcePolicies. See the method
-                description for details.
+                Instances.RemoveResourcePolicies. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3750,7 +3750,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ResetInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.Reset. See the method description for details.
+                Instances.Reset. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3852,7 +3853,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ResetInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.Reset. See the method description for details.
+                Instances.Reset. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3978,8 +3980,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ResumeInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.Resume. See the method description for
-                details.
+                Instances.Resume. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4080,8 +4082,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ResumeInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.Resume. See the method description for
-                details.
+                Instances.Resume. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4208,8 +4210,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SendDiagnosticInterruptInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SendDiagnosticInterrupt. See the method
-                description for details.
+                Instances.SendDiagnosticInterrupt. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4314,8 +4316,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetDeletionProtectionInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetDeletionProtection. See the method
-                description for details.
+                Instances.SetDeletionProtection. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4417,8 +4419,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetDeletionProtectionInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetDeletionProtection. See the method
-                description for details.
+                Instances.SetDeletionProtection. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4546,8 +4548,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetDiskAutoDeleteInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetDiskAutoDelete. See the method description
-                for details.
+                Instances.SetDiskAutoDelete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4668,8 +4670,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetDiskAutoDeleteInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetDiskAutoDelete. See the method description
-                for details.
+                Instances.SetDiskAutoDelete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4814,8 +4816,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetIamPolicy. See the method description for
-                details.
+                Instances.SetIamPolicy. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4968,8 +4970,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetLabels. See the method description for
-                details.
+                Instances.SetLabels. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -5084,8 +5086,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetLabels. See the method description for
-                details.
+                Instances.SetLabels. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -5227,8 +5229,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetMachineResourcesInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetMachineResources. See the method
-                description for details.
+                Instances.SetMachineResources. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -5345,8 +5347,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetMachineResourcesInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetMachineResources. See the method
-                description for details.
+                Instances.SetMachineResources. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -5486,8 +5488,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetMachineTypeInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetMachineType. See the method description for
-                details.
+                Instances.SetMachineType. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -5602,8 +5604,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetMachineTypeInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetMachineType. See the method description for
-                details.
+                Instances.SetMachineType. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -5741,8 +5743,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetMetadataInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetMetadata. See the method description for
-                details.
+                Instances.SetMetadata. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -5851,8 +5853,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetMetadataInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetMetadata. See the method description for
-                details.
+                Instances.SetMetadata. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -5990,8 +5992,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetMinCpuPlatformInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetMinCpuPlatform. See the method description
-                for details.
+                Instances.SetMinCpuPlatform. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -6108,8 +6110,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetMinCpuPlatformInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetMinCpuPlatform. See the method description
-                for details.
+                Instances.SetMinCpuPlatform. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -6248,8 +6250,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetNameInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetName. See the method description for
-                details.
+                Instances.SetName. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -6361,8 +6363,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetNameInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetName. See the method description for
-                details.
+                Instances.SetName. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -6502,8 +6504,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetSchedulingInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetScheduling. See the method description for
-                details.
+                Instances.SetScheduling. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -6614,8 +6616,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetSchedulingInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetScheduling. See the method description for
-                details.
+                Instances.SetScheduling. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -6750,8 +6752,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetServiceAccountInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetServiceAccount. See the method description
-                for details.
+                Instances.SetServiceAccount. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -6867,8 +6869,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetServiceAccountInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetServiceAccount. See the method description
-                for details.
+                Instances.SetServiceAccount. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -7012,8 +7014,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetShieldedInstanceIntegrityPolicyInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetShieldedInstanceIntegrityPolicy. See the
-                method description for details.
+                Instances.SetShieldedInstanceIntegrityPolicy.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -7136,8 +7138,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetShieldedInstanceIntegrityPolicyInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetShieldedInstanceIntegrityPolicy. See the
-                method description for details.
+                Instances.SetShieldedInstanceIntegrityPolicy.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -7279,8 +7281,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetTagsInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetTags. See the method description for
-                details.
+                Instances.SetTags. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -7389,8 +7391,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetTagsInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SetTags. See the method description for
-                details.
+                Instances.SetTags. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -7525,8 +7527,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SimulateMaintenanceEventInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SimulateMaintenanceEvent. See the method
-                description for details.
+                Instances.SimulateMaintenanceEvent. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -7631,8 +7633,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SimulateMaintenanceEventInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.SimulateMaintenanceEvent. See the method
-                description for details.
+                Instances.SimulateMaintenanceEvent. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -7761,7 +7763,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.StartInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.Start. See the method description for details.
+                Instances.Start. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -7863,7 +7866,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.StartInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.Start. See the method description for details.
+                Instances.Start. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -7995,8 +7999,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.StartWithEncryptionKeyInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.StartWithEncryptionKey. See the method
-                description for details.
+                Instances.StartWithEncryptionKey. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -8121,8 +8125,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.StartWithEncryptionKeyInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.StartWithEncryptionKey. See the method
-                description for details.
+                Instances.StartWithEncryptionKey. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -8270,8 +8274,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.StopInstanceRequest, dict]):
-                The request object. A request message for
-                Instances.Stop. See the method description for details.
+                The request object. A request message for Instances.Stop.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -8376,8 +8380,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.StopInstanceRequest, dict]):
-                The request object. A request message for
-                Instances.Stop. See the method description for details.
+                The request object. A request message for Instances.Stop.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -8510,8 +8514,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SuspendInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.Suspend. See the method description for
-                details.
+                Instances.Suspend. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -8619,8 +8623,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SuspendInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.Suspend. See the method description for
-                details.
+                Instances.Suspend. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -8751,8 +8755,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.TestIamPermissions. See the method description
-                for details.
+                Instances.TestIamPermissions. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -8865,8 +8869,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.Update. See the method description for
-                details.
+                Instances.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -8977,8 +8981,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.Update. See the method description for
-                details.
+                Instances.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -9117,8 +9121,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateAccessConfigInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.UpdateAccessConfig. See the method description
-                for details.
+                Instances.UpdateAccessConfig. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -9241,8 +9245,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateAccessConfigInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.UpdateAccessConfig. See the method description
-                for details.
+                Instances.UpdateAccessConfig. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -9389,8 +9393,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateDisplayDeviceInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.UpdateDisplayDevice. See the method
-                description for details.
+                Instances.UpdateDisplayDevice. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -9503,8 +9507,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateDisplayDeviceInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.UpdateDisplayDevice. See the method
-                description for details.
+                Instances.UpdateDisplayDevice. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -9646,8 +9650,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateNetworkInterfaceInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.UpdateNetworkInterface. See the method
-                description for details.
+                Instances.UpdateNetworkInterface. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -9773,8 +9777,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateNetworkInterfaceInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.UpdateNetworkInterface. See the method
-                description for details.
+                Instances.UpdateNetworkInterface. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -9923,8 +9927,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateShieldedInstanceConfigInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.UpdateShieldedInstanceConfig. See the method
-                description for details.
+                Instances.UpdateShieldedInstanceConfig.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -10045,8 +10049,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateShieldedInstanceConfigInstanceRequest, dict]):
                 The request object. A request message for
-                Instances.UpdateShieldedInstanceConfig. See the method
-                description for details.
+                Instances.UpdateShieldedInstanceConfig.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

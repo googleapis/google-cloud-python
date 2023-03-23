@@ -438,8 +438,8 @@ class ExternalVpnGatewaysClient(metaclass=ExternalVpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteExternalVpnGatewayRequest, dict]):
                 The request object. A request message for
-                ExternalVpnGateways.Delete. See the method description
-                for details.
+                ExternalVpnGateways.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -528,8 +528,8 @@ class ExternalVpnGatewaysClient(metaclass=ExternalVpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteExternalVpnGatewayRequest, dict]):
                 The request object. A request message for
-                ExternalVpnGateways.Delete. See the method description
-                for details.
+                ExternalVpnGateways.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -644,8 +644,8 @@ class ExternalVpnGatewaysClient(metaclass=ExternalVpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetExternalVpnGatewayRequest, dict]):
                 The request object. A request message for
-                ExternalVpnGateways.Get. See the method description for
-                details.
+                ExternalVpnGateways.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -747,8 +747,8 @@ class ExternalVpnGatewaysClient(metaclass=ExternalVpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertExternalVpnGatewayRequest, dict]):
                 The request object. A request message for
-                ExternalVpnGateways.Insert. See the method description
-                for details.
+                ExternalVpnGateways.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -831,8 +831,8 @@ class ExternalVpnGatewaysClient(metaclass=ExternalVpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertExternalVpnGatewayRequest, dict]):
                 The request object. A request message for
-                ExternalVpnGateways.Insert. See the method description
-                for details.
+                ExternalVpnGateways.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -938,8 +938,8 @@ class ExternalVpnGatewaysClient(metaclass=ExternalVpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListExternalVpnGatewaysRequest, dict]):
                 The request object. A request message for
-                ExternalVpnGateways.List. See the method description for
-                details.
+                ExternalVpnGateways.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1033,8 +1033,8 @@ class ExternalVpnGatewaysClient(metaclass=ExternalVpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsExternalVpnGatewayRequest, dict]):
                 The request object. A request message for
-                ExternalVpnGateways.SetLabels. See the method
-                description for details.
+                ExternalVpnGateways.SetLabels. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1141,8 +1141,8 @@ class ExternalVpnGatewaysClient(metaclass=ExternalVpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsExternalVpnGatewayRequest, dict]):
                 The request object. A request message for
-                ExternalVpnGateways.SetLabels. See the method
-                description for details.
+                ExternalVpnGateways.SetLabels. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1272,8 +1272,8 @@ class ExternalVpnGatewaysClient(metaclass=ExternalVpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsExternalVpnGatewayRequest, dict]):
                 The request object. A request message for
-                ExternalVpnGateways.TestIamPermissions. See the method
-                description for details.
+                ExternalVpnGateways.TestIamPermissions.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

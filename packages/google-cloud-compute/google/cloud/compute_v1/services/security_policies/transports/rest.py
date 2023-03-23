@@ -563,7 +563,6 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                     The request object. A request message for
                 SecurityPolicies.AddRule. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -674,7 +673,6 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                     The request object. A request message for
                 SecurityPolicies.AggregatedList. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -761,7 +759,6 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                     The request object. A request message for
                 SecurityPolicies.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -863,7 +860,6 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                     The request object. A request message for
                 SecurityPolicies.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -956,7 +952,6 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                     The request object. A request message for
                 SecurityPolicies.GetRule. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1047,7 +1042,6 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                     The request object. A request message for
                 SecurityPolicies.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1158,7 +1152,6 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                     The request object. A request message for
                 SecurityPolicies.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1246,7 +1239,6 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                         The request object. A request message for
                     SecurityPolicies.ListPreconfiguredExpressionSets.
                     See the method description for details.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1344,7 +1336,6 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                     The request object. A request message for
                 SecurityPolicies.Patch. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1455,7 +1446,6 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                     The request object. A request message for
                 SecurityPolicies.PatchRule. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1566,7 +1556,6 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                     The request object. A request message for
                 SecurityPolicies.RemoveRule. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1668,7 +1657,6 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                     The request object. A request message for
                 SecurityPolicies.SetLabels. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

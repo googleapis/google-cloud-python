@@ -440,8 +440,8 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListRegionCommitmentsRequest, dict]):
                 The request object. A request message for
-                RegionCommitments.AggregatedList. See the method
-                description for details.
+                RegionCommitments.AggregatedList. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -527,8 +527,8 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionCommitmentRequest, dict]):
                 The request object. A request message for
-                RegionCommitments.Get. See the method description for
-                details.
+                RegionCommitments.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -632,8 +632,8 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionCommitmentRequest, dict]):
                 The request object. A request message for
-                RegionCommitments.Insert. See the method description for
-                details.
+                RegionCommitments.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -729,8 +729,8 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionCommitmentRequest, dict]):
                 The request object. A request message for
-                RegionCommitments.Insert. See the method description for
-                details.
+                RegionCommitments.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -850,8 +850,8 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionCommitmentsRequest, dict]):
                 The request object. A request message for
-                RegionCommitments.List. See the method description for
-                details.
+                RegionCommitments.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -955,8 +955,8 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateRegionCommitmentRequest, dict]):
                 The request object. A request message for
-                RegionCommitments.Update. See the method description for
-                details.
+                RegionCommitments.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1065,8 +1065,8 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateRegionCommitmentRequest, dict]):
                 The request object. A request message for
-                RegionCommitments.Update. See the method description for
-                details.
+                RegionCommitments.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

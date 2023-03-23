@@ -403,7 +403,6 @@ class LicensesRestTransport(LicensesTransport):
                     The request object. A request message for
                 Licenses.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -506,7 +505,6 @@ class LicensesRestTransport(LicensesTransport):
                 request (~.compute.GetLicenseRequest):
                     The request object. A request message for Licenses.Get.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -598,7 +596,6 @@ class LicensesRestTransport(LicensesTransport):
                     The request object. A request message for
                 Licenses.GetIamPolicy. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -726,7 +723,6 @@ class LicensesRestTransport(LicensesTransport):
                     The request object. A request message for
                 Licenses.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -836,7 +832,6 @@ class LicensesRestTransport(LicensesTransport):
                 request (~.compute.ListLicensesRequest):
                     The request object. A request message for Licenses.List.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -923,7 +918,6 @@ class LicensesRestTransport(LicensesTransport):
                     The request object. A request message for
                 Licenses.SetIamPolicy. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1060,7 +1054,6 @@ class LicensesRestTransport(LicensesTransport):
                     The request object. A request message for
                 Licenses.TestIamPermissions. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

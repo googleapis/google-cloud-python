@@ -376,7 +376,6 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
                     The request object. A request message for
                 RegionHealthChecks.Delete. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -478,7 +477,6 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
                     The request object. A request message for
                 RegionHealthChecks.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -585,7 +583,6 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
                     The request object. A request message for
                 RegionHealthChecks.Insert. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -696,7 +693,6 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
                     The request object. A request message for
                 RegionHealthChecks.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -785,7 +781,6 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
                     The request object. A request message for
                 RegionHealthChecks.Patch. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -896,7 +891,6 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
                     The request object. A request message for
                 RegionHealthChecks.Update. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

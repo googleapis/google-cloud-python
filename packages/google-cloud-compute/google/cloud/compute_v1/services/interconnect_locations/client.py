@@ -437,8 +437,8 @@ class InterconnectLocationsClient(metaclass=InterconnectLocationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetInterconnectLocationRequest, dict]):
                 The request object. A request message for
-                InterconnectLocations.Get. See the method description
-                for details.
+                InterconnectLocations.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -532,8 +532,8 @@ class InterconnectLocationsClient(metaclass=InterconnectLocationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListInterconnectLocationsRequest, dict]):
                 The request object. A request message for
-                InterconnectLocations.List. See the method description
-                for details.
+                InterconnectLocations.List. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

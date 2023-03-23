@@ -347,7 +347,6 @@ class GlobalAddressesRestTransport(GlobalAddressesTransport):
                     The request object. A request message for
                 GlobalAddresses.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -449,7 +448,6 @@ class GlobalAddressesRestTransport(GlobalAddressesTransport):
                     The request object. A request message for
                 GlobalAddresses.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -543,7 +541,6 @@ class GlobalAddressesRestTransport(GlobalAddressesTransport):
                     The request object. A request message for
                 GlobalAddresses.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -654,7 +651,6 @@ class GlobalAddressesRestTransport(GlobalAddressesTransport):
                     The request object. A request message for
                 GlobalAddresses.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -741,7 +737,6 @@ class GlobalAddressesRestTransport(GlobalAddressesTransport):
                     The request object. A request message for
                 GlobalAddresses.SetLabels. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

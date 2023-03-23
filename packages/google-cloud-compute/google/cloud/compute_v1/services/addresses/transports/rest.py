@@ -370,7 +370,6 @@ class AddressesRestTransport(AddressesTransport):
                     The request object. A request message for
                 Addresses.AggregatedList. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -457,7 +456,6 @@ class AddressesRestTransport(AddressesTransport):
                     The request object. A request message for
                 Addresses.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -558,7 +556,6 @@ class AddressesRestTransport(AddressesTransport):
                 request (~.compute.GetAddressRequest):
                     The request object. A request message for Addresses.Get.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -652,7 +649,6 @@ class AddressesRestTransport(AddressesTransport):
                     The request object. A request message for
                 Addresses.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -762,7 +758,6 @@ class AddressesRestTransport(AddressesTransport):
                 request (~.compute.ListAddressesRequest):
                     The request object. A request message for Addresses.List.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -849,7 +844,6 @@ class AddressesRestTransport(AddressesTransport):
                     The request object. A request message for
                 Addresses.SetLabels. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

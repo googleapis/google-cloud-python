@@ -496,7 +496,6 @@ class ReservationsRestTransport(ReservationsTransport):
                     The request object. A request message for
                 Reservations.AggregatedList. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -583,7 +582,6 @@ class ReservationsRestTransport(ReservationsTransport):
                     The request object. A request message for
                 Reservations.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -685,7 +683,6 @@ class ReservationsRestTransport(ReservationsTransport):
                     The request object. A request message for
                 Reservations.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -778,7 +775,6 @@ class ReservationsRestTransport(ReservationsTransport):
                     The request object. A request message for
                 Reservations.GetIamPolicy. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -906,7 +902,6 @@ class ReservationsRestTransport(ReservationsTransport):
                     The request object. A request message for
                 Reservations.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1017,7 +1012,6 @@ class ReservationsRestTransport(ReservationsTransport):
                     The request object. A request message for
                 Reservations.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1104,7 +1098,6 @@ class ReservationsRestTransport(ReservationsTransport):
                     The request object. A request message for
                 Reservations.Resize. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1215,7 +1208,6 @@ class ReservationsRestTransport(ReservationsTransport):
                     The request object. A request message for
                 Reservations.SetIamPolicy. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1352,7 +1344,6 @@ class ReservationsRestTransport(ReservationsTransport):
                     The request object. A request message for
                 Reservations.TestIamPermissions. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1450,7 +1441,6 @@ class ReservationsRestTransport(ReservationsTransport):
                     The request object. A request message for
                 Reservations.Update. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

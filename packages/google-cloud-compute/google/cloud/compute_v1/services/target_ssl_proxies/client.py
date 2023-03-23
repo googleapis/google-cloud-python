@@ -438,8 +438,8 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteTargetSslProxyRequest, dict]):
                 The request object. A request message for
-                TargetSslProxies.Delete. See the method description for
-                details.
+                TargetSslProxies.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -528,8 +528,8 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteTargetSslProxyRequest, dict]):
                 The request object. A request message for
-                TargetSslProxies.Delete. See the method description for
-                details.
+                TargetSslProxies.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -642,8 +642,8 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetTargetSslProxyRequest, dict]):
                 The request object. A request message for
-                TargetSslProxies.Get. See the method description for
-                details.
+                TargetSslProxies.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -739,8 +739,8 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertTargetSslProxyRequest, dict]):
                 The request object. A request message for
-                TargetSslProxies.Insert. See the method description for
-                details.
+                TargetSslProxies.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -823,8 +823,8 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertTargetSslProxyRequest, dict]):
                 The request object. A request message for
-                TargetSslProxies.Insert. See the method description for
-                details.
+                TargetSslProxies.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -930,8 +930,8 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListTargetSslProxiesRequest, dict]):
                 The request object. A request message for
-                TargetSslProxies.List. See the method description for
-                details.
+                TargetSslProxies.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1023,8 +1023,8 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetBackendServiceTargetSslProxyRequest, dict]):
                 The request object. A request message for
-                TargetSslProxies.SetBackendService. See the method
-                description for details.
+                TargetSslProxies.SetBackendService. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1134,8 +1134,8 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetBackendServiceTargetSslProxyRequest, dict]):
                 The request object. A request message for
-                TargetSslProxies.SetBackendService. See the method
-                description for details.
+                TargetSslProxies.SetBackendService. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1269,8 +1269,8 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetCertificateMapTargetSslProxyRequest, dict]):
                 The request object. A request message for
-                TargetSslProxies.SetCertificateMap. See the method
-                description for details.
+                TargetSslProxies.SetCertificateMap. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1381,8 +1381,8 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetCertificateMapTargetSslProxyRequest, dict]):
                 The request object. A request message for
-                TargetSslProxies.SetCertificateMap. See the method
-                description for details.
+                TargetSslProxies.SetCertificateMap. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1517,8 +1517,8 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetProxyHeaderTargetSslProxyRequest, dict]):
                 The request object. A request message for
-                TargetSslProxies.SetProxyHeader. See the method
-                description for details.
+                TargetSslProxies.SetProxyHeader. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1627,8 +1627,8 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetProxyHeaderTargetSslProxyRequest, dict]):
                 The request object. A request message for
-                TargetSslProxies.SetProxyHeader. See the method
-                description for details.
+                TargetSslProxies.SetProxyHeader. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1761,8 +1761,8 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetSslCertificatesTargetSslProxyRequest, dict]):
                 The request object. A request message for
-                TargetSslProxies.SetSslCertificates. See the method
-                description for details.
+                TargetSslProxies.SetSslCertificates. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1872,8 +1872,8 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetSslCertificatesTargetSslProxyRequest, dict]):
                 The request object. A request message for
-                TargetSslProxies.SetSslCertificates. See the method
-                description for details.
+                TargetSslProxies.SetSslCertificates. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2009,8 +2009,8 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetSslPolicyTargetSslProxyRequest, dict]):
                 The request object. A request message for
-                TargetSslProxies.SetSslPolicy. See the method
-                description for details.
+                TargetSslProxies.SetSslPolicy. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2117,8 +2117,8 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetSslPolicyTargetSslProxyRequest, dict]):
                 The request object. A request message for
-                TargetSslProxies.SetSslPolicy. See the method
-                description for details.
+                TargetSslProxies.SetSslPolicy. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

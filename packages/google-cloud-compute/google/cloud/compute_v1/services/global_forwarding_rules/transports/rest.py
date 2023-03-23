@@ -407,7 +407,6 @@ class GlobalForwardingRulesRestTransport(GlobalForwardingRulesTransport):
                     The request object. A request message for
                 GlobalForwardingRules.Delete. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -509,7 +508,6 @@ class GlobalForwardingRulesRestTransport(GlobalForwardingRulesTransport):
                     The request object. A request message for
                 GlobalForwardingRules.Get. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -608,7 +606,6 @@ class GlobalForwardingRulesRestTransport(GlobalForwardingRulesTransport):
                     The request object. A request message for
                 GlobalForwardingRules.Insert. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -719,7 +716,6 @@ class GlobalForwardingRulesRestTransport(GlobalForwardingRulesTransport):
                     The request object. A request message for
                 GlobalForwardingRules.List. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -808,7 +804,6 @@ class GlobalForwardingRulesRestTransport(GlobalForwardingRulesTransport):
                     The request object. A request message for
                 GlobalForwardingRules.Patch. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -919,7 +914,6 @@ class GlobalForwardingRulesRestTransport(GlobalForwardingRulesTransport):
                     The request object. A request message for
                 GlobalForwardingRules.SetLabels. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1030,7 +1024,6 @@ class GlobalForwardingRulesRestTransport(GlobalForwardingRulesTransport):
                     The request object. A request message for
                 GlobalForwardingRules.SetTarget. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

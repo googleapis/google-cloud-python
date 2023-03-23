@@ -435,8 +435,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListAddressesRequest, dict]):
                 The request object. A request message for
-                Addresses.AggregatedList. See the method description for
-                details.
+                Addresses.AggregatedList. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -522,8 +522,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteAddressRequest, dict]):
                 The request object. A request message for
-                Addresses.Delete. See the method description for
-                details.
+                Addresses.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -621,8 +621,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteAddressRequest, dict]):
                 The request object. A request message for
-                Addresses.Delete. See the method description for
-                details.
+                Addresses.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -849,8 +849,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertAddressRequest, dict]):
                 The request object. A request message for
-                Addresses.Insert. See the method description for
-                details.
+                Addresses.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -946,8 +946,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertAddressRequest, dict]):
                 The request object. A request message for
-                Addresses.Insert. See the method description for
-                details.
+                Addresses.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1066,8 +1066,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListAddressesRequest, dict]):
-                The request object. A request message for
-                Addresses.List. See the method description for details.
+                The request object. A request message for Addresses.List.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1170,8 +1170,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsAddressRequest, dict]):
                 The request object. A request message for
-                Addresses.SetLabels. See the method description for
-                details.
+                Addresses.SetLabels. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1284,8 +1284,8 @@ class AddressesClient(metaclass=AddressesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsAddressRequest, dict]):
                 The request object. A request message for
-                Addresses.SetLabels. See the method description for
-                details.
+                Addresses.SetLabels. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

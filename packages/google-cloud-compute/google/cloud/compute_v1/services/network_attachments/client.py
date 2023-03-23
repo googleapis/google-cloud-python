@@ -441,8 +441,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListNetworkAttachmentsRequest, dict]):
                 The request object. A request message for
-                NetworkAttachments.AggregatedList. See the method
-                description for details.
+                NetworkAttachments.AggregatedList. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -531,8 +531,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNetworkAttachmentRequest, dict]):
                 The request object. A request message for
-                NetworkAttachments.Delete. See the method description
-                for details.
+                NetworkAttachments.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -631,8 +631,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNetworkAttachmentRequest, dict]):
                 The request object. A request message for
-                NetworkAttachments.Delete. See the method description
-                for details.
+                NetworkAttachments.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -756,8 +756,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetNetworkAttachmentRequest, dict]):
                 The request object. A request message for
-                NetworkAttachments.Get. See the method description for
-                details.
+                NetworkAttachments.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -858,8 +858,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyNetworkAttachmentRequest, dict]):
                 The request object. A request message for
-                NetworkAttachments.GetIamPolicy. See the method
-                description for details.
+                NetworkAttachments.GetIamPolicy. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -999,8 +999,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNetworkAttachmentRequest, dict]):
                 The request object. A request message for
-                NetworkAttachments.Insert. See the method description
-                for details.
+                NetworkAttachments.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1097,8 +1097,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNetworkAttachmentRequest, dict]):
                 The request object. A request message for
-                NetworkAttachments.Insert. See the method description
-                for details.
+                NetworkAttachments.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1218,8 +1218,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListNetworkAttachmentsRequest, dict]):
                 The request object. A request message for
-                NetworkAttachments.List. See the method description for
-                details.
+                NetworkAttachments.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1323,8 +1323,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyNetworkAttachmentRequest, dict]):
                 The request object. A request message for
-                NetworkAttachments.SetIamPolicy. See the method
-                description for details.
+                NetworkAttachments.SetIamPolicy. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1479,8 +1479,8 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsNetworkAttachmentRequest, dict]):
                 The request object. A request message for
-                NetworkAttachments.TestIamPermissions. See the method
-                description for details.
+                NetworkAttachments.TestIamPermissions.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

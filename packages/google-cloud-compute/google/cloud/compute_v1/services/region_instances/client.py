@@ -441,8 +441,8 @@ class RegionInstancesClient(metaclass=RegionInstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.BulkInsertRegionInstanceRequest, dict]):
                 The request object. A request message for
-                RegionInstances.BulkInsert. See the method description
-                for details.
+                RegionInstances.BulkInsert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -546,8 +546,8 @@ class RegionInstancesClient(metaclass=RegionInstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.BulkInsertRegionInstanceRequest, dict]):
                 The request object. A request message for
-                RegionInstances.BulkInsert. See the method description
-                for details.
+                RegionInstances.BulkInsert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

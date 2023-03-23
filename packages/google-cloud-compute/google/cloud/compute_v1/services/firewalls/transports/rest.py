@@ -370,7 +370,6 @@ class FirewallsRestTransport(FirewallsTransport):
                     The request object. A request message for
                 Firewalls.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -471,7 +470,6 @@ class FirewallsRestTransport(FirewallsTransport):
                 request (~.compute.GetFirewallRequest):
                     The request object. A request message for Firewalls.Get.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -563,7 +561,6 @@ class FirewallsRestTransport(FirewallsTransport):
                     The request object. A request message for
                 Firewalls.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -673,7 +670,6 @@ class FirewallsRestTransport(FirewallsTransport):
                 request (~.compute.ListFirewallsRequest):
                     The request object. A request message for Firewalls.List.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -760,7 +756,6 @@ class FirewallsRestTransport(FirewallsTransport):
                     The request object. A request message for
                 Firewalls.Patch. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -871,7 +866,6 @@ class FirewallsRestTransport(FirewallsTransport):
                     The request object. A request message for
                 Firewalls.Update. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

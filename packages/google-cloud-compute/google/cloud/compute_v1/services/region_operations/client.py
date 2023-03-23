@@ -437,8 +437,8 @@ class RegionOperationsClient(metaclass=RegionOperationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionOperationRequest, dict]):
                 The request object. A request message for
-                RegionOperations.Delete. See the method description for
-                details.
+                RegionOperations.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -538,8 +538,8 @@ class RegionOperationsClient(metaclass=RegionOperationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionOperationRequest, dict]):
                 The request object. A request message for
-                RegionOperations.Get. See the method description for
-                details.
+                RegionOperations.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -650,8 +650,8 @@ class RegionOperationsClient(metaclass=RegionOperationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionOperationsRequest, dict]):
                 The request object. A request message for
-                RegionOperations.List. See the method description for
-                details.
+                RegionOperations.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -763,8 +763,8 @@ class RegionOperationsClient(metaclass=RegionOperationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.WaitRegionOperationRequest, dict]):
                 The request object. A request message for
-                RegionOperations.Wait. See the method description for
-                details.
+                RegionOperations.Wait. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

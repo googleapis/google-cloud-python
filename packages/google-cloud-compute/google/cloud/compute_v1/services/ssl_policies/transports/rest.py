@@ -409,7 +409,6 @@ class SslPoliciesRestTransport(SslPoliciesTransport):
                     The request object. A request message for
                 SslPolicies.AggregatedList. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -496,7 +495,6 @@ class SslPoliciesRestTransport(SslPoliciesTransport):
                     The request object. A request message for
                 SslPolicies.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -598,7 +596,6 @@ class SslPoliciesRestTransport(SslPoliciesTransport):
                     The request object. A request message for
                 SslPolicies.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -691,7 +688,6 @@ class SslPoliciesRestTransport(SslPoliciesTransport):
                     The request object. A request message for
                 SslPolicies.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -802,7 +798,6 @@ class SslPoliciesRestTransport(SslPoliciesTransport):
                     The request object. A request message for
                 SslPolicies.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -889,7 +884,6 @@ class SslPoliciesRestTransport(SslPoliciesTransport):
                     The request object. A request message for
                 SslPolicies.ListAvailableFeatures. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -978,7 +972,6 @@ class SslPoliciesRestTransport(SslPoliciesTransport):
                     The request object. A request message for
                 SslPolicies.Patch. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

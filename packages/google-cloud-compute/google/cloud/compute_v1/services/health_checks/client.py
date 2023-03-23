@@ -438,8 +438,8 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListHealthChecksRequest, dict]):
                 The request object. A request message for
-                HealthChecks.AggregatedList. See the method description
-                for details.
+                HealthChecks.AggregatedList. See the
+                method description for details.
             project (str):
                 Name of the project scoping this
                 request.
@@ -526,8 +526,8 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteHealthCheckRequest, dict]):
                 The request object. A request message for
-                HealthChecks.Delete. See the method description for
-                details.
+                HealthChecks.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -616,8 +616,8 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteHealthCheckRequest, dict]):
                 The request object. A request message for
-                HealthChecks.Delete. See the method description for
-                details.
+                HealthChecks.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -730,8 +730,8 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetHealthCheckRequest, dict]):
                 The request object. A request message for
-                HealthChecks.Get. See the method description for
-                details.
+                HealthChecks.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -838,8 +838,8 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertHealthCheckRequest, dict]):
                 The request object. A request message for
-                HealthChecks.Insert. See the method description for
-                details.
+                HealthChecks.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -922,8 +922,8 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertHealthCheckRequest, dict]):
                 The request object. A request message for
-                HealthChecks.Insert. See the method description for
-                details.
+                HealthChecks.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1029,8 +1029,8 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListHealthChecksRequest, dict]):
                 The request object. A request message for
-                HealthChecks.List. See the method description for
-                details.
+                HealthChecks.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1121,8 +1121,8 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchHealthCheckRequest, dict]):
                 The request object. A request message for
-                HealthChecks.Patch. See the method description for
-                details.
+                HealthChecks.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1222,8 +1222,8 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchHealthCheckRequest, dict]):
                 The request object. A request message for
-                HealthChecks.Patch. See the method description for
-                details.
+                HealthChecks.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1345,8 +1345,8 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateHealthCheckRequest, dict]):
                 The request object. A request message for
-                HealthChecks.Update. See the method description for
-                details.
+                HealthChecks.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1444,8 +1444,8 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateHealthCheckRequest, dict]):
                 The request object. A request message for
-                HealthChecks.Update. See the method description for
-                details.
+                HealthChecks.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

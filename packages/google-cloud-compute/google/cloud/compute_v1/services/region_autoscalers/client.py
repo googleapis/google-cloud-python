@@ -439,8 +439,8 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionAutoscalerRequest, dict]):
                 The request object. A request message for
-                RegionAutoscalers.Delete. See the method description for
-                details.
+                RegionAutoscalers.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -538,8 +538,8 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionAutoscalerRequest, dict]):
                 The request object. A request message for
-                RegionAutoscalers.Delete. See the method description for
-                details.
+                RegionAutoscalers.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -662,8 +662,8 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionAutoscalerRequest, dict]):
                 The request object. A request message for
-                RegionAutoscalers.Get. See the method description for
-                details.
+                RegionAutoscalers.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -771,8 +771,8 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionAutoscalerRequest, dict]):
                 The request object. A request message for
-                RegionAutoscalers.Insert. See the method description for
-                details.
+                RegionAutoscalers.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -870,8 +870,8 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionAutoscalerRequest, dict]):
                 The request object. A request message for
-                RegionAutoscalers.Insert. See the method description for
-                details.
+                RegionAutoscalers.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -993,8 +993,8 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionAutoscalersRequest, dict]):
                 The request object. A request message for
-                RegionAutoscalers.List. See the method description for
-                details.
+                RegionAutoscalers.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1098,8 +1098,8 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionAutoscalerRequest, dict]):
                 The request object. A request message for
-                RegionAutoscalers.Patch. See the method description for
-                details.
+                RegionAutoscalers.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1199,8 +1199,8 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionAutoscalerRequest, dict]):
                 The request object. A request message for
-                RegionAutoscalers.Patch. See the method description for
-                details.
+                RegionAutoscalers.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1323,8 +1323,8 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateRegionAutoscalerRequest, dict]):
                 The request object. A request message for
-                RegionAutoscalers.Update. See the method description for
-                details.
+                RegionAutoscalers.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1422,8 +1422,8 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateRegionAutoscalerRequest, dict]):
                 The request object. A request message for
-                RegionAutoscalers.Update. See the method description for
-                details.
+                RegionAutoscalers.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

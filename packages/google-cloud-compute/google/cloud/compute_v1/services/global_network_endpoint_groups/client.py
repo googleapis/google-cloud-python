@@ -446,8 +446,8 @@ class GlobalNetworkEndpointGroupsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                GlobalNetworkEndpointGroups.AttachNetworkEndpoints. See
-                the method description for details.
+                GlobalNetworkEndpointGroups.AttachNetworkEndpoints.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -566,8 +566,8 @@ class GlobalNetworkEndpointGroupsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                GlobalNetworkEndpointGroups.AttachNetworkEndpoints. See
-                the method description for details.
+                GlobalNetworkEndpointGroups.AttachNetworkEndpoints.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -708,8 +708,8 @@ class GlobalNetworkEndpointGroupsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteGlobalNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                GlobalNetworkEndpointGroups.Delete. See the method
-                description for details.
+                GlobalNetworkEndpointGroups.Delete. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -803,8 +803,8 @@ class GlobalNetworkEndpointGroupsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteGlobalNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                GlobalNetworkEndpointGroups.Delete. See the method
-                description for details.
+                GlobalNetworkEndpointGroups.Delete. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -924,8 +924,8 @@ class GlobalNetworkEndpointGroupsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                GlobalNetworkEndpointGroups.DetachNetworkEndpoints. See
-                the method description for details.
+                GlobalNetworkEndpointGroups.DetachNetworkEndpoints.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1044,8 +1044,8 @@ class GlobalNetworkEndpointGroupsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                GlobalNetworkEndpointGroups.DetachNetworkEndpoints. See
-                the method description for details.
+                GlobalNetworkEndpointGroups.DetachNetworkEndpoints.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1184,8 +1184,8 @@ class GlobalNetworkEndpointGroupsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.GetGlobalNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                GlobalNetworkEndpointGroups.Get. See the method
-                description for details.
+                GlobalNetworkEndpointGroups.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1287,8 +1287,8 @@ class GlobalNetworkEndpointGroupsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.InsertGlobalNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                GlobalNetworkEndpointGroups.Insert. See the method
-                description for details.
+                GlobalNetworkEndpointGroups.Insert. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1376,8 +1376,8 @@ class GlobalNetworkEndpointGroupsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.InsertGlobalNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                GlobalNetworkEndpointGroups.Insert. See the method
-                description for details.
+                GlobalNetworkEndpointGroups.Insert. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1487,8 +1487,8 @@ class GlobalNetworkEndpointGroupsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.ListGlobalNetworkEndpointGroupsRequest, dict]):
                 The request object. A request message for
-                GlobalNetworkEndpointGroups.List. See the method
-                description for details.
+                GlobalNetworkEndpointGroups.List. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1576,8 +1576,8 @@ class GlobalNetworkEndpointGroupsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest, dict]):
                 The request object. A request message for
-                GlobalNetworkEndpointGroups.ListNetworkEndpoints. See
-                the method description for details.
+                GlobalNetworkEndpointGroups.ListNetworkEndpoints.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

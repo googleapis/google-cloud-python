@@ -439,8 +439,8 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListTargetInstancesRequest, dict]):
                 The request object. A request message for
-                TargetInstances.AggregatedList. See the method
-                description for details.
+                TargetInstances.AggregatedList. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -526,8 +526,8 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteTargetInstanceRequest, dict]):
                 The request object. A request message for
-                TargetInstances.Delete. See the method description for
-                details.
+                TargetInstances.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -627,8 +627,8 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteTargetInstanceRequest, dict]):
                 The request object. A request message for
-                TargetInstances.Delete. See the method description for
-                details.
+                TargetInstances.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -753,8 +753,8 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetTargetInstanceRequest, dict]):
                 The request object. A request message for
-                TargetInstances.Get. See the method description for
-                details.
+                TargetInstances.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -861,8 +861,8 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertTargetInstanceRequest, dict]):
                 The request object. A request message for
-                TargetInstances.Insert. See the method description for
-                details.
+                TargetInstances.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -960,8 +960,8 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertTargetInstanceRequest, dict]):
                 The request object. A request message for
-                TargetInstances.Insert. See the method description for
-                details.
+                TargetInstances.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1083,8 +1083,8 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListTargetInstancesRequest, dict]):
                 The request object. A request message for
-                TargetInstances.List. See the method description for
-                details.
+                TargetInstances.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

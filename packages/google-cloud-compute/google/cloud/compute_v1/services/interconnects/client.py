@@ -436,8 +436,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInterconnectRequest, dict]):
                 The request object. A request message for
-                Interconnects.Delete. See the method description for
-                details.
+                Interconnects.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -524,8 +524,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInterconnectRequest, dict]):
                 The request object. A request message for
-                Interconnects.Delete. See the method description for
-                details.
+                Interconnects.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -637,8 +637,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetInterconnectRequest, dict]):
                 The request object. A request message for
-                Interconnects.Get. See the method description for
-                details.
+                Interconnects.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -732,8 +732,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetDiagnosticsInterconnectRequest, dict]):
                 The request object. A request message for
-                Interconnects.GetDiagnostics. See the method description
-                for details.
+                Interconnects.GetDiagnostics. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -823,8 +823,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertInterconnectRequest, dict]):
                 The request object. A request message for
-                Interconnects.Insert. See the method description for
-                details.
+                Interconnects.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -907,8 +907,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertInterconnectRequest, dict]):
                 The request object. A request message for
-                Interconnects.Insert. See the method description for
-                details.
+                Interconnects.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1014,8 +1014,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListInterconnectsRequest, dict]):
                 The request object. A request message for
-                Interconnects.List. See the method description for
-                details.
+                Interconnects.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1106,8 +1106,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchInterconnectRequest, dict]):
                 The request object. A request message for
-                Interconnects.Patch. See the method description for
-                details.
+                Interconnects.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1205,8 +1205,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchInterconnectRequest, dict]):
                 The request object. A request message for
-                Interconnects.Patch. See the method description for
-                details.
+                Interconnects.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1328,8 +1328,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsInterconnectRequest, dict]):
                 The request object. A request message for
-                Interconnects.SetLabels. See the method description for
-                details.
+                Interconnects.SetLabels. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1433,8 +1433,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsInterconnectRequest, dict]):
                 The request object. A request message for
-                Interconnects.SetLabels. See the method description for
-                details.
+                Interconnects.SetLabels. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

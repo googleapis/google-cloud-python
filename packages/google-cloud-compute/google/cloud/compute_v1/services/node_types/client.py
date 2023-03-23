@@ -432,8 +432,8 @@ class NodeTypesClient(metaclass=NodeTypesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListNodeTypesRequest, dict]):
                 The request object. A request message for
-                NodeTypes.AggregatedList. See the method description for
-                details.
+                NodeTypes.AggregatedList. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -624,8 +624,8 @@ class NodeTypesClient(metaclass=NodeTypesClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListNodeTypesRequest, dict]):
-                The request object. A request message for
-                NodeTypes.List. See the method description for details.
+                The request object. A request message for NodeTypes.List.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

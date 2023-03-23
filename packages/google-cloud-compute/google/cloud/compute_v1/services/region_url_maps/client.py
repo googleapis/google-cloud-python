@@ -437,8 +437,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionUrlMapRequest, dict]):
                 The request object. A request message for
-                RegionUrlMaps.Delete. See the method description for
-                details.
+                RegionUrlMaps.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -538,8 +538,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionUrlMapRequest, dict]):
                 The request object. A request message for
-                RegionUrlMaps.Delete. See the method description for
-                details.
+                RegionUrlMaps.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -664,8 +664,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionUrlMapRequest, dict]):
                 The request object. A request message for
-                RegionUrlMaps.Get. See the method description for
-                details.
+                RegionUrlMaps.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -785,8 +785,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionUrlMapRequest, dict]):
                 The request object. A request message for
-                RegionUrlMaps.Insert. See the method description for
-                details.
+                RegionUrlMaps.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -884,8 +884,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionUrlMapRequest, dict]):
                 The request object. A request message for
-                RegionUrlMaps.Insert. See the method description for
-                details.
+                RegionUrlMaps.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1007,8 +1007,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionUrlMapsRequest, dict]):
                 The request object. A request message for
-                RegionUrlMaps.List. See the method description for
-                details.
+                RegionUrlMaps.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1113,8 +1113,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionUrlMapRequest, dict]):
                 The request object. A request message for
-                RegionUrlMaps.Patch. See the method description for
-                details.
+                RegionUrlMaps.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1223,8 +1223,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionUrlMapRequest, dict]):
                 The request object. A request message for
-                RegionUrlMaps.Patch. See the method description for
-                details.
+                RegionUrlMaps.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1356,8 +1356,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateRegionUrlMapRequest, dict]):
                 The request object. A request message for
-                RegionUrlMaps.Update. See the method description for
-                details.
+                RegionUrlMaps.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1466,8 +1466,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateRegionUrlMapRequest, dict]):
                 The request object. A request message for
-                RegionUrlMaps.Update. See the method description for
-                details.
+                RegionUrlMaps.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1604,8 +1604,8 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ValidateRegionUrlMapRequest, dict]):
                 The request object. A request message for
-                RegionUrlMaps.Validate. See the method description for
-                details.
+                RegionUrlMaps.Validate. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

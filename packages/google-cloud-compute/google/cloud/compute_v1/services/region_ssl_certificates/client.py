@@ -442,8 +442,8 @@ class RegionSslCertificatesClient(metaclass=RegionSslCertificatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionSslCertificateRequest, dict]):
                 The request object. A request message for
-                RegionSslCertificates.Delete. See the method description
-                for details.
+                RegionSslCertificates.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -546,8 +546,8 @@ class RegionSslCertificatesClient(metaclass=RegionSslCertificatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionSslCertificateRequest, dict]):
                 The request object. A request message for
-                RegionSslCertificates.Delete. See the method description
-                for details.
+                RegionSslCertificates.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -674,8 +674,8 @@ class RegionSslCertificatesClient(metaclass=RegionSslCertificatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionSslCertificateRequest, dict]):
                 The request object. A request message for
-                RegionSslCertificates.Get. See the method description
-                for details.
+                RegionSslCertificates.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -793,8 +793,8 @@ class RegionSslCertificatesClient(metaclass=RegionSslCertificatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionSslCertificateRequest, dict]):
                 The request object. A request message for
-                RegionSslCertificates.Insert. See the method description
-                for details.
+                RegionSslCertificates.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -895,8 +895,8 @@ class RegionSslCertificatesClient(metaclass=RegionSslCertificatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionSslCertificateRequest, dict]):
                 The request object. A request message for
-                RegionSslCertificates.Insert. See the method description
-                for details.
+                RegionSslCertificates.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1019,8 +1019,8 @@ class RegionSslCertificatesClient(metaclass=RegionSslCertificatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionSslCertificatesRequest, dict]):
                 The request object. A request message for
-                RegionSslCertificates.List. See the method description
-                for details.
+                RegionSslCertificates.List. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

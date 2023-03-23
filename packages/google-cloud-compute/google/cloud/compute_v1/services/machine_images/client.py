@@ -437,8 +437,8 @@ class MachineImagesClient(metaclass=MachineImagesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteMachineImageRequest, dict]):
                 The request object. A request message for
-                MachineImages.Delete. See the method description for
-                details.
+                MachineImages.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -528,8 +528,8 @@ class MachineImagesClient(metaclass=MachineImagesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteMachineImageRequest, dict]):
                 The request object. A request message for
-                MachineImages.Delete. See the method description for
-                details.
+                MachineImages.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -642,8 +642,8 @@ class MachineImagesClient(metaclass=MachineImagesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetMachineImageRequest, dict]):
                 The request object. A request message for
-                MachineImages.Get. See the method description for
-                details.
+                MachineImages.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -737,8 +737,8 @@ class MachineImagesClient(metaclass=MachineImagesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyMachineImageRequest, dict]):
                 The request object. A request message for
-                MachineImages.GetIamPolicy. See the method description
-                for details.
+                MachineImages.GetIamPolicy. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -870,8 +870,8 @@ class MachineImagesClient(metaclass=MachineImagesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertMachineImageRequest, dict]):
                 The request object. A request message for
-                MachineImages.Insert. See the method description for
-                details.
+                MachineImages.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -958,8 +958,8 @@ class MachineImagesClient(metaclass=MachineImagesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertMachineImageRequest, dict]):
                 The request object. A request message for
-                MachineImages.Insert. See the method description for
-                details.
+                MachineImages.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1065,8 +1065,8 @@ class MachineImagesClient(metaclass=MachineImagesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListMachineImagesRequest, dict]):
                 The request object. A request message for
-                MachineImages.List. See the method description for
-                details.
+                MachineImages.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1156,8 +1156,8 @@ class MachineImagesClient(metaclass=MachineImagesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyMachineImageRequest, dict]):
                 The request object. A request message for
-                MachineImages.SetIamPolicy. See the method description
-                for details.
+                MachineImages.SetIamPolicy. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1301,8 +1301,8 @@ class MachineImagesClient(metaclass=MachineImagesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsMachineImageRequest, dict]):
                 The request object. A request message for
-                MachineImages.TestIamPermissions. See the method
-                description for details.
+                MachineImages.TestIamPermissions. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

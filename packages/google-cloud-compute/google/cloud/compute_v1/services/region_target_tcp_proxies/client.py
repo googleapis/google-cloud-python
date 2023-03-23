@@ -441,8 +441,8 @@ class RegionTargetTcpProxiesClient(metaclass=RegionTargetTcpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionTargetTcpProxyRequest, dict]):
                 The request object. A request message for
-                RegionTargetTcpProxies.Delete. See the method
-                description for details.
+                RegionTargetTcpProxies.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -544,8 +544,8 @@ class RegionTargetTcpProxiesClient(metaclass=RegionTargetTcpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionTargetTcpProxyRequest, dict]):
                 The request object. A request message for
-                RegionTargetTcpProxies.Delete. See the method
-                description for details.
+                RegionTargetTcpProxies.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -670,8 +670,8 @@ class RegionTargetTcpProxiesClient(metaclass=RegionTargetTcpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionTargetTcpProxyRequest, dict]):
                 The request object. A request message for
-                RegionTargetTcpProxies.Get. See the method description
-                for details.
+                RegionTargetTcpProxies.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -781,8 +781,8 @@ class RegionTargetTcpProxiesClient(metaclass=RegionTargetTcpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionTargetTcpProxyRequest, dict]):
                 The request object. A request message for
-                RegionTargetTcpProxies.Insert. See the method
-                description for details.
+                RegionTargetTcpProxies.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -883,8 +883,8 @@ class RegionTargetTcpProxiesClient(metaclass=RegionTargetTcpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionTargetTcpProxyRequest, dict]):
                 The request object. A request message for
-                RegionTargetTcpProxies.Insert. See the method
-                description for details.
+                RegionTargetTcpProxies.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1008,8 +1008,8 @@ class RegionTargetTcpProxiesClient(metaclass=RegionTargetTcpProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionTargetTcpProxiesRequest, dict]):
                 The request object. A request message for
-                RegionTargetTcpProxies.List. See the method description
-                for details.
+                RegionTargetTcpProxies.List. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

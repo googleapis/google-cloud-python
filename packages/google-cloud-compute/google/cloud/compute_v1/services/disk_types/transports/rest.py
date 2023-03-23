@@ -287,7 +287,6 @@ class DiskTypesRestTransport(DiskTypesTransport):
                     The request object. A request message for
                 DiskTypes.AggregatedList. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -373,7 +372,6 @@ class DiskTypesRestTransport(DiskTypesTransport):
                 request (~.compute.GetDiskTypeRequest):
                     The request object. A request message for DiskTypes.Get.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -470,7 +468,6 @@ class DiskTypesRestTransport(DiskTypesTransport):
                 request (~.compute.ListDiskTypesRequest):
                     The request object. A request message for DiskTypes.List.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

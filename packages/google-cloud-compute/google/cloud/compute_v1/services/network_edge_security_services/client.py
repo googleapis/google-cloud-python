@@ -442,8 +442,8 @@ class NetworkEdgeSecurityServicesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListNetworkEdgeSecurityServicesRequest, dict]):
                 The request object. A request message for
-                NetworkEdgeSecurityServices.AggregatedList. See the
-                method description for details.
+                NetworkEdgeSecurityServices.AggregatedList.
+                See the method description for details.
             project (str):
                 Name of the project scoping this
                 request.
@@ -535,8 +535,8 @@ class NetworkEdgeSecurityServicesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNetworkEdgeSecurityServiceRequest, dict]):
                 The request object. A request message for
-                NetworkEdgeSecurityServices.Delete. See the method
-                description for details.
+                NetworkEdgeSecurityServices.Delete. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -641,8 +641,8 @@ class NetworkEdgeSecurityServicesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNetworkEdgeSecurityServiceRequest, dict]):
                 The request object. A request message for
-                NetworkEdgeSecurityServices.Delete. See the method
-                description for details.
+                NetworkEdgeSecurityServices.Delete. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -772,8 +772,8 @@ class NetworkEdgeSecurityServicesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.GetNetworkEdgeSecurityServiceRequest, dict]):
                 The request object. A request message for
-                NetworkEdgeSecurityServices.Get. See the method
-                description for details.
+                NetworkEdgeSecurityServices.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -881,8 +881,8 @@ class NetworkEdgeSecurityServicesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNetworkEdgeSecurityServiceRequest, dict]):
                 The request object. A request message for
-                NetworkEdgeSecurityServices.Insert. See the method
-                description for details.
+                NetworkEdgeSecurityServices.Insert. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -988,8 +988,8 @@ class NetworkEdgeSecurityServicesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNetworkEdgeSecurityServiceRequest, dict]):
                 The request object. A request message for
-                NetworkEdgeSecurityServices.Insert. See the method
-                description for details.
+                NetworkEdgeSecurityServices.Insert. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1121,8 +1121,8 @@ class NetworkEdgeSecurityServicesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.PatchNetworkEdgeSecurityServiceRequest, dict]):
                 The request object. A request message for
-                NetworkEdgeSecurityServices.Patch. See the method
-                description for details.
+                NetworkEdgeSecurityServices.Patch. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1247,8 +1247,8 @@ class NetworkEdgeSecurityServicesClient(
         Args:
             request (Union[google.cloud.compute_v1.types.PatchNetworkEdgeSecurityServiceRequest, dict]):
                 The request object. A request message for
-                NetworkEdgeSecurityServices.Patch. See the method
-                description for details.
+                NetworkEdgeSecurityServices.Patch. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

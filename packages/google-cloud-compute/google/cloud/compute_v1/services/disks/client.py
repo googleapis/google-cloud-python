@@ -442,8 +442,8 @@ class DisksClient(metaclass=DisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddResourcePoliciesDiskRequest, dict]):
                 The request object. A request message for
-                Disks.AddResourcePolicies. See the method description
-                for details.
+                Disks.AddResourcePolicies. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -557,8 +557,8 @@ class DisksClient(metaclass=DisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddResourcePoliciesDiskRequest, dict]):
                 The request object. A request message for
-                Disks.AddResourcePolicies. See the method description
-                for details.
+                Disks.AddResourcePolicies. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -690,8 +690,8 @@ class DisksClient(metaclass=DisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListDisksRequest, dict]):
                 The request object. A request message for
-                Disks.AggregatedList. See the method description for
-                details.
+                Disks.AggregatedList. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -782,8 +782,8 @@ class DisksClient(metaclass=DisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.CreateSnapshotDiskRequest, dict]):
                 The request object. A request message for
-                Disks.CreateSnapshot. See the method description for
-                details.
+                Disks.CreateSnapshot. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -895,8 +895,8 @@ class DisksClient(metaclass=DisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.CreateSnapshotDiskRequest, dict]):
                 The request object. A request message for
-                Disks.CreateSnapshot. See the method description for
-                details.
+                Disks.CreateSnapshot. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1372,8 +1372,8 @@ class DisksClient(metaclass=DisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyDiskRequest, dict]):
                 The request object. A request message for
-                Disks.GetIamPolicy. See the method description for
-                details.
+                Disks.GetIamPolicy. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1741,8 +1741,8 @@ class DisksClient(metaclass=DisksClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListDisksRequest, dict]):
-                The request object. A request message for Disks.List.
-                See the method description for details.
+                The request object. A request message for Disks.List. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1848,8 +1848,8 @@ class DisksClient(metaclass=DisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveResourcePoliciesDiskRequest, dict]):
                 The request object. A request message for
-                Disks.RemoveResourcePolicies. See the method description
-                for details.
+                Disks.RemoveResourcePolicies. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1963,8 +1963,8 @@ class DisksClient(metaclass=DisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveResourcePoliciesDiskRequest, dict]):
                 The request object. A request message for
-                Disks.RemoveResourcePolicies. See the method description
-                for details.
+                Disks.RemoveResourcePolicies. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2339,8 +2339,8 @@ class DisksClient(metaclass=DisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyDiskRequest, dict]):
                 The request object. A request message for
-                Disks.SetIamPolicy. See the method description for
-                details.
+                Disks.SetIamPolicy. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2491,7 +2491,8 @@ class DisksClient(metaclass=DisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsDiskRequest, dict]):
                 The request object. A request message for
-                Disks.SetLabels. See the method description for details.
+                Disks.SetLabels. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2604,7 +2605,8 @@ class DisksClient(metaclass=DisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsDiskRequest, dict]):
                 The request object. A request message for
-                Disks.SetLabels. See the method description for details.
+                Disks.SetLabels. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2744,8 +2746,8 @@ class DisksClient(metaclass=DisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsDiskRequest, dict]):
                 The request object. A request message for
-                Disks.TestIamPermissions. See the method description for
-                details.
+                Disks.TestIamPermissions. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

@@ -440,8 +440,8 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
         Args:
             request (Union[google.cloud.compute_v1.types.DeletePublicAdvertisedPrefixeRequest, dict]):
                 The request object. A request message for
-                PublicAdvertisedPrefixes.Delete. See the method
-                description for details.
+                PublicAdvertisedPrefixes.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -532,8 +532,8 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
         Args:
             request (Union[google.cloud.compute_v1.types.DeletePublicAdvertisedPrefixeRequest, dict]):
                 The request object. A request message for
-                PublicAdvertisedPrefixes.Delete. See the method
-                description for details.
+                PublicAdvertisedPrefixes.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -649,8 +649,8 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
         Args:
             request (Union[google.cloud.compute_v1.types.GetPublicAdvertisedPrefixeRequest, dict]):
                 The request object. A request message for
-                PublicAdvertisedPrefixes.Get. See the method description
-                for details.
+                PublicAdvertisedPrefixes.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -749,8 +749,8 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
         Args:
             request (Union[google.cloud.compute_v1.types.InsertPublicAdvertisedPrefixeRequest, dict]):
                 The request object. A request message for
-                PublicAdvertisedPrefixes.Insert. See the method
-                description for details.
+                PublicAdvertisedPrefixes.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -840,8 +840,8 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
         Args:
             request (Union[google.cloud.compute_v1.types.InsertPublicAdvertisedPrefixeRequest, dict]):
                 The request object. A request message for
-                PublicAdvertisedPrefixes.Insert. See the method
-                description for details.
+                PublicAdvertisedPrefixes.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -950,8 +950,8 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
         Args:
             request (Union[google.cloud.compute_v1.types.ListPublicAdvertisedPrefixesRequest, dict]):
                 The request object. A request message for
-                PublicAdvertisedPrefixes.List. See the method
-                description for details.
+                PublicAdvertisedPrefixes.List. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1044,8 +1044,8 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
         Args:
             request (Union[google.cloud.compute_v1.types.PatchPublicAdvertisedPrefixeRequest, dict]):
                 The request object. A request message for
-                PublicAdvertisedPrefixes.Patch. See the method
-                description for details.
+                PublicAdvertisedPrefixes.Patch. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1153,8 +1153,8 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
         Args:
             request (Union[google.cloud.compute_v1.types.PatchPublicAdvertisedPrefixeRequest, dict]):
                 The request object. A request message for
-                PublicAdvertisedPrefixes.Patch. See the method
-                description for details.
+                PublicAdvertisedPrefixes.Patch. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

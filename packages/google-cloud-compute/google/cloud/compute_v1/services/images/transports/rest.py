@@ -512,7 +512,6 @@ class ImagesRestTransport(ImagesTransport):
                 request (~.compute.DeleteImageRequest):
                     The request object. A request message for Images.Delete.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -614,7 +613,6 @@ class ImagesRestTransport(ImagesTransport):
                     The request object. A request message for
                 Images.Deprecate. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -724,7 +722,6 @@ class ImagesRestTransport(ImagesTransport):
                 request (~.compute.GetImageRequest):
                     The request object. A request message for Images.Get. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -815,7 +812,6 @@ class ImagesRestTransport(ImagesTransport):
                     The request object. A request message for
                 Images.GetFromFamily. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -906,7 +902,6 @@ class ImagesRestTransport(ImagesTransport):
                     The request object. A request message for
                 Images.GetIamPolicy. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1033,7 +1028,6 @@ class ImagesRestTransport(ImagesTransport):
                 request (~.compute.InsertImageRequest):
                     The request object. A request message for Images.Insert.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1143,7 +1137,6 @@ class ImagesRestTransport(ImagesTransport):
                 request (~.compute.ListImagesRequest):
                     The request object. A request message for Images.List.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1229,7 +1222,6 @@ class ImagesRestTransport(ImagesTransport):
                 request (~.compute.PatchImageRequest):
                     The request object. A request message for Images.Patch.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1340,7 +1332,6 @@ class ImagesRestTransport(ImagesTransport):
                     The request object. A request message for
                 Images.SetIamPolicy. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1477,7 +1468,6 @@ class ImagesRestTransport(ImagesTransport):
                     The request object. A request message for
                 Images.SetLabels. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1588,7 +1578,6 @@ class ImagesRestTransport(ImagesTransport):
                     The request object. A request message for
                 Images.TestIamPermissions. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

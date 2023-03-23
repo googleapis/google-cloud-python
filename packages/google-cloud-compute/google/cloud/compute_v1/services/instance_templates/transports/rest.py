@@ -444,7 +444,6 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
                     The request object. A request message for
                 InstanceTemplates.AggregatedList. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -533,7 +532,6 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
                     The request object. A request message for
                 InstanceTemplates.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -635,7 +633,6 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
                     The request object. A request message for
                 InstanceTemplates.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -727,7 +724,6 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
                     The request object. A request message for
                 InstanceTemplates.GetIamPolicy. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -855,7 +851,6 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
                     The request object. A request message for
                 InstanceTemplates.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -966,7 +961,6 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
                     The request object. A request message for
                 InstanceTemplates.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1053,7 +1047,6 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
                     The request object. A request message for
                 InstanceTemplates.SetIamPolicy. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1190,7 +1183,6 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
                     The request object. A request message for
                 InstanceTemplates.TestIamPermissions.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

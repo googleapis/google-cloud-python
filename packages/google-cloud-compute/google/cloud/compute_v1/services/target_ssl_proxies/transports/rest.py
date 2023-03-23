@@ -477,7 +477,6 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                     The request object. A request message for
                 TargetSslProxies.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -579,7 +578,6 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                     The request object. A request message for
                 TargetSslProxies.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -674,7 +672,6 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                     The request object. A request message for
                 TargetSslProxies.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -785,7 +782,6 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                     The request object. A request message for
                 TargetSslProxies.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -874,7 +870,6 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                     The request object. A request message for
                 TargetSslProxies.SetBackendService. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -987,7 +982,6 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                     The request object. A request message for
                 TargetSslProxies.SetCertificateMap. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1100,7 +1094,6 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                     The request object. A request message for
                 TargetSslProxies.SetProxyHeader. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1213,7 +1206,6 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                     The request object. A request message for
                 TargetSslProxies.SetSslCertificates. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1326,7 +1318,6 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                     The request object. A request message for
                 TargetSslProxies.SetSslPolicy. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

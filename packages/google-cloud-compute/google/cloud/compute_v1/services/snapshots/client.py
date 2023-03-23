@@ -442,8 +442,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteSnapshotRequest, dict]):
                 The request object. A request message for
-                Snapshots.Delete. See the method description for
-                details.
+                Snapshots.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -538,8 +538,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteSnapshotRequest, dict]):
                 The request object. A request message for
-                Snapshots.Delete. See the method description for
-                details.
+                Snapshots.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -745,8 +745,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicySnapshotRequest, dict]):
                 The request object. A request message for
-                Snapshots.GetIamPolicy. See the method description for
-                details.
+                Snapshots.GetIamPolicy. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -878,8 +878,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertSnapshotRequest, dict]):
                 The request object. A request message for
-                Snapshots.Insert. See the method description for
-                details.
+                Snapshots.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -966,8 +966,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertSnapshotRequest, dict]):
                 The request object. A request message for
-                Snapshots.Insert. See the method description for
-                details.
+                Snapshots.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1072,8 +1072,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListSnapshotsRequest, dict]):
-                The request object. A request message for
-                Snapshots.List. See the method description for details.
+                The request object. A request message for Snapshots.List.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1164,8 +1164,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicySnapshotRequest, dict]):
                 The request object. A request message for
-                Snapshots.SetIamPolicy. See the method description for
-                details.
+                Snapshots.SetIamPolicy. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1307,8 +1307,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsSnapshotRequest, dict]):
                 The request object. A request message for
-                Snapshots.SetLabels. See the method description for
-                details.
+                Snapshots.SetLabels. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1412,8 +1412,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsSnapshotRequest, dict]):
                 The request object. A request message for
-                Snapshots.SetLabels. See the method description for
-                details.
+                Snapshots.SetLabels. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1543,8 +1543,8 @@ class SnapshotsClient(metaclass=SnapshotsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsSnapshotRequest, dict]):
                 The request object. A request message for
-                Snapshots.TestIamPermissions. See the method description
-                for details.
+                Snapshots.TestIamPermissions. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

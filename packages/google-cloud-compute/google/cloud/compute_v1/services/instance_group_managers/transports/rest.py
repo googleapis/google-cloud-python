@@ -840,7 +840,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 A request message for
                 InstanceGroupManagers.AbandonInstances.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -953,7 +952,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     The request object. A request message for
                 InstanceGroupManagers.AggregatedList.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1041,7 +1039,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                         The request object. A request message for
                     InstanceGroupManagers.ApplyUpdatesToInstances.
                     See the method description for details.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1156,7 +1153,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     The request object. A request message for
                 InstanceGroupManagers.CreateInstances.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1269,7 +1265,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     The request object. A request message for
                 InstanceGroupManagers.Delete. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1371,7 +1366,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     The request object. A request message for
                 InstanceGroupManagers.DeleteInstances.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1485,7 +1479,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                         The request object. A request message for
                     InstanceGroupManagers.DeletePerInstanceConfigs.
                     See the method description for details.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1600,7 +1593,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     The request object. A request message for
                 InstanceGroupManagers.Get. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1696,7 +1688,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     The request object. A request message for
                 InstanceGroupManagers.Insert. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1807,7 +1798,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     The request object. A request message for
                 InstanceGroupManagers.List. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1894,7 +1884,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     The request object. A request message for
                 InstanceGroupManagers.ListErrors. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1981,7 +1970,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     The request object. A request message for
                 InstanceGroupManagers.ListManagedInstances.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2072,7 +2060,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     The request object. A request message for
                 InstanceGroupManagers.ListPerInstanceConfigs.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2163,7 +2150,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     The request object. A request message for
                 InstanceGroupManagers.Patch. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2275,7 +2261,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                         The request object. A request message for
                     InstanceGroupManagers.PatchPerInstanceConfigs.
                     See the method description for details.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2390,7 +2375,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     The request object. A request message for
                 InstanceGroupManagers.RecreateInstances.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2507,7 +2491,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     The request object. A request message for
                 InstanceGroupManagers.Resize. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2609,7 +2592,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     The request object. A request message for
                 InstanceGroupManagers.SetInstanceTemplate.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2724,7 +2706,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     The request object. A request message for
                 InstanceGroupManagers.SetTargetPools.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2838,7 +2819,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                         The request object. A request message for
                     InstanceGroupManagers.UpdatePerInstanceConfigs.
                     See the method description for details.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

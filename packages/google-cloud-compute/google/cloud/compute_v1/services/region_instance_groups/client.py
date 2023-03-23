@@ -439,8 +439,8 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionInstanceGroupRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroups.Get. See the method description for
-                details.
+                RegionInstanceGroups.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -552,8 +552,8 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionInstanceGroupsRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroups.List. See the method description
-                for details.
+                RegionInstanceGroups.List. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -664,8 +664,8 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListInstancesRegionInstanceGroupsRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroups.ListInstances. See the method
-                description for details.
+                RegionInstanceGroups.ListInstances. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -797,8 +797,8 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetNamedPortsRegionInstanceGroupRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroups.SetNamedPorts. See the method
-                description for details.
+                RegionInstanceGroups.SetNamedPorts. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -920,8 +920,8 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetNamedPortsRegionInstanceGroupRequest, dict]):
                 The request object. A request message for
-                RegionInstanceGroups.SetNamedPorts. See the method
-                description for details.
+                RegionInstanceGroups.SetNamedPorts. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

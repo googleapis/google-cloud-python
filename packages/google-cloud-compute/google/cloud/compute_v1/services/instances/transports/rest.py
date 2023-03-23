@@ -1591,7 +1591,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.AddAccessConfig. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1704,7 +1703,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.AddResourcePolicies. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1817,7 +1815,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.AggregatedList. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1904,7 +1901,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.AttachDisk. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2015,7 +2011,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.BulkInsert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2126,7 +2121,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2231,7 +2225,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.DeleteAccessConfig. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2337,7 +2330,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.DetachDisk. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2438,7 +2430,6 @@ class InstancesRestTransport(InstancesTransport):
                 request (~.compute.GetInstanceRequest):
                     The request object. A request message for Instances.Get.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2532,7 +2523,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.GetEffectiveFirewalls. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2621,7 +2611,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.GetGuestAttributes. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2710,7 +2699,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.GetIamPolicy. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2838,7 +2826,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.GetScreenshot. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2925,7 +2912,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.GetSerialPortOutput. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3015,7 +3001,6 @@ class InstancesRestTransport(InstancesTransport):
                         The request object. A request message for
                     Instances.GetShieldedInstanceIdentity.
                     See the method description for details.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3104,7 +3089,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3214,7 +3198,6 @@ class InstancesRestTransport(InstancesTransport):
                 request (~.compute.ListInstancesRequest):
                     The request object. A request message for Instances.List.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3301,7 +3284,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.ListReferrers. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3390,7 +3372,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.RemoveResourcePolicies. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3503,7 +3484,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.Reset. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3605,7 +3585,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.Resume. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3707,7 +3686,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.SendDiagnosticInterrupt. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3799,7 +3777,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.SetDeletionProtection. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3906,7 +3883,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.SetDiskAutoDelete. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4010,7 +3986,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.SetIamPolicy. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4147,7 +4122,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.SetLabels. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4258,7 +4232,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.SetMachineResources. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4371,7 +4344,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.SetMachineType. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4484,7 +4456,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.SetMetadata. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4595,7 +4566,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.SetMinCpuPlatform. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4708,7 +4678,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.SetName. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4819,7 +4788,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.SetScheduling. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4930,7 +4898,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.SetServiceAccount. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5044,7 +5011,6 @@ class InstancesRestTransport(InstancesTransport):
                         The request object. A request message for
                     Instances.SetShieldedInstanceIntegrityPolicy.
                     See the method description for details.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -5162,7 +5128,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.SetTags. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5274,7 +5239,6 @@ class InstancesRestTransport(InstancesTransport):
                         The request object. A request message for
                     Instances.SimulateMaintenanceEvent. See
                     the method description for details.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -5378,7 +5342,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.Start. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5480,7 +5443,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.StartWithEncryptionKey. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5592,7 +5554,6 @@ class InstancesRestTransport(InstancesTransport):
                 request (~.compute.StopInstanceRequest):
                     The request object. A request message for Instances.Stop.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5694,7 +5655,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.Suspend. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5796,7 +5756,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.TestIamPermissions. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5894,7 +5853,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.Update. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -6007,7 +5965,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.UpdateAccessConfig. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -6120,7 +6077,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.UpdateDisplayDevice. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -6235,7 +6191,6 @@ class InstancesRestTransport(InstancesTransport):
                     The request object. A request message for
                 Instances.UpdateNetworkInterface. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -6349,7 +6304,6 @@ class InstancesRestTransport(InstancesTransport):
                         The request object. A request message for
                     Instances.UpdateShieldedInstanceConfig.
                     See the method description for details.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

@@ -434,8 +434,8 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListMachineTypesRequest, dict]):
                 The request object. A request message for
-                MachineTypes.AggregatedList. See the method description
-                for details.
+                MachineTypes.AggregatedList. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -521,8 +521,8 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetMachineTypeRequest, dict]):
                 The request object. A request message for
-                MachineTypes.Get. See the method description for
-                details.
+                MachineTypes.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -623,8 +623,8 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListMachineTypesRequest, dict]):
                 The request object. A request message for
-                MachineTypes.List. See the method description for
-                details.
+                MachineTypes.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

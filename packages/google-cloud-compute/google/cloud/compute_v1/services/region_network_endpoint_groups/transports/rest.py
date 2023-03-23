@@ -328,7 +328,6 @@ class RegionNetworkEndpointGroupsRestTransport(RegionNetworkEndpointGroupsTransp
                     The request object. A request message for
                 RegionNetworkEndpointGroups.Delete. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -430,7 +429,6 @@ class RegionNetworkEndpointGroupsRestTransport(RegionNetworkEndpointGroupsTransp
                     The request object. A request message for
                 RegionNetworkEndpointGroups.Get. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -528,7 +526,6 @@ class RegionNetworkEndpointGroupsRestTransport(RegionNetworkEndpointGroupsTransp
                     The request object. A request message for
                 RegionNetworkEndpointGroups.Insert. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -639,7 +636,6 @@ class RegionNetworkEndpointGroupsRestTransport(RegionNetworkEndpointGroupsTransp
                     The request object. A request message for
                 RegionNetworkEndpointGroups.List. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

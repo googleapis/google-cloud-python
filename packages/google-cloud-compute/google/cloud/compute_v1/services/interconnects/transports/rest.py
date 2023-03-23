@@ -407,7 +407,6 @@ class InterconnectsRestTransport(InterconnectsTransport):
                     The request object. A request message for
                 Interconnects.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -509,7 +508,6 @@ class InterconnectsRestTransport(InterconnectsTransport):
                     The request object. A request message for
                 Interconnects.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -602,7 +600,6 @@ class InterconnectsRestTransport(InterconnectsTransport):
                     The request object. A request message for
                 Interconnects.GetDiagnostics. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -691,7 +688,6 @@ class InterconnectsRestTransport(InterconnectsTransport):
                     The request object. A request message for
                 Interconnects.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -802,7 +798,6 @@ class InterconnectsRestTransport(InterconnectsTransport):
                     The request object. A request message for
                 Interconnects.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -891,7 +886,6 @@ class InterconnectsRestTransport(InterconnectsTransport):
                     The request object. A request message for
                 Interconnects.Patch. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1002,7 +996,6 @@ class InterconnectsRestTransport(InterconnectsTransport):
                     The request object. A request message for
                 Interconnects.SetLabels. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

@@ -436,8 +436,8 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListUrlMapsRequest, dict]):
                 The request object. A request message for
-                UrlMaps.AggregatedList. See the method description for
-                details.
+                UrlMaps.AggregatedList. See the method
+                description for details.
             project (str):
                 Name of the project scoping this
                 request.
@@ -523,8 +523,8 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteUrlMapRequest, dict]):
-                The request object. A request message for
-                UrlMaps.Delete. See the method description for details.
+                The request object. A request message for UrlMaps.Delete.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -612,8 +612,8 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteUrlMapRequest, dict]):
-                The request object. A request message for
-                UrlMaps.Delete. See the method description for details.
+                The request object. A request message for UrlMaps.Delete.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -834,8 +834,8 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertUrlMapRequest, dict]):
-                The request object. A request message for
-                UrlMaps.Insert. See the method description for details.
+                The request object. A request message for UrlMaps.Insert.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -917,8 +917,8 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertUrlMapRequest, dict]):
-                The request object. A request message for
-                UrlMaps.Insert. See the method description for details.
+                The request object. A request message for UrlMaps.Insert.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1030,8 +1030,8 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InvalidateCacheUrlMapRequest, dict]):
                 The request object. A request message for
-                UrlMaps.InvalidateCache. See the method description for
-                details.
+                UrlMaps.InvalidateCache. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1135,8 +1135,8 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InvalidateCacheUrlMapRequest, dict]):
                 The request object. A request message for
-                UrlMaps.InvalidateCache. See the method description for
-                details.
+                UrlMaps.InvalidateCache. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1565,8 +1565,8 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateUrlMapRequest, dict]):
-                The request object. A request message for
-                UrlMaps.Update. See the method description for details.
+                The request object. A request message for UrlMaps.Update.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1663,8 +1663,8 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateUrlMapRequest, dict]):
-                The request object. A request message for
-                UrlMaps.Update. See the method description for details.
+                The request object. A request message for UrlMaps.Update.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1789,8 +1789,8 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ValidateUrlMapRequest, dict]):
                 The request object. A request message for
-                UrlMaps.Validate. See the method description for
-                details.
+                UrlMaps.Validate. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

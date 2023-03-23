@@ -591,7 +591,6 @@ class ProjectsRestTransport(ProjectsTransport):
                     The request object. A request message for
                 Projects.DisableXpnHost. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -695,7 +694,6 @@ class ProjectsRestTransport(ProjectsTransport):
                     The request object. A request message for
                 Projects.DisableXpnResource. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -808,7 +806,6 @@ class ProjectsRestTransport(ProjectsTransport):
                     The request object. A request message for
                 Projects.EnableXpnHost. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -910,7 +907,6 @@ class ProjectsRestTransport(ProjectsTransport):
                     The request object. A request message for
                 Projects.EnableXpnResource. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1022,7 +1018,6 @@ class ProjectsRestTransport(ProjectsTransport):
                 request (~.compute.GetProjectRequest):
                     The request object. A request message for Projects.Get.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1114,7 +1109,6 @@ class ProjectsRestTransport(ProjectsTransport):
                     The request object. A request message for
                 Projects.GetXpnHost. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1206,7 +1200,6 @@ class ProjectsRestTransport(ProjectsTransport):
                     The request object. A request message for
                 Projects.GetXpnResources. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1295,7 +1288,6 @@ class ProjectsRestTransport(ProjectsTransport):
                     The request object. A request message for
                 Projects.ListXpnHosts. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1391,7 +1383,6 @@ class ProjectsRestTransport(ProjectsTransport):
                     The request object. A request message for
                 Projects.MoveDisk. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1502,7 +1493,6 @@ class ProjectsRestTransport(ProjectsTransport):
                     The request object. A request message for
                 Projects.MoveInstance. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1614,7 +1604,6 @@ class ProjectsRestTransport(ProjectsTransport):
                         The request object. A request message for
                     Projects.SetCommonInstanceMetadata. See
                     the method description for details.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1727,7 +1716,6 @@ class ProjectsRestTransport(ProjectsTransport):
                     The request object. A request message for
                 Projects.SetDefaultNetworkTier. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1840,7 +1828,6 @@ class ProjectsRestTransport(ProjectsTransport):
                     The request object. A request message for
                 Projects.SetUsageExportBucket. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

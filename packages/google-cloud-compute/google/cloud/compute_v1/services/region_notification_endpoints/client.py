@@ -444,8 +444,8 @@ class RegionNotificationEndpointsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionNotificationEndpointRequest, dict]):
                 The request object. A request message for
-                RegionNotificationEndpoints.Delete. See the method
-                description for details.
+                RegionNotificationEndpoints.Delete. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -548,8 +548,8 @@ class RegionNotificationEndpointsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionNotificationEndpointRequest, dict]):
                 The request object. A request message for
-                RegionNotificationEndpoints.Delete. See the method
-                description for details.
+                RegionNotificationEndpoints.Delete. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -677,8 +677,8 @@ class RegionNotificationEndpointsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionNotificationEndpointRequest, dict]):
                 The request object. A request message for
-                RegionNotificationEndpoints.Get. See the method
-                description for details.
+                RegionNotificationEndpoints.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -787,8 +787,8 @@ class RegionNotificationEndpointsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionNotificationEndpointRequest, dict]):
                 The request object. A request message for
-                RegionNotificationEndpoints.Insert. See the method
-                description for details.
+                RegionNotificationEndpoints.Insert. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -889,8 +889,8 @@ class RegionNotificationEndpointsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionNotificationEndpointRequest, dict]):
                 The request object. A request message for
-                RegionNotificationEndpoints.Insert. See the method
-                description for details.
+                RegionNotificationEndpoints.Insert. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1014,8 +1014,8 @@ class RegionNotificationEndpointsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionNotificationEndpointsRequest, dict]):
                 The request object. A request message for
-                RegionNotificationEndpoints.List. See the method
-                description for details.
+                RegionNotificationEndpoints.List. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

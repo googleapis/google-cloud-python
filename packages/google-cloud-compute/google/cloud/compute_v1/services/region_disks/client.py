@@ -444,8 +444,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddResourcePoliciesRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.AddResourcePolicies. See the method
-                description for details.
+                RegionDisks.AddResourcePolicies. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -561,8 +561,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddResourcePoliciesRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.AddResourcePolicies. See the method
-                description for details.
+                RegionDisks.AddResourcePolicies. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -701,8 +701,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.CreateSnapshotRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.CreateSnapshot. See the method description
-                for details.
+                RegionDisks.CreateSnapshot. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -812,8 +812,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.CreateSnapshotRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.CreateSnapshot. See the method description
-                for details.
+                RegionDisks.CreateSnapshot. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -947,8 +947,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.Delete. See the method description for
-                details.
+                RegionDisks.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1050,8 +1050,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.Delete. See the method description for
-                details.
+                RegionDisks.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1174,7 +1174,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.Get. See the method description for details.
+                RegionDisks.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1283,8 +1284,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.GetIamPolicy. See the method description for
-                details.
+                RegionDisks.GetIamPolicy. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1423,8 +1424,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.Insert. See the method description for
-                details.
+                RegionDisks.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1520,8 +1521,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.Insert. See the method description for
-                details.
+                RegionDisks.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1641,8 +1642,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionDisksRequest, dict]):
                 The request object. A request message for
-                RegionDisks.List. See the method description for
-                details.
+                RegionDisks.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1746,8 +1747,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveResourcePoliciesRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.RemoveResourcePolicies. See the method
-                description for details.
+                RegionDisks.RemoveResourcePolicies. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1866,8 +1867,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveResourcePoliciesRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.RemoveResourcePolicies. See the method
-                description for details.
+                RegionDisks.RemoveResourcePolicies. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2009,8 +2010,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ResizeRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.Resize. See the method description for
-                details.
+                RegionDisks.Resize. See the method
+                description for details.
             project (str):
                 The project ID for this request.
                 This corresponds to the ``project`` field
@@ -2120,8 +2121,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ResizeRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.Resize. See the method description for
-                details.
+                RegionDisks.Resize. See the method
+                description for details.
             project (str):
                 The project ID for this request.
                 This corresponds to the ``project`` field
@@ -2257,8 +2258,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.SetIamPolicy. See the method description for
-                details.
+                RegionDisks.SetIamPolicy. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2410,8 +2411,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.SetLabels. See the method description for
-                details.
+                RegionDisks.SetLabels. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2523,8 +2524,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.SetLabels. See the method description for
-                details.
+                RegionDisks.SetLabels. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2664,8 +2665,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.TestIamPermissions. See the method
-                description for details.
+                RegionDisks.TestIamPermissions. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2778,8 +2779,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.Update. See the method description for
-                details.
+                RegionDisks.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2888,8 +2889,8 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateRegionDiskRequest, dict]):
                 The request object. A request message for
-                RegionDisks.Update. See the method description for
-                details.
+                RegionDisks.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

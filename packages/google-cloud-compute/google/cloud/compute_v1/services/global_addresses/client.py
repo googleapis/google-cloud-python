@@ -438,8 +438,8 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteGlobalAddressRequest, dict]):
                 The request object. A request message for
-                GlobalAddresses.Delete. See the method description for
-                details.
+                GlobalAddresses.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -528,8 +528,8 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteGlobalAddressRequest, dict]):
                 The request object. A request message for
-                GlobalAddresses.Delete. See the method description for
-                details.
+                GlobalAddresses.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -642,8 +642,8 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetGlobalAddressRequest, dict]):
                 The request object. A request message for
-                GlobalAddresses.Get. See the method description for
-                details.
+                GlobalAddresses.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -738,8 +738,8 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertGlobalAddressRequest, dict]):
                 The request object. A request message for
-                GlobalAddresses.Insert. See the method description for
-                details.
+                GlobalAddresses.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -822,8 +822,8 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertGlobalAddressRequest, dict]):
                 The request object. A request message for
-                GlobalAddresses.Insert. See the method description for
-                details.
+                GlobalAddresses.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -928,8 +928,8 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListGlobalAddressesRequest, dict]):
                 The request object. A request message for
-                GlobalAddresses.List. See the method description for
-                details.
+                GlobalAddresses.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1019,8 +1019,8 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsGlobalAddressRequest, dict]):
                 The request object. A request message for
-                GlobalAddresses.SetLabels. See the method description
-                for details.
+                GlobalAddresses.SetLabels. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1124,8 +1124,8 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsGlobalAddressRequest, dict]):
                 The request object. A request message for
-                GlobalAddresses.SetLabels. See the method description
-                for details.
+                GlobalAddresses.SetLabels. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

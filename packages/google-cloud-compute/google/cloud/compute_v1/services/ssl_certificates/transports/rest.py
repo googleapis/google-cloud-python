@@ -351,7 +351,6 @@ class SslCertificatesRestTransport(SslCertificatesTransport):
                     The request object. A request message for
                 SslCertificates.AggregatedList. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -438,7 +437,6 @@ class SslCertificatesRestTransport(SslCertificatesTransport):
                     The request object. A request message for
                 SslCertificates.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -540,7 +538,6 @@ class SslCertificatesRestTransport(SslCertificatesTransport):
                     The request object. A request message for
                 SslCertificates.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -643,7 +640,6 @@ class SslCertificatesRestTransport(SslCertificatesTransport):
                     The request object. A request message for
                 SslCertificates.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -754,7 +750,6 @@ class SslCertificatesRestTransport(SslCertificatesTransport):
                     The request object. A request message for
                 SslCertificates.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

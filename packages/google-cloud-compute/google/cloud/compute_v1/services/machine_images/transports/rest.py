@@ -409,7 +409,6 @@ class MachineImagesRestTransport(MachineImagesTransport):
                     The request object. A request message for
                 MachineImages.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -511,7 +510,6 @@ class MachineImagesRestTransport(MachineImagesTransport):
                     The request object. A request message for
                 MachineImages.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -606,7 +604,6 @@ class MachineImagesRestTransport(MachineImagesTransport):
                     The request object. A request message for
                 MachineImages.GetIamPolicy. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -734,7 +731,6 @@ class MachineImagesRestTransport(MachineImagesTransport):
                     The request object. A request message for
                 MachineImages.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -845,7 +841,6 @@ class MachineImagesRestTransport(MachineImagesTransport):
                     The request object. A request message for
                 MachineImages.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -932,7 +927,6 @@ class MachineImagesRestTransport(MachineImagesTransport):
                     The request object. A request message for
                 MachineImages.SetIamPolicy. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1069,7 +1063,6 @@ class MachineImagesRestTransport(MachineImagesTransport):
                     The request object. A request message for
                 MachineImages.TestIamPermissions. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

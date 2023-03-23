@@ -441,8 +441,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                RegionSecurityPolicies.Delete. See the method
-                description for details.
+                RegionSecurityPolicies.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -544,8 +544,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                RegionSecurityPolicies.Delete. See the method
-                description for details.
+                RegionSecurityPolicies.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -671,8 +671,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                RegionSecurityPolicies.Get. See the method description
-                for details.
+                RegionSecurityPolicies.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -777,8 +777,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                RegionSecurityPolicies.Insert. See the method
-                description for details.
+                RegionSecurityPolicies.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -878,8 +878,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                RegionSecurityPolicies.Insert. See the method
-                description for details.
+                RegionSecurityPolicies.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1003,8 +1003,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionSecurityPoliciesRequest, dict]):
                 The request object. A request message for
-                RegionSecurityPolicies.List. See the method description
-                for details.
+                RegionSecurityPolicies.List. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1110,8 +1110,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                RegionSecurityPolicies.Patch. See the method description
-                for details.
+                RegionSecurityPolicies.Patch. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1226,8 +1226,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionSecurityPolicyRequest, dict]):
                 The request object. A request message for
-                RegionSecurityPolicies.Patch. See the method description
-                for details.
+                RegionSecurityPolicies.Patch. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

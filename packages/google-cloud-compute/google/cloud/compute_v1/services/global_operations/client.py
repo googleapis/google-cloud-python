@@ -436,8 +436,8 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListGlobalOperationsRequest, dict]):
                 The request object. A request message for
-                GlobalOperations.AggregatedList. See the method
-                description for details.
+                GlobalOperations.AggregatedList. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -522,8 +522,8 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteGlobalOperationRequest, dict]):
                 The request object. A request message for
-                GlobalOperations.Delete. See the method description for
-                details.
+                GlobalOperations.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -613,8 +613,8 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetGlobalOperationRequest, dict]):
                 The request object. A request message for
-                GlobalOperations.Get. See the method description for
-                details.
+                GlobalOperations.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -716,8 +716,8 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListGlobalOperationsRequest, dict]):
                 The request object. A request message for
-                GlobalOperations.List. See the method description for
-                details.
+                GlobalOperations.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -816,8 +816,8 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.WaitGlobalOperationRequest, dict]):
                 The request object. A request message for
-                GlobalOperations.Wait. See the method description for
-                details.
+                GlobalOperations.Wait. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

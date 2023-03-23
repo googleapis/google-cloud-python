@@ -436,8 +436,8 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteFirewallRequest, dict]):
                 The request object. A request message for
-                Firewalls.Delete. See the method description for
-                details.
+                Firewalls.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -524,8 +524,8 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteFirewallRequest, dict]):
                 The request object. A request message for
-                Firewalls.Delete. See the method description for
-                details.
+                Firewalls.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -727,8 +727,8 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertFirewallRequest, dict]):
                 The request object. A request message for
-                Firewalls.Insert. See the method description for
-                details.
+                Firewalls.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -811,8 +811,8 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertFirewallRequest, dict]):
                 The request object. A request message for
-                Firewalls.Insert. See the method description for
-                details.
+                Firewalls.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -917,8 +917,8 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListFirewallsRequest, dict]):
-                The request object. A request message for
-                Firewalls.List. See the method description for details.
+                The request object. A request message for Firewalls.List.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1008,7 +1008,8 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchFirewallRequest, dict]):
                 The request object. A request message for
-                Firewalls.Patch. See the method description for details.
+                Firewalls.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1106,7 +1107,8 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchFirewallRequest, dict]):
                 The request object. A request message for
-                Firewalls.Patch. See the method description for details.
+                Firewalls.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1229,8 +1231,8 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateFirewallRequest, dict]):
                 The request object. A request message for
-                Firewalls.Update. See the method description for
-                details.
+                Firewalls.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1329,8 +1331,8 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateFirewallRequest, dict]):
                 The request object. A request message for
-                Firewalls.Update. See the method description for
-                details.
+                Firewalls.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

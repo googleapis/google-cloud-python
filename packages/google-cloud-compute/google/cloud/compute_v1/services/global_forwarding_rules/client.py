@@ -440,8 +440,8 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteGlobalForwardingRuleRequest, dict]):
                 The request object. A request message for
-                GlobalForwardingRules.Delete. See the method description
-                for details.
+                GlobalForwardingRules.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -532,8 +532,8 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteGlobalForwardingRuleRequest, dict]):
                 The request object. A request message for
-                GlobalForwardingRules.Delete. See the method description
-                for details.
+                GlobalForwardingRules.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -648,8 +648,8 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetGlobalForwardingRuleRequest, dict]):
                 The request object. A request message for
-                GlobalForwardingRules.Get. See the method description
-                for details.
+                GlobalForwardingRules.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -752,8 +752,8 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertGlobalForwardingRuleRequest, dict]):
                 The request object. A request message for
-                GlobalForwardingRules.Insert. See the method description
-                for details.
+                GlobalForwardingRules.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -839,8 +839,8 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertGlobalForwardingRuleRequest, dict]):
                 The request object. A request message for
-                GlobalForwardingRules.Insert. See the method description
-                for details.
+                GlobalForwardingRules.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -946,8 +946,8 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListGlobalForwardingRulesRequest, dict]):
                 The request object. A request message for
-                GlobalForwardingRules.List. See the method description
-                for details.
+                GlobalForwardingRules.List. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1038,8 +1038,8 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchGlobalForwardingRuleRequest, dict]):
                 The request object. A request message for
-                GlobalForwardingRules.Patch. See the method description
-                for details.
+                GlobalForwardingRules.Patch. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1139,8 +1139,8 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchGlobalForwardingRuleRequest, dict]):
                 The request object. A request message for
-                GlobalForwardingRules.Patch. See the method description
-                for details.
+                GlobalForwardingRules.Patch. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1267,8 +1267,8 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsGlobalForwardingRuleRequest, dict]):
                 The request object. A request message for
-                GlobalForwardingRules.SetLabels. See the method
-                description for details.
+                GlobalForwardingRules.SetLabels. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1375,8 +1375,8 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsGlobalForwardingRuleRequest, dict]):
                 The request object. A request message for
-                GlobalForwardingRules.SetLabels. See the method
-                description for details.
+                GlobalForwardingRules.SetLabels. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1505,8 +1505,8 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetTargetGlobalForwardingRuleRequest, dict]):
                 The request object. A request message for
-                GlobalForwardingRules.SetTarget. See the method
-                description for details.
+                GlobalForwardingRules.SetTarget. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1609,8 +1609,8 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetTargetGlobalForwardingRuleRequest, dict]):
                 The request object. A request message for
-                GlobalForwardingRules.SetTarget. See the method
-                description for details.
+                GlobalForwardingRules.SetTarget. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

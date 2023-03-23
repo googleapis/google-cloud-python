@@ -442,8 +442,8 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionInstanceTemplateRequest, dict]):
                 The request object. A request message for
-                RegionInstanceTemplates.Delete. See the method
-                description for details.
+                RegionInstanceTemplates.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -546,8 +546,8 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionInstanceTemplateRequest, dict]):
                 The request object. A request message for
-                RegionInstanceTemplates.Delete. See the method
-                description for details.
+                RegionInstanceTemplates.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -672,8 +672,8 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionInstanceTemplateRequest, dict]):
                 The request object. A request message for
-                RegionInstanceTemplates.Get. See the method description
-                for details.
+                RegionInstanceTemplates.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -778,8 +778,8 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionInstanceTemplateRequest, dict]):
                 The request object. A request message for
-                RegionInstanceTemplates.Insert. See the method
-                description for details.
+                RegionInstanceTemplates.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -880,8 +880,8 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionInstanceTemplateRequest, dict]):
                 The request object. A request message for
-                RegionInstanceTemplates.Insert. See the method
-                description for details.
+                RegionInstanceTemplates.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1005,8 +1005,8 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionInstanceTemplatesRequest, dict]):
                 The request object. A request message for
-                RegionInstanceTemplates.List. See the method description
-                for details.
+                RegionInstanceTemplates.List. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

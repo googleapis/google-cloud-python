@@ -435,8 +435,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DisableXpnHostProjectRequest, dict]):
                 The request object. A request message for
-                Projects.DisableXpnHost. See the method description for
-                details.
+                Projects.DisableXpnHost. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -510,8 +510,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DisableXpnHostProjectRequest, dict]):
                 The request object. A request message for
-                Projects.DisableXpnHost. See the method description for
-                details.
+                Projects.DisableXpnHost. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -613,8 +613,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DisableXpnResourceProjectRequest, dict]):
                 The request object. A request message for
-                Projects.DisableXpnResource. See the method description
-                for details.
+                Projects.DisableXpnResource. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -703,8 +703,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DisableXpnResourceProjectRequest, dict]):
                 The request object. A request message for
-                Projects.DisableXpnResource. See the method description
-                for details.
+                Projects.DisableXpnResource. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -813,8 +813,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.EnableXpnHostProjectRequest, dict]):
                 The request object. A request message for
-                Projects.EnableXpnHost. See the method description for
-                details.
+                Projects.EnableXpnHost. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -888,8 +888,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.EnableXpnHostProjectRequest, dict]):
                 The request object. A request message for
-                Projects.EnableXpnHost. See the method description for
-                details.
+                Projects.EnableXpnHost. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -992,8 +992,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.EnableXpnResourceProjectRequest, dict]):
                 The request object. A request message for
-                Projects.EnableXpnResource. See the method description
-                for details.
+                Projects.EnableXpnResource. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1083,8 +1083,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.EnableXpnResourceProjectRequest, dict]):
                 The request object. A request message for
-                Projects.EnableXpnResource. See the method description
-                for details.
+                Projects.EnableXpnResource. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1279,8 +1279,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetXpnHostProjectRequest, dict]):
                 The request object. A request message for
-                Projects.GetXpnHost. See the method description for
-                details.
+                Projects.GetXpnHost. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1358,8 +1358,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetXpnResourcesProjectsRequest, dict]):
                 The request object. A request message for
-                Projects.GetXpnResources. See the method description for
-                details.
+                Projects.GetXpnResources. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1447,8 +1447,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListXpnHostsProjectsRequest, dict]):
                 The request object. A request message for
-                Projects.ListXpnHosts. See the method description for
-                details.
+                Projects.ListXpnHosts. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1542,8 +1542,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.MoveDiskProjectRequest, dict]):
                 The request object. A request message for
-                Projects.MoveDisk. See the method description for
-                details.
+                Projects.MoveDisk. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1625,8 +1625,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.MoveDiskProjectRequest, dict]):
                 The request object. A request message for
-                Projects.MoveDisk. See the method description for
-                details.
+                Projects.MoveDisk. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1736,8 +1736,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.MoveInstanceProjectRequest, dict]):
                 The request object. A request message for
-                Projects.MoveInstance. See the method description for
-                details.
+                Projects.MoveInstance. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1823,8 +1823,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.MoveInstanceProjectRequest, dict]):
                 The request object. A request message for
-                Projects.MoveInstance. See the method description for
-                details.
+                Projects.MoveInstance. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1934,8 +1934,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetCommonInstanceMetadataProjectRequest, dict]):
                 The request object. A request message for
-                Projects.SetCommonInstanceMetadata. See the method
-                description for details.
+                Projects.SetCommonInstanceMetadata. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2023,8 +2023,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetCommonInstanceMetadataProjectRequest, dict]):
                 The request object. A request message for
-                Projects.SetCommonInstanceMetadata. See the method
-                description for details.
+                Projects.SetCommonInstanceMetadata. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2139,8 +2139,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetDefaultNetworkTierProjectRequest, dict]):
                 The request object. A request message for
-                Projects.SetDefaultNetworkTier. See the method
-                description for details.
+                Projects.SetDefaultNetworkTier. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2233,8 +2233,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetDefaultNetworkTierProjectRequest, dict]):
                 The request object. A request message for
-                Projects.SetDefaultNetworkTier. See the method
-                description for details.
+                Projects.SetDefaultNetworkTier. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2349,8 +2349,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetUsageExportBucketProjectRequest, dict]):
                 The request object. A request message for
-                Projects.SetUsageExportBucket. See the method
-                description for details.
+                Projects.SetUsageExportBucket. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2437,8 +2437,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetUsageExportBucketProjectRequest, dict]):
                 The request object. A request message for
-                Projects.SetUsageExportBucket. See the method
-                description for details.
+                Projects.SetUsageExportBucket. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

@@ -486,7 +486,6 @@ class RoutersRestTransport(RoutersTransport):
                     The request object. A request message for
                 Routers.AggregatedList. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -572,7 +571,6 @@ class RoutersRestTransport(RoutersTransport):
                 request (~.compute.DeleteRouterRequest):
                     The request object. A request message for Routers.Delete.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -673,7 +671,6 @@ class RoutersRestTransport(RoutersTransport):
                 request (~.compute.GetRouterRequest):
                     The request object. A request message for Routers.Get.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -763,7 +760,6 @@ class RoutersRestTransport(RoutersTransport):
                     The request object. A request message for
                 Routers.GetNatMappingInfo. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -854,7 +850,6 @@ class RoutersRestTransport(RoutersTransport):
                     The request object. A request message for
                 Routers.GetRouterStatus. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -942,7 +937,6 @@ class RoutersRestTransport(RoutersTransport):
                 request (~.compute.InsertRouterRequest):
                     The request object. A request message for Routers.Insert.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1052,7 +1046,6 @@ class RoutersRestTransport(RoutersTransport):
                 request (~.compute.ListRoutersRequest):
                     The request object. A request message for Routers.List.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1138,7 +1131,6 @@ class RoutersRestTransport(RoutersTransport):
                 request (~.compute.PatchRouterRequest):
                     The request object. A request message for Routers.Patch.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1249,7 +1241,6 @@ class RoutersRestTransport(RoutersTransport):
                     The request object. A request message for
                 Routers.Preview. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1344,7 +1335,6 @@ class RoutersRestTransport(RoutersTransport):
                 request (~.compute.UpdateRouterRequest):
                     The request object. A request message for Routers.Update.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

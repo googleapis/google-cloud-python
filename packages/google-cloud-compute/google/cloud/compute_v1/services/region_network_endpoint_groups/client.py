@@ -445,8 +445,8 @@ class RegionNetworkEndpointGroupsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                RegionNetworkEndpointGroups.Delete. See the method
-                description for details.
+                RegionNetworkEndpointGroups.Delete. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -552,8 +552,8 @@ class RegionNetworkEndpointGroupsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                RegionNetworkEndpointGroups.Delete. See the method
-                description for details.
+                RegionNetworkEndpointGroups.Delete. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -682,8 +682,8 @@ class RegionNetworkEndpointGroupsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                RegionNetworkEndpointGroups.Get. See the method
-                description for details.
+                RegionNetworkEndpointGroups.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -797,8 +797,8 @@ class RegionNetworkEndpointGroupsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                RegionNetworkEndpointGroups.Insert. See the method
-                description for details.
+                RegionNetworkEndpointGroups.Insert. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -902,8 +902,8 @@ class RegionNetworkEndpointGroupsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
-                RegionNetworkEndpointGroups.Insert. See the method
-                description for details.
+                RegionNetworkEndpointGroups.Insert. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1031,8 +1031,8 @@ class RegionNetworkEndpointGroupsClient(
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionNetworkEndpointGroupsRequest, dict]):
                 The request object. A request message for
-                RegionNetworkEndpointGroups.List. See the method
-                description for details.
+                RegionNetworkEndpointGroups.List. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

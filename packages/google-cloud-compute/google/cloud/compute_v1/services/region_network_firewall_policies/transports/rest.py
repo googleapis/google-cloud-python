@@ -751,7 +751,6 @@ class RegionNetworkFirewallPoliciesRestTransport(
                     The request object. A request message for
                 RegionNetworkFirewallPolicies.AddAssociation.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -864,7 +863,6 @@ class RegionNetworkFirewallPoliciesRestTransport(
                     The request object. A request message for
                 RegionNetworkFirewallPolicies.AddRule.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -975,7 +973,6 @@ class RegionNetworkFirewallPoliciesRestTransport(
                     The request object. A request message for
                 RegionNetworkFirewallPolicies.CloneRules.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1079,7 +1076,6 @@ class RegionNetworkFirewallPoliciesRestTransport(
                     The request object. A request message for
                 RegionNetworkFirewallPolicies.Delete.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1181,7 +1177,6 @@ class RegionNetworkFirewallPoliciesRestTransport(
                     The request object. A request message for
                 RegionNetworkFirewallPolicies.Get. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1270,7 +1265,6 @@ class RegionNetworkFirewallPoliciesRestTransport(
                     The request object. A request message for
                 RegionNetworkFirewallPolicies.GetAssociation.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1361,7 +1355,6 @@ class RegionNetworkFirewallPoliciesRestTransport(
                     The request object. A request message for
                 RegionNetworkFirewallPolicies.GetEffectiveFirewalls.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1458,7 +1451,6 @@ class RegionNetworkFirewallPoliciesRestTransport(
                     The request object. A request message for
                 RegionNetworkFirewallPolicies.GetIamPolicy.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1588,7 +1580,6 @@ class RegionNetworkFirewallPoliciesRestTransport(
                     The request object. A request message for
                 RegionNetworkFirewallPolicies.GetRule.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1679,7 +1670,6 @@ class RegionNetworkFirewallPoliciesRestTransport(
                     The request object. A request message for
                 RegionNetworkFirewallPolicies.Insert.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1790,7 +1780,6 @@ class RegionNetworkFirewallPoliciesRestTransport(
                     The request object. A request message for
                 RegionNetworkFirewallPolicies.List. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1877,7 +1866,6 @@ class RegionNetworkFirewallPoliciesRestTransport(
                     The request object. A request message for
                 RegionNetworkFirewallPolicies.Patch. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1988,7 +1976,6 @@ class RegionNetworkFirewallPoliciesRestTransport(
                     The request object. A request message for
                 RegionNetworkFirewallPolicies.PatchRule.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2099,7 +2086,6 @@ class RegionNetworkFirewallPoliciesRestTransport(
                     The request object. A request message for
                 RegionNetworkFirewallPolicies.RemoveAssociation.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2205,7 +2191,6 @@ class RegionNetworkFirewallPoliciesRestTransport(
                     The request object. A request message for
                 RegionNetworkFirewallPolicies.RemoveRule.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2309,7 +2294,6 @@ class RegionNetworkFirewallPoliciesRestTransport(
                     The request object. A request message for
                 RegionNetworkFirewallPolicies.SetIamPolicy.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2448,7 +2432,6 @@ class RegionNetworkFirewallPoliciesRestTransport(
                     The request object. A request message for
                 RegionNetworkFirewallPolicies.TestIamPermissions.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

@@ -378,7 +378,6 @@ class RegionAutoscalersRestTransport(RegionAutoscalersTransport):
                     The request object. A request message for
                 RegionAutoscalers.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -480,7 +479,6 @@ class RegionAutoscalersRestTransport(RegionAutoscalersTransport):
                     The request object. A request message for
                 RegionAutoscalers.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -579,7 +577,6 @@ class RegionAutoscalersRestTransport(RegionAutoscalersTransport):
                     The request object. A request message for
                 RegionAutoscalers.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -690,7 +687,6 @@ class RegionAutoscalersRestTransport(RegionAutoscalersTransport):
                     The request object. A request message for
                 RegionAutoscalers.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -777,7 +773,6 @@ class RegionAutoscalersRestTransport(RegionAutoscalersTransport):
                     The request object. A request message for
                 RegionAutoscalers.Patch. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -888,7 +883,6 @@ class RegionAutoscalersRestTransport(RegionAutoscalersTransport):
                     The request object. A request message for
                 RegionAutoscalers.Update. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

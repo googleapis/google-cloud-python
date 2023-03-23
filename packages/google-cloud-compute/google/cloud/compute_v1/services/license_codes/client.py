@@ -435,8 +435,8 @@ class LicenseCodesClient(metaclass=LicenseCodesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetLicenseCodeRequest, dict]):
                 The request object. A request message for
-                LicenseCodes.Get. See the method description for
-                details.
+                LicenseCodes.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -535,8 +535,8 @@ class LicenseCodesClient(metaclass=LicenseCodesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsLicenseCodeRequest, dict]):
                 The request object. A request message for
-                LicenseCodes.TestIamPermissions. See the method
-                description for details.
+                LicenseCodes.TestIamPermissions. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

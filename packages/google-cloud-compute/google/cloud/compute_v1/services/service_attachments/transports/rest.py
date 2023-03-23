@@ -475,7 +475,6 @@ class ServiceAttachmentsRestTransport(ServiceAttachmentsTransport):
                     The request object. A request message for
                 ServiceAttachments.AggregatedList. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -564,7 +563,6 @@ class ServiceAttachmentsRestTransport(ServiceAttachmentsTransport):
                     The request object. A request message for
                 ServiceAttachments.Delete. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -666,7 +664,6 @@ class ServiceAttachmentsRestTransport(ServiceAttachmentsTransport):
                     The request object. A request message for
                 ServiceAttachments.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -762,7 +759,6 @@ class ServiceAttachmentsRestTransport(ServiceAttachmentsTransport):
                     The request object. A request message for
                 ServiceAttachments.GetIamPolicy. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -890,7 +886,6 @@ class ServiceAttachmentsRestTransport(ServiceAttachmentsTransport):
                     The request object. A request message for
                 ServiceAttachments.Insert. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1001,7 +996,6 @@ class ServiceAttachmentsRestTransport(ServiceAttachmentsTransport):
                     The request object. A request message for
                 ServiceAttachments.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1088,7 +1082,6 @@ class ServiceAttachmentsRestTransport(ServiceAttachmentsTransport):
                     The request object. A request message for
                 ServiceAttachments.Patch. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1199,7 +1192,6 @@ class ServiceAttachmentsRestTransport(ServiceAttachmentsTransport):
                     The request object. A request message for
                 ServiceAttachments.SetIamPolicy. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1336,7 +1328,6 @@ class ServiceAttachmentsRestTransport(ServiceAttachmentsTransport):
                     The request object. A request message for
                 ServiceAttachments.TestIamPermissions.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

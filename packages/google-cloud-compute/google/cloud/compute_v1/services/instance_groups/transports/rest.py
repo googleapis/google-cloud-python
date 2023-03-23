@@ -469,7 +469,6 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
                     The request object. A request message for
                 InstanceGroups.AddInstances. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -580,7 +579,6 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
                     The request object. A request message for
                 InstanceGroups.AggregatedList. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -667,7 +665,6 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
                     The request object. A request message for
                 InstanceGroups.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -769,7 +766,6 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
                     The request object. A request message for
                 InstanceGroups.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -870,7 +866,6 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
                     The request object. A request message for
                 InstanceGroups.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -981,7 +976,6 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
                     The request object. A request message for
                 InstanceGroups.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1068,7 +1062,6 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
                     The request object. A request message for
                 InstanceGroups.ListInstances. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1164,7 +1157,6 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
                     The request object. A request message for
                 InstanceGroups.RemoveInstances. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1277,7 +1269,6 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
                     The request object. A request message for
                 InstanceGroups.SetNamedPorts. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

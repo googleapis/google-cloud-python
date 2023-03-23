@@ -415,7 +415,6 @@ class PacketMirroringsRestTransport(PacketMirroringsTransport):
                     The request object. A request message for
                 PacketMirrorings.AggregatedList. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -502,7 +501,6 @@ class PacketMirroringsRestTransport(PacketMirroringsTransport):
                     The request object. A request message for
                 PacketMirrorings.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -604,7 +602,6 @@ class PacketMirroringsRestTransport(PacketMirroringsTransport):
                     The request object. A request message for
                 PacketMirrorings.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -701,7 +698,6 @@ class PacketMirroringsRestTransport(PacketMirroringsTransport):
                     The request object. A request message for
                 PacketMirrorings.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -812,7 +808,6 @@ class PacketMirroringsRestTransport(PacketMirroringsTransport):
                     The request object. A request message for
                 PacketMirrorings.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -901,7 +896,6 @@ class PacketMirroringsRestTransport(PacketMirroringsTransport):
                     The request object. A request message for
                 PacketMirrorings.Patch. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1012,7 +1006,6 @@ class PacketMirroringsRestTransport(PacketMirroringsTransport):
                     The request object. A request message for
                 PacketMirrorings.TestIamPermissions. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

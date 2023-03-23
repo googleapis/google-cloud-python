@@ -439,8 +439,8 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteTargetGrpcProxyRequest, dict]):
                 The request object. A request message for
-                TargetGrpcProxies.Delete. See the method description for
-                details.
+                TargetGrpcProxies.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -530,8 +530,8 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteTargetGrpcProxyRequest, dict]):
                 The request object. A request message for
-                TargetGrpcProxies.Delete. See the method description for
-                details.
+                TargetGrpcProxies.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -645,8 +645,8 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetTargetGrpcProxyRequest, dict]):
                 The request object. A request message for
-                TargetGrpcProxies.Get. See the method description for
-                details.
+                TargetGrpcProxies.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -742,8 +742,8 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertTargetGrpcProxyRequest, dict]):
                 The request object. A request message for
-                TargetGrpcProxies.Insert. See the method description for
-                details.
+                TargetGrpcProxies.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -827,8 +827,8 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertTargetGrpcProxyRequest, dict]):
                 The request object. A request message for
-                TargetGrpcProxies.Insert. See the method description for
-                details.
+                TargetGrpcProxies.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -934,8 +934,8 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListTargetGrpcProxiesRequest, dict]):
                 The request object. A request message for
-                TargetGrpcProxies.List. See the method description for
-                details.
+                TargetGrpcProxies.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1024,8 +1024,8 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchTargetGrpcProxyRequest, dict]):
                 The request object. A request message for
-                TargetGrpcProxies.Patch. See the method description for
-                details.
+                TargetGrpcProxies.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1127,8 +1127,8 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchTargetGrpcProxyRequest, dict]):
                 The request object. A request message for
-                TargetGrpcProxies.Patch. See the method description for
-                details.
+                TargetGrpcProxies.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

@@ -445,8 +445,8 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddInstancesInstanceGroupRequest, dict]):
                 The request object. A request message for
-                InstanceGroups.AddInstances. See the method description
-                for details.
+                InstanceGroups.AddInstances. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -568,8 +568,8 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddInstancesInstanceGroupRequest, dict]):
                 The request object. A request message for
-                InstanceGroups.AddInstances. See the method description
-                for details.
+                InstanceGroups.AddInstances. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -711,8 +711,8 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListInstanceGroupsRequest, dict]):
                 The request object. A request message for
-                InstanceGroups.AggregatedList. See the method
-                description for details.
+                InstanceGroups.AggregatedList. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -801,8 +801,8 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstanceGroupRequest, dict]):
                 The request object. A request message for
-                InstanceGroups.Delete. See the method description for
-                details.
+                InstanceGroups.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -905,8 +905,8 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstanceGroupRequest, dict]):
                 The request object. A request message for
-                InstanceGroups.Delete. See the method description for
-                details.
+                InstanceGroups.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1035,8 +1035,8 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetInstanceGroupRequest, dict]):
                 The request object. A request message for
-                InstanceGroups.Get. See the method description for
-                details.
+                InstanceGroups.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1147,8 +1147,8 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertInstanceGroupRequest, dict]):
                 The request object. A request message for
-                InstanceGroups.Insert. See the method description for
-                details.
+                InstanceGroups.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1246,8 +1246,8 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertInstanceGroupRequest, dict]):
                 The request object. A request message for
-                InstanceGroups.Insert. See the method description for
-                details.
+                InstanceGroups.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1371,8 +1371,8 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListInstanceGroupsRequest, dict]):
                 The request object. A request message for
-                InstanceGroups.List. See the method description for
-                details.
+                InstanceGroups.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1481,8 +1481,8 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListInstancesInstanceGroupsRequest, dict]):
                 The request object. A request message for
-                InstanceGroups.ListInstances. See the method description
-                for details.
+                InstanceGroups.ListInstances. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1619,8 +1619,8 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveInstancesInstanceGroupRequest, dict]):
                 The request object. A request message for
-                InstanceGroups.RemoveInstances. See the method
-                description for details.
+                InstanceGroups.RemoveInstances. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1746,8 +1746,8 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveInstancesInstanceGroupRequest, dict]):
                 The request object. A request message for
-                InstanceGroups.RemoveInstances. See the method
-                description for details.
+                InstanceGroups.RemoveInstances. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1894,8 +1894,8 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetNamedPortsInstanceGroupRequest, dict]):
                 The request object. A request message for
-                InstanceGroups.SetNamedPorts. See the method description
-                for details.
+                InstanceGroups.SetNamedPorts. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2017,8 +2017,8 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetNamedPortsInstanceGroupRequest, dict]):
                 The request object. A request message for
-                InstanceGroups.SetNamedPorts. See the method description
-                for details.
+                InstanceGroups.SetNamedPorts. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

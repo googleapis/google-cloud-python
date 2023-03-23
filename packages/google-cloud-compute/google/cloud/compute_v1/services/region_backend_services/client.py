@@ -442,8 +442,8 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionBackendServiceRequest, dict]):
                 The request object. A request message for
-                RegionBackendServices.Delete. See the method description
-                for details.
+                RegionBackendServices.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -546,8 +546,8 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionBackendServiceRequest, dict]):
                 The request object. A request message for
-                RegionBackendServices.Delete. See the method description
-                for details.
+                RegionBackendServices.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -673,8 +673,8 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionBackendServiceRequest, dict]):
                 The request object. A request message for
-                RegionBackendServices.Get. See the method description
-                for details.
+                RegionBackendServices.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -793,8 +793,8 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetHealthRegionBackendServiceRequest, dict]):
                 The request object. A request message for
-                RegionBackendServices.GetHealth. See the method
-                description for details.
+                RegionBackendServices.GetHealth. See the
+                method description for details.
             project (str):
 
                 This corresponds to the ``project`` field
@@ -906,8 +906,8 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyRegionBackendServiceRequest, dict]):
                 The request object. A request message for
-                RegionBackendServices.GetIamPolicy. See the method
-                description for details.
+                RegionBackendServices.GetIamPolicy. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1050,8 +1050,8 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionBackendServiceRequest, dict]):
                 The request object. A request message for
-                RegionBackendServices.Insert. See the method description
-                for details.
+                RegionBackendServices.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1153,8 +1153,8 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionBackendServiceRequest, dict]):
                 The request object. A request message for
-                RegionBackendServices.Insert. See the method description
-                for details.
+                RegionBackendServices.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1277,8 +1277,8 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionBackendServicesRequest, dict]):
                 The request object. A request message for
-                RegionBackendServices.List. See the method description
-                for details.
+                RegionBackendServices.List. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1385,8 +1385,8 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionBackendServiceRequest, dict]):
                 The request object. A request message for
-                RegionBackendServices.Patch. See the method description
-                for details.
+                RegionBackendServices.Patch. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1500,8 +1500,8 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionBackendServiceRequest, dict]):
                 The request object. A request message for
-                RegionBackendServices.Patch. See the method description
-                for details.
+                RegionBackendServices.Patch. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1641,8 +1641,8 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyRegionBackendServiceRequest, dict]):
                 The request object. A request message for
-                RegionBackendServices.SetIamPolicy. See the method
-                description for details.
+                RegionBackendServices.SetIamPolicy. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1796,8 +1796,8 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateRegionBackendServiceRequest, dict]):
                 The request object. A request message for
-                RegionBackendServices.Update. See the method description
-                for details.
+                RegionBackendServices.Update. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1911,8 +1911,8 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateRegionBackendServiceRequest, dict]):
                 The request object. A request message for
-                RegionBackendServices.Update. See the method description
-                for details.
+                RegionBackendServices.Update. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

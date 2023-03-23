@@ -432,8 +432,8 @@ class DiskTypesClient(metaclass=DiskTypesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListDiskTypesRequest, dict]):
                 The request object. A request message for
-                DiskTypes.AggregatedList. See the method description for
-                details.
+                DiskTypes.AggregatedList. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -625,8 +625,8 @@ class DiskTypesClient(metaclass=DiskTypesClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListDiskTypesRequest, dict]):
-                The request object. A request message for
-                DiskTypes.List. See the method description for details.
+                The request object. A request message for DiskTypes.List.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

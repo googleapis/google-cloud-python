@@ -296,7 +296,6 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
                     The request object. A request message for
                 AcceleratorTypes.AggregatedList. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -383,7 +382,6 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
                     The request object. A request message for
                 AcceleratorTypes.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -478,7 +476,6 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
                     The request object. A request message for
                 AcceleratorTypes.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

@@ -517,7 +517,6 @@ class NetworksRestTransport(NetworksTransport):
                     The request object. A request message for
                 Networks.AddPeering. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -628,7 +627,6 @@ class NetworksRestTransport(NetworksTransport):
                     The request object. A request message for
                 Networks.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -729,7 +727,6 @@ class NetworksRestTransport(NetworksTransport):
                 request (~.compute.GetNetworkRequest):
                     The request object. A request message for Networks.Get.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -821,7 +818,6 @@ class NetworksRestTransport(NetworksTransport):
                     The request object. A request message for
                 Networks.GetEffectiveFirewalls. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -910,7 +906,6 @@ class NetworksRestTransport(NetworksTransport):
                     The request object. A request message for
                 Networks.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1020,7 +1015,6 @@ class NetworksRestTransport(NetworksTransport):
                 request (~.compute.ListNetworksRequest):
                     The request object. A request message for Networks.List.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1107,7 +1101,6 @@ class NetworksRestTransport(NetworksTransport):
                     The request object. A request message for
                 Networks.ListPeeringRoutes. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1195,7 +1188,6 @@ class NetworksRestTransport(NetworksTransport):
                 request (~.compute.PatchNetworkRequest):
                     The request object. A request message for Networks.Patch.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1306,7 +1298,6 @@ class NetworksRestTransport(NetworksTransport):
                     The request object. A request message for
                 Networks.RemovePeering. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1417,7 +1408,6 @@ class NetworksRestTransport(NetworksTransport):
                     The request object. A request message for
                 Networks.SwitchToCustomMode. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1521,7 +1511,6 @@ class NetworksRestTransport(NetworksTransport):
                     The request object. A request message for
                 Networks.UpdatePeering. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

@@ -441,8 +441,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionSslPolicyRequest, dict]):
                 The request object. A request message for
-                RegionSslPolicies.Delete. See the method description for
-                details.
+                RegionSslPolicies.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -545,8 +545,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionSslPolicyRequest, dict]):
                 The request object. A request message for
-                RegionSslPolicies.Delete. See the method description for
-                details.
+                RegionSslPolicies.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -673,8 +673,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionSslPolicyRequest, dict]):
                 The request object. A request message for
-                RegionSslPolicies.Get. See the method description for
-                details.
+                RegionSslPolicies.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -780,8 +780,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionSslPolicyRequest, dict]):
                 The request object. A request message for
-                RegionSslPolicies.Insert. See the method description for
-                details.
+                RegionSslPolicies.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -879,8 +879,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionSslPolicyRequest, dict]):
                 The request object. A request message for
-                RegionSslPolicies.Insert. See the method description for
-                details.
+                RegionSslPolicies.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1002,8 +1002,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionSslPoliciesRequest, dict]):
                 The request object. A request message for
-                RegionSslPolicies.List. See the method description for
-                details.
+                RegionSslPolicies.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1105,8 +1105,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListAvailableFeaturesRegionSslPoliciesRequest, dict]):
                 The request object. A request message for
-                RegionSslPolicies.ListAvailableFeatures. See the method
-                description for details.
+                RegionSslPolicies.ListAvailableFeatures.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1198,8 +1198,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionSslPolicyRequest, dict]):
                 The request object. A request message for
-                RegionSslPolicies.Patch. See the method description for
-                details.
+                RegionSslPolicies.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1309,8 +1309,8 @@ class RegionSslPoliciesClient(metaclass=RegionSslPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionSslPolicyRequest, dict]):
                 The request object. A request message for
-                RegionSslPolicies.Patch. See the method description for
-                details.
+                RegionSslPolicies.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

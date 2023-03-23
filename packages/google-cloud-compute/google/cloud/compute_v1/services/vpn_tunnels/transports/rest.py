@@ -376,7 +376,6 @@ class VpnTunnelsRestTransport(VpnTunnelsTransport):
                     The request object. A request message for
                 VpnTunnels.AggregatedList. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -463,7 +462,6 @@ class VpnTunnelsRestTransport(VpnTunnelsTransport):
                     The request object. A request message for
                 VpnTunnels.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -564,7 +562,6 @@ class VpnTunnelsRestTransport(VpnTunnelsTransport):
                 request (~.compute.GetVpnTunnelRequest):
                     The request object. A request message for VpnTunnels.Get.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -654,7 +651,6 @@ class VpnTunnelsRestTransport(VpnTunnelsTransport):
                     The request object. A request message for
                 VpnTunnels.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -765,7 +761,6 @@ class VpnTunnelsRestTransport(VpnTunnelsTransport):
                     The request object. A request message for
                 VpnTunnels.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -854,7 +849,6 @@ class VpnTunnelsRestTransport(VpnTunnelsTransport):
                     The request object. A request message for
                 VpnTunnels.SetLabels. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

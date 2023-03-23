@@ -436,8 +436,8 @@ class RegionDiskTypesClient(metaclass=RegionDiskTypesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionDiskTypeRequest, dict]):
                 The request object. A request message for
-                RegionDiskTypes.Get. See the method description for
-                details.
+                RegionDiskTypes.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -544,8 +544,8 @@ class RegionDiskTypesClient(metaclass=RegionDiskTypesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionDiskTypesRequest, dict]):
                 The request object. A request message for
-                RegionDiskTypes.List. See the method description for
-                details.
+                RegionDiskTypes.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

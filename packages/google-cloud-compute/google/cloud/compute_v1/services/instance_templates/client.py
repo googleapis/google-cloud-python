@@ -441,8 +441,8 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListInstanceTemplatesRequest, dict]):
                 The request object. A request message for
-                InstanceTemplates.AggregatedList. See the method
-                description for details.
+                InstanceTemplates.AggregatedList. See
+                the method description for details.
             project (str):
                 Name of the project scoping this
                 request.
@@ -534,8 +534,8 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstanceTemplateRequest, dict]):
                 The request object. A request message for
-                InstanceTemplates.Delete. See the method description for
-                details.
+                InstanceTemplates.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -627,8 +627,8 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstanceTemplateRequest, dict]):
                 The request object. A request message for
-                InstanceTemplates.Delete. See the method description for
-                details.
+                InstanceTemplates.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -741,8 +741,8 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetInstanceTemplateRequest, dict]):
                 The request object. A request message for
-                InstanceTemplates.Get. See the method description for
-                details.
+                InstanceTemplates.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -835,8 +835,8 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyInstanceTemplateRequest, dict]):
                 The request object. A request message for
-                InstanceTemplates.GetIamPolicy. See the method
-                description for details.
+                InstanceTemplates.GetIamPolicy. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -968,8 +968,8 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertInstanceTemplateRequest, dict]):
                 The request object. A request message for
-                InstanceTemplates.Insert. See the method description for
-                details.
+                InstanceTemplates.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1056,8 +1056,8 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertInstanceTemplateRequest, dict]):
                 The request object. A request message for
-                InstanceTemplates.Insert. See the method description for
-                details.
+                InstanceTemplates.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1163,8 +1163,8 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListInstanceTemplatesRequest, dict]):
                 The request object. A request message for
-                InstanceTemplates.List. See the method description for
-                details.
+                InstanceTemplates.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1256,8 +1256,8 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyInstanceTemplateRequest, dict]):
                 The request object. A request message for
-                InstanceTemplates.SetIamPolicy. See the method
-                description for details.
+                InstanceTemplates.SetIamPolicy. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1401,8 +1401,8 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsInstanceTemplateRequest, dict]):
                 The request object. A request message for
-                InstanceTemplates.TestIamPermissions. See the method
-                description for details.
+                InstanceTemplates.TestIamPermissions.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

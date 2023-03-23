@@ -351,7 +351,6 @@ class RegionCommitmentsRestTransport(RegionCommitmentsTransport):
                     The request object. A request message for
                 RegionCommitments.AggregatedList. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -438,7 +437,6 @@ class RegionCommitmentsRestTransport(RegionCommitmentsTransport):
                     The request object. A request message for
                 RegionCommitments.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -534,7 +532,6 @@ class RegionCommitmentsRestTransport(RegionCommitmentsTransport):
                     The request object. A request message for
                 RegionCommitments.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -645,7 +642,6 @@ class RegionCommitmentsRestTransport(RegionCommitmentsTransport):
                     The request object. A request message for
                 RegionCommitments.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -734,7 +730,6 @@ class RegionCommitmentsRestTransport(RegionCommitmentsTransport):
                     The request object. A request message for
                 RegionCommitments.Update. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

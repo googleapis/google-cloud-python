@@ -439,8 +439,8 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListPacketMirroringsRequest, dict]):
                 The request object. A request message for
-                PacketMirrorings.AggregatedList. See the method
-                description for details.
+                PacketMirrorings.AggregatedList. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -527,8 +527,8 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeletePacketMirroringRequest, dict]):
                 The request object. A request message for
-                PacketMirrorings.Delete. See the method description for
-                details.
+                PacketMirrorings.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -626,8 +626,8 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeletePacketMirroringRequest, dict]):
                 The request object. A request message for
-                PacketMirrorings.Delete. See the method description for
-                details.
+                PacketMirrorings.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -750,8 +750,8 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetPacketMirroringRequest, dict]):
                 The request object. A request message for
-                PacketMirrorings.Get. See the method description for
-                details.
+                PacketMirrorings.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -859,8 +859,8 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertPacketMirroringRequest, dict]):
                 The request object. A request message for
-                PacketMirrorings.Insert. See the method description for
-                details.
+                PacketMirrorings.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -957,8 +957,8 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertPacketMirroringRequest, dict]):
                 The request object. A request message for
-                PacketMirrorings.Insert. See the method description for
-                details.
+                PacketMirrorings.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1078,8 +1078,8 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListPacketMirroringsRequest, dict]):
                 The request object. A request message for
-                PacketMirrorings.List. See the method description for
-                details.
+                PacketMirrorings.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1183,8 +1183,8 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchPacketMirroringRequest, dict]):
                 The request object. A request message for
-                PacketMirrorings.Patch. See the method description for
-                details.
+                PacketMirrorings.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1295,8 +1295,8 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchPacketMirroringRequest, dict]):
                 The request object. A request message for
-                PacketMirrorings.Patch. See the method description for
-                details.
+                PacketMirrorings.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1434,8 +1434,8 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsPacketMirroringRequest, dict]):
                 The request object. A request message for
-                PacketMirrorings.TestIamPermissions. See the method
-                description for details.
+                PacketMirrorings.TestIamPermissions. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

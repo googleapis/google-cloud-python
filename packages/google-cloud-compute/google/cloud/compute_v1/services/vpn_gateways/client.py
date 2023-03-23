@@ -435,8 +435,8 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListVpnGatewaysRequest, dict]):
                 The request object. A request message for
-                VpnGateways.AggregatedList. See the method description
-                for details.
+                VpnGateways.AggregatedList. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -522,8 +522,8 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteVpnGatewayRequest, dict]):
                 The request object. A request message for
-                VpnGateways.Delete. See the method description for
-                details.
+                VpnGateways.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -619,8 +619,8 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteVpnGatewayRequest, dict]):
                 The request object. A request message for
-                VpnGateways.Delete. See the method description for
-                details.
+                VpnGateways.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -741,7 +741,8 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetVpnGatewayRequest, dict]):
                 The request object. A request message for
-                VpnGateways.Get. See the method description for details.
+                VpnGateways.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -844,8 +845,8 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetStatusVpnGatewayRequest, dict]):
                 The request object. A request message for
-                VpnGateways.GetStatus. See the method description for
-                details.
+                VpnGateways.GetStatus. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -940,8 +941,8 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertVpnGatewayRequest, dict]):
                 The request object. A request message for
-                VpnGateways.Insert. See the method description for
-                details.
+                VpnGateways.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1037,8 +1038,8 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertVpnGatewayRequest, dict]):
                 The request object. A request message for
-                VpnGateways.Insert. See the method description for
-                details.
+                VpnGateways.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1158,8 +1159,8 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListVpnGatewaysRequest, dict]):
                 The request object. A request message for
-                VpnGateways.List. See the method description for
-                details.
+                VpnGateways.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1263,8 +1264,8 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsVpnGatewayRequest, dict]):
                 The request object. A request message for
-                VpnGateways.SetLabels. See the method description for
-                details.
+                VpnGateways.SetLabels. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1377,8 +1378,8 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsVpnGatewayRequest, dict]):
                 The request object. A request message for
-                VpnGateways.SetLabels. See the method description for
-                details.
+                VpnGateways.SetLabels. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1518,8 +1519,8 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsVpnGatewayRequest, dict]):
                 The request object. A request message for
-                VpnGateways.TestIamPermissions. See the method
-                description for details.
+                VpnGateways.TestIamPermissions. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

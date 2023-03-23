@@ -360,7 +360,6 @@ class NetworkEdgeSecurityServicesRestTransport(NetworkEdgeSecurityServicesTransp
                     The request object. A request message for
                 NetworkEdgeSecurityServices.AggregatedList.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -449,7 +448,6 @@ class NetworkEdgeSecurityServicesRestTransport(NetworkEdgeSecurityServicesTransp
                     The request object. A request message for
                 NetworkEdgeSecurityServices.Delete. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -551,7 +549,6 @@ class NetworkEdgeSecurityServicesRestTransport(NetworkEdgeSecurityServicesTransp
                     The request object. A request message for
                 NetworkEdgeSecurityServices.Get. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -640,7 +637,6 @@ class NetworkEdgeSecurityServicesRestTransport(NetworkEdgeSecurityServicesTransp
                     The request object. A request message for
                 NetworkEdgeSecurityServices.Insert. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -751,7 +747,6 @@ class NetworkEdgeSecurityServicesRestTransport(NetworkEdgeSecurityServicesTransp
                     The request object. A request message for
                 NetworkEdgeSecurityServices.Patch. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

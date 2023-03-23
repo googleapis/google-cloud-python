@@ -407,7 +407,6 @@ class RegionUrlMapsRestTransport(RegionUrlMapsTransport):
                     The request object. A request message for
                 RegionUrlMaps.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -509,7 +508,6 @@ class RegionUrlMapsRestTransport(RegionUrlMapsTransport):
                     The request object. A request message for
                 RegionUrlMaps.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -617,7 +615,6 @@ class RegionUrlMapsRestTransport(RegionUrlMapsTransport):
                     The request object. A request message for
                 RegionUrlMaps.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -728,7 +725,6 @@ class RegionUrlMapsRestTransport(RegionUrlMapsTransport):
                     The request object. A request message for
                 RegionUrlMaps.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -815,7 +811,6 @@ class RegionUrlMapsRestTransport(RegionUrlMapsTransport):
                     The request object. A request message for
                 RegionUrlMaps.Patch. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -926,7 +921,6 @@ class RegionUrlMapsRestTransport(RegionUrlMapsTransport):
                     The request object. A request message for
                 RegionUrlMaps.Update. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1037,7 +1031,6 @@ class RegionUrlMapsRestTransport(RegionUrlMapsTransport):
                     The request object. A request message for
                 RegionUrlMaps.Validate. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

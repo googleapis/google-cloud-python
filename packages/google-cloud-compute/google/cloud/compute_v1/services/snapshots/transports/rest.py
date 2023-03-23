@@ -432,7 +432,6 @@ class SnapshotsRestTransport(SnapshotsTransport):
                     The request object. A request message for
                 Snapshots.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -533,7 +532,6 @@ class SnapshotsRestTransport(SnapshotsTransport):
                 request (~.compute.GetSnapshotRequest):
                     The request object. A request message for Snapshots.Get.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -625,7 +623,6 @@ class SnapshotsRestTransport(SnapshotsTransport):
                     The request object. A request message for
                 Snapshots.GetIamPolicy. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -753,7 +750,6 @@ class SnapshotsRestTransport(SnapshotsTransport):
                     The request object. A request message for
                 Snapshots.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -863,7 +859,6 @@ class SnapshotsRestTransport(SnapshotsTransport):
                 request (~.compute.ListSnapshotsRequest):
                     The request object. A request message for Snapshots.List.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -952,7 +947,6 @@ class SnapshotsRestTransport(SnapshotsTransport):
                     The request object. A request message for
                 Snapshots.SetIamPolicy. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1089,7 +1083,6 @@ class SnapshotsRestTransport(SnapshotsTransport):
                     The request object. A request message for
                 Snapshots.SetLabels. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1200,7 +1193,6 @@ class SnapshotsRestTransport(SnapshotsTransport):
                     The request object. A request message for
                 Snapshots.TestIamPermissions. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

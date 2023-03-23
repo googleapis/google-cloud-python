@@ -437,8 +437,8 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteZoneOperationRequest, dict]):
                 The request object. A request message for
-                ZoneOperations.Delete. See the method description for
-                details.
+                ZoneOperations.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -538,8 +538,8 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetZoneOperationRequest, dict]):
                 The request object. A request message for
-                ZoneOperations.Get. See the method description for
-                details.
+                ZoneOperations.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -650,8 +650,8 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListZoneOperationsRequest, dict]):
                 The request object. A request message for
-                ZoneOperations.List. See the method description for
-                details.
+                ZoneOperations.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -762,8 +762,8 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.WaitZoneOperationRequest, dict]):
                 The request object. A request message for
-                ZoneOperations.Wait. See the method description for
-                details.
+                ZoneOperations.Wait. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

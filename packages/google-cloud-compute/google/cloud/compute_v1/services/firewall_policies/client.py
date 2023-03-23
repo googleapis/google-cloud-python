@@ -443,8 +443,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddAssociationFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.AddAssociation. See the method
-                description for details.
+                FirewallPolicies.AddAssociation. See the
+                method description for details.
             firewall_policy (str):
                 Name of the firewall policy to
                 update.
@@ -539,8 +539,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddAssociationFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.AddAssociation. See the method
-                description for details.
+                FirewallPolicies.AddAssociation. See the
+                method description for details.
             firewall_policy (str):
                 Name of the firewall policy to
                 update.
@@ -653,8 +653,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddRuleFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.AddRule. See the method description for
-                details.
+                FirewallPolicies.AddRule. See the method
+                description for details.
             firewall_policy (str):
                 Name of the firewall policy to
                 update.
@@ -740,8 +740,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddRuleFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.AddRule. See the method description for
-                details.
+                FirewallPolicies.AddRule. See the method
+                description for details.
             firewall_policy (str):
                 Name of the firewall policy to
                 update.
@@ -849,8 +849,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.CloneRulesFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.CloneRules. See the method description
-                for details.
+                FirewallPolicies.CloneRules. See the
+                method description for details.
             firewall_policy (str):
                 Name of the firewall policy to
                 update.
@@ -928,8 +928,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.CloneRulesFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.CloneRules. See the method description
-                for details.
+                FirewallPolicies.CloneRules. See the
+                method description for details.
             firewall_policy (str):
                 Name of the firewall policy to
                 update.
@@ -1030,8 +1030,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.Delete. See the method description for
-                details.
+                FirewallPolicies.Delete. See the method
+                description for details.
             firewall_policy (str):
                 Name of the firewall policy to
                 delete.
@@ -1109,8 +1109,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.Delete. See the method description for
-                details.
+                FirewallPolicies.Delete. See the method
+                description for details.
             firewall_policy (str):
                 Name of the firewall policy to
                 delete.
@@ -1211,8 +1211,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.Get. See the method description for
-                details.
+                FirewallPolicies.Get. See the method
+                description for details.
             firewall_policy (str):
                 Name of the firewall policy to get.
                 This corresponds to the ``firewall_policy`` field
@@ -1290,8 +1290,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetAssociationFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.GetAssociation. See the method
-                description for details.
+                FirewallPolicies.GetAssociation. See the
+                method description for details.
             firewall_policy (str):
                 Name of the firewall policy to which
                 the queried rule belongs.
@@ -1370,8 +1370,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.GetIamPolicy. See the method
-                description for details.
+                FirewallPolicies.GetIamPolicy. See the
+                method description for details.
             resource (str):
                 Name or id of the resource for this
                 request.
@@ -1485,8 +1485,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetRuleFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.GetRule. See the method description for
-                details.
+                FirewallPolicies.GetRule. See the method
+                description for details.
             firewall_policy (str):
                 Name of the firewall policy to which
                 the queried rule belongs.
@@ -1568,8 +1568,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.Insert. See the method description for
-                details.
+                FirewallPolicies.Insert. See the method
+                description for details.
             parent_id (str):
                 Parent ID for this request. The ID can be either be
                 "folders/[FOLDER_ID]" if the parent is a folder or
@@ -1650,8 +1650,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.Insert. See the method description for
-                details.
+                FirewallPolicies.Insert. See the method
+                description for details.
             parent_id (str):
                 Parent ID for this request. The ID can be either be
                 "folders/[FOLDER_ID]" if the parent is a folder or
@@ -1754,8 +1754,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListFirewallPoliciesRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.List. See the method description for
-                details.
+                FirewallPolicies.List. See the method
+                description for details.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1817,8 +1817,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListAssociationsFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.ListAssociations. See the method
-                description for details.
+                FirewallPolicies.ListAssociations. See
+                the method description for details.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1867,8 +1867,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.MoveFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.Move. See the method description for
-                details.
+                FirewallPolicies.Move. See the method
+                description for details.
             firewall_policy (str):
                 Name of the firewall policy to
                 update.
@@ -1958,8 +1958,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.MoveFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.Move. See the method description for
-                details.
+                FirewallPolicies.Move. See the method
+                description for details.
             firewall_policy (str):
                 Name of the firewall policy to
                 update.
@@ -2074,8 +2074,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.Patch. See the method description for
-                details.
+                FirewallPolicies.Patch. See the method
+                description for details.
             firewall_policy (str):
                 Name of the firewall policy to
                 update.
@@ -2162,8 +2162,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.Patch. See the method description for
-                details.
+                FirewallPolicies.Patch. See the method
+                description for details.
             firewall_policy (str):
                 Name of the firewall policy to
                 update.
@@ -2272,8 +2272,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRuleFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.PatchRule. See the method description
-                for details.
+                FirewallPolicies.PatchRule. See the
+                method description for details.
             firewall_policy (str):
                 Name of the firewall policy to
                 update.
@@ -2359,8 +2359,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRuleFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.PatchRule. See the method description
-                for details.
+                FirewallPolicies.PatchRule. See the
+                method description for details.
             firewall_policy (str):
                 Name of the firewall policy to
                 update.
@@ -2471,8 +2471,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveAssociationFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.RemoveAssociation. See the method
-                description for details.
+                FirewallPolicies.RemoveAssociation. See
+                the method description for details.
             firewall_policy (str):
                 Name of the firewall policy to
                 update.
@@ -2553,8 +2553,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveAssociationFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.RemoveAssociation. See the method
-                description for details.
+                FirewallPolicies.RemoveAssociation. See
+                the method description for details.
             firewall_policy (str):
                 Name of the firewall policy to
                 update.
@@ -2655,8 +2655,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveRuleFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.RemoveRule. See the method description
-                for details.
+                FirewallPolicies.RemoveRule. See the
+                method description for details.
             firewall_policy (str):
                 Name of the firewall policy to
                 update.
@@ -2734,8 +2734,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveRuleFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.RemoveRule. See the method description
-                for details.
+                FirewallPolicies.RemoveRule. See the
+                method description for details.
             firewall_policy (str):
                 Name of the firewall policy to
                 update.
@@ -2842,8 +2842,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.SetIamPolicy. See the method
-                description for details.
+                FirewallPolicies.SetIamPolicy. See the
+                method description for details.
             resource (str):
                 Name or id of the resource for this
                 request.
@@ -2974,8 +2974,8 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                FirewallPolicies.TestIamPermissions. See the method
-                description for details.
+                FirewallPolicies.TestIamPermissions. See
+                the method description for details.
             resource (str):
                 Name or id of the resource for this
                 request.

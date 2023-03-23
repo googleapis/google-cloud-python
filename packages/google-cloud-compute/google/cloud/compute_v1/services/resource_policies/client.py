@@ -439,8 +439,8 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListResourcePoliciesRequest, dict]):
                 The request object. A request message for
-                ResourcePolicies.AggregatedList. See the method
-                description for details.
+                ResourcePolicies.AggregatedList. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -527,8 +527,8 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteResourcePolicyRequest, dict]):
                 The request object. A request message for
-                ResourcePolicies.Delete. See the method description for
-                details.
+                ResourcePolicies.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -626,8 +626,8 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteResourcePolicyRequest, dict]):
                 The request object. A request message for
-                ResourcePolicies.Delete. See the method description for
-                details.
+                ResourcePolicies.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -751,8 +751,8 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetResourcePolicyRequest, dict]):
                 The request object. A request message for
-                ResourcePolicies.Get. See the method description for
-                details.
+                ResourcePolicies.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -857,8 +857,8 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyResourcePolicyRequest, dict]):
                 The request object. A request message for
-                ResourcePolicies.GetIamPolicy. See the method
-                description for details.
+                ResourcePolicies.GetIamPolicy. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -996,8 +996,8 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertResourcePolicyRequest, dict]):
                 The request object. A request message for
-                ResourcePolicies.Insert. See the method description for
-                details.
+                ResourcePolicies.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1092,8 +1092,8 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertResourcePolicyRequest, dict]):
                 The request object. A request message for
-                ResourcePolicies.Insert. See the method description for
-                details.
+                ResourcePolicies.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1214,8 +1214,8 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListResourcePoliciesRequest, dict]):
                 The request object. A request message for
-                ResourcePolicies.List. See the method description for
-                details.
+                ResourcePolicies.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1319,8 +1319,8 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyResourcePolicyRequest, dict]):
                 The request object. A request message for
-                ResourcePolicies.SetIamPolicy. See the method
-                description for details.
+                ResourcePolicies.SetIamPolicy. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1475,8 +1475,8 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsResourcePolicyRequest, dict]):
                 The request object. A request message for
-                ResourcePolicies.TestIamPermissions. See the method
-                description for details.
+                ResourcePolicies.TestIamPermissions. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

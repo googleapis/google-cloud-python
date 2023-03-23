@@ -440,8 +440,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddNodesNodeGroupRequest, dict]):
                 The request object. A request message for
-                NodeGroups.AddNodes. See the method description for
-                details.
+                NodeGroups.AddNodes. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -553,8 +553,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddNodesNodeGroupRequest, dict]):
                 The request object. A request message for
-                NodeGroups.AddNodes. See the method description for
-                details.
+                NodeGroups.AddNodes. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -688,8 +688,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListNodeGroupsRequest, dict]):
                 The request object. A request message for
-                NodeGroups.AggregatedList. See the method description
-                for details.
+                NodeGroups.AggregatedList. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -775,8 +775,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNodeGroupRequest, dict]):
                 The request object. A request message for
-                NodeGroups.Delete. See the method description for
-                details.
+                NodeGroups.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -876,8 +876,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNodeGroupRequest, dict]):
                 The request object. A request message for
-                NodeGroups.Delete. See the method description for
-                details.
+                NodeGroups.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1005,8 +1005,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNodesNodeGroupRequest, dict]):
                 The request object. A request message for
-                NodeGroups.DeleteNodes. See the method description for
-                details.
+                NodeGroups.DeleteNodes. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1120,8 +1120,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNodesNodeGroupRequest, dict]):
                 The request object. A request message for
-                NodeGroups.DeleteNodes. See the method description for
-                details.
+                NodeGroups.DeleteNodes. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1259,8 +1259,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetNodeGroupRequest, dict]):
-                The request object. A request message for
-                NodeGroups.Get. See the method description for details.
+                The request object. A request message for NodeGroups.Get.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1368,8 +1368,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyNodeGroupRequest, dict]):
                 The request object. A request message for
-                NodeGroups.GetIamPolicy. See the method description for
-                details.
+                NodeGroups.GetIamPolicy. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1509,8 +1509,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNodeGroupRequest, dict]):
                 The request object. A request message for
-                NodeGroups.Insert. See the method description for
-                details.
+                NodeGroups.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1620,8 +1620,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNodeGroupRequest, dict]):
                 The request object. A request message for
-                NodeGroups.Insert. See the method description for
-                details.
+                NodeGroups.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1755,7 +1755,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListNodeGroupsRequest, dict]):
                 The request object. A request message for
-                NodeGroups.List. See the method description for details.
+                NodeGroups.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1856,8 +1857,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListNodesNodeGroupsRequest, dict]):
                 The request object. A request message for
-                NodeGroups.ListNodes. See the method description for
-                details.
+                NodeGroups.ListNodes. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1968,8 +1969,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchNodeGroupRequest, dict]):
                 The request object. A request message for
-                NodeGroups.Patch. See the method description for
-                details.
+                NodeGroups.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2077,8 +2078,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchNodeGroupRequest, dict]):
                 The request object. A request message for
-                NodeGroups.Patch. See the method description for
-                details.
+                NodeGroups.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2212,8 +2213,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyNodeGroupRequest, dict]):
                 The request object. A request message for
-                NodeGroups.SetIamPolicy. See the method description for
-                details.
+                NodeGroups.SetIamPolicy. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2365,8 +2366,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetNodeTemplateNodeGroupRequest, dict]):
                 The request object. A request message for
-                NodeGroups.SetNodeTemplate. See the method description
-                for details.
+                NodeGroups.SetNodeTemplate. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2480,8 +2481,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetNodeTemplateNodeGroupRequest, dict]):
                 The request object. A request message for
-                NodeGroups.SetNodeTemplate. See the method description
-                for details.
+                NodeGroups.SetNodeTemplate. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2623,8 +2624,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SimulateMaintenanceEventNodeGroupRequest, dict]):
                 The request object. A request message for
-                NodeGroups.SimulateMaintenanceEvent. See the method
-                description for details.
+                NodeGroups.SimulateMaintenanceEvent. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2749,8 +2750,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SimulateMaintenanceEventNodeGroupRequest, dict]):
                 The request object. A request message for
-                NodeGroups.SimulateMaintenanceEvent. See the method
-                description for details.
+                NodeGroups.SimulateMaintenanceEvent. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2900,8 +2901,8 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsNodeGroupRequest, dict]):
                 The request object. A request message for
-                NodeGroups.TestIamPermissions. See the method
-                description for details.
+                NodeGroups.TestIamPermissions. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

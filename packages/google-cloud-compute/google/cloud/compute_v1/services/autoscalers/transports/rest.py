@@ -405,7 +405,6 @@ class AutoscalersRestTransport(AutoscalersTransport):
                     The request object. A request message for
                 Autoscalers.AggregatedList. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -492,7 +491,6 @@ class AutoscalersRestTransport(AutoscalersTransport):
                     The request object. A request message for
                 Autoscalers.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -594,7 +592,6 @@ class AutoscalersRestTransport(AutoscalersTransport):
                     The request object. A request message for
                 Autoscalers.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -693,7 +690,6 @@ class AutoscalersRestTransport(AutoscalersTransport):
                     The request object. A request message for
                 Autoscalers.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -804,7 +800,6 @@ class AutoscalersRestTransport(AutoscalersTransport):
                     The request object. A request message for
                 Autoscalers.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -893,7 +888,6 @@ class AutoscalersRestTransport(AutoscalersTransport):
                     The request object. A request message for
                 Autoscalers.Patch. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1004,7 +998,6 @@ class AutoscalersRestTransport(AutoscalersTransport):
                     The request object. A request message for
                 Autoscalers.Update. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

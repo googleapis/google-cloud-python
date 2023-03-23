@@ -438,7 +438,8 @@ class LicensesClient(metaclass=LicensesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteLicenseRequest, dict]):
                 The request object. A request message for
-                Licenses.Delete. See the method description for details.
+                Licenses.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -529,7 +530,8 @@ class LicensesClient(metaclass=LicensesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteLicenseRequest, dict]):
                 The request object. A request message for
-                Licenses.Delete. See the method description for details.
+                Licenses.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -739,8 +741,8 @@ class LicensesClient(metaclass=LicensesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyLicenseRequest, dict]):
                 The request object. A request message for
-                Licenses.GetIamPolicy. See the method description for
-                details.
+                Licenses.GetIamPolicy. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -869,7 +871,8 @@ class LicensesClient(metaclass=LicensesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertLicenseRequest, dict]):
                 The request object. A request message for
-                Licenses.Insert. See the method description for details.
+                Licenses.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -953,7 +956,8 @@ class LicensesClient(metaclass=LicensesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertLicenseRequest, dict]):
                 The request object. A request message for
-                Licenses.Insert. See the method description for details.
+                Licenses.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1157,8 +1161,8 @@ class LicensesClient(metaclass=LicensesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyLicenseRequest, dict]):
                 The request object. A request message for
-                Licenses.SetIamPolicy. See the method description for
-                details.
+                Licenses.SetIamPolicy. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1301,8 +1305,8 @@ class LicensesClient(metaclass=LicensesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsLicenseRequest, dict]):
                 The request object. A request message for
-                Licenses.TestIamPermissions. See the method description
-                for details.
+                Licenses.TestIamPermissions. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

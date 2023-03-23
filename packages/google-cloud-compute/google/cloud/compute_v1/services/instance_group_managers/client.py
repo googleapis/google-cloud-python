@@ -460,8 +460,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
             request (Union[google.cloud.compute_v1.types.AbandonInstancesInstanceGroupManagerRequest, dict]):
                 The request object. Messages
                 A request message for
-                InstanceGroupManagers.AbandonInstances. See the method
-                description for details.
+                InstanceGroupManagers.AbandonInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -598,8 +598,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
             request (Union[google.cloud.compute_v1.types.AbandonInstancesInstanceGroupManagerRequest, dict]):
                 The request object. Messages
                 A request message for
-                InstanceGroupManagers.AbandonInstances. See the method
-                description for details.
+                InstanceGroupManagers.AbandonInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -741,8 +741,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListInstanceGroupManagersRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.AggregatedList. See the method
-                description for details.
+                InstanceGroupManagers.AggregatedList.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -835,8 +835,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ApplyUpdatesToInstancesInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.ApplyUpdatesToInstances. See the
-                method description for details.
+                InstanceGroupManagers.ApplyUpdatesToInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -966,8 +966,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ApplyUpdatesToInstancesInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.ApplyUpdatesToInstances. See the
-                method description for details.
+                InstanceGroupManagers.ApplyUpdatesToInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1127,8 +1127,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.CreateInstancesInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.CreateInstances. See the method
-                description for details.
+                InstanceGroupManagers.CreateInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1257,8 +1257,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.CreateInstancesInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.CreateInstances. See the method
-                description for details.
+                InstanceGroupManagers.CreateInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1405,8 +1405,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.Delete. See the method description
-                for details.
+                InstanceGroupManagers.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1511,8 +1511,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.Delete. See the method description
-                for details.
+                InstanceGroupManagers.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1656,8 +1656,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstancesInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.DeleteInstances. See the method
-                description for details.
+                InstanceGroupManagers.DeleteInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1792,8 +1792,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstancesInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.DeleteInstances. See the method
-                description for details.
+                InstanceGroupManagers.DeleteInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1940,8 +1940,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeletePerInstanceConfigsInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.DeletePerInstanceConfigs. See the
-                method description for details.
+                InstanceGroupManagers.DeletePerInstanceConfigs.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2073,8 +2073,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeletePerInstanceConfigsInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.DeletePerInstanceConfigs. See the
-                method description for details.
+                InstanceGroupManagers.DeletePerInstanceConfigs.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2226,8 +2226,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.Get. See the method description
-                for details.
+                InstanceGroupManagers.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2346,8 +2346,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.Insert. See the method description
-                for details.
+                InstanceGroupManagers.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2458,8 +2458,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.Insert. See the method description
-                for details.
+                InstanceGroupManagers.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2583,8 +2583,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListInstanceGroupManagersRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.List. See the method description
-                for details.
+                InstanceGroupManagers.List. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2689,8 +2689,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListErrorsInstanceGroupManagersRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.ListErrors. See the method
-                description for details.
+                InstanceGroupManagers.ListErrors. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2814,8 +2814,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListManagedInstancesInstanceGroupManagersRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.ListManagedInstances. See the
-                method description for details.
+                InstanceGroupManagers.ListManagedInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2931,8 +2931,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListPerInstanceConfigsInstanceGroupManagersRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.ListPerInstanceConfigs. See the
-                method description for details.
+                InstanceGroupManagers.ListPerInstanceConfigs.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3063,8 +3063,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.Patch. See the method description
-                for details.
+                InstanceGroupManagers.Patch. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3189,8 +3189,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.Patch. See the method description
-                for details.
+                InstanceGroupManagers.Patch. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3334,8 +3334,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchPerInstanceConfigsInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.PatchPerInstanceConfigs. See the
-                method description for details.
+                InstanceGroupManagers.PatchPerInstanceConfigs.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3469,8 +3469,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchPerInstanceConfigsInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.PatchPerInstanceConfigs. See the
-                method description for details.
+                InstanceGroupManagers.PatchPerInstanceConfigs.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3639,8 +3639,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RecreateInstancesInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.RecreateInstances. See the method
-                description for details.
+                InstanceGroupManagers.RecreateInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3776,8 +3776,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.RecreateInstancesInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.RecreateInstances. See the method
-                description for details.
+                InstanceGroupManagers.RecreateInstances.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3942,8 +3942,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ResizeInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.Resize. See the method description
-                for details.
+                InstanceGroupManagers.Resize. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4078,8 +4078,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ResizeInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.Resize. See the method description
-                for details.
+                InstanceGroupManagers.Resize. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4226,8 +4226,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetInstanceTemplateInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.SetInstanceTemplate. See the
-                method description for details.
+                InstanceGroupManagers.SetInstanceTemplate.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4357,8 +4357,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetInstanceTemplateInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.SetInstanceTemplate. See the
-                method description for details.
+                InstanceGroupManagers.SetInstanceTemplate.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4516,8 +4516,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetTargetPoolsInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.SetTargetPools. See the method
-                description for details.
+                InstanceGroupManagers.SetTargetPools.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4645,8 +4645,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetTargetPoolsInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.SetTargetPools. See the method
-                description for details.
+                InstanceGroupManagers.SetTargetPools.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4795,8 +4795,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdatePerInstanceConfigsInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.UpdatePerInstanceConfigs. See the
-                method description for details.
+                InstanceGroupManagers.UpdatePerInstanceConfigs.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -4930,8 +4930,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdatePerInstanceConfigsInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
-                InstanceGroupManagers.UpdatePerInstanceConfigs. See the
-                method description for details.
+                InstanceGroupManagers.UpdatePerInstanceConfigs.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

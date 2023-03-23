@@ -455,7 +455,6 @@ class UrlMapsRestTransport(UrlMapsTransport):
                     The request object. A request message for
                 UrlMaps.AggregatedList. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -541,7 +540,6 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 request (~.compute.DeleteUrlMapRequest):
                     The request object. A request message for UrlMaps.Delete.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -642,7 +640,6 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 request (~.compute.GetUrlMapRequest):
                     The request object. A request message for UrlMaps.Get.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -749,7 +746,6 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 request (~.compute.InsertUrlMapRequest):
                     The request object. A request message for UrlMaps.Insert.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -860,7 +856,6 @@ class UrlMapsRestTransport(UrlMapsTransport):
                     The request object. A request message for
                 UrlMaps.InvalidateCache. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -972,7 +967,6 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 request (~.compute.ListUrlMapsRequest):
                     The request object. A request message for UrlMaps.List.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1058,7 +1052,6 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 request (~.compute.PatchUrlMapRequest):
                     The request object. A request message for UrlMaps.Patch.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1168,7 +1161,6 @@ class UrlMapsRestTransport(UrlMapsTransport):
                 request (~.compute.UpdateUrlMapRequest):
                     The request object. A request message for UrlMaps.Update.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1279,7 +1271,6 @@ class UrlMapsRestTransport(UrlMapsTransport):
                     The request object. A request message for
                 UrlMaps.Validate. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

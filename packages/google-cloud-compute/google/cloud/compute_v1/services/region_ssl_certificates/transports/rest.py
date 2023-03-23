@@ -320,7 +320,6 @@ class RegionSslCertificatesRestTransport(RegionSslCertificatesTransport):
                     The request object. A request message for
                 RegionSslCertificates.Delete. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -422,7 +421,6 @@ class RegionSslCertificatesRestTransport(RegionSslCertificatesTransport):
                     The request object. A request message for
                 RegionSslCertificates.Get. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -525,7 +523,6 @@ class RegionSslCertificatesRestTransport(RegionSslCertificatesTransport):
                     The request object. A request message for
                 RegionSslCertificates.Insert. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -636,7 +633,6 @@ class RegionSslCertificatesRestTransport(RegionSslCertificatesTransport):
                     The request object. A request message for
                 RegionSslCertificates.List. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

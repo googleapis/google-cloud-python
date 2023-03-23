@@ -444,7 +444,6 @@ class ResourcePoliciesRestTransport(ResourcePoliciesTransport):
                     The request object. A request message for
                 ResourcePolicies.AggregatedList. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -531,7 +530,6 @@ class ResourcePoliciesRestTransport(ResourcePoliciesTransport):
                     The request object. A request message for
                 ResourcePolicies.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -633,7 +631,6 @@ class ResourcePoliciesRestTransport(ResourcePoliciesTransport):
                     The request object. A request message for
                 ResourcePolicies.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -726,7 +723,6 @@ class ResourcePoliciesRestTransport(ResourcePoliciesTransport):
                     The request object. A request message for
                 ResourcePolicies.GetIamPolicy. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -854,7 +850,6 @@ class ResourcePoliciesRestTransport(ResourcePoliciesTransport):
                     The request object. A request message for
                 ResourcePolicies.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -965,7 +960,6 @@ class ResourcePoliciesRestTransport(ResourcePoliciesTransport):
                     The request object. A request message for
                 ResourcePolicies.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1052,7 +1046,6 @@ class ResourcePoliciesRestTransport(ResourcePoliciesTransport):
                     The request object. A request message for
                 ResourcePolicies.SetIamPolicy. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1189,7 +1182,6 @@ class ResourcePoliciesRestTransport(ResourcePoliciesTransport):
                     The request object. A request message for
                 ResourcePolicies.TestIamPermissions. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

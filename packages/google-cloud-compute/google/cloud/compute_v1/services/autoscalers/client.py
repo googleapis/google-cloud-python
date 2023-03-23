@@ -435,8 +435,8 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListAutoscalersRequest, dict]):
                 The request object. A request message for
-                Autoscalers.AggregatedList. See the method description
-                for details.
+                Autoscalers.AggregatedList. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -522,8 +522,8 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteAutoscalerRequest, dict]):
                 The request object. A request message for
-                Autoscalers.Delete. See the method description for
-                details.
+                Autoscalers.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -619,8 +619,8 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteAutoscalerRequest, dict]):
                 The request object. A request message for
-                Autoscalers.Delete. See the method description for
-                details.
+                Autoscalers.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -741,7 +741,8 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetAutoscalerRequest, dict]):
                 The request object. A request message for
-                Autoscalers.Get. See the method description for details.
+                Autoscalers.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -847,8 +848,8 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertAutoscalerRequest, dict]):
                 The request object. A request message for
-                Autoscalers.Insert. See the method description for
-                details.
+                Autoscalers.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -944,8 +945,8 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertAutoscalerRequest, dict]):
                 The request object. A request message for
-                Autoscalers.Insert. See the method description for
-                details.
+                Autoscalers.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1065,8 +1066,8 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListAutoscalersRequest, dict]):
                 The request object. A request message for
-                Autoscalers.List. See the method description for
-                details.
+                Autoscalers.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1169,8 +1170,8 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchAutoscalerRequest, dict]):
                 The request object. A request message for
-                Autoscalers.Patch. See the method description for
-                details.
+                Autoscalers.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1268,8 +1269,8 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchAutoscalerRequest, dict]):
                 The request object. A request message for
-                Autoscalers.Patch. See the method description for
-                details.
+                Autoscalers.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1390,8 +1391,8 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateAutoscalerRequest, dict]):
                 The request object. A request message for
-                Autoscalers.Update. See the method description for
-                details.
+                Autoscalers.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1487,8 +1488,8 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateAutoscalerRequest, dict]):
                 The request object. A request message for
-                Autoscalers.Update. See the method description for
-                details.
+                Autoscalers.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

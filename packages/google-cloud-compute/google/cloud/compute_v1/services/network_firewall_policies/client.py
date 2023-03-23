@@ -444,8 +444,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.AddAssociationNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.AddAssociation. See the method
-                description for details.
+                NetworkFirewallPolicies.AddAssociation.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -551,8 +551,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.AddAssociationNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.AddAssociation. See the method
-                description for details.
+                NetworkFirewallPolicies.AddAssociation.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -679,8 +679,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.AddRuleNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.AddRule. See the method
-                description for details.
+                NetworkFirewallPolicies.AddRule. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -781,8 +781,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.AddRuleNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.AddRule. See the method
-                description for details.
+                NetworkFirewallPolicies.AddRule. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -906,8 +906,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.CloneRulesNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.CloneRules. See the method
-                description for details.
+                NetworkFirewallPolicies.CloneRules. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -998,8 +998,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.CloneRulesNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.CloneRules. See the method
-                description for details.
+                NetworkFirewallPolicies.CloneRules. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1114,8 +1114,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.Delete. See the method
-                description for details.
+                NetworkFirewallPolicies.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1206,8 +1206,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.Delete. See the method
-                description for details.
+                NetworkFirewallPolicies.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1320,8 +1320,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.GetNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.Get. See the method description
-                for details.
+                NetworkFirewallPolicies.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1410,8 +1410,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.GetAssociationNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.GetAssociation. See the method
-                description for details.
+                NetworkFirewallPolicies.GetAssociation.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1501,8 +1501,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.GetIamPolicy. See the method
-                description for details.
+                NetworkFirewallPolicies.GetIamPolicy.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1631,8 +1631,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.GetRuleNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.GetRule. See the method
-                description for details.
+                NetworkFirewallPolicies.GetRule. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1726,8 +1726,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.Insert. See the method
-                description for details.
+                NetworkFirewallPolicies.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1812,8 +1812,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.Insert. See the method
-                description for details.
+                NetworkFirewallPolicies.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1921,8 +1921,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.ListNetworkFirewallPoliciesRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.List. See the method description
-                for details.
+                NetworkFirewallPolicies.List. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2011,8 +2011,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.PatchNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.Patch. See the method
-                description for details.
+                NetworkFirewallPolicies.Patch. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2112,8 +2112,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.PatchNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.Patch. See the method
-                description for details.
+                NetworkFirewallPolicies.Patch. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2236,8 +2236,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRuleNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.PatchRule. See the method
-                description for details.
+                NetworkFirewallPolicies.PatchRule. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2338,8 +2338,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRuleNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.PatchRule. See the method
-                description for details.
+                NetworkFirewallPolicies.PatchRule. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2464,8 +2464,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveAssociationNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.RemoveAssociation. See the
-                method description for details.
+                NetworkFirewallPolicies.RemoveAssociation.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2559,8 +2559,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveAssociationNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.RemoveAssociation. See the
-                method description for details.
+                NetworkFirewallPolicies.RemoveAssociation.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2677,8 +2677,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveRuleNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.RemoveRule. See the method
-                description for details.
+                NetworkFirewallPolicies.RemoveRule. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2769,8 +2769,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveRuleNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.RemoveRule. See the method
-                description for details.
+                NetworkFirewallPolicies.RemoveRule. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2889,8 +2889,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.SetIamPolicy. See the method
-                description for details.
+                NetworkFirewallPolicies.SetIamPolicy.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -3034,8 +3034,8 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
-                NetworkFirewallPolicies.TestIamPermissions. See the
-                method description for details.
+                NetworkFirewallPolicies.TestIamPermissions.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

@@ -262,7 +262,6 @@ class LicenseCodesRestTransport(LicenseCodesTransport):
                     The request object. A request message for
                 LicenseCodes.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -354,7 +353,6 @@ class LicenseCodesRestTransport(LicenseCodesTransport):
                     The request object. A request message for
                 LicenseCodes.TestIamPermissions. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

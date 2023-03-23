@@ -435,8 +435,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListSubnetworksRequest, dict]):
                 The request object. A request message for
-                Subnetworks.AggregatedList. See the method description
-                for details.
+                Subnetworks.AggregatedList. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -522,8 +522,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteSubnetworkRequest, dict]):
                 The request object. A request message for
-                Subnetworks.Delete. See the method description for
-                details.
+                Subnetworks.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -623,8 +623,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteSubnetworkRequest, dict]):
                 The request object. A request message for
-                Subnetworks.Delete. See the method description for
-                details.
+                Subnetworks.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -755,8 +755,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ExpandIpCidrRangeSubnetworkRequest, dict]):
                 The request object. A request message for
-                Subnetworks.ExpandIpCidrRange. See the method
-                description for details.
+                Subnetworks.ExpandIpCidrRange. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -878,8 +878,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ExpandIpCidrRangeSubnetworkRequest, dict]):
                 The request object. A request message for
-                Subnetworks.ExpandIpCidrRange. See the method
-                description for details.
+                Subnetworks.ExpandIpCidrRange. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1020,7 +1020,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetSubnetworkRequest, dict]):
                 The request object. A request message for
-                Subnetworks.Get. See the method description for details.
+                Subnetworks.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1126,8 +1127,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicySubnetworkRequest, dict]):
                 The request object. A request message for
-                Subnetworks.GetIamPolicy. See the method description for
-                details.
+                Subnetworks.GetIamPolicy. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1266,8 +1267,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertSubnetworkRequest, dict]):
                 The request object. A request message for
-                Subnetworks.Insert. See the method description for
-                details.
+                Subnetworks.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1365,8 +1366,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertSubnetworkRequest, dict]):
                 The request object. A request message for
-                Subnetworks.Insert. See the method description for
-                details.
+                Subnetworks.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1488,8 +1489,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListSubnetworksRequest, dict]):
                 The request object. A request message for
-                Subnetworks.List. See the method description for
-                details.
+                Subnetworks.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1590,8 +1591,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListUsableSubnetworksRequest, dict]):
                 The request object. A request message for
-                Subnetworks.ListUsable. See the method description for
-                details.
+                Subnetworks.ListUsable. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1682,8 +1683,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchSubnetworkRequest, dict]):
                 The request object. A request message for
-                Subnetworks.Patch. See the method description for
-                details.
+                Subnetworks.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1795,8 +1796,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchSubnetworkRequest, dict]):
                 The request object. A request message for
-                Subnetworks.Patch. See the method description for
-                details.
+                Subnetworks.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1932,8 +1933,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicySubnetworkRequest, dict]):
                 The request object. A request message for
-                Subnetworks.SetIamPolicy. See the method description for
-                details.
+                Subnetworks.SetIamPolicy. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2089,8 +2090,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetPrivateIpGoogleAccessSubnetworkRequest, dict]):
                 The request object. A request message for
-                Subnetworks.SetPrivateIpGoogleAccess. See the method
-                description for details.
+                Subnetworks.SetPrivateIpGoogleAccess.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2213,8 +2214,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetPrivateIpGoogleAccessSubnetworkRequest, dict]):
                 The request object. A request message for
-                Subnetworks.SetPrivateIpGoogleAccess. See the method
-                description for details.
+                Subnetworks.SetPrivateIpGoogleAccess.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2361,8 +2362,8 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsSubnetworkRequest, dict]):
                 The request object. A request message for
-                Subnetworks.TestIamPermissions. See the method
-                description for details.
+                Subnetworks.TestIamPermissions. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

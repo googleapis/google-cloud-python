@@ -437,8 +437,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListReservationsRequest, dict]):
                 The request object. A request message for
-                Reservations.AggregatedList. See the method description
-                for details.
+                Reservations.AggregatedList. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -525,8 +525,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteReservationRequest, dict]):
                 The request object. A request message for
-                Reservations.Delete. See the method description for
-                details.
+                Reservations.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -622,8 +622,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteReservationRequest, dict]):
                 The request object. A request message for
-                Reservations.Delete. See the method description for
-                details.
+                Reservations.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -745,8 +745,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetReservationRequest, dict]):
                 The request object. A request message for
-                Reservations.Get. See the method description for
-                details.
+                Reservations.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -847,8 +847,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyReservationRequest, dict]):
                 The request object. A request message for
-                Reservations.GetIamPolicy. See the method description
-                for details.
+                Reservations.GetIamPolicy. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -987,8 +987,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertReservationRequest, dict]):
                 The request object. A request message for
-                Reservations.Insert. See the method description for
-                details.
+                Reservations.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1084,8 +1084,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertReservationRequest, dict]):
                 The request object. A request message for
-                Reservations.Insert. See the method description for
-                details.
+                Reservations.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1205,8 +1205,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListReservationsRequest, dict]):
                 The request object. A request message for
-                Reservations.List. See the method description for
-                details.
+                Reservations.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1309,8 +1309,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ResizeReservationRequest, dict]):
                 The request object. A request message for
-                Reservations.Resize. See the method description for
-                details.
+                Reservations.Resize. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1422,8 +1422,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ResizeReservationRequest, dict]):
                 The request object. A request message for
-                Reservations.Resize. See the method description for
-                details.
+                Reservations.Resize. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1557,8 +1557,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyReservationRequest, dict]):
                 The request object. A request message for
-                Reservations.SetIamPolicy. See the method description
-                for details.
+                Reservations.SetIamPolicy. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1713,8 +1713,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsReservationRequest, dict]):
                 The request object. A request message for
-                Reservations.TestIamPermissions. See the method
-                description for details.
+                Reservations.TestIamPermissions. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1824,8 +1824,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateReservationRequest, dict]):
                 The request object. A request message for
-                Reservations.Update. See the method description for
-                details.
+                Reservations.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1929,8 +1929,8 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateReservationRequest, dict]):
                 The request object. A request message for
-                Reservations.Update. See the method description for
-                details.
+                Reservations.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

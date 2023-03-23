@@ -441,8 +441,8 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionHealthCheckServiceRequest, dict]):
                 The request object. A request message for
-                RegionHealthCheckServices.Delete. See the method
-                description for details.
+                RegionHealthCheckServices.Delete. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -545,8 +545,8 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionHealthCheckServiceRequest, dict]):
                 The request object. A request message for
-                RegionHealthCheckServices.Delete. See the method
-                description for details.
+                RegionHealthCheckServices.Delete. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -675,8 +675,8 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionHealthCheckServiceRequest, dict]):
                 The request object. A request message for
-                RegionHealthCheckServices.Get. See the method
-                description for details.
+                RegionHealthCheckServices.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -781,8 +781,8 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionHealthCheckServiceRequest, dict]):
                 The request object. A request message for
-                RegionHealthCheckServices.Insert. See the method
-                description for details.
+                RegionHealthCheckServices.Insert. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -883,8 +883,8 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionHealthCheckServiceRequest, dict]):
                 The request object. A request message for
-                RegionHealthCheckServices.Insert. See the method
-                description for details.
+                RegionHealthCheckServices.Insert. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1009,8 +1009,8 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionHealthCheckServicesRequest, dict]):
                 The request object. A request message for
-                RegionHealthCheckServices.List. See the method
-                description for details.
+                RegionHealthCheckServices.List. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1116,8 +1116,8 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionHealthCheckServiceRequest, dict]):
                 The request object. A request message for
-                RegionHealthCheckServices.Patch. See the method
-                description for details.
+                RegionHealthCheckServices.Patch. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1233,8 +1233,8 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionHealthCheckServiceRequest, dict]):
                 The request object. A request message for
-                RegionHealthCheckServices.Patch. See the method
-                description for details.
+                RegionHealthCheckServices.Patch. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

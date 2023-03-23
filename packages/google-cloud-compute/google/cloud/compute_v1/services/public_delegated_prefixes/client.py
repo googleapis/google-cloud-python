@@ -440,8 +440,8 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListPublicDelegatedPrefixesRequest, dict]):
                 The request object. A request message for
-                PublicDelegatedPrefixes.AggregatedList. See the method
-                description for details.
+                PublicDelegatedPrefixes.AggregatedList.
+                See the method description for details.
             project (str):
                 Name of the project scoping this
                 request.
@@ -534,8 +534,8 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.DeletePublicDelegatedPrefixeRequest, dict]):
                 The request object. A request message for
-                PublicDelegatedPrefixes.Delete. See the method
-                description for details.
+                PublicDelegatedPrefixes.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -636,8 +636,8 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.DeletePublicDelegatedPrefixeRequest, dict]):
                 The request object. A request message for
-                PublicDelegatedPrefixes.Delete. See the method
-                description for details.
+                PublicDelegatedPrefixes.Delete. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -761,8 +761,8 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.GetPublicDelegatedPrefixeRequest, dict]):
                 The request object. A request message for
-                PublicDelegatedPrefixes.Get. See the method description
-                for details.
+                PublicDelegatedPrefixes.Get. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -873,8 +873,8 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.InsertPublicDelegatedPrefixeRequest, dict]):
                 The request object. A request message for
-                PublicDelegatedPrefixes.Insert. See the method
-                description for details.
+                PublicDelegatedPrefixes.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -977,8 +977,8 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.InsertPublicDelegatedPrefixeRequest, dict]):
                 The request object. A request message for
-                PublicDelegatedPrefixes.Insert. See the method
-                description for details.
+                PublicDelegatedPrefixes.Insert. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1102,8 +1102,8 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.ListPublicDelegatedPrefixesRequest, dict]):
                 The request object. A request message for
-                PublicDelegatedPrefixes.List. See the method description
-                for details.
+                PublicDelegatedPrefixes.List. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1209,8 +1209,8 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.PatchPublicDelegatedPrefixeRequest, dict]):
                 The request object. A request message for
-                PublicDelegatedPrefixes.Patch. See the method
-                description for details.
+                PublicDelegatedPrefixes.Patch. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1327,8 +1327,8 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
         Args:
             request (Union[google.cloud.compute_v1.types.PatchPublicDelegatedPrefixeRequest, dict]):
                 The request object. A request message for
-                PublicDelegatedPrefixes.Patch. See the method
-                description for details.
+                PublicDelegatedPrefixes.Patch. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

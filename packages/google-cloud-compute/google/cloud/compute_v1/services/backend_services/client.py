@@ -442,8 +442,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddSignedUrlKeyBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.AddSignedUrlKey. See the method
-                description for details.
+                BackendServices.AddSignedUrlKey. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -545,8 +545,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AddSignedUrlKeyBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.AddSignedUrlKey. See the method
-                description for details.
+                BackendServices.AddSignedUrlKey. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -670,8 +670,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListBackendServicesRequest, dict]):
                 The request object. A request message for
-                BackendServices.AggregatedList. See the method
-                description for details.
+                BackendServices.AggregatedList. See the
+                method description for details.
             project (str):
                 Name of the project scoping this
                 request.
@@ -760,8 +760,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.Delete. See the method description for
-                details.
+                BackendServices.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -850,8 +850,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.Delete. See the method description for
-                details.
+                BackendServices.Delete. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -968,8 +968,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteSignedUrlKeyBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.DeleteSignedUrlKey. See the method
-                description for details.
+                BackendServices.DeleteSignedUrlKey. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1073,8 +1073,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteSignedUrlKeyBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.DeleteSignedUrlKey. See the method
-                description for details.
+                BackendServices.DeleteSignedUrlKey. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1198,8 +1198,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.Get. See the method description for
-                details.
+                BackendServices.Get. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1306,8 +1306,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetHealthBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.GetHealth. See the method description
-                for details.
+                BackendServices.GetHealth. See the
+                method description for details.
             project (str):
 
                 This corresponds to the ``project`` field
@@ -1408,8 +1408,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.GetIamPolicy. See the method description
-                for details.
+                BackendServices.GetIamPolicy. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1538,8 +1538,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.Insert. See the method description for
-                details.
+                BackendServices.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1623,8 +1623,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.InsertBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.Insert. See the method description for
-                details.
+                BackendServices.Insert. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1730,8 +1730,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.ListBackendServicesRequest, dict]):
                 The request object. A request message for
-                BackendServices.List. See the method description for
-                details.
+                BackendServices.List. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1823,8 +1823,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.Patch. See the method description for
-                details.
+                BackendServices.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -1925,8 +1925,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.PatchBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.Patch. See the method description for
-                details.
+                BackendServices.Patch. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2052,8 +2052,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetEdgeSecurityPolicyBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.SetEdgeSecurityPolicy. See the method
-                description for details.
+                BackendServices.SetEdgeSecurityPolicy.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2161,8 +2161,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetEdgeSecurityPolicyBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.SetEdgeSecurityPolicy. See the method
-                description for details.
+                BackendServices.SetEdgeSecurityPolicy.
+                See the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2294,8 +2294,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.SetIamPolicy. See the method description
-                for details.
+                BackendServices.SetIamPolicy. See the
+                method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2440,8 +2440,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetSecurityPolicyBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.SetSecurityPolicy. See the method
-                description for details.
+                BackendServices.SetSecurityPolicy. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2549,8 +2549,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.SetSecurityPolicyBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.SetSecurityPolicy. See the method
-                description for details.
+                BackendServices.SetSecurityPolicy. See
+                the method description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2678,8 +2678,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.Update. See the method description for
-                details.
+                BackendServices.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field
@@ -2778,8 +2778,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateBackendServiceRequest, dict]):
                 The request object. A request message for
-                BackendServices.Update. See the method description for
-                details.
+                BackendServices.Update. See the method
+                description for details.
             project (str):
                 Project ID for this request.
                 This corresponds to the ``project`` field

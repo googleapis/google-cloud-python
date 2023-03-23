@@ -384,7 +384,6 @@ class PublicDelegatedPrefixesRestTransport(PublicDelegatedPrefixesTransport):
                     The request object. A request message for
                 PublicDelegatedPrefixes.AggregatedList.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -473,7 +472,6 @@ class PublicDelegatedPrefixesRestTransport(PublicDelegatedPrefixesTransport):
                     The request object. A request message for
                 PublicDelegatedPrefixes.Delete. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -575,7 +573,6 @@ class PublicDelegatedPrefixesRestTransport(PublicDelegatedPrefixesTransport):
                     The request object. A request message for
                 PublicDelegatedPrefixes.Get. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -671,7 +668,6 @@ class PublicDelegatedPrefixesRestTransport(PublicDelegatedPrefixesTransport):
                     The request object. A request message for
                 PublicDelegatedPrefixes.Insert. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -782,7 +778,6 @@ class PublicDelegatedPrefixesRestTransport(PublicDelegatedPrefixesTransport):
                     The request object. A request message for
                 PublicDelegatedPrefixes.List. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -869,7 +864,6 @@ class PublicDelegatedPrefixesRestTransport(PublicDelegatedPrefixesTransport):
                     The request object. A request message for
                 PublicDelegatedPrefixes.Patch. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

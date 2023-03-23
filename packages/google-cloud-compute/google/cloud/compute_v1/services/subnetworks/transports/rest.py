@@ -560,7 +560,6 @@ class SubnetworksRestTransport(SubnetworksTransport):
                     The request object. A request message for
                 Subnetworks.AggregatedList. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -647,7 +646,6 @@ class SubnetworksRestTransport(SubnetworksTransport):
                     The request object. A request message for
                 Subnetworks.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -749,7 +747,6 @@ class SubnetworksRestTransport(SubnetworksTransport):
                     The request object. A request message for
                 Subnetworks.ExpandIpCidrRange. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -862,7 +859,6 @@ class SubnetworksRestTransport(SubnetworksTransport):
                     The request object. A request message for
                 Subnetworks.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -956,7 +952,6 @@ class SubnetworksRestTransport(SubnetworksTransport):
                     The request object. A request message for
                 Subnetworks.GetIamPolicy. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1084,7 +1079,6 @@ class SubnetworksRestTransport(SubnetworksTransport):
                     The request object. A request message for
                 Subnetworks.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1195,7 +1189,6 @@ class SubnetworksRestTransport(SubnetworksTransport):
                     The request object. A request message for
                 Subnetworks.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1284,7 +1277,6 @@ class SubnetworksRestTransport(SubnetworksTransport):
                     The request object. A request message for
                 Subnetworks.ListUsable. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1371,7 +1363,6 @@ class SubnetworksRestTransport(SubnetworksTransport):
                     The request object. A request message for
                 Subnetworks.Patch. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1482,7 +1473,6 @@ class SubnetworksRestTransport(SubnetworksTransport):
                     The request object. A request message for
                 Subnetworks.SetIamPolicy. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1620,7 +1610,6 @@ class SubnetworksRestTransport(SubnetworksTransport):
                         The request object. A request message for
                     Subnetworks.SetPrivateIpGoogleAccess.
                     See the method description for details.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1733,7 +1722,6 @@ class SubnetworksRestTransport(SubnetworksTransport):
                     The request object. A request message for
                 Subnetworks.TestIamPermissions. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

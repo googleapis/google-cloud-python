@@ -490,7 +490,6 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
                     The request object. A request message for
                 NetworkEndpointGroups.AggregatedList.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -577,7 +576,6 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
                     The request object. A request message for
                 NetworkEndpointGroups.AttachNetworkEndpoints.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -692,7 +690,6 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
                     The request object. A request message for
                 NetworkEndpointGroups.Delete. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -794,7 +791,6 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
                     The request object. A request message for
                 NetworkEndpointGroups.DetachNetworkEndpoints.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -909,7 +905,6 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
                     The request object. A request message for
                 NetworkEndpointGroups.Get. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1007,7 +1002,6 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
                     The request object. A request message for
                 NetworkEndpointGroups.Insert. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1118,7 +1112,6 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
                     The request object. A request message for
                 NetworkEndpointGroups.List. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1205,7 +1198,6 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
                     The request object. A request message for
                 NetworkEndpointGroups.ListNetworkEndpoints.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1305,7 +1297,6 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
                     The request object. A request message for
                 NetworkEndpointGroups.TestIamPermissions.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

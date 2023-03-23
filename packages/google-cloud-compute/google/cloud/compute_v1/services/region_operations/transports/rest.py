@@ -320,7 +320,6 @@ class RegionOperationsRestTransport(RegionOperationsTransport):
                     The request object. A request message for
                 RegionOperations.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -410,7 +409,6 @@ class RegionOperationsRestTransport(RegionOperationsTransport):
                     The request object. A request message for
                 RegionOperations.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -512,7 +510,6 @@ class RegionOperationsRestTransport(RegionOperationsTransport):
                     The request object. A request message for
                 RegionOperations.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -601,7 +598,6 @@ class RegionOperationsRestTransport(RegionOperationsTransport):
                     The request object. A request message for
                 RegionOperations.Wait. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

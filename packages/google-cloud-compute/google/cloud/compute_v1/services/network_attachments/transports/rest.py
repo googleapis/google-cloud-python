@@ -446,7 +446,6 @@ class NetworkAttachmentsRestTransport(NetworkAttachmentsTransport):
                     The request object. A request message for
                 NetworkAttachments.AggregatedList. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -535,7 +534,6 @@ class NetworkAttachmentsRestTransport(NetworkAttachmentsTransport):
                     The request object. A request message for
                 NetworkAttachments.Delete. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -637,7 +635,6 @@ class NetworkAttachmentsRestTransport(NetworkAttachmentsTransport):
                     The request object. A request message for
                 NetworkAttachments.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -726,7 +723,6 @@ class NetworkAttachmentsRestTransport(NetworkAttachmentsTransport):
                     The request object. A request message for
                 NetworkAttachments.GetIamPolicy. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -854,7 +850,6 @@ class NetworkAttachmentsRestTransport(NetworkAttachmentsTransport):
                     The request object. A request message for
                 NetworkAttachments.Insert. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -965,7 +960,6 @@ class NetworkAttachmentsRestTransport(NetworkAttachmentsTransport):
                     The request object. A request message for
                 NetworkAttachments.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1052,7 +1046,6 @@ class NetworkAttachmentsRestTransport(NetworkAttachmentsTransport):
                     The request object. A request message for
                 NetworkAttachments.SetIamPolicy. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1189,7 +1182,6 @@ class NetworkAttachmentsRestTransport(NetworkAttachmentsTransport):
                     The request object. A request message for
                 NetworkAttachments.TestIamPermissions.
                 See the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

@@ -262,7 +262,6 @@ class RegionDiskTypesRestTransport(RegionDiskTypesTransport):
                     The request object. A request message for
                 RegionDiskTypes.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -360,7 +359,6 @@ class RegionDiskTypesRestTransport(RegionDiskTypesTransport):
                     The request object. A request message for
                 RegionDiskTypes.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

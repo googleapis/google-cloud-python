@@ -585,7 +585,6 @@ class RegionDisksRestTransport(RegionDisksTransport):
                     The request object. A request message for
                 RegionDisks.AddResourcePolicies. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -698,7 +697,6 @@ class RegionDisksRestTransport(RegionDisksTransport):
                     The request object. A request message for
                 RegionDisks.CreateSnapshot. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -809,7 +807,6 @@ class RegionDisksRestTransport(RegionDisksTransport):
                     The request object. A request message for
                 RegionDisks.Delete. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -911,7 +908,6 @@ class RegionDisksRestTransport(RegionDisksTransport):
                     The request object. A request message for
                 RegionDisks.Get. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1010,7 +1006,6 @@ class RegionDisksRestTransport(RegionDisksTransport):
                     The request object. A request message for
                 RegionDisks.GetIamPolicy. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1138,7 +1133,6 @@ class RegionDisksRestTransport(RegionDisksTransport):
                     The request object. A request message for
                 RegionDisks.Insert. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1249,7 +1243,6 @@ class RegionDisksRestTransport(RegionDisksTransport):
                     The request object. A request message for
                 RegionDisks.List. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1336,7 +1329,6 @@ class RegionDisksRestTransport(RegionDisksTransport):
                     The request object. A request message for
                 RegionDisks.RemoveResourcePolicies. See
                 the method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1449,7 +1441,6 @@ class RegionDisksRestTransport(RegionDisksTransport):
                     The request object. A request message for
                 RegionDisks.Resize. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1560,7 +1551,6 @@ class RegionDisksRestTransport(RegionDisksTransport):
                     The request object. A request message for
                 RegionDisks.SetIamPolicy. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1697,7 +1687,6 @@ class RegionDisksRestTransport(RegionDisksTransport):
                     The request object. A request message for
                 RegionDisks.SetLabels. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1808,7 +1797,6 @@ class RegionDisksRestTransport(RegionDisksTransport):
                     The request object. A request message for
                 RegionDisks.TestIamPermissions. See the
                 method description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1906,7 +1894,6 @@ class RegionDisksRestTransport(RegionDisksTransport):
                     The request object. A request message for
                 RegionDisks.Update. See the method
                 description for details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
