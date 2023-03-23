@@ -1400,7 +1400,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.CreateClusterRequest):
                     The request object. Request message for
                 [VmwareEngine.CreateCluster][google.cloud.vmwareengine.v1.VmwareEngine.CreateCluster]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1500,7 +1499,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.CreateHcxActivationKeyRequest):
                     The request object. Request message for
                 [VmwareEngine.CreateHcxActivationKey][google.cloud.vmwareengine.v1.VmwareEngine.CreateHcxActivationKey]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1602,7 +1600,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.CreateNetworkPolicyRequest):
                     The request object. Request message for
                 [VmwareEngine.CreateNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.CreateNetworkPolicy]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1704,7 +1701,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.CreatePrivateCloudRequest):
                     The request object. Request message for
                 [VmwareEngine.CreatePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.CreatePrivateCloud]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1807,7 +1803,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     request (~.vmwareengine.CreateVmwareEngineNetworkRequest):
                         The request object. Request message for
                     [VmwareEngine.CreateVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.CreateVmwareEngineNetwork]
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1907,7 +1902,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.DeleteClusterRequest):
                     The request object. Request message for
                 [VmwareEngine.DeleteCluster][google.cloud.vmwareengine.v1.VmwareEngine.DeleteCluster]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1996,7 +1990,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.DeleteNetworkPolicyRequest):
                     The request object. Request message for
                 [VmwareEngine.DeleteNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.DeleteNetworkPolicy]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2087,7 +2080,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.DeletePrivateCloudRequest):
                     The request object. Request message for
                 [VmwareEngine.DeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.DeletePrivateCloud]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2179,7 +2171,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     request (~.vmwareengine.DeleteVmwareEngineNetworkRequest):
                         The request object. Request message for
                     [VmwareEngine.DeleteVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.DeleteVmwareEngineNetwork]
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2270,7 +2261,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.GetClusterRequest):
                     The request object. Request message for
                 [VmwareEngine.GetCluster][google.cloud.vmwareengine.v1.VmwareEngine.GetCluster]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2358,7 +2348,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.GetHcxActivationKeyRequest):
                     The request object. Request message for
                 [VmwareEngine.GetHcxActivationKeys][]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2455,7 +2444,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.GetNetworkPolicyRequest):
                     The request object. Request message for
                 [VmwareEngine.GetNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.GetNetworkPolicy]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2556,7 +2544,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.GetNodeTypeRequest):
                     The request object. Request message for
                 [VmwareEngine.GetNodeType][google.cloud.vmwareengine.v1.VmwareEngine.GetNodeType]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2644,7 +2631,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.GetPrivateCloudRequest):
                     The request object. Request message for
                 [VmwareEngine.GetPrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.GetPrivateCloud]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2736,7 +2722,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.GetVmwareEngineNetworkRequest):
                     The request object. Request message for
                 [VmwareEngine.GetVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.GetVmwareEngineNetwork]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2829,7 +2814,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ListClustersRequest):
                     The request object. Request message for
                 [VmwareEngine.ListClusters][google.cloud.vmwareengine.v1.VmwareEngine.ListClusters]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2919,7 +2903,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ListHcxActivationKeysRequest):
                     The request object. Request message for
                 [VmwareEngine.ListHcxActivationKeys][google.cloud.vmwareengine.v1.VmwareEngine.ListHcxActivationKeys]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3011,7 +2994,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ListNetworkPoliciesRequest):
                     The request object. Request message for
                 [VmwareEngine.ListNetworkPolicies][google.cloud.vmwareengine.v1.VmwareEngine.ListNetworkPolicies]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3103,7 +3085,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ListNodeTypesRequest):
                     The request object. Request message for
                 [VmwareEngine.ListNodeTypes][google.cloud.vmwareengine.v1.VmwareEngine.ListNodeTypes]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3193,7 +3174,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ListPrivateCloudsRequest):
                     The request object. Request message for
                 [VmwareEngine.ListPrivateClouds][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateClouds]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3285,7 +3265,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ListSubnetsRequest):
                     The request object. Request message for
                 [VmwareEngine.ListSubnets][google.cloud.vmwareengine.v1.VmwareEngine.ListSubnets]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3376,7 +3355,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     request (~.vmwareengine.ListVmwareEngineNetworksRequest):
                         The request object. Request message for
                     [VmwareEngine.ListVmwareEngineNetworks][google.cloud.vmwareengine.v1.VmwareEngine.ListVmwareEngineNetworks]
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3468,7 +3446,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ResetNsxCredentialsRequest):
                     The request object. Request message for
                 [VmwareEngine.ResetNsxCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ResetNsxCredentials]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3568,7 +3545,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ResetVcenterCredentialsRequest):
                     The request object. Request message for
                 [VmwareEngine.ResetVcenterCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ResetVcenterCredentials]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3668,7 +3644,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ShowNsxCredentialsRequest):
                     The request object. Request message for
                 [VmwareEngine.ShowNsxCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ShowNsxCredentials]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3758,7 +3733,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ShowVcenterCredentialsRequest):
                     The request object. Request message for
                 [VmwareEngine.ShowVcenterCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ShowVcenterCredentials]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3848,7 +3822,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.UndeletePrivateCloudRequest):
                     The request object. Request message for
                 [VmwareEngine.UndeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.UndeletePrivateCloud]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3950,7 +3923,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.UpdateClusterRequest):
                     The request object. Request message for
                 [VmwareEngine.UpdateCluster][google.cloud.vmwareengine.v1.VmwareEngine.UpdateCluster]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4050,7 +4022,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.UpdateNetworkPolicyRequest):
                     The request object. Request message for
                 [VmwareEngine.UpdateNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.UpdateNetworkPolicy]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4152,7 +4123,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.UpdatePrivateCloudRequest):
                     The request object. Request message for
                 [VmwareEngine.UpdatePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.UpdatePrivateCloud]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4255,7 +4225,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     request (~.vmwareengine.UpdateVmwareEngineNetworkRequest):
                         The request object. Request message for
                     [VmwareEngine.UpdateVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.UpdateVmwareEngineNetwork]
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

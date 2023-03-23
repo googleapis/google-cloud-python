@@ -407,6 +407,22 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 "google.longrunning.Operations.GetOperation": [
                     {
                         "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
                     },
                     {
@@ -427,6 +443,22 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     },
                 ],
                 "google.longrunning.Operations.ListOperations": [
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*}/operations",
+                    },
                     {
                         "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",
@@ -497,7 +529,6 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     The request object. Request message for
                 [DocumentService.CreateDocument][google.cloud.discoveryengine.v1beta.DocumentService.CreateDocument]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -516,6 +547,11 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/*/branches/*}/documents",
+                    "body": "document",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*/branches/*}/documents",
                     "body": "document",
                 },
             ]
@@ -598,7 +634,6 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     The request object. Request message for
                 [DocumentService.DeleteDocument][google.cloud.discoveryengine.v1beta.DocumentService.DeleteDocument]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -610,6 +645,10 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 {
                     "method": "delete",
                     "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*/documents/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*}",
                 },
             ]
             request, metadata = self._interceptor.pre_delete_document(request, metadata)
@@ -675,7 +714,6 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     The request object. Request message for
                 [DocumentService.GetDocument][google.cloud.discoveryengine.v1beta.DocumentService.GetDocument]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -694,6 +732,10 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*/documents/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*}",
                 },
             ]
             request, metadata = self._interceptor.pre_get_document(request, metadata)
@@ -785,6 +827,11 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/*/branches/*}/documents:import",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*/branches/*}/documents:import",
+                    "body": "*",
+                },
             ]
             request, metadata = self._interceptor.pre_import_documents(
                 request, metadata
@@ -865,7 +912,6 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     The request object. Request message for
                 [DocumentService.ListDocuments][google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -884,6 +930,10 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/*/branches/*}/documents",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*/branches/*}/documents",
                 },
             ]
             request, metadata = self._interceptor.pre_list_documents(request, metadata)
@@ -957,7 +1007,6 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     The request object. Request message for
                 [DocumentService.UpdateDocument][google.cloud.discoveryengine.v1beta.DocumentService.UpdateDocument]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -976,6 +1025,11 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 {
                     "method": "patch",
                     "uri": "/v1beta/{document.name=projects/*/locations/*/dataStores/*/branches/*/documents/*}",
+                    "body": "document",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1beta/{document.name=projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*}",
                     "body": "document",
                 },
             ]
@@ -1111,6 +1165,22 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
                 },
                 {
@@ -1192,6 +1262,22 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
             """
 
             http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*}/operations",
+                },
                 {
                     "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",

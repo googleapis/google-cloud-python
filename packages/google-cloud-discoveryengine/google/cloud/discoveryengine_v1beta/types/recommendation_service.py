@@ -38,7 +38,7 @@ class RecommendRequest(proto.Message):
     Attributes:
         serving_config (str):
             Required. Full resource name of the format:
-            projects/\ */locations/global/dataStores/*/servingConfigs/\*
+            projects/\ */locations/global/collections/*/dataStores/*/servingConfigs/*
 
             Before you can request recommendations from your model, you
             must create at least one serving config for it.
@@ -144,8 +144,8 @@ class RecommendRequest(proto.Message):
             -  Keys must start with a lowercase letter or international
                character.
 
-            See `Google Cloud
-            Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
+            See `Requirements for
+            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
             for more details.
     """
 

@@ -1138,7 +1138,6 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                 request (~.service.BatchCreateInstancesRequest):
                     The request object. Message for creating a batch of
                 instances under the specified cluster.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1634,7 +1633,6 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                 request (~.service.CreateSecondaryInstanceRequest):
                     The request object. Message for creating a Secondary
                 Instance
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1995,7 +1993,6 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                 request (~.service.FailoverInstanceRequest):
                     The request object. Message for triggering failover on an
                 Instance
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2097,7 +2094,6 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                         The request object. Message for requests to generate a
                     client certificate signed by the Cluster
                     CA.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2376,7 +2372,6 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                 request (~.service.GetConnectionInfoRequest):
                     The request object. Request message for
                 GetConnectionInfo.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2558,7 +2553,6 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                 request (~.service.ListBackupsRequest):
                     The request object. Message for requesting list of
                 Backups
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2648,7 +2642,6 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                 request (~.service.ListClustersRequest):
                     The request object. Message for requesting list of
                 Clusters
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2738,7 +2731,6 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                 request (~.service.ListInstancesRequest):
                     The request object. Message for requesting list of
                 Instances
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2829,7 +2821,6 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                     request (~.service.ListSupportedDatabaseFlagsRequest):
                         The request object. Message for listing the information
                     about the supported Database flags.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3116,7 +3107,6 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                     The request object. Message for restoring a Cluster from
                 a backup or another cluster at a given
                 point in time.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

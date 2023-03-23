@@ -527,7 +527,7 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 Required. Full resource name of
                 [Document][google.cloud.discoveryengine.v1beta.Document],
                 such as
-                ``projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
 
                 If the caller does not have permission to access the
                 [Document][google.cloud.discoveryengine.v1beta.Document],
@@ -642,7 +642,7 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 method.
             parent (str):
                 Required. The parent branch resource name, such as
-                ``projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}``.
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
                 Use ``default_branch`` as the branch ID, to list
                 documents under the default branch.
 
@@ -751,12 +751,8 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 client = discoveryengine_v1beta.DocumentServiceClient()
 
                 # Initialize request argument(s)
-                document = discoveryengine_v1beta.Document()
-                document.schema_id = "schema_id_value"
-
                 request = discoveryengine_v1beta.CreateDocumentRequest(
                     parent="parent_value",
-                    document=document,
                     document_id="document_id_value",
                 )
 
@@ -773,7 +769,7 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 method.
             parent (str):
                 Required. The parent resource name, such as
-                ``projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}``.
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -897,11 +893,7 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 client = discoveryengine_v1beta.DocumentServiceClient()
 
                 # Initialize request argument(s)
-                document = discoveryengine_v1beta.Document()
-                document.schema_id = "schema_id_value"
-
                 request = discoveryengine_v1beta.UpdateDocumentRequest(
-                    document=document,
                 )
 
                 # Make the request
@@ -1003,7 +995,7 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 Required. Full resource name of
                 [Document][google.cloud.discoveryengine.v1beta.Document],
                 such as
-                ``projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
 
                 If the caller does not have permission to delete the
                 [Document][google.cloud.discoveryengine.v1beta.Document],
@@ -1095,11 +1087,7 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 client = discoveryengine_v1beta.DocumentServiceClient()
 
                 # Initialize request argument(s)
-                inline_source = discoveryengine_v1beta.InlineSource()
-                inline_source.documents.schema_id = "schema_id_value"
-
                 request = discoveryengine_v1beta.ImportDocumentsRequest(
-                    inline_source=inline_source,
                     parent="parent_value",
                 )
 

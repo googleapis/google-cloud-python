@@ -41,31 +41,31 @@ __protobuf__ = proto.module(
 
 
 class GcsSource(proto.Message):
-    r"""Google Cloud Storage location for input content.
-    format.
+    r"""Cloud Storage location for input content.
 
     Attributes:
         input_uris (MutableSequence[str]):
-            Required. Google Cloud Storage URIs to input files. URI can
-            be up to 2000 characters long. URIs can match the full
-            object path (for example,
-            ``gs://bucket/directory/object.json``) or a pattern matching
-            one or more files, such as ``gs://bucket/directory/*.json``.
-            A request can contain at most 100 files, and each file can
-            be up to 2 GB.
+            Required. Cloud Storage URIs to input files. URI can be up
+            to 2000 characters long. URIs can match the full object path
+            (for example, ``gs://bucket/directory/object.json``) or a
+            pattern matching one or more files, such as
+            ``gs://bucket/directory/*.json``. A request can contain at
+            most 100 files, and each file can be up to 2 GB.
         data_schema (str):
             The schema to use when parsing the data from the source.
 
-            Supported values for imports:
-
-            -  ``user_event`` (default): One JSON
-               [UserEvent][google.cloud.discoveryengine.v1beta.UserEvent]
-               per line.
+            Supported values for document imports:
 
             -  ``document`` (default): One JSON
                [Document][google.cloud.discoveryengine.v1beta.Document]
                per line. Each document must have a valid
                [Document.id][google.cloud.discoveryengine.v1beta.Document.id].
+
+            Supported values for user even imports:
+
+            -  ``user_event`` (default): One JSON
+               [UserEvent][google.cloud.discoveryengine.v1beta.UserEvent]
+               per line.
     """
 
     input_uris: MutableSequence[str] = proto.RepeatedField(
@@ -157,10 +157,10 @@ class ImportErrorConfig(proto.Message):
 
     Attributes:
         gcs_prefix (str):
-            Google Cloud Storage prefix for import errors. This must be
-            an empty, existing Cloud Storage directory. Import errors
-            will be written to sharded files in this directory, one per
-            line, as a JSON-encoded ``google.rpc.Status`` message.
+            Cloud Storage prefix for import errors. This must be an
+            empty, existing Cloud Storage directory. Import errors will
+            be written to sharded files in this directory, one per line,
+            as a JSON-encoded ``google.rpc.Status`` message.
 
             This field is a member of `oneof`_ ``destination``.
     """
@@ -189,8 +189,8 @@ class ImportUserEventsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         gcs_source (google.cloud.discoveryengine_v1beta.types.GcsSource):
-            Required. Google Cloud Storage location for
-            the input content.
+            Required. Cloud Storage location for the
+            input content.
 
             This field is a member of `oneof`_ ``source``.
         bigquery_source (google.cloud.discoveryengine_v1beta.types.BigQuerySource):
@@ -199,7 +199,7 @@ class ImportUserEventsRequest(proto.Message):
             This field is a member of `oneof`_ ``source``.
         parent (str):
             Required. Parent DataStore resource name, of the form
-            ``projects/{project}/locations/{location}/dataStores/{data_store}``
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``
         error_config (google.cloud.discoveryengine_v1beta.types.ImportErrorConfig):
             The desired location of errors incurred
             during the Import. Cannot be set for inline user
@@ -388,8 +388,7 @@ class ImportDocumentsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         gcs_source (google.cloud.discoveryengine_v1beta.types.GcsSource):
-            Google Cloud Storage location for the input
-            content.
+            Cloud Storage location for the input content.
 
             This field is a member of `oneof`_ ``source``.
         bigquery_source (google.cloud.discoveryengine_v1beta.types.BigQuerySource):
@@ -398,7 +397,7 @@ class ImportDocumentsRequest(proto.Message):
             This field is a member of `oneof`_ ``source``.
         parent (str):
             Required. The parent branch resource name, such as
-            ``projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}``.
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
             Requires create/update permission.
         error_config (google.cloud.discoveryengine_v1beta.types.ImportErrorConfig):
             The desired location of errors incurred

@@ -938,7 +938,8 @@ class AlloyDBAdminAsyncClient:
         Args:
             request (Optional[Union[google.cloud.alloydb_v1.types.RestoreClusterRequest, dict]]):
                 The request object. Message for restoring a Cluster from
-                a backup or another cluster at a given point in time.
+                a backup or another cluster at a given
+                point in time.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1788,8 +1789,8 @@ class AlloyDBAdminAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.alloydb_v1.types.FailoverInstanceRequest, dict]]):
-                The request object. Message for triggering failover on
-                an Instance
+                The request object. Message for triggering failover on an
+                Instance
             name (:class:`str`):
                 Required. The name of the resource.
                 For the required format, see the comment

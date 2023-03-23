@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import google.geo.type.types  # type: ignore
+from google.geo.type.types import viewport
 from google.type import latlng_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -79,10 +79,10 @@ class Geocode(proto.Message):
         number=2,
         message="PlusCode",
     )
-    bounds: google.geo.type.types.Viewport = proto.Field(
+    bounds: viewport.Viewport = proto.Field(
         proto.MESSAGE,
         number=4,
-        message=google.geo.type.types.Viewport,
+        message=viewport.Viewport,
     )
     feature_size_meters: float = proto.Field(
         proto.FLOAT,
