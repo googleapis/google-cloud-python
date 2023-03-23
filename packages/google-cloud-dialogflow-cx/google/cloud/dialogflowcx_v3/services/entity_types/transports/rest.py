@@ -455,7 +455,6 @@ class EntityTypesRestTransport(EntityTypesTransport):
                 request (~.gcdc_entity_type.CreateEntityTypeRequest):
                     The request object. The request message for
                 [EntityTypes.CreateEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.CreateEntityType].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -589,7 +588,6 @@ class EntityTypesRestTransport(EntityTypesTransport):
                 request (~.entity_type.DeleteEntityTypeRequest):
                     The request object. The request message for
                 [EntityTypes.DeleteEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.DeleteEntityType].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -667,7 +665,6 @@ class EntityTypesRestTransport(EntityTypesTransport):
                 request (~.entity_type.GetEntityTypeRequest):
                     The request object. The request message for
                 [EntityTypes.GetEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.GetEntityType].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -790,7 +787,6 @@ class EntityTypesRestTransport(EntityTypesTransport):
                 request (~.entity_type.ListEntityTypesRequest):
                     The request object. The request message for
                 [EntityTypes.ListEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ListEntityTypes].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -882,7 +878,6 @@ class EntityTypesRestTransport(EntityTypesTransport):
                 request (~.gcdc_entity_type.UpdateEntityTypeRequest):
                     The request object. The request message for
                 [EntityTypes.UpdateEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.UpdateEntityType].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

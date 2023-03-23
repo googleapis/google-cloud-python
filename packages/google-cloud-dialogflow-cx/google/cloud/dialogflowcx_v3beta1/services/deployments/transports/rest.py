@@ -375,7 +375,6 @@ class DeploymentsRestTransport(DeploymentsTransport):
                 request (~.deployment.GetDeploymentRequest):
                     The request object. The request message for
                 [Deployments.GetDeployment][google.cloud.dialogflow.cx.v3beta1.Deployments.GetDeployment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -470,7 +469,6 @@ class DeploymentsRestTransport(DeploymentsTransport):
                 request (~.deployment.ListDeploymentsRequest):
                     The request object. The request message for
                 [Deployments.ListDeployments][google.cloud.dialogflow.cx.v3beta1.Deployments.ListDeployments].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

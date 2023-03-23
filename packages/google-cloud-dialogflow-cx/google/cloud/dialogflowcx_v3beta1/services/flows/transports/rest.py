@@ -647,7 +647,6 @@ class FlowsRestTransport(FlowsTransport):
                 request (~.gcdc_flow.CreateFlowRequest):
                     The request object. The request message for
                 [Flows.CreateFlow][google.cloud.dialogflow.cx.v3beta1.Flows.CreateFlow].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -767,7 +766,6 @@ class FlowsRestTransport(FlowsTransport):
                 request (~.flow.DeleteFlowRequest):
                     The request object. The request message for
                 [Flows.DeleteFlow][google.cloud.dialogflow.cx.v3beta1.Flows.DeleteFlow].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -843,7 +841,6 @@ class FlowsRestTransport(FlowsTransport):
                 request (~.flow.ExportFlowRequest):
                     The request object. The request message for
                 [Flows.ExportFlow][google.cloud.dialogflow.cx.v3beta1.Flows.ExportFlow].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -941,7 +938,6 @@ class FlowsRestTransport(FlowsTransport):
                 request (~.flow.GetFlowRequest):
                     The request object. The response message for
                 [Flows.GetFlow][google.cloud.dialogflow.cx.v3beta1.Flows.GetFlow].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1053,7 +1049,6 @@ class FlowsRestTransport(FlowsTransport):
                     request (~.flow.GetFlowValidationResultRequest):
                         The request object. The request message for
                     [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3beta1.Flows.GetFlowValidationResult].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1145,7 +1140,6 @@ class FlowsRestTransport(FlowsTransport):
                 request (~.flow.ImportFlowRequest):
                     The request object. The request message for
                 [Flows.ImportFlow][google.cloud.dialogflow.cx.v3beta1.Flows.ImportFlow].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1243,7 +1237,6 @@ class FlowsRestTransport(FlowsTransport):
                 request (~.flow.ListFlowsRequest):
                     The request object. The request message for
                 [Flows.ListFlows][google.cloud.dialogflow.cx.v3beta1.Flows.ListFlows].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1333,7 +1326,6 @@ class FlowsRestTransport(FlowsTransport):
                 request (~.flow.TrainFlowRequest):
                     The request object. The request message for
                 [Flows.TrainFlow][google.cloud.dialogflow.cx.v3beta1.Flows.TrainFlow].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1431,7 +1423,6 @@ class FlowsRestTransport(FlowsTransport):
                 request (~.gcdc_flow.UpdateFlowRequest):
                     The request object. The request message for
                 [Flows.UpdateFlow][google.cloud.dialogflow.cx.v3beta1.Flows.UpdateFlow].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1551,7 +1542,6 @@ class FlowsRestTransport(FlowsTransport):
                 request (~.flow.ValidateFlowRequest):
                     The request object. The request message for
                 [Flows.ValidateFlow][google.cloud.dialogflow.cx.v3beta1.Flows.ValidateFlow].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

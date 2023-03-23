@@ -621,7 +621,6 @@ class AgentsRestTransport(AgentsTransport):
                 request (~.gcdc_agent.CreateAgentRequest):
                     The request object. The request message for
                 [Agents.CreateAgent][google.cloud.dialogflow.cx.v3.Agents.CreateAgent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -731,7 +730,6 @@ class AgentsRestTransport(AgentsTransport):
                 request (~.agent.DeleteAgentRequest):
                     The request object. The request message for
                 [Agents.DeleteAgent][google.cloud.dialogflow.cx.v3.Agents.DeleteAgent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -807,7 +805,6 @@ class AgentsRestTransport(AgentsTransport):
                 request (~.agent.ExportAgentRequest):
                     The request object. The request message for
                 [Agents.ExportAgent][google.cloud.dialogflow.cx.v3.Agents.ExportAgent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -905,7 +902,6 @@ class AgentsRestTransport(AgentsTransport):
                 request (~.agent.GetAgentRequest):
                     The request object. The request message for
                 [Agents.GetAgent][google.cloud.dialogflow.cx.v3.Agents.GetAgent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1007,7 +1003,6 @@ class AgentsRestTransport(AgentsTransport):
                     request (~.agent.GetAgentValidationResultRequest):
                         The request object. The request message for
                     [Agents.GetAgentValidationResult][google.cloud.dialogflow.cx.v3.Agents.GetAgentValidationResult].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1099,7 +1094,6 @@ class AgentsRestTransport(AgentsTransport):
                 request (~.agent.ListAgentsRequest):
                     The request object. The request message for
                 [Agents.ListAgents][google.cloud.dialogflow.cx.v3.Agents.ListAgents].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1189,7 +1183,6 @@ class AgentsRestTransport(AgentsTransport):
                 request (~.agent.RestoreAgentRequest):
                     The request object. The request message for
                 [Agents.RestoreAgent][google.cloud.dialogflow.cx.v3.Agents.RestoreAgent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1287,7 +1280,6 @@ class AgentsRestTransport(AgentsTransport):
                 request (~.gcdc_agent.UpdateAgentRequest):
                     The request object. The request message for
                 [Agents.UpdateAgent][google.cloud.dialogflow.cx.v3.Agents.UpdateAgent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1397,7 +1389,6 @@ class AgentsRestTransport(AgentsTransport):
                 request (~.agent.ValidateAgentRequest):
                     The request object. The request message for
                 [Agents.ValidateAgent][google.cloud.dialogflow.cx.v3.Agents.ValidateAgent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

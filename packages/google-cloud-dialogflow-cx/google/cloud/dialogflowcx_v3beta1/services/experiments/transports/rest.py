@@ -517,7 +517,6 @@ class ExperimentsRestTransport(ExperimentsTransport):
                 request (~.gcdc_experiment.CreateExperimentRequest):
                     The request object. The request message for
                 [Experiments.CreateExperiment][google.cloud.dialogflow.cx.v3beta1.Experiments.CreateExperiment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -618,7 +617,6 @@ class ExperimentsRestTransport(ExperimentsTransport):
                 request (~.experiment.DeleteExperimentRequest):
                     The request object. The request message for
                 [Experiments.DeleteExperiment][google.cloud.dialogflow.cx.v3beta1.Experiments.DeleteExperiment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -696,7 +694,6 @@ class ExperimentsRestTransport(ExperimentsTransport):
                 request (~.experiment.GetExperimentRequest):
                     The request object. The request message for
                 [Experiments.GetExperiment][google.cloud.dialogflow.cx.v3beta1.Experiments.GetExperiment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -786,7 +783,6 @@ class ExperimentsRestTransport(ExperimentsTransport):
                 request (~.experiment.ListExperimentsRequest):
                     The request object. The request message for
                 [Experiments.ListExperiments][google.cloud.dialogflow.cx.v3beta1.Experiments.ListExperiments].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -878,7 +874,6 @@ class ExperimentsRestTransport(ExperimentsTransport):
                 request (~.experiment.StartExperimentRequest):
                     The request object. The request message for
                 [Experiments.StartExperiment][google.cloud.dialogflow.cx.v3beta1.Experiments.StartExperiment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -979,7 +974,6 @@ class ExperimentsRestTransport(ExperimentsTransport):
                 request (~.experiment.StopExperimentRequest):
                     The request object. The request message for
                 [Experiments.StopExperiment][google.cloud.dialogflow.cx.v3beta1.Experiments.StopExperiment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1080,7 +1074,6 @@ class ExperimentsRestTransport(ExperimentsTransport):
                 request (~.gcdc_experiment.UpdateExperimentRequest):
                     The request object. The request message for
                 [Experiments.UpdateExperiment][google.cloud.dialogflow.cx.v3beta1.Experiments.UpdateExperiment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

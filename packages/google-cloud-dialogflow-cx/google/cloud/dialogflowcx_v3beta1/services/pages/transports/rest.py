@@ -439,7 +439,6 @@ class PagesRestTransport(PagesTransport):
                 request (~.gcdc_page.CreatePageRequest):
                     The request object. The request message for
                 [Pages.CreatePage][google.cloud.dialogflow.cx.v3beta1.Pages.CreatePage].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -557,7 +556,6 @@ class PagesRestTransport(PagesTransport):
                 request (~.page.DeletePageRequest):
                     The request object. The request message for
                 [Pages.DeletePage][google.cloud.dialogflow.cx.v3beta1.Pages.DeletePage].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -633,7 +631,6 @@ class PagesRestTransport(PagesTransport):
                 request (~.page.GetPageRequest):
                     The request object. The request message for
                 [Pages.GetPage][google.cloud.dialogflow.cx.v3beta1.Pages.GetPage].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -742,7 +739,6 @@ class PagesRestTransport(PagesTransport):
                 request (~.page.ListPagesRequest):
                     The request object. The request message for
                 [Pages.ListPages][google.cloud.dialogflow.cx.v3beta1.Pages.ListPages].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -832,7 +828,6 @@ class PagesRestTransport(PagesTransport):
                 request (~.gcdc_page.UpdatePageRequest):
                     The request object. The request message for
                 [Pages.UpdatePage][google.cloud.dialogflow.cx.v3beta1.Pages.UpdatePage].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

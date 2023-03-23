@@ -475,7 +475,6 @@ class TransitionRouteGroupsRestTransport(TransitionRouteGroupsTransport):
                     request (~.gcdc_transition_route_group.CreateTransitionRouteGroupRequest):
                         The request object. The request message for
                     [TransitionRouteGroups.CreateTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.CreateTransitionRouteGroup].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -583,7 +582,6 @@ class TransitionRouteGroupsRestTransport(TransitionRouteGroupsTransport):
                     request (~.transition_route_group.DeleteTransitionRouteGroupRequest):
                         The request object. The request message for
                     [TransitionRouteGroups.DeleteTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.DeleteTransitionRouteGroup].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -664,7 +662,6 @@ class TransitionRouteGroupsRestTransport(TransitionRouteGroupsTransport):
                     request (~.transition_route_group.GetTransitionRouteGroupRequest):
                         The request object. The request message for
                     [TransitionRouteGroups.GetTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.GetTransitionRouteGroup].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -761,7 +758,6 @@ class TransitionRouteGroupsRestTransport(TransitionRouteGroupsTransport):
                     request (~.transition_route_group.ListTransitionRouteGroupsRequest):
                         The request object. The request message for
                     [TransitionRouteGroups.ListTransitionRouteGroups][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.ListTransitionRouteGroups].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -856,7 +852,6 @@ class TransitionRouteGroupsRestTransport(TransitionRouteGroupsTransport):
                     request (~.gcdc_transition_route_group.UpdateTransitionRouteGroupRequest):
                         The request object. The request message for
                     [TransitionRouteGroups.UpdateTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.UpdateTransitionRouteGroup].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

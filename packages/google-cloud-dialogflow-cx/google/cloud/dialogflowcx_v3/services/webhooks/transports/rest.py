@@ -447,7 +447,6 @@ class WebhooksRestTransport(WebhooksTransport):
                 request (~.gcdc_webhook.CreateWebhookRequest):
                     The request object. The request message for
                 [Webhooks.CreateWebhook][google.cloud.dialogflow.cx.v3.Webhooks.CreateWebhook].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -551,7 +550,6 @@ class WebhooksRestTransport(WebhooksTransport):
                 request (~.webhook.DeleteWebhookRequest):
                     The request object. The request message for
                 [Webhooks.DeleteWebhook][google.cloud.dialogflow.cx.v3.Webhooks.DeleteWebhook].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -627,7 +625,6 @@ class WebhooksRestTransport(WebhooksTransport):
                 request (~.webhook.GetWebhookRequest):
                     The request object. The request message for
                 [Webhooks.GetWebhook][google.cloud.dialogflow.cx.v3.Webhooks.GetWebhook].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -722,7 +719,6 @@ class WebhooksRestTransport(WebhooksTransport):
                 request (~.webhook.ListWebhooksRequest):
                     The request object. The request message for
                 [Webhooks.ListWebhooks][google.cloud.dialogflow.cx.v3.Webhooks.ListWebhooks].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -812,7 +808,6 @@ class WebhooksRestTransport(WebhooksTransport):
                 request (~.gcdc_webhook.UpdateWebhookRequest):
                     The request object. The request message for
                 [Webhooks.UpdateWebhook][google.cloud.dialogflow.cx.v3.Webhooks.UpdateWebhook].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

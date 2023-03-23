@@ -467,7 +467,6 @@ class SecuritySettingsServiceRestTransport(SecuritySettingsServiceTransport):
                 request (~.gcdc_security_settings.CreateSecuritySettingsRequest):
                     The request object. The request message for
                 [SecuritySettings.CreateSecuritySettings][].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -574,7 +573,6 @@ class SecuritySettingsServiceRestTransport(SecuritySettingsServiceTransport):
                 request (~.security_settings.DeleteSecuritySettingsRequest):
                     The request object. The request message for
                 [SecuritySettings.DeleteSecuritySettings][].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -652,7 +650,6 @@ class SecuritySettingsServiceRestTransport(SecuritySettingsServiceTransport):
                 request (~.security_settings.GetSecuritySettingsRequest):
                     The request object. The request message for
                 [SecuritySettingsService.GetSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.GetSecuritySettings].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -748,7 +745,6 @@ class SecuritySettingsServiceRestTransport(SecuritySettingsServiceTransport):
                 request (~.security_settings.ListSecuritySettingsRequest):
                     The request object. The request message for
                 [SecuritySettings.ListSecuritySettings][].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -842,7 +838,6 @@ class SecuritySettingsServiceRestTransport(SecuritySettingsServiceTransport):
                 request (~.gcdc_security_settings.UpdateSecuritySettingsRequest):
                     The request object. The request message for
                 [SecuritySettingsService.UpdateSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.UpdateSecuritySettings].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

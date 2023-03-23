@@ -373,7 +373,6 @@ class ChangelogsRestTransport(ChangelogsTransport):
                 request (~.changelog.GetChangelogRequest):
                     The request object. The request message for
                 [Changelogs.GetChangelog][google.cloud.dialogflow.cx.v3.Changelogs.GetChangelog].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -463,7 +462,6 @@ class ChangelogsRestTransport(ChangelogsTransport):
                 request (~.changelog.ListChangelogsRequest):
                     The request object. The request message for
                 [Changelogs.ListChangelogs][google.cloud.dialogflow.cx.v3.Changelogs.ListChangelogs].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

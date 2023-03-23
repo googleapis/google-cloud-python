@@ -728,7 +728,6 @@ class TestCasesRestTransport(TestCasesTransport):
                 request (~.test_case.BatchDeleteTestCasesRequest):
                     The request object. The request message for
                 [TestCases.BatchDeleteTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.BatchDeleteTestCases].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -815,7 +814,6 @@ class TestCasesRestTransport(TestCasesTransport):
                 request (~.test_case.BatchRunTestCasesRequest):
                     The request object. The request message for
                 [TestCases.BatchRunTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.BatchRunTestCases].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -917,7 +915,6 @@ class TestCasesRestTransport(TestCasesTransport):
                 request (~.test_case.CalculateCoverageRequest):
                     The request object. The request message for
                 [TestCases.CalculateCoverage][google.cloud.dialogflow.cx.v3beta1.TestCases.CalculateCoverage].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1009,7 +1006,6 @@ class TestCasesRestTransport(TestCasesTransport):
                 request (~.gcdc_test_case.CreateTestCaseRequest):
                     The request object. The request message for
                 [TestCases.CreateTestCase][google.cloud.dialogflow.cx.v3beta1.TestCases.CreateTestCase].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1108,7 +1104,6 @@ class TestCasesRestTransport(TestCasesTransport):
                 request (~.test_case.ExportTestCasesRequest):
                     The request object. The request message for
                 [TestCases.ExportTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.ExportTestCases].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1208,7 +1203,6 @@ class TestCasesRestTransport(TestCasesTransport):
                 request (~.test_case.GetTestCaseRequest):
                     The request object. The request message for
                 [TestCases.GetTestCase][google.cloud.dialogflow.cx.v3beta1.TestCases.GetTestCase].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1296,7 +1290,6 @@ class TestCasesRestTransport(TestCasesTransport):
                 request (~.test_case.GetTestCaseResultRequest):
                     The request object. The request message for
                 [TestCases.GetTestCaseResult][google.cloud.dialogflow.cx.v3beta1.TestCases.GetTestCaseResult].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1388,7 +1381,6 @@ class TestCasesRestTransport(TestCasesTransport):
                 request (~.test_case.ImportTestCasesRequest):
                     The request object. The request message for
                 [TestCases.ImportTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.ImportTestCases].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1488,7 +1480,6 @@ class TestCasesRestTransport(TestCasesTransport):
                 request (~.test_case.ListTestCaseResultsRequest):
                     The request object. The request message for
                 [TestCases.ListTestCaseResults][google.cloud.dialogflow.cx.v3beta1.TestCases.ListTestCaseResults].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1580,7 +1571,6 @@ class TestCasesRestTransport(TestCasesTransport):
                 request (~.test_case.ListTestCasesRequest):
                     The request object. The request message for
                 [TestCases.ListTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.ListTestCases].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1670,7 +1660,6 @@ class TestCasesRestTransport(TestCasesTransport):
                 request (~.test_case.RunTestCaseRequest):
                     The request object. The request message for
                 [TestCases.RunTestCase][google.cloud.dialogflow.cx.v3beta1.TestCases.RunTestCase].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1770,7 +1759,6 @@ class TestCasesRestTransport(TestCasesTransport):
                 request (~.gcdc_test_case.UpdateTestCaseRequest):
                     The request object. The request message for
                 [TestCases.UpdateTestCase][google.cloud.dialogflow.cx.v3beta1.TestCases.UpdateTestCase].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

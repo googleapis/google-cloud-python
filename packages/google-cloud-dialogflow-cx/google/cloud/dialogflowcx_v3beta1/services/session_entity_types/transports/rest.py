@@ -473,7 +473,6 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
                     request (~.gcdc_session_entity_type.CreateSessionEntityTypeRequest):
                         The request object. The request message for
                     [SessionEntityTypes.CreateSessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.CreateSessionEntityType].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -597,7 +596,6 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
                     request (~.session_entity_type.DeleteSessionEntityTypeRequest):
                         The request object. The request message for
                     [SessionEntityTypes.DeleteSessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.DeleteSessionEntityType].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -679,7 +677,6 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
                 request (~.session_entity_type.GetSessionEntityTypeRequest):
                     The request object. The request message for
                 [SessionEntityTypes.GetSessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.GetSessionEntityType].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -790,7 +787,6 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
                 request (~.session_entity_type.ListSessionEntityTypesRequest):
                     The request object. The request message for
                 [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.ListSessionEntityTypes].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -887,7 +883,6 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
                     request (~.gcdc_session_entity_type.UpdateSessionEntityTypeRequest):
                         The request object. The request message for
                     [SessionEntityTypes.UpdateSessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.UpdateSessionEntityType].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
