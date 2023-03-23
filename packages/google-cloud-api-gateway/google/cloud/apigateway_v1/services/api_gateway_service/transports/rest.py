@@ -708,7 +708,6 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
                 request (~.apigateway.CreateApiRequest):
                     The request object. Request message for
                 ApiGatewayService.CreateApi
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -808,7 +807,6 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
                 request (~.apigateway.CreateApiConfigRequest):
                     The request object. Request message for
                 ApiGatewayService.CreateApiConfig
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -910,7 +908,6 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
                 request (~.apigateway.CreateGatewayRequest):
                     The request object. Request message for
                 ApiGatewayService.CreateGateway
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1008,7 +1005,6 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
                 request (~.apigateway.DeleteApiRequest):
                     The request object. Request message for
                 ApiGatewayService.DeleteApi
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1097,7 +1093,6 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
                 request (~.apigateway.DeleteApiConfigRequest):
                     The request object. Request message for
                 ApiGatewayService.DeleteApiConfig
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1188,7 +1183,6 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
                 request (~.apigateway.DeleteGatewayRequest):
                     The request object. Request message for
                 ApiGatewayService.DeleteGateway
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1277,7 +1271,6 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
                 request (~.apigateway.GetApiRequest):
                     The request object. Request message for
                 ApiGatewayService.GetApi
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1367,7 +1360,6 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
                 request (~.apigateway.GetApiConfigRequest):
                     The request object. Request message for
                 ApiGatewayService.GetApiConfig
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1458,7 +1450,6 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
                 request (~.apigateway.GetGatewayRequest):
                     The request object. Request message for
                 ApiGatewayService.GetGateway
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1552,7 +1543,6 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
                 request (~.apigateway.ListApiConfigsRequest):
                     The request object. Request message for
                 ApiGatewayService.ListApiConfigs
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1644,7 +1634,6 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
                 request (~.apigateway.ListApisRequest):
                     The request object. Request message for
                 ApiGatewayService.ListApis
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1734,7 +1723,6 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
                 request (~.apigateway.ListGatewaysRequest):
                     The request object. Request message for
                 ApiGatewayService.ListGateways
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1824,7 +1812,6 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
                 request (~.apigateway.UpdateApiRequest):
                     The request object. Request message for
                 ApiGatewayService.UpdateApi
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1922,7 +1909,6 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
                 request (~.apigateway.UpdateApiConfigRequest):
                     The request object. Request message for
                 ApiGatewayService.UpdateApiConfig
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2022,7 +2008,6 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
                 request (~.apigateway.UpdateGatewayRequest):
                     The request object. Request message for
                 ApiGatewayService.UpdateGateway
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
