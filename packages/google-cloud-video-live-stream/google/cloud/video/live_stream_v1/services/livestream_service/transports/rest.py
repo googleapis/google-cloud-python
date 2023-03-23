@@ -841,7 +841,6 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
                 request (~.service.CreateChannelRequest):
                     The request object. Request message for
                 "LivestreamService.CreateChannel".
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -941,7 +940,6 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
                 request (~.service.CreateEventRequest):
                     The request object. Request message for
                 "LivestreamService.CreateEvent".
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1044,7 +1042,6 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
                 request (~.service.CreateInputRequest):
                     The request object. Request message for
                 "LivestreamService.CreateInput".
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1142,7 +1139,6 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
                 request (~.service.DeleteChannelRequest):
                     The request object. Request message for
                 "LivestreamService.DeleteChannel".
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1231,7 +1227,6 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
                 request (~.service.DeleteEventRequest):
                     The request object. Request message for
                 "LivestreamService.DeleteEvent".
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1307,7 +1302,6 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
                 request (~.service.DeleteInputRequest):
                     The request object. Request message for
                 "LivestreamService.DeleteInput".
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1396,7 +1390,6 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
                 request (~.service.GetChannelRequest):
                     The request object. Request message for
                 "LivestreamService.GetChannel".
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1492,7 +1485,6 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
                 request (~.service.GetEventRequest):
                     The request object. Request message for
                 "LivestreamService.GetEvent".
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1584,7 +1576,6 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
                 request (~.service.GetInputRequest):
                     The request object. Request message for
                 "LivestreamService.GetInput".
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1675,7 +1666,6 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
                 request (~.service.ListChannelsRequest):
                     The request object. Request message for
                 "LivestreamService.ListChannels".
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1765,7 +1755,6 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
                 request (~.service.ListEventsRequest):
                     The request object. Request message for
                 "LivestreamService.ListEvents".
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1855,7 +1844,6 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
                 request (~.service.ListInputsRequest):
                     The request object. Request message for
                 "LivestreamService.ListInputs".
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1945,7 +1933,6 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
                 request (~.service.StartChannelRequest):
                     The request object. Request message for
                 "LivestreamService.StartChannel".
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2043,7 +2030,6 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
                 request (~.service.StopChannelRequest):
                     The request object. Request message for
                 "LivestreamService.StopChannel".
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2141,7 +2127,6 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
                 request (~.service.UpdateChannelRequest):
                     The request object. Request message for
                 "LivestreamService.UpdateChannel".
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2239,7 +2224,6 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
                 request (~.service.UpdateInputRequest):
                     The request object. Request message for
                 "LivestreamService.UpdateInput".
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
