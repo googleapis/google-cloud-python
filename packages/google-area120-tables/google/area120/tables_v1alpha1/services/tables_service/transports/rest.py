@@ -523,7 +523,6 @@ class TablesServiceRestTransport(TablesServiceTransport):
                 request (~.tables.BatchCreateRowsRequest):
                     The request object. Request message for
                 TablesService.BatchCreateRows.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -624,7 +623,6 @@ class TablesServiceRestTransport(TablesServiceTransport):
                 request (~.tables.BatchDeleteRowsRequest):
                     The request object. Request message for
                 TablesService.BatchDeleteRows
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -711,7 +709,6 @@ class TablesServiceRestTransport(TablesServiceTransport):
                 request (~.tables.BatchUpdateRowsRequest):
                     The request object. Request message for
                 TablesService.BatchUpdateRows.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -812,7 +809,6 @@ class TablesServiceRestTransport(TablesServiceTransport):
                 request (~.tables.CreateRowRequest):
                     The request object. Request message for
                 TablesService.CreateRow.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -909,7 +905,6 @@ class TablesServiceRestTransport(TablesServiceTransport):
                 request (~.tables.DeleteRowRequest):
                     The request object. Request message for
                 TablesService.DeleteRow
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -985,7 +980,6 @@ class TablesServiceRestTransport(TablesServiceTransport):
                 request (~.tables.GetRowRequest):
                     The request object. Request message for
                 TablesService.GetRow.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1073,7 +1067,6 @@ class TablesServiceRestTransport(TablesServiceTransport):
                 request (~.tables.GetTableRequest):
                     The request object. Request message for
                 TablesService.GetTable.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1161,7 +1154,6 @@ class TablesServiceRestTransport(TablesServiceTransport):
                 request (~.tables.GetWorkspaceRequest):
                     The request object. Request message for
                 TablesService.GetWorkspace.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1249,7 +1241,6 @@ class TablesServiceRestTransport(TablesServiceTransport):
                 request (~.tables.ListRowsRequest):
                     The request object. Request message for
                 TablesService.ListRows.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1329,7 +1320,6 @@ class TablesServiceRestTransport(TablesServiceTransport):
                 request (~.tables.ListTablesRequest):
                     The request object. Request message for
                 TablesService.ListTables.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1408,7 +1398,6 @@ class TablesServiceRestTransport(TablesServiceTransport):
                 request (~.tables.ListWorkspacesRequest):
                     The request object. Request message for
                 TablesService.ListWorkspaces.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1497,7 +1486,6 @@ class TablesServiceRestTransport(TablesServiceTransport):
                 request (~.tables.UpdateRowRequest):
                     The request object. Request message for
                 TablesService.UpdateRow.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
