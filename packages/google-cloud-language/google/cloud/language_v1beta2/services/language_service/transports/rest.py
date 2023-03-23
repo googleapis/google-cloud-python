@@ -480,7 +480,6 @@ class LanguageServiceRestTransport(LanguageServiceTransport):
                 request (~.language_service.AnalyzeEntitySentimentRequest):
                     The request object. The entity-level sentiment analysis
                 request message.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -581,7 +580,6 @@ class LanguageServiceRestTransport(LanguageServiceTransport):
                 request (~.language_service.AnalyzeSentimentRequest):
                     The request object. The sentiment analysis request
                 message.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -779,7 +777,6 @@ class LanguageServiceRestTransport(LanguageServiceTransport):
                 annotation API, which can perform
                 multiple analysis types (sentiment,
                 entities, and syntax) in one call.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -878,7 +875,6 @@ class LanguageServiceRestTransport(LanguageServiceTransport):
                 request (~.language_service.ClassifyTextRequest):
                     The request object. The document classification request
                 message.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

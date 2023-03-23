@@ -840,8 +840,9 @@ class LanguageServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.language_v1beta2.types.AnnotateTextRequest, dict]]):
                 The request object. The request message for the text
-                annotation API, which can perform multiple analysis
-                types (sentiment, entities, and syntax) in one call.
+                annotation API, which can perform
+                multiple analysis types (sentiment,
+                entities, and syntax) in one call.
             document (:class:`google.cloud.language_v1beta2.types.Document`):
                 Required. Input document.
                 This corresponds to the ``document`` field
