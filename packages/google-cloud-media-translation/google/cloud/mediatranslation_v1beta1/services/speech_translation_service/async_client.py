@@ -279,14 +279,13 @@ class SpeechTranslationServiceAsyncClient:
 
         Args:
             requests (AsyncIterator[`google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechRequest`]):
-                The request object AsyncIterator. The top-level message sent by the
-                client for the `StreamingTranslateSpeech` method.
-                Multiple `StreamingTranslateSpeechRequest` messages are
-                sent. The first message must contain a
-                `streaming_config` message and must not contain
-                `audio_content` data. All subsequent messages must
-                contain `audio_content` data and must not contain a
-                `streaming_config` message.
+                The request object AsyncIterator. The top-level message sent by the client for the
+                ``StreamingTranslateSpeech`` method. Multiple
+                ``StreamingTranslateSpeechRequest`` messages are sent.
+                The first message must contain a ``streaming_config``
+                message and must not contain ``audio_content`` data. All
+                subsequent messages must contain ``audio_content`` data
+                and must not contain a ``streaming_config`` message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
