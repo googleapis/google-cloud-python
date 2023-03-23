@@ -1016,7 +1016,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.CreateChannelRequest):
                     The request object. The request message for the
                 CreateChannel method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1116,7 +1115,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.CreateChannelConnectionRequest):
                     The request object. The request message for the
                 CreateChannelConnection method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1219,7 +1217,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.CreateTriggerRequest):
                     The request object. The request message for the
                 CreateTrigger method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1319,7 +1316,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.DeleteChannelRequest):
                     The request object. The request message for the
                 DeleteChannel method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1408,7 +1404,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.DeleteChannelConnectionRequest):
                     The request object. The request message for the
                 DeleteChannelConnection method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1501,7 +1496,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.DeleteTriggerRequest):
                     The request object. The request message for the
                 DeleteTrigger method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1590,7 +1584,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.GetChannelRequest):
                     The request object. The request message for the
                 GetChannel method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1686,7 +1679,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.GetChannelConnectionRequest):
                     The request object. The request message for the
                 GetChannelConnection method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1783,7 +1775,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.GetGoogleChannelConfigRequest):
                     The request object. The request message for the
                 GetGoogleChannelConfig method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1881,7 +1872,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.GetProviderRequest):
                     The request object. The request message for the
                 GetProvider method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1971,7 +1961,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.GetTriggerRequest):
                     The request object. The request message for the
                 GetTrigger method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2061,7 +2050,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.ListChannelConnectionsRequest):
                     The request object. The request message for the
                 ListChannelConnections method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2153,7 +2141,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.ListChannelsRequest):
                     The request object. The request message for the
                 ListChannels method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2241,7 +2228,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.ListProvidersRequest):
                     The request object. The request message for the
                 ListProviders method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2329,7 +2315,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.ListTriggersRequest):
                     The request object. The request message for the
                 ListTriggers method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2419,7 +2404,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.UpdateChannelRequest):
                     The request object. The request message for the
                 UpdateChannel method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2518,7 +2502,6 @@ class EventarcRestTransport(EventarcTransport):
                     request (~.eventarc.UpdateGoogleChannelConfigRequest):
                         The request object. The request message for the
                     UpdateGoogleChannelConfig method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2627,7 +2610,6 @@ class EventarcRestTransport(EventarcTransport):
                 request (~.eventarc.UpdateTriggerRequest):
                     The request object. The request message for the
                 UpdateTrigger method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
