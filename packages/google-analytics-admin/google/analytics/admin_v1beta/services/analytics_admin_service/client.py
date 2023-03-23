@@ -783,8 +783,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         Args:
             request (Union[google.analytics.admin_v1beta.types.ListAccountsRequest, dict]):
-                The request object. Request message for ListAccounts
-                RPC.
+                The request object. Request message for ListAccounts RPC.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2000,8 +1999,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         Args:
             request (Union[google.analytics.admin_v1beta.types.ListFirebaseLinksRequest, dict]):
-                The request object. Request message for
-                ListFirebaseLinks RPC
+                The request object. Request message for ListFirebaseLinks
+                RPC
             parent (str):
                 Required. Format: properties/{property_id} Example:
                 properties/1234
@@ -4651,8 +4650,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         Args:
             request (Union[google.analytics.admin_v1beta.types.ListCustomMetricsRequest, dict]):
-                The request object. Request message for
-                ListCustomMetrics RPC.
+                The request object. Request message for ListCustomMetrics
+                RPC.
             parent (str):
                 Required. Example format:
                 properties/1234

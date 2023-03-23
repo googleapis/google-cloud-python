@@ -1549,7 +1549,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     request (~.analytics_admin.AcknowledgeUserDataCollectionRequest):
                         The request object. Request message for
                     AcknowledgeUserDataCollection RPC.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1652,7 +1651,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.ArchiveCustomDimensionRequest):
                     The request object. Request message for
                 ArchiveCustomDimension RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1739,7 +1737,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.ArchiveCustomMetricRequest):
                     The request object. Request message for
                 ArchiveCustomMetric RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1826,7 +1823,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.CreateConversionEventRequest):
                     The request object. Request message for
                 CreateConversionEvent RPC
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1927,7 +1923,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.CreateCustomDimensionRequest):
                     The request object. Request message for
                 CreateCustomDimension RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2026,7 +2021,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.CreateCustomMetricRequest):
                     The request object. Request message for
                 CreateCustomMetric RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2125,7 +2119,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.CreateDataStreamRequest):
                     The request object. Request message for CreateDataStream
                 RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2226,7 +2219,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.CreateFirebaseLinkRequest):
                     The request object. Request message for
                 CreateFirebaseLink RPC
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2327,7 +2319,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.CreateGoogleAdsLinkRequest):
                     The request object. Request message for
                 CreateGoogleAdsLink RPC
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2429,7 +2420,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     request (~.analytics_admin.CreateMeasurementProtocolSecretRequest):
                         The request object. Request message for
                     CreateMeasurementProtocolSecret RPC
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2535,7 +2525,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.CreatePropertyRequest):
                     The request object. Request message for CreateProperty
                 RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2634,7 +2623,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.DeleteAccountRequest):
                     The request object. Request message for DeleteAccount
                 RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2710,7 +2698,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.DeleteConversionEventRequest):
                     The request object. Request message for
                 DeleteConversionEvent RPC
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2788,7 +2775,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.DeleteDataStreamRequest):
                     The request object. Request message for DeleteDataStream
                 RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2866,7 +2852,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.DeleteFirebaseLinkRequest):
                     The request object. Request message for
                 DeleteFirebaseLink RPC
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2944,7 +2929,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.DeleteGoogleAdsLinkRequest):
                     The request object. Request message for
                 DeleteGoogleAdsLink RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3023,7 +3007,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     request (~.analytics_admin.DeleteMeasurementProtocolSecretRequest):
                         The request object. Request message for
                     DeleteMeasurementProtocolSecret RPC
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3106,7 +3089,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.DeletePropertyRequest):
                     The request object. Request message for DeleteProperty
                 RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3284,7 +3266,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.GetConversionEventRequest):
                     The request object. Request message for
                 GetConversionEvent RPC
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3376,7 +3357,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.GetCustomDimensionRequest):
                     The request object. Request message for
                 GetCustomDimension RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3466,7 +3446,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.GetCustomMetricRequest):
                     The request object. Request message for GetCustomMetric
                 RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3557,7 +3536,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     request (~.analytics_admin.GetDataRetentionSettingsRequest):
                         The request object. Request message for
                     GetDataRetentionSettings RPC.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3649,7 +3627,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.GetDataSharingSettingsRequest):
                     The request object. Request message for
                 GetDataSharingSettings RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3742,7 +3719,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.GetDataStreamRequest):
                     The request object. Request message for GetDataStream
                 RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3833,7 +3809,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     request (~.analytics_admin.GetMeasurementProtocolSecretRequest):
                         The request object. Request message for
                     GetMeasurementProtocolSecret RPC.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -4078,7 +4053,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.ListAccountSummariesRequest):
                     The request object. Request message for
                 ListAccountSummaries RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4169,7 +4143,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.ListConversionEventsRequest):
                     The request object. Request message for
                 ListConversionEvents RPC
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4261,7 +4234,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.ListCustomDimensionsRequest):
                     The request object. Request message for
                 ListCustomDimensions RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4353,7 +4325,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.ListCustomMetricsRequest):
                     The request object. Request message for ListCustomMetrics
                 RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4445,7 +4416,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.ListDataStreamsRequest):
                     The request object. Request message for ListDataStreams
                 RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4537,7 +4507,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.ListFirebaseLinksRequest):
                     The request object. Request message for ListFirebaseLinks
                 RPC
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4629,7 +4598,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.ListGoogleAdsLinksRequest):
                     The request object. Request message for
                 ListGoogleAdsLinks RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4722,7 +4690,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     request (~.analytics_admin.ListMeasurementProtocolSecretsRequest):
                         The request object. Request message for
                     ListMeasurementProtocolSecret RPC
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -4818,7 +4785,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.ListPropertiesRequest):
                     The request object. Request message for ListProperties
                 RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4898,7 +4864,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.ProvisionAccountTicketRequest):
                     The request object. Request message for
                 ProvisionAccountTicket RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4999,7 +4964,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     request (~.analytics_admin.SearchChangeHistoryEventsRequest):
                         The request object. Request message for
                     SearchChangeHistoryEvents RPC.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -5102,7 +5066,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.UpdateAccountRequest):
                     The request object. Request message for UpdateAccount
                 RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5203,7 +5166,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.UpdateCustomDimensionRequest):
                     The request object. Request message for
                 UpdateCustomDimension RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5304,7 +5266,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.UpdateCustomMetricRequest):
                     The request object. Request message for
                 UpdateCustomMetric RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5406,7 +5367,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     request (~.analytics_admin.UpdateDataRetentionSettingsRequest):
                         The request object. Request message for
                     UpdateDataRetentionSettings RPC.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -5509,7 +5469,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.UpdateDataStreamRequest):
                     The request object. Request message for UpdateDataStream
                 RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5612,7 +5571,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.UpdateGoogleAdsLinkRequest):
                     The request object. Request message for
                 UpdateGoogleAdsLink RPC
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5714,7 +5672,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     request (~.analytics_admin.UpdateMeasurementProtocolSecretRequest):
                         The request object. Request message for
                     UpdateMeasurementProtocolSecret RPC
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -5822,7 +5779,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                 request (~.analytics_admin.UpdatePropertyRequest):
                     The request object. Request message for UpdateProperty
                 RPC.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

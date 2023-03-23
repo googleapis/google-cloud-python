@@ -1016,8 +1016,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListAccountsRequest, dict]):
-                The request object. Request message for ListAccounts
-                RPC.
+                The request object. Request message for ListAccounts RPC.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2127,8 +2126,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.BatchGetUserLinksRequest, dict]):
-                The request object. Request message for
-                BatchGetUserLinks RPC.
+                The request object. Request message for BatchGetUserLinks
+                RPC.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2435,14 +2434,16 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             request (Union[google.analytics.admin_v1alpha.types.CreateUserLinkRequest, dict]):
                 The request object. Request message for CreateUserLink
                 RPC.
-                Users can have multiple email addresses associated with
-                their Google account, and one of these email addresses
-                is the "primary" email address. Any of the email
-                addresses associated with a Google account may be used
-                for a new UserLink, but the returned UserLink will
-                always contain the "primary" email address. As a result,
-                the input and output email address for this request may
-                differ.
+                Users can have multiple email addresses
+                associated with their Google account,
+                and one of these email addresses is the
+                "primary" email address. Any of the
+                email addresses associated with a Google
+                account may be used for a new UserLink,
+                but the returned UserLink will always
+                contain the "primary" email address. As
+                a result, the input and output email
+                address for this request may differ.
             parent (str):
                 Required. Example format:
                 accounts/1234
@@ -3203,8 +3204,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListFirebaseLinksRequest, dict]):
-                The request object. Request message for
-                ListFirebaseLinks RPC
+                The request object. Request message for ListFirebaseLinks
+                RPC
             parent (str):
                 Required. Format: properties/{property_id} Example:
                 properties/1234
@@ -6017,7 +6018,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetDisplayVideo360AdvertiserLinkProposalRequest, dict]):
                 The request object. Request message for
-                GetDisplayVideo360AdvertiserLinkProposal RPC.
+                GetDisplayVideo360AdvertiserLinkProposal
+                RPC.
             name (str):
                 Required. The name of the
                 DisplayVideo360AdvertiserLinkProposal to
@@ -6140,7 +6142,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinkProposalsRequest, dict]):
                 The request object. Request message for
-                ListDisplayVideo360AdvertiserLinkProposals RPC.
+                ListDisplayVideo360AdvertiserLinkProposals
+                RPC.
             parent (str):
                 Required. Example format:
                 properties/1234
@@ -6267,7 +6270,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateDisplayVideo360AdvertiserLinkProposalRequest, dict]):
                 The request object. Request message for
-                CreateDisplayVideo360AdvertiserLinkProposal RPC.
+                CreateDisplayVideo360AdvertiserLinkProposal
+                RPC.
             parent (str):
                 Required. Example format:
                 properties/1234
@@ -6398,7 +6402,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteDisplayVideo360AdvertiserLinkProposalRequest, dict]):
                 The request object. Request message for
-                DeleteDisplayVideo360AdvertiserLinkProposal RPC.
+                DeleteDisplayVideo360AdvertiserLinkProposal
+                RPC.
             name (str):
                 Required. The name of the
                 DisplayVideo360AdvertiserLinkProposal to
@@ -6508,7 +6513,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ApproveDisplayVideo360AdvertiserLinkProposalRequest, dict]):
                 The request object. Request message for
-                ApproveDisplayVideo360AdvertiserLinkProposal RPC.
+                ApproveDisplayVideo360AdvertiserLinkProposal
+                RPC.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -6607,7 +6613,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CancelDisplayVideo360AdvertiserLinkProposalRequest, dict]):
                 The request object. Request message for
-                CancelDisplayVideo360AdvertiserLinkProposal RPC.
+                CancelDisplayVideo360AdvertiserLinkProposal
+                RPC.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -7479,8 +7486,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListCustomMetricsRequest, dict]):
-                The request object. Request message for
-                ListCustomMetrics RPC.
+                The request object. Request message for ListCustomMetrics
+                RPC.
             parent (str):
                 Required. Example format:
                 properties/1234
@@ -11427,7 +11434,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Args:
             request (Union[google.analytics.admin_v1alpha.types.SetAutomatedGa4ConfigurationOptOutRequest, dict]):
                 The request object. Request for setting the opt out
-                status for the automated GA4 setup process.
+                status for the automated GA4 setup
+                process.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -11511,7 +11519,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Args:
             request (Union[google.analytics.admin_v1alpha.types.FetchAutomatedGa4ConfigurationOptOutRequest, dict]):
                 The request object. Request for fetching the opt out
-                status for the automated GA4 setup process.
+                status for the automated GA4 setup
+                process.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -11698,8 +11707,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListBigQueryLinksRequest, dict]):
-                The request object. Request message for
-                ListBigQueryLinks RPC.
+                The request object. Request message for ListBigQueryLinks
+                RPC.
             parent (str):
                 Required. The name of the property to list BigQuery
                 links under. Format: properties/{property_id} Example:
