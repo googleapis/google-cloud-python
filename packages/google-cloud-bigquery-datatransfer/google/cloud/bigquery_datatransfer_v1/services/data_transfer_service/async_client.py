@@ -390,7 +390,8 @@ class DataTransferServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesRequest, dict]]):
                 The request object. Request to list supported data
-                sources and their data transfer settings.
+                sources and their data transfer
+                settings.
             parent (:class:`str`):
                 Required. The BigQuery project id for which data sources
                 should be returned. Must be in the form:
@@ -521,13 +522,16 @@ class DataTransferServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest, dict]]):
                 The request object. A request to create a data transfer
-                configuration. If new credentials are needed for this
-                transfer configuration, authorization info must be
-                provided. If authorization info is provided, the
-                transfer configuration will be associated with the user
-                id corresponding to the authorization info. Otherwise,
-                the transfer configuration will be associated with the
-                calling user.
+                configuration. If new credentials are
+                needed for this transfer configuration,
+                authorization info must be provided. If
+                authorization info is provided, the
+                transfer configuration will be
+                associated with the user id
+                corresponding to the authorization info.
+                Otherwise, the transfer configuration
+                will be associated with the calling
+                user.
             parent (:class:`str`):
                 Required. The BigQuery project id where the transfer
                 configuration should be created. Must be in the format
@@ -653,8 +657,9 @@ class DataTransferServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.UpdateTransferConfigRequest, dict]]):
                 The request object. A request to update a transfer
-                configuration. To update the user id of the transfer
-                configuration, authorization info needs to be provided.
+                configuration. To update the user id of
+                the transfer configuration,
+                authorization info needs to be provided.
             transfer_config (:class:`google.cloud.bigquery_datatransfer_v1.types.TransferConfig`):
                 Required. Data transfer configuration
                 to create.
@@ -771,8 +776,9 @@ class DataTransferServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.DeleteTransferConfigRequest, dict]]):
                 The request object. A request to delete data transfer
-                information. All associated transfer runs and log
-                messages will be deleted as well.
+                information. All associated transfer
+                runs and log messages will be deleted as
+                well.
             name (:class:`str`):
                 Required. The field will contain name of the resource
                 requested, for example:
@@ -1450,8 +1456,8 @@ class DataTransferServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.DeleteTransferRunRequest, dict]]):
-                The request object. A request to delete data transfer
-                run information.
+                The request object. A request to delete data transfer run
+                information.
             name (:class:`str`):
                 Required. The field will contain name of the resource
                 requested, for example:
@@ -1558,8 +1564,7 @@ class DataTransferServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest, dict]]):
-                The request object. A request to list data transfer
-                runs.
+                The request object. A request to list data transfer runs.
             parent (:class:`str`):
                 Required. Name of transfer configuration for which
                 transfer runs should be retrieved. Format of transfer
@@ -1687,7 +1692,8 @@ class DataTransferServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest, dict]]):
                 The request object. A request to get user facing log
-                messages associated with data transfer run.
+                messages associated with data transfer
+                run.
             parent (:class:`str`):
                 Required. Transfer run name in the form:
                 ``projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}``
@@ -1814,13 +1820,16 @@ class DataTransferServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.CheckValidCredsRequest, dict]]):
                 The request object. A request to determine whether the
-                user has valid credentials. This method is used to limit
-                the number of OAuth popups in the user interface. The
-                user id is inferred from the API call context.
-                If the data source has the Google+ authorization type,
-                this method returns false, as it cannot be determined
-                whether the credentials are already valid merely based
-                on the user id.
+                user has valid credentials. This method
+                is used to limit the number of OAuth
+                popups in the user interface. The user
+                id is inferred from the API call
+                context. If the data source has the
+                Google+ authorization type, this method
+                returns false, as it cannot be
+                determined whether the credentials are
+                already valid merely based on the user
+                id.
             name (:class:`str`):
                 Required. The data source in the form:
                 ``projects/{project_id}/dataSources/{data_source_id}``
@@ -1936,9 +1945,8 @@ class DataTransferServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.EnrollDataSourcesRequest, dict]]):
-                The request object. A request to enroll a set of data
-                sources so they are visible in the BigQuery UI's
-                `Transfer` tab.
+                The request object. A request to enroll a set of data sources so they are
+                visible in the BigQuery UI's ``Transfer`` tab.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

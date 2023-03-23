@@ -673,7 +673,6 @@ class DataTransferServiceRestTransport(DataTransferServiceTransport):
                 determined whether the credentials are
                 already valid merely based on the user
                 id.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -788,7 +787,6 @@ class DataTransferServiceRestTransport(DataTransferServiceTransport):
                 Otherwise, the transfer configuration
                 will be associated with the calling
                 user.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -901,7 +899,6 @@ class DataTransferServiceRestTransport(DataTransferServiceTransport):
                 information. All associated transfer
                 runs and log messages will be deleted as
                 well.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -983,7 +980,6 @@ class DataTransferServiceRestTransport(DataTransferServiceTransport):
                 request (~.datatransfer.DeleteTransferRunRequest):
                     The request object. A request to delete data transfer run
                 information.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1055,7 +1051,6 @@ class DataTransferServiceRestTransport(DataTransferServiceTransport):
                 request (~.datatransfer.EnrollDataSourcesRequest):
                     The request object. A request to enroll a set of data sources so they are
                 visible in the BigQuery UI's ``Transfer`` tab.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1238,7 +1233,6 @@ class DataTransferServiceRestTransport(DataTransferServiceTransport):
                 request (~.datatransfer.GetTransferConfigRequest):
                     The request object. A request to get data transfer
                 information.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1339,7 +1333,6 @@ class DataTransferServiceRestTransport(DataTransferServiceTransport):
                 request (~.datatransfer.GetTransferRunRequest):
                     The request object. A request to get data transfer run
                 information.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1434,7 +1427,6 @@ class DataTransferServiceRestTransport(DataTransferServiceTransport):
                     The request object. Request to list supported data
                 sources and their data transfer
                 settings.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1530,7 +1522,6 @@ class DataTransferServiceRestTransport(DataTransferServiceTransport):
                 request (~.datatransfer.ListTransferConfigsRequest):
                     The request object. A request to list data transfers
                 configured for a BigQuery project.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1627,7 +1618,6 @@ class DataTransferServiceRestTransport(DataTransferServiceTransport):
                     The request object. A request to get user facing log
                 messages associated with data transfer
                 run.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1817,7 +1807,6 @@ class DataTransferServiceRestTransport(DataTransferServiceTransport):
                 request (~.datatransfer.ScheduleTransferRunsRequest):
                     The request object. A request to schedule transfer runs
                 for a time range.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1914,7 +1903,6 @@ class DataTransferServiceRestTransport(DataTransferServiceTransport):
                     request (~.datatransfer.StartManualTransferRunsRequest):
                         The request object. A request to start manual transfer
                     runs.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2023,7 +2011,6 @@ class DataTransferServiceRestTransport(DataTransferServiceTransport):
                 configuration. To update the user id of
                 the transfer configuration,
                 authorization info needs to be provided.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
