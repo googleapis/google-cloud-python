@@ -1913,8 +1913,8 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.LabelImageRequest, dict]):
-                The request object. Request message for starting an
-                image labeling task.
+                The request object. Request message for starting an image
+                labeling task.
             parent (str):
                 Required. Name of the dataset to request labeling task,
                 format: projects/{project_id}/datasets/{dataset_id}
@@ -3277,8 +3277,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.ListInstructionsRequest, dict]):
-                The request object. Request message for
-                ListInstructions.
+                The request object. Request message for ListInstructions.
             parent (str):
                 Required. Instruction resource parent, format:
                 projects/{project_id}
@@ -3605,8 +3604,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.SearchEvaluationsRequest, dict]):
-                The request object. Request message for
-                SearchEvaluation.
+                The request object. Request message for SearchEvaluation.
             parent (str):
                 Required. Evaluation search parent (project ID). Format:
                 "projects/{project_id}"
@@ -4138,8 +4136,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
 
         Args:
             request (Union[google.cloud.datalabeling_v1beta1.types.GetEvaluationJobRequest, dict]):
-                The request object. Request message for
-                GetEvaluationJob.
+                The request object. Request message for GetEvaluationJob.
             name (str):
                 Required. Name of the evaluation job. Format:
 
