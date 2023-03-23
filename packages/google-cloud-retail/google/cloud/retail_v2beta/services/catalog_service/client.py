@@ -838,8 +838,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.retail_v2beta.types.SetDefaultBranchRequest, dict]):
-                The request object. Request message to set a specified
-                branch as new default_branch.
+                The request object. Request message to set a specified branch as new
+                default_branch.
             catalog (str):
                 Full resource name of the catalog, such as
                 ``projects/*/locations/global/catalogs/default_catalog``.

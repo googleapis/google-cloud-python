@@ -579,7 +579,6 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
                     The request object. Request for
                 [CatalogService.AddCatalogAttribute][google.cloud.retail.v2.CatalogService.AddCatalogAttribute]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -679,7 +678,6 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
                     The request object. Request for
                 [CatalogService.GetAttributesConfig][google.cloud.retail.v2.CatalogService.GetAttributesConfig]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -770,7 +768,6 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
                     The request object. Request for
                 [CatalogService.GetCompletionConfig][google.cloud.retail.v2.CatalogService.GetCompletionConfig]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -853,7 +850,6 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
                 request (~.catalog_service.GetDefaultBranchRequest):
                     The request object. Request message to show which branch
                 is currently the default branch.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -945,7 +941,6 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
                     The request object. Request for
                 [CatalogService.ListCatalogs][google.cloud.retail.v2.CatalogService.ListCatalogs]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1037,7 +1032,6 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
                     The request object. Request for
                 [CatalogService.RemoveCatalogAttribute][google.cloud.retail.v2.CatalogService.RemoveCatalogAttribute]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1137,7 +1131,6 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
                     The request object. Request for
                 [CatalogService.ReplaceCatalogAttribute][google.cloud.retail.v2.CatalogService.ReplaceCatalogAttribute]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1226,7 +1219,6 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
                 request (~.catalog_service.SetDefaultBranchRequest):
                     The request object. Request message to set a specified branch as new
                 default_branch.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1313,7 +1305,6 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
                     The request object. Request for
                 [CatalogService.UpdateAttributesConfig][google.cloud.retail.v2.CatalogService.UpdateAttributesConfig]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1413,7 +1404,6 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
                     The request object. Request for
                 [CatalogService.UpdateCatalog][google.cloud.retail.v2.CatalogService.UpdateCatalog]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1511,7 +1501,6 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
                     The request object. Request for
                 [CatalogService.UpdateCompletionConfig][google.cloud.retail.v2.CatalogService.UpdateCompletionConfig]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

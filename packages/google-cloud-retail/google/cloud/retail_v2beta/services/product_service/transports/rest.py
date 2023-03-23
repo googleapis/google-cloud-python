@@ -641,7 +641,6 @@ class ProductServiceRestTransport(ProductServiceTransport):
                     The request object. Request message for
                 [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.AddFulfillmentPlaces]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -742,7 +741,6 @@ class ProductServiceRestTransport(ProductServiceTransport):
                     The request object. Request message for
                 [ProductService.AddLocalInventories][google.cloud.retail.v2beta.ProductService.AddLocalInventories]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -845,7 +843,6 @@ class ProductServiceRestTransport(ProductServiceTransport):
                     The request object. Request message for
                 [ProductService.CreateProduct][google.cloud.retail.v2beta.ProductService.CreateProduct]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -946,7 +943,6 @@ class ProductServiceRestTransport(ProductServiceTransport):
                     The request object. Request message for
                 [ProductService.DeleteProduct][google.cloud.retail.v2beta.ProductService.DeleteProduct]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1023,7 +1019,6 @@ class ProductServiceRestTransport(ProductServiceTransport):
                     The request object. Request message for
                 [ProductService.GetProduct][google.cloud.retail.v2beta.ProductService.GetProduct]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1211,7 +1206,6 @@ class ProductServiceRestTransport(ProductServiceTransport):
                     The request object. Request message for
                 [ProductService.ListProducts][google.cloud.retail.v2beta.ProductService.ListProducts]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1303,7 +1297,6 @@ class ProductServiceRestTransport(ProductServiceTransport):
                     The request object. Request message for
                 [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.RemoveFulfillmentPlaces]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1404,7 +1397,6 @@ class ProductServiceRestTransport(ProductServiceTransport):
                     The request object. Request message for
                 [ProductService.RemoveLocalInventories][google.cloud.retail.v2beta.ProductService.RemoveLocalInventories]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1505,7 +1497,6 @@ class ProductServiceRestTransport(ProductServiceTransport):
                     The request object. Request message for
                 [ProductService.SetInventory][google.cloud.retail.v2beta.ProductService.SetInventory]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1604,7 +1595,6 @@ class ProductServiceRestTransport(ProductServiceTransport):
                     The request object. Request message for
                 [ProductService.UpdateProduct][google.cloud.retail.v2beta.ProductService.UpdateProduct]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

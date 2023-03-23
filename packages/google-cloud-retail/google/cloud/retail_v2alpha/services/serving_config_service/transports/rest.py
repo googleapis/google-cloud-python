@@ -559,7 +559,6 @@ class ServingConfigServiceRestTransport(ServingConfigServiceTransport):
                 request (~.serving_config_service.CreateServingConfigRequest):
                     The request object. Request for CreateServingConfig
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -662,7 +661,6 @@ class ServingConfigServiceRestTransport(ServingConfigServiceTransport):
                 request (~.serving_config_service.DeleteServingConfigRequest):
                     The request object. Request for DeleteServingConfig
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -832,7 +830,6 @@ class ServingConfigServiceRestTransport(ServingConfigServiceTransport):
                 request (~.serving_config_service.ListServingConfigsRequest):
                     The request object. Request for ListServingConfigs
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1023,7 +1020,6 @@ class ServingConfigServiceRestTransport(ServingConfigServiceTransport):
                 request (~.serving_config_service.UpdateServingConfigRequest):
                     The request object. Request for UpdateServingConfig
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

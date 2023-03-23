@@ -691,7 +691,6 @@ class ModelServiceRestTransport(ModelServiceTransport):
                 request (~.model_service.ListModelsRequest):
                     The request object. Request for listing models associated
                 with a resource.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -779,7 +778,6 @@ class ModelServiceRestTransport(ModelServiceTransport):
                 request (~.model_service.PauseModelRequest):
                     The request object. Request for pausing training of a
                 model.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -883,7 +881,6 @@ class ModelServiceRestTransport(ModelServiceTransport):
                 request (~.model_service.ResumeModelRequest):
                     The request object. Request for resuming training of a
                 model.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -989,7 +986,6 @@ class ModelServiceRestTransport(ModelServiceTransport):
                 process now (instead of waiting for the
                 periodically scheduled tuning to
                 happen).
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1087,7 +1083,6 @@ class ModelServiceRestTransport(ModelServiceTransport):
                 request (~.model_service.UpdateModelRequest):
                     The request object. Request for updating an existing
                 model.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

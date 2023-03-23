@@ -966,8 +966,8 @@ class ModelServiceClient(metaclass=ModelServiceClientMeta):
 
         Args:
             request (Union[google.cloud.retail_v2beta.types.ListModelsRequest, dict]):
-                The request object. Request for listing models
-                associated with a resource.
+                The request object. Request for listing models associated
+                with a resource.
             parent (str):
                 Required. The parent for which to list models. Format:
                 ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}``
@@ -1210,8 +1210,9 @@ class ModelServiceClient(metaclass=ModelServiceClientMeta):
         Args:
             request (Union[google.cloud.retail_v2beta.types.TuneModelRequest, dict]):
                 The request object. Request to manually start a tuning
-                process now (instead of waiting for the periodically
-                scheduled tuning to happen).
+                process now (instead of waiting for the
+                periodically scheduled tuning to
+                happen).
             name (str):
                 Required. The resource name of the model to tune.
                 Format:

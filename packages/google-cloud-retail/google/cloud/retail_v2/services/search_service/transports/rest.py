@@ -275,7 +275,6 @@ class SearchServiceRestTransport(SearchServiceTransport):
                     The request object. Request message for
                 [SearchService.Search][google.cloud.retail.v2.SearchService.Search]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

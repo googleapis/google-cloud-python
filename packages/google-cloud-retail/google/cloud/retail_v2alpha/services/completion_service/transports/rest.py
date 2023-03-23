@@ -468,7 +468,6 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
                 request (~.import_config.ImportCompletionDataRequest):
                     The request object. Request message for
                 ImportCompletionData methods.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
