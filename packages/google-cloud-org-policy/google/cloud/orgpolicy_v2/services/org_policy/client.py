@@ -518,8 +518,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
 
         Args:
             request (Union[google.cloud.orgpolicy_v2.types.ListConstraintsRequest, dict]):
-                The request object. The request sent to the
-                [ListConstraints]
+                The request object. The request sent to the [ListConstraints]
                 [google.cloud.orgpolicy.v2.OrgPolicy.ListConstraints]
                 method.
             parent (str):
@@ -642,8 +641,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
 
         Args:
             request (Union[google.cloud.orgpolicy_v2.types.ListPoliciesRequest, dict]):
-                The request object. The request sent to the
-                [ListPolicies]
+                The request object. The request sent to the [ListPolicies]
                 [google.cloud.orgpolicy.v2.OrgPolicy.ListPolicies]
                 method.
             parent (str):
@@ -877,8 +875,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
 
         Args:
             request (Union[google.cloud.orgpolicy_v2.types.GetEffectivePolicyRequest, dict]):
-                The request object. The request sent to the
-                [GetEffectivePolicy]
+                The request object. The request sent to the [GetEffectivePolicy]
                 [google.cloud.orgpolicy.v2.OrgPolicy.GetEffectivePolicy]
                 method.
             name (str):
@@ -988,8 +985,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
 
         Args:
             request (Union[google.cloud.orgpolicy_v2.types.CreatePolicyRequest, dict]):
-                The request object. The request sent to the
-                [CreatePolicyRequest]
+                The request object. The request sent to the [CreatePolicyRequest]
                 [google.cloud.orgpolicy.v2.OrgPolicy.CreatePolicy]
                 method.
             parent (str):
@@ -1112,8 +1108,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
 
         Args:
             request (Union[google.cloud.orgpolicy_v2.types.UpdatePolicyRequest, dict]):
-                The request object. The request sent to the
-                [UpdatePolicyRequest]
+                The request object. The request sent to the [UpdatePolicyRequest]
                 [google.cloud.orgpolicy.v2.OrgPolicy.UpdatePolicy]
                 method.
             policy (google.cloud.orgpolicy_v2.types.Policy):
@@ -1217,8 +1212,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
 
         Args:
             request (Union[google.cloud.orgpolicy_v2.types.DeletePolicyRequest, dict]):
-                The request object. The request sent to the
-                [DeletePolicy]
+                The request object. The request sent to the [DeletePolicy]
                 [google.cloud.orgpolicy.v2.OrgPolicy.DeletePolicy]
                 method.
             name (str):

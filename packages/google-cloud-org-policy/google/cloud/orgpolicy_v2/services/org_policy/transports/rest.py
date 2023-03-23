@@ -412,7 +412,6 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
                     The request object. The request sent to the [CreatePolicyRequest]
                 [google.cloud.orgpolicy.v2.OrgPolicy.CreatePolicy]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -523,7 +522,6 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
                     The request object. The request sent to the [DeletePolicy]
                 [google.cloud.orgpolicy.v2.OrgPolicy.DeletePolicy]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -608,7 +606,6 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
                     The request object. The request sent to the [GetEffectivePolicy]
                 [google.cloud.orgpolicy.v2.OrgPolicy.GetEffectivePolicy]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -709,7 +706,6 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
                 request (~.orgpolicy.GetPolicyRequest):
                     The request object. The request sent to the [GetPolicy]
                 [google.cloud.orgpolicy.v2.OrgPolicy.GetPolicy] method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -809,7 +805,6 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
                     The request object. The request sent to the [ListConstraints]
                 [google.cloud.orgpolicy.v2.OrgPolicy.ListConstraints]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -911,7 +906,6 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
                     The request object. The request sent to the [ListPolicies]
                 [google.cloud.orgpolicy.v2.OrgPolicy.ListPolicies]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1012,7 +1006,6 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
                     The request object. The request sent to the [UpdatePolicyRequest]
                 [google.cloud.orgpolicy.v2.OrgPolicy.UpdatePolicy]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
