@@ -266,7 +266,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.ListRepositoriesRequest, dict]]):
-                The request object. `ListRepositories` request message.
+                The request object. ``ListRepositories`` request message.
             parent (:class:`str`):
                 Required. The location in which to list repositories.
                 Must be in the format ``projects/*/locations/*``.
@@ -378,7 +378,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.GetRepositoryRequest, dict]]):
-                The request object. `GetRepository` request message.
+                The request object. ``GetRepository`` request message.
             name (:class:`str`):
                 Required. The repository's name.
                 This corresponds to the ``name`` field
@@ -479,7 +479,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.CreateRepositoryRequest, dict]]):
-                The request object. `CreateRepository` request message.
+                The request object. ``CreateRepository`` request message.
             parent (:class:`str`):
                 Required. The location in which to create the
                 repository. Must be in the format
@@ -597,7 +597,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.UpdateRepositoryRequest, dict]]):
-                The request object. `UpdateRepository` request message.
+                The request object. ``UpdateRepository`` request message.
             repository (:class:`google.cloud.dataform_v1beta1.types.Repository`):
                 Required. The repository to update.
                 This corresponds to the ``repository`` field
@@ -703,7 +703,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.DeleteRepositoryRequest, dict]]):
-                The request object. `DeleteRepository` request message.
+                The request object. ``DeleteRepository`` request message.
             name (:class:`str`):
                 Required. The repository's name.
                 This corresponds to the ``name`` field
@@ -792,8 +792,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.FetchRemoteBranchesRequest, dict]]):
-                The request object. `FetchRemoteBranches` request
-                message.
+                The request object. ``FetchRemoteBranches`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -872,7 +871,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.ListWorkspacesRequest, dict]]):
-                The request object. `ListWorkspaces` request message.
+                The request object. ``ListWorkspaces`` request message.
             parent (:class:`str`):
                 Required. The repository in which to list workspaces.
                 Must be in the format
@@ -985,7 +984,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.GetWorkspaceRequest, dict]]):
-                The request object. `GetWorkspace` request message.
+                The request object. ``GetWorkspace`` request message.
             name (:class:`str`):
                 Required. The workspace's name.
                 This corresponds to the ``name`` field
@@ -1085,7 +1084,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.CreateWorkspaceRequest, dict]]):
-                The request object. `CreateWorkspace` request message.
+                The request object. ``CreateWorkspace`` request message.
             parent (:class:`str`):
                 Required. The repository in which to create the
                 workspace. Must be in the format
@@ -1200,7 +1199,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.DeleteWorkspaceRequest, dict]]):
-                The request object. `DeleteWorkspace` request message.
+                The request object. ``DeleteWorkspace`` request message.
             name (:class:`str`):
                 Required. The workspace resource's
                 name.
@@ -1292,8 +1291,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.InstallNpmPackagesRequest, dict]]):
-                The request object. `InstallNpmPackages` request
-                message.
+                The request object. ``InstallNpmPackages`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1375,7 +1373,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.PullGitCommitsRequest, dict]]):
-                The request object. `PullGitCommits` request message.
+                The request object. ``PullGitCommits`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1443,7 +1441,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.PushGitCommitsRequest, dict]]):
-                The request object. `PushGitCommits` request message.
+                The request object. ``PushGitCommits`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1513,8 +1511,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.FetchFileGitStatusesRequest, dict]]):
-                The request object. `FetchFileGitStatuses` request
-                message.
+                The request object. ``FetchFileGitStatuses`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1591,8 +1588,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.FetchGitAheadBehindRequest, dict]]):
-                The request object. `FetchGitAheadBehind` request
-                message.
+                The request object. ``FetchGitAheadBehind`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1672,8 +1668,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.CommitWorkspaceChangesRequest, dict]]):
-                The request object. `CommitWorkspaceChanges` request
-                message.
+                The request object. ``CommitWorkspaceChanges`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1741,8 +1736,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.ResetWorkspaceChangesRequest, dict]]):
-                The request object. `ResetWorkspaceChanges` request
-                message.
+                The request object. ``ResetWorkspaceChanges`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1814,7 +1808,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.FetchFileDiffRequest, dict]]):
-                The request object. `FetchFileDiff` request message.
+                The request object. ``FetchFileDiff`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1894,8 +1888,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.QueryDirectoryContentsRequest, dict]]):
-                The request object. `QueryDirectoryContents` request
-                message.
+                The request object. ``QueryDirectoryContents`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1988,7 +1981,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.MakeDirectoryRequest, dict]]):
-                The request object. `MakeDirectory` request message.
+                The request object. ``MakeDirectory`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2066,7 +2059,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.RemoveDirectoryRequest, dict]]):
-                The request object. `RemoveDirectory` request message.
+                The request object. ``RemoveDirectory`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2141,7 +2134,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.MoveDirectoryRequest, dict]]):
-                The request object. `MoveDirectory` request message.
+                The request object. ``MoveDirectory`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2221,7 +2214,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.ReadFileRequest, dict]]):
-                The request object. `ReadFile` request message.
+                The request object. ``ReadFile`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2298,7 +2291,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.RemoveFileRequest, dict]]):
-                The request object. `RemoveFile` request message.
+                The request object. ``RemoveFile`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2372,7 +2365,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.MoveFileRequest, dict]]):
-                The request object. `MoveFile` request message.
+                The request object. ``MoveFile`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2453,7 +2446,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.WriteFileRequest, dict]]):
-                The request object. `WriteFile` request message.
+                The request object. ``WriteFile`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2534,8 +2527,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.ListCompilationResultsRequest, dict]]):
-                The request object. `ListCompilationResults` request
-                message.
+                The request object. ``ListCompilationResults`` request message.
             parent (:class:`str`):
                 Required. The repository in which to list compilation
                 results. Must be in the format
@@ -2648,8 +2640,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.GetCompilationResultRequest, dict]]):
-                The request object. `GetCompilationResult` request
-                message.
+                The request object. ``GetCompilationResult`` request message.
             name (:class:`str`):
                 Required. The compilation result's
                 name.
@@ -2756,8 +2747,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.CreateCompilationResultRequest, dict]]):
-                The request object. `CreateCompilationResult` request
-                message.
+                The request object. ``CreateCompilationResult`` request message.
             parent (:class:`str`):
                 Required. The repository in which to create the
                 compilation result. Must be in the format
@@ -2871,8 +2861,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.QueryCompilationResultActionsRequest, dict]]):
-                The request object. `QueryCompilationResultActions`
-                request message.
+                The request object. ``QueryCompilationResultActions`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2964,8 +2953,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.ListWorkflowInvocationsRequest, dict]]):
-                The request object. `ListWorkflowInvocations` request
-                message.
+                The request object. ``ListWorkflowInvocations`` request message.
             parent (:class:`str`):
                 Required. The parent resource of the WorkflowInvocation
                 type. Must be in the format
@@ -3078,8 +3066,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.GetWorkflowInvocationRequest, dict]]):
-                The request object. `GetWorkflowInvocation` request
-                message.
+                The request object. ``GetWorkflowInvocation`` request message.
             name (:class:`str`):
                 Required. The workflow invocation
                 resource's name.
@@ -3182,8 +3169,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.CreateWorkflowInvocationRequest, dict]]):
-                The request object. `CreateWorkflowInvocation` request
-                message.
+                The request object. ``CreateWorkflowInvocation`` request message.
             parent (:class:`str`):
                 Required. The repository in which to create the workflow
                 invocation. Must be in the format
@@ -3291,8 +3277,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.DeleteWorkflowInvocationRequest, dict]]):
-                The request object. `DeleteWorkflowInvocation` request
-                message.
+                The request object. ``DeleteWorkflowInvocation`` request message.
             name (:class:`str`):
                 Required. The workflow invocation
                 resource's name.
@@ -3381,8 +3366,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.CancelWorkflowInvocationRequest, dict]]):
-                The request object. `CancelWorkflowInvocation` request
-                message.
+                The request object. ``CancelWorkflowInvocation`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -3456,8 +3440,7 @@ class DataformAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataform_v1beta1.types.QueryWorkflowInvocationActionsRequest, dict]]):
-                The request object. `QueryWorkflowInvocationActions`
-                request message.
+                The request object. ``QueryWorkflowInvocationActions`` request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
