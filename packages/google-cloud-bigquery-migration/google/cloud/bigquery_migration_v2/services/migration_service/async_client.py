@@ -387,8 +387,8 @@ class MigrationServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.bigquery_migration_v2.types.GetMigrationWorkflowRequest, dict]]):
-                The request object. A request to get a previously
-                created migration workflow.
+                The request object. A request to get a previously created
+                migration workflow.
             name (:class:`str`):
                 Required. The unique identifier for the migration
                 workflow. Example:
@@ -827,8 +827,8 @@ class MigrationServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.bigquery_migration_v2.types.GetMigrationSubtaskRequest, dict]]):
-                The request object. A request to get a previously
-                created migration subtasks.
+                The request object. A request to get a previously created
+                migration subtasks.
             name (:class:`str`):
                 Required. The unique identifier for the migration
                 subtask. Example:

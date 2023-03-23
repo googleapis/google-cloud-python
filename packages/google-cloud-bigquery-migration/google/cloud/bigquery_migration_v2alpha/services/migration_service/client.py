@@ -632,8 +632,8 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
 
         Args:
             request (Union[google.cloud.bigquery_migration_v2alpha.types.GetMigrationWorkflowRequest, dict]):
-                The request object. A request to get a previously
-                created migration workflow.
+                The request object. A request to get a previously created
+                migration workflow.
             name (str):
                 Required. The unique identifier for the migration
                 workflow. Example:
@@ -1047,8 +1047,8 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
 
         Args:
             request (Union[google.cloud.bigquery_migration_v2alpha.types.GetMigrationSubtaskRequest, dict]):
-                The request object. A request to get a previously
-                created migration subtasks.
+                The request object. A request to get a previously created
+                migration subtasks.
             name (str):
                 Required. The unique identifier for the migration
                 subtask. Example:
