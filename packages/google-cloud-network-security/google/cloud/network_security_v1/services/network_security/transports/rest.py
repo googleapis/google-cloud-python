@@ -968,7 +968,6 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                     request (~.gcn_authorization_policy.CreateAuthorizationPolicyRequest):
                         The request object. Request used by the
                     CreateAuthorizationPolicy method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1072,7 +1071,6 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.gcn_client_tls_policy.CreateClientTlsPolicyRequest):
                     The request object. Request used by the
                 CreateClientTlsPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1174,7 +1172,6 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.gcn_server_tls_policy.CreateServerTlsPolicyRequest):
                     The request object. Request used by the
                 CreateServerTlsPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1275,7 +1272,6 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                     request (~.authorization_policy.DeleteAuthorizationPolicyRequest):
                         The request object. Request used by the
                     DeleteAuthorizationPolicy method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1368,7 +1364,6 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.client_tls_policy.DeleteClientTlsPolicyRequest):
                     The request object. Request used by the
                 DeleteClientTlsPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1459,7 +1454,6 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.server_tls_policy.DeleteServerTlsPolicyRequest):
                     The request object. Request used by the
                 DeleteServerTlsPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1550,7 +1544,6 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.authorization_policy.GetAuthorizationPolicyRequest):
                     The request object. Request used by the
                 GetAuthorizationPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1647,7 +1640,6 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.client_tls_policy.GetClientTlsPolicyRequest):
                     The request object. Request used by the
                 GetClientTlsPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1743,7 +1735,6 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.server_tls_policy.GetServerTlsPolicyRequest):
                     The request object. Request used by the
                 GetServerTlsPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1841,7 +1832,6 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                     request (~.authorization_policy.ListAuthorizationPoliciesRequest):
                         The request object. Request used with the
                     ListAuthorizationPolicies method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1935,7 +1925,6 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.client_tls_policy.ListClientTlsPoliciesRequest):
                     The request object. Request used by the
                 ListClientTlsPolicies method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2027,7 +2016,6 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.server_tls_policy.ListServerTlsPoliciesRequest):
                     The request object. Request used by the
                 ListServerTlsPolicies method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2120,7 +2108,6 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                     request (~.gcn_authorization_policy.UpdateAuthorizationPolicyRequest):
                         The request object. Request used by the
                     UpdateAuthorizationPolicy method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2222,7 +2209,6 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.gcn_client_tls_policy.UpdateClientTlsPolicyRequest):
                     The request object. Request used by UpdateClientTlsPolicy
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2322,7 +2308,6 @@ class NetworkSecurityRestTransport(NetworkSecurityTransport):
                 request (~.gcn_server_tls_policy.UpdateServerTlsPolicyRequest):
                     The request object. Request used by UpdateServerTlsPolicy
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

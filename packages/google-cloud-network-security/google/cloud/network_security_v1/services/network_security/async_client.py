@@ -1338,8 +1338,8 @@ class NetworkSecurityAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.network_security_v1.types.UpdateServerTlsPolicyRequest, dict]]):
-                The request object. Request used by
-                UpdateServerTlsPolicy method.
+                The request object. Request used by UpdateServerTlsPolicy
+                method.
             server_tls_policy (:class:`google.cloud.network_security_v1.types.ServerTlsPolicy`):
                 Required. Updated ServerTlsPolicy
                 resource.
@@ -1984,8 +1984,8 @@ class NetworkSecurityAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.network_security_v1.types.UpdateClientTlsPolicyRequest, dict]]):
-                The request object. Request used by
-                UpdateClientTlsPolicy method.
+                The request object. Request used by UpdateClientTlsPolicy
+                method.
             client_tls_policy (:class:`google.cloud.network_security_v1.types.ClientTlsPolicy`):
                 Required. Updated ClientTlsPolicy
                 resource.
