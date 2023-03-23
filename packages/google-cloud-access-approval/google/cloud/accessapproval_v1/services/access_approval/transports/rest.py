@@ -494,7 +494,6 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
                 request (~.accessapproval.ApproveApprovalRequestMessage):
                     The request object. Request to approve an
                 ApprovalRequest.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -595,7 +594,6 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
                     request (~.accessapproval.DeleteAccessApprovalSettingsMessage):
                         The request object. Request to delete access approval
                     settings.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -670,7 +668,6 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
                 request (~.accessapproval.DismissApprovalRequestMessage):
                     The request object. Request to dismiss an approval
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -771,7 +768,6 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
                     request (~.accessapproval.GetAccessApprovalServiceAccountMessage):
                         The request object. Request to get an Access Approval
                     service account.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -867,7 +863,6 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
                     request (~.accessapproval.GetAccessApprovalSettingsMessage):
                         The request object. Request to get access approval
                     settings.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1045,7 +1040,6 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
                     request (~.accessapproval.InvalidateApprovalRequestMessage):
                         The request object. Request to invalidate an existing
                     approval.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1233,7 +1227,6 @@ class AccessApprovalRestTransport(AccessApprovalTransport):
                     request (~.accessapproval.UpdateAccessApprovalSettingsMessage):
                         The request object. Request to update access approval
                     settings.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
