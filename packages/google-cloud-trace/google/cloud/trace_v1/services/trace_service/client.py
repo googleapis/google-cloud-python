@@ -466,9 +466,8 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
 
         Args:
             request (Union[google.cloud.trace_v1.types.ListTracesRequest, dict]):
-                The request object. The request message for the
-                `ListTraces` method. All fields are required unless
-                specified.
+                The request object. The request message for the ``ListTraces`` method. All
+                fields are required unless specified.
             project_id (str):
                 Required. ID of the Cloud project
                 where the trace data is stored.
@@ -584,8 +583,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
 
         Args:
             request (Union[google.cloud.trace_v1.types.GetTraceRequest, dict]):
-                The request object. The request message for the
-                `GetTrace` method.
+                The request object. The request message for the ``GetTrace`` method.
             project_id (str):
                 Required. ID of the Cloud project
                 where the trace data is stored.
@@ -705,8 +703,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
 
         Args:
             request (Union[google.cloud.trace_v1.types.PatchTracesRequest, dict]):
-                The request object. The request message for the
-                `PatchTraces` method.
+                The request object. The request message for the ``PatchTraces`` method.
             project_id (str):
                 Required. ID of the Cloud project
                 where the trace data is stored.

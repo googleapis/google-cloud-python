@@ -362,7 +362,6 @@ class TraceServiceRestTransport(TraceServiceTransport):
                 request (~.trace.ListTracesRequest):
                     The request object. The request message for the ``ListTraces`` method. All
                 fields are required unless specified.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

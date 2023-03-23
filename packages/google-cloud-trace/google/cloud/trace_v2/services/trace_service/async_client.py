@@ -263,8 +263,7 @@ class TraceServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.trace_v2.types.BatchWriteSpansRequest, dict]]):
-                The request object. The request message for the
-                `BatchWriteSpans` method.
+                The request object. The request message for the ``BatchWriteSpans`` method.
             name (:class:`str`):
                 Required. The name of the project where the spans
                 belong. The format is ``projects/[PROJECT_ID]``.
@@ -378,14 +377,16 @@ class TraceServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.trace_v2.types.Span, dict]]):
                 The request object. A span represents a single operation
-                within a trace. Spans can be nested to form a trace
-                tree. Often, a trace contains a root span that describes
-                the end-to-end latency, and one or more subspans for its
-                sub-operations.
+                within a trace. Spans can be nested to
+                form a trace tree. Often, a trace
+                contains a root span that describes the
+                end-to-end latency, and one or more
+                subspans for its sub-operations.
 
-                A trace can also contain multiple root spans, or none at
-                all. Spans do not need to be contiguous. There might be
-                gaps or overlaps between spans in a trace.
+                A trace can also contain multiple root
+                spans, or none at all. Spans do not need
+                to be contiguous. There might be gaps or
+                overlaps between spans in a trace.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

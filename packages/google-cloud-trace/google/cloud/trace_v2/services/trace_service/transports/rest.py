@@ -339,7 +339,6 @@ class TraceServiceRestTransport(TraceServiceTransport):
                 spans, or none at all. Spans do not need
                 to be contiguous. There might be gaps or
                 overlaps between spans in a trace.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
