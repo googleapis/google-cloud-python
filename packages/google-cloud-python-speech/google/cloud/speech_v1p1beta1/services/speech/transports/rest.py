@@ -349,7 +349,6 @@ class SpeechRestTransport(SpeechTransport):
                 request (~.cloud_speech.LongRunningRecognizeRequest):
                     The request object. The top-level message sent by the client for the
                 ``LongRunningRecognize`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -449,7 +448,6 @@ class SpeechRestTransport(SpeechTransport):
                 request (~.cloud_speech.RecognizeRequest):
                     The request object. The top-level message sent by the client for the
                 ``Recognize`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
