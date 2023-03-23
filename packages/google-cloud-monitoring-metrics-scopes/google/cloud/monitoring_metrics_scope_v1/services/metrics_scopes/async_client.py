@@ -265,8 +265,7 @@ class MetricsScopesAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_metrics_scope_v1.types.GetMetricsScopeRequest, dict]]):
-                The request object. Request for the `GetMetricsScope`
-                method.
+                The request object. Request for the ``GetMetricsScope`` method.
             name (:class:`str`):
                 Required. The resource name of the ``Metrics Scope``.
                 Example:
@@ -375,8 +374,8 @@ class MetricsScopesAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_metrics_scope_v1.types.ListMetricsScopesByMonitoredProjectRequest, dict]]):
-                The request object. Request for the
-                `ListMetricsScopesByMonitoredProject` method.
+                The request object. Request for the ``ListMetricsScopesByMonitoredProject``
+                method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -458,8 +457,7 @@ class MetricsScopesAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_metrics_scope_v1.types.CreateMonitoredProjectRequest, dict]]):
-                The request object. Request for the
-                `CreateMonitoredProject` method.
+                The request object. Request for the ``CreateMonitoredProject`` method.
             parent (:class:`str`):
                 Required. The resource name of the existing
                 ``Metrics Scope`` that will monitor this project.
@@ -593,8 +591,7 @@ class MetricsScopesAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_metrics_scope_v1.types.DeleteMonitoredProjectRequest, dict]]):
-                The request object. Request for the
-                `DeleteMonitoredProject` method.
+                The request object. Request for the ``DeleteMonitoredProject`` method.
             name (:class:`str`):
                 Required. The resource name of the ``MonitoredProject``.
                 Example:
