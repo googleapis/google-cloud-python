@@ -528,7 +528,6 @@ class DatastoreRestTransport(DatastoreTransport):
                 request (~.datastore.AllocateIdsRequest):
                     The request object. The request for
                 [Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -627,7 +626,6 @@ class DatastoreRestTransport(DatastoreTransport):
                 request (~.datastore.BeginTransactionRequest):
                     The request object. The request for
                 [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -728,7 +726,6 @@ class DatastoreRestTransport(DatastoreTransport):
                 request (~.datastore.CommitRequest):
                     The request object. The request for
                 [Datastore.Commit][google.datastore.v1.Datastore.Commit].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -827,7 +824,6 @@ class DatastoreRestTransport(DatastoreTransport):
                 request (~.datastore.LookupRequest):
                     The request object. The request for
                 [Datastore.Lookup][google.datastore.v1.Datastore.Lookup].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -926,7 +922,6 @@ class DatastoreRestTransport(DatastoreTransport):
                 request (~.datastore.ReserveIdsRequest):
                     The request object. The request for
                 [Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1025,7 +1020,6 @@ class DatastoreRestTransport(DatastoreTransport):
                 request (~.datastore.RollbackRequest):
                     The request object. The request for
                 [Datastore.Rollback][google.datastore.v1.Datastore.Rollback].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1125,7 +1119,6 @@ class DatastoreRestTransport(DatastoreTransport):
                 request (~.datastore.RunAggregationQueryRequest):
                     The request object. The request for
                 [Datastore.RunAggregationQuery][google.datastore.v1.Datastore.RunAggregationQuery].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1226,7 +1219,6 @@ class DatastoreRestTransport(DatastoreTransport):
                 request (~.datastore.RunQueryRequest):
                     The request object. The request for
                 [Datastore.RunQuery][google.datastore.v1.Datastore.RunQuery].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

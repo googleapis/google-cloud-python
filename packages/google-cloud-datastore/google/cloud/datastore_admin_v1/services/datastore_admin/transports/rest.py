@@ -576,7 +576,6 @@ class DatastoreAdminRestTransport(DatastoreAdminTransport):
                 request (~.datastore_admin.CreateIndexRequest):
                     The request object. The request for
                 [google.datastore.admin.v1.DatastoreAdmin.CreateIndex][google.datastore.admin.v1.DatastoreAdmin.CreateIndex].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -663,7 +662,6 @@ class DatastoreAdminRestTransport(DatastoreAdminTransport):
                 request (~.datastore_admin.DeleteIndexRequest):
                     The request object. The request for
                 [google.datastore.admin.v1.DatastoreAdmin.DeleteIndex][google.datastore.admin.v1.DatastoreAdmin.DeleteIndex].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -751,7 +749,6 @@ class DatastoreAdminRestTransport(DatastoreAdminTransport):
                 request (~.datastore_admin.ExportEntitiesRequest):
                     The request object. The request for
                 [google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -839,7 +836,6 @@ class DatastoreAdminRestTransport(DatastoreAdminTransport):
                 request (~.datastore_admin.GetIndexRequest):
                     The request object. The request for
                 [google.datastore.admin.v1.DatastoreAdmin.GetIndex][google.datastore.admin.v1.DatastoreAdmin.GetIndex].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -926,7 +922,6 @@ class DatastoreAdminRestTransport(DatastoreAdminTransport):
                 request (~.datastore_admin.ImportEntitiesRequest):
                     The request object. The request for
                 [google.datastore.admin.v1.DatastoreAdmin.ImportEntities][google.datastore.admin.v1.DatastoreAdmin.ImportEntities].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1014,7 +1009,6 @@ class DatastoreAdminRestTransport(DatastoreAdminTransport):
                 request (~.datastore_admin.ListIndexesRequest):
                     The request object. The request for
                 [google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
