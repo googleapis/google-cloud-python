@@ -2070,8 +2070,7 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
-                The request object. Request message for `SetIamPolicy`
-                method.
+                The request object. Request message for ``SetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
                 policy is being specified. See the
@@ -2238,8 +2237,7 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
-                The request object. Request message for `GetIamPolicy`
-                method.
+                The request object. Request message for ``GetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
                 policy is being requested. See the
@@ -2409,8 +2407,7 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
-                The request object. Request message for
-                `TestIamPermissions` method.
+                The request object. Request message for ``TestIamPermissions`` method.
             resource (str):
                 REQUIRED: The resource for which the
                 policy detail is being requested. See

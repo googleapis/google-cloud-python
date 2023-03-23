@@ -688,19 +688,19 @@ class DatabaseAdminAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlRequest, dict]]):
-                The request object. Enqueues the given DDL statements to
-                be applied, in order but not necessarily all at once, to
-                the database schema at some point (or points) in the
-                future. The server checks that the statements are
-                executable (syntactically valid, name tables that exist,
-                etc.) before enqueueing them, but they may still fail
-                upon
+                The request object. Enqueues the given DDL statements to be applied, in
+                order but not necessarily all at once, to the database
+                schema at some point (or points) in the future. The
+                server checks that the statements are executable
+                (syntactically valid, name tables that exist, etc.)
+                before enqueueing them, but they may still fail upon
                 later execution (e.g., if a statement from another batch
                 of statements is applied first and it conflicts in some
                 way, or if there is some data-related problem like a
-                `NULL` value in a column to which `NOT NULL` would be
-                added). If a statement fails, all subsequent statements
-                in the batch are automatically cancelled.
+                ``NULL`` value in a column to which ``NOT NULL`` would
+                be added). If a statement fails, all subsequent
+                statements in the batch are automatically cancelled.
+
                 Each batch of statements is assigned a name which can be
                 used with the
                 [Operations][google.longrunning.Operations] API to
@@ -1072,8 +1072,7 @@ class DatabaseAdminAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
-                The request object. Request message for `SetIamPolicy`
-                method.
+                The request object. Request message for ``SetIamPolicy`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
                 policy is being specified. See the
@@ -1247,8 +1246,7 @@ class DatabaseAdminAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
-                The request object. Request message for `GetIamPolicy`
-                method.
+                The request object. Request message for ``GetIamPolicy`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
                 policy is being requested. See the
@@ -1434,8 +1432,7 @@ class DatabaseAdminAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
-                The request object. Request message for
-                `TestIamPermissions` method.
+                The request object. Request message for ``TestIamPermissions`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
                 policy detail is being requested. See

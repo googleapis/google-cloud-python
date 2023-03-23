@@ -1401,8 +1401,8 @@ class SpannerClient(metaclass=SpannerClientMeta):
 
         Args:
             request (Union[google.cloud.spanner_v1.types.ReadRequest, dict]):
-                The request object. The request for
-                [Read][google.spanner.v1.Spanner.Read] and
+                The request object. The request for [Read][google.spanner.v1.Spanner.Read]
+                and
                 [StreamingRead][google.spanner.v1.Spanner.StreamingRead].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -1491,8 +1491,8 @@ class SpannerClient(metaclass=SpannerClientMeta):
 
         Args:
             request (Union[google.cloud.spanner_v1.types.ReadRequest, dict]):
-                The request object. The request for
-                [Read][google.spanner.v1.Spanner.Read] and
+                The request object. The request for [Read][google.spanner.v1.Spanner.Read]
+                and
                 [StreamingRead][google.spanner.v1.Spanner.StreamingRead].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

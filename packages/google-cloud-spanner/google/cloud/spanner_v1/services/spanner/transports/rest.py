@@ -608,7 +608,6 @@ class SpannerRestTransport(SpannerTransport):
                 request (~.spanner.BatchCreateSessionsRequest):
                     The request object. The request for
                 [BatchCreateSessions][google.spanner.v1.Spanner.BatchCreateSessions].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -709,7 +708,6 @@ class SpannerRestTransport(SpannerTransport):
                 request (~.spanner.BeginTransactionRequest):
                     The request object. The request for
                 [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -808,7 +806,6 @@ class SpannerRestTransport(SpannerTransport):
                 request (~.spanner.CommitRequest):
                     The request object. The request for
                 [Commit][google.spanner.v1.Spanner.Commit].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -907,7 +904,6 @@ class SpannerRestTransport(SpannerTransport):
                 request (~.spanner.CreateSessionRequest):
                     The request object. The request for
                 [CreateSession][google.spanner.v1.Spanner.CreateSession].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1004,7 +1000,6 @@ class SpannerRestTransport(SpannerTransport):
                 request (~.spanner.DeleteSessionRequest):
                     The request object. The request for
                 [DeleteSession][google.spanner.v1.Spanner.DeleteSession].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1080,7 +1075,6 @@ class SpannerRestTransport(SpannerTransport):
                 request (~.spanner.ExecuteBatchDmlRequest):
                     The request object. The request for
                 [ExecuteBatchDml][google.spanner.v1.Spanner.ExecuteBatchDml].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1218,7 +1212,6 @@ class SpannerRestTransport(SpannerTransport):
                     The request object. The request for
                 [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
                 [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1318,7 +1311,6 @@ class SpannerRestTransport(SpannerTransport):
                     The request object. The request for
                 [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
                 [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1421,7 +1413,6 @@ class SpannerRestTransport(SpannerTransport):
                 request (~.spanner.GetSessionRequest):
                     The request object. The request for
                 [GetSession][google.spanner.v1.Spanner.GetSession].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1509,7 +1500,6 @@ class SpannerRestTransport(SpannerTransport):
                 request (~.spanner.ListSessionsRequest):
                     The request object. The request for
                 [ListSessions][google.spanner.v1.Spanner.ListSessions].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1599,7 +1589,6 @@ class SpannerRestTransport(SpannerTransport):
                 request (~.spanner.PartitionQueryRequest):
                     The request object. The request for
                 [PartitionQuery][google.spanner.v1.Spanner.PartitionQuery]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1700,7 +1689,6 @@ class SpannerRestTransport(SpannerTransport):
                 request (~.spanner.PartitionReadRequest):
                     The request object. The request for
                 [PartitionRead][google.spanner.v1.Spanner.PartitionRead]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1802,7 +1790,6 @@ class SpannerRestTransport(SpannerTransport):
                     The request object. The request for [Read][google.spanner.v1.Spanner.Read]
                 and
                 [StreamingRead][google.spanner.v1.Spanner.StreamingRead].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1901,7 +1888,6 @@ class SpannerRestTransport(SpannerTransport):
                 request (~.spanner.RollbackRequest):
                     The request object. The request for
                 [Rollback][google.spanner.v1.Spanner.Rollback].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1987,7 +1973,6 @@ class SpannerRestTransport(SpannerTransport):
                     The request object. The request for [Read][google.spanner.v1.Spanner.Read]
                 and
                 [StreamingRead][google.spanner.v1.Spanner.StreamingRead].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

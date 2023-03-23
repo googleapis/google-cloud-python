@@ -707,7 +707,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
                 request (~.spanner_instance_admin.CreateInstanceRequest):
                     The request object. The request for
                 [CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -805,7 +804,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
                 request (~.spanner_instance_admin.CreateInstanceConfigRequest):
                     The request object. The request for
                 [CreateInstanceConfigRequest][InstanceAdmin.CreateInstanceConfigRequest].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -905,7 +903,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
                 request (~.spanner_instance_admin.DeleteInstanceRequest):
                     The request object. The request for
                 [DeleteInstance][google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstance].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -981,7 +978,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
                 request (~.spanner_instance_admin.DeleteInstanceConfigRequest):
                     The request object. The request for
                 [DeleteInstanceConfigRequest][InstanceAdmin.DeleteInstanceConfigRequest].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1229,7 +1225,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
                 request (~.spanner_instance_admin.GetInstanceRequest):
                     The request object. The request for
                 [GetInstance][google.spanner.admin.instance.v1.InstanceAdmin.GetInstance].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1320,7 +1315,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
                 request (~.spanner_instance_admin.GetInstanceConfigRequest):
                     The request object. The request for
                 [GetInstanceConfigRequest][google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1415,7 +1409,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
                     request (~.spanner_instance_admin.ListInstanceConfigOperationsRequest):
                         The request object. The request for
                     [ListInstanceConfigOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigOperations].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1511,7 +1504,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
                 request (~.spanner_instance_admin.ListInstanceConfigsRequest):
                     The request object. The request for
                 [ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1603,7 +1595,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
                 request (~.spanner_instance_admin.ListInstancesRequest):
                     The request object. The request for
                 [ListInstances][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1960,7 +1951,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
                 request (~.spanner_instance_admin.UpdateInstanceRequest):
                     The request object. The request for
                 [UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2058,7 +2048,6 @@ class InstanceAdminRestTransport(InstanceAdminTransport):
                 request (~.spanner_instance_admin.UpdateInstanceConfigRequest):
                     The request object. The request for
                 [UpdateInstanceConfigRequest][InstanceAdmin.UpdateInstanceConfigRequest].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

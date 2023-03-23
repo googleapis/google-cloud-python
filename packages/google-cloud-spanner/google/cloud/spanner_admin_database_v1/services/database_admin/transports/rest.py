@@ -955,7 +955,6 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                 request (~.backup.CopyBackupRequest):
                     The request object. The request for
                 [CopyBackup][google.spanner.admin.database.v1.DatabaseAdmin.CopyBackup].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1055,7 +1054,6 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                 request (~.gsad_backup.CreateBackupRequest):
                     The request object. The request for
                 [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1153,7 +1151,6 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                 request (~.spanner_database_admin.CreateDatabaseRequest):
                     The request object. The request for
                 [CreateDatabase][google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1251,7 +1248,6 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                 request (~.backup.DeleteBackupRequest):
                     The request object. The request for
                 [DeleteBackup][google.spanner.admin.database.v1.DatabaseAdmin.DeleteBackup].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1327,7 +1323,6 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                 request (~.spanner_database_admin.DropDatabaseRequest):
                     The request object. The request for
                 [DropDatabase][google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1403,7 +1398,6 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                 request (~.backup.GetBackupRequest):
                     The request object. The request for
                 [GetBackup][google.spanner.admin.database.v1.DatabaseAdmin.GetBackup].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1491,7 +1485,6 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                 request (~.spanner_database_admin.GetDatabaseRequest):
                     The request object. The request for
                 [GetDatabase][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabase].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1579,7 +1572,6 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                 request (~.spanner_database_admin.GetDatabaseDdlRequest):
                     The request object. The request for
                 [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1846,7 +1838,6 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                 request (~.backup.ListBackupOperationsRequest):
                     The request object. The request for
                 [ListBackupOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupOperations].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1938,7 +1929,6 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                 request (~.backup.ListBackupsRequest):
                     The request object. The request for
                 [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2028,7 +2018,6 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                 request (~.spanner_database_admin.ListDatabaseOperationsRequest):
                     The request object. The request for
                 [ListDatabaseOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseOperations].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2122,7 +2111,6 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                 request (~.spanner_database_admin.ListDatabaseRolesRequest):
                     The request object. The request for
                 [ListDatabaseRoles][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseRoles].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2214,7 +2202,6 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                 request (~.spanner_database_admin.ListDatabasesRequest):
                     The request object. The request for
                 [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2304,7 +2291,6 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                 request (~.spanner_database_admin.RestoreDatabaseRequest):
                     The request object. The request for
                 [RestoreDatabase][google.spanner.admin.database.v1.DatabaseAdmin.RestoreDatabase].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2688,7 +2674,6 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                 request (~.gsad_backup.UpdateBackupRequest):
                     The request object. The request for
                 [UpdateBackup][google.spanner.admin.database.v1.DatabaseAdmin.UpdateBackup].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2802,7 +2787,6 @@ class DatabaseAdminRestTransport(DatabaseAdminTransport):
                 monitor progress. See the
                 [operation_id][google.spanner.admin.database.v1.UpdateDatabaseDdlRequest.operation_id]
                 field for more details.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
