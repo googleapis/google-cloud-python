@@ -596,7 +596,6 @@ class AppGatewaysServiceRestTransport(AppGatewaysServiceTransport):
                 request (~.app_gateways_service.CreateAppGatewayRequest):
                     The request object. Request message for
                 BeyondCorp.CreateAppGateway.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -696,7 +695,6 @@ class AppGatewaysServiceRestTransport(AppGatewaysServiceTransport):
                 request (~.app_gateways_service.DeleteAppGatewayRequest):
                     The request object. Request message for
                 BeyondCorp.DeleteAppGateway.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -787,7 +785,6 @@ class AppGatewaysServiceRestTransport(AppGatewaysServiceTransport):
                 request (~.app_gateways_service.GetAppGatewayRequest):
                     The request object. Request message for
                 BeyondCorp.GetAppGateway.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -883,7 +880,6 @@ class AppGatewaysServiceRestTransport(AppGatewaysServiceTransport):
                 request (~.app_gateways_service.ListAppGatewaysRequest):
                     The request object. Request message for
                 BeyondCorp.ListAppGateways.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
