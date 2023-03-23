@@ -1360,11 +1360,11 @@ class SpeechClient(metaclass=SpeechClientMeta):
             request (Union[google.cloud.speech_v2.types.RecognizeRequest, dict]):
                 The request object. Request message for the
                 [Recognize][google.cloud.speech.v2.Speech.Recognize]
-                method. Either `content` or `uri` must be supplied.
+                method. Either ``content`` or ``uri`` must be supplied.
                 Supplying both or neither returns
                 [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
-                See [content
-                limits](https://cloud.google.com/speech-to-text/quotas#content).
+                See `content
+                limits <https://cloud.google.com/speech-to-text/quotas#content>`__.
             recognizer (str):
                 Required. The name of the Recognizer to use during
                 recognition. The expected format is

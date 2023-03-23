@@ -260,8 +260,8 @@ class SpeechAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.speech_v1p1beta1.types.RecognizeRequest, dict]]):
-                The request object. The top-level message sent by the
-                client for the `Recognize` method.
+                The request object. The top-level message sent by the client for the
+                ``Recognize`` method.
             config (:class:`google.cloud.speech_v1p1beta1.types.RecognitionConfig`):
                 Required. Provides information to the
                 recognizer that specifies how to process
@@ -394,8 +394,8 @@ class SpeechAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.speech_v1p1beta1.types.LongRunningRecognizeRequest, dict]]):
-                The request object. The top-level message sent by the
-                client for the `LongRunningRecognize` method.
+                The request object. The top-level message sent by the client for the
+                ``LongRunningRecognize`` method.
             config (:class:`google.cloud.speech_v1p1beta1.types.RecognitionConfig`):
                 Required. Provides information to the
                 recognizer that specifies how to process
@@ -531,13 +531,13 @@ class SpeechAsyncClient:
 
         Args:
             requests (AsyncIterator[`google.cloud.speech_v1p1beta1.types.StreamingRecognizeRequest`]):
-                The request object AsyncIterator. The top-level message sent by the
-                client for the `StreamingRecognize` method. Multiple
-                `StreamingRecognizeRequest` messages are sent. The first
-                message must contain a `streaming_config` message and
-                must not contain `audio_content`. All subsequent
-                messages must contain `audio_content` and must not
-                contain a `streaming_config` message.
+                The request object AsyncIterator. The top-level message sent by the client for the
+                ``StreamingRecognize`` method. Multiple
+                ``StreamingRecognizeRequest`` messages are sent. The
+                first message must contain a ``streaming_config``
+                message and must not contain ``audio_content``. All
+                subsequent messages must contain ``audio_content`` and
+                must not contain a ``streaming_config`` message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

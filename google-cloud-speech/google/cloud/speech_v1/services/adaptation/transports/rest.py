@@ -540,7 +540,6 @@ class AdaptationRestTransport(AdaptationTransport):
                 request (~.cloud_speech_adaptation.CreateCustomClassRequest):
                     The request object. Message sent by the client for the ``CreateCustomClass``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -646,7 +645,6 @@ class AdaptationRestTransport(AdaptationTransport):
                 request (~.cloud_speech_adaptation.CreatePhraseSetRequest):
                     The request object. Message sent by the client for the ``CreatePhraseSet``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -748,7 +746,6 @@ class AdaptationRestTransport(AdaptationTransport):
                 request (~.cloud_speech_adaptation.DeleteCustomClassRequest):
                     The request object. Message sent by the client for the ``DeleteCustomClass``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -826,7 +823,6 @@ class AdaptationRestTransport(AdaptationTransport):
                 request (~.cloud_speech_adaptation.DeletePhraseSetRequest):
                     The request object. Message sent by the client for the ``DeletePhraseSet``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -904,7 +900,6 @@ class AdaptationRestTransport(AdaptationTransport):
                 request (~.cloud_speech_adaptation.GetCustomClassRequest):
                     The request object. Message sent by the client for the ``GetCustomClass``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1001,7 +996,6 @@ class AdaptationRestTransport(AdaptationTransport):
                 request (~.cloud_speech_adaptation.GetPhraseSetRequest):
                     The request object. Message sent by the client for the ``GetPhraseSet``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1092,7 +1086,6 @@ class AdaptationRestTransport(AdaptationTransport):
                 request (~.cloud_speech_adaptation.ListCustomClassesRequest):
                     The request object. Message sent by the client for the ``ListCustomClasses``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1184,7 +1177,6 @@ class AdaptationRestTransport(AdaptationTransport):
                 request (~.cloud_speech_adaptation.ListPhraseSetRequest):
                     The request object. Message sent by the client for the ``ListPhraseSet``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1274,7 +1266,6 @@ class AdaptationRestTransport(AdaptationTransport):
                 request (~.cloud_speech_adaptation.UpdateCustomClassRequest):
                     The request object. Message sent by the client for the ``UpdateCustomClass``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1380,7 +1371,6 @@ class AdaptationRestTransport(AdaptationTransport):
                 request (~.cloud_speech_adaptation.UpdatePhraseSetRequest):
                     The request object. Message sent by the client for the ``UpdatePhraseSet``
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
