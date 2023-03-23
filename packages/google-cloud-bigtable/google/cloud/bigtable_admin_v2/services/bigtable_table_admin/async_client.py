@@ -369,6 +369,7 @@ class BigtableTableAdminAsyncClient:
             request (Optional[Union[google.cloud.bigtable_admin_v2.types.CreateTableFromSnapshotRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.CreateTableFromSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.CreateTableFromSnapshot]
+
                 Note: This is a private alpha release of Cloud Bigtable
                 snapshots. This feature is not currently available to
                 most Cloud Bigtable customers. This feature might be
@@ -1300,6 +1301,7 @@ class BigtableTableAdminAsyncClient:
             request (Optional[Union[google.cloud.bigtable_admin_v2.types.SnapshotTableRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.SnapshotTable][google.bigtable.admin.v2.BigtableTableAdmin.SnapshotTable]
+
                 Note: This is a private alpha release of Cloud Bigtable
                 snapshots. This feature is not currently available to
                 most Cloud Bigtable customers. This feature might be
@@ -1437,6 +1439,7 @@ class BigtableTableAdminAsyncClient:
             request (Optional[Union[google.cloud.bigtable_admin_v2.types.GetSnapshotRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.GetSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.GetSnapshot]
+
                 Note: This is a private alpha release of Cloud Bigtable
                 snapshots. This feature is not currently available to
                 most Cloud Bigtable customers. This feature might be
@@ -1549,6 +1552,7 @@ class BigtableTableAdminAsyncClient:
             request (Optional[Union[google.cloud.bigtable_admin_v2.types.ListSnapshotsRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots][google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots]
+
                 Note: This is a private alpha release of Cloud Bigtable
                 snapshots. This feature is not currently available to
                 most Cloud Bigtable customers. This feature might be
@@ -1672,6 +1676,7 @@ class BigtableTableAdminAsyncClient:
             request (Optional[Union[google.cloud.bigtable_admin_v2.types.DeleteSnapshotRequest, dict]]):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.DeleteSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.DeleteSnapshot]
+
                 Note: This is a private alpha release of Cloud Bigtable
                 snapshots. This feature is not currently available to
                 most Cloud Bigtable customers. This feature might be
@@ -2290,8 +2295,7 @@ class BigtableTableAdminAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
-                The request object. Request message for `GetIamPolicy`
-                method.
+                The request object. Request message for ``GetIamPolicy`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
                 policy is being requested. See the
@@ -2440,8 +2444,7 @@ class BigtableTableAdminAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
-                The request object. Request message for `SetIamPolicy`
-                method.
+                The request object. Request message for ``SetIamPolicy`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
                 policy is being specified. See the
@@ -2581,8 +2584,7 @@ class BigtableTableAdminAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
-                The request object. Request message for
-                `TestIamPermissions` method.
+                The request object. Request message for ``TestIamPermissions`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
                 policy detail is being requested. See

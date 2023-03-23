@@ -1137,8 +1137,8 @@ class BigtableInstanceAdminAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.bigtable_admin_v2.types.Cluster, dict]]):
-                The request object. A resizable group of nodes in a
-                particular cloud location, capable of serving all
+                The request object. A resizable group of nodes in a particular cloud
+                location, capable of serving all
                 [Tables][google.bigtable.admin.v2.Table] in the parent
                 [Instance][google.bigtable.admin.v2.Instance].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1880,8 +1880,7 @@ class BigtableInstanceAdminAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
-                The request object. Request message for `GetIamPolicy`
-                method.
+                The request object. Request message for ``GetIamPolicy`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
                 policy is being requested. See the
@@ -2030,8 +2029,7 @@ class BigtableInstanceAdminAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
-                The request object. Request message for `SetIamPolicy`
-                method.
+                The request object. Request message for ``SetIamPolicy`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
                 policy is being specified. See the
@@ -2171,8 +2169,7 @@ class BigtableInstanceAdminAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
-                The request object. Request message for
-                `TestIamPermissions` method.
+                The request object. Request message for ``TestIamPermissions`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
                 policy detail is being requested. See

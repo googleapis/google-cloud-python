@@ -938,7 +938,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 request (~.bigtable_table_admin.CheckConsistencyRequest):
                     The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency][google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1041,7 +1040,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 request (~.bigtable_table_admin.CreateBackupRequest):
                     The request object. The request for
                 [CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1139,7 +1137,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 request (~.bigtable_table_admin.CreateTableRequest):
                     The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.CreateTable][google.bigtable.admin.v2.BigtableTableAdmin.CreateTable]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1248,7 +1245,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                     changed in backward-incompatible ways and is not
                     recommended for production use. It is not subject to any
                     SLA or deprecation policy.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1348,7 +1344,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 request (~.bigtable_table_admin.DeleteBackupRequest):
                     The request object. The request for
                 [DeleteBackup][google.bigtable.admin.v2.BigtableTableAdmin.DeleteBackup].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1431,7 +1426,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 changed in backward-incompatible ways and is not
                 recommended for production use. It is not subject to any
                 SLA or deprecation policy.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1507,7 +1501,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 request (~.bigtable_table_admin.DeleteTableRequest):
                     The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.DeleteTable][google.bigtable.admin.v2.BigtableTableAdmin.DeleteTable]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1583,7 +1576,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 request (~.bigtable_table_admin.DropRowRangeRequest):
                     The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.DropRowRange][google.bigtable.admin.v2.BigtableTableAdmin.DropRowRange]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1669,7 +1661,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                     request (~.bigtable_table_admin.GenerateConsistencyTokenRequest):
                         The request object. Request message for
                     [google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken][google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken]
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1772,7 +1763,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 request (~.bigtable_table_admin.GetBackupRequest):
                     The request object. The request for
                 [GetBackup][google.bigtable.admin.v2.BigtableTableAdmin.GetBackup].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2042,7 +2032,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 changed in backward-incompatible ways and is not
                 recommended for production use. It is not subject to any
                 SLA or deprecation policy.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2142,7 +2131,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 request (~.bigtable_table_admin.GetTableRequest):
                     The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.GetTable][google.bigtable.admin.v2.BigtableTableAdmin.GetTable]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2234,7 +2222,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 request (~.bigtable_table_admin.ListBackupsRequest):
                     The request object. The request for
                 [ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2331,7 +2318,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 changed in backward-incompatible ways and is not
                 recommended for production use. It is not subject to any
                 SLA or deprecation policy.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2428,7 +2414,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 request (~.bigtable_table_admin.ListTablesRequest):
                     The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.ListTables][google.bigtable.admin.v2.BigtableTableAdmin.ListTables]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2518,7 +2503,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 request (~.bigtable_table_admin.ModifyColumnFamiliesRequest):
                     The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.ModifyColumnFamilies][google.bigtable.admin.v2.BigtableTableAdmin.ModifyColumnFamilies]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2621,7 +2605,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 request (~.bigtable_table_admin.RestoreTableRequest):
                     The request object. The request for
                 [RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2901,7 +2884,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 changed in backward-incompatible ways and is not
                 recommended for production use. It is not subject to any
                 SLA or deprecation policy.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3101,7 +3083,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 request (~.bigtable_table_admin.UndeleteTableRequest):
                     The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.UndeleteTable][google.bigtable.admin.v2.BigtableTableAdmin.UndeleteTable]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3201,7 +3182,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 request (~.bigtable_table_admin.UpdateBackupRequest):
                     The request object. The request for
                 [UpdateBackup][google.bigtable.admin.v2.BigtableTableAdmin.UpdateBackup].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3300,7 +3280,6 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 request (~.bigtable_table_admin.UpdateTableRequest):
                     The request object. The request for
                 [UpdateTable][google.bigtable.admin.v2.BigtableTableAdmin.UpdateTable].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

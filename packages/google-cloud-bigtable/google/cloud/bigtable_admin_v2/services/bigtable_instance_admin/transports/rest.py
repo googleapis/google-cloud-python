@@ -874,7 +874,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 request (~.bigtable_instance_admin.CreateAppProfileRequest):
                     The request object. Request message for
                 BigtableInstanceAdmin.CreateAppProfile.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -978,7 +977,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 request (~.bigtable_instance_admin.CreateClusterRequest):
                     The request object. Request message for
                 BigtableInstanceAdmin.CreateCluster.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1076,7 +1074,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 request (~.bigtable_instance_admin.CreateInstanceRequest):
                     The request object. Request message for
                 BigtableInstanceAdmin.CreateInstance.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1176,7 +1173,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 request (~.bigtable_instance_admin.DeleteAppProfileRequest):
                     The request object. Request message for
                 BigtableInstanceAdmin.DeleteAppProfile.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1254,7 +1250,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 request (~.bigtable_instance_admin.DeleteClusterRequest):
                     The request object. Request message for
                 BigtableInstanceAdmin.DeleteCluster.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1330,7 +1325,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 request (~.bigtable_instance_admin.DeleteInstanceRequest):
                     The request object. Request message for
                 BigtableInstanceAdmin.DeleteInstance.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1406,7 +1400,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 request (~.bigtable_instance_admin.GetAppProfileRequest):
                     The request object. Request message for
                 BigtableInstanceAdmin.GetAppProfile.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1497,7 +1490,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 request (~.bigtable_instance_admin.GetClusterRequest):
                     The request object. Request message for
                 BigtableInstanceAdmin.GetCluster.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1759,7 +1751,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 request (~.bigtable_instance_admin.GetInstanceRequest):
                     The request object. Request message for
                 BigtableInstanceAdmin.GetInstance.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1853,7 +1844,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 request (~.bigtable_instance_admin.ListAppProfilesRequest):
                     The request object. Request message for
                 BigtableInstanceAdmin.ListAppProfiles.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1945,7 +1935,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 request (~.bigtable_instance_admin.ListClustersRequest):
                     The request object. Request message for
                 BigtableInstanceAdmin.ListClusters.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2035,7 +2024,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 request (~.bigtable_instance_admin.ListHotTabletsRequest):
                     The request object. Request message for
                 BigtableInstanceAdmin.ListHotTablets.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2127,7 +2115,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 request (~.bigtable_instance_admin.ListInstancesRequest):
                     The request object. Request message for
                 BigtableInstanceAdmin.ListInstances.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2219,7 +2206,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 request (~.bigtable_instance_admin.PartialUpdateClusterRequest):
                     The request object. Request message for
                 BigtableInstanceAdmin.PartialUpdateCluster.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2321,7 +2307,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 request (~.bigtable_instance_admin.PartialUpdateInstanceRequest):
                     The request object. Request message for
                 BigtableInstanceAdmin.PartialUpdateInstance.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2692,7 +2677,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 request (~.bigtable_instance_admin.UpdateAppProfileRequest):
                     The request object. Request message for
                 BigtableInstanceAdmin.UpdateAppProfile.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2784,7 +2768,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 location, capable of serving all
                 [Tables][google.bigtable.admin.v2.Table] in the parent
                 [Instance][google.bigtable.admin.v2.Instance].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2885,7 +2868,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                 served from all
                 [Clusters][google.bigtable.admin.v2.Cluster] in the
                 instance.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
