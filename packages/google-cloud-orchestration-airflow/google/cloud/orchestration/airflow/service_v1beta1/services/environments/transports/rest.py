@@ -586,7 +586,6 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
                 request (~.environments.CheckUpgradeRequest):
                     The request object. Request to check whether image
                 upgrade will succeed.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -915,7 +914,6 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
                 request (~.environments.ListEnvironmentsRequest):
                     The request object. List environments in a project and
                 location.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -996,7 +994,6 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
                 request (~.environments.LoadSnapshotRequest):
                     The request object. Request to load a snapshot into a
                 Cloud Composer environment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1170,7 +1167,6 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
                 request (~.environments.SaveSnapshotRequest):
                     The request object. Request to create a snapshot of a
                 Cloud Composer environment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

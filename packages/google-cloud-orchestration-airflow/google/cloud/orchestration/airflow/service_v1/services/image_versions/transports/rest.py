@@ -283,7 +283,6 @@ class ImageVersionsRestTransport(ImageVersionsTransport):
                 request (~.image_versions.ListImageVersionsRequest):
                     The request object. List ImageVersions in a project and
                 location.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
