@@ -308,7 +308,6 @@ class PrivateCatalogRestTransport(PrivateCatalogTransport):
                 request (~.private_catalog.SearchCatalogsRequest):
                     The request object. Request message for
                 [PrivateCatalog.SearchCatalogs][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchCatalogs].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -406,7 +405,6 @@ class PrivateCatalogRestTransport(PrivateCatalogTransport):
                 request (~.private_catalog.SearchProductsRequest):
                     The request object. Request message for
                 [PrivateCatalog.SearchProducts][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchProducts].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -506,7 +504,6 @@ class PrivateCatalogRestTransport(PrivateCatalogTransport):
                 request (~.private_catalog.SearchVersionsRequest):
                     The request object. Request message for
                 [PrivateCatalog.SearchVersions][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchVersions].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
