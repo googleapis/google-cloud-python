@@ -465,8 +465,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         Args:
             request (Union[google.cloud.billing_v1.types.GetBillingAccountRequest, dict]):
-                The request object. Request message for
-                `GetBillingAccount`.
+                The request object. Request message for ``GetBillingAccount``.
             name (str):
                 Required. The resource name of the billing account to
                 retrieve. For example,
@@ -571,8 +570,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         Args:
             request (Union[google.cloud.billing_v1.types.ListBillingAccountsRequest, dict]):
-                The request object. Request message for
-                `ListBillingAccounts`.
+                The request object. Request message for ``ListBillingAccounts``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -666,8 +664,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         Args:
             request (Union[google.cloud.billing_v1.types.UpdateBillingAccountRequest, dict]):
-                The request object. Request message for
-                `UpdateBillingAccount`.
+                The request object. Request message for ``UpdateBillingAccount``.
             name (str):
                 Required. The name of the billing
                 account resource to be updated.
@@ -794,8 +791,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         Args:
             request (Union[google.cloud.billing_v1.types.CreateBillingAccountRequest, dict]):
-                The request object. Request message for
-                `CreateBillingAccount`.
+                The request object. Request message for ``CreateBillingAccount``.
             billing_account (google.cloud.billing_v1.types.BillingAccount):
                 Required. The billing account
                 resource to create. Currently
@@ -903,8 +899,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         Args:
             request (Union[google.cloud.billing_v1.types.ListProjectBillingInfoRequest, dict]):
-                The request object. Request message for
-                `ListProjectBillingInfo`.
+                The request object. Request message for ``ListProjectBillingInfo``.
             name (str):
                 Required. The resource name of the billing account
                 associated with the projects that you want to list. For
@@ -1026,8 +1021,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         Args:
             request (Union[google.cloud.billing_v1.types.GetProjectBillingInfoRequest, dict]):
-                The request object. Request message for
-                `GetProjectBillingInfo`.
+                The request object. Request message for ``GetProjectBillingInfo``.
             name (str):
                 Required. The resource name of the project for which
                 billing information is retrieved. For example,
@@ -1171,8 +1165,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         Args:
             request (Union[google.cloud.billing_v1.types.UpdateProjectBillingInfoRequest, dict]):
-                The request object. Request message for
-                `UpdateProjectBillingInfo`.
+                The request object. Request message for ``UpdateProjectBillingInfo``.
             name (str):
                 Required. The resource name of the project associated
                 with the billing information that you want to update.
@@ -1294,8 +1287,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
-                The request object. Request message for `GetIamPolicy`
-                method.
+                The request object. Request message for ``GetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
                 policy is being requested. See the
@@ -1461,8 +1453,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
-                The request object. Request message for `SetIamPolicy`
-                method.
+                The request object. Request message for ``SetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
                 policy is being specified. See the
@@ -1630,8 +1621,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
-                The request object. Request message for
-                `TestIamPermissions` method.
+                The request object. Request message for ``TestIamPermissions`` method.
             resource (str):
                 REQUIRED: The resource for which the
                 policy detail is being requested. See

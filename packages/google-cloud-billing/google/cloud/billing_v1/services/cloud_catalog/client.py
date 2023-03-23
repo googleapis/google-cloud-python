@@ -492,7 +492,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
 
         Args:
             request (Union[google.cloud.billing_v1.types.ListServicesRequest, dict]):
-                The request object. Request message for `ListServices`.
+                The request object. Request message for ``ListServices``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -580,7 +580,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
 
         Args:
             request (Union[google.cloud.billing_v1.types.ListSkusRequest, dict]):
-                The request object. Request message for `ListSkus`.
+                The request object. Request message for ``ListSkus``.
             parent (str):
                 Required. The name of the service.
                 Example: "services/DA34-426B-A397"
