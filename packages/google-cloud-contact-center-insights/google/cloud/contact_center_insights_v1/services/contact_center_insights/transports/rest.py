@@ -1429,7 +1429,6 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     request (~.contact_center_insights.BulkAnalyzeConversationsRequest):
                         The request object. The request to analyze conversations
                     in bulk.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1532,7 +1531,6 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     request (~.contact_center_insights.CalculateIssueModelStatsRequest):
                         The request object. Request to get statistics of an issue
                     model.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1626,7 +1624,6 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                 request (~.contact_center_insights.CalculateStatsRequest):
                     The request object. The request for calculating
                 conversation statistics.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2512,7 +2509,6 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                 request (~.contact_center_insights.DeletePhraseMatcherRequest):
                     The request object. The request to delete a phrase
                 matcher.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3206,7 +3202,6 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                 request (~.contact_center_insights.GetPhraseMatcherRequest):
                     The request object. The request to get a a phrase
                 matcher.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3296,7 +3291,6 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                 request (~.contact_center_insights.GetSettingsRequest):
                     The request object. The request to get project-level
                 settings.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4094,7 +4088,6 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                 request (~.contact_center_insights.UndeployIssueModelRequest):
                     The request object. The request to undeploy an issue
                 model.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4483,7 +4476,6 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                 request (~.contact_center_insights.UpdatePhraseMatcherRequest):
                     The request object. The request to update a phrase
                 matcher.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4584,7 +4576,6 @@ class ContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                 request (~.contact_center_insights.UpdateSettingsRequest):
                     The request object. The request to update project-level
                 settings.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

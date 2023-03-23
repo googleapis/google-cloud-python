@@ -783,8 +783,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         Args:
             request (Union[google.cloud.contact_center_insights_v1.types.UpdateConversationRequest, dict]):
-                The request object. The request to update a
-                conversation.
+                The request object. The request to update a conversation.
             conversation (google.cloud.contact_center_insights_v1.types.Conversation):
                 Required. The new values for the
                 conversation.
@@ -1108,8 +1107,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         Args:
             request (Union[google.cloud.contact_center_insights_v1.types.DeleteConversationRequest, dict]):
-                The request object. The request to delete a
-                conversation.
+                The request object. The request to delete a conversation.
             name (str):
                 Required. The name of the
                 conversation to delete.
@@ -2037,8 +2035,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         Args:
             request (Union[google.cloud.contact_center_insights_v1.types.CreateIssueModelRequest, dict]):
-                The request object. The request to create an issue
-                model.
+                The request object. The request to create an issue model.
             parent (str):
                 Required. The parent resource of the
                 issue model.
@@ -2159,8 +2156,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         Args:
             request (Union[google.cloud.contact_center_insights_v1.types.UpdateIssueModelRequest, dict]):
-                The request object. The request to update an issue
-                model.
+                The request object. The request to update an issue model.
             issue_model (google.cloud.contact_center_insights_v1.types.IssueModel):
                 Required. The new values for the
                 issue model.
@@ -2476,8 +2472,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         Args:
             request (Union[google.cloud.contact_center_insights_v1.types.DeleteIssueModelRequest, dict]):
-                The request object. The request to delete an issue
-                model.
+                The request object. The request to delete an issue model.
             name (str):
                 Required. The name of the issue model
                 to delete.
@@ -2604,8 +2599,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         Args:
             request (Union[google.cloud.contact_center_insights_v1.types.DeployIssueModelRequest, dict]):
-                The request object. The request to deploy an issue
-                model.
+                The request object. The request to deploy an issue model.
             name (str):
                 Required. The issue model to deploy.
                 This corresponds to the ``name`` field
@@ -3239,8 +3233,8 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         Args:
             request (Union[google.cloud.contact_center_insights_v1.types.CalculateIssueModelStatsRequest, dict]):
-                The request object. Request to get statistics of an
-                issue model.
+                The request object. Request to get statistics of an issue
+                model.
             issue_model (str):
                 Required. The resource name of the
                 issue model to query against.
