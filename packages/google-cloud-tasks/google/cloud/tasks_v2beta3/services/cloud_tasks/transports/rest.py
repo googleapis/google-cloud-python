@@ -629,7 +629,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.CreateQueueRequest):
                     The request object. Request message for
                 [CreateQueue][google.cloud.tasks.v2beta3.CloudTasks.CreateQueue].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -732,7 +731,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.CreateTaskRequest):
                     The request object. Request message for
                 [CreateTask][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -829,7 +827,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.DeleteQueueRequest):
                     The request object. Request message for
                 [DeleteQueue][google.cloud.tasks.v2beta3.CloudTasks.DeleteQueue].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -905,7 +902,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.DeleteTaskRequest):
                     The request object. Request message for deleting a task using
                 [DeleteTask][google.cloud.tasks.v2beta3.CloudTasks.DeleteTask].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1151,7 +1147,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.GetQueueRequest):
                     The request object. Request message for
                 [GetQueue][google.cloud.tasks.v2beta3.CloudTasks.GetQueue].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1245,7 +1240,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.GetTaskRequest):
                     The request object. Request message for getting a task using
                 [GetTask][google.cloud.tasks.v2beta3.CloudTasks.GetTask].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1333,7 +1327,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.ListQueuesRequest):
                     The request object. Request message for
                 [ListQueues][google.cloud.tasks.v2beta3.CloudTasks.ListQueues].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1423,7 +1416,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.ListTasksRequest):
                     The request object. Request message for listing tasks using
                 [ListTasks][google.cloud.tasks.v2beta3.CloudTasks.ListTasks].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1513,7 +1505,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.PauseQueueRequest):
                     The request object. Request message for
                 [PauseQueue][google.cloud.tasks.v2beta3.CloudTasks.PauseQueue].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1616,7 +1607,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.PurgeQueueRequest):
                     The request object. Request message for
                 [PurgeQueue][google.cloud.tasks.v2beta3.CloudTasks.PurgeQueue].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1719,7 +1709,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.ResumeQueueRequest):
                     The request object. Request message for
                 [ResumeQueue][google.cloud.tasks.v2beta3.CloudTasks.ResumeQueue].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1822,7 +1811,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.RunTaskRequest):
                     The request object. Request message for forcing a task to run now using
                 [RunTask][google.cloud.tasks.v2beta3.CloudTasks.RunTask].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2186,7 +2174,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.UpdateQueueRequest):
                     The request object. Request message for
                 [UpdateQueue][google.cloud.tasks.v2beta3.CloudTasks.UpdateQueue].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

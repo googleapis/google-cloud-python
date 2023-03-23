@@ -730,7 +730,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.AcknowledgeTaskRequest):
                     The request object. Request message for acknowledging a task using
                 [AcknowledgeTask][google.cloud.tasks.v2beta2.CloudTasks.AcknowledgeTask].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -817,7 +816,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.CancelLeaseRequest):
                     The request object. Request message for canceling a lease using
                 [CancelLease][google.cloud.tasks.v2beta2.CloudTasks.CancelLease].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -914,7 +912,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.CreateQueueRequest):
                     The request object. Request message for
                 [CreateQueue][google.cloud.tasks.v2beta2.CloudTasks.CreateQueue].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1017,7 +1014,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.CreateTaskRequest):
                     The request object. Request message for
                 [CreateTask][google.cloud.tasks.v2beta2.CloudTasks.CreateTask].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1114,7 +1110,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.DeleteQueueRequest):
                     The request object. Request message for
                 [DeleteQueue][google.cloud.tasks.v2beta2.CloudTasks.DeleteQueue].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1190,7 +1185,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.DeleteTaskRequest):
                     The request object. Request message for deleting a task using
                 [DeleteTask][google.cloud.tasks.v2beta2.CloudTasks.DeleteTask].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1436,7 +1430,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.GetQueueRequest):
                     The request object. Request message for
                 [GetQueue][google.cloud.tasks.v2beta2.CloudTasks.GetQueue].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1530,7 +1523,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.GetTaskRequest):
                     The request object. Request message for getting a task using
                 [GetTask][google.cloud.tasks.v2beta2.CloudTasks.GetTask].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1618,7 +1610,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.LeaseTasksRequest):
                     The request object. Request message for leasing tasks using
                 [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1717,7 +1708,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.ListQueuesRequest):
                     The request object. Request message for
                 [ListQueues][google.cloud.tasks.v2beta2.CloudTasks.ListQueues].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1807,7 +1797,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.ListTasksRequest):
                     The request object. Request message for listing tasks using
                 [ListTasks][google.cloud.tasks.v2beta2.CloudTasks.ListTasks].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1897,7 +1886,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.PauseQueueRequest):
                     The request object. Request message for
                 [PauseQueue][google.cloud.tasks.v2beta2.CloudTasks.PauseQueue].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2000,7 +1988,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.PurgeQueueRequest):
                     The request object. Request message for
                 [PurgeQueue][google.cloud.tasks.v2beta2.CloudTasks.PurgeQueue].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2103,7 +2090,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.RenewLeaseRequest):
                     The request object. Request message for renewing a lease using
                 [RenewLease][google.cloud.tasks.v2beta2.CloudTasks.RenewLease].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2200,7 +2186,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.ResumeQueueRequest):
                     The request object. Request message for
                 [ResumeQueue][google.cloud.tasks.v2beta2.CloudTasks.ResumeQueue].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2303,7 +2288,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.RunTaskRequest):
                     The request object. Request message for forcing a task to run now using
                 [RunTask][google.cloud.tasks.v2beta2.CloudTasks.RunTask].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2667,7 +2651,6 @@ class CloudTasksRestTransport(CloudTasksTransport):
                 request (~.cloudtasks.UpdateQueueRequest):
                     The request object. Request message for
                 [UpdateQueue][google.cloud.tasks.v2beta2.CloudTasks.UpdateQueue].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

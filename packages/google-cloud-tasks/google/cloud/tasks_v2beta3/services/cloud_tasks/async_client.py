@@ -1242,8 +1242,7 @@ class CloudTasksAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
-                The request object. Request message for `GetIamPolicy`
-                method.
+                The request object. Request message for ``GetIamPolicy`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
                 policy is being requested. See the
@@ -1430,8 +1429,7 @@ class CloudTasksAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
-                The request object. Request message for `SetIamPolicy`
-                method.
+                The request object. Request message for ``SetIamPolicy`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
                 policy is being specified. See the
@@ -1606,8 +1604,7 @@ class CloudTasksAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
-                The request object. Request message for
-                `TestIamPermissions` method.
+                The request object. Request message for ``TestIamPermissions`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
                 policy detail is being requested. See
@@ -1740,8 +1737,7 @@ class CloudTasksAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.tasks_v2beta3.types.ListTasksRequest, dict]]):
-                The request object. Request message for listing tasks
-                using
+                The request object. Request message for listing tasks using
                 [ListTasks][google.cloud.tasks.v2beta3.CloudTasks.ListTasks].
             parent (:class:`str`):
                 Required. The queue name. For example:
@@ -1865,8 +1861,7 @@ class CloudTasksAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.tasks_v2beta3.types.GetTaskRequest, dict]]):
-                The request object. Request message for getting a task
-                using
+                The request object. Request message for getting a task using
                 [GetTask][google.cloud.tasks.v2beta3.CloudTasks.GetTask].
             name (:class:`str`):
                 Required. The task name. For example:
@@ -2132,8 +2127,7 @@ class CloudTasksAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.tasks_v2beta3.types.DeleteTaskRequest, dict]]):
-                The request object. Request message for deleting a task
-                using
+                The request object. Request message for deleting a task using
                 [DeleteTask][google.cloud.tasks.v2beta3.CloudTasks.DeleteTask].
             name (:class:`str`):
                 Required. The task name. For example:
@@ -2263,8 +2257,7 @@ class CloudTasksAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.tasks_v2beta3.types.RunTaskRequest, dict]]):
-                The request object. Request message for forcing a task
-                to run now using
+                The request object. Request message for forcing a task to run now using
                 [RunTask][google.cloud.tasks.v2beta3.CloudTasks.RunTask].
             name (:class:`str`):
                 Required. The task name. For example:
