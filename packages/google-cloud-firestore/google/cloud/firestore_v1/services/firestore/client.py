@@ -1564,8 +1564,10 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
             requests (Iterator[google.cloud.firestore_v1.types.WriteRequest]):
                 The request object iterator. The request for
                 [Firestore.Write][google.firestore.v1.Firestore.Write].
+
                 The first request creates a stream, or resumes an
                 existing one from a token.
+
                 When creating a new stream, the server replies with a
                 response containing only an ID and a token, to use in
                 the next request.

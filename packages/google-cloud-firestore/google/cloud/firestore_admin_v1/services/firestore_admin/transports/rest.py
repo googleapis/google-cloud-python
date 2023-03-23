@@ -731,7 +731,6 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
                 request (~.firestore_admin.CreateIndexRequest):
                     The request object. The request for
                 [FirestoreAdmin.CreateIndex][google.firestore.admin.v1.FirestoreAdmin.CreateIndex].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -829,7 +828,6 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
                 request (~.firestore_admin.DeleteIndexRequest):
                     The request object. The request for
                 [FirestoreAdmin.DeleteIndex][google.firestore.admin.v1.FirestoreAdmin.DeleteIndex].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -905,7 +903,6 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
                 request (~.firestore_admin.ExportDocumentsRequest):
                     The request object. The request for
                 [FirestoreAdmin.ExportDocuments][google.firestore.admin.v1.FirestoreAdmin.ExportDocuments].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1005,7 +1002,6 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
                 request (~.firestore_admin.GetDatabaseRequest):
                     The request object. The request for
                 [FirestoreAdmin.GetDatabase][google.firestore.admin.v1.FirestoreAdmin.GetDatabase].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1096,7 +1092,6 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
                 request (~.firestore_admin.GetFieldRequest):
                     The request object. The request for
                 [FirestoreAdmin.GetField][google.firestore.admin.v1.FirestoreAdmin.GetField].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1189,7 +1184,6 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
                 request (~.firestore_admin.GetIndexRequest):
                     The request object. The request for
                 [FirestoreAdmin.GetIndex][google.firestore.admin.v1.FirestoreAdmin.GetIndex].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1280,7 +1274,6 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
                 request (~.firestore_admin.ImportDocumentsRequest):
                     The request object. The request for
                 [FirestoreAdmin.ImportDocuments][google.firestore.admin.v1.FirestoreAdmin.ImportDocuments].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1381,7 +1374,6 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
                     The request object. A request to list the Firestore
                 Databases in all locations for a
                 project.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1469,7 +1461,6 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
                 request (~.firestore_admin.ListFieldsRequest):
                     The request object. The request for
                 [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1559,7 +1550,6 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
                 request (~.firestore_admin.ListIndexesRequest):
                     The request object. The request for
                 [FirestoreAdmin.ListIndexes][google.firestore.admin.v1.FirestoreAdmin.ListIndexes].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1649,7 +1639,6 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
                 request (~.firestore_admin.UpdateDatabaseRequest):
                     The request object. The request for
                 [FirestoreAdmin.UpdateDatabase][google.firestore.admin.v1.FirestoreAdmin.UpdateDatabase].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1747,7 +1736,6 @@ class FirestoreAdminRestTransport(FirestoreAdminTransport):
                 request (~.firestore_admin.UpdateFieldRequest):
                     The request object. The request for
                 [FirestoreAdmin.UpdateField][google.firestore.admin.v1.FirestoreAdmin.UpdateField].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

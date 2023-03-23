@@ -687,7 +687,6 @@ class FirestoreRestTransport(FirestoreTransport):
                 request (~.firestore.BatchGetDocumentsRequest):
                     The request object. The request for
                 [Firestore.BatchGetDocuments][google.firestore.v1.Firestore.BatchGetDocuments].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -787,7 +786,6 @@ class FirestoreRestTransport(FirestoreTransport):
                 request (~.firestore.BatchWriteRequest):
                     The request object. The request for
                 [Firestore.BatchWrite][google.firestore.v1.Firestore.BatchWrite].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -886,7 +884,6 @@ class FirestoreRestTransport(FirestoreTransport):
                 request (~.firestore.BeginTransactionRequest):
                     The request object. The request for
                 [Firestore.BeginTransaction][google.firestore.v1.Firestore.BeginTransaction].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -987,7 +984,6 @@ class FirestoreRestTransport(FirestoreTransport):
                 request (~.firestore.CommitRequest):
                     The request object. The request for
                 [Firestore.Commit][google.firestore.v1.Firestore.Commit].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1086,7 +1082,6 @@ class FirestoreRestTransport(FirestoreTransport):
                 request (~.firestore.CreateDocumentRequest):
                     The request object. The request for
                 [Firestore.CreateDocument][google.firestore.v1.Firestore.CreateDocument].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1185,7 +1180,6 @@ class FirestoreRestTransport(FirestoreTransport):
                 request (~.firestore.DeleteDocumentRequest):
                     The request object. The request for
                 [Firestore.DeleteDocument][google.firestore.v1.Firestore.DeleteDocument].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1261,7 +1255,6 @@ class FirestoreRestTransport(FirestoreTransport):
                 request (~.firestore.GetDocumentRequest):
                     The request object. The request for
                 [Firestore.GetDocument][google.firestore.v1.Firestore.GetDocument].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1351,7 +1344,6 @@ class FirestoreRestTransport(FirestoreTransport):
                 request (~.firestore.ListCollectionIdsRequest):
                     The request object. The request for
                 [Firestore.ListCollectionIds][google.firestore.v1.Firestore.ListCollectionIds].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1457,7 +1449,6 @@ class FirestoreRestTransport(FirestoreTransport):
                 request (~.firestore.ListDocumentsRequest):
                     The request object. The request for
                 [Firestore.ListDocuments][google.firestore.v1.Firestore.ListDocuments].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1567,7 +1558,6 @@ class FirestoreRestTransport(FirestoreTransport):
                 request (~.firestore.PartitionQueryRequest):
                     The request object. The request for
                 [Firestore.PartitionQuery][google.firestore.v1.Firestore.PartitionQuery].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1671,7 +1661,6 @@ class FirestoreRestTransport(FirestoreTransport):
                 request (~.firestore.RollbackRequest):
                     The request object. The request for
                 [Firestore.Rollback][google.firestore.v1.Firestore.Rollback].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1756,7 +1745,6 @@ class FirestoreRestTransport(FirestoreTransport):
                 request (~.firestore.RunAggregationQueryRequest):
                     The request object. The request for
                 [Firestore.RunAggregationQuery][google.firestore.v1.Firestore.RunAggregationQuery].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1861,7 +1849,6 @@ class FirestoreRestTransport(FirestoreTransport):
                 request (~.firestore.RunQueryRequest):
                     The request object. The request for
                 [Firestore.RunQuery][google.firestore.v1.Firestore.RunQuery].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1962,7 +1949,6 @@ class FirestoreRestTransport(FirestoreTransport):
                 request (~.firestore.UpdateDocumentRequest):
                     The request object. The request for
                 [Firestore.UpdateDocument][google.firestore.v1.Firestore.UpdateDocument].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

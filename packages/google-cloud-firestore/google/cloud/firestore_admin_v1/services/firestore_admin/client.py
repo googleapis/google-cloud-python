@@ -1762,7 +1762,8 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         Args:
             request (Union[google.cloud.firestore_admin_v1.types.ListDatabasesRequest, dict]):
                 The request object. A request to list the Firestore
-                Databases in all locations for a project.
+                Databases in all locations for a
+                project.
             parent (str):
                 Required. A parent name of the form
                 ``projects/{project_id}``
