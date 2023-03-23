@@ -670,7 +670,6 @@ class AppConnectionsServiceRestTransport(AppConnectionsServiceTransport):
                 request (~.app_connections_service.CreateAppConnectionRequest):
                     The request object. Request message for
                 BeyondCorp.CreateAppConnection.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -770,7 +769,6 @@ class AppConnectionsServiceRestTransport(AppConnectionsServiceTransport):
                 request (~.app_connections_service.DeleteAppConnectionRequest):
                     The request object. Request message for
                 BeyondCorp.DeleteAppConnection.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -861,7 +859,6 @@ class AppConnectionsServiceRestTransport(AppConnectionsServiceTransport):
                 request (~.app_connections_service.GetAppConnectionRequest):
                     The request object. Request message for
                 BeyondCorp.GetAppConnection.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -959,7 +956,6 @@ class AppConnectionsServiceRestTransport(AppConnectionsServiceTransport):
                 request (~.app_connections_service.ListAppConnectionsRequest):
                     The request object. Request message for
                 BeyondCorp.ListAppConnections.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1053,7 +1049,6 @@ class AppConnectionsServiceRestTransport(AppConnectionsServiceTransport):
                 request (~.app_connections_service.ResolveAppConnectionsRequest):
                     The request object. Request message for
                 BeyondCorp.ResolveAppConnections.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1149,7 +1144,6 @@ class AppConnectionsServiceRestTransport(AppConnectionsServiceTransport):
                 request (~.app_connections_service.UpdateAppConnectionRequest):
                     The request object. Request message for
                 BeyondCorp.UpdateAppConnection.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
