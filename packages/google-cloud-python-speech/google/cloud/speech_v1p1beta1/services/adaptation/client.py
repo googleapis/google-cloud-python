@@ -512,8 +512,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.CreatePhraseSetRequest, dict]):
-                The request object. Message sent by the client for the
-                `CreatePhraseSet` method.
+                The request object. Message sent by the client for the ``CreatePhraseSet``
+                method.
             parent (str):
                 Required. The parent resource where this phrase set will
                 be created. Format:
@@ -649,8 +649,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.GetPhraseSetRequest, dict]):
-                The request object. Message sent by the client for the
-                `GetPhraseSet` method.
+                The request object. Message sent by the client for the ``GetPhraseSet``
+                method.
             name (str):
                 Required. The name of the phrase set to retrieve.
                 Format:
@@ -765,8 +765,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.ListPhraseSetRequest, dict]):
-                The request object. Message sent by the client for the
-                `ListPhraseSet` method.
+                The request object. Message sent by the client for the ``ListPhraseSet``
+                method.
             parent (str):
                 Required. The parent, which owns this collection of
                 phrase set. Format:
@@ -891,8 +891,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.UpdatePhraseSetRequest, dict]):
-                The request object. Message sent by the client for the
-                `UpdatePhraseSet` method.
+                The request object. Message sent by the client for the ``UpdatePhraseSet``
+                method.
             phrase_set (google.cloud.speech_v1p1beta1.types.PhraseSet):
                 Required. The phrase set to update.
 
@@ -1014,8 +1014,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.DeletePhraseSetRequest, dict]):
-                The request object. Message sent by the client for the
-                `DeletePhraseSet` method.
+                The request object. Message sent by the client for the ``DeletePhraseSet``
+                method.
             name (str):
                 Required. The name of the phrase set to delete. Format:
 
@@ -1113,8 +1113,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.CreateCustomClassRequest, dict]):
-                The request object. Message sent by the client for the
-                `CreateCustomClass` method.
+                The request object. Message sent by the client for the ``CreateCustomClass``
+                method.
             parent (str):
                 Required. The parent resource where this custom class
                 will be created. Format:
@@ -1254,8 +1254,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.GetCustomClassRequest, dict]):
-                The request object. Message sent by the client for the
-                `GetCustomClass` method.
+                The request object. Message sent by the client for the ``GetCustomClass``
+                method.
             name (str):
                 Required. The name of the custom class to retrieve.
                 Format:
@@ -1366,8 +1366,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.ListCustomClassesRequest, dict]):
-                The request object. Message sent by the client for the
-                `ListCustomClasses` method.
+                The request object. Message sent by the client for the ``ListCustomClasses``
+                method.
             parent (str):
                 Required. The parent, which owns this collection of
                 custom classes. Format:
@@ -1492,8 +1492,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.UpdateCustomClassRequest, dict]):
-                The request object. Message sent by the client for the
-                `UpdateCustomClass` method.
+                The request object. Message sent by the client for the ``UpdateCustomClass``
+                method.
             custom_class (google.cloud.speech_v1p1beta1.types.CustomClass):
                 Required. The custom class to update.
 
@@ -1619,8 +1619,8 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
 
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.DeleteCustomClassRequest, dict]):
-                The request object. Message sent by the client for the
-                `DeleteCustomClass` method.
+                The request object. Message sent by the client for the ``DeleteCustomClass``
+                method.
             name (str):
                 Required. The name of the custom class to delete.
                 Format:
