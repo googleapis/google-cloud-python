@@ -496,8 +496,7 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
 
         Args:
             request (Union[google.cloud.api_keys_v2.types.CreateKeyRequest, dict]):
-                The request object. Request message for `CreateKey`
-                method.
+                The request object. Request message for ``CreateKey`` method.
             parent (str):
                 Required. The project in which the
                 API key is created.
@@ -641,8 +640,7 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
 
         Args:
             request (Union[google.cloud.api_keys_v2.types.ListKeysRequest, dict]):
-                The request object. Request message for `ListKeys`
-                method.
+                The request object. Request message for ``ListKeys`` method.
             parent (str):
                 Required. Lists all API keys
                 associated with this project.
@@ -758,7 +756,7 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
 
         Args:
             request (Union[google.cloud.api_keys_v2.types.GetKeyRequest, dict]):
-                The request object. Request message for `GetKey` method.
+                The request object. Request message for ``GetKey`` method.
             name (str):
                 Required. The resource name of the
                 API key to get.
@@ -862,8 +860,7 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
 
         Args:
             request (Union[google.cloud.api_keys_v2.types.GetKeyStringRequest, dict]):
-                The request object. Request message for `GetKeyString`
-                method.
+                The request object. Request message for ``GetKeyString`` method.
             name (str):
                 Required. The resource name of the
                 API key to be retrieved.
@@ -970,8 +967,7 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
 
         Args:
             request (Union[google.cloud.api_keys_v2.types.UpdateKeyRequest, dict]):
-                The request object. Request message for `UpdateKey`
-                method.
+                The request object. Request message for ``UpdateKey`` method.
             key (google.cloud.api_keys_v2.types.Key):
                 Required. Set the ``name`` field to the resource name of
                 the API key to be updated. You can update only the
@@ -1108,8 +1104,7 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
 
         Args:
             request (Union[google.cloud.api_keys_v2.types.DeleteKeyRequest, dict]):
-                The request object. Request message for `DeleteKey`
-                method.
+                The request object. Request message for ``DeleteKey`` method.
             name (str):
                 Required. The resource name of the
                 API key to be deleted.
@@ -1227,8 +1222,7 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
 
         Args:
             request (Union[google.cloud.api_keys_v2.types.UndeleteKeyRequest, dict]):
-                The request object. Request message for `UndeleteKey`
-                method.
+                The request object. Request message for ``UndeleteKey`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1323,8 +1317,7 @@ class ApiKeysClient(metaclass=ApiKeysClientMeta):
 
         Args:
             request (Union[google.cloud.api_keys_v2.types.LookupKeyRequest, dict]):
-                The request object. Request message for `LookupKey`
-                method.
+                The request object. Request message for ``LookupKey`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
