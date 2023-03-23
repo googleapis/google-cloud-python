@@ -276,8 +276,7 @@ class CloudFunctionsServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.functions_v1.types.ListFunctionsRequest, dict]]):
-                The request object. Request for the `ListFunctions`
-                method.
+                The request object. Request for the ``ListFunctions`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -379,8 +378,7 @@ class CloudFunctionsServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.functions_v1.types.GetFunctionRequest, dict]]):
-                The request object. Request for the `GetFunction`
-                method.
+                The request object. Request for the ``GetFunction`` method.
             name (:class:`str`):
                 Required. The name of the function
                 which details should be obtained.
@@ -504,8 +502,7 @@ class CloudFunctionsServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.functions_v1.types.CreateFunctionRequest, dict]]):
-                The request object. Request for the `CreateFunction`
-                method.
+                The request object. Request for the ``CreateFunction`` method.
             location (:class:`str`):
                 Required. The project and location in which the function
                 should be created, specified in the format
@@ -632,8 +629,7 @@ class CloudFunctionsServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.functions_v1.types.UpdateFunctionRequest, dict]]):
-                The request object. Request for the `UpdateFunction`
-                method.
+                The request object. Request for the ``UpdateFunction`` method.
             function (:class:`google.cloud.functions_v1.types.CloudFunction`):
                 Required. New version of the
                 function.
@@ -764,8 +760,7 @@ class CloudFunctionsServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.functions_v1.types.DeleteFunctionRequest, dict]]):
-                The request object. Request for the `DeleteFunction`
-                method.
+                The request object. Request for the ``DeleteFunction`` method.
             name (:class:`str`):
                 Required. The name of the function
                 which should be deleted.
@@ -899,8 +894,7 @@ class CloudFunctionsServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.functions_v1.types.CallFunctionRequest, dict]]):
-                The request object. Request for the `CallFunction`
-                method.
+                The request object. Request for the ``CallFunction`` method.
             name (:class:`str`):
                 Required. The name of the function to
                 be called.
@@ -1033,8 +1027,7 @@ class CloudFunctionsServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.functions_v1.types.GenerateUploadUrlRequest, dict]]):
-                The request object. Request of `GenerateSourceUploadUrl`
-                method.
+                The request object. Request of ``GenerateSourceUploadUrl`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1115,8 +1108,7 @@ class CloudFunctionsServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.functions_v1.types.GenerateDownloadUrlRequest, dict]]):
-                The request object. Request of `GenerateDownloadUrl`
-                method.
+                The request object. Request of ``GenerateDownloadUrl`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1195,8 +1187,7 @@ class CloudFunctionsServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
-                The request object. Request message for `SetIamPolicy`
-                method.
+                The request object. Request message for ``SetIamPolicy`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1340,8 +1331,7 @@ class CloudFunctionsServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
-                The request object. Request message for `GetIamPolicy`
-                method.
+                The request object. Request message for ``GetIamPolicy`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1486,8 +1476,7 @@ class CloudFunctionsServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
-                The request object. Request message for
-                `TestIamPermissions` method.
+                The request object. Request message for ``TestIamPermissions`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

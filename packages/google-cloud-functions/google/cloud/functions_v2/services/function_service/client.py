@@ -698,8 +698,7 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
         Args:
             request (Union[google.cloud.functions_v2.types.GetFunctionRequest, dict]):
-                The request object. Request for the `GetFunction`
-                method.
+                The request object. Request for the ``GetFunction`` method.
             name (str):
                 Required. The name of the function
                 which details should be obtained.
@@ -804,8 +803,7 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
         Args:
             request (Union[google.cloud.functions_v2.types.ListFunctionsRequest, dict]):
-                The request object. Request for the `ListFunctions`
-                method.
+                The request object. Request for the ``ListFunctions`` method.
             parent (str):
                 Required. The project and location from which the
                 function should be listed, specified in the format
@@ -931,8 +929,7 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
         Args:
             request (Union[google.cloud.functions_v2.types.CreateFunctionRequest, dict]):
-                The request object. Request for the `CreateFunction`
-                method.
+                The request object. Request for the ``CreateFunction`` method.
             parent (str):
                 Required. The project and location in which the function
                 should be created, specified in the format
@@ -1068,8 +1065,7 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
         Args:
             request (Union[google.cloud.functions_v2.types.UpdateFunctionRequest, dict]):
-                The request object. Request for the `UpdateFunction`
-                method.
+                The request object. Request for the ``UpdateFunction`` method.
             function (google.cloud.functions_v2.types.Function):
                 Required. New version of the
                 function.
@@ -1201,8 +1197,7 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
         Args:
             request (Union[google.cloud.functions_v2.types.DeleteFunctionRequest, dict]):
-                The request object. Request for the `DeleteFunction`
-                method.
+                The request object. Request for the ``DeleteFunction`` method.
             name (str):
                 Required. The name of the function
                 which should be deleted.
@@ -1345,8 +1340,7 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
         Args:
             request (Union[google.cloud.functions_v2.types.GenerateUploadUrlRequest, dict]):
-                The request object. Request of `GenerateSourceUploadUrl`
-                method.
+                The request object. Request of ``GenerateSourceUploadUrl`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1429,8 +1423,7 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
         Args:
             request (Union[google.cloud.functions_v2.types.GenerateDownloadUrlRequest, dict]):
-                The request object. Request of `GenerateDownloadUrl`
-                method.
+                The request object. Request of ``GenerateDownloadUrl`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1510,8 +1503,7 @@ class FunctionServiceClient(metaclass=FunctionServiceClientMeta):
 
         Args:
             request (Union[google.cloud.functions_v2.types.ListRuntimesRequest, dict]):
-                The request object. Request for the `ListRuntimes`
-                method.
+                The request object. Request for the ``ListRuntimes`` method.
             parent (str):
                 Required. The project and location from which the
                 runtimes should be listed, specified in the format
