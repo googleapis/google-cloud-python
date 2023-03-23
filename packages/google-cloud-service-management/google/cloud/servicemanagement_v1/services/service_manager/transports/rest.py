@@ -642,7 +642,6 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
                 request (~.servicemanager.CreateServiceRequest):
                     The request object. Request message for CreateService
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -740,7 +739,6 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
                 request (~.servicemanager.CreateServiceConfigRequest):
                     The request object. Request message for
                 CreateServiceConfig method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -876,7 +874,6 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
                 request (~.servicemanager.CreateServiceRolloutRequest):
                     The request object. Request message for
                 'CreateServiceRollout'
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -976,7 +973,6 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
                 request (~.servicemanager.DeleteServiceRequest):
                     The request object. Request message for DeleteService
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1065,7 +1061,6 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
                 request (~.servicemanager.GenerateConfigReportRequest):
                     The request object. Request message for
                 GenerateConfigReport method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1255,7 +1250,6 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
                 request (~.servicemanager.GetServiceConfigRequest):
                     The request object. Request message for GetServiceConfig
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1386,7 +1380,6 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
                 request (~.servicemanager.GetServiceRolloutRequest):
                     The request object. Request message for GetServiceRollout
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1482,7 +1475,6 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
                 request (~.servicemanager.ListServiceConfigsRequest):
                     The request object. Request message for
                 ListServiceConfigs method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1576,7 +1568,6 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
                 request (~.servicemanager.ListServiceRolloutsRequest):
                     The request object. Request message for
                 'ListServiceRollouts'
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1743,7 +1734,6 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
                 request (~.servicemanager.SubmitConfigSourceRequest):
                     The request object. Request message for
                 SubmitConfigSource method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1843,7 +1833,6 @@ class ServiceManagerRestTransport(ServiceManagerTransport):
                 request (~.servicemanager.UndeleteServiceRequest):
                     The request object. Request message for UndeleteService
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

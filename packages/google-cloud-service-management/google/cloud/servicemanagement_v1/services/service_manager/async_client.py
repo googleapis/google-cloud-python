@@ -285,8 +285,7 @@ class ServiceManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.servicemanagement_v1.types.ListServicesRequest, dict]]):
-                The request object. Request message for `ListServices`
-                method.
+                The request object. Request message for ``ListServices`` method.
             producer_project_id (:class:`str`):
                 Include services produced by the
                 specified project.
@@ -406,8 +405,7 @@ class ServiceManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.servicemanagement_v1.types.GetServiceRequest, dict]]):
-                The request object. Request message for `GetService`
-                method.
+                The request object. Request message for ``GetService`` method.
             service_name (:class:`str`):
                 Required. The name of the service. See the
                 ``ServiceManager`` overview for naming requirements. For
@@ -1626,8 +1624,8 @@ class ServiceManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.servicemanagement_v1.types.GetServiceRolloutRequest, dict]]):
-                The request object. Request message for
-                GetServiceRollout method.
+                The request object. Request message for GetServiceRollout
+                method.
             service_name (:class:`str`):
                 Required. The name of the service. See the
                 `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
