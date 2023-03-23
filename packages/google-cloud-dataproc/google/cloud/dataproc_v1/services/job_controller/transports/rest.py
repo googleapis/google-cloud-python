@@ -775,7 +775,6 @@ class JobControllerRestTransport(JobControllerTransport):
                 request (~.jobs.GetJobRequest):
                     The request object. A request to get the resource
                 representation for a job in a project.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

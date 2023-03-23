@@ -785,8 +785,8 @@ class AutoscalingPolicyServiceAsyncClient:
             request (Optional[Union[google.cloud.dataproc_v1.types.DeleteAutoscalingPolicyRequest, dict]]):
                 The request object. A request to delete an autoscaling
                 policy.
-                Autoscaling policies in use by one or more clusters will
-                not be deleted.
+                Autoscaling policies in use by one or
+                more clusters will not be deleted.
             name (:class:`str`):
                 Required. The "resource name" of the autoscaling policy,
                 as described in

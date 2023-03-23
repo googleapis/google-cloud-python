@@ -1280,7 +1280,8 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         Args:
             request (Union[google.cloud.dataproc_v1.types.GetClusterRequest, dict]):
                 The request object. Request to get the resource
-                representation for a cluster in a project.
+                representation for a cluster in a
+                project.
             project_id (str):
                 Required. The ID of the Google Cloud
                 Platform project that the cluster

@@ -1392,7 +1392,8 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
             request (Union[google.cloud.dataproc_v1.types.DeleteWorkflowTemplateRequest, dict]):
                 The request object. A request to delete a workflow
                 template.
-                Currently started workflows will remain running.
+                Currently started workflows will remain
+                running.
             name (str):
                 Required. The resource name of the workflow template, as
                 described in

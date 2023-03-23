@@ -508,7 +508,6 @@ class AutoscalingPolicyServiceRestTransport(AutoscalingPolicyServiceTransport):
                 request (~.autoscaling_policies.CreateAutoscalingPolicyRequest):
                     The request object. A request to create an autoscaling
                 policy.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -616,7 +615,6 @@ class AutoscalingPolicyServiceRestTransport(AutoscalingPolicyServiceTransport):
                 policy.
                 Autoscaling policies in use by one or
                 more clusters will not be deleted.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -698,7 +696,6 @@ class AutoscalingPolicyServiceRestTransport(AutoscalingPolicyServiceTransport):
                 request (~.autoscaling_policies.GetAutoscalingPolicyRequest):
                     The request object. A request to fetch an autoscaling
                 policy.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -794,7 +791,6 @@ class AutoscalingPolicyServiceRestTransport(AutoscalingPolicyServiceTransport):
                 request (~.autoscaling_policies.ListAutoscalingPoliciesRequest):
                     The request object. A request to list autoscaling
                 policies in a project.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -890,7 +886,6 @@ class AutoscalingPolicyServiceRestTransport(AutoscalingPolicyServiceTransport):
                 request (~.autoscaling_policies.UpdateAutoscalingPolicyRequest):
                     The request object. A request to update an autoscaling
                 policy.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

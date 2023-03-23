@@ -646,7 +646,6 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
                 request (~.workflow_templates.CreateWorkflowTemplateRequest):
                     The request object. A request to create a workflow
                 template.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -754,7 +753,6 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
                 template.
                 Currently started workflows will remain
                 running.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -836,7 +834,6 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
                 request (~.workflow_templates.GetWorkflowTemplateRequest):
                     The request object. A request to fetch a workflow
                 template.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -933,7 +930,6 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
                     request (~.workflow_templates.InstantiateInlineWorkflowTemplateRequest):
                         The request object. A request to instantiate an inline
                     workflow template.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1044,7 +1040,6 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
                     request (~.workflow_templates.InstantiateWorkflowTemplateRequest):
                         The request object. A request to instantiate a workflow
                     template.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1151,7 +1146,6 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
                 request (~.workflow_templates.ListWorkflowTemplatesRequest):
                     The request object. A request to list workflow templates
                 in a project.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1247,7 +1241,6 @@ class WorkflowTemplateServiceRestTransport(WorkflowTemplateServiceTransport):
                 request (~.workflow_templates.UpdateWorkflowTemplateRequest):
                     The request object. A request to update a workflow
                 template.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

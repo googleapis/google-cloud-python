@@ -698,7 +698,6 @@ class BatchControllerRestTransport(BatchControllerTransport):
                 request (~.batches.GetBatchRequest):
                     The request object. A request to get the resource
                 representation for a batch workload.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -788,7 +787,6 @@ class BatchControllerRestTransport(BatchControllerTransport):
                 request (~.batches.ListBatchesRequest):
                     The request object. A request to list batch workloads in
                 a project.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

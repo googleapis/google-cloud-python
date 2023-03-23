@@ -849,7 +849,6 @@ class ClusterControllerRestTransport(ClusterControllerTransport):
                 request (~.clusters.DiagnoseClusterRequest):
                     The request object. A request to collect cluster
                 diagnostic information.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -950,7 +949,6 @@ class ClusterControllerRestTransport(ClusterControllerTransport):
                     The request object. Request to get the resource
                 representation for a cluster in a
                 project.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1041,7 +1039,6 @@ class ClusterControllerRestTransport(ClusterControllerTransport):
                 request (~.clusters.ListClustersRequest):
                     The request object. A request to list the clusters in a
                 project.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
