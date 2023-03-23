@@ -1459,7 +1459,6 @@ class EdgeContainerRestTransport(EdgeContainerTransport):
                 request (~.service.GenerateAccessTokenRequest):
                     The request object. Generates an access token for a
                 cluster.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
