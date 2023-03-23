@@ -279,9 +279,9 @@ class WorkflowsServiceV2BetaAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.lifesciences_v2beta.types.RunPipelineRequest, dict]]):
-                The request object. The arguments to the `RunPipeline`
-                method. The requesting user must have the
-                `iam.serviceAccounts.actAs` permission for the Cloud
+                The request object. The arguments to the ``RunPipeline`` method. The
+                requesting user must have the
+                ``iam.serviceAccounts.actAs`` permission for the Cloud
                 Life Sciences service account or the request will fail.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

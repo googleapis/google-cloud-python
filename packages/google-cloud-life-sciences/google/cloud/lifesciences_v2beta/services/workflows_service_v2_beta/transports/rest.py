@@ -397,7 +397,6 @@ class WorkflowsServiceV2BetaRestTransport(WorkflowsServiceV2BetaTransport):
                 requesting user must have the
                 ``iam.serviceAccounts.actAs`` permission for the Cloud
                 Life Sciences service account or the request will fail.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
