@@ -886,7 +886,6 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                 request (~.gcb_instance.DetachLunRequest):
                     The request object. Message for detach specific LUN from
                 an Instance.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -984,7 +983,6 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                 request (~.instance.GetInstanceRequest):
                     The request object. Message for requesting server
                 information.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1072,7 +1070,6 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                 request (~.lun.GetLunRequest):
                     The request object. Message for requesting storage lun
                 information.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1162,7 +1159,6 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                 request (~.network.GetNetworkRequest):
                     The request object. Message for requesting network
                 information.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1250,7 +1246,6 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                 request (~.nfs_share.GetNfsShareRequest):
                     The request object. Message for requesting NFS share
                 information.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1338,7 +1333,6 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                 request (~.volume.GetVolumeRequest):
                     The request object. Message for requesting storage volume
                 information.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1426,7 +1420,6 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                 request (~.instance.ListInstancesRequest):
                     The request object. Message for requesting the list of
                 servers.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1516,7 +1509,6 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                 request (~.lun.ListLunsRequest):
                     The request object. Message for requesting a list of
                 storage volume luns.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1606,7 +1598,6 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                 request (~.network.ListNetworksRequest):
                     The request object. Message for requesting a list of
                 networks.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1784,7 +1775,6 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                 request (~.nfs_share.ListNfsSharesRequest):
                     The request object. Message for requesting a list of NFS
                 shares.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1874,7 +1864,6 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                 request (~.volume.ListVolumesRequest):
                     The request object. Message for requesting a list of
                 storage volumes.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2348,7 +2337,6 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                 request (~.gcb_instance.UpdateInstanceRequest):
                     The request object. Message requesting to updating a
                 server.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2446,7 +2434,6 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                 request (~.gcb_network.UpdateNetworkRequest):
                     The request object. Message requesting to updating a
                 network.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2544,7 +2531,6 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                 request (~.gcb_nfs_share.UpdateNfsShareRequest):
                     The request object. Message requesting to updating a NFS
                 share.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

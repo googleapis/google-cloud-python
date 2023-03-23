@@ -972,8 +972,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         Args:
             request (Union[google.cloud.bare_metal_solution_v2.types.ResetInstanceRequest, dict]):
-                The request object. Message requesting to reset a
-                server.
+                The request object. Message requesting to reset a server.
             name (str):
                 Required. Name of the resource.
                 This corresponds to the ``name`` field
@@ -1087,8 +1086,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         Args:
             request (Union[google.cloud.bare_metal_solution_v2.types.StartInstanceRequest, dict]):
-                The request object. Message requesting to start a
-                server.
+                The request object. Message requesting to start a server.
             name (str):
                 Required. Name of the resource.
                 This corresponds to the ``name`` field
@@ -1551,8 +1549,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         Args:
             request (Union[google.cloud.bare_metal_solution_v2.types.GetVolumeRequest, dict]):
-                The request object. Message for requesting storage
-                volume information.
+                The request object. Message for requesting storage volume
+                information.
             name (str):
                 Required. Name of the resource.
                 This corresponds to the ``name`` field
