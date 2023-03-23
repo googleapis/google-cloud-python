@@ -658,7 +658,6 @@ class CloudMemcacheRestTransport(CloudMemcacheTransport):
                 request (~.cloud_memcache.ApplyParametersRequest):
                     The request object. Request for
                 [ApplyParameters][google.cloud.memcache.v1.CloudMemcache.ApplyParameters].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -760,7 +759,6 @@ class CloudMemcacheRestTransport(CloudMemcacheTransport):
                 request (~.cloud_memcache.CreateInstanceRequest):
                     The request object. Request for
                 [CreateInstance][google.cloud.memcache.v1.CloudMemcache.CreateInstance].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -858,7 +856,6 @@ class CloudMemcacheRestTransport(CloudMemcacheTransport):
                 request (~.cloud_memcache.DeleteInstanceRequest):
                     The request object. Request for
                 [DeleteInstance][google.cloud.memcache.v1.CloudMemcache.DeleteInstance].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -947,7 +944,6 @@ class CloudMemcacheRestTransport(CloudMemcacheTransport):
                 request (~.cloud_memcache.GetInstanceRequest):
                     The request object. Request for
                 [GetInstance][google.cloud.memcache.v1.CloudMemcache.GetInstance].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1035,7 +1031,6 @@ class CloudMemcacheRestTransport(CloudMemcacheTransport):
                 request (~.cloud_memcache.ListInstancesRequest):
                     The request object. Request for
                 [ListInstances][google.cloud.memcache.v1.CloudMemcache.ListInstances].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1125,7 +1120,6 @@ class CloudMemcacheRestTransport(CloudMemcacheTransport):
                 request (~.cloud_memcache.RescheduleMaintenanceRequest):
                     The request object. Request for
                 [RescheduleMaintenance][google.cloud.memcache.v1.CloudMemcache.RescheduleMaintenance].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1227,7 +1221,6 @@ class CloudMemcacheRestTransport(CloudMemcacheTransport):
                 request (~.cloud_memcache.UpdateInstanceRequest):
                     The request object. Request for
                 [UpdateInstance][google.cloud.memcache.v1.CloudMemcache.UpdateInstance].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1325,7 +1318,6 @@ class CloudMemcacheRestTransport(CloudMemcacheTransport):
                 request (~.cloud_memcache.UpdateParametersRequest):
                     The request object. Request for
                 [UpdateParameters][google.cloud.memcache.v1.CloudMemcache.UpdateParameters].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
