@@ -440,7 +440,6 @@ class RevisionsRestTransport(RevisionsTransport):
                 usually managed by making changes to the
                 parent Service. Only retired revisions
                 can be deleted with this API.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -529,7 +528,6 @@ class RevisionsRestTransport(RevisionsTransport):
                 request (~.revision.GetRevisionRequest):
                     The request object. Request message for obtaining a
                 Revision by its full name.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -622,7 +620,6 @@ class RevisionsRestTransport(RevisionsTransport):
                 request (~.revision.ListRevisionsRequest):
                     The request object. Request message for retrieving a list
                 of Revisions.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

@@ -439,7 +439,6 @@ class ExecutionsRestTransport(ExecutionsTransport):
                 request (~.execution.DeleteExecutionRequest):
                     The request object. Request message for deleting an
                 Execution.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -530,7 +529,6 @@ class ExecutionsRestTransport(ExecutionsTransport):
                 request (~.execution.GetExecutionRequest):
                     The request object. Request message for obtaining a
                 Execution by its full name.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -623,7 +621,6 @@ class ExecutionsRestTransport(ExecutionsTransport):
                 request (~.execution.ListExecutionsRequest):
                     The request object. Request message for retrieving a list
                 of Executions.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

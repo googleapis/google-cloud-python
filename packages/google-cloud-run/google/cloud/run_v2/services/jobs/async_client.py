@@ -514,8 +514,8 @@ class JobsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.run_v2.types.ListJobsRequest, dict]]):
-                The request object. Request message for retrieving a
-                list of Jobs.
+                The request object. Request message for retrieving a list
+                of Jobs.
             parent (:class:`str`):
                 Required. The location and project to
                 list resources on. Format:
@@ -988,8 +988,7 @@ class JobsAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
-                The request object. Request message for `GetIamPolicy`
-                method.
+                The request object. Request message for ``GetIamPolicy`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1132,8 +1131,7 @@ class JobsAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
-                The request object. Request message for `SetIamPolicy`
-                method.
+                The request object. Request message for ``SetIamPolicy`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1279,8 +1277,7 @@ class JobsAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
-                The request object. Request message for
-                `TestIamPermissions` method.
+                The request object. Request message for ``TestIamPermissions`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

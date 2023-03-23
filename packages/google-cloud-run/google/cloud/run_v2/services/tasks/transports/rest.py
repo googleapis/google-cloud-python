@@ -342,7 +342,6 @@ class TasksRestTransport(TasksTransport):
                 request (~.task.GetTaskRequest):
                     The request object. Request message for obtaining a Task
                 by its full name.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -432,7 +431,6 @@ class TasksRestTransport(TasksTransport):
                 request (~.task.ListTasksRequest):
                     The request object. Request message for retrieving a list
                 of Tasks.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

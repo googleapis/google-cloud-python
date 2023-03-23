@@ -373,8 +373,8 @@ class ExecutionsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.run_v2.types.ListExecutionsRequest, dict]]):
-                The request object. Request message for retrieving a
-                list of Executions.
+                The request object. Request message for retrieving a list
+                of Executions.
             parent (:class:`str`):
                 Required. The Execution from which
                 the Executions should be listed. To list

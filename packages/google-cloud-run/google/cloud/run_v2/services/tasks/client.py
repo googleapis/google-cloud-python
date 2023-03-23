@@ -724,8 +724,8 @@ class TasksClient(metaclass=TasksClientMeta):
 
         Args:
             request (Union[google.cloud.run_v2.types.ListTasksRequest, dict]):
-                The request object. Request message for retrieving a
-                list of Tasks.
+                The request object. Request message for retrieving a list
+                of Tasks.
             parent (str):
                 Required. The Execution from which
                 the Tasks should be listed. To list all

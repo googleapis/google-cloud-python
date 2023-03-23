@@ -373,8 +373,8 @@ class RevisionsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.run_v2.types.ListRevisionsRequest, dict]]):
-                The request object. Request message for retrieving a
-                list of Revisions.
+                The request object. Request message for retrieving a list
+                of Revisions.
             parent (:class:`str`):
                 Required. The Service from which the
                 Revisions should be listed. To list all
@@ -495,9 +495,10 @@ class RevisionsAsyncClient:
         Args:
             request (Optional[Union[google.cloud.run_v2.types.DeleteRevisionRequest, dict]]):
                 The request object. Request message for deleting a
-                retired Revision. Revision lifecycle is usually managed
-                by making changes to the parent Service. Only retired
-                revisions can be deleted with this API.
+                retired Revision. Revision lifecycle is
+                usually managed by making changes to the
+                parent Service. Only retired revisions
+                can be deleted with this API.
             name (:class:`str`):
                 Required. The name of the Revision to
                 delete. Format:

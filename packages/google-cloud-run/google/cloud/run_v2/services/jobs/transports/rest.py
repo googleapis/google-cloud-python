@@ -708,7 +708,6 @@ class JobsRestTransport(JobsTransport):
                 request (~.job.DeleteJobRequest):
                     The request object. Request message to delete a Job by
                 its full name.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -958,7 +957,6 @@ class JobsRestTransport(JobsTransport):
                 request (~.job.GetJobRequest):
                     The request object. Request message for obtaining a Job
                 by its full name.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1049,7 +1047,6 @@ class JobsRestTransport(JobsTransport):
                 request (~.job.ListJobsRequest):
                     The request object. Request message for retrieving a list
                 of Jobs.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1139,7 +1136,6 @@ class JobsRestTransport(JobsTransport):
                 request (~.job.RunJobRequest):
                     The request object. Request message to create a new
                 Execution of a Job.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

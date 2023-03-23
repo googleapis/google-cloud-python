@@ -589,7 +589,6 @@ class ServicesRestTransport(ServicesTransport):
                 request (~.gcr_service.CreateServiceRequest):
                     The request object. Request message for creating a
                 Service.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -687,7 +686,6 @@ class ServicesRestTransport(ServicesTransport):
                 request (~.service.DeleteServiceRequest):
                     The request object. Request message to delete a Service
                 by its full name.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -937,7 +935,6 @@ class ServicesRestTransport(ServicesTransport):
                 request (~.service.GetServiceRequest):
                     The request object. Request message for obtaining a
                 Service by its full name.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1034,7 +1031,6 @@ class ServicesRestTransport(ServicesTransport):
                 request (~.service.ListServicesRequest):
                     The request object. Request message for retrieving a list
                 of Services.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1391,7 +1387,6 @@ class ServicesRestTransport(ServicesTransport):
                 request (~.gcr_service.UpdateServiceRequest):
                     The request object. Request message for updating a
                 service.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

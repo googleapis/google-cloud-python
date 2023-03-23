@@ -705,8 +705,8 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
 
         Args:
             request (Union[google.cloud.run_v2.types.ListExecutionsRequest, dict]):
-                The request object. Request message for retrieving a
-                list of Executions.
+                The request object. Request message for retrieving a list
+                of Executions.
             parent (str):
                 Required. The Execution from which
                 the Executions should be listed. To list
