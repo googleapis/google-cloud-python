@@ -786,8 +786,7 @@ class SecurityCenterAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
-                The request object. Request message for `GetIamPolicy`
-                method.
+                The request object. Request message for ``GetIamPolicy`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
                 policy is being requested. See the
@@ -1197,8 +1196,7 @@ class SecurityCenterAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.securitycenter_v1p1beta1.types.GetSourceRequest, dict]]):
-                The request object. Request message for getting a
-                source.
+                The request object. Request message for getting a source.
             name (:class:`str`):
                 Required. Relative resource name of the source. Its
                 format is
@@ -1717,8 +1715,7 @@ class SecurityCenterAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.securitycenter_v1p1beta1.types.ListFindingsRequest, dict]]):
-                The request object. Request message for listing
-                findings.
+                The request object. Request message for listing findings.
             parent (:class:`str`):
                 Required. Name of the source the findings belong to. Its
                 format is
@@ -2365,8 +2362,7 @@ class SecurityCenterAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
-                The request object. Request message for `SetIamPolicy`
-                method.
+                The request object. Request message for ``SetIamPolicy`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
                 policy is being specified. See the
@@ -2534,8 +2530,7 @@ class SecurityCenterAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
-                The request object. Request message for
-                `TestIamPermissions` method.
+                The request object. Request message for ``TestIamPermissions`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
                 policy detail is being requested. See

@@ -824,7 +824,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.CreateFindingRequest):
                     The request object. Request message for creating a
                 finding.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -930,7 +929,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.CreateSourceRequest):
                     The request object. Request message for creating a
                 source.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1203,7 +1201,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.GetOrganizationSettingsRequest):
                     The request object. Request message for getting
                 organization settings.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1390,7 +1387,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.GroupAssetsRequest):
                     The request object. Request message for grouping by
                 assets.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1489,7 +1485,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.GroupFindingsRequest):
                     The request object. Request message for grouping by
                 findings.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1848,7 +1843,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.RunAssetDiscoveryRequest):
                     The request object. Request message for running asset
                 discovery for an organization.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1948,7 +1942,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.SetFindingStateRequest):
                     The request object. Request message for updating a
                 finding's state.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2323,7 +2316,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.UpdateFindingRequest):
                     The request object. Request message for updating or
                 creating a finding.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2430,7 +2422,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     request (~.securitycenter_service.UpdateOrganizationSettingsRequest):
                         The request object. Request message for updating an
                     organization's settings.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2534,7 +2525,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.UpdateSecurityMarksRequest):
                     The request object. Request message for updating a
                 SecurityMarks resource.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2646,7 +2636,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.UpdateSourceRequest):
                     The request object. Request message for updating a
                 source.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

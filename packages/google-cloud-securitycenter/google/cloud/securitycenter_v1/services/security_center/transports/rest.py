@@ -1469,7 +1469,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 which they get executed is not defined.
                 2. Once a bulk operation is started,
                 there is no way to stop it.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1581,7 +1580,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.CreateBigQueryExportRequest):
                     The request object. Request message for creating a
                 BigQuery export.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1694,7 +1692,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.CreateFindingRequest):
                     The request object. Request message for creating a
                 finding.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1802,7 +1799,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.CreateMuteConfigRequest):
                     The request object. Request message for creating a mute
                 config.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1917,7 +1913,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     request (~.securitycenter_service.CreateNotificationConfigRequest):
                         The request object. Request message for creating a
                     notification config.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2034,7 +2029,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.CreateSourceRequest):
                     The request object. Request message for creating a
                 source.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2137,7 +2131,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.DeleteBigQueryExportRequest):
                     The request object. Request message for deleting a
                 BigQuery export.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2223,7 +2216,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.DeleteMuteConfigRequest):
                     The request object. Request message for deleting a mute
                 config.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2310,7 +2302,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     request (~.securitycenter_service.DeleteNotificationConfigRequest):
                         The request object. Request message for deleting a
                     notification config.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2398,7 +2389,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.GetBigQueryExportRequest):
                     The request object. Request message for retrieving a
                 BigQuery export.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2668,7 +2658,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.GetMuteConfigRequest):
                     The request object. Request message for retrieving a mute
                 config.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2767,7 +2756,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.GetNotificationConfigRequest):
                     The request object. Request message for getting a
                 notification config.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2871,7 +2859,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.GetOrganizationSettingsRequest):
                     The request object. Request message for getting
                 organization settings.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3058,7 +3045,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.GroupAssetsRequest):
                     The request object. Request message for grouping by
                 assets.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3167,7 +3153,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.GroupFindingsRequest):
                     The request object. Request message for grouping by
                 findings.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3371,7 +3356,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     The request object. Request message for listing BigQuery
                 exports at a given scope e.g.
                 organization, folder or project.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3568,7 +3552,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     The request object. Request message for listing  mute
                 configs at a given scope e.g.
                 organization, folder or project.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3668,7 +3651,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.ListNotificationConfigsRequest):
                     The request object. Request message for listing
                 notification configs.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3864,7 +3846,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.RunAssetDiscoveryRequest):
                     The request object. Request message for running asset
                 discovery for an organization.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3964,7 +3945,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.SetFindingStateRequest):
                     The request object. Request message for updating a
                 finding's state.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4252,7 +4232,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.SetMuteRequest):
                     The request object. Request message for updating a
                 finding's mute status.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4465,7 +4444,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.UpdateBigQueryExportRequest):
                     The request object. Request message for updating a
                 BigQuery export.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4576,7 +4554,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.UpdateExternalSystemRequest):
                     The request object. Request message for updating a
                 ExternalSystem resource.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4687,7 +4664,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.UpdateFindingRequest):
                     The request object. Request message for updating or
                 creating a finding.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4803,7 +4779,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.UpdateMuteConfigRequest):
                     The request object. Request message for updating a mute
                 config.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4916,7 +4891,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     request (~.securitycenter_service.UpdateNotificationConfigRequest):
                         The request object. Request message for updating a
                     notification config.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -5034,7 +5008,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     request (~.securitycenter_service.UpdateOrganizationSettingsRequest):
                         The request object. Request message for updating an
                     organization's settings.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -5138,7 +5111,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.UpdateSecurityMarksRequest):
                     The request object. Request message for updating a
                 SecurityMarks resource.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5270,7 +5242,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 request (~.securitycenter_service.UpdateSourceRequest):
                     The request object. Request message for updating a
                 source.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

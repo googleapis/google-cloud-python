@@ -717,11 +717,11 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 The request object. Request message for bulk findings
                 update.
                 Note:
-                1. If multiple bulk update requests match the same
-                resource, the order in which they get executed is not
-                defined.
-                2. Once a bulk operation is started, there is no way to
-                stop it.
+                1. If multiple bulk update requests
+                match the same resource, the order in
+                which they get executed is not defined.
+                2. Once a bulk operation is started,
+                there is no way to stop it.
             parent (str):
                 Required. The parent, at which bulk action needs to be
                 applied. Its format is
@@ -1673,8 +1673,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
-                The request object. Request message for `GetIamPolicy`
-                method.
+                The request object. Request message for ``GetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
                 policy is being requested. See the
@@ -1837,8 +1836,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.GetMuteConfigRequest, dict]):
-                The request object. Request message for retrieving a
-                mute config.
+                The request object. Request message for retrieving a mute
+                config.
             name (str):
                 Required. Name of the mute config to retrieve. Its
                 format is
@@ -2165,8 +2164,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.GetSourceRequest, dict]):
-                The request object. Request message for getting a
-                source.
+                The request object. Request message for getting a source.
             name (str):
                 Required. Relative resource name of the source. Its
                 format is
@@ -2622,8 +2620,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.ListFindingsRequest, dict]):
-                The request object. Request message for listing
-                findings.
+                The request object. Request message for listing findings.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2720,8 +2717,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         Args:
             request (Union[google.cloud.securitycenter_v1.types.ListMuteConfigsRequest, dict]):
                 The request object. Request message for listing  mute
-                configs at a given scope e.g. organization, folder or
-                project.
+                configs at a given scope e.g.
+                organization, folder or project.
             parent (str):
                 Required. The parent, which owns the collection of mute
                 configs. Its format is
@@ -3463,8 +3460,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
-                The request object. Request message for `SetIamPolicy`
-                method.
+                The request object. Request message for ``SetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
                 policy is being specified. See the
@@ -3629,8 +3625,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
-                The request object. Request message for
-                `TestIamPermissions` method.
+                The request object. Request message for ``TestIamPermissions`` method.
             resource (str):
                 REQUIRED: The resource for which the
                 policy detail is being requested. See
@@ -4908,8 +4903,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         Args:
             request (Union[google.cloud.securitycenter_v1.types.ListBigQueryExportsRequest, dict]):
                 The request object. Request message for listing BigQuery
-                exports at a given scope e.g. organization, folder or
-                project.
+                exports at a given scope e.g.
+                organization, folder or project.
             parent (str):
                 Required. The parent, which owns the collection of
                 BigQuery exports. Its format is
