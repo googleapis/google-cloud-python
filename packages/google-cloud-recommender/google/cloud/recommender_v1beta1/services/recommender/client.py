@@ -619,8 +619,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.ListInsightsRequest, dict]):
-                The request object. Request for the `ListInsights`
-                method.
+                The request object. Request for the ``ListInsights`` method.
             parent (str):
                 Required. The container resource on which to execute the
                 request. Acceptable formats:
@@ -748,7 +747,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.GetInsightRequest, dict]):
-                The request object. Request to the `GetInsight` method.
+                The request object. Request to the ``GetInsight`` method.
             name (str):
                 Required. Name of the insight.
                 This corresponds to the ``name`` field
@@ -861,8 +860,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.MarkInsightAcceptedRequest, dict]):
-                The request object. Request for the
-                `MarkInsightAccepted` method.
+                The request object. Request for the ``MarkInsightAccepted`` method.
             name (str):
                 Required. Name of the insight.
                 This corresponds to the ``name`` field
@@ -987,8 +985,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.ListRecommendationsRequest, dict]):
-                The request object. Request for the
-                `ListRecommendations` method.
+                The request object. Request for the ``ListRecommendations`` method.
             parent (str):
                 Required. The container resource on which to execute the
                 request. Acceptable formats:
@@ -1146,8 +1143,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.GetRecommendationRequest, dict]):
-                The request object. Request to the `GetRecommendation`
-                method.
+                The request object. Request to the ``GetRecommendation`` method.
             name (str):
                 Required. Name of the recommendation.
                 This corresponds to the ``name`` field
@@ -1263,8 +1259,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.MarkRecommendationClaimedRequest, dict]):
-                The request object. Request for the
-                `MarkRecommendationClaimed` Method.
+                The request object. Request for the ``MarkRecommendationClaimed`` Method.
             name (str):
                 Required. Name of the recommendation.
                 This corresponds to the ``name`` field
@@ -1405,8 +1400,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.MarkRecommendationSucceededRequest, dict]):
-                The request object. Request for the
-                `MarkRecommendationSucceeded` Method.
+                The request object. Request for the ``MarkRecommendationSucceeded`` Method.
             name (str):
                 Required. Name of the recommendation.
                 This corresponds to the ``name`` field
@@ -1547,8 +1541,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.MarkRecommendationFailedRequest, dict]):
-                The request object. Request for the
-                `MarkRecommendationFailed` Method.
+                The request object. Request for the ``MarkRecommendationFailed`` Method.
             name (str):
                 Required. Name of the recommendation.
                 This corresponds to the ``name`` field
@@ -1675,8 +1668,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.GetRecommenderConfigRequest, dict]):
-                The request object. Request for the
-                GetRecommenderConfig` method.
+                The request object. Request for the GetRecommenderConfig\` method.
             name (str):
                 Required. Name of the Recommendation Config to get.
 
@@ -1785,8 +1777,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.UpdateRecommenderConfigRequest, dict]):
-                The request object. Request for the
-                `UpdateRecommenderConfig` method.
+                The request object. Request for the ``UpdateRecommenderConfig`` method.
             recommender_config (google.cloud.recommender_v1beta1.types.RecommenderConfig):
                 Required. The RecommenderConfig to
                 update.
@@ -1899,8 +1890,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.GetInsightTypeConfigRequest, dict]):
-                The request object. Request for the
-                GetInsightTypeConfig` method.
+                The request object. Request for the GetInsightTypeConfig\` method.
             name (str):
                 Required. Name of the InsightTypeConfig to get.
 
@@ -2009,8 +1999,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.UpdateInsightTypeConfigRequest, dict]):
-                The request object. Request for the
-                `UpdateInsightTypeConfig` method.
+                The request object. Request for the ``UpdateInsightTypeConfig`` method.
             insight_type_config (google.cloud.recommender_v1beta1.types.InsightTypeConfig):
                 Required. The InsightTypeConfig to
                 update.

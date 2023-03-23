@@ -288,8 +288,7 @@ class RecommenderAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.recommender_v1.types.ListInsightsRequest, dict]]):
-                The request object. Request for the `ListInsights`
-                method.
+                The request object. Request for the ``ListInsights`` method.
             parent (:class:`str`):
                 Required. The container resource on which to execute the
                 request. Acceptable formats:
@@ -427,7 +426,7 @@ class RecommenderAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.recommender_v1.types.GetInsightRequest, dict]]):
-                The request object. Request to the `GetInsight` method.
+                The request object. Request to the ``GetInsight`` method.
             name (:class:`str`):
                 Required. Name of the insight.
                 This corresponds to the ``name`` field
@@ -550,8 +549,7 @@ class RecommenderAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.recommender_v1.types.MarkInsightAcceptedRequest, dict]]):
-                The request object. Request for the
-                `MarkInsightAccepted` method.
+                The request object. Request for the ``MarkInsightAccepted`` method.
             name (:class:`str`):
                 Required. Name of the insight.
                 This corresponds to the ``name`` field
@@ -677,8 +675,7 @@ class RecommenderAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.recommender_v1.types.ListRecommendationsRequest, dict]]):
-                The request object. Request for the
-                `ListRecommendations` method.
+                The request object. Request for the ``ListRecommendations`` method.
             parent (:class:`str`):
                 Required. The container resource on which to execute the
                 request. Acceptable formats:
@@ -846,8 +843,7 @@ class RecommenderAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.recommender_v1.types.GetRecommendationRequest, dict]]):
-                The request object. Request to the `GetRecommendation`
-                method.
+                The request object. Request to the ``GetRecommendation`` method.
             name (:class:`str`):
                 Required. Name of the recommendation.
                 This corresponds to the ``name`` field
@@ -973,8 +969,7 @@ class RecommenderAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.recommender_v1.types.MarkRecommendationClaimedRequest, dict]]):
-                The request object. Request for the
-                `MarkRecommendationClaimed` Method.
+                The request object. Request for the ``MarkRecommendationClaimed`` Method.
             name (:class:`str`):
                 Required. Name of the recommendation.
                 This corresponds to the ``name`` field
@@ -1112,8 +1107,7 @@ class RecommenderAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.recommender_v1.types.MarkRecommendationSucceededRequest, dict]]):
-                The request object. Request for the
-                `MarkRecommendationSucceeded` Method.
+                The request object. Request for the ``MarkRecommendationSucceeded`` Method.
             name (:class:`str`):
                 Required. Name of the recommendation.
                 This corresponds to the ``name`` field
@@ -1251,8 +1245,7 @@ class RecommenderAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.recommender_v1.types.MarkRecommendationFailedRequest, dict]]):
-                The request object. Request for the
-                `MarkRecommendationFailed` Method.
+                The request object. Request for the ``MarkRecommendationFailed`` Method.
             name (:class:`str`):
                 Required. Name of the recommendation.
                 This corresponds to the ``name`` field
@@ -1378,8 +1371,7 @@ class RecommenderAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.recommender_v1.types.GetRecommenderConfigRequest, dict]]):
-                The request object. Request for the
-                GetRecommenderConfig` method.
+                The request object. Request for the GetRecommenderConfig\` method.
             name (:class:`str`):
                 Required. Name of the Recommendation Config to get.
 
@@ -1488,8 +1480,7 @@ class RecommenderAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.recommender_v1.types.UpdateRecommenderConfigRequest, dict]]):
-                The request object. Request for the
-                `UpdateRecommenderConfig` method.
+                The request object. Request for the ``UpdateRecommenderConfig`` method.
             recommender_config (:class:`google.cloud.recommender_v1.types.RecommenderConfig`):
                 Required. The RecommenderConfig to
                 update.
@@ -1600,8 +1591,7 @@ class RecommenderAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.recommender_v1.types.GetInsightTypeConfigRequest, dict]]):
-                The request object. Request for the
-                GetInsightTypeConfig` method.
+                The request object. Request for the GetInsightTypeConfig\` method.
             name (:class:`str`):
                 Required. Name of the InsightTypeConfig to get.
 
@@ -1710,8 +1700,7 @@ class RecommenderAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.recommender_v1.types.UpdateInsightTypeConfigRequest, dict]]):
-                The request object. Request for the
-                `UpdateInsightTypeConfig` method.
+                The request object. Request for the ``UpdateInsightTypeConfig`` method.
             insight_type_config (:class:`google.cloud.recommender_v1.types.InsightTypeConfig`):
                 Required. The InsightTypeConfig to
                 update.
