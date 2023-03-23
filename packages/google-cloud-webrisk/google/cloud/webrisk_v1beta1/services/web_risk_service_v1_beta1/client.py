@@ -688,8 +688,8 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
 
         Args:
             request (Union[google.cloud.webrisk_v1beta1.types.SearchHashesRequest, dict]):
-                The request object. Request to return full hashes
-                matched by the provided hash prefixes.
+                The request object. Request to return full hashes matched
+                by the provided hash prefixes.
             hash_prefix (bytes):
                 A hash prefix, consisting of the most
                 significant 4-32 bytes of a SHA256 hash.

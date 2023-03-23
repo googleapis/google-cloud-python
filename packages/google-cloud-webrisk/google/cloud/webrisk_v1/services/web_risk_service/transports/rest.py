@@ -406,7 +406,6 @@ class WebRiskServiceRestTransport(WebRiskServiceTransport):
                 request (~.webrisk.CreateSubmissionRequest):
                     The request object. Request to send a potentially phishy
                 URI to WebRisk.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -509,7 +508,6 @@ class WebRiskServiceRestTransport(WebRiskServiceTransport):
                 request (~.webrisk.SearchHashesRequest):
                     The request object. Request to return full hashes matched
                 by the provided hash prefixes.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -600,7 +598,6 @@ class WebRiskServiceRestTransport(WebRiskServiceTransport):
                 request (~.webrisk.SearchUrisRequest):
                     The request object. Request to check URI entries against
                 threatLists.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

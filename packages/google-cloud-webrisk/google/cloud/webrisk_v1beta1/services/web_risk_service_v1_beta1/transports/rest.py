@@ -377,7 +377,6 @@ class WebRiskServiceV1Beta1RestTransport(WebRiskServiceV1Beta1Transport):
                 request (~.webrisk.SearchHashesRequest):
                     The request object. Request to return full hashes matched
                 by the provided hash prefixes.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -468,7 +467,6 @@ class WebRiskServiceV1Beta1RestTransport(WebRiskServiceV1Beta1Transport):
                 request (~.webrisk.SearchUrisRequest):
                     The request object. Request to check URI entries against
                 threatLists.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
