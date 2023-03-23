@@ -510,7 +510,6 @@ class ContainerAnalysisRestTransport(ContainerAnalysisTransport):
                     request (~.containeranalysis.GetVulnerabilityOccurrencesSummaryRequest):
                         The request object. Request to get a vulnerability
                     summary for some set of occurrences.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
