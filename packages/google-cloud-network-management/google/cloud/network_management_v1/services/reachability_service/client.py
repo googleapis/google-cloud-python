@@ -499,8 +499,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
 
         Args:
             request (Union[google.cloud.network_management_v1.types.ListConnectivityTestsRequest, dict]):
-                The request object. Request for the
-                `ListConnectivityTests` method.
+                The request object. Request for the ``ListConnectivityTests`` method.
             parent (str):
                 Required. The parent resource of the Connectivity Tests:
                 ``projects/{project_id}/locations/global``
@@ -612,8 +611,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
 
         Args:
             request (Union[google.cloud.network_management_v1.types.GetConnectivityTestRequest, dict]):
-                The request object. Request for the
-                `GetConnectivityTest` method.
+                The request object. Request for the ``GetConnectivityTest`` method.
             name (str):
                 Required. ``ConnectivityTest`` resource name using the
                 form:
@@ -741,8 +739,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
 
         Args:
             request (Union[google.cloud.network_management_v1.types.CreateConnectivityTestRequest, dict]):
-                The request object. Request for the
-                `CreateConnectivityTest` method.
+                The request object. Request for the ``CreateConnectivityTest`` method.
             parent (str):
                 Required. The parent resource of the Connectivity Test
                 to create: ``projects/{project_id}/locations/global``
@@ -902,8 +899,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
 
         Args:
             request (Union[google.cloud.network_management_v1.types.UpdateConnectivityTestRequest, dict]):
-                The request object. Request for the
-                `UpdateConnectivityTest` method.
+                The request object. Request for the ``UpdateConnectivityTest`` method.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. Mask of fields to update.
                 At least one path must be supplied in
@@ -1045,8 +1041,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
 
         Args:
             request (Union[google.cloud.network_management_v1.types.RerunConnectivityTestRequest, dict]):
-                The request object. Request for the
-                `RerunConnectivityTest` method.
+                The request object. Request for the ``RerunConnectivityTest`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1144,8 +1139,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
 
         Args:
             request (Union[google.cloud.network_management_v1.types.DeleteConnectivityTestRequest, dict]):
-                The request object. Request for the
-                `DeleteConnectivityTest` method.
+                The request object. Request for the ``DeleteConnectivityTest`` method.
             name (str):
                 Required. Connectivity Test resource name using the
                 form:
