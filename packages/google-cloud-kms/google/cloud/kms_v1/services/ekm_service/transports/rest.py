@@ -504,7 +504,6 @@ class EkmServiceRestTransport(EkmServiceTransport):
                 request (~.ekm_service.CreateEkmConnectionRequest):
                     The request object. Request message for
                 [EkmService.CreateEkmConnection][google.cloud.kms.v1.EkmService.CreateEkmConnection].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -615,7 +614,6 @@ class EkmServiceRestTransport(EkmServiceTransport):
                 request (~.ekm_service.GetEkmConfigRequest):
                     The request object. Request message for
                 [EkmService.GetEkmConfig][google.cloud.kms.v1.EkmService.GetEkmConfig].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -713,7 +711,6 @@ class EkmServiceRestTransport(EkmServiceTransport):
                 request (~.ekm_service.GetEkmConnectionRequest):
                     The request object. Request message for
                 [EkmService.GetEkmConnection][google.cloud.kms.v1.EkmService.GetEkmConnection].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -815,7 +812,6 @@ class EkmServiceRestTransport(EkmServiceTransport):
                 request (~.ekm_service.ListEkmConnectionsRequest):
                     The request object. Request message for
                 [EkmService.ListEkmConnections][google.cloud.kms.v1.EkmService.ListEkmConnections].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -909,7 +905,6 @@ class EkmServiceRestTransport(EkmServiceTransport):
                 request (~.ekm_service.UpdateEkmConfigRequest):
                     The request object. Request message for
                 [EkmService.UpdateEkmConfig][google.cloud.kms.v1.EkmService.UpdateEkmConfig].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1020,7 +1015,6 @@ class EkmServiceRestTransport(EkmServiceTransport):
                 request (~.ekm_service.UpdateEkmConnectionRequest):
                     The request object. Request message for
                 [EkmService.UpdateEkmConnection][google.cloud.kms.v1.EkmService.UpdateEkmConnection].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

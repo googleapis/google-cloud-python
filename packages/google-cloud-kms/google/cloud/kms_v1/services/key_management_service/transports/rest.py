@@ -1098,7 +1098,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.AsymmetricDecryptRequest):
                     The request object. Request message for
                 [KeyManagementService.AsymmetricDecrypt][google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1199,7 +1198,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.AsymmetricSignRequest):
                     The request object. Request message for
                 [KeyManagementService.AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1300,7 +1298,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.CreateCryptoKeyRequest):
                     The request object. Request message for
                 [KeyManagementService.CreateCryptoKey][google.cloud.kms.v1.KeyManagementService.CreateCryptoKey].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1408,7 +1405,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.CreateCryptoKeyVersionRequest):
                     The request object. Request message for
                 [KeyManagementService.CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1524,7 +1520,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.CreateImportJobRequest):
                     The request object. Request message for
                 [KeyManagementService.CreateImportJob][google.cloud.kms.v1.KeyManagementService.CreateImportJob].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1670,7 +1665,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.CreateKeyRingRequest):
                     The request object. Request message for
                 [KeyManagementService.CreateKeyRing][google.cloud.kms.v1.KeyManagementService.CreateKeyRing].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1770,7 +1764,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.DecryptRequest):
                     The request object. Request message for
                 [KeyManagementService.Decrypt][google.cloud.kms.v1.KeyManagementService.Decrypt].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1870,7 +1863,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                     request (~.service.DestroyCryptoKeyVersionRequest):
                         The request object. Request message for
                     [KeyManagementService.DestroyCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.DestroyCryptoKeyVersion].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1984,7 +1976,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.EncryptRequest):
                     The request object. Request message for
                 [KeyManagementService.Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2073,7 +2064,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.GenerateRandomBytesRequest):
                     The request object. Request message for
                 [KeyManagementService.GenerateRandomBytes][google.cloud.kms.v1.KeyManagementService.GenerateRandomBytes].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2173,7 +2163,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.GetCryptoKeyRequest):
                     The request object. Request message for
                 [KeyManagementService.GetCryptoKey][google.cloud.kms.v1.KeyManagementService.GetCryptoKey].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2270,7 +2259,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.GetCryptoKeyVersionRequest):
                     The request object. Request message for
                 [KeyManagementService.GetCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.GetCryptoKeyVersion].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2375,7 +2363,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.GetImportJobRequest):
                     The request object. Request message for
                 [KeyManagementService.GetImportJob][google.cloud.kms.v1.KeyManagementService.GetImportJob].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2508,7 +2495,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.GetKeyRingRequest):
                     The request object. Request message for
                 [KeyManagementService.GetKeyRing][google.cloud.kms.v1.KeyManagementService.GetKeyRing].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2599,7 +2585,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.GetPublicKeyRequest):
                     The request object. Request message for
                 [KeyManagementService.GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2691,7 +2676,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.ImportCryptoKeyVersionRequest):
                     The request object. Request message for
                 [KeyManagementService.ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2805,7 +2789,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.ListCryptoKeysRequest):
                     The request object. Request message for
                 [KeyManagementService.ListCryptoKeys][google.cloud.kms.v1.KeyManagementService.ListCryptoKeys].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2897,7 +2880,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.ListCryptoKeyVersionsRequest):
                     The request object. Request message for
                 [KeyManagementService.ListCryptoKeyVersions][google.cloud.kms.v1.KeyManagementService.ListCryptoKeyVersions].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2989,7 +2971,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.ListImportJobsRequest):
                     The request object. Request message for
                 [KeyManagementService.ListImportJobs][google.cloud.kms.v1.KeyManagementService.ListImportJobs].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3081,7 +3062,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.ListKeyRingsRequest):
                     The request object. Request message for
                 [KeyManagementService.ListKeyRings][google.cloud.kms.v1.KeyManagementService.ListKeyRings].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3171,7 +3151,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.MacSignRequest):
                     The request object. Request message for
                 [KeyManagementService.MacSign][google.cloud.kms.v1.KeyManagementService.MacSign].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3270,7 +3249,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.MacVerifyRequest):
                     The request object. Request message for
                 [KeyManagementService.MacVerify][google.cloud.kms.v1.KeyManagementService.MacVerify].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3370,7 +3348,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                     request (~.service.RestoreCryptoKeyVersionRequest):
                         The request object. Request message for
                     [KeyManagementService.RestoreCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3486,7 +3463,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.UpdateCryptoKeyRequest):
                     The request object. Request message for
                 [KeyManagementService.UpdateCryptoKey][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKey].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3595,7 +3571,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                     request (~.service.UpdateCryptoKeyPrimaryVersionRequest):
                         The request object. Request message for
                     [KeyManagementService.UpdateCryptoKeyPrimaryVersion][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyPrimaryVersion].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3705,7 +3680,6 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
                 request (~.service.UpdateCryptoKeyVersionRequest):
                     The request object. Request message for
                 [KeyManagementService.UpdateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyVersion].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
