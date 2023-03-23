@@ -258,9 +258,7 @@ class ExecutionsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.workflows.executions_v1.types.ListExecutionsRequest, dict]]):
-                The request object. Request for the
-                [ListExecutions][]
-                method.
+                The request object. Request for the [ListExecutions][] method.
             parent (:class:`str`):
                 Required. Name of the workflow for
                 which the executions should be listed.

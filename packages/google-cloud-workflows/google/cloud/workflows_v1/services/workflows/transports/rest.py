@@ -405,7 +405,6 @@ class WorkflowsRestTransport(WorkflowsTransport):
                     The request object. Request for the
                 [CreateWorkflow][google.cloud.workflows.v1.Workflows.CreateWorkflow]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -504,7 +503,6 @@ class WorkflowsRestTransport(WorkflowsTransport):
                     The request object. Request for the
                 [DeleteWorkflow][google.cloud.workflows.v1.Workflows.DeleteWorkflow]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -594,7 +592,6 @@ class WorkflowsRestTransport(WorkflowsTransport):
                     The request object. Request for the
                 [GetWorkflow][google.cloud.workflows.v1.Workflows.GetWorkflow]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -685,7 +682,6 @@ class WorkflowsRestTransport(WorkflowsTransport):
                     The request object. Request for the
                 [ListWorkflows][google.cloud.workflows.v1.Workflows.ListWorkflows]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -777,7 +773,6 @@ class WorkflowsRestTransport(WorkflowsTransport):
                     The request object. Request for the
                 [UpdateWorkflow][google.cloud.workflows.v1.Workflows.UpdateWorkflow]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

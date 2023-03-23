@@ -511,9 +511,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
 
         Args:
             request (Union[google.cloud.workflows.executions_v1.types.ListExecutionsRequest, dict]):
-                The request object. Request for the
-                [ListExecutions][]
-                method.
+                The request object. Request for the [ListExecutions][] method.
             parent (str):
                 Required. Name of the workflow for
                 which the executions should be listed.
