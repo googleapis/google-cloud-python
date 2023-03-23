@@ -2505,6 +2505,7 @@ class ReservationServiceAsyncClient:
             request (Optional[Union[google.cloud.bigquery_reservation_v1.types.MoveAssignmentRequest, dict]]):
                 The request object. The request for
                 [ReservationService.MoveAssignment][google.cloud.bigquery.reservation.v1.ReservationService.MoveAssignment].
+
                 **Note**: "bigquery.reservationAssignments.create"
                 permission is required on the destination_id.
 
@@ -2853,8 +2854,7 @@ class ReservationServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.bigquery_reservation_v1.types.UpdateBiReservationRequest, dict]]):
-                The request object. A request to update a BI
-                reservation.
+                The request object. A request to update a BI reservation.
             bi_reservation (:class:`google.cloud.bigquery_reservation_v1.types.BiReservation`):
                 A reservation to update.
                 This corresponds to the ``bi_reservation`` field

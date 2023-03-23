@@ -821,7 +821,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                 [ReservationService.CreateAssignment][google.cloud.bigquery.reservation.v1.ReservationService.CreateAssignment].
                 Note: "bigquery.reservationAssignments.create"
                 permission is required on the related assignee.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -924,7 +923,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                     request (~.reservation.CreateCapacityCommitmentRequest):
                         The request object. The request for
                     [ReservationService.CreateCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.CreateCapacityCommitment].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1037,7 +1035,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                 request (~.gcbr_reservation.CreateReservationRequest):
                     The request object. The request for
                 [ReservationService.CreateReservation][google.cloud.bigquery.reservation.v1.ReservationService.CreateReservation].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1140,7 +1137,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                 [ReservationService.DeleteAssignment][google.cloud.bigquery.reservation.v1.ReservationService.DeleteAssignment].
                 Note: "bigquery.reservationAssignments.delete"
                 permission is required on the related assignee.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1219,7 +1215,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                     request (~.reservation.DeleteCapacityCommitmentRequest):
                         The request object. The request for
                     [ReservationService.DeleteCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.DeleteCapacityCommitment].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1297,7 +1292,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                 request (~.reservation.DeleteReservationRequest):
                     The request object. The request for
                 [ReservationService.DeleteReservation][google.cloud.bigquery.reservation.v1.ReservationService.DeleteReservation].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1375,7 +1369,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                 request (~.reservation.GetBiReservationRequest):
                     The request object. A request to get a singleton BI
                 reservation.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1465,7 +1458,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                 request (~.reservation.GetCapacityCommitmentRequest):
                     The request object. The request for
                 [ReservationService.GetCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.GetCapacityCommitment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1569,7 +1561,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                 request (~.reservation.GetReservationRequest):
                     The request object. The request for
                 [ReservationService.GetReservation][google.cloud.bigquery.reservation.v1.ReservationService.GetReservation].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1659,7 +1650,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                 request (~.reservation.ListAssignmentsRequest):
                     The request object. The request for
                 [ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1751,7 +1741,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                 request (~.reservation.ListCapacityCommitmentsRequest):
                     The request object. The request for
                 [ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1843,7 +1832,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                 request (~.reservation.ListReservationsRequest):
                     The request object. The request for
                 [ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1926,7 +1914,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                     request (~.reservation.MergeCapacityCommitmentsRequest):
                         The request object. The request for
                     [ReservationService.MergeCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.MergeCapacityCommitments].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2045,7 +2032,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                 **Note**: "bigquery.reservationAssignments.create" and
                 "bigquery.reservationAssignments.delete" permission are
                 required on the related assignee.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2147,7 +2133,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                 [ReservationService.SearchAllAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments].
                 Note: "bigquery.reservationAssignments.search"
                 permission is required on the related assignee.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2241,7 +2226,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                 [ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments].
                 Note: "bigquery.reservationAssignments.search"
                 permission is required on the related assignee.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2333,7 +2317,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                 request (~.reservation.SplitCapacityCommitmentRequest):
                     The request object. The request for
                 [ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2424,7 +2407,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                 request (~.reservation.UpdateAssignmentRequest):
                     The request object. The request for
                 [ReservationService.UpdateAssignment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateAssignment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2602,7 +2584,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                     request (~.reservation.UpdateCapacityCommitmentRequest):
                         The request object. The request for
                     [ReservationService.UpdateCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateCapacityCommitment].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2704,7 +2685,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                 request (~.gcbr_reservation.UpdateReservationRequest):
                     The request object. The request for
                 [ReservationService.UpdateReservation][google.cloud.bigquery.reservation.v1.ReservationService.UpdateReservation].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
