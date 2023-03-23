@@ -650,8 +650,8 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
         Args:
             request (Union[google.analytics.data_v1beta.types.BatchRunReportsRequest, dict]):
-                The request object. The batch request containing
-                multiple report requests.
+                The request object. The batch request containing multiple
+                report requests.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -733,8 +733,8 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
         Args:
             request (Union[google.analytics.data_v1beta.types.BatchRunPivotReportsRequest, dict]):
-                The request object. The batch request containing
-                multiple pivot report requests.
+                The request object. The batch request containing multiple
+                pivot report requests.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1038,12 +1038,11 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
         Args:
             request (Union[google.analytics.data_v1beta.types.CheckCompatibilityRequest, dict]):
-                The request object. The request for compatibility
-                information for a report's dimensions and metrics. Check
-                compatibility provides a preview of the compatibility of
-                a report; fields shared with the `runReport` request
-                should be the same values as in your `runReport`
-                request.
+                The request object. The request for compatibility information for a report's
+                dimensions and metrics. Check compatibility provides a
+                preview of the compatibility of a report; fields shared
+                with the ``runReport`` request should be the same values
+                as in your ``runReport`` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

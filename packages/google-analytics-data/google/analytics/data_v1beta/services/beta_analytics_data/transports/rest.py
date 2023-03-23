@@ -403,7 +403,6 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
                 request (~.analytics_data_api.BatchRunPivotReportsRequest):
                     The request object. The batch request containing multiple
                 pivot report requests.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -493,7 +492,6 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
                 request (~.analytics_data_api.BatchRunReportsRequest):
                     The request object. The batch request containing multiple
                 report requests.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -586,7 +584,6 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
                 preview of the compatibility of a report; fields shared
                 with the ``runReport`` request should be the same values
                 as in your ``runReport`` request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -687,7 +684,6 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
                 request (~.analytics_data_api.GetMetadataRequest):
                     The request object. Request for a property's dimension
                 and metric metadata.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -767,7 +763,6 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
                 request (~.analytics_data_api.RunPivotReportRequest):
                     The request object. The request to generate a pivot
                 report.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -857,7 +852,6 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
                 request (~.analytics_data_api.RunRealtimeReportRequest):
                     The request object. The request to generate a realtime
                 report.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
