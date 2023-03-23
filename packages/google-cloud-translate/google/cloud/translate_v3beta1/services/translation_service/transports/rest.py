@@ -958,7 +958,6 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
                 request (~.translation_service.DetectLanguageRequest):
                     The request object. The request message for language
                 detection.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1150,7 +1149,6 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
                 request (~.translation_service.GetSupportedLanguagesRequest):
                     The request object. The request message for discovering
                 supported languages.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1431,7 +1429,6 @@ class TranslationServiceRestTransport(TranslationServiceTransport):
                 request (~.translation_service.TranslateTextRequest):
                     The request object. The request message for synchronous
                 translation.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
