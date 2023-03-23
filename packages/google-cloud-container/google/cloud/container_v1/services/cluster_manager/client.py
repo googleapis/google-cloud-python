@@ -2783,11 +2783,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         Args:
             request (Union[google.cloud.container_v1.types.GetJSONWebKeysRequest, dict]):
-                The request object. GetJSONWebKeysRequest gets the
-                public component of the keys used by the cluster to sign
-                token requests. This will be the jwks_uri for the
-                discover document returned by getOpenIDConfig. See the
-                OpenID Connect Discovery 1.0 specification for details.
+                The request object. GetJSONWebKeysRequest gets the public component of the
+                keys used by the cluster to sign token requests. This
+                will be the jwks_uri for the discover document returned
+                by getOpenIDConfig. See the OpenID Connect Discovery 1.0
+                specification for details.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -3463,7 +3463,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         Args:
             request (Union[google.cloud.container_v1.types.CompleteNodePoolUpgradeRequest, dict]):
                 The request object. CompleteNodePoolUpgradeRequest sets
-                the name of target node pool to complete upgrade.
+                the name of target node pool to complete
+                upgrade.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -3545,9 +3546,10 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         Args:
             request (Union[google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest, dict]):
                 The request object. RollbackNodePoolUpgradeRequest
-                rollbacks the previously Aborted or Failed NodePool
-                upgrade. This will be an no-op if the last upgrade
-                successfully completed.
+                rollbacks the previously Aborted or
+                Failed NodePool upgrade. This will be an
+                no-op if the last upgrade successfully
+                completed.
             project_id (str):
                 Deprecated. The Google Developers Console `project ID or
                 project
@@ -3699,8 +3701,9 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         Args:
             request (Union[google.cloud.container_v1.types.SetNodePoolManagementRequest, dict]):
-                The request object. SetNodePoolManagementRequest sets
-                the node management properties of a node pool.
+                The request object. SetNodePoolManagementRequest sets the
+                node management properties of a node
+                pool.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -3783,9 +3786,10 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         Args:
             request (Union[google.cloud.container_v1.types.SetLabelsRequest, dict]):
                 The request object. SetLabelsRequest sets the Google
-                Cloud Platform labels on a Google Container Engine
-                cluster, which will in turn set them for Google Compute
-                Engine resources used by that cluster
+                Cloud Platform labels on a Google
+                Container Engine cluster, which will in
+                turn set them for Google Compute Engine
+                resources used by that cluster
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -3874,7 +3878,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         Args:
             request (Union[google.cloud.container_v1.types.SetLegacyAbacRequest, dict]):
                 The request object. SetLegacyAbacRequest enables or
-                disables the ABAC authorization mechanism for a cluster.
+                disables the ABAC authorization
+                mechanism for a cluster.
             project_id (str):
                 Deprecated. The Google Developers Console `project ID or
                 project
@@ -4024,8 +4029,9 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         Args:
             request (Union[google.cloud.container_v1.types.StartIPRotationRequest, dict]):
                 The request object. StartIPRotationRequest creates a new
-                IP for the cluster and then performs a node upgrade on
-                each node pool to point to the new IP.
+                IP for the cluster and then performs a
+                node upgrade on each node pool to point
+                to the new IP.
             project_id (str):
                 Deprecated. The Google Developers Console `project ID or
                 project
@@ -4394,7 +4400,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         Args:
             request (Union[google.cloud.container_v1.types.SetNetworkPolicyRequest, dict]):
                 The request object. SetNetworkPolicyRequest
-                enables/disables network policy for a cluster.
+                enables/disables network policy for a
+                cluster.
             project_id (str):
                 Deprecated. The Google Developers Console `project ID or
                 project
@@ -4696,9 +4703,9 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         Args:
             request (Union[google.cloud.container_v1.types.ListUsableSubnetworksRequest, dict]):
-                The request object. ListUsableSubnetworksRequest
-                requests the list of usable subnetworks available to a
-                user for creating clusters.
+                The request object. ListUsableSubnetworksRequest requests
+                the list of usable subnetworks available
+                to a user for creating clusters.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
