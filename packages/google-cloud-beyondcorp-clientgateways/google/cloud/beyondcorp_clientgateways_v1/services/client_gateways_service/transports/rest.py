@@ -878,7 +878,6 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
                 request (~.client_gateways_service.ListClientGatewaysRequest):
                     The request object. Message for requesting list of
                 ClientGateways.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

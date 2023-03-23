@@ -511,8 +511,7 @@ class ClientGatewaysServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.beyondcorp_clientgateways_v1.types.CreateClientGatewayRequest, dict]]):
-                The request object. Message for creating a
-                ClientGateway.
+                The request object. Message for creating a ClientGateway.
             parent (:class:`str`):
                 Required. Value for parent.
                 This corresponds to the ``parent`` field

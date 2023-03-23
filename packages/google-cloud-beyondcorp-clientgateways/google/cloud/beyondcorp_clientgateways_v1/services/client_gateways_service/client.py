@@ -735,8 +735,7 @@ class ClientGatewaysServiceClient(metaclass=ClientGatewaysServiceClientMeta):
 
         Args:
             request (Union[google.cloud.beyondcorp_clientgateways_v1.types.CreateClientGatewayRequest, dict]):
-                The request object. Message for creating a
-                ClientGateway.
+                The request object. Message for creating a ClientGateway.
             parent (str):
                 Required. Value for parent.
                 This corresponds to the ``parent`` field
