@@ -1047,8 +1047,8 @@ class RepositoryManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.devtools.cloudbuild_v2.types.BatchCreateRepositoriesRequest, dict]]):
-                The request object. Message for creating
-                repositoritories in batch.
+                The request object. Message for creating repositoritories
+                in batch.
             parent (:class:`str`):
                 Required. The connection to contain all the repositories
                 being created. Format:

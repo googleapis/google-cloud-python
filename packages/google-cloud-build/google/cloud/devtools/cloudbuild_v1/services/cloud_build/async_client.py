@@ -1184,8 +1184,7 @@ class CloudBuildAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.CreateBuildTriggerRequest, dict]]):
-                The request object. Request to create a new
-                `BuildTrigger`.
+                The request object. Request to create a new ``BuildTrigger``.
             project_id (:class:`str`):
                 Required. ID of the project for which
                 to configure automatic builds.
@@ -1300,8 +1299,7 @@ class CloudBuildAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.GetBuildTriggerRequest, dict]]):
-                The request object. Returns the `BuildTrigger` with the
-                specified ID.
+                The request object. Returns the ``BuildTrigger`` with the specified ID.
             project_id (:class:`str`):
                 Required. ID of the project that owns
                 the trigger.
@@ -1430,8 +1428,7 @@ class CloudBuildAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.ListBuildTriggersRequest, dict]]):
-                The request object. Request to list existing
-                `BuildTriggers`.
+                The request object. Request to list existing ``BuildTriggers``.
             project_id (:class:`str`):
                 Required. ID of the project for which
                 to list BuildTriggers.
@@ -1556,7 +1553,7 @@ class CloudBuildAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.DeleteBuildTriggerRequest, dict]]):
-                The request object. Request to delete a `BuildTrigger`.
+                The request object. Request to delete a ``BuildTrigger``.
             project_id (:class:`str`):
                 Required. ID of the project that owns
                 the trigger.
@@ -1679,8 +1676,7 @@ class CloudBuildAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.UpdateBuildTriggerRequest, dict]]):
-                The request object. Request to update an existing
-                `BuildTrigger`.
+                The request object. Request to update an existing ``BuildTrigger``.
             project_id (:class:`str`):
                 Required. ID of the project that owns
                 the trigger.
@@ -1959,9 +1955,9 @@ class CloudBuildAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.ReceiveTriggerWebhookRequest, dict]]):
-                The request object. ReceiveTriggerWebhookRequest
-                [Experimental] is the request object accepted by the
-                ReceiveTriggerWebhook method.
+                The request object. ReceiveTriggerWebhookRequest [Experimental] is the
+                request object accepted by the ReceiveTriggerWebhook
+                method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2053,8 +2049,7 @@ class CloudBuildAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.CreateWorkerPoolRequest, dict]]):
-                The request object. Request to create a new
-                `WorkerPool`.
+                The request object. Request to create a new ``WorkerPool``.
             parent (:class:`str`):
                 Required. The parent resource where this worker pool
                 will be created. Format:
@@ -2201,8 +2196,7 @@ class CloudBuildAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.GetWorkerPoolRequest, dict]]):
-                The request object. Request to get a `WorkerPool` with
-                the specified name.
+                The request object. Request to get a ``WorkerPool`` with the specified name.
             name (:class:`str`):
                 Required. The name of the ``WorkerPool`` to retrieve.
                 Format:
@@ -2331,7 +2325,7 @@ class CloudBuildAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.DeleteWorkerPoolRequest, dict]]):
-                The request object. Request to delete a `WorkerPool`.
+                The request object. Request to delete a ``WorkerPool``.
             name (:class:`str`):
                 Required. The name of the ``WorkerPool`` to delete.
                 Format:
@@ -2455,7 +2449,7 @@ class CloudBuildAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.UpdateWorkerPoolRequest, dict]]):
-                The request object. Request to update a `WorkerPool`.
+                The request object. Request to update a ``WorkerPool``.
             worker_pool (:class:`google.cloud.devtools.cloudbuild_v1.types.WorkerPool`):
                 Required. The ``WorkerPool`` to update.
 
@@ -2596,7 +2590,7 @@ class CloudBuildAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.devtools.cloudbuild_v1.types.ListWorkerPoolsRequest, dict]]):
-                The request object. Request to list `WorkerPool`\s.
+                The request object. Request to list ``WorkerPool``\ s.
             parent (:class:`str`):
                 Required. The parent of the collection of
                 ``WorkerPools``. Format:

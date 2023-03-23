@@ -791,7 +791,6 @@ class CloudBuildRestTransport(CloudBuildTransport):
                 request (~.cloudbuild.ApproveBuildRequest):
                     The request object. Request to approve or reject a
                 pending build.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2062,7 +2061,6 @@ class CloudBuildRestTransport(CloudBuildTransport):
                     The request object. ReceiveTriggerWebhookRequest [Experimental] is the
                 request object accepted by the ReceiveTriggerWebhook
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2268,7 +2266,6 @@ class CloudBuildRestTransport(CloudBuildTransport):
                 request (~.cloudbuild.RunBuildTriggerRequest):
                     The request object. Specifies a build trigger to run and
                 the source to use.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

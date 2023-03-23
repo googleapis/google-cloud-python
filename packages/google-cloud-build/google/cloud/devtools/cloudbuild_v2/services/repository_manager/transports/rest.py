@@ -762,7 +762,6 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
                 request (~.repositories.BatchCreateRepositoriesRequest):
                     The request object. Message for creating repositoritories
                 in batch.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1241,7 +1240,6 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
                     request (~.repositories.FetchLinkableRepositoriesRequest):
                         The request object. Request message for
                     FetchLinkableRepositories.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1432,7 +1430,6 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
                 request (~.repositories.FetchReadWriteTokenRequest):
                     The request object. Message for fetching SCM read/write
                 token.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1533,7 +1530,6 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
                 request (~.repositories.GetConnectionRequest):
                     The request object. Message for getting the details of a
                 Connection.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1624,7 +1620,6 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
                 request (~.repositories.GetRepositoryRequest):
                     The request object. Message for getting the details of a
                 Repository.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1714,7 +1709,6 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
                 request (~.repositories.ListConnectionsRequest):
                     The request object. Message for requesting list of
                 Connections.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1806,7 +1800,6 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
                 request (~.repositories.ListRepositoriesRequest):
                     The request object. Message for requesting list of
                 Repositories.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
