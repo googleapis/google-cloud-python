@@ -459,7 +459,6 @@ class DataPolicyServiceRestTransport(DataPolicyServiceTransport):
                 request (~.datapolicy.CreateDataPolicyRequest):
                     The request object. Request message for the
                 CreateDataPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -558,7 +557,6 @@ class DataPolicyServiceRestTransport(DataPolicyServiceTransport):
                 request (~.datapolicy.DeleteDataPolicyRequest):
                     The request object. Request message for the
                 DeleteDataPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -636,7 +634,6 @@ class DataPolicyServiceRestTransport(DataPolicyServiceTransport):
                 request (~.datapolicy.GetDataPolicyRequest):
                     The request object. Request message for the GetDataPolicy
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -894,7 +891,6 @@ class DataPolicyServiceRestTransport(DataPolicyServiceTransport):
                 request (~.datapolicy.ListDataPoliciesRequest):
                     The request object. Request message for the
                 ListDataPolicies method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -986,7 +982,6 @@ class DataPolicyServiceRestTransport(DataPolicyServiceTransport):
                 request (~.datapolicy.RenameDataPolicyRequest):
                     The request object. Request message for the
                 RenameDataPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1352,7 +1347,6 @@ class DataPolicyServiceRestTransport(DataPolicyServiceTransport):
                 request (~.datapolicy.UpdateDataPolicyRequest):
                     The request object. Response message for the
                 UpdateDataPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
