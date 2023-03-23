@@ -1650,7 +1650,6 @@ class DatastreamRestTransport(DatastreamTransport):
                     request (~.datastream.DiscoverConnectionProfileRequest):
                         The request object. Request message for 'discover'
                     ConnectionProfile request.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1739,7 +1738,6 @@ class DatastreamRestTransport(DatastreamTransport):
                 request (~.datastream.FetchErrorsRequest):
                     The request object. Request message for 'FetchErrors'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1836,7 +1834,6 @@ class DatastreamRestTransport(DatastreamTransport):
                 request (~.datastream.FetchStaticIpsRequest):
                     The request object. Request message for 'FetchStaticIps'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

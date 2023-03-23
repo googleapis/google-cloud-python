@@ -1453,8 +1453,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         Args:
             request (Union[google.cloud.datastream_v1.types.GetStreamRequest, dict]):
-                The request object. Request message for getting a
-                stream.
+                The request object. Request message for getting a stream.
             name (str):
                 Required. The name of the stream
                 resource to get.
@@ -2070,7 +2069,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         Args:
             request (Union[google.cloud.datastream_v1.types.LookupStreamObjectRequest, dict]):
                 The request object. Request for looking up a specific
-                stream object by its source object identifier.
+                stream object by its source object
+                identifier.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2153,8 +2153,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
         Args:
             request (Union[google.cloud.datastream_v1.types.ListStreamObjectsRequest, dict]):
-                The request object. Request for listing all objects for
-                a specific stream.
+                The request object. Request for listing all objects for a
+                specific stream.
             parent (str):
                 Required. The parent stream that owns
                 the collection of objects.
@@ -2269,7 +2269,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         Args:
             request (Union[google.cloud.datastream_v1.types.StartBackfillJobRequest, dict]):
                 The request object. Request for manually initiating a
-                backfill job for a specific stream object.
+                backfill job for a specific stream
+                object.
             object_ (str):
                 Required. The name of the stream
                 object resource to start a backfill job
@@ -2374,7 +2375,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         Args:
             request (Union[google.cloud.datastream_v1.types.StopBackfillJobRequest, dict]):
                 The request object. Request for manually stopping a
-                running backfill job for a specific stream object.
+                running backfill job for a specific
+                stream object.
             object_ (str):
                 Required. The name of the stream
                 object resource to stop the backfill job

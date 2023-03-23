@@ -1165,7 +1165,6 @@ class DatastreamRestTransport(DatastreamTransport):
                 request (~.datastream.CreateConnectionProfileRequest):
                     The request object. Request message for creating a
                 connection profile.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1267,7 +1266,6 @@ class DatastreamRestTransport(DatastreamTransport):
                 request (~.datastream.CreatePrivateConnectionRequest):
                     The request object. Request for creating a private
                 connection.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1467,7 +1465,6 @@ class DatastreamRestTransport(DatastreamTransport):
                 request (~.datastream.CreateStreamRequest):
                     The request object. Request message for creating a
                 stream.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1565,7 +1562,6 @@ class DatastreamRestTransport(DatastreamTransport):
                 request (~.datastream.DeleteConnectionProfileRequest):
                     The request object. Request message for deleting a
                 connection profile.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1656,7 +1652,6 @@ class DatastreamRestTransport(DatastreamTransport):
                 request (~.datastream.DeletePrivateConnectionRequest):
                     The request object. Request to delete a private
                 connection.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1834,7 +1829,6 @@ class DatastreamRestTransport(DatastreamTransport):
                 request (~.datastream.DeleteStreamRequest):
                     The request object. Request message for deleting a
                 stream.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1924,7 +1918,6 @@ class DatastreamRestTransport(DatastreamTransport):
                     request (~.datastream.DiscoverConnectionProfileRequest):
                         The request object. Request message for 'discover'
                     ConnectionProfile request.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2023,7 +2016,6 @@ class DatastreamRestTransport(DatastreamTransport):
                 request (~.datastream.FetchStaticIpsRequest):
                     The request object. Request message for 'FetchStaticIps'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2115,7 +2107,6 @@ class DatastreamRestTransport(DatastreamTransport):
                 request (~.datastream.GetConnectionProfileRequest):
                     The request object. Request message for getting a
                 connection profile.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2208,7 +2199,6 @@ class DatastreamRestTransport(DatastreamTransport):
                 request (~.datastream.GetPrivateConnectionRequest):
                     The request object. Request to get a private connection
                 configuration.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2480,7 +2470,6 @@ class DatastreamRestTransport(DatastreamTransport):
                 request (~.datastream.GetStreamObjectRequest):
                     The request object. Request for fetching a specific
                 stream object.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2572,7 +2561,6 @@ class DatastreamRestTransport(DatastreamTransport):
                 request (~.datastream.ListConnectionProfilesRequest):
                     The request object. Request message for listing
                 connection profiles.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2664,7 +2652,6 @@ class DatastreamRestTransport(DatastreamTransport):
                 request (~.datastream.ListPrivateConnectionsRequest):
                     The request object. Request for listing private
                 connections.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2842,7 +2829,6 @@ class DatastreamRestTransport(DatastreamTransport):
                 request (~.datastream.ListStreamObjectsRequest):
                     The request object. Request for listing all objects for a
                 specific stream.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3021,7 +3007,6 @@ class DatastreamRestTransport(DatastreamTransport):
                     The request object. Request for looking up a specific
                 stream object by its source object
                 identifier.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3123,7 +3108,6 @@ class DatastreamRestTransport(DatastreamTransport):
                     The request object. Request for manually initiating a
                 backfill job for a specific stream
                 object.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3226,7 +3210,6 @@ class DatastreamRestTransport(DatastreamTransport):
                     The request object. Request for manually stopping a
                 running backfill job for a specific
                 stream object.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3425,7 +3408,6 @@ class DatastreamRestTransport(DatastreamTransport):
                 request (~.datastream.UpdateStreamRequest):
                     The request object. Request message for updating a
                 stream.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
