@@ -270,8 +270,7 @@ class WebSecurityScannerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.websecurityscanner_v1.types.CreateScanConfigRequest, dict]]):
-                The request object. Request for the `CreateScanConfig`
-                method.
+                The request object. Request for the ``CreateScanConfig`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -349,8 +348,7 @@ class WebSecurityScannerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.websecurityscanner_v1.types.DeleteScanConfigRequest, dict]]):
-                The request object. Request for the `DeleteScanConfig`
-                method.
+                The request object. Request for the ``DeleteScanConfig`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -431,8 +429,7 @@ class WebSecurityScannerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.websecurityscanner_v1.types.GetScanConfigRequest, dict]]):
-                The request object. Request for the `GetScanConfig`
-                method.
+                The request object. Request for the ``GetScanConfig`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -523,8 +520,7 @@ class WebSecurityScannerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.websecurityscanner_v1.types.ListScanConfigsRequest, dict]]):
-                The request object. Request for the `ListScanConfigs`
-                method.
+                The request object. Request for the ``ListScanConfigs`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -626,8 +622,7 @@ class WebSecurityScannerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.websecurityscanner_v1.types.UpdateScanConfigRequest, dict]]):
-                The request object. Request for the
-                `UpdateScanConfigRequest` method.
+                The request object. Request for the ``UpdateScanConfigRequest`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -707,8 +702,7 @@ class WebSecurityScannerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.websecurityscanner_v1.types.StartScanRunRequest, dict]]):
-                The request object. Request for the `StartScanRun`
-                method.
+                The request object. Request for the ``StartScanRun`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -787,7 +781,7 @@ class WebSecurityScannerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.websecurityscanner_v1.types.GetScanRunRequest, dict]]):
-                The request object. Request for the `GetScanRun` method.
+                The request object. Request for the ``GetScanRun`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -878,8 +872,7 @@ class WebSecurityScannerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.websecurityscanner_v1.types.ListScanRunsRequest, dict]]):
-                The request object. Request for the `ListScanRuns`
-                method.
+                The request object. Request for the ``ListScanRuns`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -978,8 +971,7 @@ class WebSecurityScannerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.websecurityscanner_v1.types.StopScanRunRequest, dict]]):
-                The request object. Request for the `StopScanRun`
-                method.
+                The request object. Request for the ``StopScanRun`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1061,8 +1053,7 @@ class WebSecurityScannerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.websecurityscanner_v1.types.ListCrawledUrlsRequest, dict]]):
-                The request object. Request for the `ListCrawledUrls`
-                method.
+                The request object. Request for the ``ListCrawledUrls`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1161,7 +1152,7 @@ class WebSecurityScannerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.websecurityscanner_v1.types.GetFindingRequest, dict]]):
-                The request object. Request for the `GetFinding` method.
+                The request object. Request for the ``GetFinding`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1251,8 +1242,7 @@ class WebSecurityScannerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.websecurityscanner_v1.types.ListFindingsRequest, dict]]):
-                The request object. Request for the `ListFindings`
-                method.
+                The request object. Request for the ``ListFindings`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1353,8 +1343,7 @@ class WebSecurityScannerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.websecurityscanner_v1.types.ListFindingTypeStatsRequest, dict]]):
-                The request object. Request for the
-                `ListFindingTypeStats` method.
+                The request object. Request for the ``ListFindingTypeStats`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

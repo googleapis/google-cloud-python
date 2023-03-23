@@ -550,8 +550,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1alpha.types.CreateScanConfigRequest, dict]):
-                The request object. Request for the `CreateScanConfig`
-                method.
+                The request object. Request for the ``CreateScanConfig`` method.
             parent (str):
                 Required. The parent resource name
                 where the scan is created, which should
@@ -664,8 +663,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1alpha.types.DeleteScanConfigRequest, dict]):
-                The request object. Request for the `DeleteScanConfig`
-                method.
+                The request object. Request for the ``DeleteScanConfig`` method.
             name (str):
                 Required. The resource name of the
                 ScanConfig to be deleted. The name
@@ -761,8 +759,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1alpha.types.GetScanConfigRequest, dict]):
-                The request object. Request for the `GetScanConfig`
-                method.
+                The request object. Request for the ``GetScanConfig`` method.
             name (str):
                 Required. The resource name of the
                 ScanConfig to be returned. The name
@@ -869,8 +866,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1alpha.types.ListScanConfigsRequest, dict]):
-                The request object. Request for the `ListScanConfigs`
-                method.
+                The request object. Request for the ``ListScanConfigs`` method.
             parent (str):
                 Required. The parent resource name,
                 which should be a project resource name
@@ -991,8 +987,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1alpha.types.UpdateScanConfigRequest, dict]):
-                The request object. Request for the
-                `UpdateScanConfigRequest` method.
+                The request object. Request for the ``UpdateScanConfigRequest`` method.
             scan_config (google.cloud.websecurityscanner_v1alpha.types.ScanConfig):
                 Required. The ScanConfig to be
                 updated. The name field must be set to
@@ -1109,8 +1104,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1alpha.types.StartScanRunRequest, dict]):
-                The request object. Request for the `StartScanRun`
-                method.
+                The request object. Request for the ``StartScanRun`` method.
             name (str):
                 Required. The resource name of the
                 ScanConfig to be used. The name follows
@@ -1213,7 +1207,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1alpha.types.GetScanRunRequest, dict]):
-                The request object. Request for the `GetScanRun` method.
+                The request object. Request for the ``GetScanRun`` method.
             name (str):
                 Required. The resource name of the
                 ScanRun to be returned. The name follows
@@ -1318,8 +1312,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1alpha.types.ListScanRunsRequest, dict]):
-                The request object. Request for the `ListScanRuns`
-                method.
+                The request object. Request for the ``ListScanRuns`` method.
             parent (str):
                 Required. The parent resource name,
                 which should be a scan resource name in
@@ -1433,8 +1426,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1alpha.types.StopScanRunRequest, dict]):
-                The request object. Request for the `StopScanRun`
-                method.
+                The request object. Request for the ``StopScanRun`` method.
             name (str):
                 Required. The resource name of the
                 ScanRun to be stopped. The name follows
@@ -1540,8 +1532,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1alpha.types.ListCrawledUrlsRequest, dict]):
-                The request object. Request for the `ListCrawledUrls`
-                method.
+                The request object. Request for the ``ListCrawledUrls`` method.
             parent (str):
                 Required. The parent resource name,
                 which should be a scan run resource name
@@ -1655,7 +1646,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1alpha.types.GetFindingRequest, dict]):
-                The request object. Request for the `GetFinding` method.
+                The request object. Request for the ``GetFinding`` method.
             name (str):
                 Required. The resource name of the
                 Finding to be returned. The name follows
@@ -1762,8 +1753,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1alpha.types.ListFindingsRequest, dict]):
-                The request object. Request for the `ListFindings`
-                method.
+                The request object. Request for the ``ListFindings`` method.
             parent (str):
                 Required. The parent resource name,
                 which should be a scan run resource name
@@ -1889,8 +1879,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1alpha.types.ListFindingTypeStatsRequest, dict]):
-                The request object. Request for the
-                `ListFindingTypeStats` method.
+                The request object. Request for the ``ListFindingTypeStats`` method.
             parent (str):
                 Required. The parent resource name,
                 which should be a scan run resource name
