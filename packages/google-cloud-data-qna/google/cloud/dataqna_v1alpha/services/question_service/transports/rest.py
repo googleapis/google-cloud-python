@@ -372,7 +372,6 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
                 request (~.question_service.CreateQuestionRequest):
                     The request object. Request to create a question
                 resource.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -572,7 +571,6 @@ class QuestionServiceRestTransport(QuestionServiceTransport):
                 request (~.question_service.GetQuestionRequest):
                     The request object. A request to get a previously created
                 question.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

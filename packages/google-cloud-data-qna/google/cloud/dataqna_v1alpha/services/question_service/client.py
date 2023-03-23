@@ -531,8 +531,8 @@ class QuestionServiceClient(metaclass=QuestionServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataqna_v1alpha.types.GetQuestionRequest, dict]):
-                The request object. A request to get a previously
-                created question.
+                The request object. A request to get a previously created
+                question.
             name (str):
                 Required. The unique identifier for the question.
                 Example: ``projects/foo/locations/bar/questions/1234``
@@ -757,8 +757,7 @@ class QuestionServiceClient(metaclass=QuestionServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataqna_v1alpha.types.ExecuteQuestionRequest, dict]):
-                The request object. Request to execute an
-                interpretation.
+                The request object. Request to execute an interpretation.
             name (str):
                 Required. The unique identifier for the question.
                 Example: ``projects/foo/locations/bar/questions/1234``
