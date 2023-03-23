@@ -271,8 +271,8 @@ class DataMigrationServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.clouddms_v1.types.ListMigrationJobsRequest, dict]]):
-                The request object. Retrieve a list of all migration
-                jobs in a given project and location.
+                The request object. Retrieve a list of all migration jobs
+                in a given project and location.
             parent (:class:`str`):
                 Required. The parent, which owns this
                 collection of migrationJobs.
@@ -385,8 +385,8 @@ class DataMigrationServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.clouddms_v1.types.GetMigrationJobRequest, dict]]):
-                The request object. Request message for
-                'GetMigrationJob' request.
+                The request object. Request message for 'GetMigrationJob'
+                request.
             name (:class:`str`):
                 Required. Name of the migration job
                 resource to get.
@@ -504,8 +504,8 @@ class DataMigrationServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.clouddms_v1.types.CreateMigrationJobRequest, dict]]):
                 The request object. Request message to create a new
-                Database Migration Service migration job in the
-                specified project and region.
+                Database Migration Service migration job
+                in the specified project and region.
             parent (:class:`str`):
                 Required. The parent, which owns this
                 collection of migration jobs.
