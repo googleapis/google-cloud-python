@@ -505,7 +505,6 @@ class TranscoderServiceRestTransport(TranscoderServiceTransport):
                 request (~.services.CreateJobTemplateRequest):
                     The request object. Request message for
                 ``TranscoderService.CreateJobTemplate``.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -678,7 +677,6 @@ class TranscoderServiceRestTransport(TranscoderServiceTransport):
                 request (~.services.DeleteJobTemplateRequest):
                     The request object. Request message for
                 ``TranscoderService.DeleteJobTemplate``.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -842,7 +840,6 @@ class TranscoderServiceRestTransport(TranscoderServiceTransport):
                 request (~.services.GetJobTemplateRequest):
                     The request object. Request message for
                 ``TranscoderService.GetJobTemplate``.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -933,7 +930,6 @@ class TranscoderServiceRestTransport(TranscoderServiceTransport):
                     The request object. Request message for ``TranscoderService.ListJobs``. The
                 parent location from which to retrieve the collection of
                 jobs.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1021,7 +1017,6 @@ class TranscoderServiceRestTransport(TranscoderServiceTransport):
                 request (~.services.ListJobTemplatesRequest):
                     The request object. Request message for
                 ``TranscoderService.ListJobTemplates``.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

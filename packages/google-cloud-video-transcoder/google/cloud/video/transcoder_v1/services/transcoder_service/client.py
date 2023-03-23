@@ -519,8 +519,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
         Args:
             request (Union[google.cloud.video.transcoder_v1.types.CreateJobRequest, dict]):
-                The request object. Request message for
-                `TranscoderService.CreateJob`.
+                The request object. Request message for ``TranscoderService.CreateJob``.
             parent (str):
                 Required. The parent location to create and process this
                 job. Format: ``projects/{project}/locations/{location}``
@@ -629,9 +628,9 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
         Args:
             request (Union[google.cloud.video.transcoder_v1.types.ListJobsRequest, dict]):
-                The request object. Request message for
-                `TranscoderService.ListJobs`. The parent location from
-                which to retrieve the collection of jobs.
+                The request object. Request message for ``TranscoderService.ListJobs``. The
+                parent location from which to retrieve the collection of
+                jobs.
             parent (str):
                 Required. Format:
                 ``projects/{project}/locations/{location}``
@@ -743,8 +742,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
         Args:
             request (Union[google.cloud.video.transcoder_v1.types.GetJobRequest, dict]):
-                The request object. Request message for
-                `TranscoderService.GetJob`.
+                The request object. Request message for ``TranscoderService.GetJob``.
             name (str):
                 Required. The name of the job to retrieve. Format:
                 ``projects/{project}/locations/{location}/jobs/{job}``
@@ -840,8 +838,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
         Args:
             request (Union[google.cloud.video.transcoder_v1.types.DeleteJobRequest, dict]):
-                The request object. Request message for
-                `TranscoderService.DeleteJob`.
+                The request object. Request message for ``TranscoderService.DeleteJob``.
             name (str):
                 Required. The name of the job to delete. Format:
                 ``projects/{project}/locations/{location}/jobs/{job}``
@@ -937,7 +934,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
         Args:
             request (Union[google.cloud.video.transcoder_v1.types.CreateJobTemplateRequest, dict]):
                 The request object. Request message for
-                `TranscoderService.CreateJobTemplate`.
+                ``TranscoderService.CreateJobTemplate``.
             parent (str):
                 Required. The parent location to create this job
                 template. Format:
@@ -1062,7 +1059,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
         Args:
             request (Union[google.cloud.video.transcoder_v1.types.ListJobTemplatesRequest, dict]):
                 The request object. Request message for
-                `TranscoderService.ListJobTemplates`.
+                ``TranscoderService.ListJobTemplates``.
             parent (str):
                 Required. The parent location from which to retrieve the
                 collection of job templates. Format:
@@ -1176,7 +1173,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
         Args:
             request (Union[google.cloud.video.transcoder_v1.types.GetJobTemplateRequest, dict]):
                 The request object. Request message for
-                `TranscoderService.GetJobTemplate`.
+                ``TranscoderService.GetJobTemplate``.
             name (str):
                 Required. The name of the job template to retrieve.
                 Format:
@@ -1274,7 +1271,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
         Args:
             request (Union[google.cloud.video.transcoder_v1.types.DeleteJobTemplateRequest, dict]):
                 The request object. Request message for
-                `TranscoderService.DeleteJobTemplate`.
+                ``TranscoderService.DeleteJobTemplate``.
             name (str):
                 Required. The name of the job template to delete.
                 ``projects/{project}/locations/{location}/jobTemplates/{job_template}``
