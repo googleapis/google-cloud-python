@@ -218,7 +218,6 @@ class QuotaControllerRestTransport(QuotaControllerTransport):
                 request (~.quota_controller.AllocateQuotaRequest):
                     The request object. Request message for the AllocateQuota
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

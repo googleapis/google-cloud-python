@@ -472,8 +472,8 @@ class QuotaControllerClient(metaclass=QuotaControllerClientMeta):
 
         Args:
             request (Union[google.cloud.servicecontrol_v1.types.AllocateQuotaRequest, dict]):
-                The request object. Request message for the
-                AllocateQuota method.
+                The request object. Request message for the AllocateQuota
+                method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

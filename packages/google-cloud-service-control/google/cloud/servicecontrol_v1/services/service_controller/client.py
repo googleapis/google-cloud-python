@@ -479,8 +479,7 @@ class ServiceControllerClient(metaclass=ServiceControllerClientMeta):
 
         Args:
             request (Union[google.cloud.servicecontrol_v1.types.CheckRequest, dict]):
-                The request object. Request message for the Check
-                method.
+                The request object. Request message for the Check method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
