@@ -760,7 +760,6 @@ class ProductSearchRestTransport(ProductSearchTransport):
                     request (~.product_search_service.AddProductToProductSetRequest):
                         The request object. Request message for the ``AddProductToProductSet``
                     method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1911,7 +1910,6 @@ class ProductSearchRestTransport(ProductSearchTransport):
                     request (~.product_search_service.ListProductsInProductSetRequest):
                         The request object. Request message for the ``ListProductsInProductSet``
                     method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2094,7 +2092,6 @@ class ProductSearchRestTransport(ProductSearchTransport):
                     request (~.product_search_service.RemoveProductFromProductSetRequest):
                         The request object. Request message for the ``RemoveProductFromProductSet``
                     method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

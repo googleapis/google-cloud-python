@@ -293,8 +293,7 @@ class ProductSearchAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.vision_v1p3beta1.types.CreateProductSetRequest, dict]]):
-                The request object. Request message for the
-                `CreateProductSet` method.
+                The request object. Request message for the ``CreateProductSet`` method.
             parent (:class:`str`):
                 Required. The project in which the ProductSet should be
                 created.
@@ -434,8 +433,7 @@ class ProductSearchAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.vision_v1p3beta1.types.ListProductSetsRequest, dict]]):
-                The request object. Request message for the
-                `ListProductSets` method.
+                The request object. Request message for the ``ListProductSets`` method.
             parent (:class:`str`):
                 Required. The project from which ProductSets should be
                 listed.
@@ -565,8 +563,7 @@ class ProductSearchAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.vision_v1p3beta1.types.GetProductSetRequest, dict]]):
-                The request object. Request message for the
-                `GetProductSet` method.
+                The request object. Request message for the ``GetProductSet`` method.
             name (:class:`str`):
                 Required. Resource name of the ProductSet to get.
 
@@ -692,8 +689,7 @@ class ProductSearchAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.vision_v1p3beta1.types.UpdateProductSetRequest, dict]]):
-                The request object. Request message for the
-                `UpdateProductSet` method.
+                The request object. Request message for the ``UpdateProductSet`` method.
             product_set (:class:`google.cloud.vision_v1p3beta1.types.ProductSet`):
                 Required. The ProductSet resource
                 which replaces the one on the server.
@@ -824,8 +820,7 @@ class ProductSearchAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.vision_v1p3beta1.types.DeleteProductSetRequest, dict]]):
-                The request object. Request message for the
-                `DeleteProductSet` method.
+                The request object. Request message for the ``DeleteProductSet`` method.
             name (:class:`str`):
                 Required. Resource name of the ProductSet to delete.
 
@@ -942,8 +937,7 @@ class ProductSearchAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.vision_v1p3beta1.types.CreateProductRequest, dict]]):
-                The request object. Request message for the
-                `CreateProduct` method.
+                The request object. Request message for the ``CreateProduct`` method.
             parent (:class:`str`):
                 Required. The project in which the Product should be
                 created.
@@ -1078,8 +1072,7 @@ class ProductSearchAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.vision_v1p3beta1.types.ListProductsRequest, dict]]):
-                The request object. Request message for the
-                `ListProducts` method.
+                The request object. Request message for the ``ListProducts`` method.
             parent (:class:`str`):
                 Required. The project OR ProductSet from which Products
                 should be listed.
@@ -1207,8 +1200,7 @@ class ProductSearchAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.vision_v1p3beta1.types.GetProductRequest, dict]]):
-                The request object. Request message for the `GetProduct`
-                method.
+                The request object. Request message for the ``GetProduct`` method.
             name (:class:`str`):
                 Required. Resource name of the Product to get.
 
@@ -1336,8 +1328,7 @@ class ProductSearchAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.vision_v1p3beta1.types.UpdateProductRequest, dict]]):
-                The request object. Request message for the
-                `UpdateProduct` method.
+                The request object. Request message for the ``UpdateProduct`` method.
             product (:class:`google.cloud.vision_v1p3beta1.types.Product`):
                 Required. The Product resource which
                 replaces the one on the server.
@@ -1465,8 +1456,7 @@ class ProductSearchAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.vision_v1p3beta1.types.DeleteProductRequest, dict]]):
-                The request object. Request message for the
-                `DeleteProduct` method.
+                The request object. Request message for the ``DeleteProduct`` method.
             name (:class:`str`):
                 Required. Resource name of product to delete.
 
@@ -1599,8 +1589,7 @@ class ProductSearchAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.vision_v1p3beta1.types.CreateReferenceImageRequest, dict]]):
-                The request object. Request message for the
-                `CreateReferenceImage` method.
+                The request object. Request message for the ``CreateReferenceImage`` method.
             parent (:class:`str`):
                 Required. Resource name of the product in which to
                 create the reference image.
@@ -1743,8 +1732,7 @@ class ProductSearchAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.vision_v1p3beta1.types.DeleteReferenceImageRequest, dict]]):
-                The request object. Request message for the
-                `DeleteReferenceImage` method.
+                The request object. Request message for the ``DeleteReferenceImage`` method.
             name (:class:`str`):
                 Required. The resource name of the reference image to
                 delete.
@@ -1859,8 +1847,7 @@ class ProductSearchAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.vision_v1p3beta1.types.ListReferenceImagesRequest, dict]]):
-                The request object. Request message for the
-                `ListReferenceImages` method.
+                The request object. Request message for the ``ListReferenceImages`` method.
             parent (:class:`str`):
                 Required. Resource name of the product containing the
                 reference images.
@@ -1991,8 +1978,7 @@ class ProductSearchAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.vision_v1p3beta1.types.GetReferenceImageRequest, dict]]):
-                The request object. Request message for the
-                `GetReferenceImage` method.
+                The request object. Request message for the ``GetReferenceImage`` method.
             name (:class:`str`):
                 Required. The resource name of the ReferenceImage to
                 get.
@@ -2116,8 +2102,8 @@ class ProductSearchAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.vision_v1p3beta1.types.AddProductToProductSetRequest, dict]]):
-                The request object. Request message for the
-                `AddProductToProductSet` method.
+                The request object. Request message for the ``AddProductToProductSet``
+                method.
             name (:class:`str`):
                 Required. The resource name for the ProductSet to
                 modify.
@@ -2237,8 +2223,8 @@ class ProductSearchAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.vision_v1p3beta1.types.RemoveProductFromProductSetRequest, dict]]):
-                The request object. Request message for the
-                `RemoveProductFromProductSet` method.
+                The request object. Request message for the ``RemoveProductFromProductSet``
+                method.
             name (:class:`str`):
                 Required. The resource name for the ProductSet to
                 modify.
@@ -2362,8 +2348,8 @@ class ProductSearchAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.vision_v1p3beta1.types.ListProductsInProductSetRequest, dict]]):
-                The request object. Request message for the
-                `ListProductsInProductSet` method.
+                The request object. Request message for the ``ListProductsInProductSet``
+                method.
             name (:class:`str`):
                 Required. The ProductSet resource for which to retrieve
                 Products.
@@ -2509,8 +2495,7 @@ class ProductSearchAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.vision_v1p3beta1.types.ImportProductSetsRequest, dict]]):
-                The request object. Request message for the
-                `ImportProductSets` method.
+                The request object. Request message for the ``ImportProductSets`` method.
             parent (:class:`str`):
                 Required. The project in which the ProductSets should be
                 imported.

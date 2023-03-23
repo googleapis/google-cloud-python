@@ -234,7 +234,6 @@ class ImageAnnotatorRestTransport(ImageAnnotatorTransport):
                 request (~.image_annotator.BatchAnnotateImagesRequest):
                     The request object. Multiple image annotation requests
                 are batched into a single service call.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
