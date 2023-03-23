@@ -1295,7 +1295,6 @@ class BackupForGKERestTransport(BackupForGKETransport):
                 request (~.gkebackup.CreateRestorePlanRequest):
                     The request object. Request message for
                 CreateRestorePlan.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1658,7 +1657,6 @@ class BackupForGKERestTransport(BackupForGKETransport):
                 request (~.gkebackup.DeleteRestorePlanRequest):
                     The request object. Request message for
                 DeleteRestorePlan.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2648,7 +2646,6 @@ class BackupForGKERestTransport(BackupForGKETransport):
                 request (~.gkebackup.ListVolumeBackupsRequest):
                     The request object. Request message for
                 ListVolumeBackups.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2740,7 +2737,6 @@ class BackupForGKERestTransport(BackupForGKETransport):
                 request (~.gkebackup.ListVolumeRestoresRequest):
                     The request object. Request message for
                 ListVolumeRestores.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3122,7 +3118,6 @@ class BackupForGKERestTransport(BackupForGKETransport):
                 request (~.gkebackup.UpdateRestorePlanRequest):
                     The request object. Request message for
                 UpdateRestorePlan.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

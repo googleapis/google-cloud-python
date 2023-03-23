@@ -679,8 +679,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         Args:
             request (Union[google.cloud.gke_backup_v1.types.CreateBackupPlanRequest, dict]):
-                The request object. Request message for
-                CreateBackupPlan.
+                The request object. Request message for CreateBackupPlan.
             parent (str):
                 Required. The location within which to create the
                 BackupPlan. Format: ``projects/*/locations/*``
@@ -1041,8 +1040,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         Args:
             request (Union[google.cloud.gke_backup_v1.types.UpdateBackupPlanRequest, dict]):
-                The request object. Request message for
-                UpdateBackupPlan.
+                The request object. Request message for UpdateBackupPlan.
             backup_plan (google.cloud.gke_backup_v1.types.BackupPlan):
                 Required. A new version of the BackupPlan resource that
                 contains updated fields. This may be sparsely populated
@@ -1180,8 +1178,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         Args:
             request (Union[google.cloud.gke_backup_v1.types.DeleteBackupPlanRequest, dict]):
-                The request object. Request message for
-                DeleteBackupPlan.
+                The request object. Request message for DeleteBackupPlan.
             name (str):
                 Required. Fully qualified BackupPlan name. Format:
                 ``projects/*/locations/*/backupPlans/*``
@@ -2300,8 +2297,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         Args:
             request (Union[google.cloud.gke_backup_v1.types.ListRestorePlansRequest, dict]):
-                The request object. Request message for
-                ListRestorePlans.
+                The request object. Request message for ListRestorePlans.
             parent (str):
                 Required. The location that contains the RestorePlans to
                 list. Format: ``projects/*/locations/*``
@@ -3527,8 +3523,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         Args:
             request (Union[google.cloud.gke_backup_v1.types.GetVolumeRestoreRequest, dict]):
-                The request object. Request message for
-                GetVolumeRestore.
+                The request object. Request message for GetVolumeRestore.
             name (str):
                 Required. Full name of the VolumeRestore resource.
                 Format:

@@ -294,8 +294,7 @@ class BackupForGKEAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.gke_backup_v1.types.CreateBackupPlanRequest, dict]]):
-                The request object. Request message for
-                CreateBackupPlan.
+                The request object. Request message for CreateBackupPlan.
             parent (:class:`str`):
                 Required. The location within which to create the
                 BackupPlan. Format: ``projects/*/locations/*``
@@ -674,8 +673,7 @@ class BackupForGKEAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.gke_backup_v1.types.UpdateBackupPlanRequest, dict]]):
-                The request object. Request message for
-                UpdateBackupPlan.
+                The request object. Request message for UpdateBackupPlan.
             backup_plan (:class:`google.cloud.gke_backup_v1.types.BackupPlan`):
                 Required. A new version of the BackupPlan resource that
                 contains updated fields. This may be sparsely populated
@@ -813,8 +811,7 @@ class BackupForGKEAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.gke_backup_v1.types.DeleteBackupPlanRequest, dict]]):
-                The request object. Request message for
-                DeleteBackupPlan.
+                The request object. Request message for DeleteBackupPlan.
             name (:class:`str`):
                 Required. Fully qualified BackupPlan name. Format:
                 ``projects/*/locations/*/backupPlans/*``
@@ -1969,8 +1966,7 @@ class BackupForGKEAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.gke_backup_v1.types.ListRestorePlansRequest, dict]]):
-                The request object. Request message for
-                ListRestorePlans.
+                The request object. Request message for ListRestorePlans.
             parent (:class:`str`):
                 Required. The location that contains the RestorePlans to
                 list. Format: ``projects/*/locations/*``
@@ -3241,8 +3237,7 @@ class BackupForGKEAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.gke_backup_v1.types.GetVolumeRestoreRequest, dict]]):
-                The request object. Request message for
-                GetVolumeRestore.
+                The request object. Request message for GetVolumeRestore.
             name (:class:`str`):
                 Required. Full name of the VolumeRestore resource.
                 Format:
