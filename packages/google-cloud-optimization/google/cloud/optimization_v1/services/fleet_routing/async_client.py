@@ -287,8 +287,9 @@ class FleetRoutingAsyncClient:
         Args:
             request (Optional[Union[google.cloud.optimization_v1.types.OptimizeToursRequest, dict]]):
                 The request object. Request to be given to a tour
-                optimization solver which defines the shipment model to
-                solve as well as optimization parameters.
+                optimization solver which defines the
+                shipment model to solve as well as
+                optimization parameters.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -398,10 +399,10 @@ class FleetRoutingAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.optimization_v1.types.BatchOptimizeToursRequest, dict]]):
-                The request object. Request to batch optimize tours as
-                an asynchronous operation. Each input file should
-                contain one `OptimizeToursRequest`, and each output file
-                will contain one `OptimizeToursResponse`. The request
+                The request object. Request to batch optimize tours as an asynchronous
+                operation. Each input file should contain one
+                ``OptimizeToursRequest``, and each output file will
+                contain one ``OptimizeToursResponse``. The request
                 contains information to read/write and parse the files.
                 All the input and output files should be under the same
                 project.
