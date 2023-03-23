@@ -820,9 +820,10 @@ class DataFusionAsyncClient:
         Args:
             request (Optional[Union[google.cloud.data_fusion_v1.types.UpdateInstanceRequest, dict]]):
                 The request object. Request message for updating a Data
-                Fusion instance. Data Fusion allows updating the labels,
-                options, and stack driver settings. This is also used
-                for CDF version upgrade.
+                Fusion instance. Data Fusion allows
+                updating the labels, options, and stack
+                driver settings. This is also used for
+                CDF version upgrade.
             instance (:class:`google.cloud.data_fusion_v1.types.Instance`):
                 Required. The instance resource that
                 replaces the resource on the server.
@@ -958,8 +959,8 @@ class DataFusionAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.data_fusion_v1.types.RestartInstanceRequest, dict]]):
-                The request object. Request message for restarting a
-                Data Fusion instance.
+                The request object. Request message for restarting a Data
+                Fusion instance.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

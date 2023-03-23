@@ -475,7 +475,6 @@ class DataFusionRestTransport(DataFusionTransport):
                 request (~.datafusion.CreateInstanceRequest):
                     The request object. Request message for creating a Data
                 Fusion instance.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -573,7 +572,6 @@ class DataFusionRestTransport(DataFusionTransport):
                 request (~.datafusion.DeleteInstanceRequest):
                     The request object. Request message for deleting a Data
                 Fusion instance.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -662,7 +660,6 @@ class DataFusionRestTransport(DataFusionTransport):
                 request (~.datafusion.GetInstanceRequest):
                     The request object. Request message for getting details
                 about a Data Fusion instance.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -750,7 +747,6 @@ class DataFusionRestTransport(DataFusionTransport):
                 request (~.datafusion.ListAvailableVersionsRequest):
                     The request object. Request message for the list
                 available versions request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -842,7 +838,6 @@ class DataFusionRestTransport(DataFusionTransport):
                 request (~.datafusion.ListInstancesRequest):
                     The request object. Request message for listing Data
                 Fusion instances.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -932,7 +927,6 @@ class DataFusionRestTransport(DataFusionTransport):
                 request (~.datafusion.RestartInstanceRequest):
                     The request object. Request message for restarting a Data
                 Fusion instance.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1035,7 +1029,6 @@ class DataFusionRestTransport(DataFusionTransport):
                 updating the labels, options, and stack
                 driver settings. This is also used for
                 CDF version upgrade.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
