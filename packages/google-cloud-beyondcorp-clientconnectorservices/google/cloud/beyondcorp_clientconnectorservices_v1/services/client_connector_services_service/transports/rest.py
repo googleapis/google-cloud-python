@@ -647,7 +647,6 @@ class ClientConnectorServicesServiceRestTransport(
                     request (~.client_connector_services_service.CreateClientConnectorServiceRequest):
                         The request object. Message for creating a
                     ClientConnectorService.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -750,7 +749,6 @@ class ClientConnectorServicesServiceRestTransport(
                     request (~.client_connector_services_service.DeleteClientConnectorServiceRequest):
                         The request object. Message for deleting a
                     ClientConnectorService.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -844,7 +842,6 @@ class ClientConnectorServicesServiceRestTransport(
                     request (~.client_connector_services_service.GetClientConnectorServiceRequest):
                         The request object. Message for getting a
                     ClientConnectorService.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -941,7 +938,6 @@ class ClientConnectorServicesServiceRestTransport(
                     request (~.client_connector_services_service.ListClientConnectorServicesRequest):
                         The request object. Message for requesting list of
                     ClientConnectorServices.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1044,7 +1040,6 @@ class ClientConnectorServicesServiceRestTransport(
                     request (~.client_connector_services_service.UpdateClientConnectorServiceRequest):
                         The request object. Message for updating a
                     ClientConnectorService
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
