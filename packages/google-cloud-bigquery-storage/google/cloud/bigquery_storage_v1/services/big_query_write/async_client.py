@@ -271,8 +271,7 @@ class BigQueryWriteAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.bigquery_storage_v1.types.CreateWriteStreamRequest, dict]]):
-                The request object. Request message for
-                `CreateWriteStream`.
+                The request object. Request message for ``CreateWriteStream``.
             parent (:class:`str`):
                 Required. Reference to the table to which the stream
                 belongs, in the format of
@@ -436,14 +435,16 @@ class BigQueryWriteAsyncClient:
 
         Args:
             requests (AsyncIterator[`google.cloud.bigquery_storage_v1.types.AppendRowsRequest`]):
-                The request object AsyncIterator. Request message for `AppendRows`.
+                The request object AsyncIterator. Request message for ``AppendRows``.
+
                 Due to the nature of AppendRows being a bidirectional
                 streaming RPC, certain parts of the AppendRowsRequest
                 need only be specified for the first request sent each
                 time the gRPC network connection is opened/reopened.
+
                 The size of a single AppendRowsRequest must be less than
                 10 MB in size. Requests larger than this return an
-                error, typically `INVALID_ARGUMENT`.
+                error, typically ``INVALID_ARGUMENT``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -526,8 +527,7 @@ class BigQueryWriteAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.bigquery_storage_v1.types.GetWriteStreamRequest, dict]]):
-                The request object. Request message for
-                `GetWriteStreamRequest`.
+                The request object. Request message for ``GetWriteStreamRequest``.
             name (:class:`str`):
                 Required. Name of the stream to get, in the form of
                 ``projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}``.
@@ -640,8 +640,7 @@ class BigQueryWriteAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.bigquery_storage_v1.types.FinalizeWriteStreamRequest, dict]]):
-                The request object. Request message for invoking
-                `FinalizeWriteStream`.
+                The request object. Request message for invoking ``FinalizeWriteStream``.
             name (:class:`str`):
                 Required. Name of the stream to finalize, in the form of
                 ``projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}``.
@@ -756,8 +755,7 @@ class BigQueryWriteAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.bigquery_storage_v1.types.BatchCommitWriteStreamsRequest, dict]]):
-                The request object. Request message for
-                `BatchCommitWriteStreams`.
+                The request object. Request message for ``BatchCommitWriteStreams``.
             parent (:class:`str`):
                 Required. Parent table that all the streams should
                 belong to, in the form of
@@ -876,7 +874,7 @@ class BigQueryWriteAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.bigquery_storage_v1.types.FlushRowsRequest, dict]]):
-                The request object. Request message for `FlushRows`.
+                The request object. Request message for ``FlushRows``.
             write_stream (:class:`str`):
                 Required. The stream that is the
                 target of the flush operation.
