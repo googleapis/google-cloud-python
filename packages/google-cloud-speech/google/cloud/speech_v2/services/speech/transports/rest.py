@@ -1068,7 +1068,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [BatchRecognize][google.cloud.speech.v2.Speech.BatchRecognize]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1167,7 +1166,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [CreateCustomClass][google.cloud.speech.v2.Speech.CreateCustomClass]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1268,7 +1266,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [CreatePhraseSet][google.cloud.speech.v2.Speech.CreatePhraseSet]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1369,7 +1366,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [CreateRecognizer][google.cloud.speech.v2.Speech.CreateRecognizer]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1470,7 +1466,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [DeleteCustomClass][google.cloud.speech.v2.Speech.DeleteCustomClass]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1562,7 +1557,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [DeletePhraseSet][google.cloud.speech.v2.Speech.DeletePhraseSet]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1654,7 +1648,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [DeleteRecognizer][google.cloud.speech.v2.Speech.DeleteRecognizer]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1746,7 +1739,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [GetConfig][google.cloud.speech.v2.Speech.GetConfig]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1839,7 +1831,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [GetCustomClass][google.cloud.speech.v2.Speech.GetCustomClass]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1936,7 +1927,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [GetPhraseSet][google.cloud.speech.v2.Speech.GetPhraseSet]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2030,7 +2020,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [GetRecognizer][google.cloud.speech.v2.Speech.GetRecognizer]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2121,7 +2110,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [ListCustomClasses][google.cloud.speech.v2.Speech.ListCustomClasses]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2215,7 +2203,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [ListPhraseSets][google.cloud.speech.v2.Speech.ListPhraseSets]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2309,7 +2296,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [ListRecognizers][google.cloud.speech.v2.Speech.ListRecognizers]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2407,7 +2393,6 @@ class SpeechRestTransport(SpeechTransport):
                 [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
                 See `content
                 limits <https://cloud.google.com/speech-to-text/quotas#content>`__.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2524,7 +2509,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [UndeleteCustomClass][google.cloud.speech.v2.Speech.UndeleteCustomClass]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2625,7 +2609,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [UndeletePhraseSet][google.cloud.speech.v2.Speech.UndeletePhraseSet]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2726,7 +2709,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [UndeleteRecognizer][google.cloud.speech.v2.Speech.UndeleteRecognizer]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2827,7 +2809,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [UpdateConfig][google.cloud.speech.v2.Speech.UpdateConfig]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2929,7 +2910,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [UpdateCustomClass][google.cloud.speech.v2.Speech.UpdateCustomClass]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3030,7 +3010,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [UpdatePhraseSet][google.cloud.speech.v2.Speech.UpdatePhraseSet]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3131,7 +3110,6 @@ class SpeechRestTransport(SpeechTransport):
                     The request object. Request message for the
                 [UpdateRecognizer][google.cloud.speech.v2.Speech.UpdateRecognizer]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
