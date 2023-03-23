@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.15.2](https://github.com/googleapis/python-pubsub/compare/v2.15.1...v2.15.2) (2023-03-20)
+
+
+### Documentation
+
+* Update missing docstrings ([#890](https://github.com/googleapis/python-pubsub/issues/890)) ([5849e04](https://github.com/googleapis/python-pubsub/commit/5849e048f48074e3a8ecddbe3bfbcfc9da094a28))
+
 ## [2.15.1](https://github.com/googleapis/python-pubsub/compare/v2.15.0...v2.15.1) (2023-03-14)
 
 
