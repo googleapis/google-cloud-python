@@ -651,8 +651,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         Args:
             request (Union[google.cloud.bigquery.analyticshub_v1.types.ListOrgDataExchangesRequest, dict]):
                 The request object. Message for requesting the list of
-                data exchanges from projects in an organization and
-                location.
+                data exchanges from projects in an
+                organization and location.
             organization (str):
                 Required. The organization resource path of the projects
                 containing DataExchanges. e.g.
@@ -879,8 +879,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         Args:
             request (Union[google.cloud.bigquery.analyticshub_v1.types.CreateDataExchangeRequest, dict]):
-                The request object. Message for creating a data
-                exchange.
+                The request object. Message for creating a data exchange.
             parent (str):
                 Required. The parent resource path of the data exchange.
                 e.g. ``projects/myproject/locations/US``.
@@ -997,8 +996,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         Args:
             request (Union[google.cloud.bigquery.analyticshub_v1.types.UpdateDataExchangeRequest, dict]):
-                The request object. Message for updating a data
-                exchange.
+                The request object. Message for updating a data exchange.
             data_exchange (google.cloud.bigquery.analyticshub_v1.types.DataExchange):
                 Required. The data exchange to
                 update.
@@ -1112,8 +1110,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         Args:
             request (Union[google.cloud.bigquery.analyticshub_v1.types.DeleteDataExchangeRequest, dict]):
-                The request object. Message for deleting a data
-                exchange.
+                The request object. Message for deleting a data exchange.
             name (str):
                 Required. The full name of the data exchange resource
                 that you want to delete. For example,
@@ -1764,8 +1761,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         Args:
             request (Union[google.cloud.bigquery.analyticshub_v1.types.SubscribeListingRequest, dict]):
-                The request object. Message for subscribing to a
-                listing.
+                The request object. Message for subscribing to a listing.
             name (str):
                 Required. Resource name of the listing that you want to
                 subscribe to. e.g.
@@ -1867,8 +1863,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
-                The request object. Request message for `GetIamPolicy`
-                method.
+                The request object. Request message for ``GetIamPolicy`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2009,8 +2004,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
-                The request object. Request message for `SetIamPolicy`
-                method.
+                The request object. Request message for ``SetIamPolicy`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2152,8 +2146,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
-                The request object. Request message for
-                `TestIamPermissions` method.
+                The request object. Request message for ``TestIamPermissions`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
