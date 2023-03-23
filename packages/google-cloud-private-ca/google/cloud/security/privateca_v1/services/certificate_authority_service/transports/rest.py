@@ -1351,7 +1351,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                     request (~.service.ActivateCertificateAuthorityRequest):
                         The request object. Request message for
                     [CertificateAuthorityService.ActivateCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.ActivateCertificateAuthority].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1453,7 +1452,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                 request (~.service.CreateCaPoolRequest):
                     The request object. Request message for
                 [CertificateAuthorityService.CreateCaPool][google.cloud.security.privateca.v1.CertificateAuthorityService.CreateCaPool].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1551,7 +1549,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                 request (~.service.CreateCertificateRequest):
                     The request object. Request message for
                 [CertificateAuthorityService.CreateCertificate][google.cloud.security.privateca.v1.CertificateAuthorityService.CreateCertificate].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1657,7 +1654,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                     request (~.service.CreateCertificateAuthorityRequest):
                         The request object. Request message for
                     [CertificateAuthorityService.CreateCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.CreateCertificateAuthority].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1760,7 +1756,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                     request (~.service.CreateCertificateTemplateRequest):
                         The request object. Request message for
                     [CertificateAuthorityService.CreateCertificateTemplate][google.cloud.security.privateca.v1.CertificateAuthorityService.CreateCertificateTemplate].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1860,7 +1855,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                 request (~.service.DeleteCaPoolRequest):
                     The request object. Request message for
                 [CertificateAuthorityService.DeleteCaPool][google.cloud.security.privateca.v1.CertificateAuthorityService.DeleteCaPool].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1950,7 +1944,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                     request (~.service.DeleteCertificateAuthorityRequest):
                         The request object. Request message for
                     [CertificateAuthorityService.DeleteCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.DeleteCertificateAuthority].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2042,7 +2035,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                     request (~.service.DeleteCertificateTemplateRequest):
                         The request object. Request message for
                     [CertificateAuthorityService.DeleteCertificateTemplate][google.cloud.security.privateca.v1.CertificateAuthorityService.DeleteCertificateTemplate].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2134,7 +2126,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                     request (~.service.DisableCertificateAuthorityRequest):
                         The request object. Request message for
                     [CertificateAuthorityService.DisableCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.DisableCertificateAuthority].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2235,7 +2226,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                     request (~.service.EnableCertificateAuthorityRequest):
                         The request object. Request message for
                     [CertificateAuthorityService.EnableCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.EnableCertificateAuthority].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2335,7 +2325,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                 request (~.service.FetchCaCertsRequest):
                     The request object. Request message for
                 [CertificateAuthorityService.FetchCaCerts][google.cloud.security.privateca.v1.CertificateAuthorityService.FetchCaCerts].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2435,7 +2424,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                     request (~.service.FetchCertificateAuthorityCsrRequest):
                         The request object. Request message for
                     [CertificateAuthorityService.FetchCertificateAuthorityCsr][google.cloud.security.privateca.v1.CertificateAuthorityService.FetchCertificateAuthorityCsr].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2527,7 +2515,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                 request (~.service.GetCaPoolRequest):
                     The request object. Request message for
                 [CertificateAuthorityService.GetCaPool][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCaPool].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2624,7 +2611,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                 request (~.service.GetCertificateRequest):
                     The request object. Request message for
                 [CertificateAuthorityService.GetCertificate][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCertificate].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2716,7 +2702,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                 request (~.service.GetCertificateAuthorityRequest):
                     The request object. Request message for
                 [CertificateAuthorityService.GetCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCertificateAuthority].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2813,7 +2798,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                     request (~.service.GetCertificateRevocationListRequest):
                         The request object. Request message for
                     [CertificateAuthorityService.GetCertificateRevocationList][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCertificateRevocationList].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2908,7 +2892,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                 request (~.service.GetCertificateTemplateRequest):
                     The request object. Request message for
                 [CertificateAuthorityService.GetCertificateTemplate][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCertificateTemplate].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3001,7 +2984,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                 request (~.service.ListCaPoolsRequest):
                     The request object. Request message for
                 [CertificateAuthorityService.ListCaPools][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCaPools].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3092,7 +3074,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                     request (~.service.ListCertificateAuthoritiesRequest):
                         The request object. Request message for
                     [CertificateAuthorityService.ListCertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateAuthorities].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3185,7 +3166,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                     request (~.service.ListCertificateRevocationListsRequest):
                         The request object. Request message for
                     [CertificateAuthorityService.ListCertificateRevocationLists][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateRevocationLists].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3277,7 +3257,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                 request (~.service.ListCertificatesRequest):
                     The request object. Request message for
                 [CertificateAuthorityService.ListCertificates][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificates].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3370,7 +3349,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                     request (~.service.ListCertificateTemplatesRequest):
                         The request object. Request message for
                     [CertificateAuthorityService.ListCertificateTemplates][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateTemplates].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3462,7 +3440,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                 request (~.service.RevokeCertificateRequest):
                     The request object. Request message for
                 [CertificateAuthorityService.RevokeCertificate][google.cloud.security.privateca.v1.CertificateAuthorityService.RevokeCertificate].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3566,7 +3543,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                     request (~.service.UndeleteCertificateAuthorityRequest):
                         The request object. Request message for
                     [CertificateAuthorityService.UndeleteCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.UndeleteCertificateAuthority].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3668,7 +3644,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                 request (~.service.UpdateCaPoolRequest):
                     The request object. Request message for
                 [CertificateAuthorityService.UpdateCaPool][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCaPool].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3768,7 +3743,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                 request (~.service.UpdateCertificateRequest):
                     The request object. Request message for
                 [CertificateAuthorityService.UpdateCertificate][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCertificate].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3874,7 +3848,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                     request (~.service.UpdateCertificateAuthorityRequest):
                         The request object. Request message for
                     [CertificateAuthorityService.UpdateCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCertificateAuthority].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3977,7 +3950,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                     request (~.service.UpdateCertificateRevocationListRequest):
                         The request object. Request message for
                     [CertificateAuthorityService.UpdateCertificateRevocationList][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCertificateRevocationList].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -4083,7 +4055,6 @@ class CertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransp
                     request (~.service.UpdateCertificateTemplateRequest):
                         The request object. Request message for
                     [CertificateAuthorityService.UpdateCertificateTemplate][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCertificateTemplate].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
