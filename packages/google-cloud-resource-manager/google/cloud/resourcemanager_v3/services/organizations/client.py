@@ -478,9 +478,9 @@ class OrganizationsClient(metaclass=OrganizationsClientMeta):
 
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.GetOrganizationRequest, dict]):
-                The request object. The request sent to the
-                `GetOrganization` method. The `name` field is required.
-                `organization_id` is no longer accepted.
+                The request object. The request sent to the ``GetOrganization`` method. The
+                ``name`` field is required. ``organization_id`` is no
+                longer accepted.
             name (str):
                 Required. The resource name of the Organization to
                 fetch. This is the organization's relative path in the
@@ -592,8 +592,7 @@ class OrganizationsClient(metaclass=OrganizationsClientMeta):
 
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.SearchOrganizationsRequest, dict]):
-                The request object. The request sent to the
-                `SearchOrganizations` method.
+                The request object. The request sent to the ``SearchOrganizations`` method.
             query (str):
                 Optional. An optional query string used to filter the
                 Organizations to return in the response. Query rules are
@@ -728,8 +727,7 @@ class OrganizationsClient(metaclass=OrganizationsClientMeta):
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
-                The request object. Request message for `GetIamPolicy`
-                method.
+                The request object. Request message for ``GetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
                 policy is being requested. See the
@@ -898,8 +896,7 @@ class OrganizationsClient(metaclass=OrganizationsClientMeta):
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
-                The request object. Request message for `SetIamPolicy`
-                method.
+                The request object. Request message for ``SetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
                 policy is being specified. See the
@@ -1067,8 +1064,7 @@ class OrganizationsClient(metaclass=OrganizationsClientMeta):
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
-                The request object. Request message for
-                `TestIamPermissions` method.
+                The request object. Request message for ``TestIamPermissions`` method.
             resource (str):
                 REQUIRED: The resource for which the
                 policy detail is being requested. See

@@ -569,7 +569,6 @@ class ProjectsRestTransport(ProjectsTransport):
                     The request object. The request sent to the
                 [CreateProject][google.cloud.resourcemanager.v3.Projects.CreateProject]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -667,7 +666,6 @@ class ProjectsRestTransport(ProjectsTransport):
                 request (~.projects.DeleteProjectRequest):
                     The request object. [DeleteProject][google.cloud.resourcemanager.v3.Projects.DeleteProject]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -927,7 +925,6 @@ class ProjectsRestTransport(ProjectsTransport):
                     The request object. The request sent to the
                 [GetProject][google.cloud.resourcemanager.v3.Projects.GetProject]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1022,7 +1019,6 @@ class ProjectsRestTransport(ProjectsTransport):
                     The request object. The request sent to the
                 [ListProjects][google.cloud.resourcemanager.v3.Projects.ListProjects]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1122,7 +1118,6 @@ class ProjectsRestTransport(ProjectsTransport):
                     The request object. The request sent to
                 [MoveProject][google.cloud.resourcemanager.v3.Projects.MoveProject]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1211,7 +1206,6 @@ class ProjectsRestTransport(ProjectsTransport):
                     The request object. The request sent to the
                 [SearchProjects][google.cloud.resourcemanager.v3.Projects.SearchProjects]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1573,7 +1567,6 @@ class ProjectsRestTransport(ProjectsTransport):
                     The request object. The request sent to the [UndeleteProject]
                 [google.cloud.resourcemanager.v3.Projects.UndeleteProject]
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1679,7 +1672,6 @@ class ProjectsRestTransport(ProjectsTransport):
                 change. Use the
                 [MoveProject][google.cloud.resourcemanager.v3.Projects.MoveProject]
                 method to change the ``parent`` field.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

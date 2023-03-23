@@ -519,7 +519,6 @@ class OrganizationsRestTransport(OrganizationsTransport):
                     The request object. The request sent to the ``GetOrganization`` method. The
                 ``name`` field is required. ``organization_id`` is no
                 longer accepted.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

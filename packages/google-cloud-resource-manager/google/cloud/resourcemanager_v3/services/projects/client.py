@@ -1019,10 +1019,10 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
                 [UpdateProject][google.cloud.resourcemanager.v3.Projects.UpdateProject]
                 method.
 
-                Only the `display_name` and `labels` fields can be
+                Only the ``display_name`` and ``labels`` fields can be
                 change. Use the
                 [MoveProject][google.cloud.resourcemanager.v3.Projects.MoveProject]
-                method to change the `parent` field.
+                method to change the ``parent`` field.
             project (google.cloud.resourcemanager_v3.types.Project):
                 Required. The new definition of the
                 project.
@@ -1447,8 +1447,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.UndeleteProjectRequest, dict]):
-                The request object. The request sent to the
-                [UndeleteProject]
+                The request object. The request sent to the [UndeleteProject]
                 [google.cloud.resourcemanager.v3.Projects.UndeleteProject]
                 method.
             name (str):
@@ -1567,8 +1566,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
-                The request object. Request message for `GetIamPolicy`
-                method.
+                The request object. Request message for ``GetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
                 policy is being requested. See the
@@ -1781,8 +1779,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
-                The request object. Request message for `SetIamPolicy`
-                method.
+                The request object. Request message for ``SetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
                 policy is being specified. See the
@@ -1947,8 +1944,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
-                The request object. Request message for
-                `TestIamPermissions` method.
+                The request object. Request message for ``TestIamPermissions`` method.
             resource (str):
                 REQUIRED: The resource for which the
                 policy detail is being requested. See

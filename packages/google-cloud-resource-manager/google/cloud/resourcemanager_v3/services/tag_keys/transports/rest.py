@@ -471,7 +471,6 @@ class TagKeysRestTransport(TagKeysTransport):
                 request (~.tag_keys.CreateTagKeyRequest):
                     The request object. The request message for creating a
                 TagKey.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -569,7 +568,6 @@ class TagKeysRestTransport(TagKeysTransport):
                 request (~.tag_keys.DeleteTagKeyRequest):
                     The request object. The request message for deleting a
                 TagKey.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -828,7 +826,6 @@ class TagKeysRestTransport(TagKeysTransport):
                 request (~.tag_keys.GetTagKeyRequest):
                     The request object. The request message for getting a
                 TagKey.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -920,7 +917,6 @@ class TagKeysRestTransport(TagKeysTransport):
                 request (~.tag_keys.ListTagKeysRequest):
                     The request object. The request message for listing all
                 TagKeys under a parent resource.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1275,7 +1271,6 @@ class TagKeysRestTransport(TagKeysTransport):
                 request (~.tag_keys.UpdateTagKeyRequest):
                     The request object. The request message for updating a
                 TagKey.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

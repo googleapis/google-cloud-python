@@ -1179,7 +1179,6 @@ class FoldersRestTransport(FoldersTransport):
                 request (~.folders.SearchFoldersRequest):
                     The request object. The request message for searching
                 folders.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1639,7 +1638,6 @@ class FoldersRestTransport(FoldersTransport):
                 other fields will be ignored. Use the
                 [MoveFolder][google.cloud.resourcemanager.v3.Folders.MoveFolder]
                 method to change the ``parent`` field.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

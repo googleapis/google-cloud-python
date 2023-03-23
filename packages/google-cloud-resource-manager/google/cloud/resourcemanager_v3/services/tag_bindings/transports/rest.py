@@ -332,7 +332,6 @@ class TagBindingsRestTransport(TagBindingsTransport):
                 request (~.tag_bindings.CreateTagBindingRequest):
                     The request object. The request message to create a
                 TagBinding.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -432,7 +431,6 @@ class TagBindingsRestTransport(TagBindingsTransport):
                 request (~.tag_bindings.DeleteTagBindingRequest):
                     The request object. The request message to delete a
                 TagBinding.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -525,7 +523,6 @@ class TagBindingsRestTransport(TagBindingsTransport):
                 request (~.tag_bindings.ListTagBindingsRequest):
                     The request object. The request message to list all
                 TagBindings for a parent.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
