@@ -1380,8 +1380,8 @@ class ManagedNotebookServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.notebooks_v1.types.UpgradeRuntimeRequest, dict]]):
-                The request object. Request for upgrading a Managed
-                Notebook Runtime to the latest version. option
+                The request object. Request for upgrading a Managed Notebook Runtime to the
+                latest version. option
                 (google.api.message_visibility).restriction =
                 "TRUSTED_TESTER,SPECIAL_TESTER";
             name (:class:`str`):

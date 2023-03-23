@@ -1342,8 +1342,9 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         Args:
             request (Union[google.cloud.notebooks_v1.types.UpdateShieldedInstanceConfigRequest, dict]):
                 The request object. Request for updating the Shielded
-                Instance config for a notebook instance. You can only
-                use this method on a stopped instance
+                Instance config for a notebook instance.
+                You can only use this method on a
+                stopped instance
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

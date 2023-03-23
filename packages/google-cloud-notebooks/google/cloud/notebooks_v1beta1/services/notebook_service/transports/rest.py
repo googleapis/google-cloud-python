@@ -1038,7 +1038,6 @@ class NotebookServiceRestTransport(NotebookServiceTransport):
                 request (~.service.CreateEnvironmentRequest):
                     The request object. Request for creating a notebook
                 environment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1140,7 +1139,6 @@ class NotebookServiceRestTransport(NotebookServiceTransport):
                 request (~.service.CreateInstanceRequest):
                     The request object. Request for creating a notebook
                 instance.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1238,7 +1236,6 @@ class NotebookServiceRestTransport(NotebookServiceTransport):
                 request (~.service.DeleteEnvironmentRequest):
                     The request object. Request for deleting a notebook
                 environment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1329,7 +1326,6 @@ class NotebookServiceRestTransport(NotebookServiceTransport):
                 request (~.service.DeleteInstanceRequest):
                     The request object. Request for deleting a notebook
                 instance.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1418,7 +1414,6 @@ class NotebookServiceRestTransport(NotebookServiceTransport):
                 request (~.service.GetEnvironmentRequest):
                     The request object. Request for getting a notebook
                 environment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1509,7 +1504,6 @@ class NotebookServiceRestTransport(NotebookServiceTransport):
                 request (~.service.GetInstanceRequest):
                     The request object. Request for getting a notebook
                 instance.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1599,7 +1593,6 @@ class NotebookServiceRestTransport(NotebookServiceTransport):
                 request (~.service.IsInstanceUpgradeableRequest):
                     The request object. Request for checking if a notebook
                 instance is upgradeable.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1779,7 +1772,6 @@ class NotebookServiceRestTransport(NotebookServiceTransport):
                 request (~.service.ListInstancesRequest):
                     The request object. Request for listing notebook
                 instances.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1869,7 +1861,6 @@ class NotebookServiceRestTransport(NotebookServiceTransport):
                 request (~.service.RegisterInstanceRequest):
                     The request object. Request for registering a notebook
                 instance.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1969,7 +1960,6 @@ class NotebookServiceRestTransport(NotebookServiceTransport):
                 request (~.service.ReportInstanceInfoRequest):
                     The request object. Request for notebook instances to
                 report information to Notebooks API.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2069,7 +2059,6 @@ class NotebookServiceRestTransport(NotebookServiceTransport):
                 request (~.service.ResetInstanceRequest):
                     The request object. Request for reseting a notebook
                 instance
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2167,7 +2156,6 @@ class NotebookServiceRestTransport(NotebookServiceTransport):
                 request (~.service.SetInstanceAcceleratorRequest):
                     The request object. Request for setting instance
                 accelerator.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2365,7 +2353,6 @@ class NotebookServiceRestTransport(NotebookServiceTransport):
                 request (~.service.SetInstanceMachineTypeRequest):
                     The request object. Request for setting instance machine
                 type.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2465,7 +2452,6 @@ class NotebookServiceRestTransport(NotebookServiceTransport):
                 request (~.service.StartInstanceRequest):
                     The request object. Request for starting a notebook
                 instance
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2563,7 +2549,6 @@ class NotebookServiceRestTransport(NotebookServiceTransport):
                 request (~.service.StopInstanceRequest):
                     The request object. Request for stopping a notebook
                 instance
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2661,7 +2646,6 @@ class NotebookServiceRestTransport(NotebookServiceTransport):
                 request (~.service.UpgradeInstanceRequest):
                     The request object. Request for upgrading a notebook
                 instance
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2761,7 +2745,6 @@ class NotebookServiceRestTransport(NotebookServiceTransport):
                 request (~.service.UpgradeInstanceInternalRequest):
                     The request object. Request for upgrading a notebook
                 instance from within the VM
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
