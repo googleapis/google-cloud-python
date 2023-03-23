@@ -329,7 +329,6 @@ class AuthorizedCertificatesRestTransport(AuthorizedCertificatesTransport):
                     request (~.appengine.CreateAuthorizedCertificateRequest):
                         The request object. Request message for
                     ``AuthorizedCertificates.CreateAuthorizedCertificate``.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -423,7 +422,6 @@ class AuthorizedCertificatesRestTransport(AuthorizedCertificatesTransport):
                     request (~.appengine.DeleteAuthorizedCertificateRequest):
                         The request object. Request message for
                     ``AuthorizedCertificates.DeleteAuthorizedCertificate``.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -491,7 +489,6 @@ class AuthorizedCertificatesRestTransport(AuthorizedCertificatesTransport):
                     request (~.appengine.GetAuthorizedCertificateRequest):
                         The request object. Request message for
                     ``AuthorizedCertificates.GetAuthorizedCertificate``.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -576,7 +573,6 @@ class AuthorizedCertificatesRestTransport(AuthorizedCertificatesTransport):
                     request (~.appengine.ListAuthorizedCertificatesRequest):
                         The request object. Request message for
                     ``AuthorizedCertificates.ListAuthorizedCertificates``.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -658,7 +654,6 @@ class AuthorizedCertificatesRestTransport(AuthorizedCertificatesTransport):
                     request (~.appengine.UpdateAuthorizedCertificateRequest):
                         The request object. Request message for
                     ``AuthorizedCertificates.UpdateAuthorizedCertificate``.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

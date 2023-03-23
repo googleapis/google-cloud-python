@@ -465,7 +465,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.ListDomainMappingsRequest, dict]):
                 The request object. Request message for
-                `DomainMappings.ListDomainMappings`.
+                ``DomainMappings.ListDomainMappings``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -555,8 +555,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.GetDomainMappingRequest, dict]):
-                The request object. Request message for
-                `DomainMappings.GetDomainMapping`.
+                The request object. Request message for ``DomainMappings.GetDomainMapping``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -643,7 +642,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.CreateDomainMappingRequest, dict]):
                 The request object. Request message for
-                `DomainMappings.CreateDomainMapping`.
+                ``DomainMappings.CreateDomainMapping``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -742,7 +741,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.UpdateDomainMappingRequest, dict]):
                 The request object. Request message for
-                `DomainMappings.UpdateDomainMapping`.
+                ``DomainMappings.UpdateDomainMapping``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -839,7 +838,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.DeleteDomainMappingRequest, dict]):
                 The request object. Request message for
-                `DomainMappings.DeleteDomainMapping`.
+                ``DomainMappings.DeleteDomainMapping``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

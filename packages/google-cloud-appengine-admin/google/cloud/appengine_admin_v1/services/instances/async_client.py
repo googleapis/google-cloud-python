@@ -256,8 +256,7 @@ class InstancesAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.appengine_admin_v1.types.ListInstancesRequest, dict]]):
-                The request object. Request message for
-                `Instances.ListInstances`.
+                The request object. Request message for ``Instances.ListInstances``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -346,8 +345,7 @@ class InstancesAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.appengine_admin_v1.types.GetInstanceRequest, dict]]):
-                The request object. Request message for
-                `Instances.GetInstance`.
+                The request object. Request message for ``Instances.GetInstance``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -444,8 +442,7 @@ class InstancesAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.appengine_admin_v1.types.DeleteInstanceRequest, dict]]):
-                The request object. Request message for
-                `Instances.DeleteInstance`.
+                The request object. Request message for ``Instances.DeleteInstance``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -554,8 +551,7 @@ class InstancesAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.appengine_admin_v1.types.DebugInstanceRequest, dict]]):
-                The request object. Request message for
-                `Instances.DebugInstance`.
+                The request object. Request message for ``Instances.DebugInstance``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

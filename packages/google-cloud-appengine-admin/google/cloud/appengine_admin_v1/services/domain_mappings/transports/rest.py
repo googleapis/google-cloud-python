@@ -388,7 +388,6 @@ class DomainMappingsRestTransport(DomainMappingsTransport):
                 request (~.appengine.CreateDomainMappingRequest):
                     The request object. Request message for
                 ``DomainMappings.CreateDomainMapping``.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -477,7 +476,6 @@ class DomainMappingsRestTransport(DomainMappingsTransport):
                 request (~.appengine.DeleteDomainMappingRequest):
                     The request object. Request message for
                 ``DomainMappings.DeleteDomainMapping``.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -636,7 +634,6 @@ class DomainMappingsRestTransport(DomainMappingsTransport):
                 request (~.appengine.ListDomainMappingsRequest):
                     The request object. Request message for
                 ``DomainMappings.ListDomainMappings``.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -717,7 +714,6 @@ class DomainMappingsRestTransport(DomainMappingsTransport):
                 request (~.appengine.UpdateDomainMappingRequest):
                     The request object. Request message for
                 ``DomainMappings.UpdateDomainMapping``.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

@@ -522,7 +522,6 @@ class ApplicationsRestTransport(ApplicationsTransport):
                 request (~.appengine.RepairApplicationRequest):
                     The request object. Request message for
                 'Applications.RepairApplication'.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

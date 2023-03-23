@@ -465,8 +465,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.ListVersionsRequest, dict]):
-                The request object. Request message for
-                `Versions.ListVersions`.
+                The request object. Request message for ``Versions.ListVersions``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -558,8 +557,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.GetVersionRequest, dict]):
-                The request object. Request message for
-                `Versions.GetVersion`.
+                The request object. Request message for ``Versions.GetVersion``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -643,8 +641,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.CreateVersionRequest, dict]):
-                The request object. Request message for
-                `Versions.CreateVersion`.
+                The request object. Request message for ``Versions.CreateVersion``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -772,8 +769,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.UpdateVersionRequest, dict]):
-                The request object. Request message for
-                `Versions.UpdateVersion`.
+                The request object. Request message for ``Versions.UpdateVersion``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -866,8 +862,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.DeleteVersionRequest, dict]):
-                The request object. Request message for
-                `Versions.DeleteVersion`.
+                The request object. Request message for ``Versions.DeleteVersion``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

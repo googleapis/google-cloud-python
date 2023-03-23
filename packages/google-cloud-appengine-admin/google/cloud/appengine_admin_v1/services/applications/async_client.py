@@ -250,8 +250,7 @@ class ApplicationsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.appengine_admin_v1.types.GetApplicationRequest, dict]]):
-                The request object. Request message for
-                `Applications.GetApplication`.
+                The request object. Request message for ``Applications.GetApplication``.
             name (:class:`str`):
                 Name of the Application resource to get. Example:
                 ``apps/myapp``.
@@ -365,8 +364,7 @@ class ApplicationsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.appengine_admin_v1.types.CreateApplicationRequest, dict]]):
-                The request object. Request message for
-                `Applications.CreateApplication`.
+                The request object. Request message for ``Applications.CreateApplication``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -460,8 +458,7 @@ class ApplicationsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.appengine_admin_v1.types.UpdateApplicationRequest, dict]]):
-                The request object. Request message for
-                `Applications.UpdateApplication`.
+                The request object. Request message for ``Applications.UpdateApplication``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

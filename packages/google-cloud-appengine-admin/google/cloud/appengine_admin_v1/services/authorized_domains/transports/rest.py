@@ -217,7 +217,6 @@ class AuthorizedDomainsRestTransport(AuthorizedDomainsTransport):
                 request (~.appengine.ListAuthorizedDomainsRequest):
                     The request object. Request message for
                 ``AuthorizedDomains.ListAuthorizedDomains``.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

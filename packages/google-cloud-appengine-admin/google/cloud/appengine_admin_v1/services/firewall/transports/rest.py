@@ -368,7 +368,6 @@ class FirewallRestTransport(FirewallTransport):
                     request (~.appengine.BatchUpdateIngressRulesRequest):
                         The request object. Request message for
                     ``Firewall.BatchUpdateIngressRules``.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

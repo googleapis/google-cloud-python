@@ -468,8 +468,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.ListIngressRulesRequest, dict]):
-                The request object. Request message for
-                `Firewall.ListIngressRules`.
+                The request object. Request message for ``Firewall.ListIngressRules``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -566,7 +565,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.BatchUpdateIngressRulesRequest, dict]):
                 The request object. Request message for
-                `Firewall.BatchUpdateIngressRules`.
+                ``Firewall.BatchUpdateIngressRules``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -645,8 +644,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.CreateIngressRuleRequest, dict]):
-                The request object. Request message for
-                `Firewall.CreateIngressRule`.
+                The request object. Request message for ``Firewall.CreateIngressRule``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -727,8 +725,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.GetIngressRuleRequest, dict]):
-                The request object. Request message for
-                `Firewall.GetIngressRule`.
+                The request object. Request message for ``Firewall.GetIngressRule``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -809,8 +806,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.UpdateIngressRuleRequest, dict]):
-                The request object. Request message for
-                `Firewall.UpdateIngressRule`.
+                The request object. Request message for ``Firewall.UpdateIngressRule``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -888,8 +884,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.DeleteIngressRuleRequest, dict]):
-                The request object. Request message for
-                `Firewall.DeleteIngressRule`.
+                The request object. Request message for ``Firewall.DeleteIngressRule``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

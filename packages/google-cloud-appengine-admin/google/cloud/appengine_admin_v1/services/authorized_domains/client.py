@@ -464,7 +464,7 @@ class AuthorizedDomainsClient(metaclass=AuthorizedDomainsClientMeta):
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.ListAuthorizedDomainsRequest, dict]):
                 The request object. Request message for
-                `AuthorizedDomains.ListAuthorizedDomains`.
+                ``AuthorizedDomains.ListAuthorizedDomains``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
