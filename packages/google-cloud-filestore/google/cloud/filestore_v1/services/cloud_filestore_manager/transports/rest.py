@@ -888,7 +888,6 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
                 request (~.cloud_filestore_service.CreateInstanceRequest):
                     The request object. CreateInstanceRequest creates an
                 instance.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -988,7 +987,6 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
                 request (~.cloud_filestore_service.CreateSnapshotRequest):
                     The request object. CreateSnapshotRequest creates a
                 snapshot.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1173,7 +1171,6 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
                 request (~.cloud_filestore_service.DeleteInstanceRequest):
                     The request object. DeleteInstanceRequest deletes an
                 instance.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1262,7 +1259,6 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
                 request (~.cloud_filestore_service.DeleteSnapshotRequest):
                     The request object. DeleteSnapshotRequest deletes a
                 snapshot.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1351,7 +1347,6 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
                 request (~.cloud_filestore_service.GetBackupRequest):
                     The request object. GetBackupRequest gets the state of a
                 backup.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1439,7 +1434,6 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
                 request (~.cloud_filestore_service.GetInstanceRequest):
                     The request object. GetInstanceRequest gets the state of
                 an instance.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1527,7 +1521,6 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
                 request (~.cloud_filestore_service.GetSnapshotRequest):
                     The request object. GetSnapshotRequest gets the state of
                 a snapshot.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1880,7 +1873,6 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
                     The request object. RestoreInstanceRequest restores an
                 existing instance's file share from a
                 backup.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1982,7 +1974,6 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
                 request (~.cloud_filestore_service.UpdateBackupRequest):
                     The request object. UpdateBackupRequest updates
                 description and/or labels for a backup.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2070,7 +2061,6 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
                 request (~.cloud_filestore_service.UpdateInstanceRequest):
                     The request object. UpdateInstanceRequest updates the
                 settings of an instance.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2170,7 +2160,6 @@ class CloudFilestoreManagerRestTransport(CloudFilestoreManagerTransport):
                     The request object. UpdateSnapshotRequest updates
                 description and/or labels for a
                 snapshot.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

@@ -297,8 +297,7 @@ class CloudFilestoreManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.filestore_v1.types.ListInstancesRequest, dict]]):
-                The request object. ListInstancesRequest lists
-                instances.
+                The request object. ListInstancesRequest lists instances.
             parent (:class:`str`):
                 Required. The project and location for which to retrieve
                 instance information, in the format
@@ -827,7 +826,8 @@ class CloudFilestoreManagerAsyncClient:
         Args:
             request (Optional[Union[google.cloud.filestore_v1.types.RestoreInstanceRequest, dict]]):
                 The request object. RestoreInstanceRequest restores an
-                existing instance's file share from a backup.
+                existing instance's file share from a
+                backup.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1048,8 +1048,7 @@ class CloudFilestoreManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.filestore_v1.types.ListSnapshotsRequest, dict]]):
-                The request object. ListSnapshotsRequest lists
-                snapshots.
+                The request object. ListSnapshotsRequest lists snapshots.
             parent (:class:`str`):
                 Required. The instance for which to retrieve snapshot
                 information, in the format
@@ -1542,7 +1541,8 @@ class CloudFilestoreManagerAsyncClient:
         Args:
             request (Optional[Union[google.cloud.filestore_v1.types.UpdateSnapshotRequest, dict]]):
                 The request object. UpdateSnapshotRequest updates
-                description and/or labels for a snapshot.
+                description and/or labels for a
+                snapshot.
             snapshot (:class:`google.cloud.filestore_v1.types.Snapshot`):
                 Required. A snapshot resource.
                 This corresponds to the ``snapshot`` field
@@ -1912,8 +1912,7 @@ class CloudFilestoreManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.filestore_v1.types.CreateBackupRequest, dict]]):
-                The request object. CreateBackupRequest creates a
-                backup.
+                The request object. CreateBackupRequest creates a backup.
             parent (:class:`str`):
                 Required. The backup's project and location, in the
                 format
@@ -2057,8 +2056,7 @@ class CloudFilestoreManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.filestore_v1.types.DeleteBackupRequest, dict]]):
-                The request object. DeleteBackupRequest deletes a
-                backup.
+                The request object. DeleteBackupRequest deletes a backup.
             name (:class:`str`):
                 Required. The backup resource name, in the format
                 ``projects/{project_number}/locations/{location}/backups/{backup_id}``
