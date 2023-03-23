@@ -297,7 +297,6 @@ class PredictionApiKeyRegistryRestTransport(PredictionApiKeyRegistryTransport):
                     request (~.prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest):
                         The request object. Request message for the
                     ``CreatePredictionApiKeyRegistration`` method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -404,7 +403,6 @@ class PredictionApiKeyRegistryRestTransport(PredictionApiKeyRegistryTransport):
                     request (~.prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest):
                         The request object. Request message for
                     ``DeletePredictionApiKeyRegistration`` method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -488,7 +486,6 @@ class PredictionApiKeyRegistryRestTransport(PredictionApiKeyRegistryTransport):
                     request (~.prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest):
                         The request object. Request message for the
                     ``ListPredictionApiKeyRegistrations``.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

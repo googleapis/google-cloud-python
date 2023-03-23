@@ -271,8 +271,8 @@ class CatalogServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.recommendationengine_v1beta1.types.CreateCatalogItemRequest, dict]]):
-                The request object. Request message for
-                CreateCatalogItem method.
+                The request object. Request message for CreateCatalogItem
+                method.
             parent (:class:`str`):
                 Required. The parent catalog resource name, such as
                 ``projects/*/locations/global/catalogs/default_catalog``.
@@ -646,8 +646,8 @@ class CatalogServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.recommendationengine_v1beta1.types.UpdateCatalogItemRequest, dict]]):
-                The request object. Request message for
-                UpdateCatalogItem method.
+                The request object. Request message for UpdateCatalogItem
+                method.
             name (:class:`str`):
                 Required. Full resource name of catalog item, such as
                 ``projects/*/locations/global/catalogs/default_catalog/catalogItems/some_catalog_item_id``.
@@ -774,8 +774,8 @@ class CatalogServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.recommendationengine_v1beta1.types.DeleteCatalogItemRequest, dict]]):
-                The request object. Request message for
-                DeleteCatalogItem method.
+                The request object. Request message for DeleteCatalogItem
+                method.
             name (:class:`str`):
                 Required. Full resource name of catalog item, such as
                 ``projects/*/locations/global/catalogs/default_catalog/catalogItems/some_catalog_item_id``.

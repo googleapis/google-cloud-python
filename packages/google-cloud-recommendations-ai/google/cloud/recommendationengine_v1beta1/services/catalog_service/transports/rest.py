@@ -426,7 +426,6 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
                 request (~.catalog_service.CreateCatalogItemRequest):
                     The request object. Request message for CreateCatalogItem
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -527,7 +526,6 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
                 request (~.catalog_service.DeleteCatalogItemRequest):
                     The request object. Request message for DeleteCatalogItem
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -605,7 +603,6 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
                 request (~.catalog_service.GetCatalogItemRequest):
                     The request object. Request message for GetCatalogItem
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -795,7 +792,6 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
                 request (~.catalog_service.ListCatalogItemsRequest):
                     The request object. Request message for ListCatalogItems
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -887,7 +883,6 @@ class CatalogServiceRestTransport(CatalogServiceTransport):
                 request (~.catalog_service.UpdateCatalogItemRequest):
                     The request object. Request message for UpdateCatalogItem
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

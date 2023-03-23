@@ -284,7 +284,7 @@ class PredictionApiKeyRegistryAsyncClient:
         Args:
             request (Optional[Union[google.cloud.recommendationengine_v1beta1.types.CreatePredictionApiKeyRegistrationRequest, dict]]):
                 The request object. Request message for the
-                `CreatePredictionApiKeyRegistration` method.
+                ``CreatePredictionApiKeyRegistration`` method.
             parent (:class:`str`):
                 Required. The parent resource path.
                 ``projects/*/locations/global/catalogs/default_catalog/eventStores/default_event_store``.
@@ -412,7 +412,7 @@ class PredictionApiKeyRegistryAsyncClient:
         Args:
             request (Optional[Union[google.cloud.recommendationengine_v1beta1.types.ListPredictionApiKeyRegistrationsRequest, dict]]):
                 The request object. Request message for the
-                `ListPredictionApiKeyRegistrations`.
+                ``ListPredictionApiKeyRegistrations``.
             parent (:class:`str`):
                 Required. The parent placement resource name such as
                 ``projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store``
@@ -542,7 +542,7 @@ class PredictionApiKeyRegistryAsyncClient:
         Args:
             request (Optional[Union[google.cloud.recommendationengine_v1beta1.types.DeletePredictionApiKeyRegistrationRequest, dict]]):
                 The request object. Request message for
-                `DeletePredictionApiKeyRegistration` method.
+                ``DeletePredictionApiKeyRegistration`` method.
             name (:class:`str`):
                 Required. The API key to unregister including full
                 resource path.
