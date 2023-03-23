@@ -692,7 +692,6 @@ class GrafeasRestTransport(GrafeasTransport):
                 request (~.grafeas.BatchCreateOccurrencesRequest):
                     The request object. Request to create occurrences in
                 batch.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1317,7 +1316,6 @@ class GrafeasRestTransport(GrafeasTransport):
                 request (~.grafeas.GetOccurrenceNoteRequest):
                     The request object. Request to get the note to which the
                 specified occurrence is attached.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1409,7 +1407,6 @@ class GrafeasRestTransport(GrafeasTransport):
                 request (~.grafeas.ListNoteOccurrencesRequest):
                     The request object. Request to list occurrences for a
                 note.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
