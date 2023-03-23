@@ -249,8 +249,8 @@ class TextToSpeechAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.texttospeech_v1.types.ListVoicesRequest, dict]]):
-                The request object. The top-level message sent by the
-                client for the `ListVoices` method.
+                The request object. The top-level message sent by the client for the
+                ``ListVoices`` method.
             language_code (:class:`str`):
                 Optional. Recommended.
                 `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
@@ -366,8 +366,8 @@ class TextToSpeechAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.texttospeech_v1.types.SynthesizeSpeechRequest, dict]]):
-                The request object. The top-level message sent by the
-                client for the `SynthesizeSpeech` method.
+                The request object. The top-level message sent by the client for the
+                ``SynthesizeSpeech`` method.
             input (:class:`google.cloud.texttospeech_v1.types.SynthesisInput`):
                 Required. The Synthesizer requires
                 either plain text or SSML as input.

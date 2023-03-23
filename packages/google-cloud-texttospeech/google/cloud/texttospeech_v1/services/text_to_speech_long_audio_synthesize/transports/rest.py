@@ -273,7 +273,6 @@ class TextToSpeechLongAudioSynthesizeRestTransport(
                 request (~.cloud_tts_lrs.SynthesizeLongAudioRequest):
                     The request object. The top-level message sent by the client for the
                 ``SynthesizeLongAudio`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

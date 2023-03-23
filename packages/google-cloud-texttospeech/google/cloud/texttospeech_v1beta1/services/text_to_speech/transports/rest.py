@@ -252,7 +252,6 @@ class TextToSpeechRestTransport(TextToSpeechTransport):
                 request (~.cloud_tts.ListVoicesRequest):
                     The request object. The top-level message sent by the client for the
                 ``ListVoices`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -339,7 +338,6 @@ class TextToSpeechRestTransport(TextToSpeechTransport):
                 request (~.cloud_tts.SynthesizeSpeechRequest):
                     The request object. The top-level message sent by the client for the
                 ``SynthesizeSpeech`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

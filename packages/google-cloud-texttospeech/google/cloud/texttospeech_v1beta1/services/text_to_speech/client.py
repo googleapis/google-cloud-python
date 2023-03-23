@@ -483,8 +483,8 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
 
         Args:
             request (Union[google.cloud.texttospeech_v1beta1.types.ListVoicesRequest, dict]):
-                The request object. The top-level message sent by the
-                client for the `ListVoices` method.
+                The request object. The top-level message sent by the client for the
+                ``ListVoices`` method.
             language_code (str):
                 Optional. Recommended.
                 `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
@@ -600,8 +600,8 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
 
         Args:
             request (Union[google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest, dict]):
-                The request object. The top-level message sent by the
-                client for the `SynthesizeSpeech` method.
+                The request object. The top-level message sent by the client for the
+                ``SynthesizeSpeech`` method.
             input (google.cloud.texttospeech_v1beta1.types.SynthesisInput):
                 Required. The Synthesizer requires
                 either plain text or SSML as input.

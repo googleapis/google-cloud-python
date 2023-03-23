@@ -507,8 +507,8 @@ class TextToSpeechLongAudioSynthesizeClient(
 
         Args:
             request (Union[google.cloud.texttospeech_v1.types.SynthesizeLongAudioRequest, dict]):
-                The request object. The top-level message sent by the
-                client for the `SynthesizeLongAudio` method.
+                The request object. The top-level message sent by the client for the
+                ``SynthesizeLongAudio`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
