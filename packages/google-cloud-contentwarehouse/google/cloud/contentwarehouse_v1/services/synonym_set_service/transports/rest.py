@@ -350,7 +350,6 @@ class SynonymSetServiceRestTransport(SynonymSetServiceTransport):
                 request (~.synonymset_service_request.CreateSynonymSetRequest):
                     The request object. Request message for
                 SynonymSetService.CreateSynonymSet.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -457,7 +456,6 @@ class SynonymSetServiceRestTransport(SynonymSetServiceTransport):
                 request (~.synonymset_service_request.DeleteSynonymSetRequest):
                     The request object. Request message for
                 SynonymSetService.DeleteSynonymSet.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -536,7 +534,6 @@ class SynonymSetServiceRestTransport(SynonymSetServiceTransport):
                     The request object. Request message for
                 SynonymSetService.GetSynonymSet. Will
                 return synonymSet for a certain context.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -634,7 +631,6 @@ class SynonymSetServiceRestTransport(SynonymSetServiceTransport):
                 SynonymSetService.ListSynonymSets. Will
                 return all synonymSets belonging to the
                 customer project.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -729,7 +725,6 @@ class SynonymSetServiceRestTransport(SynonymSetServiceTransport):
                 Removes the SynonymSet for the specified
                 context and replaces it with the
                 SynonymSet in this request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

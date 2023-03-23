@@ -1987,8 +1987,7 @@ class WorkstationsClient(metaclass=WorkstationsClientMeta):
 
         Args:
             request (Union[google.cloud.workstations_v1beta.types.ListWorkstationsRequest, dict]):
-                The request object. Request message for
-                ListWorkstations.
+                The request object. Request message for ListWorkstations.
             parent (str):
                 Required. Parent resource name.
                 This corresponds to the ``parent`` field
@@ -2601,8 +2600,7 @@ class WorkstationsClient(metaclass=WorkstationsClientMeta):
 
         Args:
             request (Union[google.cloud.workstations_v1beta.types.StartWorkstationRequest, dict]):
-                The request object. Request message for
-                StartWorkstation.
+                The request object. Request message for StartWorkstation.
             name (str):
                 Required. Name of the workstation to
                 start.

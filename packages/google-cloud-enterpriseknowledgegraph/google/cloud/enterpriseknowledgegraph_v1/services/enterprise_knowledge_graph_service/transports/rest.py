@@ -443,7 +443,6 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                     request (~.service.CancelEntityReconciliationJobRequest):
                         The request object. Request message for
                     CancelEntityReconciliationJob.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -531,7 +530,6 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                     request (~.service.CreateEntityReconciliationJobRequest):
                         The request object. Request message for
                     CreateEntityReconciliationJob.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -631,7 +629,6 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                     request (~.service.DeleteEntityReconciliationJobRequest):
                         The request object. Request message for
                     DeleteEntityReconciliationJob.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -710,7 +707,6 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                     request (~.service.GetEntityReconciliationJobRequest):
                         The request object. Request message for
                     GetEntityReconciliationJob.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -801,7 +797,6 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                     request (~.service.ListEntityReconciliationJobsRequest):
                         The request object. Request message for
                     [EnterpriseKnowledgeGraphService.ListEntityReconciliationJobs][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.ListEntityReconciliationJobs].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -895,7 +890,6 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 request (~.service.LookupRequest):
                     The request object. Request message for
                 [EnterpriseKnowledgeGraphService.Lookup][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Lookup].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -987,7 +981,6 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 request (~.service.LookupPublicKgRequest):
                     The request object. Request message for
                 [EnterpriseKnowledgeGraphService.LookupPublicKg][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.LookupPublicKg].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1081,7 +1074,6 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 request (~.service.SearchRequest):
                     The request object. Request message for
                 [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1173,7 +1165,6 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 request (~.service.SearchPublicKgRequest):
                     The request object. Request message for
                 [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

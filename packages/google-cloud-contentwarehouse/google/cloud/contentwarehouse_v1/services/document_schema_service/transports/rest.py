@@ -351,7 +351,6 @@ class DocumentSchemaServiceRestTransport(DocumentSchemaServiceTransport):
                 request (~.document_schema_service.CreateDocumentSchemaRequest):
                     The request object. Request message for
                 DocumentSchemaService.CreateDocumentSchema.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -452,7 +451,6 @@ class DocumentSchemaServiceRestTransport(DocumentSchemaServiceTransport):
                 request (~.document_schema_service.DeleteDocumentSchemaRequest):
                     The request object. Request message for
                 DocumentSchemaService.DeleteDocumentSchema.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -530,7 +528,6 @@ class DocumentSchemaServiceRestTransport(DocumentSchemaServiceTransport):
                 request (~.document_schema_service.GetDocumentSchemaRequest):
                     The request object. Request message for
                 DocumentSchemaService.GetDocumentSchema.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -622,7 +619,6 @@ class DocumentSchemaServiceRestTransport(DocumentSchemaServiceTransport):
                 request (~.document_schema_service.ListDocumentSchemasRequest):
                     The request object. Request message for
                 DocumentSchemaService.ListDocumentSchemas.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -714,7 +710,6 @@ class DocumentSchemaServiceRestTransport(DocumentSchemaServiceTransport):
                 request (~.document_schema_service.UpdateDocumentSchemaRequest):
                     The request object. Request message for
                 DocumentSchemaService.UpdateDocumentSchema.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

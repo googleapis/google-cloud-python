@@ -455,7 +455,6 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                 request (~.user_event_service.CollectUserEventRequest):
                     The request object. Request message for CollectUserEvent
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -598,7 +597,6 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                 request (~.import_config.ImportUserEventsRequest):
                     The request object. Request message for the
                 ImportUserEvents request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -703,7 +701,6 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                 request (~.user_event_service.WriteUserEventRequest):
                     The request object. Request message for WriteUserEvent
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
