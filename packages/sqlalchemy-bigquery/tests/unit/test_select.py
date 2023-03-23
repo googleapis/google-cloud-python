@@ -23,6 +23,7 @@ from decimal import Decimal
 import packaging.version
 import pytest
 import sqlalchemy
+from sqlalchemy import not_
 
 import sqlalchemy_bigquery
 
@@ -445,3 +446,43 @@ def test_array_indexing(faux_conn, metadata):
     )
     got = str(sqlalchemy.select([t.c.a[0]]).compile(faux_conn.engine))
     assert got == "SELECT `t`.`a`[OFFSET(%(a_1:INT64)s)] AS `anon_1` \nFROM `t`"
+
+
+@pytest.mark.skipif(
+    packaging.version.parse(sqlalchemy.__version__) < packaging.version.parse("1.4"),
+    reason="regexp_match support requires version 1.4 or higher",
+)
+def test_visit_regexp_match_op_binary(faux_conn):
+    table = setup_table(
+        faux_conn,
+        "table",
+        sqlalchemy.Column("foo", sqlalchemy.String),
+    )
+
+    # NOTE: "sample_pattern" is not used in this test, we are not testing
+    # the regex engine, we are testing the ability to create SQL
+    sql_statement = table.c.foo.regexp_match("sample_pattern")
+    result = sql_statement.compile(faux_conn).string
+    expected = "REGEXP_CONTAINS(`table`.`foo`, %(foo_1:STRING)s)"
+
+    assert result == expected
+
+
+@pytest.mark.skipif(
+    packaging.version.parse(sqlalchemy.__version__) < packaging.version.parse("1.4"),
+    reason="regexp_match support requires version 1.4 or higher",
+)
+def test_visit_not_regexp_match_op_binary(faux_conn):
+    table = setup_table(
+        faux_conn,
+        "table",
+        sqlalchemy.Column("foo", sqlalchemy.String),
+    )
+
+    # NOTE: "sample_pattern" is not used in this test, we are not testing
+    # the regex engine, we are testing the ability to create SQL
+    sql_statement = not_(table.c.foo.regexp_match("sample_pattern"))
+    result = sql_statement.compile(faux_conn).string
+    expected = "NOT REGEXP_CONTAINS(`table`.`foo`, %(foo_1:STRING)s)"
+
+    assert result == expected

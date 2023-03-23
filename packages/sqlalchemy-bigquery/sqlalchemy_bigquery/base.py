@@ -553,6 +553,18 @@ class BigQueryCompiler(_struct.SQLCompiler, SQLCompiler):
         right = self.process(binary.right, **kw)
         return f"{left}[OFFSET({right})]"
 
+    def _get_regexp_args(self, binary, kw):
+        string = self.process(binary.left, **kw)
+        pattern = self.process(binary.right, **kw)
+        return string, pattern
+
+    def visit_regexp_match_op_binary(self, binary, operator, **kw):
+        string, pattern = self._get_regexp_args(binary, kw)
+        return "REGEXP_CONTAINS(%s, %s)" % (string, pattern)
+
+    def visit_not_regexp_match_op_binary(self, binary, operator, **kw):
+        return "NOT %s" % self.visit_regexp_match_op_binary(binary, operator, **kw)
+
 
 class BigQueryTypeCompiler(GenericTypeCompiler):
     def visit_INTEGER(self, type_, **kw):
