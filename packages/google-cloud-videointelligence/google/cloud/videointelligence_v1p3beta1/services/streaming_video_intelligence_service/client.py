@@ -486,12 +486,12 @@ class StreamingVideoIntelligenceServiceClient(
 
         Args:
             requests (Iterator[google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoRequest]):
-                The request object iterator. The top-level message sent by the
-                client for the `StreamingAnnotateVideo` method. Multiple
-                `StreamingAnnotateVideoRequest` messages are sent. The
-                first message must only contain a `StreamingVideoConfig`
-                message. All subsequent messages must only contain
-                `input_content` data.
+                The request object iterator. The top-level message sent by the client for the
+                ``StreamingAnnotateVideo`` method. Multiple
+                ``StreamingAnnotateVideoRequest`` messages are sent. The
+                first message must only contain a
+                ``StreamingVideoConfig`` message. All subsequent
+                messages must only contain ``input_content`` data.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
