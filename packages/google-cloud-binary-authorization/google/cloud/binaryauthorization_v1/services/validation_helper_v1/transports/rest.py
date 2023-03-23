@@ -226,7 +226,6 @@ class ValidationHelperV1RestTransport(ValidationHelperV1Transport):
                     request (~.service.ValidateAttestationOccurrenceRequest):
                         The request object. Request message for
                     [ValidationHelperV1.ValidateAttestationOccurrence][google.cloud.binaryauthorization.v1.ValidationHelperV1.ValidateAttestationOccurrence].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

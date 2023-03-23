@@ -388,7 +388,6 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
                 request (~.service.CreateAttestorRequest):
                     The request object. Request message for
                 [BinauthzManagementService.CreateAttestor][].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -489,7 +488,6 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
                 request (~.service.DeleteAttestorRequest):
                     The request object. Request message for
                 [BinauthzManagementService.DeleteAttestor][].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -565,7 +563,6 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
                 request (~.service.GetAttestorRequest):
                     The request object. Request message for
                 [BinauthzManagementService.GetAttestor][].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -657,7 +654,6 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
                 request (~.service.GetPolicyRequest):
                     The request object. Request message for
                 [BinauthzManagementService.GetPolicy][].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -747,7 +743,6 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
                 request (~.service.ListAttestorsRequest):
                     The request object. Request message for
                 [BinauthzManagementService.ListAttestors][].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -837,7 +832,6 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
                 request (~.service.UpdateAttestorRequest):
                     The request object. Request message for
                 [BinauthzManagementService.UpdateAttestor][].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -938,7 +932,6 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
                 request (~.service.UpdatePolicyRequest):
                     The request object. Request message for
                 [BinauthzManagementService.UpdatePolicy][].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

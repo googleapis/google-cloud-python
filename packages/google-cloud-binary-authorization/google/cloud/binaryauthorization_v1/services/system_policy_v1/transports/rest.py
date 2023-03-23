@@ -223,7 +223,6 @@ class SystemPolicyV1RestTransport(SystemPolicyV1Transport):
                 request (~.service.GetSystemPolicyRequest):
                     The request object. Request to read the current system
                 policy.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
