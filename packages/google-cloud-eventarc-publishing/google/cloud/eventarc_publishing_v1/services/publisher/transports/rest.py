@@ -272,7 +272,6 @@ class PublisherRestTransport(PublisherTransport):
                     request (~.publisher.PublishChannelConnectionEventsRequest):
                         The request object. The request message for the
                     PublishChannelConnectionEvents method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -362,7 +361,6 @@ class PublisherRestTransport(PublisherTransport):
                 request (~.publisher.PublishEventsRequest):
                     The request object. The request message for the
                 PublishEvents method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
