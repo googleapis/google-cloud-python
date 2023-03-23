@@ -1812,7 +1812,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.AddGroupMigrationRequest):
                     The request object. Request message for
                 'AddGroupMigration' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1912,7 +1911,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.CancelCloneJobRequest):
                     The request object. Request message for 'CancelCloneJob'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2012,7 +2010,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.CancelCutoverJobRequest):
                     The request object. Request message for
                 'CancelCutoverJob' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2114,7 +2111,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.CreateCloneJobRequest):
                     The request object. Request message for 'CreateCloneJob'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2216,7 +2212,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.CreateCutoverJobRequest):
                     The request object. Request message for
                 'CreateCutoverJob' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2319,7 +2314,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                     request (~.vmmigration.CreateDatacenterConnectorRequest):
                         The request object. Request message for
                     'CreateDatacenterConnector' request.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2421,7 +2415,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.CreateGroupRequest):
                     The request object. Request message for 'CreateGroup'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2521,7 +2514,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.CreateMigratingVmRequest):
                     The request object. Request message for
                 'CreateMigratingVm' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2623,7 +2615,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.CreateSourceRequest):
                     The request object. Request message for 'CreateSource'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2723,7 +2714,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.CreateTargetProjectRequest):
                     The request object. Request message for
                 'CreateTargetProject' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2825,7 +2815,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.CreateUtilizationReportRequest):
                     The request object. Request message for
                 'CreateUtilizationReport' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2926,7 +2915,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                     request (~.vmmigration.DeleteDatacenterConnectorRequest):
                         The request object. Request message for
                     'DeleteDatacenterConnector' request.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3017,7 +3005,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.DeleteGroupRequest):
                     The request object. Request message for 'DeleteGroup'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3106,7 +3093,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.DeleteMigratingVmRequest):
                     The request object. Request message for
                 'DeleteMigratingVm' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3197,7 +3183,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.DeleteSourceRequest):
                     The request object. Request message for 'DeleteSource'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3286,7 +3271,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.DeleteTargetProjectRequest):
                     The request object. Request message for
                 'DeleteTargetProject' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3377,7 +3361,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.DeleteUtilizationReportRequest):
                     The request object. Request message for
                 'DeleteUtilizationReport' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3468,7 +3451,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.FetchInventoryRequest):
                     The request object. Request message for
                 [fetchInventory][google.cloud.vmmigration.v1.VmMigration.FetchInventory].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3558,7 +3540,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.FinalizeMigrationRequest):
                     The request object. Request message for
                 'FinalizeMigration' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3658,7 +3639,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.GetCloneJobRequest):
                     The request object. Request message for 'GetCloneJob'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3759,7 +3739,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.GetCutoverJobRequest):
                     The request object. Request message for 'GetCutoverJob'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3853,7 +3832,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.GetDatacenterConnectorRequest):
                     The request object. Request message for
                 'GetDatacenterConnector' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3950,7 +3928,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.GetGroupRequest):
                     The request object. Request message for 'GetGroup'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4041,7 +4018,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.GetMigratingVmRequest):
                     The request object. Request message for 'GetMigratingVm'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4134,7 +4110,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.GetReplicationCycleRequest):
                     The request object. Request message for
                 'GetReplicationCycle' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4227,7 +4202,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.GetSourceRequest):
                     The request object. Request message for 'GetSource'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4319,7 +4293,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.GetTargetProjectRequest):
                     The request object. Request message for
                 'GetTargetProject' call.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4412,7 +4385,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.GetUtilizationReportRequest):
                     The request object. Request message for
                 'GetUtilizationReport' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4507,7 +4479,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.ListCloneJobsRequest):
                     The request object. Request message for
                 'ListCloneJobsRequest' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4599,7 +4570,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.ListCutoverJobsRequest):
                     The request object. Request message for
                 'ListCutoverJobsRequest' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4694,7 +4664,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                     request (~.vmmigration.ListDatacenterConnectorsRequest):
                         The request object. Request message for
                     'ListDatacenterConnectors' request.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -4788,7 +4757,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.ListGroupsRequest):
                     The request object. Request message for 'ListGroups'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4880,7 +4848,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.ListMigratingVmsRequest):
                     The request object. Request message for
                 'LisMigratingVmsRequest' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4974,7 +4941,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.ListReplicationCyclesRequest):
                     The request object. Request message for
                 'LisReplicationCyclesRequest' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5068,7 +5034,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.ListSourcesRequest):
                     The request object. Request message for 'ListSources'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5160,7 +5125,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.ListTargetProjectsRequest):
                     The request object. Request message for
                 'ListTargetProjects' call.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5254,7 +5218,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.ListUtilizationReportsRequest):
                     The request object. Request message for
                 'ListUtilizationReports' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5346,7 +5309,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.PauseMigrationRequest):
                     The request object. Request message for 'PauseMigration'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5444,7 +5406,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.RemoveGroupMigrationRequest):
                     The request object. Request message for 'RemoveMigration'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5544,7 +5505,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.ResumeMigrationRequest):
                     The request object. Request message for 'ResumeMigration'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5644,7 +5604,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.StartMigrationRequest):
                     The request object. Request message for
                 'StartMigrationRequest' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5742,7 +5701,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.UpdateGroupRequest):
                     The request object. Update message for 'UpdateGroups'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5840,7 +5798,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.UpdateMigratingVmRequest):
                     The request object. Request message for
                 'UpdateMigratingVm' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5940,7 +5897,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.UpdateSourceRequest):
                     The request object. Update message for 'UpdateSources'
                 request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -6038,7 +5994,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.UpdateTargetProjectRequest):
                     The request object. Update message for
                 'UpdateTargetProject' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -6138,7 +6093,6 @@ class VmMigrationRestTransport(VmMigrationTransport):
                 request (~.vmmigration.UpgradeApplianceRequest):
                     The request object. Request message for
                 'UpgradeAppliance' request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

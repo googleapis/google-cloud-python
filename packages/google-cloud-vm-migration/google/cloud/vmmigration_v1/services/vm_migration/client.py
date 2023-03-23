@@ -3219,8 +3219,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         Args:
             request (Union[google.cloud.vmmigration_v1.types.ResumeMigrationRequest, dict]):
-                The request object. Request message for
-                'ResumeMigration' request.
+                The request object. Request message for 'ResumeMigration'
+                request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -5212,8 +5212,8 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         Args:
             request (Union[google.cloud.vmmigration_v1.types.RemoveGroupMigrationRequest, dict]):
-                The request object. Request message for
-                'RemoveMigration' request.
+                The request object. Request message for 'RemoveMigration'
+                request.
             group (str):
                 Required. The name of the Group.
                 This corresponds to the ``group`` field
