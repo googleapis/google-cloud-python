@@ -511,8 +511,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
         Args:
             request (Union[google.cloud.scheduler_v1.types.ListJobsRequest, dict]):
-                The request object. Request message for listing jobs
-                using
+                The request object. Request message for listing jobs using
                 [ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs].
             parent (str):
                 Required. The location name. For example:
@@ -973,8 +972,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
         Args:
             request (Union[google.cloud.scheduler_v1.types.DeleteJobRequest, dict]):
-                The request object. Request message for deleting a job
-                using
+                The request object. Request message for deleting a job using
                 [DeleteJob][google.cloud.scheduler.v1.CloudScheduler.DeleteJob].
             name (str):
                 Required. The job name. For example:
@@ -1296,8 +1294,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
         Args:
             request (Union[google.cloud.scheduler_v1.types.RunJobRequest, dict]):
-                The request object. Request message for forcing a job to
-                run now using
+                The request object. Request message for forcing a job to run now using
                 [RunJob][google.cloud.scheduler.v1.CloudScheduler.RunJob].
             name (str):
                 Required. The job name. For example:

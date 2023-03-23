@@ -463,7 +463,6 @@ class CloudSchedulerRestTransport(CloudSchedulerTransport):
                 request (~.cloudscheduler.CreateJobRequest):
                     The request object. Request message for
                 [CreateJob][google.cloud.scheduler.v1.CloudScheduler.CreateJob].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -563,7 +562,6 @@ class CloudSchedulerRestTransport(CloudSchedulerTransport):
                 request (~.cloudscheduler.DeleteJobRequest):
                     The request object. Request message for deleting a job using
                 [DeleteJob][google.cloud.scheduler.v1.CloudScheduler.DeleteJob].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -639,7 +637,6 @@ class CloudSchedulerRestTransport(CloudSchedulerTransport):
                 request (~.cloudscheduler.GetJobRequest):
                     The request object. Request message for
                 [GetJob][google.cloud.scheduler.v1.CloudScheduler.GetJob].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -730,7 +727,6 @@ class CloudSchedulerRestTransport(CloudSchedulerTransport):
                 request (~.cloudscheduler.ListJobsRequest):
                     The request object. Request message for listing jobs using
                 [ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -820,7 +816,6 @@ class CloudSchedulerRestTransport(CloudSchedulerTransport):
                 request (~.cloudscheduler.PauseJobRequest):
                     The request object. Request message for
                 [PauseJob][google.cloud.scheduler.v1.CloudScheduler.PauseJob].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -920,7 +915,6 @@ class CloudSchedulerRestTransport(CloudSchedulerTransport):
                 request (~.cloudscheduler.ResumeJobRequest):
                     The request object. Request message for
                 [ResumeJob][google.cloud.scheduler.v1.CloudScheduler.ResumeJob].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1020,7 +1014,6 @@ class CloudSchedulerRestTransport(CloudSchedulerTransport):
                 request (~.cloudscheduler.RunJobRequest):
                     The request object. Request message for forcing a job to run now using
                 [RunJob][google.cloud.scheduler.v1.CloudScheduler.RunJob].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1120,7 +1113,6 @@ class CloudSchedulerRestTransport(CloudSchedulerTransport):
                 request (~.cloudscheduler.UpdateJobRequest):
                     The request object. Request message for
                 [UpdateJob][google.cloud.scheduler.v1.CloudScheduler.UpdateJob].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
