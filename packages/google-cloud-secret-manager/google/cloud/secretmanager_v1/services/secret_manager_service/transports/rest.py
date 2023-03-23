@@ -634,7 +634,6 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 request (~.service.AccessSecretVersionRequest):
                     The request object. Request message for
                 [SecretManagerService.AccessSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AccessSecretVersion].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -726,7 +725,6 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 request (~.service.AddSecretVersionRequest):
                     The request object. Request message for
                 [SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -829,7 +827,6 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 request (~.service.CreateSecretRequest):
                     The request object. Request message for
                 [SecretManagerService.CreateSecret][google.cloud.secretmanager.v1.SecretManagerService.CreateSecret].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -933,7 +930,6 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 request (~.service.DeleteSecretRequest):
                     The request object. Request message for
                 [SecretManagerService.DeleteSecret][google.cloud.secretmanager.v1.SecretManagerService.DeleteSecret].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1009,7 +1005,6 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 request (~.service.DestroySecretVersionRequest):
                     The request object. Request message for
                 [SecretManagerService.DestroySecretVersion][google.cloud.secretmanager.v1.SecretManagerService.DestroySecretVersion].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1110,7 +1105,6 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 request (~.service.DisableSecretVersionRequest):
                     The request object. Request message for
                 [SecretManagerService.DisableSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.DisableSecretVersion].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1211,7 +1205,6 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 request (~.service.EnableSecretVersionRequest):
                     The request object. Request message for
                 [SecretManagerService.EnableSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.EnableSecretVersion].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1473,7 +1466,6 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 request (~.service.GetSecretRequest):
                     The request object. Request message for
                 [SecretManagerService.GetSecret][google.cloud.secretmanager.v1.SecretManagerService.GetSecret].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1568,7 +1560,6 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 request (~.service.GetSecretVersionRequest):
                     The request object. Request message for
                 [SecretManagerService.GetSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.GetSecretVersion].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1660,7 +1651,6 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 request (~.service.ListSecretsRequest):
                     The request object. Request message for
                 [SecretManagerService.ListSecrets][google.cloud.secretmanager.v1.SecretManagerService.ListSecrets].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1750,7 +1740,6 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 request (~.service.ListSecretVersionsRequest):
                     The request object. Request message for
                 [SecretManagerService.ListSecretVersions][google.cloud.secretmanager.v1.SecretManagerService.ListSecretVersions].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2111,7 +2100,6 @@ class SecretManagerServiceRestTransport(SecretManagerServiceTransport):
                 request (~.service.UpdateSecretRequest):
                     The request object. Request message for
                 [SecretManagerService.UpdateSecret][google.cloud.secretmanager.v1.SecretManagerService.UpdateSecret].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
