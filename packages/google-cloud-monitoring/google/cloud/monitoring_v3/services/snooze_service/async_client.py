@@ -270,9 +270,9 @@ class SnoozeServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.CreateSnoozeRequest, dict]]):
-                The request object. The message definition for creating
-                a `Snooze`. Users must provide the body of the `Snooze`
-                to be created but must omit the `Snooze` field, `name`.
+                The request object. The message definition for creating a ``Snooze``. Users
+                must provide the body of the ``Snooze`` to be created
+                but must omit the ``Snooze`` field, ``name``.
             parent (:class:`str`):
                 Required. The
                 `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
@@ -393,9 +393,9 @@ class SnoozeServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.ListSnoozesRequest, dict]]):
-                The request object. The message definition for listing
-                `Snooze`s associated with the given `parent`, satisfying
-                the optional `filter`.
+                The request object. The message definition for listing ``Snooze``\ s
+                associated with the given ``parent``, satisfying the
+                optional ``filter``.
             parent (:class:`str`):
                 Required. The
                 `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
@@ -522,9 +522,9 @@ class SnoozeServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.GetSnoozeRequest, dict]]):
-                The request object. The message definition for
-                retrieving a `Snooze`. Users must specify the field,
-                `name`, which identifies the `Snooze`.
+                The request object. The message definition for retrieving a ``Snooze``.
+                Users must specify the field, ``name``, which identifies
+                the ``Snooze``.
             name (:class:`str`):
                 Required. The ID of the ``Snooze`` to retrieve. The
                 format is:
@@ -647,21 +647,22 @@ class SnoozeServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.UpdateSnoozeRequest, dict]]):
-                The request object. The message definition for updating
-                a `Snooze`. The field, `snooze.name` identifies the
-                `Snooze` to be updated. The remainder of `snooze` gives
-                the content the `Snooze` in question will be assigned.
+                The request object. The message definition for updating a ``Snooze``. The
+                field, ``snooze.name`` identifies the ``Snooze`` to be
+                updated. The remainder of ``snooze`` gives the content
+                the ``Snooze`` in question will be assigned.
 
                 What fields can be updated depends on the start time and
-                end time of the `Snooze`.
-                * end time is in the past: These `Snooze`s are
-                considered     read-only and cannot be updated.
-                * start time is in the past and end time is in the
-                future: `display_name`     and `interval.end_time` can
-                be updated.
-                * start time is in the future: `display_name`,
-                `interval.start_time` and     `interval.end_time` can be
-                updated.
+                end time of the ``Snooze``.
+
+                -  end time is in the past: These ``Snooze``\ s are
+                   considered read-only and cannot be updated.
+                -  start time is in the past and end time is in the
+                   future: ``display_name`` and ``interval.end_time``
+                   can be updated.
+                -  start time is in the future: ``display_name``,
+                   ``interval.start_time`` and ``interval.end_time`` can
+                   be updated.
             snooze (:class:`google.cloud.monitoring_v3.types.Snooze`):
                 Required. The ``Snooze`` to update. Must have the name
                 field present.

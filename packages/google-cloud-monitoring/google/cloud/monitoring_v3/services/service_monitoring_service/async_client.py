@@ -272,7 +272,7 @@ class ServiceMonitoringServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.CreateServiceRequest, dict]]):
-                The request object. The `CreateService` request.
+                The request object. The ``CreateService`` request.
             parent (:class:`str`):
                 Required. Resource
                 `name <https://cloud.google.com/monitoring/api/v3#project_name>`__
@@ -389,7 +389,7 @@ class ServiceMonitoringServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.GetServiceRequest, dict]]):
-                The request object. The `GetService` request.
+                The request object. The ``GetService`` request.
             name (:class:`str`):
                 Required. Resource name of the ``Service``. The format
                 is:
@@ -508,7 +508,7 @@ class ServiceMonitoringServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.ListServicesRequest, dict]]):
-                The request object. The `ListServices` request.
+                The request object. The ``ListServices`` request.
             parent (:class:`str`):
                 Required. Resource name of the parent containing the
                 listed services, either a
@@ -635,7 +635,7 @@ class ServiceMonitoringServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.UpdateServiceRequest, dict]]):
-                The request object. The `UpdateService` request.
+                The request object. The ``UpdateService`` request.
             service (:class:`google.cloud.monitoring_v3.types.Service`):
                 Required. The ``Service`` to draw updates from. The
                 given ``name`` specifies the resource to update.
@@ -739,7 +739,7 @@ class ServiceMonitoringServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.DeleteServiceRequest, dict]]):
-                The request object. The `DeleteService` request.
+                The request object. The ``DeleteService`` request.
             name (:class:`str`):
                 Required. Resource name of the ``Service`` to delete.
                 The format is:
@@ -847,8 +847,7 @@ class ServiceMonitoringServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.CreateServiceLevelObjectiveRequest, dict]]):
-                The request object. The `CreateServiceLevelObjective`
-                request.
+                The request object. The ``CreateServiceLevelObjective`` request.
             parent (:class:`str`):
                 Required. Resource name of the parent ``Service``. The
                 format is:
@@ -976,8 +975,7 @@ class ServiceMonitoringServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.GetServiceLevelObjectiveRequest, dict]]):
-                The request object. The `GetServiceLevelObjective`
-                request.
+                The request object. The ``GetServiceLevelObjective`` request.
             name (:class:`str`):
                 Required. Resource name of the ``ServiceLevelObjective``
                 to get. The format is:
@@ -1105,8 +1103,7 @@ class ServiceMonitoringServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.ListServiceLevelObjectivesRequest, dict]]):
-                The request object. The `ListServiceLevelObjectives`
-                request.
+                The request object. The ``ListServiceLevelObjectives`` request.
             parent (:class:`str`):
                 Required. Resource name of the parent containing the
                 listed SLOs, either a project or a Monitoring Workspace.
@@ -1234,8 +1231,7 @@ class ServiceMonitoringServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.UpdateServiceLevelObjectiveRequest, dict]]):
-                The request object. The `UpdateServiceLevelObjective`
-                request.
+                The request object. The ``UpdateServiceLevelObjective`` request.
             service_level_objective (:class:`google.cloud.monitoring_v3.types.ServiceLevelObjective`):
                 Required. The ``ServiceLevelObjective`` to draw updates
                 from. The given ``name`` specifies the resource to
@@ -1354,8 +1350,7 @@ class ServiceMonitoringServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.DeleteServiceLevelObjectiveRequest, dict]]):
-                The request object. The `DeleteServiceLevelObjective`
-                request.
+                The request object. The ``DeleteServiceLevelObjective`` request.
             name (:class:`str`):
                 Required. Resource name of the ``ServiceLevelObjective``
                 to delete. The format is:

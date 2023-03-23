@@ -512,8 +512,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsRequest, dict]):
-                The request object. The
-                `ListNotificationChannelDescriptors` request.
+                The request object. The ``ListNotificationChannelDescriptors`` request.
             name (str):
                 Required. The REST resource name of the parent from
                 which to retrieve the notification channel descriptors.
@@ -648,8 +647,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.GetNotificationChannelDescriptorRequest, dict]):
-                The request object. The
-                `GetNotificationChannelDescriptor` response.
+                The request object. The ``GetNotificationChannelDescriptor`` response.
             name (str):
                 Required. The channel type for which to execute the
                 request. The format is:
@@ -767,8 +765,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.ListNotificationChannelsRequest, dict]):
-                The request object. The `ListNotificationChannels`
-                request.
+                The request object. The ``ListNotificationChannels`` request.
             name (str):
                 Required. The
                 `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
@@ -904,8 +901,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.GetNotificationChannelRequest, dict]):
-                The request object. The `GetNotificationChannel`
-                request.
+                The request object. The ``GetNotificationChannel`` request.
             name (str):
                 Required. The channel for which to execute the request.
                 The format is:
@@ -1020,8 +1016,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.CreateNotificationChannelRequest, dict]):
-                The request object. The `CreateNotificationChannel`
-                request.
+                The request object. The ``CreateNotificationChannel`` request.
             name (str):
                 Required. The
                 `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
@@ -1155,8 +1150,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.UpdateNotificationChannelRequest, dict]):
-                The request object. The `UpdateNotificationChannel`
-                request.
+                The request object. The ``UpdateNotificationChannel`` request.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The fields to update.
                 This corresponds to the ``update_mask`` field
@@ -1278,8 +1272,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.DeleteNotificationChannelRequest, dict]):
-                The request object. The `DeleteNotificationChannel`
-                request.
+                The request object. The ``DeleteNotificationChannel`` request.
             name (str):
                 Required. The channel for which to execute the request.
                 The format is:
@@ -1398,8 +1391,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.SendNotificationChannelVerificationCodeRequest, dict]):
-                The request object. The
-                `SendNotificationChannelVerificationCode` request.
+                The request object. The ``SendNotificationChannelVerificationCode`` request.
             name (str):
                 Required. The notification channel to
                 which to send a verification code.
@@ -1530,8 +1522,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeRequest, dict]):
-                The request object. The
-                `GetNotificationChannelVerificationCode` request.
+                The request object. The ``GetNotificationChannelVerificationCode`` request.
             name (str):
                 Required. The notification channel
                 for which a verification code is to be
@@ -1648,8 +1639,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.VerifyNotificationChannelRequest, dict]):
-                The request object. The `VerifyNotificationChannel`
-                request.
+                The request object. The ``VerifyNotificationChannel`` request.
             name (str):
                 Required. The notification channel to
                 verify.

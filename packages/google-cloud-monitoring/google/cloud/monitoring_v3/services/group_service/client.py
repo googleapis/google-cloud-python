@@ -489,7 +489,7 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.ListGroupsRequest, dict]):
-                The request object. The `ListGroup` request.
+                The request object. The ``ListGroup`` request.
             name (str):
                 Required. The
                 `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
@@ -606,7 +606,7 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.GetGroupRequest, dict]):
-                The request object. The `GetGroup` request.
+                The request object. The ``GetGroup`` request.
             name (str):
                 Required. The group to retrieve. The format is:
 
@@ -742,7 +742,7 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.CreateGroupRequest, dict]):
-                The request object. The `CreateGroup` request.
+                The request object. The ``CreateGroup`` request.
             name (str):
                 Required. The
                 `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
@@ -888,7 +888,7 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.UpdateGroupRequest, dict]):
-                The request object. The `UpdateGroup` request.
+                The request object. The ``UpdateGroup`` request.
             group (google.cloud.monitoring_v3.types.Group):
                 Required. The new definition of the group. All fields of
                 the existing group, excepting ``name``, are replaced
@@ -1020,9 +1020,9 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.DeleteGroupRequest, dict]):
-                The request object. The `DeleteGroup` request. The
-                default behavior is to be able to delete a single group
-                without any descendants.
+                The request object. The ``DeleteGroup`` request. The default behavior is to
+                be able to delete a single group without any
+                descendants.
             name (str):
                 Required. The group to delete. The format is:
 
@@ -1119,7 +1119,7 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.ListGroupMembersRequest, dict]):
-                The request object. The `ListGroupMembers` request.
+                The request object. The ``ListGroupMembers`` request.
             name (str):
                 Required. The group whose members are listed. The format
                 is:

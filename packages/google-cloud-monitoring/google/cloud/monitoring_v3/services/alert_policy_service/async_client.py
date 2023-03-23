@@ -277,8 +277,7 @@ class AlertPolicyServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.ListAlertPoliciesRequest, dict]]):
-                The request object. The protocol for the
-                `ListAlertPolicies` request.
+                The request object. The protocol for the ``ListAlertPolicies`` request.
             name (:class:`str`):
                 Required. The
                 `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
@@ -410,8 +409,7 @@ class AlertPolicyServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.GetAlertPolicyRequest, dict]]):
-                The request object. The protocol for the
-                `GetAlertPolicy` request.
+                The request object. The protocol for the ``GetAlertPolicy`` request.
             name (:class:`str`):
                 Required. The alerting policy to retrieve. The format
                 is:
@@ -529,8 +527,7 @@ class AlertPolicyServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.CreateAlertPolicyRequest, dict]]):
-                The request object. The protocol for the
-                `CreateAlertPolicy` request.
+                The request object. The protocol for the ``CreateAlertPolicy`` request.
             name (:class:`str`):
                 Required. The
                 `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
@@ -657,8 +654,7 @@ class AlertPolicyServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.DeleteAlertPolicyRequest, dict]]):
-                The request object. The protocol for the
-                `DeleteAlertPolicy` request.
+                The request object. The protocol for the ``DeleteAlertPolicy`` request.
             name (:class:`str`):
                 Required. The alerting policy to delete. The format is:
 
@@ -768,8 +764,7 @@ class AlertPolicyServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.UpdateAlertPolicyRequest, dict]]):
-                The request object. The protocol for the
-                `UpdateAlertPolicy` request.
+                The request object. The protocol for the ``UpdateAlertPolicy`` request.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Optional. A list of alerting policy field names. If this
                 field is not empty, each listed field in the existing

@@ -273,8 +273,7 @@ class UptimeCheckServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.ListUptimeCheckConfigsRequest, dict]]):
-                The request object. The protocol for the
-                `ListUptimeCheckConfigs` request.
+                The request object. The protocol for the ``ListUptimeCheckConfigs`` request.
             parent (:class:`str`):
                 Required. The
                 `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
@@ -403,8 +402,7 @@ class UptimeCheckServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.GetUptimeCheckConfigRequest, dict]]):
-                The request object. The protocol for the
-                `GetUptimeCheckConfig` request.
+                The request object. The protocol for the ``GetUptimeCheckConfig`` request.
             name (:class:`str`):
                 Required. The Uptime check configuration to retrieve.
                 The format is:
@@ -522,8 +520,8 @@ class UptimeCheckServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.CreateUptimeCheckConfigRequest, dict]]):
-                The request object. The protocol for the
-                `CreateUptimeCheckConfig` request.
+                The request object. The protocol for the ``CreateUptimeCheckConfig``
+                request.
             parent (:class:`str`):
                 Required. The
                 `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
@@ -644,8 +642,8 @@ class UptimeCheckServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.UpdateUptimeCheckConfigRequest, dict]]):
-                The request object. The protocol for the
-                `UpdateUptimeCheckConfig` request.
+                The request object. The protocol for the ``UpdateUptimeCheckConfig``
+                request.
             uptime_check_config (:class:`google.cloud.monitoring_v3.types.UptimeCheckConfig`):
                 Required. If an ``updateMask`` has been specified, this
                 field gives the values for the set of fields mentioned
@@ -762,8 +760,8 @@ class UptimeCheckServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.DeleteUptimeCheckConfigRequest, dict]]):
-                The request object. The protocol for the
-                `DeleteUptimeCheckConfig` request.
+                The request object. The protocol for the ``DeleteUptimeCheckConfig``
+                request.
             name (:class:`str`):
                 Required. The Uptime check configuration to delete. The
                 format is:
@@ -868,8 +866,7 @@ class UptimeCheckServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.monitoring_v3.types.ListUptimeCheckIpsRequest, dict]]):
-                The request object. The protocol for the
-                `ListUptimeCheckIps` request.
+                The request object. The protocol for the ``ListUptimeCheckIps`` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

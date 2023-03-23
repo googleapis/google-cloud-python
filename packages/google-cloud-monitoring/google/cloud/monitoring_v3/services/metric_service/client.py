@@ -517,8 +517,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsRequest, dict]):
-                The request object. The
-                `ListMonitoredResourceDescriptors` request.
+                The request object. The ``ListMonitoredResourceDescriptors`` request.
             name (str):
                 Required. The
                 `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
@@ -642,8 +641,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.GetMonitoredResourceDescriptorRequest, dict]):
-                The request object. The `GetMonitoredResourceDescriptor`
-                request.
+                The request object. The ``GetMonitoredResourceDescriptor`` request.
             name (str):
                 Required. The monitored resource descriptor to get. The
                 format is:
@@ -666,12 +664,14 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         Returns:
             google.api.monitored_resource_pb2.MonitoredResourceDescriptor:
-                An object that describes the schema of a [MonitoredResource][google.api.MonitoredResource] object using a
-                   type name and a set of labels. For example, the
-                   monitored resource descriptor for Google Compute
-                   Engine VM instances has a type of "gce_instance" and
-                   specifies the use of the labels "instance_id" and
-                   "zone" to identify particular VM instances.
+                An object that describes the schema of a
+                   [MonitoredResource][google.api.MonitoredResource]
+                   object using a type name and a set of labels. For
+                   example, the monitored resource descriptor for Google
+                   Compute Engine VM instances has a type of
+                   "gce_instance" and specifies the use of the labels
+                   "instance_id" and "zone" to identify particular VM
+                   instances.
 
                    Different APIs can support different monitored
                    resource types. APIs generally provide a list method
@@ -768,7 +768,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.ListMetricDescriptorsRequest, dict]):
-                The request object. The `ListMetricDescriptors` request.
+                The request object. The ``ListMetricDescriptors`` request.
             name (str):
                 Required. The
                 `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
@@ -888,7 +888,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.GetMetricDescriptorRequest, dict]):
-                The request object. The `GetMetricDescriptor` request.
+                The request object. The ``GetMetricDescriptor`` request.
             name (str):
                 Required. The metric descriptor on which to execute the
                 request. The format is:
@@ -1006,8 +1006,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.CreateMetricDescriptorRequest, dict]):
-                The request object. The `CreateMetricDescriptor`
-                request.
+                The request object. The ``CreateMetricDescriptor`` request.
             name (str):
                 Required. The
                 `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
@@ -1124,8 +1123,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.DeleteMetricDescriptorRequest, dict]):
-                The request object. The `DeleteMetricDescriptor`
-                request.
+                The request object. The ``DeleteMetricDescriptor`` request.
             name (str):
                 Required. The metric descriptor on which to execute the
                 request. The format is:
@@ -1231,7 +1229,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.ListTimeSeriesRequest, dict]):
-                The request object. The `ListTimeSeries` request.
+                The request object. The ``ListTimeSeries`` request.
             name (str):
                 Required. The
                 `project <https://cloud.google.com/monitoring/api/v3#project_name>`__,
@@ -1392,7 +1390,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.CreateTimeSeriesRequest, dict]):
-                The request object. The `CreateTimeSeries` request.
+                The request object. The ``CreateTimeSeries`` request.
             name (str):
                 Required. The
                 `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
@@ -1512,7 +1510,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         Args:
             request (Union[google.cloud.monitoring_v3.types.CreateTimeSeriesRequest, dict]):
-                The request object. The `CreateTimeSeries` request.
+                The request object. The ``CreateTimeSeries`` request.
             name (str):
                 Required. The
                 `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
