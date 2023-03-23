@@ -668,7 +668,6 @@ class AppConnectorsServiceRestTransport(AppConnectorsServiceTransport):
                 request (~.app_connectors_service.CreateAppConnectorRequest):
                     The request object. Request message for
                 BeyondCorp.CreateAppConnector.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -768,7 +767,6 @@ class AppConnectorsServiceRestTransport(AppConnectorsServiceTransport):
                 request (~.app_connectors_service.DeleteAppConnectorRequest):
                     The request object. Request message for
                 BeyondCorp.DeleteAppConnector.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -859,7 +857,6 @@ class AppConnectorsServiceRestTransport(AppConnectorsServiceTransport):
                 request (~.app_connectors_service.GetAppConnectorRequest):
                     The request object. Request message for
                 BeyondCorp.GetAppConnector.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -959,7 +956,6 @@ class AppConnectorsServiceRestTransport(AppConnectorsServiceTransport):
                 request (~.app_connectors_service.ListAppConnectorsRequest):
                     The request object. Request message for
                 BeyondCorp.ListAppConnectors.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1149,7 +1145,6 @@ class AppConnectorsServiceRestTransport(AppConnectorsServiceTransport):
                 request (~.app_connectors_service.UpdateAppConnectorRequest):
                     The request object. Request message for
                 BeyondCorp.UpdateAppConnector.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
