@@ -499,8 +499,8 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
 
         Args:
             request (Union[google.cloud.vpcaccess_v1.types.CreateConnectorRequest, dict]):
-                The request object. Request for creating a Serverless
-                VPC Access connector.
+                The request object. Request for creating a Serverless VPC
+                Access connector.
             parent (str):
                 Required. The project and location in which the
                 configuration should be created, specified in the format
@@ -852,8 +852,8 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
 
         Args:
             request (Union[google.cloud.vpcaccess_v1.types.DeleteConnectorRequest, dict]):
-                The request object. Request for deleting a Serverless
-                VPC Access connector.
+                The request object. Request for deleting a Serverless VPC
+                Access connector.
             name (str):
                 Required. Name of a Serverless VPC
                 Access connector to delete.

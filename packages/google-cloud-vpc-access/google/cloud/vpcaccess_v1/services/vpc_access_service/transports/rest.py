@@ -442,7 +442,6 @@ class VpcAccessServiceRestTransport(VpcAccessServiceTransport):
                 request (~.vpc_access.CreateConnectorRequest):
                     The request object. Request for creating a Serverless VPC
                 Access connector.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -542,7 +541,6 @@ class VpcAccessServiceRestTransport(VpcAccessServiceTransport):
                 request (~.vpc_access.DeleteConnectorRequest):
                     The request object. Request for deleting a Serverless VPC
                 Access connector.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -633,7 +631,6 @@ class VpcAccessServiceRestTransport(VpcAccessServiceTransport):
                 request (~.vpc_access.GetConnectorRequest):
                     The request object. Request for getting a Serverless VPC
                 Access connector.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -723,7 +720,6 @@ class VpcAccessServiceRestTransport(VpcAccessServiceTransport):
                 request (~.vpc_access.ListConnectorsRequest):
                     The request object. Request for listing Serverless VPC
                 Access connectors in a location.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
