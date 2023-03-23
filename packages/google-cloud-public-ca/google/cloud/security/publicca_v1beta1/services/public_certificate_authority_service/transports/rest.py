@@ -233,7 +233,6 @@ class PublicCertificateAuthorityServiceRestTransport(
                         The request object. Creates a new
                     [ExternalAccountKey][google.cloud.security.publicca.v1beta1.ExternalAccountKey]
                     in a given project.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
