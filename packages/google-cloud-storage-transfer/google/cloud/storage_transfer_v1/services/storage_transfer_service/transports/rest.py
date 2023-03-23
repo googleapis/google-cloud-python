@@ -695,7 +695,6 @@ class StorageTransferServiceRestTransport(StorageTransferServiceTransport):
                 request (~.transfer.CreateAgentPoolRequest):
                     The request object. Specifies the request passed to
                 CreateAgentPool.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -894,7 +893,6 @@ class StorageTransferServiceRestTransport(StorageTransferServiceTransport):
                 request (~.transfer.DeleteAgentPoolRequest):
                     The request object. Specifies the request passed to
                 DeleteAgentPool.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1050,7 +1048,6 @@ class StorageTransferServiceRestTransport(StorageTransferServiceTransport):
                 request (~.transfer.GetAgentPoolRequest):
                     The request object. Specifies the request passed to
                 GetAgentPool.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1139,7 +1136,6 @@ class StorageTransferServiceRestTransport(StorageTransferServiceTransport):
                     request (~.transfer.GetGoogleServiceAccountRequest):
                         The request object. Request passed to
                     GetGoogleServiceAccount.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1413,7 +1409,6 @@ class StorageTransferServiceRestTransport(StorageTransferServiceTransport):
                     The request object. ``projectId``, ``jobNames``, and ``jobStatuses`` are
                 query parameters that can be specified when listing
                 transfer jobs.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1503,7 +1498,6 @@ class StorageTransferServiceRestTransport(StorageTransferServiceTransport):
                 request (~.transfer.PauseTransferOperationRequest):
                     The request object. Request passed to
                 PauseTransferOperation.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1590,7 +1584,6 @@ class StorageTransferServiceRestTransport(StorageTransferServiceTransport):
                 request (~.transfer.ResumeTransferOperationRequest):
                     The request object. Request passed to
                 ResumeTransferOperation.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1775,7 +1768,6 @@ class StorageTransferServiceRestTransport(StorageTransferServiceTransport):
                 request (~.transfer.UpdateAgentPoolRequest):
                     The request object. Specifies the request passed to
                 UpdateAgentPool.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

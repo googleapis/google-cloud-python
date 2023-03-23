@@ -829,9 +829,9 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
 
         Args:
             request (Union[google.cloud.storage_transfer_v1.types.ListTransferJobsRequest, dict]):
-                The request object. `projectId`, `jobNames`, and
-                `jobStatuses` are query parameters that can be specified
-                when listing transfer jobs.
+                The request object. ``projectId``, ``jobNames``, and ``jobStatuses`` are
+                query parameters that can be specified when listing
+                transfer jobs.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1607,8 +1607,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
 
         Args:
             request (Union[google.cloud.storage_transfer_v1.types.ListAgentPoolsRequest, dict]):
-                The request object. The request passed to
-                ListAgentPools.
+                The request object. The request passed to ListAgentPools.
             project_id (str):
                 Required. The ID of the Google Cloud
                 project that owns the job.
