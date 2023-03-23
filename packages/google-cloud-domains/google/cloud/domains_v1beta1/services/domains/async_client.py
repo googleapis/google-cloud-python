@@ -261,8 +261,7 @@ class DomainsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.domains_v1beta1.types.SearchDomainsRequest, dict]]):
-                The request object. Request for the `SearchDomains`
-                method.
+                The request object. Request for the ``SearchDomains`` method.
             location (:class:`str`):
                 Required. The location. Must be in the format
                 ``projects/*/locations/*``.
@@ -376,8 +375,7 @@ class DomainsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.domains_v1beta1.types.RetrieveRegisterParametersRequest, dict]]):
-                The request object. Request for the
-                `RetrieveRegisterParameters` method.
+                The request object. Request for the ``RetrieveRegisterParameters`` method.
             location (:class:`str`):
                 Required. The location. Must be in the format
                 ``projects/*/locations/*``.
@@ -516,8 +514,7 @@ class DomainsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.domains_v1beta1.types.RegisterDomainRequest, dict]]):
-                The request object. Request for the `RegisterDomain`
-                method.
+                The request object. Request for the ``RegisterDomain`` method.
             parent (:class:`str`):
                 Required. The parent resource of the ``Registration``.
                 Must be in the format ``projects/*/locations/*``.
@@ -677,8 +674,7 @@ class DomainsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.domains_v1beta1.types.RetrieveTransferParametersRequest, dict]]):
-                The request object. Request for the
-                `RetrieveTransferParameters` method.
+                The request object. Request for the ``RetrieveTransferParameters`` method.
             location (:class:`str`):
                 Required. The location. Must be in the format
                 ``projects/*/locations/*``.
@@ -828,8 +824,7 @@ class DomainsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.domains_v1beta1.types.TransferDomainRequest, dict]]):
-                The request object. Request for the `TransferDomain`
-                method.
+                The request object. Request for the ``TransferDomain`` method.
             parent (:class:`str`):
                 Required. The parent resource of the ``Registration``.
                 Must be in the format ``projects/*/locations/*``.
@@ -1000,8 +995,7 @@ class DomainsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.domains_v1beta1.types.ListRegistrationsRequest, dict]]):
-                The request object. Request for the `ListRegistrations`
-                method.
+                The request object. Request for the ``ListRegistrations`` method.
             parent (:class:`str`):
                 Required. The project and location from which to list
                 ``Registration``\ s, specified in the format
@@ -1114,8 +1108,7 @@ class DomainsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.domains_v1beta1.types.GetRegistrationRequest, dict]]):
-                The request object. Request for the `GetRegistration`
-                method.
+                The request object. Request for the ``GetRegistration`` method.
             name (:class:`str`):
                 Required. The name of the ``Registration`` to get, in
                 the format ``projects/*/locations/*/registrations/*``.
@@ -1248,8 +1241,7 @@ class DomainsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.domains_v1beta1.types.UpdateRegistrationRequest, dict]]):
-                The request object. Request for the `UpdateRegistration`
-                method.
+                The request object. Request for the ``UpdateRegistration`` method.
             registration (:class:`google.cloud.domains_v1beta1.types.Registration`):
                 Fields of the ``Registration`` to update.
                 This corresponds to the ``registration`` field
@@ -1399,8 +1391,7 @@ class DomainsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.domains_v1beta1.types.ConfigureManagementSettingsRequest, dict]]):
-                The request object. Request for the
-                `ConfigureManagementSettings` method.
+                The request object. Request for the ``ConfigureManagementSettings`` method.
             registration (:class:`str`):
                 Required. The name of the ``Registration`` whose
                 management settings are being updated, in the format
@@ -1558,8 +1549,7 @@ class DomainsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.domains_v1beta1.types.ConfigureDnsSettingsRequest, dict]]):
-                The request object. Request for the
-                `ConfigureDnsSettings` method.
+                The request object. Request for the ``ConfigureDnsSettings`` method.
             registration (:class:`str`):
                 Required. The name of the ``Registration`` whose DNS
                 settings are being updated, in the format
@@ -1725,8 +1715,7 @@ class DomainsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.domains_v1beta1.types.ConfigureContactSettingsRequest, dict]]):
-                The request object. Request for the
-                `ConfigureContactSettings` method.
+                The request object. Request for the ``ConfigureContactSettings`` method.
             registration (:class:`str`):
                 Required. The name of the ``Registration`` whose contact
                 settings are being updated, in the format
@@ -1891,8 +1880,7 @@ class DomainsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.domains_v1beta1.types.ExportRegistrationRequest, dict]]):
-                The request object. Request for the `ExportRegistration`
-                method.
+                The request object. Request for the ``ExportRegistration`` method.
             name (:class:`str`):
                 Required. The name of the ``Registration`` to export, in
                 the format ``projects/*/locations/*/registrations/*``.
@@ -2048,8 +2036,7 @@ class DomainsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.domains_v1beta1.types.DeleteRegistrationRequest, dict]]):
-                The request object. Request for the `DeleteRegistration`
-                method.
+                The request object. Request for the ``DeleteRegistration`` method.
             name (:class:`str`):
                 Required. The name of the ``Registration`` to delete, in
                 the format ``projects/*/locations/*/registrations/*``.
@@ -2172,8 +2159,7 @@ class DomainsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.domains_v1beta1.types.RetrieveAuthorizationCodeRequest, dict]]):
-                The request object. Request for the
-                `RetrieveAuthorizationCode` method.
+                The request object. Request for the ``RetrieveAuthorizationCode`` method.
             registration (:class:`str`):
                 Required. The name of the ``Registration`` whose
                 authorization code is being retrieved, in the format
@@ -2279,8 +2265,7 @@ class DomainsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.domains_v1beta1.types.ResetAuthorizationCodeRequest, dict]]):
-                The request object. Request for the
-                `ResetAuthorizationCode` method.
+                The request object. Request for the ``ResetAuthorizationCode`` method.
             registration (:class:`str`):
                 Required. The name of the ``Registration`` whose
                 authorization code is being reset, in the format
