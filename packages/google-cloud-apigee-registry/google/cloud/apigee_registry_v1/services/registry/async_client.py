@@ -1113,8 +1113,7 @@ class RegistryAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.apigee_registry_v1.types.CreateApiVersionRequest, dict]]):
-                The request object. Request message for
-                CreateApiVersion.
+                The request object. Request message for CreateApiVersion.
             parent (:class:`str`):
                 Required. The parent, which owns this collection of
                 versions. Format: ``projects/*/locations/*/apis/*``
@@ -1250,8 +1249,7 @@ class RegistryAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.apigee_registry_v1.types.UpdateApiVersionRequest, dict]]):
-                The request object. Request message for
-                UpdateApiVersion.
+                The request object. Request message for UpdateApiVersion.
             api_version (:class:`google.cloud.apigee_registry_v1.types.ApiVersion`):
                 Required. The version to update.
 
@@ -1380,8 +1378,7 @@ class RegistryAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.apigee_registry_v1.types.DeleteApiVersionRequest, dict]]):
-                The request object. Request message for
-                DeleteApiVersion.
+                The request object. Request message for DeleteApiVersion.
             name (:class:`str`):
                 Required. The name of the version to delete. Format:
                 ``projects/*/locations/*/apis/*/versions/*``
@@ -2864,8 +2861,7 @@ class RegistryAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.apigee_registry_v1.types.GetApiDeploymentRequest, dict]]):
-                The request object. Request message for
-                GetApiDeployment.
+                The request object. Request message for GetApiDeployment.
             name (:class:`str`):
                 Required. The name of the deployment to retrieve.
                 Format: ``projects/*/locations/*/apis/*/deployments/*``

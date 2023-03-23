@@ -1517,7 +1517,6 @@ class RegistryRestTransport(RegistryTransport):
                 request (~.registry_service.CreateApiDeploymentRequest):
                     The request object. Request message for
                 CreateApiDeployment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2040,7 +2039,6 @@ class RegistryRestTransport(RegistryTransport):
                 request (~.registry_service.DeleteApiDeploymentRequest):
                     The request object. Request message for
                 DeleteApiDeployment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2119,7 +2117,6 @@ class RegistryRestTransport(RegistryTransport):
                     request (~.registry_service.DeleteApiDeploymentRevisionRequest):
                         The request object. Request message for
                     DeleteApiDeploymentRevision.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2292,7 +2289,6 @@ class RegistryRestTransport(RegistryTransport):
                 request (~.registry_service.DeleteApiSpecRevisionRequest):
                     The request object. Request message for
                 DeleteApiSpecRevision.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2848,7 +2844,6 @@ class RegistryRestTransport(RegistryTransport):
                 request (~.registry_service.GetApiSpecContentsRequest):
                     The request object. Request message for
                 GetApiSpecContents.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3189,7 +3184,6 @@ class RegistryRestTransport(RegistryTransport):
                 request (~.registry_service.GetArtifactContentsRequest):
                     The request object. Request message for
                 GetArtifactContents.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3345,7 +3339,6 @@ class RegistryRestTransport(RegistryTransport):
                     request (~.registry_service.ListApiDeploymentRevisionsRequest):
                         The request object. Request message for
                     ListApiDeploymentRevisions.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3437,7 +3430,6 @@ class RegistryRestTransport(RegistryTransport):
                 request (~.registry_service.ListApiDeploymentsRequest):
                     The request object. Request message for
                 ListApiDeployments.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3615,7 +3607,6 @@ class RegistryRestTransport(RegistryTransport):
                 request (~.registry_service.ListApiSpecRevisionsRequest):
                     The request object. Request message for
                 ListApiSpecRevisions.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4111,7 +4102,6 @@ class RegistryRestTransport(RegistryTransport):
                 request (~.registry_service.RollbackApiDeploymentRequest):
                     The request object. Request message for
                 RollbackApiDeployment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4331,7 +4321,6 @@ class RegistryRestTransport(RegistryTransport):
                     request (~.registry_service.TagApiDeploymentRevisionRequest):
                         The request object. Request message for
                     TagApiDeploymentRevision.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -4439,7 +4428,6 @@ class RegistryRestTransport(RegistryTransport):
                 request (~.registry_service.TagApiSpecRevisionRequest):
                     The request object. Request message for
                 TagApiSpecRevision.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4650,7 +4638,6 @@ class RegistryRestTransport(RegistryTransport):
                 request (~.registry_service.UpdateApiDeploymentRequest):
                     The request object. Request message for
                 UpdateApiDeployment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
