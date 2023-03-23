@@ -485,7 +485,6 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
                 request (~.environment.CreateEnvironmentRequest):
                     The request object. The request message for
                 [Environments.CreateEnvironment][google.cloud.dialogflow.v2beta1.Environments.CreateEnvironment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -608,7 +607,6 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
                 request (~.environment.DeleteEnvironmentRequest):
                     The request object. The request message for
                 [Environments.DeleteEnvironment][google.cloud.dialogflow.v2beta1.Environments.DeleteEnvironment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -690,7 +688,6 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
                 request (~.environment.GetEnvironmentRequest):
                     The request object. The request message for
                 [Environments.GetEnvironment][google.cloud.dialogflow.v2beta1.Environments.GetEnvironment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -801,7 +798,6 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
                 request (~.environment.GetEnvironmentHistoryRequest):
                     The request object. The request message for
                 [Environments.GetEnvironmentHistory][google.cloud.dialogflow.v2beta1.Environments.GetEnvironmentHistory].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -897,7 +893,6 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
                 request (~.environment.ListEnvironmentsRequest):
                     The request object. The request message for
                 [Environments.ListEnvironments][google.cloud.dialogflow.v2beta1.Environments.ListEnvironments].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -995,7 +990,6 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
                 request (~.environment.UpdateEnvironmentRequest):
                     The request object. The request message for
                 [Environments.UpdateEnvironment][google.cloud.dialogflow.v2beta1.Environments.UpdateEnvironment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

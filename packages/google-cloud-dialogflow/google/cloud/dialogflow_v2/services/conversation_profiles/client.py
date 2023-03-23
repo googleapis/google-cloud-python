@@ -1085,6 +1085,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
             request (Union[google.cloud.dialogflow_v2.types.DeleteConversationProfileRequest, dict]):
                 The request object. The request message for
                 [ConversationProfiles.DeleteConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.DeleteConversationProfile].
+
                 This operation fails if the conversation profile is
                 still referenced from a phone number.
             name (str):

@@ -771,6 +771,7 @@ class ConversationProfilesAsyncClient:
             request (Optional[Union[google.cloud.dialogflow_v2beta1.types.DeleteConversationProfileRequest, dict]]):
                 The request object. The request message for
                 [ConversationProfiles.DeleteConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfiles.DeleteConversationProfile].
+
                 This operation fails if the conversation profile is
                 still referenced from a phone number.
             name (:class:`str`):

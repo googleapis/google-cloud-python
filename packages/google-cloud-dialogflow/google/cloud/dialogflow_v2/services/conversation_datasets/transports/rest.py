@@ -548,7 +548,6 @@ class ConversationDatasetsRestTransport(ConversationDatasetsTransport):
                     request (~.gcd_conversation_dataset.CreateConversationDatasetRequest):
                         The request object. The request message for
                     [ConversationDatasets.CreateConversationDataset][google.cloud.dialogflow.v2.ConversationDatasets.CreateConversationDataset].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -651,7 +650,6 @@ class ConversationDatasetsRestTransport(ConversationDatasetsTransport):
                     request (~.conversation_dataset.DeleteConversationDatasetRequest):
                         The request object. The request message for
                     [ConversationDatasets.DeleteConversationDataset][google.cloud.dialogflow.v2.ConversationDatasets.DeleteConversationDataset].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -744,7 +742,6 @@ class ConversationDatasetsRestTransport(ConversationDatasetsTransport):
                 request (~.conversation_dataset.GetConversationDatasetRequest):
                     The request object. The request message for
                 [ConversationDatasets.GetConversationDataset][google.cloud.dialogflow.v2.ConversationDatasets.GetConversationDataset].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -845,7 +842,6 @@ class ConversationDatasetsRestTransport(ConversationDatasetsTransport):
                 request (~.conversation_dataset.ImportConversationDataRequest):
                     The request object. The request message for
                 [ConversationDatasets.ImportConversationData][google.cloud.dialogflow.v2.ConversationDatasets.ImportConversationData].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -951,7 +947,6 @@ class ConversationDatasetsRestTransport(ConversationDatasetsTransport):
                     request (~.conversation_dataset.ListConversationDatasetsRequest):
                         The request object. The request message for
                     [ConversationDatasets.ListConversationDatasets][google.cloud.dialogflow.v2.ConversationDatasets.ListConversationDatasets].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

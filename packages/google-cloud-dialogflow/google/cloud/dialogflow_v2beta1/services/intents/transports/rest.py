@@ -569,7 +569,6 @@ class IntentsRestTransport(IntentsTransport):
                 request (~.intent.BatchDeleteIntentsRequest):
                     The request object. The request message for
                 [Intents.BatchDeleteIntents][google.cloud.dialogflow.v2beta1.Intents.BatchDeleteIntents].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -674,7 +673,6 @@ class IntentsRestTransport(IntentsTransport):
                 request (~.intent.BatchUpdateIntentsRequest):
                     The request object. The request message for
                 [Intents.BatchUpdateIntents][google.cloud.dialogflow.v2beta1.Intents.BatchUpdateIntents].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -779,7 +777,6 @@ class IntentsRestTransport(IntentsTransport):
                 request (~.gcd_intent.CreateIntentRequest):
                     The request object. The request message for
                 [Intents.CreateIntent][google.cloud.dialogflow.v2beta1.Intents.CreateIntent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -892,7 +889,6 @@ class IntentsRestTransport(IntentsTransport):
                 request (~.intent.DeleteIntentRequest):
                     The request object. The request message for
                 [Intents.DeleteIntent][google.cloud.dialogflow.v2beta1.Intents.DeleteIntent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -972,7 +968,6 @@ class IntentsRestTransport(IntentsTransport):
                 request (~.intent.GetIntentRequest):
                     The request object. The request message for
                 [Intents.GetIntent][google.cloud.dialogflow.v2beta1.Intents.GetIntent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1075,7 +1070,6 @@ class IntentsRestTransport(IntentsTransport):
                 request (~.intent.ListIntentsRequest):
                     The request object. The request message for
                 [Intents.ListIntents][google.cloud.dialogflow.v2beta1.Intents.ListIntents].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1177,7 +1171,6 @@ class IntentsRestTransport(IntentsTransport):
                 request (~.gcd_intent.UpdateIntentRequest):
                     The request object. The request message for
                 [Intents.UpdateIntent][google.cloud.dialogflow.v2beta1.Intents.UpdateIntent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

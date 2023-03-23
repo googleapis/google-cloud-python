@@ -456,7 +456,6 @@ class ContextsRestTransport(ContextsTransport):
                 request (~.gcd_context.CreateContextRequest):
                     The request object. The request message for
                 [Contexts.CreateContext][google.cloud.dialogflow.v2.Contexts.CreateContext].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -587,7 +586,6 @@ class ContextsRestTransport(ContextsTransport):
                 request (~.context.DeleteAllContextsRequest):
                     The request object. The request message for
                 [Contexts.DeleteAllContexts][google.cloud.dialogflow.v2.Contexts.DeleteAllContexts].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -677,7 +675,6 @@ class ContextsRestTransport(ContextsTransport):
                 request (~.context.DeleteContextRequest):
                     The request object. The request message for
                 [Contexts.DeleteContext][google.cloud.dialogflow.v2.Contexts.DeleteContext].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -765,7 +762,6 @@ class ContextsRestTransport(ContextsTransport):
                 request (~.context.GetContextRequest):
                     The request object. The request message for
                 [Contexts.GetContext][google.cloud.dialogflow.v2.Contexts.GetContext].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -884,7 +880,6 @@ class ContextsRestTransport(ContextsTransport):
                 request (~.context.ListContextsRequest):
                     The request object. The request message for
                 [Contexts.ListContexts][google.cloud.dialogflow.v2.Contexts.ListContexts].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -986,7 +981,6 @@ class ContextsRestTransport(ContextsTransport):
                 request (~.gcd_context.UpdateContextRequest):
                     The request object. The request message for
                 [Contexts.UpdateContext][google.cloud.dialogflow.v2.Contexts.UpdateContext].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

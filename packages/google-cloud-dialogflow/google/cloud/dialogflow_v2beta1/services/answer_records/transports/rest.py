@@ -394,7 +394,6 @@ class AnswerRecordsRestTransport(AnswerRecordsTransport):
                 request (~.answer_record.GetAnswerRecordRequest):
                     The request object. Request message for
                 [AnswerRecords.GetAnswerRecord][google.cloud.dialogflow.v2beta1.AnswerRecords.GetAnswerRecord].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -508,7 +507,6 @@ class AnswerRecordsRestTransport(AnswerRecordsTransport):
                 request (~.answer_record.ListAnswerRecordsRequest):
                     The request object. Request message for
                 [AnswerRecords.ListAnswerRecords][google.cloud.dialogflow.v2beta1.AnswerRecords.ListAnswerRecords].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -603,7 +601,6 @@ class AnswerRecordsRestTransport(AnswerRecordsTransport):
                 request (~.gcd_answer_record.UpdateAnswerRecordRequest):
                     The request object. Request message for
                 [AnswerRecords.UpdateAnswerRecord][google.cloud.dialogflow.v2beta1.AnswerRecords.UpdateAnswerRecord].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

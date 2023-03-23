@@ -602,7 +602,6 @@ class ConversationProfilesRestTransport(ConversationProfilesTransport):
                     request (~.gcd_conversation_profile.ClearSuggestionFeatureConfigRequest):
                         The request object. The request message for
                     [ConversationProfiles.ClearFeature][].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -710,7 +709,6 @@ class ConversationProfilesRestTransport(ConversationProfilesTransport):
                     request (~.gcd_conversation_profile.CreateConversationProfileRequest):
                         The request object. The request message for
                     [ConversationProfiles.CreateConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfiles.CreateConversationProfile].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -822,7 +820,6 @@ class ConversationProfilesRestTransport(ConversationProfilesTransport):
 
                     This operation fails if the conversation profile is
                     still referenced from a phone number.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -906,7 +903,6 @@ class ConversationProfilesRestTransport(ConversationProfilesTransport):
                 request (~.conversation_profile.GetConversationProfileRequest):
                     The request object. The request message for
                 [ConversationProfiles.GetConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfiles.GetConversationProfile].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1003,7 +999,6 @@ class ConversationProfilesRestTransport(ConversationProfilesTransport):
                     request (~.conversation_profile.ListConversationProfilesRequest):
                         The request object. The request message for
                     [ConversationProfiles.ListConversationProfiles][google.cloud.dialogflow.v2beta1.ConversationProfiles.ListConversationProfiles].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1102,7 +1097,6 @@ class ConversationProfilesRestTransport(ConversationProfilesTransport):
                     request (~.gcd_conversation_profile.SetSuggestionFeatureConfigRequest):
                         The request object. The request message for
                     [ConversationProfiles.SetSuggestionFeature][].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1212,7 +1206,6 @@ class ConversationProfilesRestTransport(ConversationProfilesTransport):
                     request (~.gcd_conversation_profile.UpdateConversationProfileRequest):
                         The request object. The request message for
                     [ConversationProfiles.UpdateConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfiles.UpdateConversationProfile].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

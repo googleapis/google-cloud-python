@@ -530,7 +530,6 @@ class ConversationsRestTransport(ConversationsTransport):
                 request (~.conversation.BatchCreateMessagesRequest):
                     The request object. The request message for
                 [Conversations.BatchCreateMessagesRequest][].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -636,7 +635,6 @@ class ConversationsRestTransport(ConversationsTransport):
                 request (~.conversation.CompleteConversationRequest):
                     The request object. The request message for
                 [Conversations.CompleteConversation][google.cloud.dialogflow.v2beta1.Conversations.CompleteConversation].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -747,7 +745,6 @@ class ConversationsRestTransport(ConversationsTransport):
                 request (~.gcd_conversation.CreateConversationRequest):
                     The request object. The request message for
                 [Conversations.CreateConversation][google.cloud.dialogflow.v2beta1.Conversations.CreateConversation].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -858,7 +855,6 @@ class ConversationsRestTransport(ConversationsTransport):
                 request (~.conversation.GetConversationRequest):
                     The request object. The request message for
                 [Conversations.GetConversation][google.cloud.dialogflow.v2beta1.Conversations.GetConversation].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -959,7 +955,6 @@ class ConversationsRestTransport(ConversationsTransport):
                 request (~.conversation.ListConversationsRequest):
                     The request object. The request message for
                 [Conversations.ListConversations][google.cloud.dialogflow.v2beta1.Conversations.ListConversations].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1055,7 +1050,6 @@ class ConversationsRestTransport(ConversationsTransport):
                 request (~.conversation.ListMessagesRequest):
                     The request object. The request message for
                 [Conversations.ListMessages][google.cloud.dialogflow.v2beta1.Conversations.ListMessages].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1150,7 +1144,6 @@ class ConversationsRestTransport(ConversationsTransport):
                     request (~.gcd_conversation.SuggestConversationSummaryRequest):
                         The request object. The request message for
                     [Conversations.SuggestConversationSummary][google.cloud.dialogflow.v2beta1.Conversations.SuggestConversationSummary].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

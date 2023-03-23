@@ -752,41 +752,44 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
         Args:
             requests (Iterator[google.cloud.dialogflow_v2beta1.types.StreamingDetectIntentRequest]):
-                The request object iterator. The top-level message sent by the
-                client to the
+                The request object iterator. The top-level message sent by the client to the
                 [Sessions.StreamingDetectIntent][google.cloud.dialogflow.v2beta1.Sessions.StreamingDetectIntent]
                 method.
 
                 Multiple request messages should be sent in order:
 
-                1.  The first message must contain
-                [session][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.session],
-                [query_input][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.query_input]
-                plus optionally
-                [query_params][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.query_params].
-                If the client wants to receive an audio response, it
-                should also contain
-                [output_audio_config][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.output_audio_config].
-                The message must not contain
-                [input_audio][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.input_audio].
-                2.  If
-                [query_input][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.query_input]
-                was set to
-                [query_input.audio_config][google.cloud.dialogflow.v2beta1.InputAudioConfig],
-                all subsequent messages must contain
-                [input_audio][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.input_audio]
-                to continue with Speech recognition. If you decide to
-                rather detect an     intent from text input after you
-                already started Speech recognition,     please send a
-                message with
-                [query_input.text][google.cloud.dialogflow.v2beta1.QueryInput.text].
-                    However, note that:
+                1. The first message must contain
+                   [session][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.session],
+                   [query_input][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.query_input]
+                   plus optionally
+                   [query_params][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.query_params].
+                   If the client wants to receive an audio response, it
+                   should also contain
+                   [output_audio_config][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.output_audio_config].
+                   The message must not contain
+                   [input_audio][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.input_audio].
 
-                    * Dialogflow will bill you for the audio duration so
-                far.     * Dialogflow discards all Speech recognition
-                results in favor of the       input text.
-                    * Dialogflow will use the language code from the
-                first message.
+                2. If
+                   [query_input][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.query_input]
+                   was set to
+                   [query_input.audio_config][google.cloud.dialogflow.v2beta1.InputAudioConfig],
+                   all subsequent messages must contain
+                   [input_audio][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.input_audio]
+                   to continue with Speech recognition. If you decide to
+                   rather detect an intent from text input after you
+                   already started Speech recognition, please send a
+                   message with
+                   [query_input.text][google.cloud.dialogflow.v2beta1.QueryInput.text].
+
+                   However, note that:
+
+                   -  Dialogflow will bill you for the audio duration so
+                      far.
+                   -  Dialogflow discards all Speech recognition results
+                      in favor of the input text.
+                   -  Dialogflow will use the language code from the
+                      first message.
+
                 After you sent all input, you must half-close or abort
                 the request stream.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

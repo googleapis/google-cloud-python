@@ -623,7 +623,6 @@ class AgentsRestTransport(AgentsTransport):
                 request (~.agent.DeleteAgentRequest):
                     The request object. The request message for
                 [Agents.DeleteAgent][google.cloud.dialogflow.v2.Agents.DeleteAgent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -703,7 +702,6 @@ class AgentsRestTransport(AgentsTransport):
                 request (~.agent.ExportAgentRequest):
                     The request object. The request message for
                 [Agents.ExportAgent][google.cloud.dialogflow.v2.Agents.ExportAgent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -806,7 +804,6 @@ class AgentsRestTransport(AgentsTransport):
                 request (~.agent.GetAgentRequest):
                     The request object. The request message for
                 [Agents.GetAgent][google.cloud.dialogflow.v2.Agents.GetAgent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -910,7 +907,6 @@ class AgentsRestTransport(AgentsTransport):
                 request (~.agent.GetValidationResultRequest):
                     The request object. The request message for
                 [Agents.GetValidationResult][google.cloud.dialogflow.v2.Agents.GetValidationResult].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1006,7 +1002,6 @@ class AgentsRestTransport(AgentsTransport):
                 request (~.agent.ImportAgentRequest):
                     The request object. The request message for
                 [Agents.ImportAgent][google.cloud.dialogflow.v2.Agents.ImportAgent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1109,7 +1104,6 @@ class AgentsRestTransport(AgentsTransport):
                 request (~.agent.RestoreAgentRequest):
                     The request object. The request message for
                 [Agents.RestoreAgent][google.cloud.dialogflow.v2.Agents.RestoreAgent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1212,7 +1206,6 @@ class AgentsRestTransport(AgentsTransport):
                 request (~.agent.SearchAgentsRequest):
                     The request object. The request message for
                 [Agents.SearchAgents][google.cloud.dialogflow.v2.Agents.SearchAgents].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1306,7 +1299,6 @@ class AgentsRestTransport(AgentsTransport):
                 request (~.gcd_agent.SetAgentRequest):
                     The request object. The request message for
                 [Agents.SetAgent][google.cloud.dialogflow.v2.Agents.SetAgent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1420,7 +1412,6 @@ class AgentsRestTransport(AgentsTransport):
                 request (~.agent.TrainAgentRequest):
                     The request object. The request message for
                 [Agents.TrainAgent][google.cloud.dialogflow.v2.Agents.TrainAgent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

@@ -441,7 +441,6 @@ class VersionsRestTransport(VersionsTransport):
                 request (~.gcd_version.CreateVersionRequest):
                     The request object. The request message for
                 [Versions.CreateVersion][google.cloud.dialogflow.v2beta1.Versions.CreateVersion].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -562,7 +561,6 @@ class VersionsRestTransport(VersionsTransport):
                 request (~.version.DeleteVersionRequest):
                     The request object. The request message for
                 [Versions.DeleteVersion][google.cloud.dialogflow.v2beta1.Versions.DeleteVersion].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -642,7 +640,6 @@ class VersionsRestTransport(VersionsTransport):
                 request (~.version.GetVersionRequest):
                     The request object. The request message for
                 [Versions.GetVersion][google.cloud.dialogflow.v2beta1.Versions.GetVersion].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -753,7 +750,6 @@ class VersionsRestTransport(VersionsTransport):
                 request (~.version.ListVersionsRequest):
                     The request object. The request message for
                 [Versions.ListVersions][google.cloud.dialogflow.v2beta1.Versions.ListVersions].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -849,7 +845,6 @@ class VersionsRestTransport(VersionsTransport):
                 request (~.gcd_version.UpdateVersionRequest):
                     The request object. The request message for
                 [Versions.UpdateVersion][google.cloud.dialogflow.v2beta1.Versions.UpdateVersion].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

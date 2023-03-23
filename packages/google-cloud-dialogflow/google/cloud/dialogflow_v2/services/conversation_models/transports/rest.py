@@ -679,7 +679,6 @@ class ConversationModelsRestTransport(ConversationModelsTransport):
                 request (~.gcd_conversation_model.CreateConversationModelRequest):
                     The request object. The request message for
                 [ConversationModels.CreateConversationModel][google.cloud.dialogflow.v2.ConversationModels.CreateConversationModel]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -787,7 +786,6 @@ class ConversationModelsRestTransport(ConversationModelsTransport):
                     request (~.conversation_model.CreateConversationModelEvaluationRequest):
                         The request object. The request message for
                     [ConversationModels.CreateConversationModelEvaluation][google.cloud.dialogflow.v2.ConversationModels.CreateConversationModelEvaluation]
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -892,7 +890,6 @@ class ConversationModelsRestTransport(ConversationModelsTransport):
                 request (~.conversation_model.DeleteConversationModelRequest):
                     The request object. The request message for
                 [ConversationModels.DeleteConversationModel][google.cloud.dialogflow.v2.ConversationModels.DeleteConversationModel]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -987,7 +984,6 @@ class ConversationModelsRestTransport(ConversationModelsTransport):
                 request (~.conversation_model.DeployConversationModelRequest):
                     The request object. The request message for
                 [ConversationModels.DeployConversationModel][google.cloud.dialogflow.v2.ConversationModels.DeployConversationModel]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1092,7 +1088,6 @@ class ConversationModelsRestTransport(ConversationModelsTransport):
                 request (~.conversation_model.GetConversationModelRequest):
                     The request object. The request message for
                 [ConversationModels.GetConversationModel][google.cloud.dialogflow.v2.ConversationModels.GetConversationModel]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1187,7 +1182,6 @@ class ConversationModelsRestTransport(ConversationModelsTransport):
                     request (~.conversation_model.GetConversationModelEvaluationRequest):
                         The request object. The request message for
                     [ConversationModels.GetConversationModelEvaluation][google.cloud.dialogflow.v2.ConversationModels.GetConversationModelEvaluation]
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1286,7 +1280,6 @@ class ConversationModelsRestTransport(ConversationModelsTransport):
                     request (~.conversation_model.ListConversationModelEvaluationsRequest):
                         The request object. The request message for
                     [ConversationModels.ListConversationModelEvaluations][google.cloud.dialogflow.v2.ConversationModels.ListConversationModelEvaluations]
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1389,7 +1382,6 @@ class ConversationModelsRestTransport(ConversationModelsTransport):
                 request (~.conversation_model.ListConversationModelsRequest):
                     The request object. The request message for
                 [ConversationModels.ListConversationModels][google.cloud.dialogflow.v2.ConversationModels.ListConversationModels]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1486,7 +1478,6 @@ class ConversationModelsRestTransport(ConversationModelsTransport):
                     request (~.conversation_model.UndeployConversationModelRequest):
                         The request object. The request message for
                     [ConversationModels.UndeployConversationModel][google.cloud.dialogflow.v2.ConversationModels.UndeployConversationModel]
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

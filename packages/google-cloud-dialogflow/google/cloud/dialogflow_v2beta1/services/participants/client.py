@@ -1221,49 +1221,49 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
         Args:
             requests (Iterator[google.cloud.dialogflow_v2beta1.types.StreamingAnalyzeContentRequest]):
-                The request object iterator. The top-level message sent by the
-                client to the
+                The request object iterator. The top-level message sent by the client to the
                 [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.StreamingAnalyzeContent]
                 method.
 
                 Multiple request messages should be sent in order:
 
-                1.  The first message must contain
-                [participant][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.participant],
-                [config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.config]
-                and optionally
-                [query_params][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.query_params].
-                If you want to receive an audio response, it should also
-                contain
-                [reply_audio_config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.reply_audio_config].
-                The message must not contain
-                [input][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.input].
-                2.  If
-                [config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.config]
-                in the first message
-                    was set to
-                [audio_config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.audio_config],
-                all subsequent messages must contain
-                [input_audio][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.input_audio]
-                to continue with Speech recognition. If you decide to
-                rather analyze text     input after you already started
-                Speech recognition, please send a message     with
-                [StreamingAnalyzeContentRequest.input_text][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.input_text].
-                    However, note that:
+                1. The first message must contain
+                   [participant][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.participant],
+                   [config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.config]
+                   and optionally
+                   [query_params][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.query_params].
+                   If you want to receive an audio response, it should
+                   also contain
+                   [reply_audio_config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.reply_audio_config].
+                   The message must not contain
+                   [input][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.input].
 
-                    * Dialogflow will bill you for the audio so far.
-                    * Dialogflow discards all Speech recognition results
-                in favor of the       text input.
+                2. If
+                   [config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.config]
+                   in the first message was set to
+                   [audio_config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.audio_config],
+                   all subsequent messages must contain
+                   [input_audio][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.input_audio]
+                   to continue with Speech recognition. If you decide to
+                   rather analyze text input after you already started
+                   Speech recognition, please send a message with
+                   [StreamingAnalyzeContentRequest.input_text][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.input_text].
 
-                 3. If
-                [StreamingAnalyzeContentRequest.config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.config]
-                in the first message was set
-                   to
-                [StreamingAnalyzeContentRequest.text_config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.text_config],
-                then the second message must contain only
-                [input_text][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.input_text].
-                Moreover, you must not send more than two messages.
-                 After you sent all input, you must half-close or abort
+                   However, note that:
+
+                   -  Dialogflow will bill you for the audio so far.
+                   -  Dialogflow discards all Speech recognition results
+                      in favor of the text input.
+
+                3. If
+                   [StreamingAnalyzeContentRequest.config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.config]
+                   in the first message was set to
+                   [StreamingAnalyzeContentRequest.text_config][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.text_config],
+                   then the second message must contain only
+                   [input_text][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest.input_text].
+                   Moreover, you must not send more than two messages.
+
+                After you sent all input, you must half-close or abort
                 the request stream.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

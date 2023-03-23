@@ -559,7 +559,6 @@ class ParticipantsRestTransport(ParticipantsTransport):
                 request (~.gcd_participant.AnalyzeContentRequest):
                     The request object. The request message for
                 [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -663,7 +662,6 @@ class ParticipantsRestTransport(ParticipantsTransport):
                 request (~.gcd_participant.CreateParticipantRequest):
                     The request object. The request message for
                 [Participants.CreateParticipant][google.cloud.dialogflow.v2.Participants.CreateParticipant].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -769,7 +767,6 @@ class ParticipantsRestTransport(ParticipantsTransport):
                 request (~.participant.GetParticipantRequest):
                     The request object. The request message for
                 [Participants.GetParticipant][google.cloud.dialogflow.v2.Participants.GetParticipant].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -863,7 +860,6 @@ class ParticipantsRestTransport(ParticipantsTransport):
                 request (~.participant.ListParticipantsRequest):
                     The request object. The request message for
                 [Participants.ListParticipants][google.cloud.dialogflow.v2.Participants.ListParticipants].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -975,7 +971,6 @@ class ParticipantsRestTransport(ParticipantsTransport):
                 request (~.participant.SuggestArticlesRequest):
                     The request object. The request message for
                 [Participants.SuggestArticles][google.cloud.dialogflow.v2.Participants.SuggestArticles].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1081,7 +1076,6 @@ class ParticipantsRestTransport(ParticipantsTransport):
                 request (~.participant.SuggestFaqAnswersRequest):
                     The request object. The request message for
                 [Participants.SuggestFaqAnswers][google.cloud.dialogflow.v2.Participants.SuggestFaqAnswers].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1187,7 +1181,6 @@ class ParticipantsRestTransport(ParticipantsTransport):
                 request (~.participant.SuggestSmartRepliesRequest):
                     The request object. The request message for
                 [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2.Participants.SuggestSmartReplies].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1295,7 +1288,6 @@ class ParticipantsRestTransport(ParticipantsTransport):
                 request (~.gcd_participant.UpdateParticipantRequest):
                     The request object. The request message for
                 [Participants.UpdateParticipant][google.cloud.dialogflow.v2.Participants.UpdateParticipant].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

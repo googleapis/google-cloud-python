@@ -457,7 +457,6 @@ class KnowledgeBasesRestTransport(KnowledgeBasesTransport):
                 request (~.gcd_knowledge_base.CreateKnowledgeBaseRequest):
                     The request object. Request message for
                 [KnowledgeBases.CreateKnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBases.CreateKnowledgeBase].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -578,7 +577,6 @@ class KnowledgeBasesRestTransport(KnowledgeBasesTransport):
                 request (~.knowledge_base.DeleteKnowledgeBaseRequest):
                     The request object. Request message for
                 [KnowledgeBases.DeleteKnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBases.DeleteKnowledgeBase].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -664,7 +662,6 @@ class KnowledgeBasesRestTransport(KnowledgeBasesTransport):
                 request (~.knowledge_base.GetKnowledgeBaseRequest):
                     The request object. Request message for
                 [KnowledgeBases.GetKnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBases.GetKnowledgeBase].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -774,7 +771,6 @@ class KnowledgeBasesRestTransport(KnowledgeBasesTransport):
                 request (~.knowledge_base.ListKnowledgeBasesRequest):
                     The request object. Request message for
                 [KnowledgeBases.ListKnowledgeBases][google.cloud.dialogflow.v2beta1.KnowledgeBases.ListKnowledgeBases].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -874,7 +870,6 @@ class KnowledgeBasesRestTransport(KnowledgeBasesTransport):
                 request (~.gcd_knowledge_base.UpdateKnowledgeBaseRequest):
                     The request object. Request message for
                 [KnowledgeBases.UpdateKnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBases.UpdateKnowledgeBase].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

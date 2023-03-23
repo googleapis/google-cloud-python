@@ -373,7 +373,6 @@ class FulfillmentsRestTransport(FulfillmentsTransport):
                 request (~.fulfillment.GetFulfillmentRequest):
                     The request object. The request message for
                 [Fulfillments.GetFulfillment][google.cloud.dialogflow.v2beta1.Fulfillments.GetFulfillment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -479,7 +478,6 @@ class FulfillmentsRestTransport(FulfillmentsTransport):
                 request (~.gcd_fulfillment.UpdateFulfillmentRequest):
                     The request object. The request message for
                 [Fulfillments.UpdateFulfillment][google.cloud.dialogflow.v2beta1.Fulfillments.UpdateFulfillment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

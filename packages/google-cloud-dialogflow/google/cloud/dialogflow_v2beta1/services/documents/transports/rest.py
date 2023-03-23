@@ -591,7 +591,6 @@ class DocumentsRestTransport(DocumentsTransport):
                 request (~.gcd_document.CreateDocumentRequest):
                     The request object. Request message for
                 [Documents.CreateDocument][google.cloud.dialogflow.v2beta1.Documents.CreateDocument].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -699,7 +698,6 @@ class DocumentsRestTransport(DocumentsTransport):
                 request (~.document.DeleteDocumentRequest):
                     The request object. Request message for
                 [Documents.DeleteDocument][google.cloud.dialogflow.v2beta1.Documents.DeleteDocument].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -796,7 +794,6 @@ class DocumentsRestTransport(DocumentsTransport):
                 request (~.document.GetDocumentRequest):
                     The request object. Request message for
                 [Documents.GetDocument][google.cloud.dialogflow.v2beta1.Documents.GetDocument].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -901,7 +898,6 @@ class DocumentsRestTransport(DocumentsTransport):
                 request (~.document.ImportDocumentsRequest):
                     The request object. Request message for
                 [Documents.ImportDocuments][google.cloud.dialogflow.v2beta1.Documents.ImportDocuments].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1006,7 +1002,6 @@ class DocumentsRestTransport(DocumentsTransport):
                 request (~.document.ListDocumentsRequest):
                     The request object. Request message for
                 [Documents.ListDocuments][google.cloud.dialogflow.v2beta1.Documents.ListDocuments].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1104,7 +1099,6 @@ class DocumentsRestTransport(DocumentsTransport):
                 request (~.document.ReloadDocumentRequest):
                     The request object. Request message for
                 [Documents.ReloadDocument][google.cloud.dialogflow.v2beta1.Documents.ReloadDocument].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1212,7 +1206,6 @@ class DocumentsRestTransport(DocumentsTransport):
                 request (~.gcd_document.UpdateDocumentRequest):
                     The request object. Request message for
                 [Documents.UpdateDocument][google.cloud.dialogflow.v2beta1.Documents.UpdateDocument].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
