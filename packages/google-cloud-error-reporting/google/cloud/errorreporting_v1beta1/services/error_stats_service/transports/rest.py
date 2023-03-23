@@ -384,7 +384,6 @@ class ErrorStatsServiceRestTransport(ErrorStatsServiceTransport):
                 request (~.error_stats_service.ListEventsRequest):
                     The request object. Specifies a set of error events to
                 return.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

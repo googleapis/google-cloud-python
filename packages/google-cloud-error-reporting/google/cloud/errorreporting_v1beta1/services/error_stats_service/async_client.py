@@ -261,8 +261,7 @@ class ErrorStatsServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.errorreporting_v1beta1.types.ListGroupStatsRequest, dict]]):
-                The request object. Specifies a set of `ErrorGroupStats`
-                to return.
+                The request object. Specifies a set of ``ErrorGroupStats`` to return.
             project_name (:class:`str`):
                 Required. The resource name of the Google Cloud Platform
                 project. Written as ``projects/{projectID}`` or

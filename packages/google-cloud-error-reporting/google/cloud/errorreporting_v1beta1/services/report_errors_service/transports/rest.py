@@ -233,7 +233,6 @@ class ReportErrorsServiceRestTransport(ReportErrorsServiceTransport):
                 request (~.report_errors_service.ReportErrorEventRequest):
                     The request object. A request for reporting an individual
                 error event.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

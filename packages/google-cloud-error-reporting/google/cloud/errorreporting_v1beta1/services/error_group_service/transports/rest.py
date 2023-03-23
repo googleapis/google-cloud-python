@@ -259,7 +259,6 @@ class ErrorGroupServiceRestTransport(ErrorGroupServiceTransport):
                 request (~.error_group_service.GetGroupRequest):
                     The request object. A request to return an individual
                 group.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -349,7 +348,6 @@ class ErrorGroupServiceRestTransport(ErrorGroupServiceTransport):
                 request (~.error_group_service.UpdateGroupRequest):
                     The request object. A request to replace the existing
                 data for the given group.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

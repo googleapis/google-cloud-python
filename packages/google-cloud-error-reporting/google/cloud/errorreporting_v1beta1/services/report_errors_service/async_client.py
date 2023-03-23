@@ -269,8 +269,8 @@ class ReportErrorsServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.errorreporting_v1beta1.types.ReportErrorEventRequest, dict]]):
-                The request object. A request for reporting an
-                individual error event.
+                The request object. A request for reporting an individual
+                error event.
             project_name (:class:`str`):
                 Required. The resource name of the Google Cloud Platform
                 project. Written as ``projects/{projectId}``, where
