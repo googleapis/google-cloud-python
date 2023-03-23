@@ -2885,8 +2885,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         Args:
             request (Union[google.cloud.network_services_v1.types.CreateHttpRouteRequest, dict]):
-                The request object. Request used by the HttpRoute
-                method.
+                The request object. Request used by the HttpRoute method.
             parent (str):
                 Required. The parent resource of the HttpRoute. Must be
                 in the format ``projects/*/locations/global``.
@@ -4629,8 +4628,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 
         Args:
             request (Union[google.cloud.network_services_v1.types.GetServiceBindingRequest, dict]):
-                The request object. Request used by the
-                GetServiceBinding method.
+                The request object. Request used by the GetServiceBinding
+                method.
             name (str):
                 Required. A name of the ServiceBinding to get. Must be
                 in the format

@@ -1665,7 +1665,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.gcn_endpoint_policy.CreateEndpointPolicyRequest):
                     The request object. Request used with the
                 CreateEndpointPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1767,7 +1766,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.gcn_gateway.CreateGatewayRequest):
                     The request object. Request used by the CreateGateway
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1867,7 +1865,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.gcn_grpc_route.CreateGrpcRouteRequest):
                     The request object. Request used by the CreateGrpcRoute
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2069,7 +2066,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.gcn_mesh.CreateMeshRequest):
                     The request object. Request used by the CreateMesh
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2169,7 +2165,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.gcn_service_binding.CreateServiceBindingRequest):
                     The request object. Request used by the ServiceBinding
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2469,7 +2464,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.endpoint_policy.DeleteEndpointPolicyRequest):
                     The request object. Request used with the
                 DeleteEndpointPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2560,7 +2554,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.gateway.DeleteGatewayRequest):
                     The request object. Request used by the DeleteGateway
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2649,7 +2642,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.grpc_route.DeleteGrpcRouteRequest):
                     The request object. Request used by the DeleteGrpcRoute
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2740,7 +2732,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.http_route.DeleteHttpRouteRequest):
                     The request object. Request used by the DeleteHttpRoute
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2831,7 +2822,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.mesh.DeleteMeshRequest):
                     The request object. Request used by the DeleteMesh
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2920,7 +2910,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.service_binding.DeleteServiceBindingRequest):
                     The request object. Request used by the
                 DeleteServiceBinding method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3011,7 +3000,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.tcp_route.DeleteTcpRouteRequest):
                     The request object. Request used by the DeleteTcpRoute
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3102,7 +3090,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.tls_route.DeleteTlsRouteRequest):
                     The request object. Request used by the DeleteTlsRoute
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3193,7 +3180,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.endpoint_policy.GetEndpointPolicyRequest):
                     The request object. Request used with the
                 GetEndpointPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3289,7 +3275,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.gateway.GetGatewayRequest):
                     The request object. Request used by the GetGateway
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3385,7 +3370,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.grpc_route.GetGrpcRouteRequest):
                     The request object. Request used by the GetGrpcRoute
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3476,7 +3460,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.http_route.GetHttpRouteRequest):
                     The request object. Request used by the GetHttpRoute
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3659,7 +3642,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.service_binding.GetServiceBindingRequest):
                     The request object. Request used by the GetServiceBinding
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3752,7 +3734,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.tcp_route.GetTcpRouteRequest):
                     The request object. Request used by the GetTcpRoute
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3843,7 +3824,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.tls_route.GetTlsRouteRequest):
                     The request object. Request used by the GetTlsRoute
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3934,7 +3914,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.endpoint_policy.ListEndpointPoliciesRequest):
                     The request object. Request used with the
                 ListEndpointPolicies method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4026,7 +4005,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.gateway.ListGatewaysRequest):
                     The request object. Request used with the ListGateways
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4116,7 +4094,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.grpc_route.ListGrpcRoutesRequest):
                     The request object. Request used with the ListGrpcRoutes
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4208,7 +4185,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.http_route.ListHttpRoutesRequest):
                     The request object. Request used with the ListHttpRoutes
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4300,7 +4276,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.mesh.ListMeshesRequest):
                     The request object. Request used with the ListMeshes
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4390,7 +4365,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.service_binding.ListServiceBindingsRequest):
                     The request object. Request used with the
                 ListServiceBindings method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4482,7 +4456,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.tcp_route.ListTcpRoutesRequest):
                     The request object. Request used with the ListTcpRoutes
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4572,7 +4545,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.tls_route.ListTlsRoutesRequest):
                     The request object. Request used with the ListTlsRoutes
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4662,7 +4634,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.gcn_endpoint_policy.UpdateEndpointPolicyRequest):
                     The request object. Request used with the
                 UpdateEndpointPolicy method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4762,7 +4733,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.gcn_gateway.UpdateGatewayRequest):
                     The request object. Request used by the UpdateGateway
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4860,7 +4830,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.gcn_grpc_route.UpdateGrpcRouteRequest):
                     The request object. Request used by the UpdateGrpcRoute
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4960,7 +4929,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.gcn_http_route.UpdateHttpRouteRequest):
                     The request object. Request used by the UpdateHttpRoute
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5060,7 +5028,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.gcn_mesh.UpdateMeshRequest):
                     The request object. Request used by the UpdateMesh
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5158,7 +5125,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.gcn_tcp_route.UpdateTcpRouteRequest):
                     The request object. Request used by the UpdateTcpRoute
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -5258,7 +5224,6 @@ class NetworkServicesRestTransport(NetworkServicesTransport):
                 request (~.gcn_tls_route.UpdateTlsRouteRequest):
                     The request object. Request used by the UpdateTlsRoute
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
