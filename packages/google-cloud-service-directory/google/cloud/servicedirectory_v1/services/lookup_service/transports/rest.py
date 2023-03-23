@@ -227,7 +227,6 @@ class LookupServiceRestTransport(LookupServiceTransport):
                 [LookupService.ResolveService][google.cloud.servicedirectory.v1.LookupService.ResolveService].
                 Looks up a service by its name, returns the service and
                 its endpoints.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

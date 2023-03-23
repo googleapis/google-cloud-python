@@ -720,7 +720,6 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                 request (~.registration_service.CreateEndpointRequest):
                     The request object. The request message for
                 [RegistrationService.CreateEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateEndpoint].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -822,7 +821,6 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                 request (~.registration_service.CreateNamespaceRequest):
                     The request object. The request message for
                 [RegistrationService.CreateNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateNamespace].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -928,7 +926,6 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                 request (~.registration_service.CreateServiceRequest):
                     The request object. The request message for
                 [RegistrationService.CreateService][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateService].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1029,7 +1026,6 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                 request (~.registration_service.DeleteEndpointRequest):
                     The request object. The request message for
                 [RegistrationService.DeleteEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteEndpoint].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1105,7 +1101,6 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                 request (~.registration_service.DeleteNamespaceRequest):
                     The request object. The request message for
                 [RegistrationService.DeleteNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteNamespace].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1183,7 +1178,6 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                 request (~.registration_service.DeleteServiceRequest):
                     The request object. The request message for
                 [RegistrationService.DeleteService][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteService].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1261,7 +1255,6 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                 [RegistrationService.GetEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.GetEndpoint].
                 This should not be used to lookup endpoints at runtime.
                 Instead, use the ``resolve`` method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1527,7 +1520,6 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                 request (~.registration_service.GetNamespaceRequest):
                     The request object. The request message for
                 [RegistrationService.GetNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.GetNamespace].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1623,7 +1615,6 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                 This should not be used for looking up a service.
                 Insead, use the ``resolve`` method as it contains all
                 endpoints and associated metadata.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1715,7 +1706,6 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                 request (~.registration_service.ListEndpointsRequest):
                     The request object. The request message for
                 [RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1805,7 +1795,6 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                 request (~.registration_service.ListNamespacesRequest):
                     The request object. The request message for
                 [RegistrationService.ListNamespaces][google.cloud.servicedirectory.v1beta1.RegistrationService.ListNamespaces].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1895,7 +1884,6 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                 request (~.registration_service.ListServicesRequest):
                     The request object. The request message for
                 [RegistrationService.ListServices][google.cloud.servicedirectory.v1beta1.RegistrationService.ListServices].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2264,7 +2252,6 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                 request (~.registration_service.UpdateEndpointRequest):
                     The request object. The request message for
                 [RegistrationService.UpdateEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateEndpoint].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2366,7 +2353,6 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                 request (~.registration_service.UpdateNamespaceRequest):
                     The request object. The request message for
                 [RegistrationService.UpdateNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateNamespace].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2472,7 +2458,6 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                 request (~.registration_service.UpdateServiceRequest):
                     The request object. The request message for
                 [RegistrationService.UpdateService][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateService].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

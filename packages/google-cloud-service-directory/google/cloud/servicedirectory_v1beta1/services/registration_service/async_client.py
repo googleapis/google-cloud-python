@@ -1103,7 +1103,7 @@ class RegistrationServiceAsyncClient:
                 The request object. The request message for
                 [RegistrationService.GetService][google.cloud.servicedirectory.v1beta1.RegistrationService.GetService].
                 This should not be used for looking up a service.
-                Insead, use the `resolve` method as it contains all
+                Insead, use the ``resolve`` method as it contains all
                 endpoints and associated metadata.
             name (:class:`str`):
                 Required. The name of the service to
@@ -1668,7 +1668,7 @@ class RegistrationServiceAsyncClient:
                 The request object. The request message for
                 [RegistrationService.GetEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.GetEndpoint].
                 This should not be used to lookup endpoints at runtime.
-                Instead, use the `resolve` method.
+                Instead, use the ``resolve`` method.
             name (:class:`str`):
                 Required. The name of the endpoint to
                 get.
@@ -1977,8 +1977,7 @@ class RegistrationServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
-                The request object. Request message for `GetIamPolicy`
-                method.
+                The request object. Request message for ``GetIamPolicy`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2121,8 +2120,7 @@ class RegistrationServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
-                The request object. Request message for `SetIamPolicy`
-                method.
+                The request object. Request message for ``SetIamPolicy`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2266,8 +2264,7 @@ class RegistrationServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
-                The request object. Request message for
-                `TestIamPermissions` method.
+                The request object. Request message for ``TestIamPermissions`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
