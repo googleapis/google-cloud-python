@@ -383,7 +383,6 @@ class CloudShellServiceRestTransport(CloudShellServiceTransport):
                 request (~.cloudshell.AddPublicKeyRequest):
                     The request object. Request message for
                 [AddPublicKey][google.cloud.shell.v1.CloudShellService.AddPublicKey].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -470,7 +469,6 @@ class CloudShellServiceRestTransport(CloudShellServiceTransport):
                 request (~.cloudshell.AuthorizeEnvironmentRequest):
                     The request object. Request message for
                 [AuthorizeEnvironment][google.cloud.shell.v1.CloudShellService.AuthorizeEnvironment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -569,7 +567,6 @@ class CloudShellServiceRestTransport(CloudShellServiceTransport):
                 request (~.cloudshell.GetEnvironmentRequest):
                     The request object. Request message for
                 [GetEnvironment][google.cloud.shell.v1.CloudShellService.GetEnvironment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -655,7 +652,6 @@ class CloudShellServiceRestTransport(CloudShellServiceTransport):
                 request (~.cloudshell.RemovePublicKeyRequest):
                     The request object. Request message for
                 [RemovePublicKey][google.cloud.shell.v1.CloudShellService.RemovePublicKey].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -744,7 +740,6 @@ class CloudShellServiceRestTransport(CloudShellServiceTransport):
                 request (~.cloudshell.StartEnvironmentRequest):
                     The request object. Request message for
                 [StartEnvironment][google.cloud.shell.v1.CloudShellService.StartEnvironment].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
