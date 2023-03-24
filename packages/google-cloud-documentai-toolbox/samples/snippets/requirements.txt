@@ -1,4 +1,4 @@
 google-cloud-bigquery==3.7.0
-google-cloud-documentai==2.14.0
+google-cloud-documentai==2.15.0
 google-cloud-storage==2.7.0
 google-cloud-documentai-toolbox==0.1.1a0
