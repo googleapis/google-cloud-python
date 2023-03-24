@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.16.3](https://github.com/googleapis/google-auth-library-python/compare/v2.16.2...v2.16.3) (2023-03-24)
+
+
+### Bug Fixes
+
+* Read both applicationId and relyingPartyId. ([#1246](https://github.com/googleapis/google-auth-library-python/issues/1246)) ([e125dfe](https://github.com/googleapis/google-auth-library-python/commit/e125dfe1e345bf5f6cef4efee8215de129401c51))
+
 ## [2.16.2](https://github.com/googleapis/google-auth-library-python/compare/v2.16.1...v2.16.2) (2023-03-02)
 
 
