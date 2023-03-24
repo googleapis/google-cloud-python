@@ -17,13 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import google.apps.script.type  # type: ignore
-import google.apps.script.type.calendar
-import google.apps.script.type.docs
-import google.apps.script.type.drive
-import google.apps.script.type.gmail
-import google.apps.script.type.sheets
-import google.apps.script.type.slides
+from google.apps.script.type.calendar.types import calendar_addon_manifest
+from google.apps.script.type.docs.types import docs_addon_manifest
+from google.apps.script.type.drive.types import drive_addon_manifest
+from google.apps.script.type.gmail.types import gmail_addon_manifest
+from google.apps.script.type.sheets.types import sheets_addon_manifest
+from google.apps.script.type.slides.types import slides_addon_manifest
+from google.apps.script.type.types import script_manifest
 from google.protobuf import wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -395,47 +395,45 @@ class AddOns(proto.Message):
             endpoints
     """
 
-    common: google.apps.script.type.types.CommonAddOnManifest = proto.Field(
+    common: script_manifest.CommonAddOnManifest = proto.Field(
         proto.MESSAGE,
         number=1,
-        message=google.apps.script.type.types.CommonAddOnManifest,
+        message=script_manifest.CommonAddOnManifest,
     )
-    gmail: google.apps.script.type.gmail.types.GmailAddOnManifest = proto.Field(
+    gmail: gmail_addon_manifest.GmailAddOnManifest = proto.Field(
         proto.MESSAGE,
         number=2,
-        message=google.apps.script.type.gmail.types.GmailAddOnManifest,
+        message=gmail_addon_manifest.GmailAddOnManifest,
     )
-    drive: google.apps.script.type.drive.types.DriveAddOnManifest = proto.Field(
+    drive: drive_addon_manifest.DriveAddOnManifest = proto.Field(
         proto.MESSAGE,
         number=5,
-        message=google.apps.script.type.drive.types.DriveAddOnManifest,
+        message=drive_addon_manifest.DriveAddOnManifest,
     )
-    calendar: google.apps.script.type.calendar.types.CalendarAddOnManifest = (
-        proto.Field(
-            proto.MESSAGE,
-            number=6,
-            message=google.apps.script.type.calendar.types.CalendarAddOnManifest,
-        )
+    calendar: calendar_addon_manifest.CalendarAddOnManifest = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=calendar_addon_manifest.CalendarAddOnManifest,
     )
-    docs: google.apps.script.type.docs.types.DocsAddOnManifest = proto.Field(
+    docs: docs_addon_manifest.DocsAddOnManifest = proto.Field(
         proto.MESSAGE,
         number=7,
-        message=google.apps.script.type.docs.types.DocsAddOnManifest,
+        message=docs_addon_manifest.DocsAddOnManifest,
     )
-    sheets: google.apps.script.type.sheets.types.SheetsAddOnManifest = proto.Field(
+    sheets: sheets_addon_manifest.SheetsAddOnManifest = proto.Field(
         proto.MESSAGE,
         number=8,
-        message=google.apps.script.type.sheets.types.SheetsAddOnManifest,
+        message=sheets_addon_manifest.SheetsAddOnManifest,
     )
-    slides: google.apps.script.type.slides.types.SlidesAddOnManifest = proto.Field(
+    slides: slides_addon_manifest.SlidesAddOnManifest = proto.Field(
         proto.MESSAGE,
         number=10,
-        message=google.apps.script.type.slides.types.SlidesAddOnManifest,
+        message=slides_addon_manifest.SlidesAddOnManifest,
     )
-    http_options: google.apps.script.type.types.HttpOptions = proto.Field(
+    http_options: script_manifest.HttpOptions = proto.Field(
         proto.MESSAGE,
         number=15,
-        message=google.apps.script.type.types.HttpOptions,
+        message=script_manifest.HttpOptions,
     )
 
 

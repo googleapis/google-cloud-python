@@ -544,7 +544,8 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
         Args:
             request (Union[google.cloud.gsuiteaddons_v1.types.GetAuthorizationRequest, dict]):
                 The request object. Request message to get Google
-                Workspace Add-ons authorization information.
+                Workspace Add-ons authorization
+                information.
             name (str):
                 Required. Name of the project for which to get the
                 Google Workspace Add-ons authorization information.

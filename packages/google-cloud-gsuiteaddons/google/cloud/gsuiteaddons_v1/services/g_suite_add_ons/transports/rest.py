@@ -459,7 +459,6 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
                 request (~.gsuiteaddons.CreateDeploymentRequest):
                     The request object. Request message to create a
                 deployment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -558,7 +557,6 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
                 request (~.gsuiteaddons.DeleteDeploymentRequest):
                     The request object. Request message to delete a
                 deployment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -637,7 +635,6 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
                     The request object. Request message to get Google
                 Workspace Add-ons authorization
                 information.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -815,7 +812,6 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
                 request (~.gsuiteaddons.GetInstallStatusRequest):
                     The request object. Request message to get the install
                 status of a developer mode deployment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -907,7 +903,6 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
                 request (~.gsuiteaddons.InstallDeploymentRequest):
                     The request object. Request message to install a
                 developer mode deployment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -994,7 +989,6 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
                 request (~.gsuiteaddons.ListDeploymentsRequest):
                     The request object. Request message to list deployments
                 for a project.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1084,7 +1078,6 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
                 request (~.gsuiteaddons.ReplaceDeploymentRequest):
                     The request object. Request message to create or replace
                 a deployment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1183,7 +1176,6 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
                 request (~.gsuiteaddons.UninstallDeploymentRequest):
                     The request object. Request message to uninstall a
                 developer mode deployment.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

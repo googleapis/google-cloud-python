@@ -29,6 +29,17 @@ import math
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
+from google.apps.script.type.calendar.types import calendar_addon_manifest
+from google.apps.script.type.docs.types import docs_addon_manifest
+from google.apps.script.type.drive.types import drive_addon_manifest
+from google.apps.script.type.gmail.types import gmail_addon_manifest
+from google.apps.script.type.sheets.types import sheets_addon_manifest
+from google.apps.script.type.slides.types import slides_addon_manifest
+from google.apps.script.type.types import (
+    addon_widget_set,
+    extension_point,
+    script_manifest,
+)
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
