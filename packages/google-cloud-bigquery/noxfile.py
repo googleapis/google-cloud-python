@@ -303,6 +303,10 @@ def prerelease_deps(session):
     session.install(
         "--pre",
         "--upgrade",
+        "IPython",
+        "ipykernel",
+        "ipywidgets",
+        "tqdm",
         "git+https://github.com/pypa/packaging.git",
     )
 
@@ -321,7 +325,6 @@ def prerelease_deps(session):
         "google-cloud-datacatalog",
         "google-cloud-storage",
         "google-cloud-testutils",
-        "IPython",
         "mock",
         "psutil",
         "pytest",
@@ -356,6 +359,7 @@ def prerelease_deps(session):
     session.run("python", "-c", "import grpc; print(grpc.__version__)")
     session.run("python", "-c", "import pandas; print(pandas.__version__)")
     session.run("python", "-c", "import pyarrow; print(pyarrow.__version__)")
+    session.run("python", "-m", "pip", "freeze")
 
     # Run all tests, except a few samples tests which require extra dependencies.
     session.run("py.test", "tests/unit")
