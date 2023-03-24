@@ -45,13 +45,15 @@ def test_security_key():
                     ).decode("ascii"),
                 }
             ],
+            "relyingPartyId": "security_key_application_id",
         },
     }
     mock_key = mock.Mock()
 
     challenge = challenges.SecurityKeyChallenge()
 
-    # Test the case that security key challenge is passed.
+    # Test the case that security key challenge is passed with applicationId and
+    # relyingPartyId the same.
     with mock.patch("pyu2f.model.RegisteredKey", return_value=mock_key):
         with mock.patch(
             "pyu2f.convenience.authenticator.CompositeAuthenticator.Authenticate"
@@ -67,6 +69,56 @@ def test_security_key():
                 [{"key": mock_key, "challenge": b"some_challenge"}],
                 print_callback=sys.stderr.write,
             )
+
+    # Test the case that security key challenge is passed with applicationId and
+    # relyingPartyId different, first call works.
+    metadata["securityKey"]["relyingPartyId"] = "security_key_relying_party_id"
+    sys.stderr.write("metadata=" + str(metadata) + "\n")
+    with mock.patch("pyu2f.model.RegisteredKey", return_value=mock_key):
+        with mock.patch(
+            "pyu2f.convenience.authenticator.CompositeAuthenticator.Authenticate"
+        ) as mock_authenticate:
+            mock_authenticate.return_value = "security key response"
+            assert challenge.name == "SECURITY_KEY"
+            assert challenge.is_locally_eligible
+            assert challenge.obtain_challenge_input(metadata) == {
+                "securityKey": "security key response"
+            }
+            mock_authenticate.assert_called_with(
+                "security_key_relying_party_id",
+                [{"key": mock_key, "challenge": b"some_challenge"}],
+                print_callback=sys.stderr.write,
+            )
+
+    # Test the case that security key challenge is passed with applicationId and
+    # relyingPartyId different, first call fails, requires retry.
+    metadata["securityKey"]["relyingPartyId"] = "security_key_relying_party_id"
+    with mock.patch("pyu2f.model.RegisteredKey", return_value=mock_key):
+        with mock.patch(
+            "pyu2f.convenience.authenticator.CompositeAuthenticator.Authenticate"
+        ) as mock_authenticate:
+            assert challenge.name == "SECURITY_KEY"
+            assert challenge.is_locally_eligible
+            mock_authenticate.side_effect = [
+                pyu2f.errors.U2FError(pyu2f.errors.U2FError.DEVICE_INELIGIBLE),
+                "security key response",
+            ]
+            assert challenge.obtain_challenge_input(metadata) == {
+                "securityKey": "security key response"
+            }
+            calls = [
+                mock.call(
+                    "security_key_relying_party_id",
+                    [{"key": mock_key, "challenge": b"some_challenge"}],
+                    print_callback=sys.stderr.write,
+                ),
+                mock.call(
+                    "security_key_application_id",
+                    [{"key": mock_key, "challenge": b"some_challenge"}],
+                    print_callback=sys.stderr.write,
+                ),
+            ]
+            mock_authenticate.assert_has_calls(calls)
 
     # Test various types of exceptions.
     with mock.patch("pyu2f.model.RegisteredKey", return_value=mock_key):
@@ -84,6 +136,12 @@ def test_security_key():
             mock_authenticate.side_effect = pyu2f.errors.U2FError(
                 pyu2f.errors.U2FError.TIMEOUT
             )
+            assert challenge.obtain_challenge_input(metadata) is None
+
+        with mock.patch(
+            "pyu2f.convenience.authenticator.CompositeAuthenticator.Authenticate"
+        ) as mock_authenticate:
+            mock_authenticate.side_effect = pyu2f.errors.PluginError()
             assert challenge.obtain_challenge_input(metadata) is None
 
         with mock.patch(

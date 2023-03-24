@@ -124,7 +124,16 @@ class SecurityKeyChallenge(ReauthChallenge):
             )
         sk = metadata["securityKey"]
         challenges = sk["challenges"]
-        app_id = sk["applicationId"]
+        # Read both 'applicationId' and 'relyingPartyId', if they are the same, use
+        # applicationId, if they are different, use relyingPartyId first and retry
+        # with applicationId
+        application_id = sk["applicationId"]
+        relying_party_id = sk["relyingPartyId"]
+
+        if application_id != relying_party_id:
+            application_parameters = [relying_party_id, application_id]
+        else:
+            application_parameters = [application_id]
 
         challenge_data = []
         for c in challenges:
@@ -134,24 +143,37 @@ class SecurityKeyChallenge(ReauthChallenge):
             challenge = base64.urlsafe_b64decode(challenge)
             challenge_data.append({"key": key, "challenge": challenge})
 
-        try:
-            api = pyu2f.convenience.authenticator.CreateCompositeAuthenticator(
-                REAUTH_ORIGIN
-            )
-            response = api.Authenticate(
-                app_id, challenge_data, print_callback=sys.stderr.write
-            )
-            return {"securityKey": response}
-        except pyu2f.errors.U2FError as e:
-            if e.code == pyu2f.errors.U2FError.DEVICE_INELIGIBLE:
-                sys.stderr.write("Ineligible security key.\n")
-            elif e.code == pyu2f.errors.U2FError.TIMEOUT:
-                sys.stderr.write("Timed out while waiting for security key touch.\n")
-            else:
-                raise e
-        except pyu2f.errors.NoDeviceFoundError:
-            sys.stderr.write("No security key found.\n")
-        return None
+        # Track number of tries to suppress error message until all application_parameters
+        # are tried.
+        tries = 0
+        for app_id in application_parameters:
+            try:
+                tries += 1
+                api = pyu2f.convenience.authenticator.CreateCompositeAuthenticator(
+                    REAUTH_ORIGIN
+                )
+                response = api.Authenticate(
+                    app_id, challenge_data, print_callback=sys.stderr.write
+                )
+                return {"securityKey": response}
+            except pyu2f.errors.U2FError as e:
+                if e.code == pyu2f.errors.U2FError.DEVICE_INELIGIBLE:
+                    # Only show error if all app_ids have been tried
+                    if tries == len(application_parameters):
+                        sys.stderr.write("Ineligible security key.\n")
+                        return None
+                    continue
+                if e.code == pyu2f.errors.U2FError.TIMEOUT:
+                    sys.stderr.write(
+                        "Timed out while waiting for security key touch.\n"
+                    )
+                else:
+                    raise e
+            except pyu2f.errors.PluginError:
+                continue
+            except pyu2f.errors.NoDeviceFoundError:
+                sys.stderr.write("No security key found.\n")
+            return None
 
 
 class SamlChallenge(ReauthChallenge):
