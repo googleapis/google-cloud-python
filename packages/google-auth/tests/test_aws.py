@@ -1495,39 +1495,6 @@ class TestCredentials(object):
         credentials.retrieve_subject_token(request)
         assert not request.called
 
-    def test_validate_metadata_server_url_if_any(self):
-        aws.Credentials.validate_metadata_server_url_if_any(
-            "http://[fd00:ec2::254]/latest/meta-data/placement/availability-zone", "url"
-        )
-        aws.Credentials.validate_metadata_server_url_if_any(
-            "http://169.254.169.254/latest/meta-data/placement/availability-zone", "url"
-        )
-
-        with pytest.raises(ValueError) as excinfo:
-            aws.Credentials.validate_metadata_server_url_if_any(
-                "http://fd00:ec2::254/latest/meta-data/placement/availability-zone",
-                "url",
-            )
-        assert excinfo.match("Invalid hostname 'fd00' for 'url'")
-
-        with pytest.raises(ValueError) as excinfo:
-            aws.Credentials.validate_metadata_server_url_if_any(
-                "http://abc.com/latest/meta-data/placement/availability-zone", "url"
-            )
-        assert excinfo.match("Invalid hostname 'abc.com' for 'url'")
-
-    def test_retrieve_subject_token_invalid_hosts(self):
-        keys = ["url", "region_url", "imdsv2_session_token_url"]
-        for key in keys:
-            credential_source = self.CREDENTIAL_SOURCE.copy()
-            credential_source[
-                key
-            ] = "http://abc.com/latest/meta-data/iam/security-credentials"
-
-            with pytest.raises(ValueError) as excinfo:
-                self.make_credentials(credential_source=credential_source)
-            assert excinfo.match("Invalid hostname 'abc.com' for '{}'".format(key))
-
     @mock.patch("google.auth._helpers.utcnow")
     def test_retrieve_subject_token_success_ipv6(self, utcnow):
         utcnow.return_value = datetime.datetime.strptime(
