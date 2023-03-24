@@ -1646,7 +1646,8 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         Args:
             request (Union[google.cloud.documentai_v1.types.ListProcessorVersionsRequest, dict]):
                 The request object. Request message for list all
-                processor versions belongs to a processor.
+                processor versions belongs to a
+                processor.
             parent (str):
                 Required. The parent (project, location and processor)
                 to list all versions. Format:
@@ -2144,9 +2145,10 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         Args:
             request (Union[google.cloud.documentai_v1.types.CreateProcessorRequest, dict]):
                 The request object. Request message for create a
-                processor. Notice this request is sent to a regionalized
-                backend service, and if the processor type is not
-                available on that region, the creation will fail.
+                processor. Notice this request is sent
+                to a regionalized backend service, and
+                if the processor type is not available
+                on that region, the creation will fail.
             parent (str):
                 Required. The parent (project and location) under which
                 to create the processor. Format:
@@ -3063,8 +3065,8 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1.types.ListEvaluationsRequest, dict]):
-                The request object. Retrieves a list of evaluations for
-                a given ProcessorVersion.
+                The request object. Retrieves a list of evaluations for a
+                given ProcessorVersion.
             parent (str):
                 Required. The resource name of the
                 [ProcessorVersion][google.cloud.documentai.v1.ProcessorVersion]

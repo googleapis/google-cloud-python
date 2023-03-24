@@ -83,6 +83,9 @@ __protobuf__ = proto.module(
         "GetEvaluationRequest",
         "ListEvaluationsRequest",
         "ListEvaluationsResponse",
+        "ImportProcessorVersionRequest",
+        "ImportProcessorVersionResponse",
+        "ImportProcessorVersionMetadata",
     },
 )
 
@@ -1538,6 +1541,74 @@ class ListEvaluationsResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class ImportProcessorVersionRequest(proto.Message):
+    r"""The request message for the ImportProcessorVersion method. This
+    method requires Document AI Service Agent of the destination project
+    in the source project's IAM with `Document AI Editor
+    role <https://cloud.google.com/document-ai/docs/access-control/iam-roles>`__.
+
+    The destination project is specified as part of the ``parent``
+    field. The source project is specified as part of ``source`` field.
+
+    The Service Agent for Document AI can be found in
+    https://cloud.google.com/iam/docs/service-agents.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        processor_version_source (str):
+            The source processor version to import from.
+
+            This field is a member of `oneof`_ ``source``.
+        parent (str):
+            Required. The destination processor name to create the
+            processor version in. Format:
+            ``projects/{project}/locations/{location}/processors/{processor}``
+    """
+
+    processor_version_source: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="source",
+    )
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ImportProcessorVersionResponse(proto.Message):
+    r"""The response message for the ImportProcessorVersion method.
+
+    Attributes:
+        processor_version (str):
+            The destination processor version name.
+    """
+
+    processor_version: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ImportProcessorVersionMetadata(proto.Message):
+    r"""The long running operation metadata for the
+    ImportProcessorVersion method.
+
+    Attributes:
+        common_metadata (google.cloud.documentai_v1beta3.types.CommonOperationMetadata):
+            The basic metadata for the long running
+            operation.
+    """
+
+    common_metadata: operation_metadata.CommonOperationMetadata = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=operation_metadata.CommonOperationMetadata,
     )
 
 

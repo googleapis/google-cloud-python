@@ -277,9 +277,9 @@ class DocumentUnderstandingServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.documentai_v1beta2.types.BatchProcessDocumentsRequest, dict]]):
-                The request object. Request to batch process documents
-                as an asynchronous operation. The output is written to
-                Cloud Storage as JSON in the [Document] format.
+                The request object. Request to batch process documents as an asynchronous
+                operation. The output is written to Cloud Storage as
+                JSON in the [Document] format.
             requests (:class:`MutableSequence[google.cloud.documentai_v1beta2.types.ProcessDocumentRequest]`):
                 Required. Individual requests for
                 each document.

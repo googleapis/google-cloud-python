@@ -75,6 +75,11 @@
                 "get_processor_version"
               ]
             },
+            "ImportProcessorVersion": {
+              "methods": [
+                "import_processor_version"
+              ]
+            },
             "ListEvaluations": {
               "methods": [
                 "list_evaluations"
@@ -190,6 +195,11 @@
                 "get_processor_version"
               ]
             },
+            "ImportProcessorVersion": {
+              "methods": [
+                "import_processor_version"
+              ]
+            },
             "ListEvaluations": {
               "methods": [
                 "list_evaluations"
@@ -303,6 +313,11 @@
             "GetProcessorVersion": {
               "methods": [
                 "get_processor_version"
+              ]
+            },
+            "ImportProcessorVersion": {
+              "methods": [
+                "import_processor_version"
               ]
             },
             "ListEvaluations": {

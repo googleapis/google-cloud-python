@@ -900,6 +900,36 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
             )
         return self._stubs["list_evaluations"]
 
+    @property
+    def import_processor_version(
+        self,
+    ) -> Callable[
+        [document_processor_service.ImportProcessorVersionRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the import processor version method over gRPC.
+
+        Imports a processor version from source processor
+        version.
+
+        Returns:
+            Callable[[~.ImportProcessorVersionRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "import_processor_version" not in self._stubs:
+            self._stubs["import_processor_version"] = self.grpc_channel.unary_unary(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/ImportProcessorVersion",
+                request_serializer=document_processor_service.ImportProcessorVersionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["import_processor_version"]
+
     def close(self):
         self.grpc_channel.close()
 

@@ -267,6 +267,11 @@ class DocumentProcessorServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.import_processor_version: gapic_v1.method.wrap_method(
+                self.import_processor_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -496,6 +501,15 @@ class DocumentProcessorServiceTransport(abc.ABC):
             document_processor_service.ListEvaluationsResponse,
             Awaitable[document_processor_service.ListEvaluationsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def import_processor_version(
+        self,
+    ) -> Callable[
+        [document_processor_service.ImportProcessorVersionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

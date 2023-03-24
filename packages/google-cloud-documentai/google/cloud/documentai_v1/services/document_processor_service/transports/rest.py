@@ -1116,7 +1116,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 request (~.document_processor_service.BatchProcessRequest):
                     The request object. Request message for batch process
                 document method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1224,7 +1223,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 to a regionalized backend service, and
                 if the processor type is not available
                 on that region, the creation will fail.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1327,7 +1325,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 request (~.document_processor_service.DeleteProcessorRequest):
                     The request object. Request message for the delete
                 processor method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1418,7 +1415,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 request (~.document_processor_service.DeleteProcessorVersionRequest):
                     The request object. Request message for the delete
                 processor version method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1511,7 +1507,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 request (~.document_processor_service.DeployProcessorVersionRequest):
                     The request object. Request message for the deploy
                 processor version method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1613,7 +1608,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 request (~.document_processor_service.DisableProcessorRequest):
                     The request object. Request message for the disable
                 processor method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1713,7 +1707,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 request (~.document_processor_service.EnableProcessorRequest):
                     The request object. Request message for the enable
                 processor method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1814,7 +1807,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                     request (~.document_processor_service.EvaluateProcessorVersionRequest):
                         The request object. Evaluates the given ProcessorVersion
                     against the supplied documents.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1916,7 +1908,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 request (~.document_processor_service.FetchProcessorTypesRequest):
                     The request object. Request message for fetch processor
                 types.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2280,7 +2271,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 request (~.document_processor_service.GetProcessorVersionRequest):
                     The request object. Request message for get processor
                 version.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2381,7 +2371,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 request (~.document_processor_service.ListEvaluationsRequest):
                     The request object. Retrieves a list of evaluations for a
                 given ProcessorVersion.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2471,7 +2460,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 request (~.document_processor_service.ListProcessorsRequest):
                     The request object. Request message for list all
                 processors belongs to a project.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2559,7 +2547,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 request (~.document_processor_service.ListProcessorTypesRequest):
                     The request object. Request message for list processor
                 types.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2654,7 +2641,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                     The request object. Request message for list all
                 processor versions belongs to a
                 processor.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2746,7 +2732,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 request (~.document_processor_service.ProcessRequest):
                     The request object. Request message for the process
                 document method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2852,7 +2837,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 request (~.document_processor_service.ReviewDocumentRequest):
                     The request object. Request message for review document
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2951,7 +2935,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                     request (~.document_processor_service.SetDefaultProcessorVersionRequest):
                         The request object. Request message for the set default
                     processor version method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3053,7 +3036,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 request (~.document_processor_service.TrainProcessorVersionRequest):
                     The request object. Request message for the create
                 processor version method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3156,7 +3138,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                     request (~.document_processor_service.UndeployProcessorVersionRequest):
                         The request object. Request message for the undeploy
                     processor version method.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
