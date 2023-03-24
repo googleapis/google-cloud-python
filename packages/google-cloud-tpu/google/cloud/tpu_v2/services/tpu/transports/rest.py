@@ -779,7 +779,6 @@ class TpuRestTransport(TpuTransport):
                 request (~.cloud_tpu.CreateNodeRequest):
                     The request object. Request for
                 [CreateNode][google.cloud.tpu.v2.Tpu.CreateNode].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -877,7 +876,6 @@ class TpuRestTransport(TpuTransport):
                 request (~.cloud_tpu.DeleteNodeRequest):
                     The request object. Request for
                 [DeleteNode][google.cloud.tpu.v2.Tpu.DeleteNode].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -966,7 +964,6 @@ class TpuRestTransport(TpuTransport):
                 request (~.cloud_tpu.GenerateServiceIdentityRequest):
                     The request object. Request for
                 [GenerateServiceIdentity][google.cloud.tpu.v2.Tpu.GenerateServiceIdentity].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1067,7 +1064,6 @@ class TpuRestTransport(TpuTransport):
                 request (~.cloud_tpu.GetAcceleratorTypeRequest):
                     The request object. Request for
                 [GetAcceleratorType][google.cloud.tpu.v2.Tpu.GetAcceleratorType].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1159,7 +1155,6 @@ class TpuRestTransport(TpuTransport):
                 request (~.cloud_tpu.GetGuestAttributesRequest):
                     The request object. Request for
                 [GetGuestAttributes][google.cloud.tpu.v2.Tpu.GetGuestAttributes].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1346,7 +1341,6 @@ class TpuRestTransport(TpuTransport):
                 request (~.cloud_tpu.GetRuntimeVersionRequest):
                     The request object. Request for
                 [GetRuntimeVersion][google.cloud.tpu.v2.Tpu.GetRuntimeVersion].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1438,7 +1432,6 @@ class TpuRestTransport(TpuTransport):
                 request (~.cloud_tpu.ListAcceleratorTypesRequest):
                     The request object. Request for
                 [ListAcceleratorTypes][google.cloud.tpu.v2.Tpu.ListAcceleratorTypes].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1530,7 +1523,6 @@ class TpuRestTransport(TpuTransport):
                 request (~.cloud_tpu.ListNodesRequest):
                     The request object. Request for
                 [ListNodes][google.cloud.tpu.v2.Tpu.ListNodes].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1620,7 +1612,6 @@ class TpuRestTransport(TpuTransport):
                 request (~.cloud_tpu.ListRuntimeVersionsRequest):
                     The request object. Request for
                 [ListRuntimeVersions][google.cloud.tpu.v2.Tpu.ListRuntimeVersions].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1712,7 +1703,6 @@ class TpuRestTransport(TpuTransport):
                 request (~.cloud_tpu.StartNodeRequest):
                     The request object. Request for
                 [StartNode][google.cloud.tpu.v2.Tpu.StartNode].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1810,7 +1800,6 @@ class TpuRestTransport(TpuTransport):
                 request (~.cloud_tpu.StopNodeRequest):
                     The request object. Request for
                 [StopNode][google.cloud.tpu.v2.Tpu.StopNode].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1910,7 +1899,6 @@ class TpuRestTransport(TpuTransport):
                 request (~.cloud_tpu.UpdateNodeRequest):
                     The request object. Request for
                 [UpdateNode][google.cloud.tpu.v2.Tpu.UpdateNode].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

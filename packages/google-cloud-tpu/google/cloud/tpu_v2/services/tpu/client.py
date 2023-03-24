@@ -647,8 +647,7 @@ class TpuClient(metaclass=TpuClientMeta):
 
         Args:
             request (Union[google.cloud.tpu_v2.types.GetNodeRequest, dict]):
-                The request object. Request for
-                [GetNode][google.cloud.tpu.v2.Tpu.GetNode].
+                The request object. Request for [GetNode][google.cloud.tpu.v2.Tpu.GetNode].
             name (str):
                 Required. The resource name.
                 This corresponds to the ``name`` field
@@ -1337,7 +1336,7 @@ class TpuClient(metaclass=TpuClientMeta):
         Returns:
             google.cloud.tpu_v2.types.GenerateServiceIdentityResponse:
                 Response for
-                [GenerateServiceIdentity][google.cloud.tpu.v2.Tpu.GenerateServiceIdentity].
+                   [GenerateServiceIdentity][google.cloud.tpu.v2.Tpu.GenerateServiceIdentity].
 
         """
         # Create or coerce a protobuf request object.
@@ -1427,7 +1426,7 @@ class TpuClient(metaclass=TpuClientMeta):
         Returns:
             google.cloud.tpu_v2.services.tpu.pagers.ListAcceleratorTypesPager:
                 Response for
-                [ListAcceleratorTypes][google.cloud.tpu.v2.Tpu.ListAcceleratorTypes].
+                   [ListAcceleratorTypes][google.cloud.tpu.v2.Tpu.ListAcceleratorTypes].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1640,7 +1639,7 @@ class TpuClient(metaclass=TpuClientMeta):
         Returns:
             google.cloud.tpu_v2.services.tpu.pagers.ListRuntimeVersionsPager:
                 Response for
-                [ListRuntimeVersions][google.cloud.tpu.v2.Tpu.ListRuntimeVersions].
+                   [ListRuntimeVersions][google.cloud.tpu.v2.Tpu.ListRuntimeVersions].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1846,7 +1845,7 @@ class TpuClient(metaclass=TpuClientMeta):
         Returns:
             google.cloud.tpu_v2.types.GetGuestAttributesResponse:
                 Response for
-                [GetGuestAttributes][google.cloud.tpu.v2.Tpu.GetGuestAttributes].
+                   [GetGuestAttributes][google.cloud.tpu.v2.Tpu.GetGuestAttributes].
 
         """
         # Create or coerce a protobuf request object.

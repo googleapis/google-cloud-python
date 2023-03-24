@@ -370,8 +370,7 @@ class TpuAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.tpu_v1.types.GetNodeRequest, dict]]):
-                The request object. Request for
-                [GetNode][google.cloud.tpu.v1.Tpu.GetNode].
+                The request object. Request for [GetNode][google.cloud.tpu.v1.Tpu.GetNode].
             name (:class:`str`):
                 Required. The resource name.
                 This corresponds to the ``name`` field
@@ -1014,7 +1013,7 @@ class TpuAsyncClient:
         Returns:
             google.cloud.tpu_v1.services.tpu.pagers.ListTensorFlowVersionsAsyncPager:
                 Response for
-                [ListTensorFlowVersions][google.cloud.tpu.v1.Tpu.ListTensorFlowVersions].
+                   [ListTensorFlowVersions][google.cloud.tpu.v1.Tpu.ListTensorFlowVersions].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1227,7 +1226,7 @@ class TpuAsyncClient:
         Returns:
             google.cloud.tpu_v1.services.tpu.pagers.ListAcceleratorTypesAsyncPager:
                 Response for
-                [ListAcceleratorTypes][google.cloud.tpu.v1.Tpu.ListAcceleratorTypes].
+                   [ListAcceleratorTypes][google.cloud.tpu.v1.Tpu.ListAcceleratorTypes].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
