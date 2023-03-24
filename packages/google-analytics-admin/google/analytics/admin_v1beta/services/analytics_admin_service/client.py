@@ -51,7 +51,11 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 
 from google.analytics.admin_v1beta.services.analytics_admin_service import pagers
-from google.analytics.admin_v1beta.types import analytics_admin, resources
+from google.analytics.admin_v1beta.types import (
+    access_report,
+    analytics_admin,
+    resources,
+)
 
 from .transports.base import DEFAULT_CLIENT_INFO, AnalyticsAdminServiceTransport
 from .transports.grpc import AnalyticsAdminServiceGrpcTransport
@@ -985,10 +989,10 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. The list of fields to be updated. Field names
-                must be in snake case (e.g., "field_to_update"). Omitted
-                fields will not be updated. To replace the entire
-                entity, use one path with the string "*" to match all
-                fields.
+                must be in snake case (for example, "field_to_update").
+                Omitted fields will not be updated. To replace the
+                entire entity, use one path with the string "*" to match
+                all fields.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1533,8 +1537,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         GoogleAdsLinks, Streams, UserLinks) will be permanently
         purged.
         https://support.google.com/analytics/answer/6154772
-        Returns an error if the target is not found, or is not
-        an GA4 Property.
+        Returns an error if the target is not found, or is not a
+        GA4 Property.
 
         .. code-block:: python
 
@@ -3220,7 +3224,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Acknowledges the terms of user data collection for
         the specified property.
         This acknowledgement must be completed (either in the
-        Google Analytics UI or via this API) before
+        Google Analytics UI or through this API) before
         MeasurementProtocolSecret resources may be created.
 
         .. code-block:: python
@@ -5678,6 +5682,100 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def run_access_report(
+        self,
+        request: Optional[Union[analytics_admin.RunAccessReportRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_admin.RunAccessReportResponse:
+        r"""Returns a customized report of data access records. The report
+        provides records of each time a user reads Google Analytics
+        reporting data. Access records are retained for up to 2 years.
+
+        Data Access Reports can be requested for a property. The
+        property must be in Google Analytics 360. This method is only
+        available to Administrators.
+
+        These data access records include GA4 UI Reporting, GA4 UI
+        Explorations, GA4 Data API, and other products like Firebase &
+        Admob that can retrieve data from Google Analytics through a
+        linkage. These records don't include property configuration
+        changes like adding a stream or changing a property's time zone.
+        For configuration change history, see
+        `searchChangeHistoryEvents <https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/accounts/searchChangeHistoryEvents>`__.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1beta
+
+            def sample_run_access_report():
+                # Create a client
+                client = admin_v1beta.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1beta.RunAccessReportRequest(
+                )
+
+                # Make the request
+                response = client.run_access_report(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1beta.types.RunAccessReportRequest, dict]):
+                The request object. The request for a Data Access Record
+                Report.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1beta.types.RunAccessReportResponse:
+                The customized Data Access Record
+                Report response.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.RunAccessReportRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.RunAccessReportRequest):
+            request = analytics_admin.RunAccessReportRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.run_access_report]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("entity", request.entity),)),
         )
 
         # Send the request.

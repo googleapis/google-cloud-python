@@ -21,11 +21,13 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.analytics.admin_v1beta.types import resources
+from google.analytics.admin_v1beta.types import access_report, resources
 
 __protobuf__ = proto.module(
     package="google.analytics.admin.v1beta",
     manifest={
+        "RunAccessReportRequest",
+        "RunAccessReportResponse",
         "GetAccountRequest",
         "ListAccountsRequest",
         "ListAccountsResponse",
@@ -88,6 +90,210 @@ __protobuf__ = proto.module(
         "GetDataStreamRequest",
     },
 )
+
+
+class RunAccessReportRequest(proto.Message):
+    r"""The request for a Data Access Record Report.
+
+    Attributes:
+        entity (str):
+            The Data Access Report supports requesting at
+            the property level or account level. If
+            requested at the account level, Data Access
+            Reports include all access for all properties
+            under that account.
+            To request at the property level, entity should
+            be for example 'properties/123' if "123" is your
+            GA4 property ID. To request at the account
+            level, entity should be for example
+            'accounts/1234' if "1234" is your GA4 Account
+            ID.
+        dimensions (MutableSequence[google.analytics.admin_v1beta.types.AccessDimension]):
+            The dimensions requested and displayed in the
+            response. Requests are allowed up to 9
+            dimensions.
+        metrics (MutableSequence[google.analytics.admin_v1beta.types.AccessMetric]):
+            The metrics requested and displayed in the
+            response. Requests are allowed up to 10 metrics.
+        date_ranges (MutableSequence[google.analytics.admin_v1beta.types.AccessDateRange]):
+            Date ranges of access records to read. If
+            multiple date ranges are requested, each
+            response row will contain a zero based date
+            range index. If two date ranges overlap, the
+            access records for the overlapping days is
+            included in the response rows for both date
+            ranges. Requests are allowed up to 2 date
+            ranges.
+        dimension_filter (google.analytics.admin_v1beta.types.AccessFilterExpression):
+            Dimension filters let you restrict report response to
+            specific dimension values which match the filter. For
+            example, filtering on access records of a single user. To
+            learn more, see `Fundamentals of Dimension
+            Filters <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>`__
+            for examples. Metrics cannot be used in this filter.
+        metric_filter (google.analytics.admin_v1beta.types.AccessFilterExpression):
+            Metric filters allow you to restrict report
+            response to specific metric values which match
+            the filter. Metric filters are applied after
+            aggregating the report's rows, similar to SQL
+            having-clause. Dimensions cannot be used in this
+            filter.
+        offset (int):
+            The row count of the start row. The first row is counted as
+            row 0. If offset is unspecified, it is treated as 0. If
+            offset is zero, then this method will return the first page
+            of results with ``limit`` entries.
+
+            To learn more about this pagination parameter, see
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
+        limit (int):
+            The number of rows to return. If unspecified, 10,000 rows
+            are returned. The API returns a maximum of 100,000 rows per
+            request, no matter how many you ask for. ``limit`` must be
+            positive.
+
+            The API may return fewer rows than the requested ``limit``,
+            if there aren't as many remaining rows as the ``limit``. For
+            instance, there are fewer than 300 possible values for the
+            dimension ``country``, so when reporting on only
+            ``country``, you can't get more than 300 rows, even if you
+            set ``limit`` to a higher value.
+
+            To learn more about this pagination parameter, see
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
+        time_zone (str):
+            This request's time zone if specified. If unspecified, the
+            property's time zone is used. The request's time zone is
+            used to interpret the start & end dates of the report.
+
+            Formatted as strings from the IANA Time Zone database
+            (https://www.iana.org/time-zones); for example
+            "America/New_York" or "Asia/Tokyo".
+        order_bys (MutableSequence[google.analytics.admin_v1beta.types.AccessOrderBy]):
+            Specifies how rows are ordered in the
+            response.
+        return_entity_quota (bool):
+            Toggles whether to return the current state of this
+            Analytics Property's quota. Quota is returned in
+            `AccessQuota <#AccessQuota>`__. For account-level requests,
+            this field must be false.
+    """
+
+    entity: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dimensions: MutableSequence[access_report.AccessDimension] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=access_report.AccessDimension,
+    )
+    metrics: MutableSequence[access_report.AccessMetric] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=access_report.AccessMetric,
+    )
+    date_ranges: MutableSequence[access_report.AccessDateRange] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=access_report.AccessDateRange,
+    )
+    dimension_filter: access_report.AccessFilterExpression = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=access_report.AccessFilterExpression,
+    )
+    metric_filter: access_report.AccessFilterExpression = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=access_report.AccessFilterExpression,
+    )
+    offset: int = proto.Field(
+        proto.INT64,
+        number=7,
+    )
+    limit: int = proto.Field(
+        proto.INT64,
+        number=8,
+    )
+    time_zone: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    order_bys: MutableSequence[access_report.AccessOrderBy] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message=access_report.AccessOrderBy,
+    )
+    return_entity_quota: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+    )
+
+
+class RunAccessReportResponse(proto.Message):
+    r"""The customized Data Access Record Report response.
+
+    Attributes:
+        dimension_headers (MutableSequence[google.analytics.admin_v1beta.types.AccessDimensionHeader]):
+            The header for a column in the report that
+            corresponds to a specific dimension. The number
+            of DimensionHeaders and ordering of
+            DimensionHeaders matches the dimensions present
+            in rows.
+        metric_headers (MutableSequence[google.analytics.admin_v1beta.types.AccessMetricHeader]):
+            The header for a column in the report that
+            corresponds to a specific metric. The number of
+            MetricHeaders and ordering of MetricHeaders
+            matches the metrics present in rows.
+        rows (MutableSequence[google.analytics.admin_v1beta.types.AccessRow]):
+            Rows of dimension value combinations and
+            metric values in the report.
+        row_count (int):
+            The total number of rows in the query result. ``rowCount``
+            is independent of the number of rows returned in the
+            response, the ``limit`` request parameter, and the
+            ``offset`` request parameter. For example if a query returns
+            175 rows and includes ``limit`` of 50 in the API request,
+            the response will contain ``rowCount`` of 175 but only 50
+            rows.
+
+            To learn more about this pagination parameter, see
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
+        quota (google.analytics.admin_v1beta.types.AccessQuota):
+            The quota state for this Analytics property
+            including this request. This field doesn't work
+            with account-level requests.
+    """
+
+    dimension_headers: MutableSequence[
+        access_report.AccessDimensionHeader
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=access_report.AccessDimensionHeader,
+    )
+    metric_headers: MutableSequence[
+        access_report.AccessMetricHeader
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=access_report.AccessMetricHeader,
+    )
+    rows: MutableSequence[access_report.AccessRow] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=access_report.AccessRow,
+    )
+    row_count: int = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    quota: access_report.AccessQuota = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=access_report.AccessQuota,
+    )
 
 
 class GetAccountRequest(proto.Message):
@@ -196,9 +402,9 @@ class UpdateAccountRequest(proto.Message):
             field is used to identify the account.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The list of fields to be updated. Field names must
-            be in snake case (e.g., "field_to_update"). Omitted fields
-            will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
+            be in snake case (for example, "field_to_update"). Omitted
+            fields will not be updated. To replace the entire entity,
+            use one path with the string "*" to match all fields.
     """
 
     account: resources.Account = proto.Field(
@@ -222,8 +428,7 @@ class ProvisionAccountTicketRequest(proto.Message):
         redirect_uri (str):
             Redirect URI where the user will be sent
             after accepting Terms of Service. Must be
-            configured in Developers Console as a Redirect
-            URI
+            configured in Cloud Console as a Redirect URI.
     """
 
     account: resources.Account = proto.Field(
@@ -468,7 +673,7 @@ class ListFirebaseLinksRequest(proto.Message):
             A page token, received from a previous ``ListFirebaseLinks``
             call. Provide this to retrieve the subsequent page. When
             paginating, all other parameters provided to
-            ``ListProperties`` must match the call that provided the
+            ``ListFirebaseLinks`` must match the call that provided the
             page token.
     """
 

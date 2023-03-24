@@ -330,7 +330,7 @@ class Property(proto.Message):
             When creating a property, if the type is
             "PROPERTY_TYPE_UNSPECIFIED", then "ORDINARY_PROPERTY" will
             be implied. "SUBPROPERTY" and "ROLLUP_PROPERTY" types cannot
-            yet be created via Google Analytics Admin API.
+            yet be created with the Google Analytics Admin API.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the entity was
             originally created.
@@ -1124,7 +1124,7 @@ class ConversionEvent(proto.Message):
             was created in the property.
         deletable (bool):
             Output only. If set, this event can currently
-            be deleted via DeleteConversionEvent.
+            be deleted with DeleteConversionEvent.
         custom (bool):
             Output only. If set to true, this conversion
             event refers to a custom event.  If set to

@@ -128,27 +128,27 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self._wrapped_methods = {
             self.get_account: gapic_v1.method.wrap_method(
                 self.get_account,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_accounts: gapic_v1.method.wrap_method(
                 self.list_accounts,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.delete_account: gapic_v1.method.wrap_method(
                 self.delete_account,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.update_account: gapic_v1.method.wrap_method(
                 self.update_account,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.provision_account_ticket: gapic_v1.method.wrap_method(
                 self.provision_account_ticket,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_account_summaries: gapic_v1.method.wrap_method(
@@ -158,62 +158,62 @@ class AnalyticsAdminServiceTransport(abc.ABC):
             ),
             self.get_property: gapic_v1.method.wrap_method(
                 self.get_property,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_properties: gapic_v1.method.wrap_method(
                 self.list_properties,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.create_property: gapic_v1.method.wrap_method(
                 self.create_property,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.delete_property: gapic_v1.method.wrap_method(
                 self.delete_property,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.update_property: gapic_v1.method.wrap_method(
                 self.update_property,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.create_firebase_link: gapic_v1.method.wrap_method(
                 self.create_firebase_link,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.delete_firebase_link: gapic_v1.method.wrap_method(
                 self.delete_firebase_link,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_firebase_links: gapic_v1.method.wrap_method(
                 self.list_firebase_links,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.create_google_ads_link: gapic_v1.method.wrap_method(
                 self.create_google_ads_link,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.update_google_ads_link: gapic_v1.method.wrap_method(
                 self.update_google_ads_link,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.delete_google_ads_link: gapic_v1.method.wrap_method(
                 self.delete_google_ads_link,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_google_ads_links: gapic_v1.method.wrap_method(
                 self.list_google_ads_links,
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_data_sharing_settings: gapic_v1.method.wrap_method(
@@ -358,6 +358,11 @@ class AnalyticsAdminServiceTransport(abc.ABC):
             ),
             self.get_data_stream: gapic_v1.method.wrap_method(
                 self.get_data_stream,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.run_access_report: gapic_v1.method.wrap_method(
+                self.run_access_report,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -844,6 +849,18 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     ) -> Callable[
         [analytics_admin.GetDataStreamRequest],
         Union[resources.DataStream, Awaitable[resources.DataStream]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def run_access_report(
+        self,
+    ) -> Callable[
+        [analytics_admin.RunAccessReportRequest],
+        Union[
+            analytics_admin.RunAccessReportResponse,
+            Awaitable[analytics_admin.RunAccessReportResponse],
+        ],
     ]:
         raise NotImplementedError()
 

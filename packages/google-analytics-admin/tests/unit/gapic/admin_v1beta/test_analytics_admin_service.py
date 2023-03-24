@@ -51,7 +51,11 @@ from google.analytics.admin_v1beta.services.analytics_admin_service import (
     pagers,
     transports,
 )
-from google.analytics.admin_v1beta.types import analytics_admin, resources
+from google.analytics.admin_v1beta.types import (
+    access_report,
+    analytics_admin,
+    resources,
+)
 
 
 def client_cert_source_callback():
@@ -14081,6 +14085,166 @@ async def test_get_data_stream_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        analytics_admin.RunAccessReportRequest,
+        dict,
+    ],
+)
+def test_run_access_report(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_access_report), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.RunAccessReportResponse(
+            row_count=992,
+        )
+        response = client.run_access_report(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.RunAccessReportRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_admin.RunAccessReportResponse)
+    assert response.row_count == 992
+
+
+def test_run_access_report_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_access_report), "__call__"
+    ) as call:
+        client.run_access_report()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.RunAccessReportRequest()
+
+
+@pytest.mark.asyncio
+async def test_run_access_report_async(
+    transport: str = "grpc_asyncio", request_type=analytics_admin.RunAccessReportRequest
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_access_report), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.RunAccessReportResponse(
+                row_count=992,
+            )
+        )
+        response = await client.run_access_report(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.RunAccessReportRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_admin.RunAccessReportResponse)
+    assert response.row_count == 992
+
+
+@pytest.mark.asyncio
+async def test_run_access_report_async_from_dict():
+    await test_run_access_report_async(request_type=dict)
+
+
+def test_run_access_report_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.RunAccessReportRequest()
+
+    request.entity = "entity_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_access_report), "__call__"
+    ) as call:
+        call.return_value = analytics_admin.RunAccessReportResponse()
+        client.run_access_report(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "entity=entity_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_run_access_report_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.RunAccessReportRequest()
+
+    request.entity = "entity_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_access_report), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.RunAccessReportResponse()
+        )
+        await client.run_access_report(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "entity=entity_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         analytics_admin.GetAccountRequest,
         dict,
     ],
@@ -27495,6 +27659,132 @@ def test_get_data_stream_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.RunAccessReportRequest,
+        dict,
+    ],
+)
+def test_run_access_report_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"entity": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.RunAccessReportResponse(
+            row_count=992,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.RunAccessReportResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.run_access_report(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_admin.RunAccessReportResponse)
+    assert response.row_count == 992
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_run_access_report_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_run_access_report"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_run_access_report"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.RunAccessReportRequest.pb(
+            analytics_admin.RunAccessReportRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_admin.RunAccessReportResponse.to_json(
+            analytics_admin.RunAccessReportResponse()
+        )
+
+        request = analytics_admin.RunAccessReportRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.RunAccessReportResponse()
+
+        client.run_access_report(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_run_access_report_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.RunAccessReportRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"entity": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.run_access_report(request)
+
+
+def test_run_access_report_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AnalyticsAdminServiceGrpcTransport(
@@ -27681,6 +27971,7 @@ def test_analytics_admin_service_base_transport():
         "update_data_stream",
         "list_data_streams",
         "get_data_stream",
+        "run_access_report",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -28095,6 +28386,9 @@ def test_analytics_admin_service_client_transport_session_collision(transport_na
     assert session1 != session2
     session1 = client1.transport.get_data_stream._session
     session2 = client2.transport.get_data_stream._session
+    assert session1 != session2
+    session1 = client1.transport.run_access_report._session
+    session2 = client2.transport.run_access_report._session
     assert session1 != session2
 
 

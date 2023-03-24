@@ -200,6 +200,11 @@
                 "provision_account_ticket"
               ]
             },
+            "RunAccessReport": {
+              "methods": [
+                "run_access_report"
+              ]
+            },
             "SearchChangeHistoryEvents": {
               "methods": [
                 "search_change_history_events"
@@ -440,6 +445,11 @@
                 "provision_account_ticket"
               ]
             },
+            "RunAccessReport": {
+              "methods": [
+                "run_access_report"
+              ]
+            },
             "SearchChangeHistoryEvents": {
               "methods": [
                 "search_change_history_events"
@@ -678,6 +688,11 @@
             "ProvisionAccountTicket": {
               "methods": [
                 "provision_account_ticket"
+              ]
+            },
+            "RunAccessReport": {
+              "methods": [
+                "run_access_report"
               ]
             },
             "SearchChangeHistoryEvents": {

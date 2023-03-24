@@ -77,6 +77,7 @@ class adminCallTransformer(cst.CSTTransformer):
         'list_measurement_protocol_secrets': ('parent', 'page_size', 'page_token', ),
         'list_properties': ('filter', 'page_size', 'page_token', 'show_deleted', ),
         'provision_account_ticket': ('account', 'redirect_uri', ),
+        'run_access_report': ('entity', 'dimensions', 'metrics', 'date_ranges', 'dimension_filter', 'metric_filter', 'offset', 'limit', 'time_zone', 'order_bys', 'return_entity_quota', ),
         'search_change_history_events': ('account', 'property', 'resource_type', 'action', 'actor_email', 'earliest_change_time', 'latest_change_time', 'page_size', 'page_token', ),
         'update_account': ('account', 'update_mask', ),
         'update_custom_dimension': ('update_mask', 'custom_dimension', ),
