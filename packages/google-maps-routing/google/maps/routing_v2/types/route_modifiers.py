@@ -39,22 +39,22 @@ class RouteModifiers(proto.Message):
             Specifies whether to avoid toll roads where reasonable.
             Preference will be given to routes not containing toll
             roads. Applies only to the ``DRIVE`` and ``TWO_WHEELER``
-            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
+            travel modes.
         avoid_highways (bool):
             Specifies whether to avoid highways where reasonable.
             Preference will be given to routes not containing highways.
-            Applies only to the ``DRIVE`` and ``TWO_WHEELER``
-            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
+            Applies only to the ``DRIVE`` and ``TWO_WHEELER`` travel
+            modes.
         avoid_ferries (bool):
             Specifies whether to avoid ferries where reasonable.
             Preference will be given to routes not containing travel by
             ferries. Applies only to the ``DRIVE`` and\ ``TWO_WHEELER``
-            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
+            travel modes.
         avoid_indoor (bool):
             Specifies whether to avoid navigating indoors where
             reasonable. Preference will be given to routes not
             containing indoor navigation. Applies only to the ``WALK``
-            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
+            travel mode.
         vehicle_info (google.maps.routing_v2.types.VehicleInfo):
             Specifies the vehicle information.
         toll_passes (MutableSequence[google.maps.routing_v2.types.TollPass]):
@@ -62,8 +62,7 @@ class RouteModifiers(proto.Message):
             are provided, the API tries to return the pass price. If
             toll passes are not provided, the API treats the toll pass
             as unknown and tries to return the cash price. Applies only
-            to the ``DRIVE`` and ``TWO_WHEELER``
-            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
+            to the DRIVE and TWO_WHEELER travel modes.
     """
 
     avoid_tolls: bool = proto.Field(

@@ -42,8 +42,7 @@ class Location(proto.Message):
             the road to use for pickup and drop-off. Heading values can
             be from 0 to 360, where 0 specifies a heading of due North,
             90 specifies a heading of due East, etc. You can use this
-            field only for ``DRIVE`` and ``TWO_WHEELER``
-            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
+            field only for ``DRIVE`` and ``TWO_WHEELER`` travel modes.
     """
 
     lat_lng: latlng_pb2.LatLng = proto.Field(

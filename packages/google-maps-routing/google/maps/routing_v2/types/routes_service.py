@@ -116,24 +116,19 @@ class ComputeRoutesRequest(proto.Message):
             for the list of supported languages. When you don't provide
             this value, the display language is inferred from the
             location of the route request.
-        region_code (str):
-            Optional. The region code, specified as a ccTLD ("top-level
-            domain") two-character value. For more information see
-            https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains
         units (google.maps.routing_v2.types.Units):
             Optional. Specifies the units of measure for the display
             fields. This includes the ``instruction`` field in
-            [NavigationInstruction][google.maps.routing.v2.NavigationInstruction].
-            The units of measure used for the route, leg, step distance,
-            and duration are not affected by this value. If you don't
-            provide this value, then the display units are inferred from
-            the location of the request.
+            ``NavigationInstruction``. The units of measure used for the
+            route, leg, step distance, and duration are not affected by
+            this value. If you don't provide this value, then the
+            display units are inferred from the location of the request.
         requested_reference_routes (MutableSequence[google.maps.routing_v2.types.ComputeRoutesRequest.ReferenceRoute]):
             Optional. Specifies what reference routes to calculate as
             part of the request in addition to the default route. A
             reference route is a route with a different route
-            calculation objective than the default route. For example a
-            ``FUEL_EFFICIENT`` reference route calculation takes into
+            calculation objective than the default route. For example an
+            FUEL_EFFICIENT reference route calculation takes into
             account various parameters that would generate an optimal
             fuel efficient route.
         extra_computations (MutableSequence[google.maps.routing_v2.types.ComputeRoutesRequest.ExtraComputation]):
@@ -232,10 +227,6 @@ class ComputeRoutesRequest(proto.Message):
         proto.STRING,
         number=10,
     )
-    region_code: str = proto.Field(
-        proto.STRING,
-        number=16,
-    )
     units: gmr_units.Units = proto.Field(
         proto.ENUM,
         number=11,
@@ -328,19 +319,6 @@ class ComputeRouteMatrixRequest(proto.Message):
             you made the request. If you set this value to a
             time that has already occurred, the request
             fails.
-        language_code (str):
-            Optional. The BCP-47 language code, such as "en-US" or
-            "sr-Latn". For more information, see
-            http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
-            See `Language
-            Support <https://developers.google.com/maps/faq#languagesupport>`__
-            for the list of supported languages. When you don't provide
-            this value, the display language is inferred from the
-            location of the first origin.
-        region_code (str):
-            Optional. The region code, specified as a ccTLD ("top-level
-            domain") two-character value. For more information see
-            https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains
         extra_computations (MutableSequence[google.maps.routing_v2.types.ComputeRouteMatrixRequest.ExtraComputation]):
             Optional. A list of extra computations which
             may be used to complete the request. Note: These
@@ -387,14 +365,6 @@ class ComputeRouteMatrixRequest(proto.Message):
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
-    )
-    language_code: str = proto.Field(
-        proto.STRING,
-        number=6,
-    )
-    region_code: str = proto.Field(
-        proto.STRING,
-        number=9,
     )
     extra_computations: MutableSequence[ExtraComputation] = proto.RepeatedField(
         proto.ENUM,
@@ -469,13 +439,11 @@ class RouteMatrixElement(proto.Message):
             The travel distance of the route, in meters.
         duration (google.protobuf.duration_pb2.Duration):
             The length of time needed to navigate the route. If you set
-            the
-            [routing_preference][google.maps.routing.v2.ComputeRouteMatrixRequest.routing_preference]
-            to ``TRAFFIC_UNAWARE``, then this value is the same as
-            ``static_duration``. If you set the ``routing_preference``
-            to either ``TRAFFIC_AWARE`` or ``TRAFFIC_AWARE_OPTIMAL``,
-            then this value is calculated taking traffic conditions into
-            account.
+            the ``routing_preference`` to ``TRAFFIC_UNAWARE``, then this
+            value is the same as ``static_duration``. If you set the
+            ``routing_preference`` to either ``TRAFFIC_AWARE`` or
+            ``TRAFFIC_AWARE_OPTIMAL``, then this value is calculated
+            taking traffic conditions into account.
         static_duration (google.protobuf.duration_pb2.Duration):
             The duration of traveling through the route
             without taking traffic conditions into
