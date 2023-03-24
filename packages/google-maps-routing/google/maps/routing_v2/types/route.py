@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import google.geo.type.types
+from google.geo.type.types import viewport as ggt_viewport
 from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -54,10 +54,11 @@ class Route(proto.Message):
         legs (MutableSequence[google.maps.routing_v2.types.RouteLeg]):
             A collection of legs (path segments between waypoints) that
             make-up the route. Each leg corresponds to the trip between
-            two non-\ ``via`` Waypoints. For example, a route with no
-            intermediate waypoints has only one leg. A route that
-            includes one non-\ ``via`` intermediate waypoint has two
-            legs. A route that includes one ``via`` intermediate
+            two non-\ ``via``
+            [Waypoints][google.maps.routing.v2.Waypoint]. For example, a
+            route with no intermediate waypoints has only one leg. A
+            route that includes one non-\ ``via`` intermediate waypoint
+            has two legs. A route that includes one ``via`` intermediate
             waypoint has one leg. The order of the legs matches the
             order of Waypoints from ``origin`` to ``intermediates`` to
             ``destination``.
@@ -137,10 +138,10 @@ class Route(proto.Message):
         proto.STRING,
         number=7,
     )
-    viewport: google.geo.type.types.Viewport = proto.Field(
+    viewport: ggt_viewport.Viewport = proto.Field(
         proto.MESSAGE,
         number=8,
-        message=google.geo.type.types.Viewport,
+        message=ggt_viewport.Viewport,
     )
     travel_advisory: "RouteTravelAdvisory" = proto.Field(
         proto.MESSAGE,
@@ -254,19 +255,7 @@ class RouteLegStepTravelAdvisory(proto.Message):
 
     Attributes:
         speed_reading_intervals (MutableSequence[google.maps.routing_v2.types.SpeedReadingInterval]):
-            Speed reading intervals detailing traffic density.
-            Applicable in case of ``TRAFFIC_AWARE`` and
-            ``TRAFFIC_AWARE_OPTIMAL`` routing preferences. The intervals
-            cover the entire polyline of the RouteLegStep without
-            overlap. The start point of a specified interval is the same
-            as the end point of the preceding interval.
-
-            Example:
-
-            ::
-
-                polyline: A ---- B ---- C ---- D ---- E ---- F ---- G
-                speed_reading_intervals: [A,C), [C,D), [D,G).
+            NOTE: This field is not currently populated.
     """
 
     speed_reading_intervals: MutableSequence[
@@ -361,7 +350,8 @@ class RouteLeg(proto.Message):
 
 
 class RouteLegStep(proto.Message):
-    r"""Encapsulates a segment of a ``RouteLeg``. A step corresponds to a
+    r"""Encapsulates a segment of a
+    [RouteLeg][google.maps.routing.v2.RouteLeg]. A step corresponds to a
     single navigation instruction. Route legs are made up of steps.
 
     Attributes:

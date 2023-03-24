@@ -35,8 +35,8 @@ class VehicleInfo(proto.Message):
 
     Attributes:
         emission_type (google.maps.routing_v2.types.VehicleEmissionType):
-            Describes the vehicle's emission type.
-            Applies only to the DRIVE travel mode.
+            Describes the vehicle's emission type. Applies only to the
+            ``DRIVE`` travel mode.
     """
 
     emission_type: vehicle_emission_type.VehicleEmissionType = proto.Field(

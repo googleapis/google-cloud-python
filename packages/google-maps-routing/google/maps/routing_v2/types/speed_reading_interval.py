@@ -49,6 +49,8 @@ class SpeedReadingInterval(proto.Message):
             This field is a member of `oneof`_ ``_end_polyline_point_index``.
         speed (google.maps.routing_v2.types.SpeedReadingInterval.Speed):
             Traffic speed in this interval.
+
+            This field is a member of `oneof`_ ``speed_type``.
     """
 
     class Speed(proto.Enum):
@@ -82,6 +84,7 @@ class SpeedReadingInterval(proto.Message):
     speed: Speed = proto.Field(
         proto.ENUM,
         number=3,
+        oneof="speed_type",
         enum=Speed,
     )
 

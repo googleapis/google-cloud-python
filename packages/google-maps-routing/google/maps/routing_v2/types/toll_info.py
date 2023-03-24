@@ -29,19 +29,20 @@ __protobuf__ = proto.module(
 
 
 class TollInfo(proto.Message):
-    r"""Encapsulates toll information on a ``Route`` or on a ``RouteLeg``.
+    r"""Encapsulates toll information on a
+    [Route][google.maps.routing.v2.Route] or on a
+    [RouteLeg][google.maps.routing.v2.RouteLeg].
 
     Attributes:
         estimated_price (MutableSequence[google.type.money_pb2.Money]):
-            The monetary amount of tolls for the
-            corresponding Route or RouteLeg. This list
-            contains a money amount for each currency that
-            is expected to be charged by the toll stations.
-            Typically this list will contain only one item
-            for routes with tolls in one currency. For
-            international trips, this list may contain
-            multiple items to reflect tolls in different
-            currencies.
+            The monetary amount of tolls for the corresponding
+            [Route][google.maps.routing.v2.Route] or
+            [RouteLeg][google.maps.routing.v2.RouteLeg]. This list
+            contains a money amount for each currency that is expected
+            to be charged by the toll stations. Typically this list will
+            contain only one item for routes with tolls in one currency.
+            For international trips, this list may contain multiple
+            items to reflect tolls in different currencies.
     """
 
     estimated_price: MutableSequence[money_pb2.Money] = proto.RepeatedField(
