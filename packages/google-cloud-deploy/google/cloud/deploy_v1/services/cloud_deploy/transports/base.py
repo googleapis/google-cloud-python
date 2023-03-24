@@ -255,6 +255,16 @@ class CloudDeployTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.advance_rollout: gapic_v1.method.wrap_method(
+                self.advance_rollout,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.cancel_rollout: gapic_v1.method.wrap_method(
+                self.cancel_rollout,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.list_rollouts: gapic_v1.method.wrap_method(
                 self.list_rollouts,
                 default_retry=retries.Retry(
@@ -288,6 +298,11 @@ class CloudDeployTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.ignore_job: gapic_v1.method.wrap_method(
+                self.ignore_job,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.retry_job: gapic_v1.method.wrap_method(
                 self.retry_job,
                 default_timeout=60.0,
@@ -318,6 +333,11 @@ class CloudDeployTransport(abc.ABC):
                     ),
                     deadline=60.0,
                 ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.terminate_job_run: gapic_v1.method.wrap_method(
+                self.terminate_job_run,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
@@ -502,6 +522,30 @@ class CloudDeployTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def advance_rollout(
+        self,
+    ) -> Callable[
+        [cloud_deploy.AdvanceRolloutRequest],
+        Union[
+            cloud_deploy.AdvanceRolloutResponse,
+            Awaitable[cloud_deploy.AdvanceRolloutResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_rollout(
+        self,
+    ) -> Callable[
+        [cloud_deploy.CancelRolloutRequest],
+        Union[
+            cloud_deploy.CancelRolloutResponse,
+            Awaitable[cloud_deploy.CancelRolloutResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_rollouts(
         self,
     ) -> Callable[
@@ -532,6 +576,17 @@ class CloudDeployTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def ignore_job(
+        self,
+    ) -> Callable[
+        [cloud_deploy.IgnoreJobRequest],
+        Union[
+            cloud_deploy.IgnoreJobResponse, Awaitable[cloud_deploy.IgnoreJobResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def retry_job(
         self,
     ) -> Callable[
@@ -558,6 +613,18 @@ class CloudDeployTransport(abc.ABC):
     ) -> Callable[
         [cloud_deploy.GetJobRunRequest],
         Union[cloud_deploy.JobRun, Awaitable[cloud_deploy.JobRun]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def terminate_job_run(
+        self,
+    ) -> Callable[
+        [cloud_deploy.TerminateJobRunRequest],
+        Union[
+            cloud_deploy.TerminateJobRunResponse,
+            Awaitable[cloud_deploy.TerminateJobRunResponse],
+        ],
     ]:
         raise NotImplementedError()
 

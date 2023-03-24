@@ -4933,6 +4933,468 @@ async def test_approve_rollout_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        cloud_deploy.AdvanceRolloutRequest,
+        dict,
+    ],
+)
+def test_advance_rollout(request_type, transport: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.advance_rollout), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.AdvanceRolloutResponse()
+        response = client.advance_rollout(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.AdvanceRolloutRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.AdvanceRolloutResponse)
+
+
+def test_advance_rollout_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.advance_rollout), "__call__") as call:
+        client.advance_rollout()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.AdvanceRolloutRequest()
+
+
+@pytest.mark.asyncio
+async def test_advance_rollout_async(
+    transport: str = "grpc_asyncio", request_type=cloud_deploy.AdvanceRolloutRequest
+):
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.advance_rollout), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.AdvanceRolloutResponse()
+        )
+        response = await client.advance_rollout(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.AdvanceRolloutRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.AdvanceRolloutResponse)
+
+
+@pytest.mark.asyncio
+async def test_advance_rollout_async_from_dict():
+    await test_advance_rollout_async(request_type=dict)
+
+
+def test_advance_rollout_field_headers():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.AdvanceRolloutRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.advance_rollout), "__call__") as call:
+        call.return_value = cloud_deploy.AdvanceRolloutResponse()
+        client.advance_rollout(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_advance_rollout_field_headers_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.AdvanceRolloutRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.advance_rollout), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.AdvanceRolloutResponse()
+        )
+        await client.advance_rollout(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_advance_rollout_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.advance_rollout), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.AdvanceRolloutResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.advance_rollout(
+            name="name_value",
+            phase_id="phase_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].phase_id
+        mock_val = "phase_id_value"
+        assert arg == mock_val
+
+
+def test_advance_rollout_flattened_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.advance_rollout(
+            cloud_deploy.AdvanceRolloutRequest(),
+            name="name_value",
+            phase_id="phase_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_advance_rollout_flattened_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.advance_rollout), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.AdvanceRolloutResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.AdvanceRolloutResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.advance_rollout(
+            name="name_value",
+            phase_id="phase_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].phase_id
+        mock_val = "phase_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_advance_rollout_flattened_error_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.advance_rollout(
+            cloud_deploy.AdvanceRolloutRequest(),
+            name="name_value",
+            phase_id="phase_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CancelRolloutRequest,
+        dict,
+    ],
+)
+def test_cancel_rollout(request_type, transport: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_rollout), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.CancelRolloutResponse()
+        response = client.cancel_rollout(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.CancelRolloutRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.CancelRolloutResponse)
+
+
+def test_cancel_rollout_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_rollout), "__call__") as call:
+        client.cancel_rollout()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.CancelRolloutRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_rollout_async(
+    transport: str = "grpc_asyncio", request_type=cloud_deploy.CancelRolloutRequest
+):
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_rollout), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.CancelRolloutResponse()
+        )
+        response = await client.cancel_rollout(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.CancelRolloutRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.CancelRolloutResponse)
+
+
+@pytest.mark.asyncio
+async def test_cancel_rollout_async_from_dict():
+    await test_cancel_rollout_async(request_type=dict)
+
+
+def test_cancel_rollout_field_headers():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.CancelRolloutRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_rollout), "__call__") as call:
+        call.return_value = cloud_deploy.CancelRolloutResponse()
+        client.cancel_rollout(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_cancel_rollout_field_headers_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.CancelRolloutRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_rollout), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.CancelRolloutResponse()
+        )
+        await client.cancel_rollout(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_cancel_rollout_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_rollout), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.CancelRolloutResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.cancel_rollout(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_cancel_rollout_flattened_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.cancel_rollout(
+            cloud_deploy.CancelRolloutRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_cancel_rollout_flattened_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_rollout), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.CancelRolloutResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.CancelRolloutResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.cancel_rollout(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_cancel_rollout_flattened_error_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.cancel_rollout(
+            cloud_deploy.CancelRolloutRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         cloud_deploy.ListRolloutsRequest,
         dict,
     ],
@@ -5385,6 +5847,7 @@ def test_get_rollout(request_type, transport: str = "grpc"):
             deploying_build="deploying_build_value",
             etag="etag_value",
             deploy_failure_cause=cloud_deploy.Rollout.FailureCause.CLOUD_BUILD_UNAVAILABLE,
+            controller_rollout="controller_rollout_value",
         )
         response = client.get_rollout(request)
 
@@ -5408,6 +5871,7 @@ def test_get_rollout(request_type, transport: str = "grpc"):
         response.deploy_failure_cause
         == cloud_deploy.Rollout.FailureCause.CLOUD_BUILD_UNAVAILABLE
     )
+    assert response.controller_rollout == "controller_rollout_value"
 
 
 def test_get_rollout_empty_call():
@@ -5454,6 +5918,7 @@ async def test_get_rollout_async(
                 deploying_build="deploying_build_value",
                 etag="etag_value",
                 deploy_failure_cause=cloud_deploy.Rollout.FailureCause.CLOUD_BUILD_UNAVAILABLE,
+                controller_rollout="controller_rollout_value",
             )
         )
         response = await client.get_rollout(request)
@@ -5478,6 +5943,7 @@ async def test_get_rollout_async(
         response.deploy_failure_cause
         == cloud_deploy.Rollout.FailureCause.CLOUD_BUILD_UNAVAILABLE
     )
+    assert response.controller_rollout == "controller_rollout_value"
 
 
 @pytest.mark.asyncio
@@ -5871,6 +6337,252 @@ async def test_create_rollout_flattened_error_async():
             parent="parent_value",
             rollout=cloud_deploy.Rollout(name="name_value"),
             rollout_id="rollout_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.IgnoreJobRequest,
+        dict,
+    ],
+)
+def test_ignore_job(request_type, transport: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.ignore_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.IgnoreJobResponse()
+        response = client.ignore_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.IgnoreJobRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.IgnoreJobResponse)
+
+
+def test_ignore_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.ignore_job), "__call__") as call:
+        client.ignore_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.IgnoreJobRequest()
+
+
+@pytest.mark.asyncio
+async def test_ignore_job_async(
+    transport: str = "grpc_asyncio", request_type=cloud_deploy.IgnoreJobRequest
+):
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.ignore_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.IgnoreJobResponse()
+        )
+        response = await client.ignore_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.IgnoreJobRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.IgnoreJobResponse)
+
+
+@pytest.mark.asyncio
+async def test_ignore_job_async_from_dict():
+    await test_ignore_job_async(request_type=dict)
+
+
+def test_ignore_job_field_headers():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.IgnoreJobRequest()
+
+    request.rollout = "rollout_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.ignore_job), "__call__") as call:
+        call.return_value = cloud_deploy.IgnoreJobResponse()
+        client.ignore_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "rollout=rollout_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_ignore_job_field_headers_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.IgnoreJobRequest()
+
+    request.rollout = "rollout_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.ignore_job), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.IgnoreJobResponse()
+        )
+        await client.ignore_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "rollout=rollout_value",
+    ) in kw["metadata"]
+
+
+def test_ignore_job_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.ignore_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.IgnoreJobResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.ignore_job(
+            rollout="rollout_value",
+            phase_id="phase_id_value",
+            job_id="job_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].rollout
+        mock_val = "rollout_value"
+        assert arg == mock_val
+        arg = args[0].phase_id
+        mock_val = "phase_id_value"
+        assert arg == mock_val
+        arg = args[0].job_id
+        mock_val = "job_id_value"
+        assert arg == mock_val
+
+
+def test_ignore_job_flattened_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.ignore_job(
+            cloud_deploy.IgnoreJobRequest(),
+            rollout="rollout_value",
+            phase_id="phase_id_value",
+            job_id="job_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_ignore_job_flattened_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.ignore_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.IgnoreJobResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.IgnoreJobResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.ignore_job(
+            rollout="rollout_value",
+            phase_id="phase_id_value",
+            job_id="job_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].rollout
+        mock_val = "rollout_value"
+        assert arg == mock_val
+        arg = args[0].phase_id
+        mock_val = "phase_id_value"
+        assert arg == mock_val
+        arg = args[0].job_id
+        mock_val = "job_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_ignore_job_flattened_error_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.ignore_job(
+            cloud_deploy.IgnoreJobRequest(),
+            rollout="rollout_value",
+            phase_id="phase_id_value",
+            job_id="job_id_value",
         )
 
 
@@ -6796,6 +7508,246 @@ async def test_get_job_run_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        cloud_deploy.TerminateJobRunRequest,
+        dict,
+    ],
+)
+def test_terminate_job_run(request_type, transport: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.terminate_job_run), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.TerminateJobRunResponse()
+        response = client.terminate_job_run(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.TerminateJobRunRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.TerminateJobRunResponse)
+
+
+def test_terminate_job_run_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.terminate_job_run), "__call__"
+    ) as call:
+        client.terminate_job_run()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.TerminateJobRunRequest()
+
+
+@pytest.mark.asyncio
+async def test_terminate_job_run_async(
+    transport: str = "grpc_asyncio", request_type=cloud_deploy.TerminateJobRunRequest
+):
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.terminate_job_run), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.TerminateJobRunResponse()
+        )
+        response = await client.terminate_job_run(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_deploy.TerminateJobRunRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.TerminateJobRunResponse)
+
+
+@pytest.mark.asyncio
+async def test_terminate_job_run_async_from_dict():
+    await test_terminate_job_run_async(request_type=dict)
+
+
+def test_terminate_job_run_field_headers():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.TerminateJobRunRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.terminate_job_run), "__call__"
+    ) as call:
+        call.return_value = cloud_deploy.TerminateJobRunResponse()
+        client.terminate_job_run(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_terminate_job_run_field_headers_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_deploy.TerminateJobRunRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.terminate_job_run), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.TerminateJobRunResponse()
+        )
+        await client.terminate_job_run(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_terminate_job_run_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.terminate_job_run), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.TerminateJobRunResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.terminate_job_run(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_terminate_job_run_flattened_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.terminate_job_run(
+            cloud_deploy.TerminateJobRunRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_terminate_job_run_flattened_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.terminate_job_run), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_deploy.TerminateJobRunResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_deploy.TerminateJobRunResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.terminate_job_run(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_terminate_job_run_flattened_error_async():
+    client = CloudDeployAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.terminate_job_run(
+            cloud_deploy.TerminateJobRunRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         cloud_deploy.GetConfigRequest,
         dict,
     ],
@@ -7686,7 +8638,42 @@ def test_create_delivery_pipeline_rest(request_type):
                 {
                     "target_id": "target_id_value",
                     "profiles": ["profiles_value1", "profiles_value2"],
-                    "strategy": {"standard": {"verify": True}},
+                    "strategy": {
+                        "standard": {"verify": True},
+                        "canary": {
+                            "runtime_config": {
+                                "kubernetes": {
+                                    "gateway_service_mesh": {
+                                        "http_route": "http_route_value",
+                                        "service": "service_value",
+                                        "deployment": "deployment_value",
+                                    },
+                                    "service_networking": {
+                                        "service": "service_value",
+                                        "deployment": "deployment_value",
+                                    },
+                                },
+                                "cloud_run": {"automatic_traffic_control": True},
+                            },
+                            "canary_deployment": {
+                                "percentages": [1170, 1171],
+                                "verify": True,
+                            },
+                            "custom_canary_deployment": {
+                                "phase_configs": [
+                                    {
+                                        "phase_id": "phase_id_value",
+                                        "percentage": 1054,
+                                        "profiles": [
+                                            "profiles_value1",
+                                            "profiles_value2",
+                                        ],
+                                        "verify": True,
+                                    }
+                                ]
+                            },
+                        },
+                    },
                 }
             ]
         },
@@ -7696,6 +8683,10 @@ def test_create_delivery_pipeline_rest(request_type):
                 "status": True,
                 "missing_targets": ["missing_targets_value1", "missing_targets_value2"],
                 "update_time": {},
+            },
+            "targets_type_condition": {
+                "status": True,
+                "error_details": "error_details_value",
             },
         },
         "etag": "etag_value",
@@ -7926,7 +8917,42 @@ def test_create_delivery_pipeline_rest_bad_request(
                 {
                     "target_id": "target_id_value",
                     "profiles": ["profiles_value1", "profiles_value2"],
-                    "strategy": {"standard": {"verify": True}},
+                    "strategy": {
+                        "standard": {"verify": True},
+                        "canary": {
+                            "runtime_config": {
+                                "kubernetes": {
+                                    "gateway_service_mesh": {
+                                        "http_route": "http_route_value",
+                                        "service": "service_value",
+                                        "deployment": "deployment_value",
+                                    },
+                                    "service_networking": {
+                                        "service": "service_value",
+                                        "deployment": "deployment_value",
+                                    },
+                                },
+                                "cloud_run": {"automatic_traffic_control": True},
+                            },
+                            "canary_deployment": {
+                                "percentages": [1170, 1171],
+                                "verify": True,
+                            },
+                            "custom_canary_deployment": {
+                                "phase_configs": [
+                                    {
+                                        "phase_id": "phase_id_value",
+                                        "percentage": 1054,
+                                        "profiles": [
+                                            "profiles_value1",
+                                            "profiles_value2",
+                                        ],
+                                        "verify": True,
+                                    }
+                                ]
+                            },
+                        },
+                    },
                 }
             ]
         },
@@ -7936,6 +8962,10 @@ def test_create_delivery_pipeline_rest_bad_request(
                 "status": True,
                 "missing_targets": ["missing_targets_value1", "missing_targets_value2"],
                 "update_time": {},
+            },
+            "targets_type_condition": {
+                "status": True,
+                "error_details": "error_details_value",
             },
         },
         "etag": "etag_value",
@@ -8052,7 +9082,42 @@ def test_update_delivery_pipeline_rest(request_type):
                 {
                     "target_id": "target_id_value",
                     "profiles": ["profiles_value1", "profiles_value2"],
-                    "strategy": {"standard": {"verify": True}},
+                    "strategy": {
+                        "standard": {"verify": True},
+                        "canary": {
+                            "runtime_config": {
+                                "kubernetes": {
+                                    "gateway_service_mesh": {
+                                        "http_route": "http_route_value",
+                                        "service": "service_value",
+                                        "deployment": "deployment_value",
+                                    },
+                                    "service_networking": {
+                                        "service": "service_value",
+                                        "deployment": "deployment_value",
+                                    },
+                                },
+                                "cloud_run": {"automatic_traffic_control": True},
+                            },
+                            "canary_deployment": {
+                                "percentages": [1170, 1171],
+                                "verify": True,
+                            },
+                            "custom_canary_deployment": {
+                                "phase_configs": [
+                                    {
+                                        "phase_id": "phase_id_value",
+                                        "percentage": 1054,
+                                        "profiles": [
+                                            "profiles_value1",
+                                            "profiles_value2",
+                                        ],
+                                        "verify": True,
+                                    }
+                                ]
+                            },
+                        },
+                    },
                 }
             ]
         },
@@ -8062,6 +9127,10 @@ def test_update_delivery_pipeline_rest(request_type):
                 "status": True,
                 "missing_targets": ["missing_targets_value1", "missing_targets_value2"],
                 "update_time": {},
+            },
+            "targets_type_condition": {
+                "status": True,
+                "error_details": "error_details_value",
             },
         },
         "etag": "etag_value",
@@ -8277,7 +9346,42 @@ def test_update_delivery_pipeline_rest_bad_request(
                 {
                     "target_id": "target_id_value",
                     "profiles": ["profiles_value1", "profiles_value2"],
-                    "strategy": {"standard": {"verify": True}},
+                    "strategy": {
+                        "standard": {"verify": True},
+                        "canary": {
+                            "runtime_config": {
+                                "kubernetes": {
+                                    "gateway_service_mesh": {
+                                        "http_route": "http_route_value",
+                                        "service": "service_value",
+                                        "deployment": "deployment_value",
+                                    },
+                                    "service_networking": {
+                                        "service": "service_value",
+                                        "deployment": "deployment_value",
+                                    },
+                                },
+                                "cloud_run": {"automatic_traffic_control": True},
+                            },
+                            "canary_deployment": {
+                                "percentages": [1170, 1171],
+                                "verify": True,
+                            },
+                            "custom_canary_deployment": {
+                                "phase_configs": [
+                                    {
+                                        "phase_id": "phase_id_value",
+                                        "percentage": 1054,
+                                        "profiles": [
+                                            "profiles_value1",
+                                            "profiles_value2",
+                                        ],
+                                        "verify": True,
+                                    }
+                                ]
+                            },
+                        },
+                    },
                 }
             ]
         },
@@ -8287,6 +9391,10 @@ def test_update_delivery_pipeline_rest_bad_request(
                 "status": True,
                 "missing_targets": ["missing_targets_value1", "missing_targets_value2"],
                 "update_time": {},
+            },
+            "targets_type_condition": {
+                "status": True,
+                "error_details": "error_details_value",
             },
         },
         "etag": "etag_value",
@@ -9306,6 +10414,7 @@ def test_create_target_rest(request_type):
         "gke": {"cluster": "cluster_value", "internal_ip": True},
         "anthos_cluster": {"membership": "membership_value"},
         "run": {"location": "location_value"},
+        "multi_target": {"target_ids": ["target_ids_value1", "target_ids_value2"]},
         "etag": "etag_value",
         "execution_configs": [
             {
@@ -9549,6 +10658,7 @@ def test_create_target_rest_bad_request(
         "gke": {"cluster": "cluster_value", "internal_ip": True},
         "anthos_cluster": {"membership": "membership_value"},
         "run": {"location": "location_value"},
+        "multi_target": {"target_ids": ["target_ids_value1", "target_ids_value2"]},
         "etag": "etag_value",
         "execution_configs": [
             {
@@ -9677,6 +10787,7 @@ def test_update_target_rest(request_type):
         "gke": {"cluster": "cluster_value", "internal_ip": True},
         "anthos_cluster": {"membership": "membership_value"},
         "run": {"location": "location_value"},
+        "multi_target": {"target_ids": ["target_ids_value1", "target_ids_value2"]},
         "etag": "etag_value",
         "execution_configs": [
             {
@@ -9905,6 +11016,7 @@ def test_update_target_rest_bad_request(
         "gke": {"cluster": "cluster_value", "internal_ip": True},
         "anthos_cluster": {"membership": "membership_value"},
         "run": {"location": "location_value"},
+        "multi_target": {"target_ids": ["target_ids_value1", "target_ids_value2"]},
         "etag": "etag_value",
         "execution_configs": [
             {
@@ -10964,7 +12076,42 @@ def test_create_release_rest(request_type):
                     {
                         "target_id": "target_id_value",
                         "profiles": ["profiles_value1", "profiles_value2"],
-                        "strategy": {"standard": {"verify": True}},
+                        "strategy": {
+                            "standard": {"verify": True},
+                            "canary": {
+                                "runtime_config": {
+                                    "kubernetes": {
+                                        "gateway_service_mesh": {
+                                            "http_route": "http_route_value",
+                                            "service": "service_value",
+                                            "deployment": "deployment_value",
+                                        },
+                                        "service_networking": {
+                                            "service": "service_value",
+                                            "deployment": "deployment_value",
+                                        },
+                                    },
+                                    "cloud_run": {"automatic_traffic_control": True},
+                                },
+                                "canary_deployment": {
+                                    "percentages": [1170, 1171],
+                                    "verify": True,
+                                },
+                                "custom_canary_deployment": {
+                                    "phase_configs": [
+                                        {
+                                            "phase_id": "phase_id_value",
+                                            "percentage": 1054,
+                                            "profiles": [
+                                                "profiles_value1",
+                                                "profiles_value2",
+                                            ],
+                                            "verify": True,
+                                        }
+                                    ]
+                                },
+                            },
+                        },
                     }
                 ]
             },
@@ -10977,6 +12124,10 @@ def test_create_release_rest(request_type):
                         "missing_targets_value2",
                     ],
                     "update_time": {},
+                },
+                "targets_type_condition": {
+                    "status": True,
+                    "error_details": "error_details_value",
                 },
             },
             "etag": "etag_value",
@@ -10996,6 +12147,9 @@ def test_create_release_rest(request_type):
                 "gke": {"cluster": "cluster_value", "internal_ip": True},
                 "anthos_cluster": {"membership": "membership_value"},
                 "run": {"location": "location_value"},
+                "multi_target": {
+                    "target_ids": ["target_ids_value1", "target_ids_value2"]
+                },
                 "etag": "etag_value",
                 "execution_configs": [
                     {
@@ -11022,6 +12176,15 @@ def test_create_release_rest(request_type):
         "skaffold_version": "skaffold_version_value",
         "target_artifacts": {},
         "target_renders": {},
+        "condition": {
+            "release_ready_condition": {"status": True},
+            "skaffold_supported_condition": {
+                "status": True,
+                "skaffold_support_state": 1,
+                "maintenance_mode_time": {},
+                "support_expiration_time": {},
+            },
+        },
     }
     request = request_type(**request_init)
 
@@ -11261,7 +12424,42 @@ def test_create_release_rest_bad_request(
                     {
                         "target_id": "target_id_value",
                         "profiles": ["profiles_value1", "profiles_value2"],
-                        "strategy": {"standard": {"verify": True}},
+                        "strategy": {
+                            "standard": {"verify": True},
+                            "canary": {
+                                "runtime_config": {
+                                    "kubernetes": {
+                                        "gateway_service_mesh": {
+                                            "http_route": "http_route_value",
+                                            "service": "service_value",
+                                            "deployment": "deployment_value",
+                                        },
+                                        "service_networking": {
+                                            "service": "service_value",
+                                            "deployment": "deployment_value",
+                                        },
+                                    },
+                                    "cloud_run": {"automatic_traffic_control": True},
+                                },
+                                "canary_deployment": {
+                                    "percentages": [1170, 1171],
+                                    "verify": True,
+                                },
+                                "custom_canary_deployment": {
+                                    "phase_configs": [
+                                        {
+                                            "phase_id": "phase_id_value",
+                                            "percentage": 1054,
+                                            "profiles": [
+                                                "profiles_value1",
+                                                "profiles_value2",
+                                            ],
+                                            "verify": True,
+                                        }
+                                    ]
+                                },
+                            },
+                        },
                     }
                 ]
             },
@@ -11274,6 +12472,10 @@ def test_create_release_rest_bad_request(
                         "missing_targets_value2",
                     ],
                     "update_time": {},
+                },
+                "targets_type_condition": {
+                    "status": True,
+                    "error_details": "error_details_value",
                 },
             },
             "etag": "etag_value",
@@ -11293,6 +12495,9 @@ def test_create_release_rest_bad_request(
                 "gke": {"cluster": "cluster_value", "internal_ip": True},
                 "anthos_cluster": {"membership": "membership_value"},
                 "run": {"location": "location_value"},
+                "multi_target": {
+                    "target_ids": ["target_ids_value1", "target_ids_value2"]
+                },
                 "etag": "etag_value",
                 "execution_configs": [
                     {
@@ -11319,6 +12524,15 @@ def test_create_release_rest_bad_request(
         "skaffold_version": "skaffold_version_value",
         "target_artifacts": {},
         "target_renders": {},
+        "condition": {
+            "release_ready_condition": {"status": True},
+            "skaffold_supported_condition": {
+                "status": True,
+                "skaffold_support_state": 1,
+                "maintenance_mode_time": {},
+                "support_expiration_time": {},
+            },
+        },
     }
     request = request_type(**request_init)
 
@@ -11960,6 +13174,564 @@ def test_approve_rollout_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        cloud_deploy.AdvanceRolloutRequest,
+        dict,
+    ],
+)
+def test_advance_rollout_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.AdvanceRolloutResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.AdvanceRolloutResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.advance_rollout(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.AdvanceRolloutResponse)
+
+
+def test_advance_rollout_rest_required_fields(
+    request_type=cloud_deploy.AdvanceRolloutRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["phase_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).advance_rollout._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["phaseId"] = "phase_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).advance_rollout._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "phaseId" in jsonified_request
+    assert jsonified_request["phaseId"] == "phase_id_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.AdvanceRolloutResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_deploy.AdvanceRolloutResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.advance_rollout(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_advance_rollout_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.advance_rollout._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "phaseId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_advance_rollout_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_advance_rollout"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_advance_rollout"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.AdvanceRolloutRequest.pb(
+            cloud_deploy.AdvanceRolloutRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.AdvanceRolloutResponse.to_json(
+            cloud_deploy.AdvanceRolloutResponse()
+        )
+
+        request = cloud_deploy.AdvanceRolloutRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.AdvanceRolloutResponse()
+
+        client.advance_rollout(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_advance_rollout_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.AdvanceRolloutRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.advance_rollout(request)
+
+
+def test_advance_rollout_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.AdvanceRolloutResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            phase_id="phase_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.AdvanceRolloutResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.advance_rollout(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/deliveryPipelines/*/releases/*/rollouts/*}:advance"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_advance_rollout_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.advance_rollout(
+            cloud_deploy.AdvanceRolloutRequest(),
+            name="name_value",
+            phase_id="phase_id_value",
+        )
+
+
+def test_advance_rollout_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.CancelRolloutRequest,
+        dict,
+    ],
+)
+def test_cancel_rollout_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.CancelRolloutResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.CancelRolloutResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.cancel_rollout(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.CancelRolloutResponse)
+
+
+def test_cancel_rollout_rest_required_fields(
+    request_type=cloud_deploy.CancelRolloutRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).cancel_rollout._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).cancel_rollout._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.CancelRolloutResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_deploy.CancelRolloutResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.cancel_rollout(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_cancel_rollout_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.cancel_rollout._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_cancel_rollout_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_cancel_rollout"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_cancel_rollout"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.CancelRolloutRequest.pb(
+            cloud_deploy.CancelRolloutRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.CancelRolloutResponse.to_json(
+            cloud_deploy.CancelRolloutResponse()
+        )
+
+        request = cloud_deploy.CancelRolloutRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.CancelRolloutResponse()
+
+        client.cancel_rollout(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_cancel_rollout_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.CancelRolloutRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_rollout(request)
+
+
+def test_cancel_rollout_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.CancelRolloutResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.CancelRolloutResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.cancel_rollout(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/deliveryPipelines/*/releases/*/rollouts/*}:cancel"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_cancel_rollout_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.cancel_rollout(
+            cloud_deploy.CancelRolloutRequest(),
+            name="name_value",
+        )
+
+
+def test_cancel_rollout_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         cloud_deploy.ListRolloutsRequest,
         dict,
     ],
@@ -12342,6 +14114,7 @@ def test_get_rollout_rest(request_type):
             deploying_build="deploying_build_value",
             etag="etag_value",
             deploy_failure_cause=cloud_deploy.Rollout.FailureCause.CLOUD_BUILD_UNAVAILABLE,
+            controller_rollout="controller_rollout_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -12369,6 +14142,7 @@ def test_get_rollout_rest(request_type):
         response.deploy_failure_cause
         == cloud_deploy.Rollout.FailureCause.CLOUD_BUILD_UNAVAILABLE
     )
+    assert response.controller_rollout == "controller_rollout_value"
 
 
 def test_get_rollout_rest_required_fields(request_type=cloud_deploy.GetRolloutRequest):
@@ -12637,15 +14411,23 @@ def test_create_rollout_rest(request_type):
             {
                 "id": "id_value",
                 "state": 1,
+                "skip_message": "skip_message_value",
                 "deployment_jobs": {
                     "deploy_job": {
                         "id": "id_value",
                         "state": 1,
+                        "skip_message": "skip_message_value",
                         "job_run": "job_run_value",
                         "deploy_job": {},
                         "verify_job": {},
+                        "create_child_rollout_job": {},
+                        "advance_child_rollout_job": {},
                     },
                     "verify_job": {},
+                },
+                "child_rollout_jobs": {
+                    "create_rollout_jobs": {},
+                    "advance_rollout_jobs": {},
                 },
             }
         ],
@@ -12656,6 +14438,7 @@ def test_create_rollout_rest(request_type):
                 "revision": "revision_value",
             }
         },
+        "controller_rollout": "controller_rollout_value",
     }
     request = request_type(**request_init)
 
@@ -12718,6 +14501,7 @@ def test_create_rollout_rest_required_fields(
         (
             "request_id",
             "rollout_id",
+            "starting_phase_id",
             "validate_only",
         )
     )
@@ -12785,6 +14569,7 @@ def test_create_rollout_rest_unset_required_fields():
             (
                 "requestId",
                 "rolloutId",
+                "startingPhaseId",
                 "validateOnly",
             )
         )
@@ -12891,15 +14676,23 @@ def test_create_rollout_rest_bad_request(
             {
                 "id": "id_value",
                 "state": 1,
+                "skip_message": "skip_message_value",
                 "deployment_jobs": {
                     "deploy_job": {
                         "id": "id_value",
                         "state": 1,
+                        "skip_message": "skip_message_value",
                         "job_run": "job_run_value",
                         "deploy_job": {},
                         "verify_job": {},
+                        "create_child_rollout_job": {},
+                        "advance_child_rollout_job": {},
                     },
                     "verify_job": {},
+                },
+                "child_rollout_jobs": {
+                    "create_rollout_jobs": {},
+                    "advance_rollout_jobs": {},
                 },
             }
         ],
@@ -12910,6 +14703,7 @@ def test_create_rollout_rest_bad_request(
                 "revision": "revision_value",
             }
         },
+        "controller_rollout": "controller_rollout_value",
     }
     request = request_type(**request_init)
 
@@ -12987,6 +14781,295 @@ def test_create_rollout_rest_flattened_error(transport: str = "rest"):
 
 
 def test_create_rollout_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_deploy.IgnoreJobRequest,
+        dict,
+    ],
+)
+def test_ignore_job_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "rollout": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.IgnoreJobResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.IgnoreJobResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.ignore_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.IgnoreJobResponse)
+
+
+def test_ignore_job_rest_required_fields(request_type=cloud_deploy.IgnoreJobRequest):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["rollout"] = ""
+    request_init["phase_id"] = ""
+    request_init["job_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).ignore_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["rollout"] = "rollout_value"
+    jsonified_request["phaseId"] = "phase_id_value"
+    jsonified_request["jobId"] = "job_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).ignore_job._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "rollout" in jsonified_request
+    assert jsonified_request["rollout"] == "rollout_value"
+    assert "phaseId" in jsonified_request
+    assert jsonified_request["phaseId"] == "phase_id_value"
+    assert "jobId" in jsonified_request
+    assert jsonified_request["jobId"] == "job_id_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.IgnoreJobResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_deploy.IgnoreJobResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.ignore_job(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_ignore_job_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.ignore_job._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "rollout",
+                "phaseId",
+                "jobId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_ignore_job_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_ignore_job"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_ignore_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.IgnoreJobRequest.pb(cloud_deploy.IgnoreJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.IgnoreJobResponse.to_json(
+            cloud_deploy.IgnoreJobResponse()
+        )
+
+        request = cloud_deploy.IgnoreJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.IgnoreJobResponse()
+
+        client.ignore_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_ignore_job_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.IgnoreJobRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "rollout": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.ignore_job(request)
+
+
+def test_ignore_job_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.IgnoreJobResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "rollout": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            rollout="rollout_value",
+            phase_id="phase_id_value",
+            job_id="job_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.IgnoreJobResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.ignore_job(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{rollout=projects/*/locations/*/deliveryPipelines/*/releases/*/rollouts/*}:ignoreJob"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_ignore_job_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.ignore_job(
+            cloud_deploy.IgnoreJobRequest(),
+            rollout="rollout_value",
+            phase_id="phase_id_value",
+            job_id="job_id_value",
+        )
+
+
+def test_ignore_job_rest_error():
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -13915,6 +15998,278 @@ def test_get_job_run_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        cloud_deploy.TerminateJobRunRequest,
+        dict,
+    ],
+)
+def test_terminate_job_run_rest(request_type):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5/jobRuns/sample6"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.TerminateJobRunResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.TerminateJobRunResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.terminate_job_run(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_deploy.TerminateJobRunResponse)
+
+
+def test_terminate_job_run_rest_required_fields(
+    request_type=cloud_deploy.TerminateJobRunRequest,
+):
+    transport_class = transports.CloudDeployRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).terminate_job_run._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).terminate_job_run._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_deploy.TerminateJobRunResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_deploy.TerminateJobRunResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.terminate_job_run(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_terminate_job_run_rest_unset_required_fields():
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.terminate_job_run._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_terminate_job_run_rest_interceptors(null_interceptor):
+    transport = transports.CloudDeployRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudDeployRestInterceptor(),
+    )
+    client = CloudDeployClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "post_terminate_job_run"
+    ) as post, mock.patch.object(
+        transports.CloudDeployRestInterceptor, "pre_terminate_job_run"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_deploy.TerminateJobRunRequest.pb(
+            cloud_deploy.TerminateJobRunRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_deploy.TerminateJobRunResponse.to_json(
+            cloud_deploy.TerminateJobRunResponse()
+        )
+
+        request = cloud_deploy.TerminateJobRunRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_deploy.TerminateJobRunResponse()
+
+        client.terminate_job_run(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_terminate_job_run_rest_bad_request(
+    transport: str = "rest", request_type=cloud_deploy.TerminateJobRunRequest
+):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5/jobRuns/sample6"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.terminate_job_run(request)
+
+
+def test_terminate_job_run_rest_flattened():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_deploy.TerminateJobRunResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4/rollouts/sample5/jobRuns/sample6"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_deploy.TerminateJobRunResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.terminate_job_run(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/deliveryPipelines/*/releases/*/rollouts/*/jobRuns/*}:terminate"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_terminate_job_run_rest_flattened_error(transport: str = "rest"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.terminate_job_run(
+            cloud_deploy.TerminateJobRunRequest(),
+            name="name_value",
+        )
+
+
+def test_terminate_job_run_rest_error():
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         cloud_deploy.GetConfigRequest,
         dict,
     ],
@@ -14329,12 +16684,16 @@ def test_cloud_deploy_base_transport():
         "create_release",
         "abandon_release",
         "approve_rollout",
+        "advance_rollout",
+        "cancel_rollout",
         "list_rollouts",
         "get_rollout",
         "create_rollout",
+        "ignore_job",
         "retry_job",
         "list_job_runs",
         "get_job_run",
+        "terminate_job_run",
         "get_config",
         "set_iam_policy",
         "get_iam_policy",
@@ -14667,6 +17026,12 @@ def test_cloud_deploy_client_transport_session_collision(transport_name):
     session1 = client1.transport.approve_rollout._session
     session2 = client2.transport.approve_rollout._session
     assert session1 != session2
+    session1 = client1.transport.advance_rollout._session
+    session2 = client2.transport.advance_rollout._session
+    assert session1 != session2
+    session1 = client1.transport.cancel_rollout._session
+    session2 = client2.transport.cancel_rollout._session
+    assert session1 != session2
     session1 = client1.transport.list_rollouts._session
     session2 = client2.transport.list_rollouts._session
     assert session1 != session2
@@ -14676,6 +17041,9 @@ def test_cloud_deploy_client_transport_session_collision(transport_name):
     session1 = client1.transport.create_rollout._session
     session2 = client2.transport.create_rollout._session
     assert session1 != session2
+    session1 = client1.transport.ignore_job._session
+    session2 = client2.transport.ignore_job._session
+    assert session1 != session2
     session1 = client1.transport.retry_job._session
     session2 = client2.transport.retry_job._session
     assert session1 != session2
@@ -14684,6 +17052,9 @@ def test_cloud_deploy_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.get_job_run._session
     session2 = client2.transport.get_job_run._session
+    assert session1 != session2
+    session1 = client1.transport.terminate_job_run._session
+    session2 = client2.transport.terminate_job_run._session
     assert session1 != session2
     session1 = client1.transport.get_config._session
     session2 = client2.transport.get_config._session
@@ -15075,10 +17446,36 @@ def test_parse_rollout_path():
     assert expected == actual
 
 
-def test_target_path():
+def test_service_path():
     project = "scallop"
     location = "abalone"
-    target = "squid"
+    service = "squid"
+    expected = "projects/{project}/locations/{location}/services/{service}".format(
+        project=project,
+        location=location,
+        service=service,
+    )
+    actual = CloudDeployClient.service_path(project, location, service)
+    assert expected == actual
+
+
+def test_parse_service_path():
+    expected = {
+        "project": "clam",
+        "location": "whelk",
+        "service": "octopus",
+    }
+    path = CloudDeployClient.service_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudDeployClient.parse_service_path(path)
+    assert expected == actual
+
+
+def test_target_path():
+    project = "oyster"
+    location = "nudibranch"
+    target = "cuttlefish"
     expected = "projects/{project}/locations/{location}/targets/{target}".format(
         project=project,
         location=location,
@@ -15090,9 +17487,9 @@ def test_target_path():
 
 def test_parse_target_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "target": "octopus",
+        "project": "mussel",
+        "location": "winkle",
+        "target": "nautilus",
     }
     path = CloudDeployClient.target_path(**expected)
 
@@ -15102,9 +17499,9 @@ def test_parse_target_path():
 
 
 def test_worker_pool_path():
-    project = "oyster"
-    location = "nudibranch"
-    worker_pool = "cuttlefish"
+    project = "scallop"
+    location = "abalone"
+    worker_pool = "squid"
     expected = (
         "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
             project=project,
@@ -15118,9 +17515,9 @@ def test_worker_pool_path():
 
 def test_parse_worker_pool_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "worker_pool": "nautilus",
+        "project": "clam",
+        "location": "whelk",
+        "worker_pool": "octopus",
     }
     path = CloudDeployClient.worker_pool_path(**expected)
 
@@ -15130,7 +17527,7 @@ def test_parse_worker_pool_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -15140,7 +17537,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "nudibranch",
     }
     path = CloudDeployClient.common_billing_account_path(**expected)
 
@@ -15150,7 +17547,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -15160,7 +17557,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "mussel",
     }
     path = CloudDeployClient.common_folder_path(**expected)
 
@@ -15170,7 +17567,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -15180,7 +17577,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "nautilus",
     }
     path = CloudDeployClient.common_organization_path(**expected)
 
@@ -15190,7 +17587,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -15200,7 +17597,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "abalone",
     }
     path = CloudDeployClient.common_project_path(**expected)
 
@@ -15210,8 +17607,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -15222,8 +17619,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = CloudDeployClient.common_location_path(**expected)
 

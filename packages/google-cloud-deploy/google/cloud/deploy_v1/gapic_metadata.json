@@ -15,9 +15,19 @@
                 "abandon_release"
               ]
             },
+            "AdvanceRollout": {
+              "methods": [
+                "advance_rollout"
+              ]
+            },
             "ApproveRollout": {
               "methods": [
                 "approve_rollout"
+              ]
+            },
+            "CancelRollout": {
+              "methods": [
+                "cancel_rollout"
               ]
             },
             "CreateDeliveryPipeline": {
@@ -80,6 +90,11 @@
                 "get_target"
               ]
             },
+            "IgnoreJob": {
+              "methods": [
+                "ignore_job"
+              ]
+            },
             "ListDeliveryPipelines": {
               "methods": [
                 "list_delivery_pipelines"
@@ -108,6 +123,11 @@
             "RetryJob": {
               "methods": [
                 "retry_job"
+              ]
+            },
+            "TerminateJobRun": {
+              "methods": [
+                "terminate_job_run"
               ]
             },
             "UpdateDeliveryPipeline": {
@@ -130,9 +150,19 @@
                 "abandon_release"
               ]
             },
+            "AdvanceRollout": {
+              "methods": [
+                "advance_rollout"
+              ]
+            },
             "ApproveRollout": {
               "methods": [
                 "approve_rollout"
+              ]
+            },
+            "CancelRollout": {
+              "methods": [
+                "cancel_rollout"
               ]
             },
             "CreateDeliveryPipeline": {
@@ -195,6 +225,11 @@
                 "get_target"
               ]
             },
+            "IgnoreJob": {
+              "methods": [
+                "ignore_job"
+              ]
+            },
             "ListDeliveryPipelines": {
               "methods": [
                 "list_delivery_pipelines"
@@ -223,6 +258,11 @@
             "RetryJob": {
               "methods": [
                 "retry_job"
+              ]
+            },
+            "TerminateJobRun": {
+              "methods": [
+                "terminate_job_run"
               ]
             },
             "UpdateDeliveryPipeline": {
@@ -245,9 +285,19 @@
                 "abandon_release"
               ]
             },
+            "AdvanceRollout": {
+              "methods": [
+                "advance_rollout"
+              ]
+            },
             "ApproveRollout": {
               "methods": [
                 "approve_rollout"
+              ]
+            },
+            "CancelRollout": {
+              "methods": [
+                "cancel_rollout"
               ]
             },
             "CreateDeliveryPipeline": {
@@ -310,6 +360,11 @@
                 "get_target"
               ]
             },
+            "IgnoreJob": {
+              "methods": [
+                "ignore_job"
+              ]
+            },
             "ListDeliveryPipelines": {
               "methods": [
                 "list_delivery_pipelines"
@@ -338,6 +393,11 @@
             "RetryJob": {
               "methods": [
                 "retry_job"
+              ]
+            },
+            "TerminateJobRun": {
+              "methods": [
+                "terminate_job_run"
               ]
             },
             "UpdateDeliveryPipeline": {

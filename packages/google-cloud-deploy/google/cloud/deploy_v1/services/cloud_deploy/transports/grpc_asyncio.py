@@ -681,6 +681,64 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
         return self._stubs["approve_rollout"]
 
     @property
+    def advance_rollout(
+        self,
+    ) -> Callable[
+        [cloud_deploy.AdvanceRolloutRequest],
+        Awaitable[cloud_deploy.AdvanceRolloutResponse],
+    ]:
+        r"""Return a callable for the advance rollout method over gRPC.
+
+        Advances a Rollout in a given project and location.
+
+        Returns:
+            Callable[[~.AdvanceRolloutRequest],
+                    Awaitable[~.AdvanceRolloutResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "advance_rollout" not in self._stubs:
+            self._stubs["advance_rollout"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/AdvanceRollout",
+                request_serializer=cloud_deploy.AdvanceRolloutRequest.serialize,
+                response_deserializer=cloud_deploy.AdvanceRolloutResponse.deserialize,
+            )
+        return self._stubs["advance_rollout"]
+
+    @property
+    def cancel_rollout(
+        self,
+    ) -> Callable[
+        [cloud_deploy.CancelRolloutRequest],
+        Awaitable[cloud_deploy.CancelRolloutResponse],
+    ]:
+        r"""Return a callable for the cancel rollout method over gRPC.
+
+        Cancels a Rollout in a given project and location.
+
+        Returns:
+            Callable[[~.CancelRolloutRequest],
+                    Awaitable[~.CancelRolloutResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_rollout" not in self._stubs:
+            self._stubs["cancel_rollout"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/CancelRollout",
+                request_serializer=cloud_deploy.CancelRolloutRequest.serialize,
+                response_deserializer=cloud_deploy.CancelRolloutResponse.deserialize,
+            )
+        return self._stubs["cancel_rollout"]
+
+    @property
     def list_rollouts(
         self,
     ) -> Callable[
@@ -764,6 +822,34 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
         return self._stubs["create_rollout"]
 
     @property
+    def ignore_job(
+        self,
+    ) -> Callable[
+        [cloud_deploy.IgnoreJobRequest], Awaitable[cloud_deploy.IgnoreJobResponse]
+    ]:
+        r"""Return a callable for the ignore job method over gRPC.
+
+        Ignores the specified Job in a Rollout.
+
+        Returns:
+            Callable[[~.IgnoreJobRequest],
+                    Awaitable[~.IgnoreJobResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "ignore_job" not in self._stubs:
+            self._stubs["ignore_job"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/IgnoreJob",
+                request_serializer=cloud_deploy.IgnoreJobRequest.serialize,
+                response_deserializer=cloud_deploy.IgnoreJobResponse.deserialize,
+            )
+        return self._stubs["ignore_job"]
+
+    @property
     def retry_job(
         self,
     ) -> Callable[
@@ -844,6 +930,35 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 response_deserializer=cloud_deploy.JobRun.deserialize,
             )
         return self._stubs["get_job_run"]
+
+    @property
+    def terminate_job_run(
+        self,
+    ) -> Callable[
+        [cloud_deploy.TerminateJobRunRequest],
+        Awaitable[cloud_deploy.TerminateJobRunResponse],
+    ]:
+        r"""Return a callable for the terminate job run method over gRPC.
+
+        Terminates a Job Run in a given project and location.
+
+        Returns:
+            Callable[[~.TerminateJobRunRequest],
+                    Awaitable[~.TerminateJobRunResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "terminate_job_run" not in self._stubs:
+            self._stubs["terminate_job_run"] = self.grpc_channel.unary_unary(
+                "/google.cloud.deploy.v1.CloudDeploy/TerminateJobRun",
+                request_serializer=cloud_deploy.TerminateJobRunRequest.serialize,
+                response_deserializer=cloud_deploy.TerminateJobRunResponse.deserialize,
+            )
+        return self._stubs["terminate_job_run"]
 
     @property
     def get_config(

@@ -83,11 +83,27 @@ class CloudDeployRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_advance_rollout(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_advance_rollout(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_approve_rollout(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_approve_rollout(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_cancel_rollout(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_cancel_rollout(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -187,6 +203,14 @@ class CloudDeployRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_ignore_job(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_ignore_job(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_delivery_pipelines(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -235,6 +259,14 @@ class CloudDeployRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_terminate_job_run(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_terminate_job_run(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_delivery_pipeline(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -280,6 +312,29 @@ class CloudDeployRestInterceptor:
         """
         return response
 
+    def pre_advance_rollout(
+        self,
+        request: cloud_deploy.AdvanceRolloutRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.AdvanceRolloutRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for advance_rollout
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_advance_rollout(
+        self, response: cloud_deploy.AdvanceRolloutResponse
+    ) -> cloud_deploy.AdvanceRolloutResponse:
+        """Post-rpc interceptor for advance_rollout
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_approve_rollout(
         self,
         request: cloud_deploy.ApproveRolloutRequest,
@@ -296,6 +351,29 @@ class CloudDeployRestInterceptor:
         self, response: cloud_deploy.ApproveRolloutResponse
     ) -> cloud_deploy.ApproveRolloutResponse:
         """Post-rpc interceptor for approve_rollout
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_cancel_rollout(
+        self,
+        request: cloud_deploy.CancelRolloutRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.CancelRolloutRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for cancel_rollout
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_cancel_rollout(
+        self, response: cloud_deploy.CancelRolloutResponse
+    ) -> cloud_deploy.CancelRolloutResponse:
+        """Post-rpc interceptor for cancel_rollout
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudDeploy server but before
@@ -569,6 +647,29 @@ class CloudDeployRestInterceptor:
         """
         return response
 
+    def pre_ignore_job(
+        self,
+        request: cloud_deploy.IgnoreJobRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.IgnoreJobRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for ignore_job
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_ignore_job(
+        self, response: cloud_deploy.IgnoreJobResponse
+    ) -> cloud_deploy.IgnoreJobResponse:
+        """Post-rpc interceptor for ignore_job
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_delivery_pipelines(
         self,
         request: cloud_deploy.ListDeliveryPipelinesRequest,
@@ -698,6 +799,29 @@ class CloudDeployRestInterceptor:
         self, response: cloud_deploy.RetryJobResponse
     ) -> cloud_deploy.RetryJobResponse:
         """Post-rpc interceptor for retry_job
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudDeploy server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_terminate_job_run(
+        self,
+        request: cloud_deploy.TerminateJobRunRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_deploy.TerminateJobRunRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for terminate_job_run
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudDeploy server.
+        """
+        return request, metadata
+
+    def post_terminate_job_run(
+        self, response: cloud_deploy.TerminateJobRunResponse
+    ) -> cloud_deploy.TerminateJobRunResponse:
+        """Post-rpc interceptor for terminate_job_run
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudDeploy server but before
@@ -1198,6 +1322,101 @@ class CloudDeployRestTransport(CloudDeployTransport):
             resp = self._interceptor.post_abandon_release(resp)
             return resp
 
+    class _AdvanceRollout(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("AdvanceRollout")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.AdvanceRolloutRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_deploy.AdvanceRolloutResponse:
+            r"""Call the advance rollout method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.AdvanceRolloutRequest):
+                    The request object. The request object used by ``AdvanceRollout``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_deploy.AdvanceRolloutResponse:
+                    The response object from ``AdvanceRollout``.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*/deliveryPipelines/*/releases/*/rollouts/*}:advance",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_advance_rollout(request, metadata)
+            pb_request = cloud_deploy.AdvanceRolloutRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_deploy.AdvanceRolloutResponse()
+            pb_resp = cloud_deploy.AdvanceRolloutResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_advance_rollout(resp)
+            return resp
+
     class _ApproveRollout(CloudDeployRestStub):
         def __hash__(self):
             return hash("ApproveRollout")
@@ -1291,6 +1510,101 @@ class CloudDeployRestTransport(CloudDeployTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_approve_rollout(resp)
+            return resp
+
+    class _CancelRollout(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("CancelRollout")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.CancelRolloutRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_deploy.CancelRolloutResponse:
+            r"""Call the cancel rollout method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.CancelRolloutRequest):
+                    The request object. The request object used by ``CancelRollout``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_deploy.CancelRolloutResponse:
+                    The response object from ``CancelRollout``.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*/deliveryPipelines/*/releases/*/rollouts/*}:cancel",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_cancel_rollout(request, metadata)
+            pb_request = cloud_deploy.CancelRolloutRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_deploy.CancelRolloutResponse()
+            pb_resp = cloud_deploy.CancelRolloutResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_cancel_rollout(resp)
             return resp
 
     class _CreateDeliveryPipeline(CloudDeployRestStub):
@@ -1521,7 +1835,6 @@ class CloudDeployRestTransport(CloudDeployTransport):
                 request (~.cloud_deploy.CreateRolloutRequest):
                     The request object. CreateRolloutRequest is the request object used by
                 ``CreateRollout``.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2072,7 +2385,6 @@ class CloudDeployRestTransport(CloudDeployTransport):
                 request (~.cloud_deploy.GetJobRunRequest):
                     The request object. GetJobRunRequest is the request object used by
                 ``GetJobRun``.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2254,7 +2566,6 @@ class CloudDeployRestTransport(CloudDeployTransport):
                 request (~.cloud_deploy.GetRolloutRequest):
                     The request object. GetRolloutRequest is the request object used by
                 ``GetRollout``.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2408,6 +2719,101 @@ class CloudDeployRestTransport(CloudDeployTransport):
             resp = self._interceptor.post_get_target(resp)
             return resp
 
+    class _IgnoreJob(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("IgnoreJob")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.IgnoreJobRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_deploy.IgnoreJobResponse:
+            r"""Call the ignore job method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.IgnoreJobRequest):
+                    The request object. The request object used by ``IgnoreJob``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_deploy.IgnoreJobResponse:
+                    The response object from ``IgnoreJob``.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{rollout=projects/*/locations/*/deliveryPipelines/*/releases/*/rollouts/*}:ignoreJob",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_ignore_job(request, metadata)
+            pb_request = cloud_deploy.IgnoreJobRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_deploy.IgnoreJobResponse()
+            pb_resp = cloud_deploy.IgnoreJobResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_ignore_job(resp)
+            return resp
+
     class _ListDeliveryPipelines(CloudDeployRestStub):
         def __hash__(self):
             return hash("ListDeliveryPipelines")
@@ -2524,7 +2930,6 @@ class CloudDeployRestTransport(CloudDeployTransport):
                 request (~.cloud_deploy.ListJobRunsRequest):
                     The request object. ListJobRunsRequest is the request object used by
                 ``ListJobRuns``.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2700,7 +3105,6 @@ class CloudDeployRestTransport(CloudDeployTransport):
                 request (~.cloud_deploy.ListRolloutsRequest):
                     The request object. ListRolloutsRequest is the request object used by
                 ``ListRollouts``.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2876,7 +3280,6 @@ class CloudDeployRestTransport(CloudDeployTransport):
                 request (~.cloud_deploy.RetryJobRequest):
                     The request object. RetryJobRequest is the request object used by
                 ``RetryJob``.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2943,6 +3346,103 @@ class CloudDeployRestTransport(CloudDeployTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_retry_job(resp)
+            return resp
+
+    class _TerminateJobRun(CloudDeployRestStub):
+        def __hash__(self):
+            return hash("TerminateJobRun")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloud_deploy.TerminateJobRunRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_deploy.TerminateJobRunResponse:
+            r"""Call the terminate job run method over HTTP.
+
+            Args:
+                request (~.cloud_deploy.TerminateJobRunRequest):
+                    The request object. The request object used by ``TerminateJobRun``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_deploy.TerminateJobRunResponse:
+                    The response object from ``TerminateJobRun``.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*/deliveryPipelines/*/releases/*/rollouts/*/jobRuns/*}:terminate",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_terminate_job_run(
+                request, metadata
+            )
+            pb_request = cloud_deploy.TerminateJobRunRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_deploy.TerminateJobRunResponse()
+            pb_resp = cloud_deploy.TerminateJobRunResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_terminate_job_run(resp)
             return resp
 
     class _UpdateDeliveryPipeline(CloudDeployRestStub):
@@ -3154,6 +3654,16 @@ class CloudDeployRestTransport(CloudDeployTransport):
         return self._AbandonRelease(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def advance_rollout(
+        self,
+    ) -> Callable[
+        [cloud_deploy.AdvanceRolloutRequest], cloud_deploy.AdvanceRolloutResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._AdvanceRollout(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def approve_rollout(
         self,
     ) -> Callable[
@@ -3162,6 +3672,16 @@ class CloudDeployRestTransport(CloudDeployTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ApproveRollout(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def cancel_rollout(
+        self,
+    ) -> Callable[
+        [cloud_deploy.CancelRolloutRequest], cloud_deploy.CancelRolloutResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CancelRollout(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_delivery_pipeline(
@@ -3266,6 +3786,14 @@ class CloudDeployRestTransport(CloudDeployTransport):
         return self._GetTarget(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def ignore_job(
+        self,
+    ) -> Callable[[cloud_deploy.IgnoreJobRequest], cloud_deploy.IgnoreJobResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._IgnoreJob(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_delivery_pipelines(
         self,
     ) -> Callable[
@@ -3319,6 +3847,16 @@ class CloudDeployRestTransport(CloudDeployTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RetryJob(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def terminate_job_run(
+        self,
+    ) -> Callable[
+        [cloud_deploy.TerminateJobRunRequest], cloud_deploy.TerminateJobRunResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._TerminateJobRun(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_delivery_pipeline(
