@@ -30,8 +30,10 @@ __protobuf__ = proto.module(
 
 
 class GeocodingResults(proto.Message):
-    r"""Contains GeocodedWaypoints for origin, destination and
-    intermediate waypoints. Only populated for address waypoints.
+    r"""Contains
+    [GeocodedWaypoints][google.maps.routing.v2.GeocodedWaypoint] for
+    origin, destination and intermediate waypoints. Only populated for
+    address waypoints.
 
     Attributes:
         origin (google.maps.routing_v2.types.GeocodedWaypoint):

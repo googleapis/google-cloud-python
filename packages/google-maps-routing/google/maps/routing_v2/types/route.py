@@ -54,10 +54,11 @@ class Route(proto.Message):
         legs (MutableSequence[google.maps.routing_v2.types.RouteLeg]):
             A collection of legs (path segments between waypoints) that
             make-up the route. Each leg corresponds to the trip between
-            two non-\ ``via`` Waypoints. For example, a route with no
-            intermediate waypoints has only one leg. A route that
-            includes one non-\ ``via`` intermediate waypoint has two
-            legs. A route that includes one ``via`` intermediate
+            two non-\ ``via``
+            [Waypoints][google.maps.routing.v2.Waypoint]. For example, a
+            route with no intermediate waypoints has only one leg. A
+            route that includes one non-\ ``via`` intermediate waypoint
+            has two legs. A route that includes one ``via`` intermediate
             waypoint has one leg. The order of the legs matches the
             order of Waypoints from ``origin`` to ``intermediates`` to
             ``destination``.
@@ -82,7 +83,7 @@ class Route(proto.Message):
         warnings (MutableSequence[str]):
             An array of warnings to show when displaying
             the route.
-        viewport (google.geo.type.viewport_pb2.Viewport):
+        viewport (google.geo.type.types.Viewport):
             The viewport bounding box of the polyline.
         travel_advisory (google.maps.routing_v2.types.RouteTravelAdvisory):
             Additional information about the route.
@@ -349,7 +350,8 @@ class RouteLeg(proto.Message):
 
 
 class RouteLegStep(proto.Message):
-    r"""Encapsulates a segment of a ``RouteLeg``. A step corresponds to a
+    r"""Encapsulates a segment of a
+    [RouteLeg][google.maps.routing.v2.RouteLeg]. A step corresponds to a
     single navigation instruction. Route legs are made up of steps.
 
     Attributes:

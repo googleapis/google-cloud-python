@@ -58,11 +58,13 @@ class FallbackRoutingMode(proto.Enum):
         FALLBACK_ROUTING_MODE_UNSPECIFIED (0):
             Not used.
         FALLBACK_TRAFFIC_UNAWARE (1):
-            Indicates the "TRAFFIC_UNAWARE" routing mode was used to
+            Indicates the ``TRAFFIC_UNAWARE``
+            [google.maps.routing.v2.RoutingPreference] was used to
             compute the response.
         FALLBACK_TRAFFIC_AWARE (2):
-            Indicates the "TRAFFIC_AWARE" routing mode was used to
-            compute the response.
+            Indicates the ``TRAFFIC_AWARE``
+            [RoutingPreference][google.maps.routing.v2.RoutingPreference]
+            was used to compute the response.
     """
     FALLBACK_ROUTING_MODE_UNSPECIFIED = 0
     FALLBACK_TRAFFIC_UNAWARE = 1
