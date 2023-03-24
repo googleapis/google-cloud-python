@@ -146,10 +146,16 @@ class Query(proto.Message):
             The order to apply to the query results (if
             empty, order is unspecified).
         distinct_on (MutableSequence[google.cloud.datastore_v1.types.PropertyReference]):
-            The properties to make distinct. The query
-            results will contain the first result for each
-            distinct combination of values for the given
-            properties (if empty, all results are returned).
+            The properties to make distinct. The query results will
+            contain the first result for each distinct combination of
+            values for the given properties (if empty, all results are
+            returned).
+
+            Requires:
+
+            -  If ``order`` is specified, the set of distinct on
+               properties must appear before the non-distinct on
+               properties in ``order``.
         start_cursor (bytes):
             A starting point for the query results. Query cursors are
             returned in query result batches and `can only be used to
@@ -238,7 +244,7 @@ class AggregationQuery(proto.Message):
     """
 
     class Aggregation(proto.Message):
-        r"""Defines a aggregation that produces a single result.
+        r"""Defines an aggregation that produces a single result.
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -261,7 +267,7 @@ class AggregationQuery(proto.Message):
                      COUNT_UP_TO(1) AS count_up_to_1,
                      COUNT_UP_TO(2),
                      COUNT_UP_TO(3) AS count_up_to_3,
-                     COUNT_UP_TO(4)
+                     COUNT(*)
                    OVER (
                      ...
                    );
@@ -274,7 +280,7 @@ class AggregationQuery(proto.Message):
                      COUNT_UP_TO(1) AS count_up_to_1,
                      COUNT_UP_TO(2) AS property_1,
                      COUNT_UP_TO(3) AS count_up_to_3,
-                     COUNT_UP_TO(4) AS property_2
+                     COUNT(*) AS property_2
                    OVER (
                      ...
                    );
@@ -298,7 +304,7 @@ class AggregationQuery(proto.Message):
                     entities to count.
 
                     This provides a way to set an upper bound on the number of
-                    entities to scan, limiting latency and cost.
+                    entities to scan, limiting latency, and cost.
 
                     Unspecified is interpreted as no bound.
 
