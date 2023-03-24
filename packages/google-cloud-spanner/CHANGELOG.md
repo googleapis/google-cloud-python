@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.29.0](https://github.com/googleapis/python-spanner/compare/v3.28.0...v3.29.0) (2023-03-23)
+
+
+### Features
+
+* Adding new fields for Serverless analytics ([#906](https://github.com/googleapis/python-spanner/issues/906)) ([2a5a636](https://github.com/googleapis/python-spanner/commit/2a5a636fc296ad0a7f86ace6a5f361db1e2ee26d))
+
+
+### Bug Fixes
+
+* Correcting the proto field Id for field data_boost_enabled ([#915](https://github.com/googleapis/python-spanner/issues/915)) ([428aa1e](https://github.com/googleapis/python-spanner/commit/428aa1e5e4458649033a5566dc3017d2fadbd2a0))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#918](https://github.com/googleapis/python-spanner/issues/918)) ([c022bf8](https://github.com/googleapis/python-spanner/commit/c022bf859a3ace60c0a9ddb86896bc83f85e327f))
+
 ## [3.28.0](https://github.com/googleapis/python-spanner/compare/v3.27.1...v3.28.0) (2023-02-28)
 
 
