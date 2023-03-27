@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-filestore/compare/v1.5.1...v1.6.0) (2023-03-23)
+
+
+### Features
+
+* Add support for Snapshot ([fe698b2](https://github.com/googleapis/python-filestore/commit/fe698b2674491a31720e56c0f0388474362d9d61))
+* Updating the client to match the latest v1 API ([fe698b2](https://github.com/googleapis/python-filestore/commit/fe698b2674491a31720e56c0f0388474362d9d61))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#142](https://github.com/googleapis/python-filestore/issues/142)) ([475baaf](https://github.com/googleapis/python-filestore/commit/475baaf0d8a1218371426b2103b33d7e61aa8554))
+
 ## [1.5.1](https://github.com/googleapis/python-filestore/compare/v1.5.0...v1.5.1) (2023-02-17)
 
 
