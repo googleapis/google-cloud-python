@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.19.1](https://github.com/googleapis/python-bigquery-storage/compare/v2.19.0...v2.19.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#586](https://github.com/googleapis/python-bigquery-storage/issues/586)) ([76c4f0f](https://github.com/googleapis/python-bigquery-storage/commit/76c4f0fb3ff9e941977ab8ba63063e9451af6f2c))
+
 ## [2.19.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.18.1...v2.19.0) (2023-03-01)
 
 
