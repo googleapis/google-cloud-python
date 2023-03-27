@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/googleapis/python-workflows/compare/v1.10.0...v1.10.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#248](https://github.com/googleapis/python-workflows/issues/248)) ([20f6578](https://github.com/googleapis/python-workflows/commit/20f6578d109fef6372ca61f8fd4f13a0d5b3325f))
+
 ## [1.10.0](https://github.com/googleapis/python-workflows/compare/v1.9.1...v1.10.0) (2023-02-17)
 
 
