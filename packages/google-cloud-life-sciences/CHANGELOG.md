@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.2](https://github.com/googleapis/python-life-sciences/compare/v0.9.1...v0.9.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#169](https://github.com/googleapis/python-life-sciences/issues/169)) ([d342e12](https://github.com/googleapis/python-life-sciences/commit/d342e1279602de5bcf0b9984c6c7d9f1c07d1fe4))
+
 ## [0.9.1](https://github.com/googleapis/python-life-sciences/compare/v0.9.0...v0.9.1) (2023-01-20)
 
 
