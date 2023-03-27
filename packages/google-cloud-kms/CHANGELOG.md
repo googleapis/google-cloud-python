@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.16.0](https://github.com/googleapis/python-kms/compare/v2.15.0...v2.16.0) (2023-03-23)
+
+
+### Features
+
+* Add support for Coordinated External Keys ([#382](https://github.com/googleapis/python-kms/issues/382)) ([3f68192](https://github.com/googleapis/python-kms/commit/3f681923dee66e30eed91bf5a19485dea19e524e))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#385](https://github.com/googleapis/python-kms/issues/385)) ([94d33c2](https://github.com/googleapis/python-kms/commit/94d33c206d7a06265933359074b61aab94f6be8e))
+
 ## [2.15.0](https://github.com/googleapis/python-kms/compare/v2.14.1...v2.15.0) (2023-02-21)
 
 
