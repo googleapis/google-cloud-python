@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.3](https://github.com/googleapis/python-dataflow-client/compare/v0.8.2...v0.8.3) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#177](https://github.com/googleapis/python-dataflow-client/issues/177)) ([22668f6](https://github.com/googleapis/python-dataflow-client/commit/22668f60347b04862a52fc5080e54ec7f3712113))
+
 ## [0.8.2](https://github.com/googleapis/python-dataflow-client/compare/v0.8.1...v0.8.2) (2023-02-07)
 
 
