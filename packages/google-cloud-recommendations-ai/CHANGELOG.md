@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.3](https://github.com/googleapis/python-recommendations-ai/compare/v0.10.2...v0.10.3) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#221](https://github.com/googleapis/python-recommendations-ai/issues/221)) ([e65988f](https://github.com/googleapis/python-recommendations-ai/commit/e65988fc540f9c2ca0cdf4ccc5cb923fb4fe4387))
+
 ## [0.10.2](https://github.com/googleapis/python-recommendations-ai/compare/v0.10.1...v0.10.2) (2023-02-17)
 
 
