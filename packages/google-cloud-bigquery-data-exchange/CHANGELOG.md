@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.5.1...v0.5.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#69](https://github.com/googleapis/python-bigquery-data-exchange/issues/69)) ([665ebe3](https://github.com/googleapis/python-bigquery-data-exchange/commit/665ebe311308a0ef96ec9604bbee40e2568475ff))
+
 ## [0.5.1](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.5.0...v0.5.1) (2023-01-20)
 
 
