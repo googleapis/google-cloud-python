@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.3](https://github.com/googleapis/python-dataplex/compare/v1.4.2...v1.4.3) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#131](https://github.com/googleapis/python-dataplex/issues/131)) ([3ebb439](https://github.com/googleapis/python-dataplex/commit/3ebb439e786fecda33956c3eac2b0b3f451bedb1))
+
 ## [1.4.2](https://github.com/googleapis/python-dataplex/compare/v1.4.1...v1.4.2) (2023-02-02)
 
 
