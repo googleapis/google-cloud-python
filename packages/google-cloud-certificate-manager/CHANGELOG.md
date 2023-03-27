@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/googleapis/python-certificate-manager/compare/v1.4.1...v1.4.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#116](https://github.com/googleapis/python-certificate-manager/issues/116)) ([7507e2a](https://github.com/googleapis/python-certificate-manager/commit/7507e2a664428de6cacc762cda9d64392a5b1bc8))
+
 ## [1.4.1](https://github.com/googleapis/python-certificate-manager/compare/v1.4.0...v1.4.1) (2023-03-01)
 
 
