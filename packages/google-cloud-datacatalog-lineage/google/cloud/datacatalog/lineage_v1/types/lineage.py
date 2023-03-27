@@ -861,8 +861,8 @@ class SearchLinksRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The project and location you want
-            search in.
+            Required. The project and location you want search in the
+            format ``projects/*/locations/*``
         source (google.cloud.datacatalog.lineage_v1.types.EntityReference):
             Optional. Send asset information in the **source** field to
             retrieve all links that lead from the specified asset to
@@ -1005,8 +1005,8 @@ class BatchSearchLinkProcessesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The project and location where you
-            want to search.
+            Required. The project and location you want search in the
+            format ``projects/*/locations/*``
         links (MutableSequence[str]):
             Required. An array of links to check for their associated
             LineageProcesses.
