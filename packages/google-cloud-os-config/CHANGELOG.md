@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.1](https://github.com/googleapis/python-os-config/compare/v1.15.0...v1.15.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#272](https://github.com/googleapis/python-os-config/issues/272)) ([4fdfa8b](https://github.com/googleapis/python-os-config/commit/4fdfa8bb23c85bfb6785aa6e9450fdb042a3fb83))
+
 ## [1.15.0](https://github.com/googleapis/python-os-config/compare/v1.14.1...v1.15.0) (2023-02-21)
 
 
