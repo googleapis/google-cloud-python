@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-essential-contacts/compare/v1.5.0...v1.5.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#174](https://github.com/googleapis/python-essential-contacts/issues/174)) ([a2b2648](https://github.com/googleapis/python-essential-contacts/commit/a2b26489c3e78b8861ce7c81598e723722925780))
+
 ## [1.5.0](https://github.com/googleapis/python-essential-contacts/compare/v1.4.1...v1.5.0) (2023-02-09)
 
 
