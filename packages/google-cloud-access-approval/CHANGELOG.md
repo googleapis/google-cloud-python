@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.1](https://github.com/googleapis/python-access-approval/compare/v1.11.0...v1.11.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#277](https://github.com/googleapis/python-access-approval/issues/277)) ([7ed0221](https://github.com/googleapis/python-access-approval/commit/7ed0221888e0f3633f8ed6ac8afe93c92fca9a6e))
+
 ## [1.11.0](https://github.com/googleapis/python-access-approval/compare/v1.10.1...v1.11.0) (2023-02-27)
 
 
