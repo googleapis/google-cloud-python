@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.16.0](https://github.com/googleapis/python-analytics-admin/compare/v0.15.0...v0.16.0) (2023-03-24)
+
+
+### Features
+
+* **v1alpha:** Add `enhanced_measurement_settings` option to the `ChangeHistoryResource.resource` oneof field ([49c9f02](https://github.com/googleapis/python-analytics-admin/commit/49c9f022ac5efd2df7e0e82080810d9e26d81376))
+* **v1alpha:** Add `ENHANCED_MEASUREMENT_SETTINGS` option to the `ChangeHistoryResourceType` enum ([49c9f02](https://github.com/googleapis/python-analytics-admin/commit/49c9f022ac5efd2df7e0e82080810d9e26d81376))
+* **v1alpha:** Add `intraday_export_enabled` field to the `BigQueryLink` resource ([49c9f02](https://github.com/googleapis/python-analytics-admin/commit/49c9f022ac5efd2df7e0e82080810d9e26d81376))
+* **v1alpha:** Add account-level binding for the `RunAccessReport` method ([49c9f02](https://github.com/googleapis/python-analytics-admin/commit/49c9f022ac5efd2df7e0e82080810d9e26d81376))
+* **v1beta:** Add `AccessDimension`, `AccessMetric`, `AccessDateRange`, `AccessFilterExpression`, `AccessFilterExpressionList`, `AccessFilter`, `AccessStringFilter`, `AccessInListFilter`, `AccessNumericFilter`, `AccessBetweenFilter`, `NumericValue`, `AccessOrderBy`, `AccessDimensionHeader`, `AccessMetricHeader`, `AccessRow`, `AccessDimensionValue`, `AccessMetricValue`, `AccessQuota`, `AccessQuotaStatus` types ([c397e0a](https://github.com/googleapis/python-analytics-admin/commit/c397e0a818b693e0d53b312e0e31aeb060828603))
+* **v1beta:** Add RunAccessReport method (with bindings for account and property resources) ([c397e0a](https://github.com/googleapis/python-analytics-admin/commit/c397e0a818b693e0d53b312e0e31aeb060828603))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#335](https://github.com/googleapis/python-analytics-admin/issues/335)) ([5c24a33](https://github.com/googleapis/python-analytics-admin/commit/5c24a33512e1ece8904a70c7dd6bd666f2e527d1))
+
 ## [0.15.0](https://github.com/googleapis/python-analytics-admin/compare/v0.14.1...v0.15.0) (2023-02-28)
 
 
