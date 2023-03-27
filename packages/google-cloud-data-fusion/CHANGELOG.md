@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/python-data-fusion/compare/v1.8.0...v1.8.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#172](https://github.com/googleapis/python-data-fusion/issues/172)) ([6f3a379](https://github.com/googleapis/python-data-fusion/commit/6f3a3790744250f794bf0a95716d2e95e3401807))
+
 ## [1.8.0](https://github.com/googleapis/python-data-fusion/compare/v1.7.1...v1.8.0) (2023-02-27)
 
 
