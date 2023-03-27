@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/googleapis/python-network-connectivity/compare/v2.0.0...v2.0.1) (2023-03-23)
+
+
+### Bug Fixes
+
+* Add service_yaml_parameters to `networkconnectivity_py_gapic` ([#234](https://github.com/googleapis/python-network-connectivity/issues/234)) ([ab0bcce](https://github.com/googleapis/python-network-connectivity/commit/ab0bcce313bb283aa79cd9500c9b5c79dd39d7d6))
+
 ## [2.0.0](https://github.com/googleapis/python-network-connectivity/compare/v1.6.1...v2.0.0) (2023-02-27)
 
 
