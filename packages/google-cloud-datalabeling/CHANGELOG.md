@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+## [1.8.2](https://github.com/googleapis/python-datalabeling/compare/v1.8.1...v1.8.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#313](https://github.com/googleapis/python-datalabeling/issues/313)) ([6ed5de1](https://github.com/googleapis/python-datalabeling/commit/6ed5de1cfc5c79bf606485dbec4ecb9fdc4beee7))
+
 ## [1.8.1](https://github.com/googleapis/python-datalabeling/compare/v1.8.0...v1.8.1) (2023-01-20)
 
 
