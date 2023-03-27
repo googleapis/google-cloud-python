@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.11.0](https://github.com/googleapis/python-scheduler/compare/v2.10.0...v2.11.0) (2023-03-23)
+
+
+### Features
+
+* Location API methods ([#324](https://github.com/googleapis/python-scheduler/issues/324)) ([662e648](https://github.com/googleapis/python-scheduler/commit/662e6489710ea62b86b43d04f9bc69f9bc96e8b8))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#328](https://github.com/googleapis/python-scheduler/issues/328)) ([94e406e](https://github.com/googleapis/python-scheduler/commit/94e406eb242b027824536e597ced29b6f82cba97))
+
 ## [2.10.0](https://github.com/googleapis/python-scheduler/compare/v2.9.1...v2.10.0) (2023-02-28)
 
 
