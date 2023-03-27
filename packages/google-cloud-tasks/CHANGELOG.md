@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.13.1](https://github.com/googleapis/python-tasks/compare/v2.13.0...v2.13.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#342](https://github.com/googleapis/python-tasks/issues/342)) ([85141f8](https://github.com/googleapis/python-tasks/commit/85141f82f6dabf02b39e34420a3bbcc754227040))
+
 ## [2.13.0](https://github.com/googleapis/python-tasks/compare/v2.12.1...v2.13.0) (2023-02-28)
 
 
