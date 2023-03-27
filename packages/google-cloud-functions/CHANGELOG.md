@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/python-functions/compare/v1.11.0...v1.12.0) (2023-03-23)
+
+
+### Features
+
+* Add `available_cpu` field ([af189a0](https://github.com/googleapis/python-functions/commit/af189a0b5f2ef5c29f017cb4265f0011074ce366))
+* Add `kms_key_name` field to ServiceConfig (the CMEK use case) ([af189a0](https://github.com/googleapis/python-functions/commit/af189a0b5f2ef5c29f017cb4265f0011074ce366))
+* Add `max_instance_request_concurrency` field ([af189a0](https://github.com/googleapis/python-functions/commit/af189a0b5f2ef5c29f017cb4265f0011074ce366))
+* Add `security_level` field ([af189a0](https://github.com/googleapis/python-functions/commit/af189a0b5f2ef5c29f017cb4265f0011074ce366))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#259](https://github.com/googleapis/python-functions/issues/259)) ([8befe21](https://github.com/googleapis/python-functions/commit/8befe21b1d7bc16112f17fe32c1280ae7fa52ce2))
+
 ## [1.11.0](https://github.com/googleapis/python-functions/compare/v1.10.1...v1.11.0) (2023-02-16)
 
 
