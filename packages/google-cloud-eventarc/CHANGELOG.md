@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/googleapis/python-eventarc/compare/v1.9.0...v1.9.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#200](https://github.com/googleapis/python-eventarc/issues/200)) ([b0be428](https://github.com/googleapis/python-eventarc/commit/b0be428683dc09184246313ed0e34ad097e7cc4b))
+
 ## [1.9.0](https://github.com/googleapis/python-eventarc/compare/v1.8.1...v1.9.0) (2023-02-09)
 
 
