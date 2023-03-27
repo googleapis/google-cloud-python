@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/python-service-control/compare/v1.8.0...v1.8.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#198](https://github.com/googleapis/python-service-control/issues/198)) ([be2d5ae](https://github.com/googleapis/python-service-control/commit/be2d5aed8b8cdba6ac951db43be01da025b868e4))
+
 ## [1.8.0](https://github.com/googleapis/python-service-control/compare/v1.7.1...v1.8.0) (2023-02-28)
 
 
