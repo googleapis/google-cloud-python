@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.14.0](https://github.com/googleapis/python-cloudbuild/compare/v3.13.0...v3.14.0) (2023-03-23)
+
+
+### Features
+
+* Add DefaultLogsBucketBehavior to BuildOptions ([#391](https://github.com/googleapis/python-cloudbuild/issues/391)) ([599c938](https://github.com/googleapis/python-cloudbuild/commit/599c9385af35940b077b9094cd4bcd6ab88c0c5c))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#397](https://github.com/googleapis/python-cloudbuild/issues/397)) ([1c7725f](https://github.com/googleapis/python-cloudbuild/commit/1c7725fb41eb4278b3db661cae9fc6d9630e704c))
+
 ## [3.13.0](https://github.com/googleapis/python-cloudbuild/compare/v3.12.0...v3.13.0) (2023-02-17)
 
 
