@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.3](https://github.com/googleapis/python-gke-backup/compare/v0.4.2...v0.4.3) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#60](https://github.com/googleapis/python-gke-backup/issues/60)) ([911b0ed](https://github.com/googleapis/python-gke-backup/commit/911b0edd7976b83f256a3daaceaa043b2af10fd4))
+
 ## [0.4.2](https://github.com/googleapis/python-gke-backup/compare/v0.4.1...v0.4.2) (2023-02-17)
 
 
