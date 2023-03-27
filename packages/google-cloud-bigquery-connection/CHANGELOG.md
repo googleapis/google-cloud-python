@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.11.0...v1.12.0) (2023-03-23)
+
+
+### Features
+
+* Add spark connection properties type ([#304](https://github.com/googleapis/python-bigquery-connection/issues/304)) ([9f7de41](https://github.com/googleapis/python-bigquery-connection/commit/9f7de41e4379666a788ab04820afb716275b3d31))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#307](https://github.com/googleapis/python-bigquery-connection/issues/307)) ([18839c6](https://github.com/googleapis/python-bigquery-connection/commit/18839c643f176d960f61ba256cf62ca2262a0fde))
+
 ## [1.11.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.10.0...v1.11.0) (2023-03-01)
 
 
