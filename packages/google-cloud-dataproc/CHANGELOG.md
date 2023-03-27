@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.4.1](https://github.com/googleapis/python-dataproc/compare/v5.4.0...v5.4.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#528](https://github.com/googleapis/python-dataproc/issues/528)) ([c7806f5](https://github.com/googleapis/python-dataproc/commit/c7806f572156a9dfd3ce6f7eb4d048f090e85fe5))
+
 ## [5.4.0](https://github.com/googleapis/python-dataproc/compare/v5.3.0...v5.4.0) (2023-02-17)
 
 
