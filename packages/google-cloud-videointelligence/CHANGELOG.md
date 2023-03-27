@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.11.1](https://github.com/googleapis/python-videointelligence/compare/v2.11.0...v2.11.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#412](https://github.com/googleapis/python-videointelligence/issues/412)) ([a3d5521](https://github.com/googleapis/python-videointelligence/commit/a3d5521f16abe05fda32e19937c599e1dad67c57))
+
 ## [2.11.0](https://github.com/googleapis/python-videointelligence/compare/v2.10.1...v2.11.0) (2023-02-28)
 
 
