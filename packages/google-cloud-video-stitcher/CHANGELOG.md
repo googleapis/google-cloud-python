@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.7.0](https://github.com/googleapis/python-video-stitcher/compare/v0.6.1...v0.7.0) (2023-03-27)
+
+
+### Features
+
+* LiveSession changes for live config ([93971ed](https://github.com/googleapis/python-video-stitcher/commit/93971ed42dd850c4f432decb44a1814163815b30))
+* LRO changes for CdnKey and Slate methods ([93971ed](https://github.com/googleapis/python-video-stitcher/commit/93971ed42dd850c4f432decb44a1814163815b30))
+* VodSession changes for ad tracking ([93971ed](https://github.com/googleapis/python-video-stitcher/commit/93971ed42dd850c4f432decb44a1814163815b30))
+
+
+### Bug Fixes
+
+* Add AdTracking as a required parameter for VodSession ([93971ed](https://github.com/googleapis/python-video-stitcher/commit/93971ed42dd850c4f432decb44a1814163815b30))
+
 ## [0.6.1](https://github.com/googleapis/python-video-stitcher/compare/v0.6.0...v0.6.1) (2023-01-23)
 
 
