@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.19.0](https://github.com/googleapis/python-speech/compare/v2.18.0...v2.19.0) (2023-03-27)
+
+
+### Features
+
+* Add support for BatchRecognize ([2e7ee2d](https://github.com/googleapis/python-speech/commit/2e7ee2dd8a8e3f6feb3cda08cd87e13e7567d4a5))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#512](https://github.com/googleapis/python-speech/issues/512)) ([1edd640](https://github.com/googleapis/python-speech/commit/1edd640b6493f4ed499acc08b8dbd4edd108ed28))
+* Fix the resource name format in comment for CreatePhraseSetRequest ([2e7ee2d](https://github.com/googleapis/python-speech/commit/2e7ee2dd8a8e3f6feb3cda08cd87e13e7567d4a5))
+
 ## [2.18.0](https://github.com/googleapis/python-speech/compare/v2.17.3...v2.18.0) (2023-02-28)
 
 
