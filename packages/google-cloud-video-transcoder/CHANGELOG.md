@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/python-video-transcoder/compare/v1.8.0...v1.8.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#296](https://github.com/googleapis/python-video-transcoder/issues/296)) ([ced945e](https://github.com/googleapis/python-video-transcoder/commit/ced945edd9994b8bd45d3c350735b394b3c1c48e))
+
 ## [1.8.0](https://github.com/googleapis/python-video-transcoder/compare/v1.7.0...v1.8.0) (2023-03-01)
 
 
