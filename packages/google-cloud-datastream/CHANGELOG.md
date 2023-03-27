@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-datastream/compare/v1.5.0...v1.5.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#165](https://github.com/googleapis/python-datastream/issues/165)) ([e44614b](https://github.com/googleapis/python-datastream/commit/e44614bcc93cce5ef8219166bb76769ecd51f8a5))
+
 ## [1.5.0](https://github.com/googleapis/python-datastream/compare/v1.4.1...v1.5.0) (2023-02-17)
 
 
