@@ -45,7 +45,11 @@ async def sample_create_slate():
     )
 
     # Make the request
-    response = await client.create_slate(request=request)
+    operation = client.create_slate(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = (await operation).result()
 
     # Handle the response
     print(response)

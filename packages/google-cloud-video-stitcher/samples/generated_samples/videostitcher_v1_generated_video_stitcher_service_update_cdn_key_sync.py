@@ -43,7 +43,11 @@ def sample_update_cdn_key():
     )
 
     # Make the request
-    response = client.update_cdn_key(request=request)
+    operation = client.update_cdn_key(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
     print(response)

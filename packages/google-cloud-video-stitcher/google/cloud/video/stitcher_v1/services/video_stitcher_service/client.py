@@ -46,12 +46,18 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
+from google.longrunning import operations_pb2
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.video.stitcher_v1.services.video_stitcher_service import pagers
 from google.cloud.video.stitcher_v1.types import (
     ad_tag_details,
     cdn_keys,
+    live_configs,
     sessions,
     slates,
     stitch_details,
@@ -61,7 +67,6 @@ from google.cloud.video.stitcher_v1.types import (
 from .transports.base import DEFAULT_CLIENT_INFO, VideoStitcherServiceTransport
 from .transports.grpc import VideoStitcherServiceGrpcTransport
 from .transports.grpc_asyncio import VideoStitcherServiceGrpcAsyncIOTransport
-from .transports.rest import VideoStitcherServiceRestTransport
 
 
 class VideoStitcherServiceClientMeta(type):
@@ -77,7 +82,6 @@ class VideoStitcherServiceClientMeta(type):
     )  # type: Dict[str, Type[VideoStitcherServiceTransport]]
     _transport_registry["grpc"] = VideoStitcherServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = VideoStitcherServiceGrpcAsyncIOTransport
-    _transport_registry["rest"] = VideoStitcherServiceRestTransport
 
     def get_transport_class(
         cls,
@@ -233,6 +237,30 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         """Parses a live_ad_tag_detail path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/liveSessions/(?P<live_session>.+?)/liveAdTagDetails/(?P<live_ad_tag_detail>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def live_config_path(
+        project: str,
+        location: str,
+        live_config: str,
+    ) -> str:
+        """Returns a fully-qualified live_config string."""
+        return (
+            "projects/{project}/locations/{location}/liveConfigs/{live_config}".format(
+                project=project,
+                location=location,
+                live_config=live_config,
+            )
+        )
+
+    @staticmethod
+    def parse_live_config_path(path: str) -> Dict[str, str]:
+        """Parses a live_config path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/liveConfigs/(?P<live_config>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -609,7 +637,7 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> cdn_keys.CdnKey:
+    ) -> operation.Operation:
         r"""Creates a new CDN key.
 
         .. code-block:: python
@@ -634,7 +662,11 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.create_cdn_key(request=request)
+                operation = client.create_cdn_key(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
 
                 # Handle the response
                 print(response)
@@ -679,11 +711,12 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.video.stitcher_v1.types.CdnKey:
-                Configuration for a CDN key. Used by
-                the Video Stitcher to sign URIs for
-                fetching video manifests and signing
-                media segments for playback.
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.video.stitcher_v1.types.CdnKey` Configuration for a CDN key. Used by the Video Stitcher
+                   to sign URIs for fetching video manifests and signing
+                   media segments for playback.
 
         """
         # Create or coerce a protobuf request object.
@@ -727,6 +760,14 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
             retry=retry,
             timeout=timeout,
             metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            cdn_keys.CdnKey,
+            metadata_type=video_stitcher_service.OperationMetadata,
         )
 
         # Done; return the response.
@@ -966,7 +1007,7 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
+    ) -> operation.Operation:
         r"""Deletes the specified CDN key.
 
         .. code-block:: python
@@ -990,7 +1031,14 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 )
 
                 # Make the request
-                client.delete_cdn_key(request=request)
+                operation = client.delete_cdn_key(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.video.stitcher_v1.types.DeleteCdnKeyRequest, dict]):
@@ -1009,6 +1057,22 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -1042,12 +1106,23 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=video_stitcher_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
 
     def update_cdn_key(
         self,
@@ -1060,7 +1135,7 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> cdn_keys.CdnKey:
+    ) -> operation.Operation:
         r"""Updates the specified CDN key. Only update fields
         specified in the call method body.
 
@@ -1084,7 +1159,11 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.update_cdn_key(request=request)
+                operation = client.update_cdn_key(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
 
                 # Handle the response
                 print(response)
@@ -1115,11 +1194,12 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.video.stitcher_v1.types.CdnKey:
-                Configuration for a CDN key. Used by
-                the Video Stitcher to sign URIs for
-                fetching video manifests and signing
-                media segments for playback.
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.video.stitcher_v1.types.CdnKey` Configuration for a CDN key. Used by the Video Stitcher
+                   to sign URIs for fetching video manifests and signing
+                   media segments for playback.
 
         """
         # Create or coerce a protobuf request object.
@@ -1165,6 +1245,14 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
             metadata=metadata,
         )
 
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            cdn_keys.CdnKey,
+            metadata_type=video_stitcher_service.OperationMetadata,
+        )
+
         # Done; return the response.
         return response
 
@@ -1203,6 +1291,7 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 vod_session = stitcher_v1.VodSession()
                 vod_session.source_uri = "source_uri_value"
                 vod_session.ad_tag_uri = "ad_tag_uri_value"
+                vod_session.ad_tracking = "SERVER"
 
                 request = stitcher_v1.CreateVodSessionRequest(
                     parent="parent_value",
@@ -1242,7 +1331,10 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         Returns:
             google.cloud.video.stitcher_v1.types.VodSession:
-                Metadata for a VOD session.
+                Metadata for a VOD session. The
+                session expires 4 hours after its
+                creation.
+
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -1348,7 +1440,10 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         Returns:
             google.cloud.video.stitcher_v1.types.VodSession:
-                Metadata for a VOD session.
+                Metadata for a VOD session. The
+                session expires 4 hours after its
+                creation.
+
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -2077,7 +2172,7 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> slates.Slate:
+    ) -> operation.Operation:
         r"""Creates a slate.
 
         .. code-block:: python
@@ -2102,7 +2197,11 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.create_slate(request=request)
+                operation = client.create_slate(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
 
                 # Handle the response
                 print(response)
@@ -2113,7 +2212,8 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 VideoStitcherService.createSlate.
             parent (str):
                 Required. The project in which the slate should be
-                created, in the form of ``projects/{project_number}``.
+                created, in the form of
+                ``projects/{project_number}/locations/{location}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2142,8 +2242,13 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.video.stitcher_v1.types.Slate:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.video.stitcher_v1.types.Slate`
                 Slate object
+
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -2186,6 +2291,14 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
             retry=retry,
             timeout=timeout,
             metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            slates.Slate,
+            metadata_type=video_stitcher_service.OperationMetadata,
         )
 
         # Done; return the response.
@@ -2236,7 +2349,7 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 VideoStitcherService.listSlates.
             parent (str):
                 Required. The project to list slates, in the form of
-                ``projects/{project_number}``.
+                ``projects/{project_number}/locations/{location}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2419,7 +2532,7 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> slates.Slate:
+    ) -> operation.Operation:
         r"""Updates the specified slate.
 
         .. code-block:: python
@@ -2442,7 +2555,11 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.update_slate(request=request)
+                operation = client.update_slate(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
 
                 # Handle the response
                 print(response)
@@ -2473,8 +2590,13 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.video.stitcher_v1.types.Slate:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.video.stitcher_v1.types.Slate`
                 Slate object
+
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -2519,6 +2641,14 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
             metadata=metadata,
         )
 
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            slates.Slate,
+            metadata_type=video_stitcher_service.OperationMetadata,
+        )
+
         # Done; return the response.
         return response
 
@@ -2532,7 +2662,7 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
+    ) -> operation.Operation:
         r"""Deletes the specified slate.
 
         .. code-block:: python
@@ -2556,7 +2686,14 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 )
 
                 # Make the request
-                client.delete_slate(request=request)
+                operation = client.delete_slate(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.video.stitcher_v1.types.DeleteSlateRequest, dict]):
@@ -2575,6 +2712,22 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -2608,12 +2761,23 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        rpc(
+        response = rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=video_stitcher_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
 
     def create_live_session(
         self,
@@ -2645,8 +2809,12 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
                 client = stitcher_v1.VideoStitcherServiceClient()
 
                 # Initialize request argument(s)
+                live_session = stitcher_v1.LiveSession()
+                live_session.live_config = "live_config_value"
+
                 request = stitcher_v1.CreateLiveSessionRequest(
                     parent="parent_value",
+                    live_session=live_session,
                 )
 
                 # Make the request
@@ -2682,7 +2850,11 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         Returns:
             google.cloud.video.stitcher_v1.types.LiveSession:
-                Metadata for a live session.
+                Metadata for a live session. The
+                session expires 5 minutes after the
+                client stops fetching the session's
+                playlists.
+
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -2786,7 +2958,11 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         Returns:
             google.cloud.video.stitcher_v1.types.LiveSession:
-                Metadata for a live session.
+                Metadata for a live session. The
+                session expires 5 minutes after the
+                client stops fetching the session's
+                playlists.
+
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -2830,6 +3006,505 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         # Done; return the response.
         return response
 
+    def create_live_config(
+        self,
+        request: Optional[
+            Union[video_stitcher_service.CreateLiveConfigRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        live_config: Optional[live_configs.LiveConfig] = None,
+        live_config_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Registers the live config with the provided unique ID
+        in the specified region.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.video import stitcher_v1
+
+            def sample_create_live_config():
+                # Create a client
+                client = stitcher_v1.VideoStitcherServiceClient()
+
+                # Initialize request argument(s)
+                live_config = stitcher_v1.LiveConfig()
+                live_config.source_uri = "source_uri_value"
+                live_config.ad_tracking = "SERVER"
+
+                request = stitcher_v1.CreateLiveConfigRequest(
+                    parent="parent_value",
+                    live_config_id="live_config_id_value",
+                    live_config=live_config,
+                )
+
+                # Make the request
+                operation = client.create_live_config(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.video.stitcher_v1.types.CreateLiveConfigRequest, dict]):
+                The request object. Request message for
+                VideoStitcherService.createLiveConfig
+            parent (str):
+                Required. The project in which the live config should be
+                created, in the form of
+                ``projects/{project_number}/locations/{location}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            live_config (google.cloud.video.stitcher_v1.types.LiveConfig):
+                Required. The live config resource to
+                create.
+
+                This corresponds to the ``live_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            live_config_id (str):
+                Required. The unique identifier ID to
+                use for the live config.
+
+                This corresponds to the ``live_config_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.video.stitcher_v1.types.LiveConfig`
+                Metadata for used to register live configs.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, live_config, live_config_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a video_stitcher_service.CreateLiveConfigRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, video_stitcher_service.CreateLiveConfigRequest):
+            request = video_stitcher_service.CreateLiveConfigRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if live_config is not None:
+                request.live_config = live_config
+            if live_config_id is not None:
+                request.live_config_id = live_config_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_live_config]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            live_configs.LiveConfig,
+            metadata_type=video_stitcher_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_live_configs(
+        self,
+        request: Optional[
+            Union[video_stitcher_service.ListLiveConfigsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListLiveConfigsPager:
+        r"""Lists all live configs managed by the Video Stitcher
+        that belong to the specified project and region.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.video import stitcher_v1
+
+            def sample_list_live_configs():
+                # Create a client
+                client = stitcher_v1.VideoStitcherServiceClient()
+
+                # Initialize request argument(s)
+                request = stitcher_v1.ListLiveConfigsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_live_configs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.video.stitcher_v1.types.ListLiveConfigsRequest, dict]):
+                The request object. Request message for
+                VideoStitcherService.listLiveConfig.
+            parent (str):
+                Required. The project that contains the list of live
+                configs, in the form of
+                ``projects/{project_number}/locations/{location}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.video.stitcher_v1.services.video_stitcher_service.pagers.ListLiveConfigsPager:
+                Response message for
+                VideoStitcher.ListLiveConfig.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a video_stitcher_service.ListLiveConfigsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, video_stitcher_service.ListLiveConfigsRequest):
+            request = video_stitcher_service.ListLiveConfigsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_live_configs]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListLiveConfigsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_live_config(
+        self,
+        request: Optional[
+            Union[video_stitcher_service.GetLiveConfigRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> live_configs.LiveConfig:
+        r"""Returns the specified live config managed by the
+        Video Stitcher service.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.video import stitcher_v1
+
+            def sample_get_live_config():
+                # Create a client
+                client = stitcher_v1.VideoStitcherServiceClient()
+
+                # Initialize request argument(s)
+                request = stitcher_v1.GetLiveConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_live_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.video.stitcher_v1.types.GetLiveConfigRequest, dict]):
+                The request object. Request message for
+                VideoStitcherService.getLiveConfig.
+            name (str):
+                Required. The name of the live config to be retrieved,
+                in the form of
+                ``projects/{project_number}/locations/{location}/liveConfigs/{id}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.video.stitcher_v1.types.LiveConfig:
+                Metadata for used to register live
+                configs.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a video_stitcher_service.GetLiveConfigRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, video_stitcher_service.GetLiveConfigRequest):
+            request = video_stitcher_service.GetLiveConfigRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_live_config]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_live_config(
+        self,
+        request: Optional[
+            Union[video_stitcher_service.DeleteLiveConfigRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Deletes the specified live config.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.video import stitcher_v1
+
+            def sample_delete_live_config():
+                # Create a client
+                client = stitcher_v1.VideoStitcherServiceClient()
+
+                # Initialize request argument(s)
+                request = stitcher_v1.DeleteLiveConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_live_config(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.video.stitcher_v1.types.DeleteLiveConfigRequest, dict]):
+                The request object. Request message for
+                VideoStitcherService.deleteLiveConfig.
+            name (str):
+                Required. The name of the live config to be deleted, in
+                the form of
+                ``projects/{project_number}/locations/{location}/liveConfigs/{id}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a video_stitcher_service.DeleteLiveConfigRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, video_stitcher_service.DeleteLiveConfigRequest):
+            request = video_stitcher_service.DeleteLiveConfigRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_live_config]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=video_stitcher_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def __enter__(self) -> "VideoStitcherServiceClient":
         return self
 
@@ -2842,6 +3517,223 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
             and may cause errors in other clients!
         """
         self.transport.close()
+
+    def list_operations(
+        self,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.ListOperationsResponse:
+        r"""Lists operations that match the specified filter in the request.
+
+        Args:
+            request (:class:`~.operations_pb2.ListOperationsRequest`):
+                The request object. Request message for
+                `ListOperations` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.ListOperationsResponse:
+                Response message for ``ListOperations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.ListOperationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.list_operations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_operation(
+        self,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.Operation:
+        r"""Gets the latest state of a long-running operation.
+
+        Args:
+            request (:class:`~.operations_pb2.GetOperationRequest`):
+                The request object. Request message for
+                `GetOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.Operation:
+                An ``Operation`` object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.GetOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.get_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_operation(
+        self,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a long-running operation.
+
+        This method indicates that the client is no longer interested
+        in the operation result. It does not cancel the operation.
+        If the server doesn't support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.DeleteOperationRequest`):
+                The request object. Request message for
+                `DeleteOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            None
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.DeleteOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.delete_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def cancel_operation(
+        self,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Starts asynchronous cancellation on a long-running operation.
+
+        The server makes a best effort to cancel the operation, but success
+        is not guaranteed.  If the server doesn't support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.CancelOperationRequest`):
+                The request object. Request message for
+                `CancelOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            None
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.CancelOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.cancel_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

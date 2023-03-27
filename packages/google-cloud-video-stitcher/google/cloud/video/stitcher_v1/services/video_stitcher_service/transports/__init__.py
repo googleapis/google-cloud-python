@@ -19,7 +19,6 @@ from typing import Dict, Type
 from .base import VideoStitcherServiceTransport
 from .grpc import VideoStitcherServiceGrpcTransport
 from .grpc_asyncio import VideoStitcherServiceGrpcAsyncIOTransport
-from .rest import VideoStitcherServiceRestInterceptor, VideoStitcherServiceRestTransport
 
 # Compile a registry of transports.
 _transport_registry = (
@@ -27,12 +26,9 @@ _transport_registry = (
 )  # type: Dict[str, Type[VideoStitcherServiceTransport]]
 _transport_registry["grpc"] = VideoStitcherServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = VideoStitcherServiceGrpcAsyncIOTransport
-_transport_registry["rest"] = VideoStitcherServiceRestTransport
 
 __all__ = (
     "VideoStitcherServiceTransport",
     "VideoStitcherServiceGrpcTransport",
     "VideoStitcherServiceGrpcAsyncIOTransport",
-    "VideoStitcherServiceRestTransport",
-    "VideoStitcherServiceRestInterceptor",
 )

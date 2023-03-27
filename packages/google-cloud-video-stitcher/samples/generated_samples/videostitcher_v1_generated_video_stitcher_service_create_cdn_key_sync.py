@@ -45,7 +45,11 @@ def sample_create_cdn_key():
     )
 
     # Make the request
-    response = client.create_cdn_key(request=request)
+    operation = client.create_cdn_key(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
     print(response)

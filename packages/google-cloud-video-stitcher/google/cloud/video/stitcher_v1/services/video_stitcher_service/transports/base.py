@@ -18,17 +18,18 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.video.stitcher_v1 import gapic_version as package_version
 from google.cloud.video.stitcher_v1.types import (
     ad_tag_details,
     cdn_keys,
+    live_configs,
     sessions,
     slates,
     stitch_details,
@@ -230,6 +231,26 @@ class VideoStitcherServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.create_live_config: gapic_v1.method.wrap_method(
+                self.create_live_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_live_configs: gapic_v1.method.wrap_method(
+                self.list_live_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_live_config: gapic_v1.method.wrap_method(
+                self.get_live_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_live_config: gapic_v1.method.wrap_method(
+                self.delete_live_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -242,11 +263,16 @@ class VideoStitcherServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def operations_client(self):
+        """Return the client designed to process long-running operations."""
+        raise NotImplementedError()
+
+    @property
     def create_cdn_key(
         self,
     ) -> Callable[
         [video_stitcher_service.CreateCdnKeyRequest],
-        Union[cdn_keys.CdnKey, Awaitable[cdn_keys.CdnKey]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -276,7 +302,7 @@ class VideoStitcherServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [video_stitcher_service.DeleteCdnKeyRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -285,7 +311,7 @@ class VideoStitcherServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [video_stitcher_service.UpdateCdnKeyRequest],
-        Union[cdn_keys.CdnKey, Awaitable[cdn_keys.CdnKey]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -379,7 +405,7 @@ class VideoStitcherServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [video_stitcher_service.CreateSlateRequest],
-        Union[slates.Slate, Awaitable[slates.Slate]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -409,7 +435,7 @@ class VideoStitcherServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [video_stitcher_service.UpdateSlateRequest],
-        Union[slates.Slate, Awaitable[slates.Slate]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -418,7 +444,7 @@ class VideoStitcherServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [video_stitcher_service.DeleteSlateRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -438,6 +464,78 @@ class VideoStitcherServiceTransport(abc.ABC):
         [video_stitcher_service.GetLiveSessionRequest],
         Union[sessions.LiveSession, Awaitable[sessions.LiveSession]],
     ]:
+        raise NotImplementedError()
+
+    @property
+    def create_live_config(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.CreateLiveConfigRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_live_configs(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.ListLiveConfigsRequest],
+        Union[
+            video_stitcher_service.ListLiveConfigsResponse,
+            Awaitable[video_stitcher_service.ListLiveConfigsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_live_config(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.GetLiveConfigRequest],
+        Union[live_configs.LiveConfig, Awaitable[live_configs.LiveConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_live_config(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.DeleteLiveConfigRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
         raise NotImplementedError()
 
     @property

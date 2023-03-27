@@ -43,7 +43,11 @@ def sample_update_slate():
     )
 
     # Make the request
-    response = client.update_slate(request=request)
+    operation = client.update_slate(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
 
     # Handle the response
     print(response)

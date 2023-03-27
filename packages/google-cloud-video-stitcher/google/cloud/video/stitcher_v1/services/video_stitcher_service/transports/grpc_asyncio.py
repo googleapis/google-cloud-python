@@ -16,16 +16,17 @@
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers_async
+from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.video.stitcher_v1.types import (
     ad_tag_details,
     cdn_keys,
+    live_configs,
     sessions,
     slates,
     stitch_details,
@@ -168,6 +169,7 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -244,10 +246,27 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
         return self._grpc_channel
 
     @property
+    def operations_client(self) -> operations_v1.OperationsAsyncClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Quick check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsAsyncClient(
+                self.grpc_channel
+            )
+
+        # Return the client from cache.
+        return self._operations_client
+
+    @property
     def create_cdn_key(
         self,
     ) -> Callable[
-        [video_stitcher_service.CreateCdnKeyRequest], Awaitable[cdn_keys.CdnKey]
+        [video_stitcher_service.CreateCdnKeyRequest],
+        Awaitable[operations_pb2.Operation],
     ]:
         r"""Return a callable for the create cdn key method over gRPC.
 
@@ -255,7 +274,7 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
 
         Returns:
             Callable[[~.CreateCdnKeyRequest],
-                    Awaitable[~.CdnKey]]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -267,7 +286,7 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
             self._stubs["create_cdn_key"] = self.grpc_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/CreateCdnKey",
                 request_serializer=video_stitcher_service.CreateCdnKeyRequest.serialize,
-                response_deserializer=cdn_keys.CdnKey.deserialize,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_cdn_key"]
 
@@ -333,7 +352,8 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
     def delete_cdn_key(
         self,
     ) -> Callable[
-        [video_stitcher_service.DeleteCdnKeyRequest], Awaitable[empty_pb2.Empty]
+        [video_stitcher_service.DeleteCdnKeyRequest],
+        Awaitable[operations_pb2.Operation],
     ]:
         r"""Return a callable for the delete cdn key method over gRPC.
 
@@ -341,7 +361,7 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
 
         Returns:
             Callable[[~.DeleteCdnKeyRequest],
-                    Awaitable[~.Empty]]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -353,7 +373,7 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
             self._stubs["delete_cdn_key"] = self.grpc_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/DeleteCdnKey",
                 request_serializer=video_stitcher_service.DeleteCdnKeyRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_cdn_key"]
 
@@ -361,7 +381,8 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
     def update_cdn_key(
         self,
     ) -> Callable[
-        [video_stitcher_service.UpdateCdnKeyRequest], Awaitable[cdn_keys.CdnKey]
+        [video_stitcher_service.UpdateCdnKeyRequest],
+        Awaitable[operations_pb2.Operation],
     ]:
         r"""Return a callable for the update cdn key method over gRPC.
 
@@ -370,7 +391,7 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
 
         Returns:
             Callable[[~.UpdateCdnKeyRequest],
-                    Awaitable[~.CdnKey]]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -382,7 +403,7 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
             self._stubs["update_cdn_key"] = self.grpc_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/UpdateCdnKey",
                 request_serializer=video_stitcher_service.UpdateCdnKeyRequest.serialize,
-                response_deserializer=cdn_keys.CdnKey.deserialize,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_cdn_key"]
 
@@ -628,14 +649,16 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
     @property
     def create_slate(
         self,
-    ) -> Callable[[video_stitcher_service.CreateSlateRequest], Awaitable[slates.Slate]]:
+    ) -> Callable[
+        [video_stitcher_service.CreateSlateRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the create slate method over gRPC.
 
         Creates a slate.
 
         Returns:
             Callable[[~.CreateSlateRequest],
-                    Awaitable[~.Slate]]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -647,7 +670,7 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
             self._stubs["create_slate"] = self.grpc_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/CreateSlate",
                 request_serializer=video_stitcher_service.CreateSlateRequest.serialize,
-                response_deserializer=slates.Slate.deserialize,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_slate"]
 
@@ -710,14 +733,16 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
     @property
     def update_slate(
         self,
-    ) -> Callable[[video_stitcher_service.UpdateSlateRequest], Awaitable[slates.Slate]]:
+    ) -> Callable[
+        [video_stitcher_service.UpdateSlateRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the update slate method over gRPC.
 
         Updates the specified slate.
 
         Returns:
             Callable[[~.UpdateSlateRequest],
-                    Awaitable[~.Slate]]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -729,7 +754,7 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
             self._stubs["update_slate"] = self.grpc_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/UpdateSlate",
                 request_serializer=video_stitcher_service.UpdateSlateRequest.serialize,
-                response_deserializer=slates.Slate.deserialize,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_slate"]
 
@@ -737,7 +762,7 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
     def delete_slate(
         self,
     ) -> Callable[
-        [video_stitcher_service.DeleteSlateRequest], Awaitable[empty_pb2.Empty]
+        [video_stitcher_service.DeleteSlateRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the delete slate method over gRPC.
 
@@ -745,7 +770,7 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
 
         Returns:
             Callable[[~.DeleteSlateRequest],
-                    Awaitable[~.Empty]]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -757,7 +782,7 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
             self._stubs["delete_slate"] = self.grpc_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/DeleteSlate",
                 request_serializer=video_stitcher_service.DeleteSlateRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_slate"]
 
@@ -818,8 +843,197 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
             )
         return self._stubs["get_live_session"]
 
+    @property
+    def create_live_config(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.CreateLiveConfigRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create live config method over gRPC.
+
+        Registers the live config with the provided unique ID
+        in the specified region.
+
+        Returns:
+            Callable[[~.CreateLiveConfigRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_live_config" not in self._stubs:
+            self._stubs["create_live_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.stitcher.v1.VideoStitcherService/CreateLiveConfig",
+                request_serializer=video_stitcher_service.CreateLiveConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_live_config"]
+
+    @property
+    def list_live_configs(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.ListLiveConfigsRequest],
+        Awaitable[video_stitcher_service.ListLiveConfigsResponse],
+    ]:
+        r"""Return a callable for the list live configs method over gRPC.
+
+        Lists all live configs managed by the Video Stitcher
+        that belong to the specified project and region.
+
+        Returns:
+            Callable[[~.ListLiveConfigsRequest],
+                    Awaitable[~.ListLiveConfigsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_live_configs" not in self._stubs:
+            self._stubs["list_live_configs"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.stitcher.v1.VideoStitcherService/ListLiveConfigs",
+                request_serializer=video_stitcher_service.ListLiveConfigsRequest.serialize,
+                response_deserializer=video_stitcher_service.ListLiveConfigsResponse.deserialize,
+            )
+        return self._stubs["list_live_configs"]
+
+    @property
+    def get_live_config(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.GetLiveConfigRequest],
+        Awaitable[live_configs.LiveConfig],
+    ]:
+        r"""Return a callable for the get live config method over gRPC.
+
+        Returns the specified live config managed by the
+        Video Stitcher service.
+
+        Returns:
+            Callable[[~.GetLiveConfigRequest],
+                    Awaitable[~.LiveConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_live_config" not in self._stubs:
+            self._stubs["get_live_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.stitcher.v1.VideoStitcherService/GetLiveConfig",
+                request_serializer=video_stitcher_service.GetLiveConfigRequest.serialize,
+                response_deserializer=live_configs.LiveConfig.deserialize,
+            )
+        return self._stubs["get_live_config"]
+
+    @property
+    def delete_live_config(
+        self,
+    ) -> Callable[
+        [video_stitcher_service.DeleteLiveConfigRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete live config method over gRPC.
+
+        Deletes the specified live config.
+
+        Returns:
+            Callable[[~.DeleteLiveConfigRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_live_config" not in self._stubs:
+            self._stubs["delete_live_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.stitcher.v1.VideoStitcherService/DeleteLiveConfig",
+                request_serializer=video_stitcher_service.DeleteLiveConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_live_config"]
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None]:
+        r"""Return a callable for the delete_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_operation" not in self._stubs:
+            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/DeleteOperation",
+                request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
+                response_deserializer=None,
+            )
+        return self._stubs["delete_operation"]
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
+        r"""Return a callable for the cancel_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_operation" not in self._stubs:
+            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/CancelOperation",
+                request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
+                response_deserializer=None,
+            )
+        return self._stubs["cancel_operation"]
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the get_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_operation" not in self._stubs:
+            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/GetOperation",
+                request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["get_operation"]
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
+    ]:
+        r"""Return a callable for the list_operations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_operations" not in self._stubs:
+            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/ListOperations",
+                request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
+                response_deserializer=operations_pb2.ListOperationsResponse.FromString,
+            )
+        return self._stubs["list_operations"]
 
 
 __all__ = ("VideoStitcherServiceGrpcAsyncIOTransport",)

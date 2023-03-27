@@ -44,7 +44,13 @@ async def sample_delete_slate():
     )
 
     # Make the request
-    await client.delete_slate(request=request)
+    operation = client.delete_slate(request=request)
 
+    print("Waiting for operation to complete...")
+
+    response = (await operation).result()
+
+    # Handle the response
+    print(response)
 
 # [END videostitcher_v1_generated_VideoStitcherService_DeleteSlate_async]

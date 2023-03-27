@@ -44,7 +44,13 @@ async def sample_delete_cdn_key():
     )
 
     # Make the request
-    await client.delete_cdn_key(request=request)
+    operation = client.delete_cdn_key(request=request)
 
+    print("Waiting for operation to complete...")
+
+    response = (await operation).result()
+
+    # Handle the response
+    print(response)
 
 # [END videostitcher_v1_generated_VideoStitcherService_DeleteCdnKey_async]

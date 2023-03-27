@@ -18,8 +18,10 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.video.stitcher_v1.types import live_configs as gcvs_live_configs
 from google.cloud.video.stitcher_v1.types import ad_tag_details
 from google.cloud.video.stitcher_v1.types import cdn_keys as gcvs_cdn_keys
 from google.cloud.video.stitcher_v1.types import sessions
@@ -54,6 +56,12 @@ __protobuf__ = proto.module(
         "DeleteSlateRequest",
         "CreateLiveSessionRequest",
         "GetLiveSessionRequest",
+        "CreateLiveConfigRequest",
+        "ListLiveConfigsRequest",
+        "ListLiveConfigsResponse",
+        "GetLiveConfigRequest",
+        "DeleteLiveConfigRequest",
+        "OperationMetadata",
     },
 )
 
@@ -490,7 +498,8 @@ class CreateSlateRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The project in which the slate should be created,
-            in the form of ``projects/{project_number}``.
+            in the form of
+            ``projects/{project_number}/locations/{location}``.
         slate_id (str):
             Required. The unique identifier for the
             slate. This value should conform to RFC-1034,
@@ -500,6 +509,23 @@ class CreateSlateRequest(proto.Message):
             character maximum.
         slate (google.cloud.video.stitcher_v1.types.Slate):
             Required. The slate to create.
+        request_id (str):
+            A request ID to identify requests. Specify a unique request
+            ID so that if you must retry your request, the server will
+            know to ignore the request if it has already been completed.
+            The server will guarantee that for at least 60 minutes since
+            the first request.
+
+            For example, consider a situation where you make an initial
+            request and the request times out. If you make the request
+            again with the same request ID, the server can check if
+            original operation with the same request ID was received,
+            and if so, will ignore the second request. This prevents
+            clients from accidentally creating duplicate commitments.
+
+            The request ID must be a valid UUID with the exception that
+            zero UUID is not supported
+            ``(00000000-0000-0000-0000-000000000000)``.
     """
 
     parent: str = proto.Field(
@@ -514,6 +540,10 @@ class CreateSlateRequest(proto.Message):
         proto.MESSAGE,
         number=3,
         message=gcvs_slates.Slate,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -539,7 +569,7 @@ class ListSlatesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The project to list slates, in the form of
-            ``projects/{project_number}``.
+            ``projects/{project_number}/locations/{location}``.
         page_size (int):
             Requested page size. Server may return fewer
             items than requested. If unspecified, server
@@ -682,6 +712,199 @@ class GetLiveSessionRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class CreateLiveConfigRequest(proto.Message):
+    r"""Request message for VideoStitcherService.createLiveConfig
+
+    Attributes:
+        parent (str):
+            Required. The project in which the live config should be
+            created, in the form of
+            ``projects/{project_number}/locations/{location}``.
+        live_config_id (str):
+            Required. The unique identifier ID to use for
+            the live config.
+        live_config (google.cloud.video.stitcher_v1.types.LiveConfig):
+            Required. The live config resource to create.
+        request_id (str):
+            A request ID to identify requests. Specify a unique request
+            ID so that if you must retry your request, the server will
+            know to ignore the request if it has already been completed.
+            The server will guarantee that for at least 60 minutes since
+            the first request.
+
+            For example, consider a situation where you make an initial
+            request and the request times out. If you make the request
+            again with the same request ID, the server can check if
+            original operation with the same request ID was received,
+            and if so, will ignore the second request. This prevents
+            clients from accidentally creating duplicate commitments.
+
+            The request ID must be a valid UUID with the exception that
+            zero UUID is not supported
+            ``(00000000-0000-0000-0000-000000000000)``.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    live_config_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    live_config: gcvs_live_configs.LiveConfig = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcvs_live_configs.LiveConfig,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListLiveConfigsRequest(proto.Message):
+    r"""Request message for VideoStitcherService.listLiveConfig.
+
+    Attributes:
+        parent (str):
+            Required. The project that contains the list of live
+            configs, in the form of
+            ``projects/{project_number}/locations/{location}``.
+        page_size (int):
+            The maximum number of items to return.
+        page_token (str):
+            The next_page_token value returned from a previous List
+            request, if any.
+        filter (str):
+            Optional. The filter to apply to list results (see
+            `Filtering <https://google.aip.dev/160>`__).
+        order_by (str):
+            Optional. Specifies the ordering of results following `Cloud
+            API
+            syntax <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListLiveConfigsResponse(proto.Message):
+    r"""Response message for VideoStitcher.ListLiveConfig.
+
+    Attributes:
+        live_configs (MutableSequence[google.cloud.video.stitcher_v1.types.LiveConfig]):
+            List of live configs.
+        next_page_token (str):
+            The pagination token.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    live_configs: MutableSequence[gcvs_live_configs.LiveConfig] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcvs_live_configs.LiveConfig,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetLiveConfigRequest(proto.Message):
+    r"""Request message for VideoStitcherService.getLiveConfig.
+
+    Attributes:
+        name (str):
+            Required. The name of the live config to be retrieved, in
+            the form of
+            ``projects/{project_number}/locations/{location}/liveConfigs/{id}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DeleteLiveConfigRequest(proto.Message):
+    r"""Request message for VideoStitcherService.deleteLiveConfig.
+
+    Attributes:
+        name (str):
+            Required. The name of the live config to be deleted, in the
+            form of
+            ``projects/{project_number}/locations/{location}/liveConfigs/{id}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class OperationMetadata(proto.Message):
+    r"""Represents the metadata of the long-running operation.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the operation was created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the operation finished running.
+        target (str):
+            Server-defined resource path for the target
+            of the operation.
+        verb (str):
+            Name of the verb executed by the operation.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    verb: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 

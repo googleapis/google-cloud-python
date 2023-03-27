@@ -39,8 +39,12 @@ def sample_create_live_session():
     client = stitcher_v1.VideoStitcherServiceClient()
 
     # Initialize request argument(s)
+    live_session = stitcher_v1.LiveSession()
+    live_session.live_config = "live_config_value"
+
     request = stitcher_v1.CreateLiveSessionRequest(
         parent="parent_value",
+        live_session=live_session,
     )
 
     # Make the request

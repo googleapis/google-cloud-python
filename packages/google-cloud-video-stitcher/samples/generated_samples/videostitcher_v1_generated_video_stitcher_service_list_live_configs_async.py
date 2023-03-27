@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateCdnKey
+# Snippet for ListLiveConfigs
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-video-stitcher
 
 
-# [START videostitcher_v1_generated_VideoStitcherService_CreateCdnKey_async]
+# [START videostitcher_v1_generated_VideoStitcherService_ListLiveConfigs_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,24 +34,20 @@
 from google.cloud.video import stitcher_v1
 
 
-async def sample_create_cdn_key():
+async def sample_list_live_configs():
     # Create a client
     client = stitcher_v1.VideoStitcherServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = stitcher_v1.CreateCdnKeyRequest(
+    request = stitcher_v1.ListLiveConfigsRequest(
         parent="parent_value",
-        cdn_key_id="cdn_key_id_value",
     )
 
     # Make the request
-    operation = client.create_cdn_key(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = (await operation).result()
+    page_result = client.list_live_configs(request=request)
 
     # Handle the response
-    print(response)
+    async for response in page_result:
+        print(response)
 
-# [END videostitcher_v1_generated_VideoStitcherService_CreateCdnKey_async]
+# [END videostitcher_v1_generated_VideoStitcherService_ListLiveConfigs_async]

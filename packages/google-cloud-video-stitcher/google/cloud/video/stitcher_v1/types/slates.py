@@ -38,7 +38,31 @@ class Slate(proto.Message):
             The URI to fetch the source content for the
             slate. This URI must return an MP4 video with at
             least one audio track.
+        gam_slate (google.cloud.video.stitcher_v1.types.Slate.GamSlate):
+            gam_slate has all the GAM related attributes of slates.
     """
+
+    class GamSlate(proto.Message):
+        r"""GamSlate object has Google Ad Manager (GAM) related
+        properties for the slate.
+
+        Attributes:
+            network_code (str):
+                Required. Ad Manager network code to
+                associate with the live config.
+            gam_slate_id (int):
+                Output only. The identifier generated for the
+                slate by GAM.
+        """
+
+        network_code: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        gam_slate_id: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -47,6 +71,11 @@ class Slate(proto.Message):
     uri: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    gam_slate: GamSlate = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=GamSlate,
     )
 
 
