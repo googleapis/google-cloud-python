@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.16.1](https://github.com/googleapis/python-secret-manager/compare/v2.16.0...v2.16.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#409](https://github.com/googleapis/python-secret-manager/issues/409)) ([925d05a](https://github.com/googleapis/python-secret-manager/commit/925d05af92f2b60978db307f5be891c9784a1bb1))
+
 ## [2.16.0](https://github.com/googleapis/python-secret-manager/compare/v2.15.1...v2.16.0) (2023-02-28)
 
 
