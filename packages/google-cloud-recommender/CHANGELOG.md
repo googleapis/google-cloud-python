@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.11.1](https://github.com/googleapis/python-recommender/compare/v2.11.0...v2.11.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#268](https://github.com/googleapis/python-recommender/issues/268)) ([17b64b8](https://github.com/googleapis/python-recommender/commit/17b64b8cbceb20178170029b5378cead9aab645e))
+
 ## [2.11.0](https://github.com/googleapis/python-recommender/compare/v2.10.1...v2.11.0) (2023-02-28)
 
 
