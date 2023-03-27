@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/googleapis/python-network-services/compare/v0.5.0...v0.5.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#77](https://github.com/googleapis/python-network-services/issues/77)) ([924ba0e](https://github.com/googleapis/python-network-services/commit/924ba0e125c84200a166a70798835f6df487422b))
+
 ## [0.5.0](https://github.com/googleapis/python-network-services/compare/v0.4.1...v0.5.0) (2023-02-09)
 
 
