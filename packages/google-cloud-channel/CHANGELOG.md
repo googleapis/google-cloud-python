@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/python-channel/compare/v1.12.1...v1.13.0) (2023-03-16)
+
+
+### Features
+
+* Add ListEntitlementChanges ([da4f098](https://github.com/googleapis/python-channel/commit/da4f0983e2aed026f66190c55f52d4545eda0769))
+* Add show_future_offers to ListOffers ([da4f098](https://github.com/googleapis/python-channel/commit/da4f0983e2aed026f66190c55f52d4545eda0769))
+
 ## [1.12.1](https://github.com/googleapis/python-channel/compare/v1.12.0...v1.12.1) (2023-01-20)
 
 
