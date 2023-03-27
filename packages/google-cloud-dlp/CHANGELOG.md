@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.12.1](https://github.com/googleapis/python-dlp/compare/v3.12.0...v3.12.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#497](https://github.com/googleapis/python-dlp/issues/497)) ([60cafe1](https://github.com/googleapis/python-dlp/commit/60cafe18f98c9b46553c4cba521b95e4b1c5e6d1))
+
 ## [3.12.0](https://github.com/googleapis/python-dlp/compare/v3.11.1...v3.12.0) (2023-02-28)
 
 
