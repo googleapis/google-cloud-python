@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-memcache/compare/v1.7.0...v1.7.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#251](https://github.com/googleapis/python-memcache/issues/251)) ([dac4ef6](https://github.com/googleapis/python-memcache/commit/dac4ef673c0ff54178ee4e204e64c516cbdf392a))
+
 ## [1.7.0](https://github.com/googleapis/python-memcache/compare/v1.6.1...v1.7.0) (2023-02-16)
 
 
