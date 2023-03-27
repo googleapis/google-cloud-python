@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-deploy/compare/v1.7.0...v1.8.0) (2023-03-24)
+
+
+### Features
+
+* Added supported for Cloud Deploy Progressive Deployment Strategy ([f8f2a5e](https://github.com/googleapis/python-deploy/commit/f8f2a5eda3069e85716fea58987485374e60fa49))
+
+
+### Documentation
+
+* Deprecate TYPE_RENDER_STATUES_CHANGE, use RELEASE_RENDER log type instead ([f8f2a5e](https://github.com/googleapis/python-deploy/commit/f8f2a5eda3069e85716fea58987485374e60fa49))
+* Fix formatting of request arg in docstring ([f8f2a5e](https://github.com/googleapis/python-deploy/commit/f8f2a5eda3069e85716fea58987485374e60fa49))
+
 ## [1.7.0](https://github.com/googleapis/python-deploy/compare/v1.6.1...v1.7.0) (2023-02-16)
 
 
