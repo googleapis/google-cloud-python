@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.20.1](https://github.com/googleapis/python-dialogflow-cx/compare/v1.20.0...v1.20.1) (2023-03-23)
+
+
+### Documentation
+
+* Add clarification in AudioInput ([#511](https://github.com/googleapis/python-dialogflow-cx/issues/511)) ([fc0ecdf](https://github.com/googleapis/python-dialogflow-cx/commit/fc0ecdf2f3d29f23de45e6bd44f1c1ec17ddb4ef))
+* Clarified wording around quota usage ([#515](https://github.com/googleapis/python-dialogflow-cx/issues/515)) ([361a359](https://github.com/googleapis/python-dialogflow-cx/commit/361a359e60c8953453a6837e3e5f1916fad76095))
+* Minor formatting changes ([#517](https://github.com/googleapis/python-dialogflow-cx/issues/517)) ([b05b15f](https://github.com/googleapis/python-dialogflow-cx/commit/b05b15f2ac54ffd83a33ee0829cab395f157a42f))
+
 ## [1.20.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.19.0...v1.20.0) (2023-03-01)
 
 
