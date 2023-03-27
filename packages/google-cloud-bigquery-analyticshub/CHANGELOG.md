@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/googleapis/python-bigquery-analyticshub/compare/v0.3.1...v0.3.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#26](https://github.com/googleapis/python-bigquery-analyticshub/issues/26)) ([f306471](https://github.com/googleapis/python-bigquery-analyticshub/commit/f306471d6e75de32a430ec8e4fb24ee32a7faba0))
+
 ## [0.3.1](https://github.com/googleapis/python-bigquery-analyticshub/compare/v0.3.0...v0.3.1) (2023-01-20)
 
 
