@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/googleapis/python-dataform/compare/v0.5.0...v0.5.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#54](https://github.com/googleapis/python-dataform/issues/54)) ([c38ec22](https://github.com/googleapis/python-dataform/commit/c38ec228a071a57e88dcaf2bbf26a8b456f773de))
+
 ## [0.5.0](https://github.com/googleapis/python-dataform/compare/v0.4.1...v0.5.0) (2023-02-27)
 
 
