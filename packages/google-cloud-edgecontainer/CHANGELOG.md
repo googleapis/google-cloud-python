@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/googleapis/python-edgecontainer/compare/v0.5.0...v0.5.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#30](https://github.com/googleapis/python-edgecontainer/issues/30)) ([010c651](https://github.com/googleapis/python-edgecontainer/commit/010c651ccb9c5f56a7cbf1e822def196fb8d706d))
+
 ## [0.5.0](https://github.com/googleapis/python-edgecontainer/compare/v0.4.1...v0.5.0) (2023-03-03)
 
 
