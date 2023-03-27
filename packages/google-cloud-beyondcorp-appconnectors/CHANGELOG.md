@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/googleapis/python-beyondcorp-appconnectors/compare/v0.4.1...v0.4.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#60](https://github.com/googleapis/python-beyondcorp-appconnectors/issues/60)) ([aa55ce7](https://github.com/googleapis/python-beyondcorp-appconnectors/commit/aa55ce7947ba5af2f5ebbfdf8f6480fd1787b540))
+
 ## [0.4.1](https://github.com/googleapis/python-beyondcorp-appconnectors/compare/v0.4.0...v0.4.1) (2023-01-20)
 
 
