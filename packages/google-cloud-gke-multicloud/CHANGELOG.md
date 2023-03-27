@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/googleapis/python-gke-multicloud/compare/v0.6.0...v0.6.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#66](https://github.com/googleapis/python-gke-multicloud/issues/66)) ([cabb6f7](https://github.com/googleapis/python-gke-multicloud/commit/cabb6f70c159dd06f34b03bff36f005d0cc08d35))
+
 ## [0.6.0](https://github.com/googleapis/python-gke-multicloud/compare/v0.5.1...v0.6.0) (2023-02-02)
 
 
