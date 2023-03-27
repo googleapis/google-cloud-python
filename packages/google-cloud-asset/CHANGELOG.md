@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.18.1](https://github.com/googleapis/python-asset/compare/v3.18.0...v3.18.1) (2023-03-24)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#558](https://github.com/googleapis/python-asset/issues/558)) ([21e3a6d](https://github.com/googleapis/python-asset/commit/21e3a6d50cf4152cd0f9a9767f30a09fc589941a))
+
 ## [3.18.0](https://github.com/googleapis/python-asset/compare/v3.17.1...v3.18.0) (2023-02-19)
 
 
