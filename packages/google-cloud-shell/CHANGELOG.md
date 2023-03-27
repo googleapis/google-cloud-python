@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-shell/compare/v1.7.0...v1.7.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#164](https://github.com/googleapis/python-shell/issues/164)) ([a4751ad](https://github.com/googleapis/python-shell/commit/a4751adef57a187b13bdb0605cf09394c4c1adc9))
+
 ## [1.7.0](https://github.com/googleapis/python-shell/compare/v1.6.1...v1.7.0) (2023-02-09)
 
 
