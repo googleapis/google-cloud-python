@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.2](https://github.com/googleapis/python-gke-connect-gateway/compare/v0.8.1...v0.8.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#155](https://github.com/googleapis/python-gke-connect-gateway/issues/155)) ([51dc2ef](https://github.com/googleapis/python-gke-connect-gateway/commit/51dc2ef2e39f0d5d9cb3d62e5d91035451465c40))
+
 ## [0.8.1](https://github.com/googleapis/python-gke-connect-gateway/compare/v0.8.0...v0.8.1) (2023-01-20)
 
 
