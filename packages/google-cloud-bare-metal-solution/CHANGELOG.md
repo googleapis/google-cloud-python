@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-bare-metal-solution/compare/v1.4.0...v1.4.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#91](https://github.com/googleapis/python-bare-metal-solution/issues/91)) ([88f4b1d](https://github.com/googleapis/python-bare-metal-solution/commit/88f4b1df3a35c2017d2bcdd69fa6bebaa8ff555a))
+
 ## [1.4.0](https://github.com/googleapis/python-bare-metal-solution/compare/v1.3.1...v1.4.0) (2023-03-02)
 
 
