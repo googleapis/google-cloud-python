@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/googleapis/python-gsuiteaddons/compare/v0.3.0...v0.3.1) (2023-03-24)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#28](https://github.com/googleapis/python-gsuiteaddons/issues/28)) ([825245f](https://github.com/googleapis/python-gsuiteaddons/commit/825245f81594feea5ee41ab64f4177e02d8f903d))
+
 ## [0.3.0](https://github.com/googleapis/python-gsuiteaddons/compare/v0.2.1...v0.3.0) (2023-02-19)
 
 
