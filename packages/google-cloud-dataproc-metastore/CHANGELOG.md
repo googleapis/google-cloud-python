@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.10.1](https://github.com/googleapis/python-dataproc-metastore/compare/v1.10.0...v1.10.1) (2023-03-23)
+
+
+### Bug Fixes
+
+* Add service_yaml_parameters to `metastore` preview Python GAPICs ([#210](https://github.com/googleapis/python-dataproc-metastore/issues/210)) ([876451f](https://github.com/googleapis/python-dataproc-metastore/commit/876451f84513c856659c2cecf00ab91a111e3a21))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#213](https://github.com/googleapis/python-dataproc-metastore/issues/213)) ([9c1d92c](https://github.com/googleapis/python-dataproc-metastore/commit/9c1d92c8083133085475a5ea15938c19f5568632))
+
 ## [1.10.0](https://github.com/googleapis/python-dataproc-metastore/compare/v1.9.1...v1.10.0) (2023-03-02)
 
 
