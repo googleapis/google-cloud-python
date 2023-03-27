@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/googleapis/python-apigee-registry/compare/v0.6.1...v0.6.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#74](https://github.com/googleapis/python-apigee-registry/issues/74)) ([6edd830](https://github.com/googleapis/python-apigee-registry/commit/6edd830cf67736a19a31ceb6a5d9867777bf27c3))
+
 ## [0.6.1](https://github.com/googleapis/python-apigee-registry/compare/v0.6.0...v0.6.1) (2023-01-20)
 
 
