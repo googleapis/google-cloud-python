@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-orchestration-airflow/compare/v1.7.0...v1.7.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#170](https://github.com/googleapis/python-orchestration-airflow/issues/170)) ([91e315c](https://github.com/googleapis/python-orchestration-airflow/commit/91e315c66c77a6d9c37196a4362c9ddd94c85cc4))
+
 ## [1.7.0](https://github.com/googleapis/python-orchestration-airflow/compare/v1.6.1...v1.7.0) (2023-02-17)
 
 
