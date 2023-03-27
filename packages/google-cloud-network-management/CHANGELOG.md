@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/python-network-management/compare/v1.8.0...v1.8.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#180](https://github.com/googleapis/python-network-management/issues/180)) ([e4ff785](https://github.com/googleapis/python-network-management/commit/e4ff785a5d882c016edb7ddf421cd9bd8916c1e1))
+
 ## [1.8.0](https://github.com/googleapis/python-network-management/compare/v1.7.1...v1.8.0) (2023-02-17)
 
 
