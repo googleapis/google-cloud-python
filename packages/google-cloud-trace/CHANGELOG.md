@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## [1.11.1](https://github.com/googleapis/python-trace/compare/v1.11.0...v1.11.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#308](https://github.com/googleapis/python-trace/issues/308)) ([838132e](https://github.com/googleapis/python-trace/commit/838132e5db2d4c4705f0fad27aad9c8232dd8cef))
+
 ## [1.11.0](https://github.com/googleapis/python-trace/compare/v1.10.0...v1.11.0) (2023-02-28)
 
 
