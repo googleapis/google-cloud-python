@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/googleapis/python-appengine-admin/compare/v1.9.0...v1.9.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#230](https://github.com/googleapis/python-appengine-admin/issues/230)) ([7738bed](https://github.com/googleapis/python-appengine-admin/commit/7738bed39a867311611a57f7da9e2cd48d58f7c3))
+
 ## [1.9.0](https://github.com/googleapis/python-appengine-admin/compare/v1.8.1...v1.9.0) (2023-02-27)
 
 
