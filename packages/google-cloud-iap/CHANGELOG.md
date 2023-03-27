@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-iap/compare/v1.9.0...v1.10.0) (2023-03-23)
+
+
+### Features
+
+* Add an enum ENROLLED_SECOND_FACTORS under IapSettings ([8890e9e](https://github.com/googleapis/python-iap/commit/8890e9eceb2cfc41c3fee269d2e084052e783c5e))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#167](https://github.com/googleapis/python-iap/issues/167)) ([a95d454](https://github.com/googleapis/python-iap/commit/a95d4548860e8bf8f3a6e269c9b3882cda42d364))
+* Update doc description for field_mask ([8890e9e](https://github.com/googleapis/python-iap/commit/8890e9eceb2cfc41c3fee269d2e084052e783c5e))
+
 ## [1.9.0](https://github.com/googleapis/python-iap/compare/v1.8.1...v1.9.0) (2023-02-19)
 
 
