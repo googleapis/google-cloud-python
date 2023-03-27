@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.12.1](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.12.0...v2.12.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#263](https://github.com/googleapis/python-monitoring-dashboards/issues/263)) ([c5eb858](https://github.com/googleapis/python-monitoring-dashboards/commit/c5eb85807b725571b6a7600b442c3d2c486c10dd))
+
 ## [2.12.0](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.11.1...v2.12.0) (2023-02-16)
 
 
