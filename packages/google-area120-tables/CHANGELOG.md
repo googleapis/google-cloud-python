@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.2](https://github.com/googleapis/python-area120-tables/compare/v0.11.1...v0.11.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#230](https://github.com/googleapis/python-area120-tables/issues/230)) ([2ad5d77](https://github.com/googleapis/python-area120-tables/commit/2ad5d77309bc8e7eb63af60b796d85e1306c2278))
+
 ## [0.11.1](https://github.com/googleapis/python-area120-tables/compare/v0.11.0...v0.11.1) (2023-01-20)
 
 
