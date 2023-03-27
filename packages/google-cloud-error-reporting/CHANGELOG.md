@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.9.1](https://github.com/googleapis/python-error-reporting/compare/v1.9.0...v1.9.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#422](https://github.com/googleapis/python-error-reporting/issues/422)) ([561dc39](https://github.com/googleapis/python-error-reporting/commit/561dc395302f7989820db79f1c82aad04b7f6f7c))
+
 ## [1.9.0](https://github.com/googleapis/python-error-reporting/compare/v1.8.2...v1.9.0) (2023-02-28)
 
 
