@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-service-management/compare/v1.6.0...v1.6.1) (2023-03-23)
+
+
+### Bug Fixes
+
+* **deps:** Require googleapis-common-protos &gt;= 1.59.0 ([#199](https://github.com/googleapis/python-service-management/issues/199)) ([e36155c](https://github.com/googleapis/python-service-management/commit/e36155c9455ae30a3ff9c8f928a16d534e36aa3d))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#201](https://github.com/googleapis/python-service-management/issues/201)) ([5dfeb11](https://github.com/googleapis/python-service-management/commit/5dfeb1179bf12e785f1e8079abd6bf80ad3e2fdb))
+
 ## [1.6.0](https://github.com/googleapis/python-service-management/compare/v1.5.1...v1.6.0) (2023-02-17)
 
 
