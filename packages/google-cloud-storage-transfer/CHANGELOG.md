@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/python-storage-transfer/compare/v1.8.0...v1.8.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#151](https://github.com/googleapis/python-storage-transfer/issues/151)) ([8af4265](https://github.com/googleapis/python-storage-transfer/commit/8af4265865eadabd21957fc9efb375d5ca3ac1a6))
+
 ## [1.8.0](https://github.com/googleapis/python-storage-transfer/compare/v1.7.1...v1.8.0) (2023-02-28)
 
 
