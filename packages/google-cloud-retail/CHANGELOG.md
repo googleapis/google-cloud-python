@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.1](https://github.com/googleapis/python-retail/compare/v1.15.0...v1.15.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#402](https://github.com/googleapis/python-retail/issues/402)) ([5477f18](https://github.com/googleapis/python-retail/commit/5477f18cc2c3e1c755278b386632a778e121b93c))
+
 ## [1.15.0](https://github.com/googleapis/python-retail/compare/v1.14.1...v1.15.0) (2023-02-28)
 
 
