@@ -5,6 +5,20 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.8.0](https://github.com/googleapis/python-bigquery/compare/v3.7.0...v3.8.0) (2023-03-24)
+
+
+### Features
+
+* Add bool, int, float, string dtype to to_dataframe ([#1529](https://github.com/googleapis/python-bigquery/issues/1529)) ([5e4465d](https://github.com/googleapis/python-bigquery/commit/5e4465d0975f54e8da885006686d9431ff9c5653))
+* Add default LoadJobConfig to Client ([#1526](https://github.com/googleapis/python-bigquery/issues/1526)) ([a2520ca](https://github.com/googleapis/python-bigquery/commit/a2520cabf7ec6bcb923c21e338188f1c10dc4d5d))
+* Expose configuration property on CopyJob, ExtractJob, LoadJob, QueryJob ([#1521](https://github.com/googleapis/python-bigquery/issues/1521)) ([8270a10](https://github.com/googleapis/python-bigquery/commit/8270a10df8f40750a7ac541a1781a71d7e79ce67))
+
+
+### Bug Fixes
+
+* Loosen ipywidgets restrictions further to address ipython compatibility issues ([#1531](https://github.com/googleapis/python-bigquery/issues/1531)) ([50e5026](https://github.com/googleapis/python-bigquery/commit/50e502674807b9771d7e26c0e784539bed8f9da6))
+
 ## [3.7.0](https://github.com/googleapis/python-bigquery/compare/v3.6.0...v3.7.0) (2023-03-06)
 
 
