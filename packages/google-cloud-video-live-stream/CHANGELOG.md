@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-video-live-stream/compare/v1.3.0...v1.4.0) (2023-03-23)
+
+
+### Features
+
+* Added Encryption for enabling output encryption with DRM systems ([638bd0a](https://github.com/googleapis/python-video-live-stream/commit/638bd0ac4008b5b2004067dbcd7307899e700f27))
+* Added InputConfig to allow enabling/disabling automatic failover ([638bd0a](https://github.com/googleapis/python-video-live-stream/commit/638bd0ac4008b5b2004067dbcd7307899e700f27))
+* Added new tasks to Event: inputSwitch, returnToProgram, mute, unmute ([638bd0a](https://github.com/googleapis/python-video-live-stream/commit/638bd0ac4008b5b2004067dbcd7307899e700f27))
+* Added support for audio normalization and audio gain ([638bd0a](https://github.com/googleapis/python-video-live-stream/commit/638bd0ac4008b5b2004067dbcd7307899e700f27))
+* Added TimecodeConfig for specifying the source of timecode used in media workflow synchronization ([638bd0a](https://github.com/googleapis/python-video-live-stream/commit/638bd0ac4008b5b2004067dbcd7307899e700f27))
+
+
+### Documentation
+
+* Clarify behavior when update_mask is omitted in PATCH requests ([638bd0a](https://github.com/googleapis/python-video-live-stream/commit/638bd0ac4008b5b2004067dbcd7307899e700f27))
+* Fix formatting of request arg in docstring ([#154](https://github.com/googleapis/python-video-live-stream/issues/154)) ([c41b461](https://github.com/googleapis/python-video-live-stream/commit/c41b4613db09b35c92b3f18d09591755ea7039be))
+
 ## [1.3.0](https://github.com/googleapis/python-video-live-stream/compare/v1.2.1...v1.3.0) (2023-02-28)
 
 
