@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.12.0](https://github.com/googleapis/python-datacatalog/compare/v3.11.1...v3.12.0) (2023-03-23)
+
+
+### Features
+
+* Add support for a ReconcileTags() API method ([423efa5](https://github.com/googleapis/python-datacatalog/commit/423efa530c48b8f8d397aa0a555c2c00729301b0))
+* Add support for entries associated with Looker and CloudSQL ([423efa5](https://github.com/googleapis/python-datacatalog/commit/423efa530c48b8f8d397aa0a555c2c00729301b0))
+* Add support for new ImportEntries() API, including format of the dump ([423efa5](https://github.com/googleapis/python-datacatalog/commit/423efa530c48b8f8d397aa0a555c2c00729301b0))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#472](https://github.com/googleapis/python-datacatalog/issues/472)) ([99ea7ba](https://github.com/googleapis/python-datacatalog/commit/99ea7baf21f8beca897497e5b31ac4086c1d681f))
+
 ## [3.11.1](https://github.com/googleapis/python-datacatalog/compare/v3.11.0...v3.11.1) (2023-01-20)
 
 
