@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/python-service-directory/compare/v1.8.0...v1.8.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#266](https://github.com/googleapis/python-service-directory/issues/266)) ([132ebdf](https://github.com/googleapis/python-service-directory/commit/132ebdfbc723cf48c3623d89ade48ce0c4f03666))
+
 ## [1.8.0](https://github.com/googleapis/python-service-directory/compare/v1.7.1...v1.8.0) (2023-02-28)
 
 
