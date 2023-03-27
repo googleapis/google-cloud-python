@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.2](https://github.com/googleapis/python-private-catalog/compare/v0.9.1...v0.9.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#186](https://github.com/googleapis/python-private-catalog/issues/186)) ([b3214f4](https://github.com/googleapis/python-private-catalog/commit/b3214f4da3374c5eaf14055fc408c47bf4d12007))
+
 ## [0.9.1](https://github.com/googleapis/python-private-catalog/compare/v0.9.0...v0.9.1) (2023-01-23)
 
 
