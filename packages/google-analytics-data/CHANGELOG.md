@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.2](https://github.com/googleapis/python-analytics-data/compare/v0.16.1...v0.16.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#347](https://github.com/googleapis/python-analytics-data/issues/347)) ([50505cd](https://github.com/googleapis/python-analytics-data/commit/50505cd51c77a9e085507e163bf324a3c9761c8d))
+
 ## [0.16.1](https://github.com/googleapis/python-analytics-data/compare/v0.16.0...v0.16.1) (2023-01-20)
 
 
