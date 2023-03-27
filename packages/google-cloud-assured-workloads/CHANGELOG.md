@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/googleapis/python-assured-workloads/compare/v1.10.0...v1.10.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#239](https://github.com/googleapis/python-assured-workloads/issues/239)) ([448999e](https://github.com/googleapis/python-assured-workloads/commit/448999ef82076dd9c6fa51c6c6b2fe864b1030c4))
+
 ## [1.10.0](https://github.com/googleapis/python-assured-workloads/compare/v1.9.1...v1.10.0) (2023-02-09)
 
 
