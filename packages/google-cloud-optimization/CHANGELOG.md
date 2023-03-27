@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-optimization/compare/v1.4.0...v1.4.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#122](https://github.com/googleapis/python-optimization/issues/122)) ([ccd6370](https://github.com/googleapis/python-optimization/commit/ccd6370332129c5692f0939601bf2e3b4678ea6d))
+
 ## [1.4.0](https://github.com/googleapis/python-optimization/compare/v1.3.2...v1.4.0) (2023-02-21)
 
 
