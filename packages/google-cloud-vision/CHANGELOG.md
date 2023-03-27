@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [3.4.1](https://github.com/googleapis/python-vision/compare/v3.4.0...v3.4.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#527](https://github.com/googleapis/python-vision/issues/527)) ([d589fe1](https://github.com/googleapis/python-vision/commit/d589fe1e7e8106aae896cea1ee0737cdcddbc0fd))
+
 ## [3.4.0](https://github.com/googleapis/python-vision/compare/v3.3.1...v3.4.0) (2023-02-28)
 
 
