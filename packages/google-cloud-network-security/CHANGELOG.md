@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.9.2](https://github.com/googleapis/python-network-security/compare/v0.9.1...v0.9.2) (2023-03-23)
+
+
+### Bug Fixes
+
+* Add service_yaml_parameters to `networksecurity_py_gapic` ([#166](https://github.com/googleapis/python-network-security/issues/166)) ([dce340d](https://github.com/googleapis/python-network-security/commit/dce340d509952d9347266d6f1acda823812d94de))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#170](https://github.com/googleapis/python-network-security/issues/170)) ([d1db2c2](https://github.com/googleapis/python-network-security/commit/d1db2c24b4121fa746cbaaff7b535abedb2c47fb))
+
 ## [0.9.1](https://github.com/googleapis/python-network-security/compare/v0.9.0...v0.9.1) (2023-01-20)
 
 
