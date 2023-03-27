@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.12.0](https://github.com/googleapis/python-iam/compare/v2.11.2...v2.12.0) (2023-03-23)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#271](https://github.com/googleapis/python-iam/issues/271)) ([b652b8f](https://github.com/googleapis/python-iam/commit/b652b8f8c9336ef99afc09ba0fe75189fdfe5a89))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#277](https://github.com/googleapis/python-iam/issues/277)) ([107448e](https://github.com/googleapis/python-iam/commit/107448e1d952bd7c88bfabc0a765090c81054cdb))
+
 ## [2.11.2](https://github.com/googleapis/python-iam/compare/v2.11.1...v2.11.2) (2023-02-02)
 
 
