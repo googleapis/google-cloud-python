@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/googleapis/python-bigquery-datapolicies/compare/v0.3.1...v0.3.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#30](https://github.com/googleapis/python-bigquery-datapolicies/issues/30)) ([4434913](https://github.com/googleapis/python-bigquery-datapolicies/commit/443491312e530fa1186d05fdcda4b246fe4eecb0))
+
 ## [0.3.1](https://github.com/googleapis/python-bigquery-datapolicies/compare/v0.3.0...v0.3.1) (2023-01-20)
 
 
