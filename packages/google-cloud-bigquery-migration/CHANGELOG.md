@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.11.0](https://github.com/googleapis/python-bigquery-migration/compare/v0.10.0...v0.11.0) (2023-03-23)
+
+
+### Features
+
+* Add `request_source` field to `TranslationConfigDetails` ([d11aa1f](https://github.com/googleapis/python-bigquery-migration/commit/d11aa1fdb4a7d9c7e0bb270ad5b8306a91485818))
+* Add PENDING_DEPENDENCY to `State` enum of `MigrationSubtask` ([d11aa1f](https://github.com/googleapis/python-bigquery-migration/commit/d11aa1fdb4a7d9c7e0bb270ad5b8306a91485818))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#177](https://github.com/googleapis/python-bigquery-migration/issues/177)) ([699d68c](https://github.com/googleapis/python-bigquery-migration/commit/699d68cfddad624609ec1913fbbe1992d83d0806))
+
 ## [0.10.0](https://github.com/googleapis/python-bigquery-migration/compare/v0.9.1...v0.10.0) (2023-03-01)
 
 
