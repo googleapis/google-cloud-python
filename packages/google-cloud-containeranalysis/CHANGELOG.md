@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.12.1](https://github.com/googleapis/python-containeranalysis/compare/v2.12.0...v2.12.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#370](https://github.com/googleapis/python-containeranalysis/issues/370)) ([f58475d](https://github.com/googleapis/python-containeranalysis/commit/f58475d382a971eadd173e0264ea8fee460daeb5))
+
 ## [2.12.0](https://github.com/googleapis/python-containeranalysis/compare/v2.11.1...v2.12.0) (2023-02-27)
 
 
