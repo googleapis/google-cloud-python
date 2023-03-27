@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.2](https://github.com/googleapis/python-data-qna/compare/v0.10.1...v0.10.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#215](https://github.com/googleapis/python-data-qna/issues/215)) ([c7e3dc7](https://github.com/googleapis/python-data-qna/commit/c7e3dc7d2555aabee2a1897fb05899e0c63de24d))
+
 ## [0.10.1](https://github.com/googleapis/python-data-qna/compare/v0.10.0...v0.10.1) (2023-01-20)
 
 
