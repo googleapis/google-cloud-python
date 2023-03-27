@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.19.1](https://github.com/googleapis/python-securitycenter/compare/v1.19.0...v1.19.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#445](https://github.com/googleapis/python-securitycenter/issues/445)) ([b8e46b7](https://github.com/googleapis/python-securitycenter/commit/b8e46b76a34e9a19e0778521b7ecffef4ebe24af))
+
 ## [1.19.0](https://github.com/googleapis/python-securitycenter/compare/v1.18.2...v1.19.0) (2023-02-28)
 
 
