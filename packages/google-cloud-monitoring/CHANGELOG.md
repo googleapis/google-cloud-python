@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.14.2](https://github.com/googleapis/python-monitoring/compare/v2.14.1...v2.14.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#535](https://github.com/googleapis/python-monitoring/issues/535)) ([e10167f](https://github.com/googleapis/python-monitoring/commit/e10167f5d0def6fd6707fc8bda56a2cfe6a47eac))
+
 ## [2.14.1](https://github.com/googleapis/python-monitoring/compare/v2.14.0...v2.14.1) (2023-01-20)
 
 
