@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.2](https://github.com/googleapis/python-dms/compare/v1.6.1...v1.6.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#174](https://github.com/googleapis/python-dms/issues/174)) ([3a87dd9](https://github.com/googleapis/python-dms/commit/3a87dd9474e017b133a2b5e03a420fcc2c9ea59b))
+
 ## [1.6.1](https://github.com/googleapis/python-dms/compare/v1.6.0...v1.6.1) (2023-01-20)
 
 
