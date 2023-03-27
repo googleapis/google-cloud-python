@@ -276,7 +276,7 @@ class Flow(object):
 
         Returns:
             Mapping[str, str]: The obtained tokens. Typically, you will not use
-                return value of this function and instead and use
+                return value of this function and instead use
                 :meth:`credentials` to obtain a
                 :class:`~google.auth.credentials.Credentials` instance.
         """
