@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/python-compute/compare/v1.10.1...v1.11.0) (2023-03-23)
+
+
+### Features
+
+* Update Compute Engine API to revision 20230307 ([#770](https://github.com/googleapis/python-compute/issues/770)) ([#400](https://github.com/googleapis/python-compute/issues/400)) ([13bc576](https://github.com/googleapis/python-compute/commit/13bc5765120e72708beb2d9eb0c80ce56754cf18))
+* Update Compute Engine API to revision 20230307 ([#786](https://github.com/googleapis/python-compute/issues/786)) ([#403](https://github.com/googleapis/python-compute/issues/403)) ([acc70b8](https://github.com/googleapis/python-compute/commit/acc70b87f28251cd5cee1b585cb82b4185c9d6ea))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#404](https://github.com/googleapis/python-compute/issues/404)) ([e9b13a0](https://github.com/googleapis/python-compute/commit/e9b13a03b34332c6ab0aa9f204b39b90ddbeaed0))
+
 ## [1.10.1](https://github.com/googleapis/python-compute/compare/v1.10.0...v1.10.1) (2023-02-23)
 
 
