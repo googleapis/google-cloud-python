@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/googleapis/python-security-public-ca/compare/v0.3.1...v0.3.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#29](https://github.com/googleapis/python-security-public-ca/issues/29)) ([b8a41e5](https://github.com/googleapis/python-security-public-ca/commit/b8a41e52655a4db9f219e0d37747bbd0c55ee3e7))
+
 ## [0.3.1](https://github.com/googleapis/python-security-public-ca/compare/v0.3.0...v0.3.1) (2023-01-20)
 
 
