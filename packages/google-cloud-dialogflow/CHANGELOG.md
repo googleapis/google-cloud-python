@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.21.0](https://github.com/googleapis/python-dialogflow/compare/v2.20.0...v2.21.0) (2023-03-23)
+
+
+### Features
+
+* Added support for custom content types ([4e35741](https://github.com/googleapis/python-dialogflow/commit/4e35741d3ffb11b8dd1e5e2c77897fd2c2c4b9f2))
+
+
+### Documentation
+
+* Clarified wording around quota usage ([4e35741](https://github.com/googleapis/python-dialogflow/commit/4e35741d3ffb11b8dd1e5e2c77897fd2c2c4b9f2))
+* Fix formatting of request arg in docstring ([#632](https://github.com/googleapis/python-dialogflow/issues/632)) ([073a8d4](https://github.com/googleapis/python-dialogflow/commit/073a8d42588f1f5ff9f99468d6d0502949c482cc))
+
 ## [2.20.0](https://github.com/googleapis/python-dialogflow/compare/v2.19.1...v2.20.0) (2023-02-28)
 
 
