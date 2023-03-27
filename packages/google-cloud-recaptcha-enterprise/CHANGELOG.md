@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.11.1...v1.12.0) (2023-03-23)
+
+
+### Features
+
+* Add reCAPTCHA Enterprise Fraud Prevention API ([#350](https://github.com/googleapis/python-recaptcha-enterprise/issues/350)) ([5f841d7](https://github.com/googleapis/python-recaptcha-enterprise/commit/5f841d782c6e5ef3f4e5f4a9fa36a96d13e5849a))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#352](https://github.com/googleapis/python-recaptcha-enterprise/issues/352)) ([a0ab5c3](https://github.com/googleapis/python-recaptcha-enterprise/commit/a0ab5c3abcd70aff6c1cc220fbb6afc14a5de436))
+
 ## [1.11.1](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.11.0...v1.11.1) (2023-01-20)
 
 
