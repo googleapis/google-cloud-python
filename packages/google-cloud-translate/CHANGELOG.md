@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.11.1](https://github.com/googleapis/python-translate/compare/v3.11.0...v3.11.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#487](https://github.com/googleapis/python-translate/issues/487)) ([59f7107](https://github.com/googleapis/python-translate/commit/59f710706a4c0a71b6a8ec7deedaab9fe55a5260))
+
 ## [3.11.0](https://github.com/googleapis/python-translate/compare/v3.10.1...v3.11.0) (2023-02-28)
 
 
