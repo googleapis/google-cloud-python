@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.15.1](https://github.com/googleapis/python-datastore/compare/v2.15.0...v2.15.1) (2023-03-24)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#428](https://github.com/googleapis/python-datastore/issues/428)) ([da86a02](https://github.com/googleapis/python-datastore/commit/da86a02744f02c34d9cf1c83ea20a4ca2bbde232))
+* Improve query API documentation ([#430](https://github.com/googleapis/python-datastore/issues/430)) ([915daf5](https://github.com/googleapis/python-datastore/commit/915daf5443c74953f9d531c2bf2029e4a8e87d47))
+
 ## [2.15.0](https://github.com/googleapis/python-datastore/compare/v2.14.0...v2.15.0) (2023-03-09)
 
 
