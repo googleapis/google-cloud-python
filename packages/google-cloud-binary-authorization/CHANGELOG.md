@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-binary-authorization/compare/v1.6.0...v1.6.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#209](https://github.com/googleapis/python-binary-authorization/issues/209)) ([c5bc464](https://github.com/googleapis/python-binary-authorization/commit/c5bc464c59051af86c7998cdb520c555f8402e97))
+
 ## [1.6.0](https://github.com/googleapis/python-binary-authorization/compare/v1.5.1...v1.6.0) (2023-02-27)
 
 
