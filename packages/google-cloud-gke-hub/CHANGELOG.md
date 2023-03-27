@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/python-gke-hub/compare/v1.8.0...v1.8.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#232](https://github.com/googleapis/python-gke-hub/issues/232)) ([467e84a](https://github.com/googleapis/python-gke-hub/commit/467e84a868886a2a517b0490ba6128eba4898822))
+
 ## [1.8.0](https://github.com/googleapis/python-gke-hub/compare/v1.7.1...v1.8.0) (2023-02-19)
 
 
