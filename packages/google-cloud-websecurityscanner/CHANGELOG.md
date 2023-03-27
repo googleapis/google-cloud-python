@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.12.1](https://github.com/googleapis/python-websecurityscanner/compare/v1.12.0...v1.12.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#269](https://github.com/googleapis/python-websecurityscanner/issues/269)) ([1fa62df](https://github.com/googleapis/python-websecurityscanner/commit/1fa62df90fcba5a31bef1a31c8f1ccdaa5e44cfa))
+
 ## [1.12.0](https://github.com/googleapis/python-websecurityscanner/compare/v1.11.1...v1.12.0) (2023-02-09)
 
 
