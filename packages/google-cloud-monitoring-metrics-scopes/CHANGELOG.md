@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/googleapis/python-monitoring-metrics-scopes/compare/v1.4.1...v1.4.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#125](https://github.com/googleapis/python-monitoring-metrics-scopes/issues/125)) ([5c9463e](https://github.com/googleapis/python-monitoring-metrics-scopes/commit/5c9463e6a07f3c49dc49ba23ed7feb436781fa6b))
+
 ## [1.4.1](https://github.com/googleapis/python-monitoring-metrics-scopes/compare/v1.4.0...v1.4.1) (2023-01-20)
 
 
