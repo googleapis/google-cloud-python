@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/python-bigquery-reservation/compare/v1.10.0...v1.11.0) (2023-03-23)
+
+
+### Features
+
+* Add edition/autoscale related fields ([#348](https://github.com/googleapis/python-bigquery-reservation/issues/348)) ([e94a53b](https://github.com/googleapis/python-bigquery-reservation/commit/e94a53bd510f51facc4a0fd591e5c4a981028f90))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#350](https://github.com/googleapis/python-bigquery-reservation/issues/350)) ([ecce362](https://github.com/googleapis/python-bigquery-reservation/commit/ecce36210c6a8fdce862b9ff16d49451180bea9a))
+
 ## [1.10.0](https://github.com/googleapis/python-bigquery-reservation/compare/v1.9.1...v1.10.0) (2023-02-16)
 
 
