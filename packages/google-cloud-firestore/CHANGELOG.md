@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.10.1](https://github.com/googleapis/python-firestore/compare/v2.10.0...v2.10.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#700](https://github.com/googleapis/python-firestore/issues/700)) ([7b09f16](https://github.com/googleapis/python-firestore/commit/7b09f164f66a1387f34ccc4bee89eb3fd9e7b9fc))
+
 ## [2.10.0](https://github.com/googleapis/python-firestore/compare/v2.9.1...v2.10.0) (2023-02-21)
 
 
