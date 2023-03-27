@@ -3,6 +3,13 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.11.1](https://github.com/googleapis/python-webrisk/compare/v1.11.0...v1.11.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#262](https://github.com/googleapis/python-webrisk/issues/262)) ([1966bb4](https://github.com/googleapis/python-webrisk/commit/1966bb4cdb6e395def14d5f8ef5c70591629f9d5))
+
 ## [1.11.0](https://github.com/googleapis/python-webrisk/compare/v1.10.1...v1.11.0) (2023-02-09)
 
 
