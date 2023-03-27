@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-service-usage/compare/v1.7.0...v1.7.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#170](https://github.com/googleapis/python-service-usage/issues/170)) ([f730be6](https://github.com/googleapis/python-service-usage/commit/f730be62e82de2374216e72d8a54fc8110e0a868))
+
 ## [1.7.0](https://github.com/googleapis/python-service-usage/compare/v1.6.1...v1.7.0) (2023-02-28)
 
 
