@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/python-artifact-registry/compare/v1.8.0...v1.8.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#231](https://github.com/googleapis/python-artifact-registry/issues/231)) ([5433de8](https://github.com/googleapis/python-artifact-registry/commit/5433de8e9b3109dfa162d2ef1a454ab2061c35e6))
+
 ## [1.8.0](https://github.com/googleapis/python-artifact-registry/compare/v1.7.0...v1.8.0) (2023-02-27)
 
 
