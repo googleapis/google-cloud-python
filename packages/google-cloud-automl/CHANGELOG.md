@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.11.1](https://github.com/googleapis/python-automl/compare/v2.11.0...v2.11.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#481](https://github.com/googleapis/python-automl/issues/481)) ([6e78170](https://github.com/googleapis/python-automl/commit/6e78170a97f44583522d9fe0aabd2cb1ea452f7b))
+
 ## [2.11.0](https://github.com/googleapis/python-automl/compare/v2.10.1...v2.11.0) (2023-02-28)
 
 
