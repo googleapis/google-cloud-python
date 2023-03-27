@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2](https://github.com/googleapis/python-api-keys/compare/v0.5.1...v0.5.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#53](https://github.com/googleapis/python-api-keys/issues/53)) ([7f7fae9](https://github.com/googleapis/python-api-keys/commit/7f7fae9061ba39a32f538491d9d724b426fccc52))
+
 ## [0.5.1](https://github.com/googleapis/python-api-keys/compare/v0.5.0...v0.5.1) (2023-01-20)
 
 
