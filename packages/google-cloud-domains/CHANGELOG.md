@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-domains/compare/v1.5.0...v1.5.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#201](https://github.com/googleapis/python-domains/issues/201)) ([3054d9f](https://github.com/googleapis/python-domains/commit/3054d9fa04b0d928e125a076547f048f9fabdfdc))
+
 ## [1.5.0](https://github.com/googleapis/python-domains/compare/v1.4.1...v1.5.0) (2023-02-19)
 
 
