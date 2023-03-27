@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/googleapis/python-contact-center-insights/compare/v1.9.0...v1.9.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#299](https://github.com/googleapis/python-contact-center-insights/issues/299)) ([0848578](https://github.com/googleapis/python-contact-center-insights/commit/08485784ea1e9f785baffaa5f85bdff4c75d1f65))
+
 ## [1.9.0](https://github.com/googleapis/python-contact-center-insights/compare/v1.8.0...v1.9.0) (2023-03-02)
 
 
