@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-tpu/compare/v1.8.0...v1.9.0) (2023-03-24)
+
+
+### Features
+
+* Add AcceleratorConfig to ListAcceleratorTypesResponse ([#220](https://github.com/googleapis/python-tpu/issues/220)) ([495fbad](https://github.com/googleapis/python-tpu/commit/495fbad638714a9cc30d8699462630c5492c0430))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#223](https://github.com/googleapis/python-tpu/issues/223)) ([58839c4](https://github.com/googleapis/python-tpu/commit/58839c441b1677a40df09fb0352e5dd28e02384d))
+
 ## [1.8.0](https://github.com/googleapis/python-tpu/compare/v1.7.2...v1.8.0) (2023-02-17)
 
 
