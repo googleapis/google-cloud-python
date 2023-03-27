@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.10.1](https://github.com/googleapis/python-talent/compare/v2.10.0...v2.10.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#331](https://github.com/googleapis/python-talent/issues/331)) ([a9ac9d8](https://github.com/googleapis/python-talent/commit/a9ac9d8d2d4e0b3a6f6068ccd3680721bb312aaa))
+
 ## [2.10.0](https://github.com/googleapis/python-talent/compare/v2.9.1...v2.10.0) (2023-02-28)
 
 
