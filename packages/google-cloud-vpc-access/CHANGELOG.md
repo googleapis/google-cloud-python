@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/python-vpc-access/compare/v1.8.0...v1.8.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#171](https://github.com/googleapis/python-vpc-access/issues/171)) ([cbb3701](https://github.com/googleapis/python-vpc-access/commit/cbb370158e611c666f148a8a54eeac710756e36c))
+
 ## [1.8.0](https://github.com/googleapis/python-vpc-access/compare/v1.7.1...v1.8.0) (2023-02-09)
 
 
