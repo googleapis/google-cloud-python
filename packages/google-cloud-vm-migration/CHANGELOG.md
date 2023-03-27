@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-vm-migration/compare/v1.6.0...v1.6.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#119](https://github.com/googleapis/python-vm-migration/issues/119)) ([cc95fb4](https://github.com/googleapis/python-vm-migration/commit/cc95fb484f188cf7967457a342a2f11da9c4db23))
+
 ## [1.6.0](https://github.com/googleapis/python-vm-migration/compare/v1.5.1...v1.6.0) (2023-02-09)
 
 
