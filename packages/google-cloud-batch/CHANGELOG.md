@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.10.0](https://github.com/googleapis/python-batch/compare/v0.9.0...v0.10.0) (2023-03-16)
+
+
+### Features
+
+* Added StatusEvent.task_state ([de68b7c](https://github.com/googleapis/python-batch/commit/de68b7c772bdd90f258139b7dc1f5268dfe5eb8e))
+
+
+### Bug Fixes
+
+* Remove IAM methods ([de68b7c](https://github.com/googleapis/python-batch/commit/de68b7c772bdd90f258139b7dc1f5268dfe5eb8e))
+
+
+### Documentation
+
+* Point to the correct documentation page ([#102](https://github.com/googleapis/python-batch/issues/102)) ([2d13090](https://github.com/googleapis/python-batch/commit/2d1309089dd0747f7bab08d743e971e429536393))
+* Updated comments ([de68b7c](https://github.com/googleapis/python-batch/commit/de68b7c772bdd90f258139b7dc1f5268dfe5eb8e))
+
 ## [0.9.0](https://github.com/googleapis/python-batch/compare/v0.8.1...v0.9.0) (2023-02-04)
 
 
