@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [2.12.1](https://github.com/googleapis/python-redis/compare/v2.12.0...v2.12.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#255](https://github.com/googleapis/python-redis/issues/255)) ([7586aa5](https://github.com/googleapis/python-redis/commit/7586aa5d4c1ee9397f3a2a57f443facfbab621c2))
+
 ## [2.12.0](https://github.com/googleapis/python-redis/compare/v2.11.1...v2.12.0) (2023-02-28)
 
 
