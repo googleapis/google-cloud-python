@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/googleapis/python-billing/compare/v1.10.0...v1.10.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#244](https://github.com/googleapis/python-billing/issues/244)) ([4f0ec70](https://github.com/googleapis/python-billing/commit/4f0ec703cd725a5000529cfdcca06e94be39d53d))
+
 ## [1.10.0](https://github.com/googleapis/python-billing/compare/v1.9.1...v1.10.0) (2023-02-27)
 
 
