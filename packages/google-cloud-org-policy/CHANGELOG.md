@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/python-org-policy/compare/v1.8.0...v1.8.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#211](https://github.com/googleapis/python-org-policy/issues/211)) ([042cc81](https://github.com/googleapis/python-org-policy/commit/042cc810c76332f174fd0aa05206d789afb1e74f))
+
 ## [1.8.0](https://github.com/googleapis/python-org-policy/compare/v1.7.1...v1.8.0) (2023-02-21)
 
 
