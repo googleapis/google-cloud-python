@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/python-api-gateway/compare/v1.7.0...v1.7.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#208](https://github.com/googleapis/python-api-gateway/issues/208)) ([f2254d6](https://github.com/googleapis/python-api-gateway/commit/f2254d61e95af85c8afe0f63c2a3dfef97719da8))
+
 ## [1.7.0](https://github.com/googleapis/python-api-gateway/compare/v1.6.1...v1.7.0) (2023-02-27)
 
 
