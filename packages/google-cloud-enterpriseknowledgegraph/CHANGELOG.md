@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-enterpriseknowledgegraph-v0.3.1...google-cloud-enterpriseknowledgegraph-v0.3.2) (2023-03-25)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#10867](https://github.com/googleapis/google-cloud-python/issues/10867)) ([d34a425](https://github.com/googleapis/google-cloud-python/commit/d34a425f7d0f02bebaf20d24b725b8c25c699697))
+
 ## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-enterpriseknowledgegraph-v0.3.0...google-cloud-enterpriseknowledgegraph-v0.3.1) (2023-01-20)
 
 

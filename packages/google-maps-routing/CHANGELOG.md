@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.4.0...google-maps-routing-v0.5.0) (2023-03-25)
+
+
+### Features
+
+* Add support for specifying region_code and language_code in the ComputeRouteMatrixRequest ([80f77f1](https://github.com/googleapis/google-cloud-python/commit/80f77f17494d4d98e9f8ad7e0d4a693e4bd12ede))
+* Add support for specifying region_code in the ComputeRoutesRequest ([80f77f1](https://github.com/googleapis/google-cloud-python/commit/80f77f17494d4d98e9f8ad7e0d4a693e4bd12ede))
+* Add support for specifying waypoints as addresses ([80f77f1](https://github.com/googleapis/google-cloud-python/commit/80f77f17494d4d98e9f8ad7e0d4a693e4bd12ede))
+
+
+### Documentation
+
+* Clarify usage of compute_alternative_routes in proto comment ([80f77f1](https://github.com/googleapis/google-cloud-python/commit/80f77f17494d4d98e9f8ad7e0d4a693e4bd12ede))
+* Clarify usage of RouteLegStepTravelAdvisory in comment ([80f77f1](https://github.com/googleapis/google-cloud-python/commit/80f77f17494d4d98e9f8ad7e0d4a693e4bd12ede))
+* Update proto comments to contain concrete references to other proto messages ([80f77f1](https://github.com/googleapis/google-cloud-python/commit/80f77f17494d4d98e9f8ad7e0d4a693e4bd12ede))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.3.1...google-maps-routing-v0.4.0) (2023-02-09)
 
 
