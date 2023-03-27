@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/googleapis/python-eventarc-publishing/compare/v0.6.1...v0.6.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#98](https://github.com/googleapis/python-eventarc-publishing/issues/98)) ([8037e11](https://github.com/googleapis/python-eventarc-publishing/commit/8037e110078cf12615b8465064a736f2cbeef60c))
+
 ## [0.6.1](https://github.com/googleapis/python-eventarc-publishing/compare/v0.6.0...v0.6.1) (2023-01-20)
 
 
