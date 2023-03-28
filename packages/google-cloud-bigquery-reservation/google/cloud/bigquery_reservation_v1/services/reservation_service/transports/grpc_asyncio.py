@@ -33,8 +33,7 @@ from .grpc import ReservationServiceGrpcTransport
 class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
     """gRPC AsyncIO backend transport for ReservationService.
 
-    This API allows users to manage their flat-rate BigQuery
-    reservations.
+    This API allows users to manage their BigQuery reservations.
 
     A reservation provides computational resource guarantees, in the
     form of `slots <https://cloud.google.com/bigquery/docs/slots>`__, to
