@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.17.0](https://github.com/googleapis/google-auth-library-python/compare/v2.16.3...v2.17.0) (2023-03-28)
+
+
+### Features
+
+* Experimental service account iam endpoint flow for id token ([#1258](https://github.com/googleapis/google-auth-library-python/issues/1258)) ([8ff0de5](https://github.com/googleapis/google-auth-library-python/commit/8ff0de5f6c26c8778e24e57d6b7f449856357f81))
+
+
+### Bug Fixes
+
+* Python: Remove aws url validation ([#1254](https://github.com/googleapis/google-auth-library-python/issues/1254)) ([20a966b](https://github.com/googleapis/google-auth-library-python/commit/20a966bbbfc66932f471e0bfd191769f40332233))
+
 ## [2.16.3](https://github.com/googleapis/google-auth-library-python/compare/v2.16.2...v2.16.3) (2023-03-24)
 
 
