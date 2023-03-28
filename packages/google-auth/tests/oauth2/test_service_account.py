@@ -428,6 +428,7 @@ class TestIDTokenCredentials(object):
         assert credentials.service_account_email == SERVICE_ACCOUNT_INFO["client_email"]
         assert credentials._token_uri == SERVICE_ACCOUNT_INFO["token_uri"]
         assert credentials._target_audience == self.TARGET_AUDIENCE
+        assert not credentials._use_iam_endpoint
 
     def test_from_service_account_file(self):
         info = SERVICE_ACCOUNT_INFO.copy()
@@ -440,6 +441,7 @@ class TestIDTokenCredentials(object):
         assert credentials._signer.key_id == info["private_key_id"]
         assert credentials._token_uri == info["token_uri"]
         assert credentials._target_audience == self.TARGET_AUDIENCE
+        assert not credentials._use_iam_endpoint
 
     def test_default_state(self):
         credentials = self.make_credentials()
@@ -465,6 +467,11 @@ class TestIDTokenCredentials(object):
         credentials = self.make_credentials()
         new_credentials = credentials.with_target_audience("https://new.example.com")
         assert new_credentials._target_audience == "https://new.example.com"
+
+    def test__with_use_iam_endpoint(self):
+        credentials = self.make_credentials()
+        new_credentials = credentials._with_use_iam_endpoint(True)
+        assert new_credentials._use_iam_endpoint
 
     def test_with_quota_project(self):
         credentials = self.make_credentials()
@@ -516,6 +523,28 @@ class TestIDTokenCredentials(object):
         # Check that the credentials are valid (have a token and are not
         # expired)
         assert credentials.valid
+
+    @mock.patch(
+        "google.oauth2._client.call_iam_generate_id_token_endpoint", autospec=True
+    )
+    def test_refresh_iam_flow(self, call_iam_generate_id_token_endpoint):
+        credentials = self.make_credentials()
+        credentials._use_iam_endpoint = True
+        token = "id_token"
+        call_iam_generate_id_token_endpoint.return_value = (
+            token,
+            _helpers.utcnow() + datetime.timedelta(seconds=500),
+        )
+        request = mock.Mock()
+        credentials.refresh(request)
+        req, signer_email, target_audience, access_token = call_iam_generate_id_token_endpoint.call_args[
+            0
+        ]
+        assert req == request
+        assert signer_email == "service-account@example.com"
+        assert target_audience == "https://example.com"
+        decoded_access_token = jwt.decode(access_token, verify=False)
+        assert decoded_access_token["scope"] == "https://www.googleapis.com/auth/iam"
 
     @mock.patch("google.oauth2._client.id_token_jwt_grant", autospec=True)
     def test_before_request_refreshes(self, id_token_jwt_grant):

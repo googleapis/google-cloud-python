@@ -305,6 +305,50 @@ def test_jwt_grant_no_access_token():
     assert not excinfo.value.retryable
 
 
+def test_call_iam_generate_id_token_endpoint():
+    now = _helpers.utcnow()
+    id_token_expiry = _helpers.datetime_to_secs(now)
+    id_token = jwt.encode(SIGNER, {"exp": id_token_expiry}).decode("utf-8")
+    request = make_request({"token": id_token})
+
+    token, expiry = _client.call_iam_generate_id_token_endpoint(
+        request, "fake_email", "fake_audience", "fake_access_token"
+    )
+
+    assert (
+        request.call_args[1]["url"]
+        == "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/fake_email:generateIdToken"
+    )
+    assert request.call_args[1]["headers"]["Content-Type"] == "application/json"
+    assert (
+        request.call_args[1]["headers"]["Authorization"] == "Bearer fake_access_token"
+    )
+    response_body = json.loads(request.call_args[1]["body"])
+    assert response_body["audience"] == "fake_audience"
+    assert response_body["includeEmail"] == "true"
+
+    # Check result
+    assert token == id_token
+    # JWT does not store microseconds
+    now = now.replace(microsecond=0)
+    assert expiry == now
+
+
+def test_call_iam_generate_id_token_endpoint_no_id_token():
+    request = make_request(
+        {
+            # No access token.
+            "error": "no token"
+        }
+    )
+
+    with pytest.raises(exceptions.RefreshError) as excinfo:
+        _client.call_iam_generate_id_token_endpoint(
+            request, "fake_email", "fake_audience", "fake_access_token"
+        )
+    assert excinfo.match("No ID token in response")
+
+
 def test_id_token_jwt_grant():
     now = _helpers.utcnow()
     id_token_expiry = _helpers.datetime_to_secs(now)

@@ -554,6 +554,7 @@ class IDTokenCredentials(
         self._token_uri = token_uri
         self._target_audience = target_audience
         self._quota_project_id = quota_project_id
+        self._use_iam_endpoint = False
 
         if additional_claims is not None:
             self._additional_claims = additional_claims
@@ -639,6 +640,31 @@ class IDTokenCredentials(
             quota_project_id=self.quota_project_id,
         )
 
+    def _with_use_iam_endpoint(self, use_iam_endpoint):
+        """Create a copy of these credentials with the use_iam_endpoint value.
+
+        Args:
+            use_iam_endpoint (bool): If True, IAM generateIdToken endpoint will
+                be used instead of the token_uri. Note that
+                iam.serviceAccountTokenCreator role is required to use the IAM
+                endpoint. The default value is False. This feature is currently
+                experimental and subject to change without notice.
+
+        Returns:
+            google.auth.service_account.IDTokenCredentials: A new credentials
+                instance.
+        """
+        cred = self.__class__(
+            self._signer,
+            service_account_email=self._service_account_email,
+            token_uri=self._token_uri,
+            target_audience=self._target_audience,
+            additional_claims=self._additional_claims.copy(),
+            quota_project_id=self.quota_project_id,
+        )
+        cred._use_iam_endpoint = use_iam_endpoint
+        return cred
+
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
         return self.__class__(
@@ -692,14 +718,50 @@ class IDTokenCredentials(
 
         return token
 
+    def _refresh_with_iam_endpoint(self, request):
+        """Use IAM generateIdToken endpoint to obtain an ID token.
+
+        It works as follows:
+
+        1. First we create a self signed jwt with
+        https://www.googleapis.com/auth/iam being the scope.
+
+        2. Next we use the self signed jwt as the access token, and make a POST
+        request to IAM generateIdToken endpoint. The request body is:
+            {
+                "audience": self._target_audience,
+                "includeEmail": "true"
+            }
+        TODO: add "set_azp_to_email": "true" once it's ready from server side.
+        https://github.com/googleapis/google-auth-library-python/issues/1263
+
+        If the request is succesfully, it will return {"token":"the ID token"},
+        and we can extract the ID token and compute its expiry.
+        """
+        jwt_credentials = jwt.Credentials.from_signing_credentials(
+            self,
+            None,
+            additional_claims={"scope": "https://www.googleapis.com/auth/iam"},
+        )
+        jwt_credentials.refresh(request)
+        self.token, self.expiry = _client.call_iam_generate_id_token_endpoint(
+            request,
+            self.signer_email,
+            self._target_audience,
+            jwt_credentials.token.decode(),
+        )
+
     @_helpers.copy_docstring(credentials.Credentials)
     def refresh(self, request):
-        assertion = self._make_authorization_grant_assertion()
-        access_token, expiry, _ = _client.id_token_jwt_grant(
-            request, self._token_uri, assertion
-        )
-        self.token = access_token
-        self.expiry = expiry
+        if self._use_iam_endpoint:
+            self._refresh_with_iam_endpoint(request)
+        else:
+            assertion = self._make_authorization_grant_assertion()
+            access_token, expiry, _ = _client.id_token_jwt_grant(
+                request, self._token_uri, assertion
+            )
+            self.token = access_token
+            self.expiry = expiry
 
     @property
     def service_account_email(self):

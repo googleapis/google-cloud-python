@@ -40,6 +40,10 @@ _URLENCODED_CONTENT_TYPE = "application/x-www-form-urlencoded"
 _JSON_CONTENT_TYPE = "application/json"
 _JWT_GRANT_TYPE = "urn:ietf:params:oauth:grant-type:jwt-bearer"
 _REFRESH_GRANT_TYPE = "refresh_token"
+_IAM_IDTOKEN_ENDPOINT = (
+    "https://iamcredentials.googleapis.com/v1/"
+    + "projects/-/serviceAccounts/{}:generateIdToken"
+)
 
 
 def _handle_error_response(response_data, retryable_error):
@@ -311,6 +315,44 @@ def jwt_grant(request, token_uri, assertion, can_retry=True):
     expiry = _parse_expiry(response_data)
 
     return access_token, expiry, response_data
+
+
+def call_iam_generate_id_token_endpoint(request, signer_email, audience, access_token):
+    """Call iam.generateIdToken endpoint to get ID token.
+
+    Args:
+        request (google.auth.transport.Request): A callable used to make
+            HTTP requests.
+        signer_email (str): The signer email used to form the IAM
+            generateIdToken endpoint.
+        audience (str): The audience for the ID token.
+        access_token (str): The access token used to call the IAM endpoint.
+
+    Returns:
+        Tuple[str, datetime]: The ID token and expiration.
+    """
+    body = {"audience": audience, "includeEmail": "true"}
+
+    response_data = _token_endpoint_request(
+        request,
+        _IAM_IDTOKEN_ENDPOINT.format(signer_email),
+        body,
+        access_token=access_token,
+        use_json=True,
+    )
+
+    try:
+        id_token = response_data["token"]
+    except KeyError as caught_exc:
+        new_exc = exceptions.RefreshError(
+            "No ID token in response.", response_data, retryable=False
+        )
+        six.raise_from(new_exc, caught_exc)
+
+    payload = jwt.decode(id_token, verify=False)
+    expiry = datetime.datetime.utcfromtimestamp(payload["exp"])
+
+    return id_token, expiry
 
 
 def id_token_jwt_grant(request, token_uri, assertion, can_retry=True):
