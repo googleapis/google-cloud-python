@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.16.1](https://github.com/googleapis/python-kms/compare/v2.16.0...v2.16.1) (2023-03-28)
+
+
+### Documentation
+
+* Publish the API comment changes related to supporting different hash functions/values for ECDSA signing ([#386](https://github.com/googleapis/python-kms/issues/386)) ([c45e891](https://github.com/googleapis/python-kms/commit/c45e8914fe198abf5767727103fb1832cca645dc))
+
 ## [2.16.0](https://github.com/googleapis/python-kms/compare/v2.15.0...v2.16.0) (2023-03-23)
 
 
