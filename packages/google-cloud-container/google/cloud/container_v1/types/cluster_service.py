@@ -170,6 +170,7 @@ __protobuf__ = proto.module(
         "LoggingVariantConfig",
         "MonitoringComponentConfig",
         "ManagedPrometheusConfig",
+        "Fleet",
         "LocalNvmeSsdBlockConfig",
         "EphemeralStorageLocalSsdConfig",
     },
@@ -2353,6 +2354,8 @@ class Cluster(proto.Message):
             on the value of cluster fields, and may be sent
             on update requests to ensure the client has an
             up-to-date value before proceeding.
+        fleet (google.cloud.container_v1.types.Fleet):
+            Fleet information for the cluster.
     """
 
     class Status(proto.Enum):
@@ -2678,6 +2681,11 @@ class Cluster(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=139,
+    )
+    fleet: "Fleet" = proto.Field(
+        proto.MESSAGE,
+        number=140,
+        message="Fleet",
     )
 
 
@@ -7250,8 +7258,9 @@ class UsableSubnetworkSecondaryRange(proto.Message):
                 UNUSED denotes that this range is unclaimed
                 by any cluster.
             IN_USE_SERVICE (2):
-                IN_USE_SERVICE denotes that this range is claimed by a
-                cluster for services. It cannot be used for other clusters.
+                IN_USE_SERVICE denotes that this range is claimed by
+                cluster(s) for services. User-managed services range can be
+                shared between clusters within the same subnetwork.
             IN_USE_SHAREABLE_POD (3):
                 IN_USE_SHAREABLE_POD denotes this range was created by the
                 network admin and is currently claimed by a cluster for
@@ -7936,6 +7945,38 @@ class ManagedPrometheusConfig(proto.Message):
     enabled: bool = proto.Field(
         proto.BOOL,
         number=1,
+    )
+
+
+class Fleet(proto.Message):
+    r"""Fleet is the fleet configuration for the cluster.
+
+    Attributes:
+        project (str):
+            The Fleet host project(project ID or project
+            number) where this cluster will be registered
+            to. This field cannot be changed after the
+            cluster has been registered.
+        membership (str):
+            [Output only] The full resource name of the registered fleet
+            membership of the cluster, in the format
+            ``//gkehub.googleapis.com/projects/*/locations/*/memberships/*``.
+        pre_registered (bool):
+            [Output only] Whether the cluster has been registered
+            through the fleet API.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    membership: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    pre_registered: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 

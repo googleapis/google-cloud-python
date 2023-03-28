@@ -187,6 +187,7 @@ __protobuf__ = proto.module(
         "NodePoolLoggingConfig",
         "LoggingVariantConfig",
         "MonitoringComponentConfig",
+        "Fleet",
     },
 )
 
@@ -2648,6 +2649,8 @@ class Cluster(proto.Message):
             on the value of cluster fields, and may be sent
             on update requests to ensure the client has an
             up-to-date value before proceeding.
+        fleet (google.cloud.container_v1beta1.types.Fleet):
+            Fleet information for the cluster.
     """
 
     class Status(proto.Enum):
@@ -3016,6 +3019,11 @@ class Cluster(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=139,
+    )
+    fleet: "Fleet" = proto.Field(
+        proto.MESSAGE,
+        number=140,
+        message="Fleet",
     )
 
 
@@ -8772,6 +8780,38 @@ class MonitoringComponentConfig(proto.Message):
         proto.ENUM,
         number=1,
         enum=Component,
+    )
+
+
+class Fleet(proto.Message):
+    r"""Fleet is the fleet configuration for the cluster.
+
+    Attributes:
+        project (str):
+            The Fleet host project(project ID or project
+            number) where this cluster will be registered
+            to. This field cannot be changed after the
+            cluster has been registered.
+        membership (str):
+            [Output only] The full resource name of the registered fleet
+            membership of the cluster, in the format
+            ``//gkehub.googleapis.com/projects/*/locations/*/memberships/*``.
+        pre_registered (bool):
+            [Output only] Whether the cluster has been registered
+            through the fleet API.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    membership: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    pre_registered: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 
