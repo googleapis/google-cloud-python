@@ -19,8 +19,8 @@ from gapic import utils
 
 
 def test_convert_uri_fieldname():
-    uri = "abc/*/license/{license}/{xyz.reversed=reversed/*}"
-    expected_uri = "abc/*/license/{license_}/{xyz.reversed_=reversed/*}"
+    uri = "abc/*/license/{license}/{xyz.class=class/*}"
+    expected_uri = "abc/*/license/{license_}/{xyz.class_=class/*}"
     assert utils.convert_uri_fieldnames(uri) == expected_uri
 
 

@@ -12,22 +12,81 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import builtins
-import itertools
-import keyword
+# DO NOT CHANGE this file, except when you need to add a new reserved keyword
+# from Python's new major release.
+# In an unforseen case if you have to make changes, please follow the process:
+# 1. Run the internal script to check if any of the existing Google APIs use the
+#   item to be added/removed. For external contributors, ask a Googler to do that
+#   during code review.
+# 2. If no APIs are using it, it's safe to add. Otherwise, consult with your TL.
+#
+# Changing this list will lead to breaking changes. This is happening because
+# GAPIC will add "_" to field names from that list. This will change the generated
+# client library surface (i.e. breaking change). Example of when this happened:
+# https://github.com/googleapis/gapic-generator-python/issues/835.
 
-
-# The exceptions to builtins are frequent and useful.
-# They are explicitly allowed message, module, and field names.
+# Each item in the list belongs to one of the following categories:
+# 1. Python keyword
+# 2. Used in Google APIs at the time of writing this PR
+# 3. Reserved word from Protoplus.
 RESERVED_NAMES = frozenset(
-    itertools.chain(
-        # We CANNOT make exceptions for keywords.
-        keyword.kwlist,
-        # We make SOME exceptions for certain names that collide with builtins.
-        set(dir(builtins)) - {"filter", "map", "id",
-            "input", "property", "vars", "set"},
-        # "mapping" and "ignore_unknown_fields" have special uses
-        # in the constructor of proto.Message
-        {"mapping", "ignore_unknown_fields"},
-    )
+    [
+        "any",
+        "format",
+        "yield",
+        "await",
+        "False",
+        "return",
+        "continue",
+        "as",
+        "pass",
+        "next",
+        "class",
+        "list",
+        "breakpoint",
+        "import",
+        "mapping",
+        "zip",
+        "locals",
+        "max",
+        "and",
+        "finally",
+        "dir",
+        "def",
+        "elif",
+        "from",
+        "nonlocal",
+        "min",
+        "not",
+        "object",
+        "global",
+        "with",
+        "else",
+        "__peg_parser__",
+        "del",
+        "range",
+        "open",
+        "assert",
+        "all",
+        "except",
+        "while",
+        "license",
+        "raise",
+        "True",
+        "lambda",
+        "for",
+        "or",
+        "if",
+        "in",
+        "async",
+        "slice",
+        "is",
+        "break",
+        "hash",
+        "None",
+        "try",
+        "type",
+        # Comes from Protoplus
+        "ignore_unknown_fields"
+    ]
 )
