@@ -662,6 +662,29 @@ class TestCursor(unittest.TestCase):
             "Iterating again over the same results should produce no rows.",
         )
 
+    def test_query_job_wo_execute(self):
+        from google.cloud.bigquery import dbapi
+
+        connection = dbapi.connect(self._mock_client())
+        cursor = connection.cursor()
+        self.assertIsNone(cursor.query_job)
+
+    def test_query_job_w_execute(self):
+        from google.cloud.bigquery import dbapi, QueryJob
+
+        connection = dbapi.connect(self._mock_client())
+        cursor = connection.cursor()
+        cursor.execute("SELECT 1;")
+        self.assertIsInstance(cursor.query_job, QueryJob)
+
+    def test_query_job_w_executemany(self):
+        from google.cloud.bigquery import dbapi, QueryJob
+
+        connection = dbapi.connect(self._mock_client())
+        cursor = connection.cursor()
+        cursor.executemany("SELECT %s;", (("1",), ("2",)))
+        self.assertIsInstance(cursor.query_job, QueryJob)
+
     def test__format_operation_w_dict(self):
         from google.cloud.bigquery.dbapi import cursor
 

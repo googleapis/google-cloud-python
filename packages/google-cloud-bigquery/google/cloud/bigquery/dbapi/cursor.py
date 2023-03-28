@@ -79,6 +79,16 @@ class Cursor(object):
         self._query_job = None
         self._closed = False
 
+    @property
+    def query_job(self):
+        """google.cloud.bigquery.job.query.QueryJob: The query job created by
+        the last ``execute*()`` call.
+
+        .. note::
+            If the last ``execute*()`` call was ``executemany()``, this is the
+            last job created by ``executemany()``."""
+        return self._query_job
+
     def close(self):
         """Mark the cursor as closed, preventing its further use."""
         self._closed = True
