@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.11.1](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.11.0...v3.11.1) (2023-03-27)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#455](https://github.com/googleapis/python-bigquery-datatransfer/issues/455)) ([40a85d6](https://github.com/googleapis/python-bigquery-datatransfer/commit/40a85d6eb5e40ff77c054c76bbdfe8a5b821e1ef))
+* Removes deprecated sample ([#451](https://github.com/googleapis/python-bigquery-datatransfer/issues/451)) ([250acb4](https://github.com/googleapis/python-bigquery-datatransfer/commit/250acb4ec89a33c54174659d33fd7088f22f93db))
+* Replace deprecated snippet ([e2f04db](https://github.com/googleapis/python-bigquery-datatransfer/commit/e2f04db7553721610903500133553e67fe717642))
+
 ## [3.11.0](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.10.1...v3.11.0) (2023-02-28)
 
 
