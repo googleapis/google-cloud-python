@@ -497,6 +497,7 @@ def connect(
     credentials=None,
     pool=None,
     user_agent=None,
+    client=None,
 ):
     """Creates a connection to a Google Cloud Spanner database.
 
@@ -529,25 +530,31 @@ def connect(
     :param user_agent: (Optional) User agent to be used with this connection's
                        requests.
 
+    :type client: Concrete subclass of
+                  :class:`~google.cloud.spanner_v1.Client`.
+    :param client: (Optional) Custom user provided Client Object
+
     :rtype: :class:`google.cloud.spanner_dbapi.connection.Connection`
     :returns: Connection object associated with the given Google Cloud Spanner
               resource.
     """
-
-    client_info = ClientInfo(
-        user_agent=user_agent or DEFAULT_USER_AGENT,
-        python_version=PY_VERSION,
-        client_library_version=spanner.__version__,
-    )
-
-    if isinstance(credentials, str):
-        client = spanner.Client.from_service_account_json(
-            credentials, project=project, client_info=client_info
+    if client is None:
+        client_info = ClientInfo(
+            user_agent=user_agent or DEFAULT_USER_AGENT,
+            python_version=PY_VERSION,
+            client_library_version=spanner.__version__,
         )
+        if isinstance(credentials, str):
+            client = spanner.Client.from_service_account_json(
+                credentials, project=project, client_info=client_info
+            )
+        else:
+            client = spanner.Client(
+                project=project, credentials=credentials, client_info=client_info
+            )
     else:
-        client = spanner.Client(
-            project=project, credentials=credentials, client_info=client_info
-        )
+        if project is not None and client.project != project:
+            raise ValueError("project in url does not match client object project")
 
     instance = client.instance(instance_id)
     conn = Connection(instance, instance.database(database_id, pool=pool))

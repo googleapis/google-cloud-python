@@ -18,6 +18,7 @@ import datetime
 import mock
 import unittest
 import warnings
+import pytest
 
 PROJECT = "test-project"
 INSTANCE = "test-instance"
@@ -915,7 +916,52 @@ class TestConnection(unittest.TestCase):
             sql, params, param_types=param_types, request_options=None
         )
 
+    @mock.patch("google.cloud.spanner_v1.Client")
+    def test_custom_client_connection(self, mock_client):
+        from google.cloud.spanner_dbapi import connect
+
+        client = _Client()
+        connection = connect("test-instance", "test-database", client=client)
+        self.assertTrue(connection.instance._client == client)
+
+    @mock.patch("google.cloud.spanner_v1.Client")
+    def test_invalid_custom_client_connection(self, mock_client):
+        from google.cloud.spanner_dbapi import connect
+
+        client = _Client()
+        with pytest.raises(ValueError):
+            connect(
+                "test-instance",
+                "test-database",
+                project="invalid_project",
+                client=client,
+            )
+
 
 def exit_ctx_func(self, exc_type, exc_value, traceback):
     """Context __exit__ method mock."""
     pass
+
+
+class _Client(object):
+    def __init__(self, project="project_id"):
+        self.project = project
+        self.project_name = "projects/" + self.project
+
+    def instance(self, instance_id="instance_id"):
+        return _Instance(name=instance_id, client=self)
+
+
+class _Instance(object):
+    def __init__(self, name="instance_id", client=None):
+        self.name = name
+        self._client = client
+
+    def database(self, database_id="database_id", pool=None):
+        return _Database(database_id, pool)
+
+
+class _Database(object):
+    def __init__(self, database_id="database_id", pool=None):
+        self.name = database_id
+        self.pool = pool
