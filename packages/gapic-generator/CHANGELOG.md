@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.10.0](https://github.com/googleapis/gapic-generator-python/compare/v1.9.1...v1.10.0) (2023-03-28)
+
+
+### Features
+
+* Freezes reserved names list. ([#1575](https://github.com/googleapis/gapic-generator-python/issues/1575)) ([b1b56ab](https://github.com/googleapis/gapic-generator-python/commit/b1b56ab22442d6d00ad2381ea14ce46aeda96e6e))
+
 ## [1.9.1](https://github.com/googleapis/gapic-generator-python/compare/v1.9.0...v1.9.1) (2023-03-22)
 
 
