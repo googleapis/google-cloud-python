@@ -29,7 +29,8 @@ export GOOGLE_APPLICATION_CREDENTIALS=$KOKORO_KEYSTORE_DIR/73713_docuploader_ser
 gcloud auth activate-service-account --key-file ${GOOGLE_APPLICATION_CREDENTIALS}
 
 # Install dependencies.
-python3 -m pip install --require-hashes -r .kokoro/requirements.txt
+# Disable dependency resolver as all dependencies should have been laid out.
+python3 -m pip install --no-deps --require-hashes -r .kokoro/requirements.txt
 python3 -m pip install -e .
 
 # Store the contents of bucket log in a variable to reuse.
