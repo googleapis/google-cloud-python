@@ -931,32 +931,6 @@ def test_list_columns_and_indexes_with_multiindex(module_under_test):
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
-def test_dataframe_to_bq_schema_dict_sequence(module_under_test):
-    df_data = collections.OrderedDict(
-        [
-            ("str_column", ["hello", "world"]),
-            ("int_column", [42, 8]),
-            ("bool_column", [True, False]),
-        ]
-    )
-    dataframe = pandas.DataFrame(df_data)
-
-    dict_schema = [
-        {"name": "str_column", "type": "STRING", "mode": "NULLABLE"},
-        {"name": "bool_column", "type": "BOOL", "mode": "REQUIRED"},
-    ]
-
-    returned_schema = module_under_test.dataframe_to_bq_schema(dataframe, dict_schema)
-
-    expected_schema = (
-        schema.SchemaField("str_column", "STRING", "NULLABLE"),
-        schema.SchemaField("int_column", "INTEGER", "NULLABLE"),
-        schema.SchemaField("bool_column", "BOOL", "REQUIRED"),
-    )
-    assert returned_schema == expected_schema
-
-
-@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_dataframe_to_arrow_with_multiindex(module_under_test):
     bq_schema = (
         schema.SchemaField("str_index", "STRING"),
@@ -1188,6 +1162,86 @@ def test_dataframe_to_parquet_compression_method(module_under_test):
     call_args = fake_write_table.call_args
     assert call_args is not None
     assert call_args.kwargs.get("compression") == "ZSTD"
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_dataframe_to_bq_schema_w_named_index(module_under_test):
+    df_data = collections.OrderedDict(
+        [
+            ("str_column", ["hello", "world"]),
+            ("int_column", [42, 8]),
+            ("bool_column", [True, False]),
+        ]
+    )
+    index = pandas.Index(["a", "b"], name="str_index")
+    dataframe = pandas.DataFrame(df_data, index=index)
+
+    returned_schema = module_under_test.dataframe_to_bq_schema(dataframe, [])
+
+    expected_schema = (
+        schema.SchemaField("str_index", "STRING", "NULLABLE"),
+        schema.SchemaField("str_column", "STRING", "NULLABLE"),
+        schema.SchemaField("int_column", "INTEGER", "NULLABLE"),
+        schema.SchemaField("bool_column", "BOOLEAN", "NULLABLE"),
+    )
+    assert returned_schema == expected_schema
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_dataframe_to_bq_schema_w_multiindex(module_under_test):
+    df_data = collections.OrderedDict(
+        [
+            ("str_column", ["hello", "world"]),
+            ("int_column", [42, 8]),
+            ("bool_column", [True, False]),
+        ]
+    )
+    index = pandas.MultiIndex.from_tuples(
+        [
+            ("a", 0, datetime.datetime(1999, 12, 31, 23, 59, 59, 999999)),
+            ("a", 0, datetime.datetime(2000, 1, 1, 0, 0, 0)),
+        ],
+        names=["str_index", "int_index", "dt_index"],
+    )
+    dataframe = pandas.DataFrame(df_data, index=index)
+
+    returned_schema = module_under_test.dataframe_to_bq_schema(dataframe, [])
+
+    expected_schema = (
+        schema.SchemaField("str_index", "STRING", "NULLABLE"),
+        schema.SchemaField("int_index", "INTEGER", "NULLABLE"),
+        schema.SchemaField("dt_index", "DATETIME", "NULLABLE"),
+        schema.SchemaField("str_column", "STRING", "NULLABLE"),
+        schema.SchemaField("int_column", "INTEGER", "NULLABLE"),
+        schema.SchemaField("bool_column", "BOOLEAN", "NULLABLE"),
+    )
+    assert returned_schema == expected_schema
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_dataframe_to_bq_schema_w_bq_schema(module_under_test):
+    df_data = collections.OrderedDict(
+        [
+            ("str_column", ["hello", "world"]),
+            ("int_column", [42, 8]),
+            ("bool_column", [True, False]),
+        ]
+    )
+    dataframe = pandas.DataFrame(df_data)
+
+    dict_schema = [
+        {"name": "str_column", "type": "STRING", "mode": "NULLABLE"},
+        {"name": "bool_column", "type": "BOOL", "mode": "REQUIRED"},
+    ]
+
+    returned_schema = module_under_test.dataframe_to_bq_schema(dataframe, dict_schema)
+
+    expected_schema = (
+        schema.SchemaField("str_column", "STRING", "NULLABLE"),
+        schema.SchemaField("int_column", "INTEGER", "NULLABLE"),
+        schema.SchemaField("bool_column", "BOOL", "REQUIRED"),
+    )
+    assert returned_schema == expected_schema
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")

@@ -481,7 +481,7 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
         # pandas dtype.
         bq_type = _PANDAS_DTYPE_TO_BQ.get(dtype.name)
         if bq_type is None:
-            sample_data = _first_valid(dataframe[column])
+            sample_data = _first_valid(dataframe.reset_index()[column])
             if (
                 isinstance(sample_data, _BaseGeometry)
                 and sample_data is not None  # Paranoia
@@ -544,7 +544,7 @@ def augment_schema(dataframe, current_bq_schema):
             augmented_schema.append(field)
             continue
 
-        arrow_table = pyarrow.array(dataframe[field.name])
+        arrow_table = pyarrow.array(dataframe.reset_index()[field.name])
 
         if pyarrow.types.is_list(arrow_table.type):
             # `pyarrow.ListType`
