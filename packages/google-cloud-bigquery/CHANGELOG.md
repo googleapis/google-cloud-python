@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.9.0](https://github.com/googleapis/python-bigquery/compare/v3.8.0...v3.9.0) (2023-03-28)
+
+
+### Features
+
+* Expose query job on dbapi cursor ([#1520](https://github.com/googleapis/python-bigquery/issues/1520)) ([339eb0e](https://github.com/googleapis/python-bigquery/commit/339eb0e86040a7c30d140800f34810ffc6a7c76b))
+
+
+### Bug Fixes
+
+* Keyerror when the load_table_from_dataframe accesses a unmapped dtype dataframe index ([#1535](https://github.com/googleapis/python-bigquery/issues/1535)) ([a69348a](https://github.com/googleapis/python-bigquery/commit/a69348a558f48cfc61d03d3e8bb7f9aee48bea86))
+
 ## [3.8.0](https://github.com/googleapis/python-bigquery/compare/v3.7.0...v3.8.0) (2023-03-24)
 
 
