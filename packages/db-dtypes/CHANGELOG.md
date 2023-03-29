@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.0.5...v1.1.0) (2023-03-29)
+
+
+### Features
+
+* Support pandas 2.0 release candidate ([#179](https://github.com/googleapis/python-db-dtypes-pandas/issues/179)) ([daa6852](https://github.com/googleapis/python-db-dtypes-pandas/commit/daa685234d283bc2f3c87a6127fd734d8a037ad6))
+
+
+### Bug Fixes
+
+* Adds bounds checking because pandas now handles microsecond reso… ([#166](https://github.com/googleapis/python-db-dtypes-pandas/issues/166)) ([357a315](https://github.com/googleapis/python-db-dtypes-pandas/commit/357a3156a3eb37eede2edb7fc84e93fe32967f11))
+
 ## [1.0.5](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.0.4...v1.0.5) (2022-12-05)
 
 
