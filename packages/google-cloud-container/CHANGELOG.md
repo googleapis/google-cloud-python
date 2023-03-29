@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.18.0](https://github.com/googleapis/python-container/compare/v2.17.4...v2.18.0) (2023-03-28)
+
+
+### Features
+
+* Add a new fleet registration feature to v1beta1, v1 ([#360](https://github.com/googleapis/python-container/issues/360)) ([0bfdffe](https://github.com/googleapis/python-container/commit/0bfdffe31e660c3914081181c611efd5582a05d3))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#359](https://github.com/googleapis/python-container/issues/359)) ([d10ac7e](https://github.com/googleapis/python-container/commit/d10ac7e8db4d79011f1b5fa1bb508a8829a683ac))
+* Minor typo fix ([#356](https://github.com/googleapis/python-container/issues/356)) ([f41b699](https://github.com/googleapis/python-container/commit/f41b699907991248b0d14bd9d5ae3ab4a8e1aff7))
+
 ## [2.17.4](https://github.com/googleapis/python-container/compare/v2.17.3...v2.17.4) (2023-02-28)
 
 
