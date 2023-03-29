@@ -1226,6 +1226,7 @@ def test_get_notification(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = service.Notification(
             name="name_value",
+            notification_type=service.NotificationType.NOTIFICATION_TYPE_SECURITY_PRIVACY_ADVISORY,
         )
         response = client.get_notification(request)
 
@@ -1237,6 +1238,10 @@ def test_get_notification(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Notification)
     assert response.name == "name_value"
+    assert (
+        response.notification_type
+        == service.NotificationType.NOTIFICATION_TYPE_SECURITY_PRIVACY_ADVISORY
+    )
 
 
 def test_get_notification_empty_call():
@@ -1274,6 +1279,7 @@ async def test_get_notification_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.Notification(
                 name="name_value",
+                notification_type=service.NotificationType.NOTIFICATION_TYPE_SECURITY_PRIVACY_ADVISORY,
             )
         )
         response = await client.get_notification(request)
@@ -1286,6 +1292,10 @@ async def test_get_notification_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Notification)
     assert response.name == "name_value"
+    assert (
+        response.notification_type
+        == service.NotificationType.NOTIFICATION_TYPE_SECURITY_PRIVACY_ADVISORY
+    )
 
 
 @pytest.mark.asyncio
@@ -1805,6 +1815,7 @@ def test_get_notification_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = service.Notification(
             name="name_value",
+            notification_type=service.NotificationType.NOTIFICATION_TYPE_SECURITY_PRIVACY_ADVISORY,
         )
 
         # Wrap the value into a proper Response obj
@@ -1820,6 +1831,10 @@ def test_get_notification_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Notification)
     assert response.name == "name_value"
+    assert (
+        response.notification_type
+        == service.NotificationType.NOTIFICATION_TYPE_SECURITY_PRIVACY_ADVISORY
+    )
 
 
 def test_get_notification_rest_required_fields(

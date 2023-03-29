@@ -33,6 +33,7 @@ from google.cloud.advisorynotifications_v1.types.service import (
     LocalizationState,
     Message,
     Notification,
+    NotificationType,
     NotificationView,
     Subject,
     Text,
@@ -51,5 +52,6 @@ __all__ = (
     "Subject",
     "Text",
     "LocalizationState",
+    "NotificationType",
     "NotificationView",
 )
