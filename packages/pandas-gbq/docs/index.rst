@@ -13,6 +13,10 @@ with a shape and data types derived from the source table. Additionally,
 DataFrames can be inserted into new BigQuery tables or appended to existing
 tables.
 
+Note:  The canonical version of this documentation can always be found on the
+`googleapis.dev pandas-gbq site
+<https://googleapis.dev/python/pandas-gbq/latest/index.html>`__.
+
 .. note::
 
    To use this module, you will need a valid BigQuery account. Use the
