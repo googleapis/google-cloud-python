@@ -18,7 +18,6 @@
 """
 
 import base64
-import cgi
 import copy
 import hashlib
 from io import BytesIO
@@ -27,6 +26,7 @@ import logging
 import mimetypes
 import os
 import re
+from email.parser import HeaderParser
 from urllib.parse import parse_qsl
 from urllib.parse import quote
 from urllib.parse import urlencode
@@ -1628,7 +1628,8 @@ class Blob(_PropertyMixin):
             return data.decode(encoding)
 
         if self.content_type is not None:
-            _, params = cgi.parse_header(self.content_type)
+            msg = HeaderParser().parsestr("Content-Type: " + self.content_type)
+            params = dict(msg.get_params()[1:])
             if "charset" in params:
                 return data.decode(params["charset"])
 
