@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.1.0...v1.1.1) (2023-03-30)
+
+
+### Bug Fixes
+
+* Out-of-bounds datetime.date raises OutOfBoundsDatetime ([#180](https://github.com/googleapis/python-db-dtypes-pandas/issues/180)) ([4f3399e](https://github.com/googleapis/python-db-dtypes-pandas/commit/4f3399e3103c8ad8063b047c7718bcb5621038ca))
+
 ## [1.1.0](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.0.5...v1.1.0) (2023-03-29)
 
 
