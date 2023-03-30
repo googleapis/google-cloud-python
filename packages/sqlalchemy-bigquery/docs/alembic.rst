@@ -15,7 +15,7 @@ Supported operations:
 `add_column(table_name, column, schema=None)
 <https://alembic.sqlalchemy.org/en/latest/ops.html#alembic.operations.Operations.add_column>`_
 
-`alter_column(table_name, column_name, nullable=None, schema=None)
+`alter_column(table_name, column_name, nullable=None, schema=None, type_=None)
 <https://alembic.sqlalchemy.org/en/latest/ops.html#alembic.operations.Operations.alter_column>`_
 
 `bulk_insert(table, rows, multiinsert=True)

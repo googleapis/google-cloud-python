@@ -20,7 +20,7 @@
 import contextlib
 
 import pytest
-from sqlalchemy import Column, DateTime, Integer, String
+from sqlalchemy import Column, DateTime, Integer, String, Numeric
 
 import google.api_core.exceptions
 from google.cloud.bigquery import SchemaField
@@ -149,7 +149,7 @@ def test_alembic_scenario(alembic_table):
         """
     )
 
-    # The only thing we can alter about a column is we can make it
+    # One thing we can alter about a column is we can make it
     # nullable:
     op.alter_column("transactions", "amount", True)
     assert alembic_table("transactions", "schema") == [
@@ -162,3 +162,12 @@ def test_alembic_scenario(alembic_table):
     assert alembic_table("transactions").description == "Transaction log"
 
     op.drop_table("transactions")
+
+    # Another thing we can do is alter the datatype of a nullable column,
+    # if allowed by BigQuery's type coercion rules
+    op.create_table("identifiers", Column("id", Integer))
+
+    op.alter_column("identifiers", "id", type_=Numeric)
+    assert alembic_table("identifiers", "schema") == [SchemaField("id", "NUMERIC")]
+
+    op.drop_table("identifiers")

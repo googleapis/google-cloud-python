@@ -40,6 +40,7 @@ import sqlalchemy.sql.sqltypes
 import sqlalchemy.sql.type_api
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy import util
+from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.sql.compiler import (
     SQLCompiler,
     GenericTypeCompiler,
@@ -786,6 +787,7 @@ class BigQueryDialect(DefaultDialect):
         self.credentials_info = credentials_info
         self.credentials_base64 = credentials_base64
         self.location = location
+        self.identifier_preparer = self.preparer(self)
         self.dataset_id = None
         self.list_tables_page_size = list_tables_page_size
 
@@ -1071,6 +1073,19 @@ except ImportError:  # pragma: NO COVER
     pass
 else:
     from alembic.ddl import impl
+    from alembic.ddl.base import ColumnType, format_type, alter_table, alter_column
 
     class SqlalchemyBigqueryImpl(impl.DefaultImpl):
         __dialect__ = "bigquery"
+
+    @compiles(ColumnType, "bigquery")
+    def visit_column_type(element: ColumnType, compiler: DDLCompiler, **kw) -> str:
+        """Replaces the visit_column_type() function in alembic/alembic/ddl/base.py.
+        The alembic version ends in TYPE <element type>, but bigquery requires this syntax:
+        SET DATA TYPE <element type>"""
+
+        return "%s %s %s" % (  # pragma: NO COVER
+            alter_table(compiler, element.table_name, element.schema),
+            alter_column(compiler, element.column_name),
+            "SET DATA TYPE %s" % format_type(compiler, element.type_),
+        )
