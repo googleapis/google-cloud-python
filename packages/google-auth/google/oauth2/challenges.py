@@ -169,7 +169,8 @@ class SecurityKeyChallenge(ReauthChallenge):
                     )
                 else:
                     raise e
-            except pyu2f.errors.PluginError:
+            except pyu2f.errors.PluginError as e:
+                sys.stderr.write("Plugin error: {}.\n".format(e))
                 continue
             except pyu2f.errors.NoDeviceFoundError:
                 sys.stderr.write("No security key found.\n")

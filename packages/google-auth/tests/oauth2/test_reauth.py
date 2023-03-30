@@ -204,6 +204,20 @@ def test__obtain_rapt_unsupported_status():
         assert excinfo.match(r"API error: STATUS_UNSPECIFIED")
 
 
+def test__obtain_rapt_no_challenge_output():
+    challenges_response = copy.deepcopy(CHALLENGES_RESPONSE_TEMPLATE)
+    with mock.patch(
+        "google.oauth2.reauth._get_challenges", return_value=challenges_response
+    ):
+        with mock.patch("google.oauth2.reauth.is_interactive", return_value=True):
+            with mock.patch(
+                "google.oauth2.reauth._run_next_challenge", return_value=None
+            ):
+                with pytest.raises(exceptions.ReauthFailError) as excinfo:
+                    reauth._obtain_rapt(MOCK_REQUEST, "token", None)
+        assert excinfo.match(r"Failed to obtain rapt token")
+
+
 def test__obtain_rapt_not_interactive():
     with mock.patch(
         "google.oauth2.reauth._get_challenges",

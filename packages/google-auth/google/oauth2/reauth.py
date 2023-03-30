@@ -225,6 +225,8 @@ def _obtain_rapt(request, access_token, requested_scopes):
 
         msg = _run_next_challenge(msg, request, access_token)
 
+        if not msg:
+            raise exceptions.ReauthFailError("Failed to obtain rapt token.")
         if msg["status"] == _AUTHENTICATED:
             return msg["encodedProofOfReauthToken"]
 
