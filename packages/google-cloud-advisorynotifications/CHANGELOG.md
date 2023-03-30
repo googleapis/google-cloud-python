@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.1.1...google-cloud-advisorynotifications-v0.2.0) (2023-03-30)
+
+
+### Features
+
+* Add NotificationType field for advisorynotifications.googleapis.com ([#10877](https://github.com/googleapis/google-cloud-python/issues/10877)) ([96b9091](https://github.com/googleapis/google-cloud-python/commit/96b9091776a7355c9fc52f6d3c85475ecbaec38f))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.1.0...google-cloud-advisorynotifications-v0.1.1) (2023-03-25)
 
 
