@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
     manifest={
         "NotificationView",
         "LocalizationState",
+        "NotificationType",
         "Notification",
         "Text",
         "Subject",
@@ -86,6 +87,22 @@ class LocalizationState(proto.Enum):
     LOCALIZATION_STATE_COMPLETED = 3
 
 
+class NotificationType(proto.Enum):
+    r"""Type of notification
+
+    Values:
+        NOTIFICATION_TYPE_UNSPECIFIED (0):
+            Default type
+        NOTIFICATION_TYPE_SECURITY_PRIVACY_ADVISORY (1):
+            Security and privacy advisory notifications
+        NOTIFICATION_TYPE_SENSITIVE_ACTIONS (2):
+            Sensitive action notifications
+    """
+    NOTIFICATION_TYPE_UNSPECIFIED = 0
+    NOTIFICATION_TYPE_SECURITY_PRIVACY_ADVISORY = 1
+    NOTIFICATION_TYPE_SENSITIVE_ACTIONS = 2
+
+
 class Notification(proto.Message):
     r"""A notification object for notifying customers about security
     and privacy issues.
@@ -102,6 +119,8 @@ class Notification(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time the notification was
             created.
+        notification_type (google.cloud.advisorynotifications_v1.types.NotificationType):
+            Type of notification
     """
 
     name: str = proto.Field(
@@ -122,6 +141,11 @@ class Notification(proto.Message):
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
+    )
+    notification_type: "NotificationType" = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum="NotificationType",
     )
 
 
