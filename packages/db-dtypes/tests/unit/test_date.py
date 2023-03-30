@@ -159,6 +159,8 @@ def test_date_parsing_errors(value, error):
         ("9999-12-31", "Out of bounds"),
         ("1677-09-21", "Out of bounds"),
         ("2262-04-12", "Out of bounds"),
+        (datetime.date(1, 1, 1), "Out of bounds"),
+        (datetime.date(9999, 12, 31), "Out of bounds"),
     ],
 )
 def test_date_parsing_errors_out_of_bounds(value, error):

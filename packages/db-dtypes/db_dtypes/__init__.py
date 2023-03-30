@@ -246,19 +246,18 @@ class DateArray(core.BaseDatetimeArray):
         scalar,
         match_fn=re.compile(r"\s*(?P<year>\d+)-(?P<month>\d+)-(?P<day>\d+)\s*$").match,
     ) -> Optional[numpy.datetime64]:
-        if isinstance(scalar, numpy.datetime64):
-            return scalar
-
         # Convert pyarrow values to datetime.date.
         if isinstance(scalar, (pyarrow.Date32Scalar, pyarrow.Date64Scalar)):
             scalar = scalar.as_py()
 
         if pandas.isna(scalar):
             return numpy.datetime64("NaT")
+        elif isinstance(scalar, numpy.datetime64):
+            dateObj = pandas.Timestamp(scalar)
         elif isinstance(scalar, datetime.date):
-            return pandas.Timestamp(
+            dateObj = pandas.Timestamp(
                 year=scalar.year, month=scalar.month, day=scalar.day
-            ).to_datetime64()
+            )
         elif isinstance(scalar, str):
             match = match_fn(scalar)
             if not match:
@@ -272,13 +271,15 @@ class DateArray(core.BaseDatetimeArray):
                 month=month,
                 day=day,
             )
-            if pandas.Timestamp.min < dateObj < pandas.Timestamp.max:
-                return dateObj.to_datetime64()
-            else:  # pragma: NO COVER
-                # TODO(#166): Include these lines in coverage when pandas 2.0 is released.
-                raise OutOfBoundsDatetime("Out of bounds", scalar)  # pragma: NO COVER
         else:
             raise TypeError("Invalid value type", scalar)
+
+        # TODO(#64): Support larger ranges with other units.
+        if pandas.Timestamp.min < dateObj < pandas.Timestamp.max:
+            return dateObj.to_datetime64()
+        else:  # pragma: NO COVER
+            # TODO(#166): Include these lines in coverage when pandas 2.0 is released.
+            raise OutOfBoundsDatetime("Out of bounds", scalar)  # pragma: NO COVER
 
     def _box_func(self, x):
         if pandas.isna(x):
