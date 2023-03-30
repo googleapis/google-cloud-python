@@ -643,6 +643,7 @@ def _table_read_row_helper(chunks, expected_result, app_profile_id=None):
     from google.cloud.bigtable import table as MUT
     from google.cloud.bigtable.row_set import RowSet
     from google.cloud.bigtable.row_filters import RowSampleFilter
+    from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS
 
     credentials = _make_credentials()
     client = _make_client(project="project-id", credentials=credentials, admin=True)
@@ -691,7 +692,9 @@ def _table_read_row_helper(chunks, expected_result, app_profile_id=None):
     assert result == expected_result
     assert mock_created == expected_request
 
-    data_api.read_rows.assert_called_once_with(request_pb, timeout=61.0)
+    data_api.read_rows.assert_called_once_with(
+        request_pb, timeout=61.0, retry=DEFAULT_RETRY_READ_ROWS
+    )
 
 
 def test_table_read_row_miss_no__responses():
@@ -906,7 +909,7 @@ def test_table_read_rows():
     }
     assert mock_created == [(table.name, created_kwargs)]
 
-    data_api.read_rows.assert_called_once_with(request_pb, timeout=61.0)
+    data_api.read_rows.assert_called_once_with(request_pb, timeout=61.0, retry=retry)
 
 
 def test_table_read_retry_rows():
@@ -1082,6 +1085,7 @@ def test_table_yield_rows_with_row_set():
     from google.cloud.bigtable.row_set import RowSet
     from google.cloud.bigtable.row_set import RowRange
     from google.cloud.bigtable.table import _create_row_request
+    from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS
 
     credentials = _make_credentials()
     client = _make_client(project="project-id", credentials=credentials, admin=True)
@@ -1149,7 +1153,9 @@ def test_table_yield_rows_with_row_set():
         end_key=ROW_KEY_2,
     )
     expected_request.rows.row_keys.append(ROW_KEY_3)
-    data_api.read_rows.assert_called_once_with(expected_request, timeout=61.0)
+    data_api.read_rows.assert_called_once_with(
+        expected_request, timeout=61.0, retry=DEFAULT_RETRY_READ_ROWS
+    )
 
 
 def test_table_sample_row_keys():

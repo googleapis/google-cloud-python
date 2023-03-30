@@ -157,7 +157,9 @@ class PartialRowsData(object):
         # Otherwise there is a risk of entering an infinite loop that resets
         # the timeout counter just before it being triggered. The increment
         # by 1 second here is customary but should not be much less than that.
-        self.response_iterator = read_method(request, timeout=self.retry._deadline + 1)
+        self.response_iterator = read_method(
+            request, timeout=self.retry._deadline + 1, retry=self.retry
+        )
 
         self.rows = {}
 

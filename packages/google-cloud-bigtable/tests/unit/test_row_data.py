@@ -446,7 +446,9 @@ def test_partial_rows_data_constructor_with_retry():
         client._data_stub.ReadRows, request, retry
     )
     partial_rows_data.read_method.assert_called_once_with(
-        request, timeout=DEFAULT_RETRY_READ_ROWS.deadline + 1
+        request,
+        timeout=DEFAULT_RETRY_READ_ROWS.deadline + 1,
+        retry=DEFAULT_RETRY_READ_ROWS,
     )
     assert partial_rows_data.request is request
     assert partial_rows_data.rows == {}
