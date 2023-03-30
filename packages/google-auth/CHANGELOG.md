@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.17.1](https://github.com/googleapis/google-auth-library-python/compare/v2.17.0...v2.17.1) (2023-03-30)
+
+
+### Bug Fixes
+
+* Print out reauth plugin error and raise if challenge output is None ([#1265](https://github.com/googleapis/google-auth-library-python/issues/1265)) ([08d22fe](https://github.com/googleapis/google-auth-library-python/commit/08d22fe805e0401c3a902ce96f9c3797e7f166b1))
+
 ## [2.17.0](https://github.com/googleapis/google-auth-library-python/compare/v2.16.3...v2.17.0) (2023-03-28)
 
 
