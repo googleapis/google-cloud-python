@@ -51,7 +51,7 @@
 
             {% set body_spec = api.mixin_http_options["{}".format(name)][0].body %}
             {%- if body_spec %}
-            body = json.loads(json.dumps(transcoded_request['body']))
+            body = json.dumps(transcoded_request['body'])
             {%- endif %}
 
             uri = transcoded_request['uri']
