@@ -512,7 +512,7 @@ class RelatedAsset(proto.Message):
 
 class ResourceSearchResult(proto.Message):
     r"""A result of Resource Search, containing information of a
-    cloud resource. Next ID: 31
+    cloud resource. Next ID: 32
 
     Attributes:
         name (str):

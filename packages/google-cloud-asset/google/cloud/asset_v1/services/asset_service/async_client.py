@@ -621,8 +621,8 @@ class AssetServiceAsyncClient:
                 be an organization number (such as
                 "organizations/123"), a folder number
                 (such as "folders/123"), a project ID
-                (such as "projects/my-project-id")", or
-                a project number (such as
+                (such as "projects/my-project-id"), or a
+                project number (such as
                 "projects/12345").
 
                 This corresponds to the ``parent`` field
@@ -2016,7 +2016,7 @@ class AssetServiceAsyncClient:
                 where this saved_query should be created in. It can only
                 be an organization number (such as "organizations/123"),
                 a folder number (such as "folders/123"), a project ID
-                (such as "projects/my-project-id")", or a project number
+                (such as "projects/my-project-id"), or a project number
                 (such as "projects/12345").
 
                 This corresponds to the ``parent`` field
@@ -2779,7 +2779,17 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.analyze_org_policies,
-            default_timeout=None,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -2930,7 +2940,17 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.analyze_org_policy_governed_containers,
-            default_timeout=None,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -3110,7 +3130,17 @@ class AssetServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.analyze_org_policy_governed_assets,
-            default_timeout=None,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 

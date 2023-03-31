@@ -521,7 +521,7 @@ class CreateFeedRequest(proto.Message):
             organization number (such as
             "organizations/123"), a folder number (such as
             "folders/123"), a project ID (such as
-            "projects/my-project-id")", or a project number
+            "projects/my-project-id"), or a project number
             (such as "projects/12345").
         feed_id (str):
             Required. This is the client-assigned asset
@@ -2202,7 +2202,7 @@ class CreateSavedQueryRequest(proto.Message):
             this saved_query should be created in. It can only be an
             organization number (such as "organizations/123"), a folder
             number (such as "folders/123"), a project ID (such as
-            "projects/my-project-id")", or a project number (such as
+            "projects/my-project-id"), or a project number (such as
             "projects/12345").
         saved_query (google.cloud.asset_v1.types.SavedQuery):
             Required. The saved_query details. The ``name`` field must
@@ -2280,9 +2280,8 @@ class ListSavedQueriesRequest(proto.Message):
             Optional. The maximum number of saved queries
             to return per page. The service may return fewer
             than this value. If unspecified, at most 50 will
-            be returned.
-            The maximum value is 1000; values above 1000
-            will be coerced to 1000.
+            be returned. The maximum value is 1000; values
+            above 1000 will be coerced to 1000.
         page_token (str):
             Optional. A page token, received from a previous
             ``ListSavedQueries`` call. Provide this to retrieve the
@@ -3855,19 +3854,19 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
                 of the parent of
                 [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource.full_resource_name][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource.full_resource_name].
             project (str):
-                The project that this resource belongs to, in the form of
+                The project that this resource belongs to, in the format of
                 projects/{PROJECT_NUMBER}. This field is available when the
                 resource belongs to a project.
             folders (MutableSequence[str]):
-                The folder(s) that this resource belongs to, in the form of
-                folders/{FOLDER_NUMBER}. This field is available when the
-                resource belongs(directly or cascadingly) to one or more
+                The folder(s) that this resource belongs to, in the format
+                of folders/{FOLDER_NUMBER}. This field is available when the
+                resource belongs (directly or cascadingly) to one or more
                 folders.
             organization (str):
-                The organization that this resource belongs to, in the form
-                of organizations/{ORGANIZATION_NUMBER}. This field is
-                available when the resource belongs(directly or cascadingly)
-                to an organization.
+                The organization that this resource belongs to, in the
+                format of organizations/{ORGANIZATION_NUMBER}. This field is
+                available when the resource belongs (directly or
+                cascadingly) to an organization.
         """
 
         full_resource_name: str = proto.Field(
@@ -3907,18 +3906,18 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
                 The IAM policy directly set on the given
                 resource.
             project (str):
-                The project that this IAM policy belongs to, in the form of
-                projects/{PROJECT_NUMBER}. This field is available when the
-                IAM policy belongs to a project.
+                The project that this IAM policy belongs to, in the format
+                of projects/{PROJECT_NUMBER}. This field is available when
+                the IAM policy belongs to a project.
             folders (MutableSequence[str]):
-                The folder(s) that this IAM policy belongs to, in the form
+                The folder(s) that this IAM policy belongs to, in the format
                 of folders/{FOLDER_NUMBER}. This field is available when the
-                IAM policy belongs(directly or cascadingly) to one or more
+                IAM policy belongs (directly or cascadingly) to one or more
                 folders.
             organization (str):
                 The organization that this IAM policy belongs to, in the
-                form of organizations/{ORGANIZATION_NUMBER}. This field is
-                available when the IAM policy belongs(directly or
+                format of organizations/{ORGANIZATION_NUMBER}. This field is
+                available when the IAM policy belongs (directly or
                 cascadingly) to an organization.
         """
 
