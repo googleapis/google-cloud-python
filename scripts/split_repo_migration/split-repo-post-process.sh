@@ -219,8 +219,8 @@ Consider generating the image "${IMAGE}" by running the following:
   docker pull "${IMAGE}"
   docker run --rm \\
     --user $(id -u):$(id -g) \\
-    -v $(pwd):/workspace/google-cloud-node \\
-    -w /workspace/google-cloud-node \\
+    -v $(pwd):/workspace/google-cloud-python \\
+    -w /workspace/google-cloud-python \\
     -e "DEFAULT_BRANCH=main" \\
     "${IMAGE}"
 EOF
