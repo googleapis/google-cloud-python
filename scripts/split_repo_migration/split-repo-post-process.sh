@@ -39,7 +39,7 @@
 # `-e` enables the script to automatically fail when a command fails
 set -e
 
-NOP="echo -e ''"
+NOP="echo -n"
 DEBUG="yes"  # set to blank for a real run
 
 [[ -n ${DEBUG} ]] && {
