@@ -29,8 +29,8 @@ __protobuf__ = proto.module(
 
 class AuthorizedDomain(proto.Message):
     r"""A domain that a user has been authorized to administer. To authorize
-    use of a domain, verify ownership via `Webmaster
-    Central <https://www.google.com/webmasters/verification/home>`__.
+    use of a domain, verify ownership via `Search
+    Console <https://search.google.com/search-console/welcome>`__.
 
     Attributes:
         name (str):
