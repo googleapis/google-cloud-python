@@ -23,7 +23,7 @@ from flaky import flaky
 from google.api_core.exceptions import InternalServerError, NotFound
 from google.cloud import pubsub_v1
 from google.cloud.pubsub import PublisherClient, SchemaServiceClient, SubscriberClient
-from google.pubsub_v1.types import Encoding
+from google.pubsub_v1.types import Encoding, Schema, Topic
 import pytest
 
 import schema
@@ -35,18 +35,26 @@ try:
 except KeyError:
     raise KeyError("Need to set GOOGLE_CLOUD_PROJECT as an environment variable.")
 AVRO_TOPIC_ID = f"schema-test-avro-topic-{UUID}"
+AVRO_TOPIC_ID_TO_CREATE = f"schema-test-avro-topic-to-create-{UUID}"
 PROTO_TOPIC_ID = f"schema-test-proto-topic-{UUID}"
 PROTO_WITH_REVISIONS_TOPIC_ID = f"schema-test-proto-with-revisions-topic-{UUID}"
+PROTO_WITH_REVISIONS_TOPIC_ID_TO_CREATE = (
+    f"schema-test-proto-with-revisions-topic-to-create-{UUID}"
+)
 AVRO_SUBSCRIPTION_ID = f"schema-test-avro-subscription-{UUID}"
 PROTO_SUBSCRIPTION_ID = f"schema-test-proto-subscription-{UUID}"
 AVRO_SCHEMA_ID = f"schema-test-avro-schema-{UUID}"
+AVRO_SCHEMA_ID_TO_CREATE = f"schema-test-avro-schema-to-create-{UUID}"
 PROTO_SCHEMA_ID = f"schema-test-proto-schema-{UUID}"
+PROTO_SCHEMA_ID_TO_CREATE = f"schema-test-proto-schema-to-create-{UUID}"
+PROTO_SCHEMA_ID_TO_DELETE = f"schema-test-proto-schema-to-delete-{UUID}"
 AVSC_FILE = "resources/us-states.avsc"
 AVSC_REVISION_FILE = "resources/us-states.avsc"
 PROTO_FILE = "resources/us-states.proto"
 PROTO_REVISION_FILE = "resources/us-states.proto"
 
-# These tests run in parallel if pytest-parallel is installed.
+# These tests run in parallel in continuous integration,
+# with the same UUID.
 # Avoid modifying resources that are shared across tests,
 # as this results in test flake.
 
@@ -57,11 +65,42 @@ def schema_client() -> Generator[pubsub_v1.SchemaServiceClient, None, None]:
     yield schema_client
 
 
+def ensure_schema_exists(
+    name: str, type: Schema.Type, schema_client: pubsub_v1.SchemaServiceClient
+) -> Schema:
+    schema_path = schema_client.schema_path(PROJECT_ID, name)
+
+    try:
+        return schema_client.get_schema(request={"name": schema_path})
+    except NotFound:
+        project_path = f"projects/{PROJECT_ID}"
+        with open(AVSC_FILE if type == Schema.Type.AVRO else PROTO_FILE, "rb") as f:
+            definition_text = f.read().decode("utf-8")
+        schema = Schema(name=schema_path, type_=type, definition=definition_text)
+        return schema_client.create_schema(
+            request={"parent": project_path, "schema": schema, "schema_id": name}
+        )
+
+
 @pytest.fixture(scope="module")
 def avro_schema(
     schema_client: pubsub_v1.SchemaServiceClient,
 ) -> Generator[str, None, None]:
-    avro_schema_path = schema_client.schema_path(PROJECT_ID, AVRO_SCHEMA_ID)
+    avro_schema = ensure_schema_exists(AVRO_SCHEMA_ID, Schema.Type.AVRO, schema_client)
+
+    yield avro_schema.name
+
+    try:
+        schema_client.delete_schema(request={"name": avro_schema.name})
+    except (NotFound, InternalServerError):
+        pass
+
+
+@pytest.fixture(scope="module")
+def avro_schema_to_create(
+    schema_client: pubsub_v1.SchemaServiceClient,
+) -> Generator[str, None, None]:
+    avro_schema_path = schema_client.schema_path(PROJECT_ID, AVRO_SCHEMA_ID_TO_CREATE)
 
     yield avro_schema_path
 
@@ -75,7 +114,39 @@ def avro_schema(
 def proto_schema(
     schema_client: pubsub_v1.SchemaServiceClient,
 ) -> Generator[str, None, None]:
-    proto_schema_path = schema_client.schema_path(PROJECT_ID, PROTO_SCHEMA_ID)
+    proto_schema = ensure_schema_exists(
+        PROTO_SCHEMA_ID, Schema.Type.PROTOCOL_BUFFER, schema_client
+    )
+
+    yield proto_schema.name
+
+    try:
+        schema_client.delete_schema(request={"name": proto_schema.name})
+    except (NotFound, InternalServerError):
+        pass
+
+
+@pytest.fixture(scope="module")
+def proto_schema_to_delete(
+    schema_client: pubsub_v1.SchemaServiceClient,
+) -> Generator[str, None, None]:
+    proto_schema = ensure_schema_exists(
+        PROTO_SCHEMA_ID_TO_DELETE, Schema.Type.PROTOCOL_BUFFER, schema_client
+    )
+
+    yield proto_schema.name
+
+    try:
+        schema_client.delete_schema(request={"name": proto_schema.name})
+    except (NotFound, InternalServerError):
+        pass
+
+
+@pytest.fixture(scope="module")
+def proto_schema_to_create(
+    schema_client: pubsub_v1.SchemaServiceClient,
+) -> Generator[str, None, None]:
+    proto_schema_path = schema_client.schema_path(PROJECT_ID, PROTO_SCHEMA_ID_TO_CREATE)
 
     yield proto_schema_path
 
@@ -90,54 +161,99 @@ def publisher_client() -> Generator[pubsub_v1.PublisherClient, None, None]:
     yield PublisherClient()
 
 
-@pytest.fixture(scope="module")
-def avro_topic(
-    publisher_client: pubsub_v1.PublisherClient, avro_schema: str
-) -> Generator[str, None, None]:
-    from google.pubsub_v1.types import Encoding
-
-    avro_topic_path = publisher_client.topic_path(PROJECT_ID, AVRO_TOPIC_ID)
+def ensure_topic_exists(
+    name: str,
+    schema_path: str,
+    encoding: Encoding,
+    publisher_client: pubsub_v1.PublisherClient,
+) -> Topic:
+    topic_path = publisher_client.topic_path(PROJECT_ID, name)
 
     try:
-        avro_topic = publisher_client.get_topic(request={"topic": avro_topic_path})
+        return publisher_client.get_topic(request={"topic": topic_path})
     except NotFound:
-        avro_topic = publisher_client.create_topic(
+        return publisher_client.create_topic(
             request={
-                "name": avro_topic_path,
+                "name": topic_path,
                 "schema_settings": {
-                    "schema": avro_schema,
-                    "encoding": Encoding.BINARY,
+                    "schema": schema_path,
+                    "encoding": encoding,
                 },
             }
         )
 
-    yield avro_topic.name
 
-    publisher_client.delete_topic(request={"topic": avro_topic.name})
+@pytest.fixture(scope="module")
+def avro_topic(
+    publisher_client: pubsub_v1.PublisherClient, avro_schema: str
+) -> Generator[str, None, None]:
+    avro_topic = ensure_topic_exists(
+        AVRO_TOPIC_ID, avro_schema, Encoding.BINARY, publisher_client
+    )
+
+    yield avro_topic.name
+    try:
+        publisher_client.delete_topic(request={"topic": avro_topic.name})
+    except NotFound:
+        pass
+
+
+@pytest.fixture(scope="module")
+def avro_topic_to_create(
+    publisher_client: pubsub_v1.PublisherClient, avro_schema: str
+) -> Generator[str, None, None]:
+    avro_topic_path = publisher_client.topic_path(PROJECT_ID, AVRO_TOPIC_ID_TO_CREATE)
+
+    yield avro_topic_path
+    try:
+        publisher_client.delete_topic(request={"topic": avro_topic_path})
+    except NotFound:
+        pass
 
 
 @pytest.fixture(scope="module")
 def proto_topic(
     publisher_client: pubsub_v1.PublisherClient, proto_schema: str
 ) -> Generator[str, None, None]:
-    proto_topic_path = publisher_client.topic_path(PROJECT_ID, PROTO_TOPIC_ID)
-
-    try:
-        proto_topic = publisher_client.get_topic(request={"topic": proto_topic_path})
-    except NotFound:
-        proto_topic = publisher_client.create_topic(
-            request={
-                "name": proto_topic_path,
-                "schema_settings": {
-                    "schema": proto_schema,
-                    "encoding": Encoding.BINARY,
-                },
-            }
-        )
+    proto_topic = ensure_topic_exists(
+        PROTO_TOPIC_ID, proto_schema, Encoding.BINARY, publisher_client
+    )
 
     yield proto_topic.name
+    try:
+        publisher_client.delete_topic(request={"topic": proto_topic.name})
+    except NotFound:
+        pass
 
-    publisher_client.delete_topic(request={"topic": proto_topic.name})
+
+@pytest.fixture(scope="module")
+def proto_with_revisions_topic(
+    publisher_client: pubsub_v1.PublisherClient, proto_schema: str
+) -> Generator[str, None, None]:
+    proto_topic = ensure_topic_exists(
+        PROTO_WITH_REVISIONS_TOPIC_ID, proto_schema, Encoding.BINARY, publisher_client
+    )
+
+    yield proto_topic.name
+    try:
+        publisher_client.delete_topic(request={"topic": proto_topic.name})
+    except NotFound:
+        pass
+
+
+@pytest.fixture(scope="module")
+def proto_with_revisions_topic_to_create(
+    publisher_client: pubsub_v1.PublisherClient, proto_schema: str
+) -> Generator[str, None, None]:
+    topic_path = publisher_client.topic_path(
+        PROJECT_ID, PROTO_WITH_REVISIONS_TOPIC_ID_TO_CREATE
+    )
+
+    yield topic_path
+    try:
+        publisher_client.delete_topic(request={"topic": topic_path})
+    except NotFound:
+        pass
 
 
 @pytest.fixture(scope="module")
@@ -166,9 +282,12 @@ def avro_subscription(
 
     yield avro_subscription.name
 
-    subscriber_client.delete_subscription(
-        request={"subscription": avro_subscription.name}
-    )
+    try:
+        subscriber_client.delete_subscription(
+            request={"subscription": avro_subscription.name}
+        )
+    except NotFound:
+        pass
 
 
 @pytest.fixture(scope="module")
@@ -190,43 +309,46 @@ def proto_subscription(
 
     yield proto_subscription.name
 
-    subscriber_client.delete_subscription(
-        request={"subscription": proto_subscription.name}
-    )
+    try:
+        subscriber_client.delete_subscription(
+            request={"subscription": proto_subscription.name}
+        )
+    except NotFound:
+        pass
 
 
 def test_create_avro_schema(
     schema_client: pubsub_v1.SchemaServiceClient,
-    avro_schema: str,
+    avro_schema_to_create: str,
     capsys: CaptureFixture[str],
 ) -> None:
     try:
-        schema_client.delete_schema(request={"name": avro_schema})
+        schema_client.delete_schema(request={"name": avro_schema_to_create})
     except NotFound:
         pass
 
-    schema.create_avro_schema(PROJECT_ID, AVRO_SCHEMA_ID, AVSC_FILE)
+    schema.create_avro_schema(PROJECT_ID, AVRO_SCHEMA_ID_TO_CREATE, AVSC_FILE)
 
     out, _ = capsys.readouterr()
     assert "Created a schema using an Avro schema file:" in out
-    assert f"{avro_schema}" in out
+    assert f"{avro_schema_to_create}" in out
 
 
 def test_create_proto_schema(
     schema_client: pubsub_v1.SchemaServiceClient,
-    proto_schema: str,
+    proto_schema_to_create: str,
     capsys: CaptureFixture[str],
 ) -> None:
     try:
-        schema_client.delete_schema(request={"name": proto_schema})
+        schema_client.delete_schema(request={"name": proto_schema_to_create})
     except NotFound:
         pass
 
-    schema.create_proto_schema(PROJECT_ID, PROTO_SCHEMA_ID, PROTO_FILE)
+    schema.create_proto_schema(PROJECT_ID, PROTO_SCHEMA_ID_TO_CREATE, PROTO_FILE)
 
     out, _ = capsys.readouterr()
     assert "Created a schema using a protobuf schema file:" in out
-    assert f"{proto_schema}" in out
+    assert f"{proto_schema_to_create}" in out
 
 
 def test_commit_avro_schema(
@@ -260,7 +382,7 @@ def test_get_schema(avro_schema: str, capsys: CaptureFixture[str]) -> None:
     assert f"{avro_schema}" in out
 
 
-def test_get_schema_revsion(avro_schema: str, capsys: CaptureFixture[str]) -> None:
+def test_get_schema_revision(avro_schema: str, capsys: CaptureFixture[str]) -> None:
     committed_schema = schema.commit_avro_schema(
         PROJECT_ID, AVRO_SCHEMA_ID, AVSC_REVISION_FILE
     )
@@ -270,7 +392,9 @@ def test_get_schema_revsion(avro_schema: str, capsys: CaptureFixture[str]) -> No
     assert f"{avro_schema}" in out
 
 
-def test_rollback_schema_revsion(avro_schema: str, capsys: CaptureFixture[str]) -> None:
+def test_rollback_schema_revision(
+    avro_schema: str, capsys: CaptureFixture[str]
+) -> None:
     committed_schema = schema.commit_avro_schema(
         PROJECT_ID, AVRO_SCHEMA_ID, AVSC_REVISION_FILE
     )
@@ -283,7 +407,7 @@ def test_rollback_schema_revsion(avro_schema: str, capsys: CaptureFixture[str]) 
     # assert f"{avro_schema}" in out
 
 
-def test_delete_schema_revsion(avro_schema: str, capsys: CaptureFixture[str]) -> None:
+def test_delete_schema_revision(avro_schema: str, capsys: CaptureFixture[str]) -> None:
     committed_schema = schema.commit_avro_schema(
         PROJECT_ID, AVRO_SCHEMA_ID, AVSC_REVISION_FILE
     )
@@ -309,25 +433,34 @@ def test_list_schema_revisions(capsys: CaptureFixture[str]) -> None:
 
 
 def test_create_topic_with_schema(
-    avro_schema: str, capsys: CaptureFixture[str]
+    avro_schema: str,
+    avro_topic_to_create: str,
+    publisher_client: pubsub_v1.PublisherClient,
+    capsys: CaptureFixture[str],
 ) -> None:
-    schema.create_topic_with_schema(PROJECT_ID, AVRO_TOPIC_ID, AVRO_SCHEMA_ID, "BINARY")
+    schema.create_topic_with_schema(
+        PROJECT_ID, AVRO_TOPIC_ID_TO_CREATE, AVRO_SCHEMA_ID, "BINARY"
+    )
     out, _ = capsys.readouterr()
     assert "Created a topic" in out
-    assert f"{AVRO_TOPIC_ID}" in out
+    assert f"{AVRO_TOPIC_ID_TO_CREATE}" in out
     assert f"{avro_schema}" in out
     assert "BINARY" in out or "2" in out
 
 
 def test_create_topic_with_schema_revisions(
-    proto_schema: str, capsys: CaptureFixture[str]
+    proto_schema: str,
+    proto_with_revisions_topic_to_create: str,
+    publisher_client: pubsub_v1.PublisherClient,
+    capsys: CaptureFixture[str],
 ) -> None:
     committed_schema = schema.commit_proto_schema(
         PROJECT_ID, PROTO_SCHEMA_ID, PROTO_REVISION_FILE
     )
+
     schema.create_topic_with_schema_revisions(
         PROJECT_ID,
-        PROTO_WITH_REVISIONS_TOPIC_ID,
+        PROTO_WITH_REVISIONS_TOPIC_ID_TO_CREATE,
         PROTO_SCHEMA_ID,
         committed_schema.revision_id,
         committed_schema.revision_id,
@@ -335,17 +468,18 @@ def test_create_topic_with_schema_revisions(
     )
     out, _ = capsys.readouterr()
     assert "Created a topic" in out
-    assert f"{PROTO_WITH_REVISIONS_TOPIC_ID}" in out
+    assert f"{PROTO_WITH_REVISIONS_TOPIC_ID_TO_CREATE}" in out
     assert f"{proto_schema}" in out
     assert "BINARY" in out or "2" in out
 
 
 def test_update_topic_schema(
-    proto_schema: str, proto_topic: str, capsys: CaptureFixture[str]
+    proto_schema: str, proto_with_revisions_topic: str, capsys: CaptureFixture[str]
 ) -> None:
     committed_schema = schema.commit_proto_schema(
         PROJECT_ID, PROTO_SCHEMA_ID, PROTO_REVISION_FILE
     )
+
     schema.update_topic_schema(
         PROJECT_ID,
         PROTO_WITH_REVISIONS_TOPIC_ID,
@@ -420,8 +554,10 @@ typed_flaky = cast(Callable[[C], C], flaky(max_runs=3, min_passes=1))
 
 
 @typed_flaky
-def test_delete_schema(proto_schema: str, capsys: CaptureFixture[str]) -> None:
-    schema.delete_schema(PROJECT_ID, PROTO_SCHEMA_ID)
+def test_delete_schema(
+    proto_schema_to_delete: str, capsys: CaptureFixture[str]
+) -> None:
+    schema.delete_schema(PROJECT_ID, PROTO_SCHEMA_ID_TO_DELETE)
     out, _ = capsys.readouterr()
     assert "Deleted a schema" in out
-    assert f"{proto_schema}" in out
+    assert f"{proto_schema_to_delete}" in out

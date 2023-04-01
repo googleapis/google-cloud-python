@@ -86,6 +86,8 @@ def subscription_admin(
 
     yield subscription.name
 
+    subscriber_client.delete_subscription(request={"subscription": subscription_path})
+
 
 @pytest.fixture(scope="module")
 def topic(publisher_client: pubsub_v1.PublisherClient) -> Generator[str, None, None]:
