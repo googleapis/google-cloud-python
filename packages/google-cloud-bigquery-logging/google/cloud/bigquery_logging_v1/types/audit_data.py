@@ -1286,7 +1286,11 @@ class JobStatistics(proto.Message):
             The total number of slot-ms consumed by the
             query job.
         reservation_usage (MutableSequence[google.cloud.bigquery_logging_v1.types.JobStatistics.ReservationResourceUsage]):
-            Reservation usage.
+            Reservation usage. This field reported
+            misleading information and will no longer be
+            populated. Aggregate usage of all jobs submitted
+            to a reservation should provide a more reliable
+            indicator of reservation imbalance.
         referenced_tables (MutableSequence[google.cloud.bigquery_logging_v1.types.TableName]):
             The first N tables accessed by the query job. Older queries
             that reference a large number of tables may not have all of
