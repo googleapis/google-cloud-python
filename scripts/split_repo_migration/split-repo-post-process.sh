@@ -61,7 +61,7 @@ MESSAGE=""
 
 if [ $# -lt 1 ]
 then
-  echo "Usage: $0 PATH/TO/PACKAGE_NAME>"
+  echo "Usage: $0 PATH/TO/PACKAGE_NAME"
   exit 1
 fi
 
