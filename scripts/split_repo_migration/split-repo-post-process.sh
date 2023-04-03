@@ -14,22 +14,22 @@
 # limitations under the License.
 
 # This script was written as part of a project to migrate
-# split repositories to a mono repository google-cloud-python.
+# split repositories to the mono-repository google-cloud-python.
 #
 # This script will update the various metadata files migrated from the split
-# repo into formats and locations suitable for the monorepo.
+# repo into formats and locations suitable for the mono-repo.
 #
 # Pre-condition: the split repo has been copied to the path indicated when
 # calling this function.
 #
-# Invocation:
+# INVOCATION from the mono-repo root directory:
 #   split-repo-post-process.sh PACKAGE_PATH
 # where PACKAGE_PATH is the path (absolute or relative) from pwd to the
 # directory in google-cloud-python holding the copied split repo. Typically, if
 # running from the top level of google-cloud-python, this is something like
 # "packages/google-cloud-APINAME"
-# Example from the root directory of the monorepo:
-#   split-repo-post-process.sh packages/google-cloud-speech
+# EXAMPLE from the root directory of the monorepo:
+#   ./scripts/split_repo_migration/split-repo-post-process.sh packages/google-cloud-speech
 #
 # For debugging/developing this script, you can have additional parameters:
 #  ./split-repo-post-process.sh SPLIT_REPO_DIR MONOREPO_DIR MONOREPO_PACKAGE_NAME
@@ -41,6 +41,7 @@ set -e
 
 NOP="echo -n"
 DEBUG="yes"  # set to blank for a real run
+MESSAGE=""
 
 [[ -n ${DEBUG} ]] && {
   # Comment out some commands for development/debugging
@@ -60,7 +61,7 @@ DEBUG="yes"  # set to blank for a real run
 
 if [ $# -lt 1 ]
 then
-  echo "Usage: $0 <path to copied split-repo>"
+  echo "Usage: $0 PATH/TO/PACKAGE_NAME>"
   exit 1
 fi
 
@@ -69,13 +70,23 @@ fi
 #   MONOREPO_PATH_* are paths relative to the root of the monorepo
 #   MONOREPO_* are values used in the monorepo
 
+# In a real run for a split repo already copied to the mono-repo, $1 would be
+# specified as `packages/PACKAGE_NAME`. For developing this script, it's useful
+# to specify $1 as the name of a completely separate split repo, in which case
+# specifying $2 and $3 is also useful (see below).
 PATH_PACKAGE="$(realpath "$1")"
 
-# optional second argument is useful for development.
+# The optional second argument is useful for development: it specifies a different
+# directory for the monorepo (rather than deriving it from $1).
 PATH_MONOREPO="${2:-$(dirname $(dirname $PATH_PACKAGE))}"
 PATH_MONOREPO="$(realpath "${PATH_MONOREPO}")"
 
-# optional third argument is useful for development.
+# The optional third argument is useful for development: it specifies what the the
+# package name should be for this API once migrated to the monorepo. This can be
+# inferred if we've already migrated the split repo to the correct location, but
+# otherwise needs to be specified, since it differs from the split repo name
+# (for example, the repo "python-speech" defines a package
+# "google-cloud-speech").
 MONOREPO_PACKAGE_NAME="${3:-$(basename ${PATH_PACKAGE})}"
 
 MONOREPO_PATH_PACKAGE="packages/${MONOREPO_PACKAGE_NAME}"
@@ -89,6 +100,22 @@ Post-processing ${MONOREPO_PACKAGE_NAME}
 EOF
 
 pushd "${PATH_MONOREPO}" >& /dev/null
+
+## START system tests check ########################################
+# variable prefix: TST_*
+
+# If there are integration tests, do not proceed with the script.
+
+TST_MONO_TESTDIR="${MONOREPO_PATH_PACKAGE}/tests/"
+TST_MONO_SYSTEM_DIR="${TST_MONO_TESTDIR}system"
+TST_MONO_SYSTEM_FILE="${TST_MONO_TESTDIR}system.py"
+echo "Checking for system tests in ${TST_MONO_TESTDIR}"
+
+[[ ! -f ${TST_MONO_SYSTEM_FILE} ]] || \
+  { echo "ERROR: ${TST_MONO_SYSTEM_FILE} exists. Need to manually deal with that." ; return -10 ; }
+[[ ! -d ${TST_MONO_SYSTEM_DIR} ]] || \
+  { echo "ERROR: ${TST_MONO_SYSTEM_DIR} exists. Need to manually deal with that." ; return -11 ; }
+## END system tests check
 
 ## START release-please config migration ########################################
 # variable prefix: RPC_*
@@ -105,7 +132,6 @@ RPC_NEW_OBJECT="$(jq '.packages."."' "${RPC_SPLIT_PATH}")"
 
 jq ${RPC_SORT_KEYS} --argjson newObject "${RPC_NEW_OBJECT}" ". * {\"packages\": {\"${MONOREPO_PATH_PACKAGE}\": \$newObject}}" ${RPC_MONO_PATH} | sponge ${RPC_MONO_PATH}
 $RM ${RPC_SPLIT_PATH}
-
 ## END release-please config migration
 
 ## START release-please manifest migration ########################################
@@ -121,12 +147,12 @@ RPM_SPLIT_PATH="${PATH_PACKAGE}/.release-please-manifest.json"
 RPM_VERSION="$(jq '."."' "${RPM_SPLIT_PATH}")"
 jq ${RPM_SORT_KEYS}  ". * {\"${MONOREPO_PATH_PACKAGE}\": ${RPM_VERSION}}" ${RPM_MONO_PATH} | sponge ${RPM_MONO_PATH}
 $RM ${RPM_SPLIT_PATH}
-
 ## END release-please manifest migration
 
 
 ## START owlbot.yaml migration ########################################
 # variable prefix: OWY_*
+# FIXME: KEEP?
 OWY_MONO_PATH="${MONOREPO_PATH_PACKAGE}/.OwlBot.yaml"
 echo "Migrating: ${OWY_MONO_PATH}"
 mkdir -p $(dirname ${OWY_MONO_PATH})
@@ -164,16 +190,14 @@ $RM ${OWY_SPLIT_PATH}
 OWP_MONO_PATH="${MONOREPO_PATH_PACKAGE}/owlbot.py"
 echo "Migrating: ${OWP_MONO_PATH}"
 
+# the next two lines are only needed for dev runs
 OWP_SPLIT_PATH="${PATH_PACKAGE}/owlbot.py"
-cp ${OWP_SPLIT_PATH} ${OWP_MONO_PATH}  # only needed for dev runs
+[[ ! -f "${OWP_SPLIT_PATH}" ]] || cp ${OWP_SPLIT_PATH} ${OWP_MONO_PATH}
 
-[[ -f "${OWP_MONO_PATH}" ]] && {
-  sed -i "s|import synthtool.languages.python as python|import synthtool.languages.python_mono_repo as python|" "${OWP_MONO_PATH}"
-  sed -i "s|from synthtool.languages import python|from synthtool.languages import python_mono_repo as python|" "${OWP_MONO_PATH}"
-  sed -i "s|python.owlbot_main(|python.owlbot_main(package_dir=\"${MONOREPO_PATH_PACKAGE}\",|" "${OWP_MONO_PATH}"
-  # FIXME: owlbot.py makes freqent use of synthtool.languages.python.py_samples, but there is no py_samples in synthtool.languages.python_mono_repo
-} || { $NOP ;}
-
+[[ ! -f "${OWP_MONO_PATH}" ]] || {
+  MESSAGE="${MESSAGE}\n\nWARNING: Deleted ${OWP_MONO_PATH}"
+  ${RM} -rf "${OWP_MONO_PATH}"
+}
 ## END owlbot.py migration
 
 ## START .repo-metadata.json migration ########################################
@@ -188,7 +212,6 @@ jq '.repo = "googleapis/google-cloud-python"' ${RMJ_MONO_PATH} | sponge ${RMJ_MO
 jq -r ".issue_tracker" "${RMJ_MONO_PATH}" | grep -q "github.com"  && {
   jq '.issue_tracker = "https://github.com/googleapis/google-cloud-python/issues"' ${RMJ_MONO_PATH} | sponge ${RMJ_MONO_PATH}
 } || { $NOP ; }
-
 ## END .repo-metadata.json migration
 
 
@@ -199,6 +222,7 @@ echo "Migrating: ${PCC_MONO_PATH}"
 
 PCC_SPLIT_PATH="${PATH_PACKAGE}/.pre-commit-config.yaml"
 
+# We only copy this if it doesn't already exist in the mono-repo.
 [[ ! -f "${PCC_MONO_PATH}" ]] && [[ -f "${PCC_SPLIT_PATH}" ]] && {
   cp ${PCC_SPLIT_PATH} ${PCC_MONO_PATH}
 } || { $NOP ; }
@@ -206,15 +230,10 @@ $RM -f ${PCC_SPLIT_PATH}
 ## END .pre-commit-config migration
 
 
-## FIXME: Do we need to do anything for testing?
-
-## START run pre-processor #############################################
-PPR="${PATH_PACKAGE}/owlbot.py"
-[[ ! -f "${PPR}" ]] && {
-   IMAGE="gcr.io/cloud-devrel-public-resources/owlbot-python-mono-repo:latest"
-   read -r -d '' MESSAGE <<EOF
-WARNING: ${PPR} not present.
-Consider generating the image "${IMAGE}" by running the following:
+## START run post-processor #############################################
+IMAGE="gcr.io/cloud-devrel-public-resources/owlbot-python-mono-repo:latest"
+read -r -d '' NEWMESSAGE <<EOF
+optional: Consider generating the image "${IMAGE}" by running the following:
 
   docker pull "${IMAGE}"
   docker run --rm \\
@@ -224,8 +243,7 @@ Consider generating the image "${IMAGE}" by running the following:
     -e "DEFAULT_BRANCH=main" \\
     "${IMAGE}"
 EOF
- } || { $NOP ; }
- 
+MESSAGE="${MESSAGE}\n\n${NEWMESSAGE}"
 ## END run pre-processor
 
 ## START commit changes #############################################
