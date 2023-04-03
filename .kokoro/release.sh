@@ -81,7 +81,7 @@ done
 touch ${PROJECT_ROOT}/release_requirements.in
 
 # Combine all package_requirements.in files
-cat ${PROJECT_ROOT}/**/release_requirements.in >> ${PROJECT_ROOT}/release_requirements.in
+cat ${PROJECT_ROOT}/packages/*/release_requirements.in >> ${PROJECT_ROOT}/release_requirements.in
 
 # Compile the combined requirements.txt file for a combined list of all dependencies of packages published
 pip-compile --generate-hashes ${PROJECT_ROOT}/release_requirements.in --output-file ${PROJECT_ROOT}/requirements.txt
