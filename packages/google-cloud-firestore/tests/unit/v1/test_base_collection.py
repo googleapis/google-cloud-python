@@ -220,6 +220,48 @@ def test_basecollectionreference_where(mock_query):
 
 
 @mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
+def test_basecollectionreference_where_with_filter_arg(mock_query):
+    from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+    from google.cloud.firestore_v1.base_query import FieldFilter
+
+    with mock.patch.object(BaseCollectionReference, "_query") as _query:
+        _query.return_value = mock_query
+
+        collection = _make_base_collection_reference("collection")
+        field_path = "foo"
+        op_string = "=="
+        value = 45
+        field_filter = FieldFilter(field_path, op_string, value)
+        query = collection.where(filter=field_filter)
+
+        mock_query.where.assert_called_once_with(filter=field_filter)
+        assert query == mock_query.where.return_value
+
+
+@mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
+def test_basecollectionreference_where_with_filter_arg_and_positional_args(mock_query):
+    from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+    from google.cloud.firestore_v1.base_query import FieldFilter
+
+    with mock.patch.object(BaseCollectionReference, "_query") as _query:
+        _query.return_value = mock_query
+
+        collection = _make_base_collection_reference("collection")
+        field_path = "foo"
+        op_string = "=="
+        value = 45
+        field_filter = FieldFilter(field_path, op_string, value)
+        with pytest.raises(ValueError) as exc:
+            collection.where(field_path, op_string, value, filter=field_filter)
+
+        mock_query.where.assert_not_called()
+        assert (
+            str(exc.value)
+            == "Can't pass in both the positional arguments and 'filter' at the same time"
+        )
+
+
+@mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
 def test_basecollectionreference_where_w___name___w_value_as_list_of_str(mock_query):
     from google.cloud.firestore_v1.base_collection import BaseCollectionReference
 

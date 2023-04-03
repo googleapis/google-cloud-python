@@ -28,6 +28,8 @@ from google.api_core.exceptions import NotFound
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import UTC
 from google.cloud import firestore_v1 as firestore
+from google.cloud.firestore_v1.base_query import FieldFilter, And, Or
+
 
 from time import sleep
 from typing import Callable, Dict, List, Optional
@@ -542,13 +544,28 @@ def query_docs(client):
 @pytest.fixture
 def query(query_docs):
     collection, stored, allowed_vals = query_docs
-    query = collection.where("a", "==", 1)
+    query = collection.where(filter=FieldFilter("a", "==", 1))
     return query
+
+
+def test_query_stream_legacy_where(query_docs):
+    """Assert the legacy code still works and returns value"""
+    collection, stored, allowed_vals = query_docs
+    with pytest.warns(
+        UserWarning,
+        match="Detected filter using positional arguments",
+    ):
+        query = collection.where("a", "==", 1)
+        values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
+        assert len(values) == len(allowed_vals)
+        for key, value in values.items():
+            assert stored[key] == value
+            assert value["a"] == 1
 
 
 def test_query_stream_w_simple_field_eq_op(query_docs):
     collection, stored, allowed_vals = query_docs
-    query = collection.where("a", "==", 1)
+    query = collection.where(filter=FieldFilter("a", "==", 1))
     values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
     assert len(values) == len(allowed_vals)
     for key, value in values.items():
@@ -558,7 +575,7 @@ def test_query_stream_w_simple_field_eq_op(query_docs):
 
 def test_query_stream_w_simple_field_array_contains_op(query_docs):
     collection, stored, allowed_vals = query_docs
-    query = collection.where("c", "array_contains", 1)
+    query = collection.where(filter=FieldFilter("c", "array_contains", 1))
     values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
     assert len(values) == len(allowed_vals)
     for key, value in values.items():
@@ -569,7 +586,7 @@ def test_query_stream_w_simple_field_array_contains_op(query_docs):
 def test_query_stream_w_simple_field_in_op(query_docs):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
-    query = collection.where("a", "in", [1, num_vals + 100])
+    query = collection.where(filter=FieldFilter("a", "in", [1, num_vals + 100]))
     values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
     assert len(values) == len(allowed_vals)
     for key, value in values.items():
@@ -579,7 +596,7 @@ def test_query_stream_w_simple_field_in_op(query_docs):
 
 def test_query_stream_w_not_eq_op(query_docs):
     collection, stored, allowed_vals = query_docs
-    query = collection.where("stats.sum", "!=", 4)
+    query = collection.where(filter=FieldFilter("stats.sum", "!=", 4))
     values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
     assert len(values) == 20
     ab_pairs2 = set()
@@ -601,7 +618,9 @@ def test_query_stream_w_not_eq_op(query_docs):
 def test_query_stream_w_simple_not_in_op(query_docs):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
-    query = collection.where("stats.sum", "not-in", [2, num_vals + 100])
+    query = collection.where(
+        filter=FieldFilter("stats.sum", "not-in", [2, num_vals + 100])
+    )
     values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
 
     assert len(values) == 22
@@ -610,7 +629,9 @@ def test_query_stream_w_simple_not_in_op(query_docs):
 def test_query_stream_w_simple_field_array_contains_any_op(query_docs):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
-    query = collection.where("c", "array_contains_any", [1, num_vals * 200])
+    query = collection.where(
+        filter=FieldFilter("c", "array_contains_any", [1, num_vals * 200])
+    )
     values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
     assert len(values) == len(allowed_vals)
     for key, value in values.items():
@@ -633,7 +654,7 @@ def test_query_stream_w_order_by(query_docs):
 
 def test_query_stream_w_field_path(query_docs):
     collection, stored, allowed_vals = query_docs
-    query = collection.where("stats.sum", ">", 4)
+    query = collection.where(filter=FieldFilter("stats.sum", ">", 4))
     values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
     assert len(values) == 10
     ab_pairs2 = set()
@@ -670,7 +691,7 @@ def test_query_stream_w_start_end_cursor(query_docs):
 def test_query_stream_wo_results(query_docs):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
-    query = collection.where("b", "==", num_vals + 100)
+    query = collection.where(filter=FieldFilter("b", "==", num_vals + 100))
     values = list(query.stream())
     assert len(values) == 0
 
@@ -678,7 +699,9 @@ def test_query_stream_wo_results(query_docs):
 def test_query_stream_w_projection(query_docs):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
-    query = collection.where("b", "<=", 1).select(["a", "stats.product"])
+    query = collection.where(filter=FieldFilter("b", "<=", 1)).select(
+        ["a", "stats.product"]
+    )
     values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
     assert len(values) == num_vals * 2  # a ANY, b in (0, 1)
     for key, value in values.items():
@@ -691,7 +714,9 @@ def test_query_stream_w_projection(query_docs):
 
 def test_query_stream_w_multiple_filters(query_docs):
     collection, stored, allowed_vals = query_docs
-    query = collection.where("stats.product", ">", 5).where("stats.product", "<", 10)
+    query = collection.where(filter=FieldFilter("stats.product", ">", 5)).where(
+        filter=FieldFilter("stats.product", "<", 10)
+    )
     values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
     matching_pairs = [
         (a_val, b_val)
@@ -710,7 +735,7 @@ def test_query_stream_w_offset(query_docs):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     offset = 3
-    query = collection.where("b", "==", 2).offset(offset)
+    query = collection.where(filter=FieldFilter("b", "==", 2)).offset(offset)
     values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
     # NOTE: We don't check the ``a``-values, since that would require
     #       an ``order_by('a')``, which combined with the ``b == 2``
@@ -773,7 +798,7 @@ def test_query_unary(client, cleanup):
     cleanup(document1.delete)
 
     # 0. Query for null.
-    query0 = collection.where(field_name, "==", None)
+    query0 = collection.where(filter=FieldFilter(field_name, "==", None))
     values0 = list(query0.stream())
     assert len(values0) == 1
     snapshot0 = values0[0]
@@ -781,7 +806,7 @@ def test_query_unary(client, cleanup):
     assert snapshot0.to_dict() == {field_name: None}
 
     # 1. Query for a NAN.
-    query1 = collection.where(field_name, "==", nan_val)
+    query1 = collection.where(filter=FieldFilter(field_name, "==", nan_val))
     values1 = list(query1.stream())
     assert len(values1) == 1
     snapshot1 = values1[0]
@@ -890,10 +915,18 @@ def test_collection_group_queries_filters(client, cleanup):
     query = (
         client.collection_group(collection_group)
         .where(
-            firestore.field_path.FieldPath.document_id(), ">=", client.document("a/b")
+            filter=FieldFilter(
+                firestore.field_path.FieldPath.document_id(),
+                ">=",
+                client.document("a/b"),
+            )
         )
         .where(
-            firestore.field_path.FieldPath.document_id(), "<=", client.document("a/b0")
+            filter=FieldFilter(
+                firestore.field_path.FieldPath.document_id(),
+                "<=",
+                client.document("a/b0"),
+            )
         )
     )
     snapshots = list(query.stream())
@@ -903,12 +936,18 @@ def test_collection_group_queries_filters(client, cleanup):
     query = (
         client.collection_group(collection_group)
         .where(
-            firestore.field_path.FieldPath.document_id(), ">", client.document("a/b")
+            filter=FieldFilter(
+                firestore.field_path.FieldPath.document_id(),
+                ">",
+                client.document("a/b"),
+            )
         )
         .where(
-            firestore.field_path.FieldPath.document_id(),
-            "<",
-            client.document("a/b/{}/cg-doc3".format(collection_group)),
+            filter=FieldFilter(
+                firestore.field_path.FieldPath.document_id(),
+                "<",
+                client.document("a/b/{}/cg-doc3".format(collection_group)),
+            )
         )
     )
     snapshots = list(query.stream())
@@ -1175,7 +1214,7 @@ def test_watch_query(client, cleanup):
     db = client
     collection_ref = db.collection("wq-users" + UNIQUE_RESOURCE_ID)
     doc_ref = collection_ref.document("alovelace")
-    query_ref = collection_ref.where("first", "==", "Ada")
+    query_ref = collection_ref.where(filter=FieldFilter("first", "==", "Ada"))
 
     # Initial setting
     doc_ref.set({"first": "Jane", "last": "Doe", "born": 1900})
@@ -1188,7 +1227,9 @@ def test_watch_query(client, cleanup):
         on_snapshot.called_count += 1
 
         # A snapshot should return the same thing as if a query ran now.
-        query_ran = collection_ref.where("first", "==", "Ada").stream()
+        query_ran = collection_ref.where(
+            filter=FieldFilter("first", "==", "Ada")
+        ).stream()
         assert len(docs) == len([i for i in query_ran])
 
     on_snapshot.called_count = 0
@@ -1528,7 +1569,9 @@ def test_watch_query_order(client, cleanup):
     doc_ref4 = collection_ref.document("afourthlovelace" + UNIQUE_RESOURCE_ID)
     doc_ref5 = collection_ref.document("afifthlovelace" + UNIQUE_RESOURCE_ID)
 
-    query_ref = collection_ref.where("first", "==", "Ada").order_by("last")
+    query_ref = collection_ref.where(filter=FieldFilter("first", "==", "Ada")).order_by(
+        "last"
+    )
 
     # Setup listener
     def on_snapshot(docs, changes, read_time):
@@ -1602,7 +1645,11 @@ def test_repro_429(client, cleanup):
         _, document = collection.add(data, document_id)
         cleanup(document.delete)
 
-    query = collection.where("paymentId", "==", None).limit(10).order_by("__name__")
+    query = (
+        collection.where(filter=FieldFilter("paymentId", "==", None))
+        .limit(10)
+        .order_by("__name__")
+    )
 
     last_snapshot = None
     for snapshot in query.stream():
@@ -1764,7 +1811,7 @@ def test_count_query_stream_empty_aggregation(query):
 def create_in_transaction(collection_id, transaction, cleanup):
     collection = client.collection(collection_id)
 
-    query = collection.where("a", "==", 1)
+    query = collection.where(filter=FieldFilter("a", "==", 1))
     count_query = query.count()
 
     result = count_query.get(transaction=transaction)
@@ -1782,7 +1829,7 @@ def create_in_transaction(collection_id, transaction, cleanup):
 @firestore.transactional
 def create_in_transaction_helper(transaction, client, collection_id, cleanup):
     collection = client.collection(collection_id)
-    query = collection.where("a", "==", 1)
+    query = collection.where(filter=FieldFilter("a", "==", 1))
     count_query = query.count()
     result = count_query.get(transaction=transaction)
 
@@ -1814,12 +1861,139 @@ def test_count_query_in_transaction(client, cleanup):
 
     with pytest.raises(ValueError) as exc:
         create_in_transaction_helper(transaction, client, collection_id, cleanup)
-        assert exc.exc_info == "Collection can't have more than 2 documents"
+    assert str(exc.value) == "Collection can't have more than 2 docs"
 
     collection = client.collection(collection_id)
 
-    query = collection.where("a", "==", 1)
+    query = collection.where(filter=FieldFilter("a", "==", 1))
     count_query = query.count()
     result = count_query.get()
     for r in result[0]:
         assert r.value == 2  # there are still only 2 docs
+
+
+def test_query_with_and_composite_filter(query_docs):
+    collection, stored, allowed_vals = query_docs
+    and_filter = And(
+        filters=[
+            FieldFilter("stats.product", ">", 5),
+            FieldFilter("stats.product", "<", 10),
+        ]
+    )
+
+    query = collection.where(filter=and_filter)
+    for result in query.stream():
+        assert result.get("stats.product") > 5
+        assert result.get("stats.product") < 10
+
+
+def test_query_with_or_composite_filter(query_docs):
+    collection, stored, allowed_vals = query_docs
+    or_filter = Or(
+        filters=[
+            FieldFilter("stats.product", ">", 5),
+            FieldFilter("stats.product", "<", 10),
+        ]
+    )
+    query = collection.where(filter=or_filter)
+    gt_5 = 0
+    lt_10 = 0
+    for result in query.stream():
+        value = result.get("stats.product")
+        assert value > 5 or value < 10
+        if value > 5:
+            gt_5 += 1
+        if value < 10:
+            lt_10 += 1
+
+    assert gt_5 > 0
+    assert lt_10 > 0
+
+
+def test_query_with_complex_composite_filter(query_docs):
+    collection, stored, allowed_vals = query_docs
+    field_filter = FieldFilter("b", "==", 0)
+    or_filter = Or(
+        filters=[FieldFilter("stats.sum", "==", 0), FieldFilter("stats.sum", "==", 4)]
+    )
+    # b == 0 && (stats.sum == 0 || stats.sum == 4)
+    query = collection.where(filter=field_filter).where(filter=or_filter)
+
+    sum_0 = 0
+    sum_4 = 0
+    for result in query.stream():
+        assert result.get("b") == 0
+        assert result.get("stats.sum") == 0 or result.get("stats.sum") == 4
+        if result.get("stats.sum") == 0:
+            sum_0 += 1
+        if result.get("stats.sum") == 4:
+            sum_4 += 1
+
+    assert sum_0 > 0
+    assert sum_4 > 0
+
+    # b == 3 || (stats.sum == 4  && a == 4)
+    comp_filter = Or(
+        filters=[
+            FieldFilter("b", "==", 3),
+            And([FieldFilter("stats.sum", "==", 4), FieldFilter("a", "==", 4)]),
+        ]
+    )
+    query = collection.where(filter=comp_filter)
+
+    b_3 = False
+    b_not_3 = False
+    for result in query.stream():
+        if result.get("b") == 3:
+            b_3 = True
+        else:
+            b_not_3 = True
+            assert result.get("stats.sum") == 4
+            assert result.get("a") == 4
+
+    assert b_3 is True
+    assert b_not_3 is True
+
+
+def test_or_query_in_transaction(client, cleanup):
+    collection_id = "doc-create" + UNIQUE_RESOURCE_ID
+    document_id_1 = "doc1" + UNIQUE_RESOURCE_ID
+    document_id_2 = "doc2" + UNIQUE_RESOURCE_ID
+
+    document_1 = client.document(collection_id, document_id_1)
+    document_2 = client.document(collection_id, document_id_2)
+
+    cleanup(document_1.delete)
+    cleanup(document_2.delete)
+
+    document_1.create({"a": 1, "b": 2})
+    document_2.create({"a": 1, "b": 1})
+
+    transaction = client.transaction()
+
+    with pytest.raises(ValueError) as exc:
+        create_in_transaction_helper(transaction, client, collection_id, cleanup)
+    assert str(exc.value) == "Collection can't have more than 2 docs"
+
+    collection = client.collection(collection_id)
+
+    query = collection.where(filter=FieldFilter("a", "==", 1)).where(
+        filter=Or([FieldFilter("b", "==", 1), FieldFilter("b", "==", 2)])
+    )
+    b_1 = False
+    b_2 = False
+    count = 0
+    for result in query.stream():
+        assert result.get("a") == 1  # assert a==1 is True in both results
+        assert result.get("b") == 1 or result.get("b") == 2
+        if result.get("b") == 1:
+            b_1 = True
+        if result.get("b") == 2:
+            b_2 = True
+        count += 1
+
+    assert b_1 is True  # assert one of them is b == 1
+    assert b_2 is True  # assert one of them is b == 2
+    assert (
+        count == 2
+    )  # assert only 2 results, the third one was rolledback and not created

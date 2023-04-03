@@ -255,7 +255,6 @@ def _where_unary_helper(value, op_enum, op_string="=="):
     query_inst = _make_base_query_all_fields(skip_fields=("field_filters",))
     field_path = "feeeld"
     new_query = query_inst.where(field_path, op_string, value)
-
     assert query_inst is not new_query
     assert isinstance(new_query, BaseQuery)
     assert len(new_query._field_filters) == 1
@@ -268,56 +267,162 @@ def _where_unary_helper(value, op_enum, op_string="=="):
     _compare_queries(query_inst, new_query, "_field_filters")
 
 
-def test_basequery_where_eq_null():
+def _where_unary_helper_field_filter(value, op_enum, op_string="=="):
+    from google.cloud.firestore_v1.base_query import BaseQuery, FieldFilter
+    from google.cloud.firestore_v1.types import StructuredQuery
+
+    query_inst = _make_base_query_all_fields(skip_fields=("field_filters",))
+    field_path = "feeeld"
+
+    filter = FieldFilter(field_path, op_string, value)
+    new_query = query_inst.where(filter=filter)
+
+    assert query_inst is not new_query
+    assert isinstance(new_query, BaseQuery)
+    assert len(new_query._field_filters) == 1
+
+    field_pb = new_query._field_filters[0]
+    expected_pb = StructuredQuery.UnaryFilter(
+        field=StructuredQuery.FieldReference(field_path=filter.field_path), op=op_enum
+    )
+    assert field_pb == expected_pb
+    _compare_queries(query_inst, new_query, "_field_filters")
+
+
+@pytest.mark.parametrize(
+    "unary_helper_function",
+    [
+        (_where_unary_helper),
+        (_where_unary_helper_field_filter),
+    ],
+)
+def test_basequery_where_eq_null(unary_helper_function):
     from google.cloud.firestore_v1.types import StructuredQuery
 
     op_enum = StructuredQuery.UnaryFilter.Operator.IS_NULL
-    _where_unary_helper(None, op_enum)
+    unary_helper_function(None, op_enum)
 
 
-def test_basequery_where_gt_null():
-    with pytest.raises(ValueError):
-        _where_unary_helper(None, 0, op_string=">")
+@pytest.mark.parametrize(
+    "unary_helper_function",
+    [
+        (_where_unary_helper),
+        (_where_unary_helper_field_filter),
+    ],
+)
+def test_basequery_where_gt_null(unary_helper_function):
+    from google.cloud.firestore_v1.base_query import _BAD_OP_NAN_NULL
+
+    with pytest.raises(ValueError) as exc:
+        unary_helper_function(None, 0, op_string=">")
+    assert str(exc.value) == _BAD_OP_NAN_NULL
 
 
-def test_basequery_where_eq_nan():
+@pytest.mark.parametrize(
+    "unary_helper_function",
+    [
+        (_where_unary_helper),
+        (_where_unary_helper_field_filter),
+    ],
+)
+def test_basequery_where_eq_nan(unary_helper_function):
     from google.cloud.firestore_v1.types import StructuredQuery
 
     op_enum = StructuredQuery.UnaryFilter.Operator.IS_NAN
-    _where_unary_helper(float("nan"), op_enum)
+    unary_helper_function(float("nan"), op_enum)
 
 
-def test_basequery_where_le_nan():
-    with pytest.raises(ValueError):
-        _where_unary_helper(float("nan"), 0, op_string="<=")
+@pytest.mark.parametrize(
+    "unary_helper_function",
+    [
+        (_where_unary_helper),
+        (_where_unary_helper_field_filter),
+    ],
+)
+def test_basequery_where_le_nan(unary_helper_function):
+    from google.cloud.firestore_v1.base_query import _BAD_OP_NAN_NULL
+
+    with pytest.raises(ValueError) as exc:
+        unary_helper_function(float("nan"), 0, op_string="<=")
+    assert str(exc.value) == _BAD_OP_NAN_NULL
 
 
-def test_basequery_where_w_delete():
+@pytest.mark.parametrize(
+    "unary_helper_function",
+    [
+        (_where_unary_helper),
+        (_where_unary_helper_field_filter),
+    ],
+)
+def test_basequery_where_w_delete(unary_helper_function):
     from google.cloud.firestore_v1 import DELETE_FIELD
+    from google.cloud.firestore_v1.base_query import _INVALID_WHERE_TRANSFORM
 
-    with pytest.raises(ValueError):
-        _where_unary_helper(DELETE_FIELD, 0)
+    with pytest.raises(ValueError) as exc:
+        unary_helper_function(DELETE_FIELD, 0)
+    assert str(exc.value) == _INVALID_WHERE_TRANSFORM
 
 
-def test_basequery_where_w_server_timestamp():
+@pytest.mark.parametrize(
+    "unary_helper_function",
+    [
+        (_where_unary_helper),
+        (_where_unary_helper_field_filter),
+    ],
+)
+def test_basequery_where_w_server_timestamp(unary_helper_function):
     from google.cloud.firestore_v1 import SERVER_TIMESTAMP
+    from google.cloud.firestore_v1.base_query import _INVALID_WHERE_TRANSFORM
 
-    with pytest.raises(ValueError):
-        _where_unary_helper(SERVER_TIMESTAMP, 0)
+    with pytest.raises(ValueError) as exc:
+        unary_helper_function(SERVER_TIMESTAMP, 0)
+    assert str(exc.value) == _INVALID_WHERE_TRANSFORM
 
 
-def test_basequery_where_w_array_remove():
+@pytest.mark.parametrize(
+    "unary_helper_function",
+    [
+        (_where_unary_helper),
+        (_where_unary_helper_field_filter),
+    ],
+)
+def test_basequery_where_w_array_remove(unary_helper_function):
     from google.cloud.firestore_v1 import ArrayRemove
+    from google.cloud.firestore_v1.base_query import _INVALID_WHERE_TRANSFORM
 
-    with pytest.raises(ValueError):
-        _where_unary_helper(ArrayRemove([1, 3, 5]), 0)
+    with pytest.raises(ValueError) as exc:
+        unary_helper_function(ArrayRemove([1, 3, 5]), 0)
+    assert str(exc.value) == _INVALID_WHERE_TRANSFORM
 
 
-def test_basequery_where_w_array_union():
+@pytest.mark.parametrize(
+    "unary_helper_function",
+    [
+        (_where_unary_helper),
+        (_where_unary_helper_field_filter),
+    ],
+)
+def test_basequery_where_w_array_union(unary_helper_function):
     from google.cloud.firestore_v1 import ArrayUnion
+    from google.cloud.firestore_v1.base_query import _INVALID_WHERE_TRANSFORM
 
-    with pytest.raises(ValueError):
-        _where_unary_helper(ArrayUnion([2, 4, 8]), 0)
+    with pytest.raises(ValueError) as exc:
+        unary_helper_function(ArrayUnion([2, 4, 8]), 0)
+    assert str(exc.value) == _INVALID_WHERE_TRANSFORM
+
+
+@pytest.mark.parametrize(
+    "unary_helper_function",
+    [
+        (_where_unary_helper),
+        (_where_unary_helper_field_filter),
+    ],
+)
+def test_basequery_where_filter_eq_null(unary_helper_function):
+    from google.cloud.firestore_v1.types import StructuredQuery
+
+    op_enum = StructuredQuery.UnaryFilter.Operator.IS_NULL
+    unary_helper_function(None, op_enum)
 
 
 def test_basequery_order_by_invalid_path():
@@ -652,6 +757,288 @@ def test_basequery_end_at():
     assert isinstance(query5, BaseQuery)
     assert query5._end_at == (document_fields5, False)
     _compare_queries(query4, query5, "_end_at")
+
+
+def test_basequery_where_filter_keyword_arg():
+
+    from google.cloud.firestore_v1.types import StructuredQuery
+    from google.cloud.firestore_v1.types import document
+    from google.cloud.firestore_v1.types import query
+    from google.cloud.firestore_v1.base_query import FieldFilter, And, Or
+
+    op_class = StructuredQuery.FieldFilter.Operator
+
+    field_path_1 = "x.y"
+    op_str_1 = ">"
+    value_1 = 50.5
+
+    field_path_2 = "population"
+    op_str_2 = "=="
+    value_2 = 60000
+
+    field_filter_1 = FieldFilter(field_path_1, op_str_1, value_1)
+    field_filter_2 = FieldFilter(field_path_2, op_str_2, value_2)
+
+    q = _make_base_query(mock.sentinel.parent)
+    q = q.where(filter=field_filter_1)
+
+    filter_pb = q._filters_pb()
+    expected_pb = query.StructuredQuery.Filter(
+        field_filter=query.StructuredQuery.FieldFilter(
+            field=query.StructuredQuery.FieldReference(field_path=field_path_1),
+            op=StructuredQuery.FieldFilter.Operator.GREATER_THAN,
+            value=document.Value(double_value=value_1),
+        )
+    )
+    assert filter_pb == expected_pb
+
+    or_filter = Or(filters=[field_filter_1, field_filter_2])
+    q = _make_base_query(mock.sentinel.parent)
+    q = q.where(filter=or_filter)
+
+    filter_pb = q._filters_pb()
+    expected_pb = query.StructuredQuery.Filter(
+        query.StructuredQuery.Filter(
+            composite_filter=query.StructuredQuery.CompositeFilter(
+                op=StructuredQuery.CompositeFilter.Operator.OR,
+                filters=[
+                    query.StructuredQuery.Filter(
+                        field_filter=query.StructuredQuery.FieldFilter(
+                            field=query.StructuredQuery.FieldReference(
+                                field_path=field_path_1
+                            ),
+                            op=op_class.GREATER_THAN,
+                            value=document.Value(double_value=value_1),
+                        )
+                    ),
+                    query.StructuredQuery.Filter(
+                        field_filter=query.StructuredQuery.FieldFilter(
+                            field=query.StructuredQuery.FieldReference(
+                                field_path=field_path_2
+                            ),
+                            op=op_class.EQUAL,
+                            value=document.Value(integer_value=value_2),
+                        )
+                    ),
+                ],
+            )
+        )
+    )
+    assert filter_pb == expected_pb
+
+    and_filter = And(filters=[field_filter_1, field_filter_2])
+    q = _make_base_query(mock.sentinel.parent)
+    q = q.where(filter=and_filter)
+
+    filter_pb = q._filters_pb()
+    expected_pb = query.StructuredQuery.Filter(
+        query.StructuredQuery.Filter(
+            composite_filter=query.StructuredQuery.CompositeFilter(
+                op=StructuredQuery.CompositeFilter.Operator.AND,
+                filters=[
+                    query.StructuredQuery.Filter(
+                        field_filter=query.StructuredQuery.FieldFilter(
+                            field=query.StructuredQuery.FieldReference(
+                                field_path=field_path_1
+                            ),
+                            op=op_class.GREATER_THAN,
+                            value=document.Value(double_value=value_1),
+                        )
+                    ),
+                    query.StructuredQuery.Filter(
+                        field_filter=query.StructuredQuery.FieldFilter(
+                            field=query.StructuredQuery.FieldReference(
+                                field_path=field_path_2
+                            ),
+                            op=op_class.EQUAL,
+                            value=document.Value(integer_value=value_2),
+                        )
+                    ),
+                ],
+            )
+        )
+    )
+    assert filter_pb == expected_pb
+
+
+def test_basequery_where_cannot_pass_both_positional_and_keyword_filter_arg():
+
+    from google.cloud.firestore_v1.base_query import FieldFilter
+
+    field_path_1 = "x.y"
+    op_str_1 = ">"
+    value_1 = 50.5
+    filter = FieldFilter(field_path_1, op_str_1, value_1)
+    q = _make_base_query(mock.sentinel.parent)
+
+    with pytest.raises(
+        ValueError,
+        match="Can't pass in both the positional arguments and 'filter' at the same time",
+    ):
+        q.where(field_path_1, op_str_1, value_1, filter=filter)
+
+
+def test_basequery_where_cannot_pass_filter_without_keyword_arg():
+    from google.cloud.firestore_v1.base_query import FieldFilter, And
+
+    field_path_1 = "x.y"
+    op_str_1 = ">"
+    value_1 = 50.5
+    filter = FieldFilter(field_path_1, op_str_1, value_1)
+    q = _make_base_query(mock.sentinel.parent)
+
+    with pytest.raises(
+        ValueError,
+        match="FieldFilter object must be passed using keyword argument 'filter'",
+    ):
+        q.where(filter)
+
+    and_filter = And(filters=[filter])
+    with pytest.raises(
+        ValueError,
+        match="'Or' and 'And' objects must be passed using keyword argument 'filter'",
+    ):
+        q.where(and_filter)
+
+
+def test_basequery_where_mix_of_field_and_composite():
+    from google.cloud.firestore_v1.base_query import FieldFilter, And, Or
+    from google.cloud.firestore_v1.types import query
+    from google.cloud.firestore_v1.types.query import StructuredQuery
+    from google.cloud.firestore_v1.types import document
+
+    op_class = StructuredQuery.FieldFilter.Operator
+
+    field_path_1 = "x.y"
+    op_str_1 = ">"
+    value_1 = 50.5
+    filter_1 = FieldFilter(field_path_1, op_str_1, value_1)
+
+    field_path_2 = "population"
+    op_str_2 = "=="
+    value_2 = 60000
+    filter_2 = FieldFilter(field_path_2, op_str_2, value_2)
+
+    field_path_3 = "country"
+    op_str_3 = "=="
+    value_3 = "USA"
+    filter_3 = FieldFilter(field_path_3, op_str_3, value_3)
+
+    or_filter = Or(filters=[filter_2, filter_3])
+    combined_filter = And(filters=[filter_1, or_filter])
+    q = _make_base_query(mock.sentinel.parent)
+    q = q.where(filter=filter_1).where(filter=combined_filter)
+
+    filter_pb = q._filters_pb()
+
+    expected_pb = query.StructuredQuery.Filter(
+        composite_filter=query.StructuredQuery.CompositeFilter(
+            op=StructuredQuery.CompositeFilter.Operator.AND,
+            filters=[
+                query.StructuredQuery.Filter(
+                    field_filter=query.StructuredQuery.FieldFilter(
+                        field=query.StructuredQuery.FieldReference(
+                            field_path=field_path_1
+                        ),
+                        op=op_class.GREATER_THAN,
+                        value=document.Value(double_value=value_1),
+                    )
+                ),
+                query.StructuredQuery.Filter(
+                    composite_filter=query.StructuredQuery.CompositeFilter(
+                        op=StructuredQuery.CompositeFilter.Operator.AND,
+                        filters=[
+                            query.StructuredQuery.Filter(
+                                field_filter=query.StructuredQuery.FieldFilter(
+                                    field=query.StructuredQuery.FieldReference(
+                                        field_path=field_path_1
+                                    ),
+                                    op=op_class.GREATER_THAN,
+                                    value=document.Value(double_value=value_1),
+                                )
+                            ),
+                            query.StructuredQuery.Filter(
+                                composite_filter=query.StructuredQuery.CompositeFilter(
+                                    op=StructuredQuery.CompositeFilter.Operator.OR,
+                                    filters=[
+                                        query.StructuredQuery.Filter(
+                                            field_filter=query.StructuredQuery.FieldFilter(
+                                                field=query.StructuredQuery.FieldReference(
+                                                    field_path=field_path_2
+                                                ),
+                                                op=op_class.EQUAL,
+                                                value=document.Value(
+                                                    integer_value=value_2
+                                                ),
+                                            )
+                                        ),
+                                        query.StructuredQuery.Filter(
+                                            field_filter=query.StructuredQuery.FieldFilter(
+                                                field=query.StructuredQuery.FieldReference(
+                                                    field_path=field_path_3
+                                                ),
+                                                op=op_class.EQUAL,
+                                                value=document.Value(
+                                                    string_value=value_3
+                                                ),
+                                            )
+                                        ),
+                                    ],
+                                )
+                            ),
+                        ],
+                    )
+                ),
+            ],
+        )
+    )
+
+    assert filter_pb == expected_pb
+
+
+def test_basequery_where_filter_as_positional_arg():
+    from google.cloud.firestore_v1.base_query import FieldFilter, Or
+
+    field_path_1 = "x.y"
+    op_str_1 = ">"
+    value_1 = 50.5
+    filter_1 = FieldFilter(field_path_1, op_str_1, value_1)
+
+    q = _make_base_query(mock.sentinel.parent)
+    with pytest.raises(ValueError) as exc:
+        q.where(filter_1)
+    assert (
+        str(exc.value)
+        == "FieldFilter object must be passed using keyword argument 'filter'"
+    )
+
+    or_filter = Or(filters=[filter_1])
+    with pytest.raises(ValueError) as exc:
+        q.where(or_filter)
+    assert (
+        str(exc.value)
+        == "'Or' and 'And' objects must be passed using keyword argument 'filter'"
+    )
+
+
+def test_basequery_where_requires_a_filter():
+    q = _make_base_query(mock.sentinel.parent)
+
+    with pytest.raises(
+        ValueError,
+        match="Filter must be provided through positional arguments or the 'filter' keyword argument.",
+    ):
+        q.where()
+
+
+def test_query_add_filter_with_positional_args_raises_user_warning():
+    q = _make_base_query(mock.sentinel.parent)
+
+    with pytest.warns(
+        UserWarning,
+        match="Detected filter using positional arguments",
+    ):
+        q.where("x.y", "==", 50)
 
 
 def test_basequery__filters_pb_empty():
@@ -1623,6 +2010,18 @@ def test_query_end():
     assert query.orders == "ORDER"
     assert query.start_at == (["start"], True)
     assert query.end_at is None
+
+
+def test_base_composite_filter_constructor():
+    from google.cloud.firestore_v1.base_query import BaseCompositeFilter
+    from google.cloud.firestore_v1.types import query
+
+    comp_filter = BaseCompositeFilter()
+    assert (
+        comp_filter.operator
+        == query.StructuredQuery.CompositeFilter.Operator.OPERATOR_UNSPECIFIED
+    )
+    assert len(comp_filter.filters) == 0
 
 
 class DummyQuery:

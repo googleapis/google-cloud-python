@@ -20,8 +20,10 @@ a more common way to create a query than direct usage of the constructor.
 """
 from __future__ import annotations
 
+import abc
 import copy
 import math
+import warnings
 
 from google.api_core import retry as retries
 from google.protobuf import wrappers_pb2
@@ -99,6 +101,104 @@ _NO_ORDERS_FOR_CURSOR = (
 _MISMATCH_CURSOR_W_ORDER_BY = "The cursor {!r} does not match the order fields {!r}."
 
 _not_passed = object()
+
+
+class BaseFilter(abc.ABC):
+    """Base class for Filters"""
+
+    @abc.abstractmethod
+    def _to_pb(self):
+        """Build the protobuf representation based on values in the filter"""
+
+
+class FieldFilter(BaseFilter):
+    """Class representation of a Field Filter."""
+
+    def __init__(self, field_path, op_string, value=None):
+        self.field_path = field_path
+        self.value = value
+
+        if value is None:
+            if op_string != _EQ_OP:
+                raise ValueError(_BAD_OP_NAN_NULL)
+            self.op_string = StructuredQuery.UnaryFilter.Operator.IS_NULL
+
+        elif _isnan(value):
+            if op_string != _EQ_OP:
+                raise ValueError(_BAD_OP_NAN_NULL)
+            self.op_string = StructuredQuery.UnaryFilter.Operator.IS_NAN
+        elif isinstance(value, (transforms.Sentinel, transforms._ValueList)):
+            raise ValueError(_INVALID_WHERE_TRANSFORM)
+        else:
+            self.op_string = op_string
+
+    def _to_pb(self):
+        """Returns the protobuf representation, either a StructuredQuery.UnaryFilter or a StructuredQuery.FieldFilter"""
+        if self.value is None or _isnan(self.value):
+            filter_pb = query.StructuredQuery.UnaryFilter(
+                field=query.StructuredQuery.FieldReference(field_path=self.field_path),
+                op=self.op_string,
+            )
+        else:
+            filter_pb = query.StructuredQuery.FieldFilter(
+                field=query.StructuredQuery.FieldReference(field_path=self.field_path),
+                op=_enum_from_op_string(self.op_string),
+                value=_helpers.encode_value(self.value),
+            )
+        return filter_pb
+
+
+class BaseCompositeFilter(BaseFilter):
+    """Base class for a Composite Filter. (either OR or AND)."""
+
+    def __init__(
+        self,
+        operator=StructuredQuery.CompositeFilter.Operator.OPERATOR_UNSPECIFIED,
+        filters=None,
+    ):
+        self.operator = operator
+        if filters is None:
+            self.filters = []
+        else:
+            self.filters = filters
+
+    def __repr__(self):
+        repr = f"op: {self.operator}\nFilters:"
+        for filter in self.filters:
+            repr += f"\n\t{filter}"
+        return repr
+
+    def _to_pb(self):
+        """Build the protobuf representation based on values in the Composite Filter."""
+        filter_pb = StructuredQuery.CompositeFilter(
+            op=self.operator,
+        )
+        for filter in self.filters:
+            if isinstance(filter, BaseCompositeFilter):
+                fb = query.StructuredQuery.Filter(composite_filter=filter._to_pb())
+            else:
+                fb = _filter_pb(filter._to_pb())
+            filter_pb.filters.append(fb)
+
+        return filter_pb
+
+
+class Or(BaseCompositeFilter):
+    """Class representation of an OR Filter."""
+
+    def __init__(self, filters):
+        super().__init__(
+            operator=StructuredQuery.CompositeFilter.Operator.OR, filters=filters
+        )
+
+
+class And(BaseCompositeFilter):
+    """Class representation of an AND Filter."""
+
+    def __init__(self, filters):
+        super().__init__(
+            operator=StructuredQuery.CompositeFilter.Operator.AND, filters=filters
+        )
 
 
 class BaseQuery(object):
@@ -243,7 +343,7 @@ class BaseQuery(object):
         """
         field_paths = list(field_paths)
         for field_path in field_paths:
-            field_path_module.split_field_path(field_path)  # raises
+            field_path_module.split_field_path(field_path)
 
         new_projection = query.StructuredQuery.Projection(
             fields=[
@@ -288,7 +388,14 @@ class BaseQuery(object):
         copy instead of being misinterpreted as an unpassed parameter."""
         return value if value is not _not_passed else fallback_value
 
-    def where(self, field_path: str, op_string: str, value) -> "BaseQuery":
+    def where(
+        self,
+        field_path: Optional[str] = None,
+        op_string: Optional[str] = None,
+        value=None,
+        *,
+        filter=None,
+    ) -> "BaseQuery":
         """Filter the query on a field.
 
         See :meth:`~google.cloud.firestore_v1.client.Client.field_path` for
@@ -300,9 +407,9 @@ class BaseQuery(object):
         operation.
 
         Args:
-            field_path (str): A field path (``.``-delimited list of
+            field_path (Optional[str]): A field path (``.``-delimited list of
                 field names) for the field to filter on.
-            op_string (str): A comparison operation in the form of a string.
+            op_string (Optional[str]): A comparison operation in the form of a string.
                 Acceptable values are ``<``, ``<=``, ``==``, ``!=``, ``>=``, ``>``,
                 ``in``, ``not-in``, ``array_contains`` and ``array_contains_any``.
             value (Any): The value to compare the field against in the filter.
@@ -315,36 +422,66 @@ class BaseQuery(object):
             modified with the newly added filter.
 
         Raises:
-            ValueError: If ``field_path`` is invalid.
-            ValueError: If ``value`` is a NaN or :data:`None` and
-                ``op_string`` is not ``==``.
+            ValueError: If
+                * ``field_path`` is invalid.
+                * If ``value`` is a NaN or :data:`None` and ``op_string`` is not ``==``.
+                * FieldFilter was passed without using the filter keyword argument.
+                * `And` or `Or` was passed without using the filter keyword argument .
+                * Both the positional arguments and the keyword argument `filter` were passed.
         """
-        field_path_module.split_field_path(field_path)  # raises
 
-        if value is None:
-            if op_string != _EQ_OP:
-                raise ValueError(_BAD_OP_NAN_NULL)
-            filter_pb = query.StructuredQuery.UnaryFilter(
-                field=query.StructuredQuery.FieldReference(field_path=field_path),
-                op=StructuredQuery.UnaryFilter.Operator.IS_NULL,
+        if isinstance(field_path, FieldFilter):
+            raise ValueError(
+                "FieldFilter object must be passed using keyword argument 'filter'"
             )
-        elif _isnan(value):
-            if op_string != _EQ_OP:
-                raise ValueError(_BAD_OP_NAN_NULL)
-            filter_pb = query.StructuredQuery.UnaryFilter(
-                field=query.StructuredQuery.FieldReference(field_path=field_path),
-                op=StructuredQuery.UnaryFilter.Operator.IS_NAN,
+        if isinstance(field_path, BaseCompositeFilter):
+            raise ValueError(
+                "'Or' and 'And' objects must be passed using keyword argument 'filter'"
             )
-        elif isinstance(value, (transforms.Sentinel, transforms._ValueList)):
-            raise ValueError(_INVALID_WHERE_TRANSFORM)
+
+        field_path_module.split_field_path(field_path)
+        new_filters = self._field_filters
+
+        if field_path is not None and op_string is not None:
+            if filter is not None:
+                raise ValueError(
+                    "Can't pass in both the positional arguments and 'filter' at the same time"
+                )
+            warnings.warn(
+                "Detected filter using positional arguments. Prefer using the 'filter' keyword argument instead.",
+                UserWarning,
+                stacklevel=2,
+            )
+            if value is None:
+                if op_string != _EQ_OP:
+                    raise ValueError(_BAD_OP_NAN_NULL)
+                filter_pb = query.StructuredQuery.UnaryFilter(
+                    field=query.StructuredQuery.FieldReference(field_path=field_path),
+                    op=StructuredQuery.UnaryFilter.Operator.IS_NULL,
+                )
+            elif _isnan(value):
+                if op_string != _EQ_OP:
+                    raise ValueError(_BAD_OP_NAN_NULL)
+                filter_pb = query.StructuredQuery.UnaryFilter(
+                    field=query.StructuredQuery.FieldReference(field_path=field_path),
+                    op=StructuredQuery.UnaryFilter.Operator.IS_NAN,
+                )
+            elif isinstance(value, (transforms.Sentinel, transforms._ValueList)):
+                raise ValueError(_INVALID_WHERE_TRANSFORM)
+            else:
+                filter_pb = query.StructuredQuery.FieldFilter(
+                    field=query.StructuredQuery.FieldReference(field_path=field_path),
+                    op=_enum_from_op_string(op_string),
+                    value=_helpers.encode_value(value),
+                )
+
+            new_filters += (filter_pb,)
+        elif isinstance(filter, BaseFilter):
+            new_filters += (filter._to_pb(),)
         else:
-            filter_pb = query.StructuredQuery.FieldFilter(
-                field=query.StructuredQuery.FieldReference(field_path=field_path),
-                op=_enum_from_op_string(op_string),
-                value=_helpers.encode_value(value),
+            raise ValueError(
+                "Filter must be provided through positional arguments or the 'filter' keyword argument."
             )
-
-        new_filters = self._field_filters + (filter_pb,)
         return self._copy(field_filters=new_filters)
 
     @staticmethod
@@ -651,7 +788,7 @@ class BaseQuery(object):
             document_fields_or_snapshot, before=False, start=False
         )
 
-    def _filters_pb(self) -> StructuredQuery.Filter:
+    def _filters_pb(self) -> Optional[StructuredQuery.Filter]:
         """Convert all the filters into a single generic Filter protobuf.
 
         This may be a lone field filter or unary filter, may be a composite
@@ -665,12 +802,24 @@ class BaseQuery(object):
         if num_filters == 0:
             return None
         elif num_filters == 1:
-            return _filter_pb(self._field_filters[0])
+            filter = self._field_filters[0]
+            if isinstance(filter, query.StructuredQuery.CompositeFilter):
+                return query.StructuredQuery.Filter(composite_filter=filter)
+            else:
+                return _filter_pb(filter)
         else:
+
             composite_filter = query.StructuredQuery.CompositeFilter(
                 op=StructuredQuery.CompositeFilter.Operator.AND,
-                filters=[_filter_pb(filter_) for filter_ in self._field_filters],
             )
+            for filter_ in self._field_filters:
+                if isinstance(filter_, query.StructuredQuery.CompositeFilter):
+                    composite_filter.filters.append(
+                        query.StructuredQuery.Filter(composite_filter=filter_)
+                    )
+                else:
+                    composite_filter.filters.append(_filter_pb(filter_))
+
             return query.StructuredQuery.Filter(composite_filter=composite_filter)
 
     @staticmethod
@@ -726,7 +875,7 @@ class BaseQuery(object):
     def _normalize_cursor(self, cursor, orders) -> Optional[Tuple[Any, Any]]:
         """Helper: convert cursor to a list of values based on orders."""
         if cursor is None:
-            return
+            return None
 
         if not orders:
             raise ValueError(_NO_ORDERS_FOR_CURSOR)
@@ -817,16 +966,16 @@ class BaseQuery(object):
     def get(
         self,
         transaction=None,
-        retry: retries.Retry = None,
-        timeout: float = None,
+        retry: Optional[retries.Retry] = None,
+        timeout: Optional[float] = None,
     ) -> Iterable[DocumentSnapshot]:
         raise NotImplementedError
 
     def _prep_stream(
         self,
         transaction=None,
-        retry: retries.Retry = None,
-        timeout: float = None,
+        retry: Optional[retries.Retry] = None,
+        timeout: Optional[float] = None,
     ) -> Tuple[dict, str, dict]:
         """Shared setup for async / sync :meth:`stream`"""
         if self._limit_to_last:
@@ -848,8 +997,8 @@ class BaseQuery(object):
     def stream(
         self,
         transaction=None,
-        retry: retries.Retry = None,
-        timeout: float = None,
+        retry: Optional[retries.Retry] = None,
+        timeout: Optional[float] = None,
     ) -> Generator[document.DocumentSnapshot, Any, None]:
         raise NotImplementedError
 
@@ -1195,8 +1344,8 @@ class BaseCollectionGroup(BaseQuery):
     def _prep_get_partitions(
         self,
         partition_count,
-        retry: retries.Retry = None,
-        timeout: float = None,
+        retry: Optional[retries.Retry] = None,
+        timeout: Optional[float] = None,
     ) -> Tuple[dict, dict]:
         self._validate_partition_query()
         parent_path, expected_prefix = self._parent._parent_info()
@@ -1220,8 +1369,8 @@ class BaseCollectionGroup(BaseQuery):
     def get_partitions(
         self,
         partition_count,
-        retry: retries.Retry = None,
-        timeout: float = None,
+        retry: Optional[retries.Retry] = None,
+        timeout: Optional[float] = None,
     ) -> NoReturn:
         raise NotImplementedError
 

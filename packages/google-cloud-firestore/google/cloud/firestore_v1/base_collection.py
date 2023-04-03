@@ -23,6 +23,7 @@ from google.cloud.firestore_v1.base_aggregation import BaseAggregationQuery
 
 
 from typing import (
+    Optional,
     Any,
     AsyncGenerator,
     Coroutine,
@@ -113,7 +114,7 @@ class BaseCollectionReference(object):
     def _aggregation_query(self) -> BaseAggregationQuery:
         raise NotImplementedError
 
-    def document(self, document_id: str = None) -> DocumentReference:
+    def document(self, document_id: Optional[str] = None) -> DocumentReference:
         """Create a sub-document underneath the current collection.
 
         Args:
@@ -160,9 +161,9 @@ class BaseCollectionReference(object):
     def _prep_add(
         self,
         document_data: dict,
-        document_id: str = None,
-        retry: retries.Retry = None,
-        timeout: float = None,
+        document_id: Optional[str] = None,
+        retry: Optional[retries.Retry] = None,
+        timeout: Optional[float] = None,
     ) -> Tuple[DocumentReference, dict]:
         """Shared setup for async / sync :method:`add`"""
         if document_id is None:
@@ -176,17 +177,17 @@ class BaseCollectionReference(object):
     def add(
         self,
         document_data: dict,
-        document_id: str = None,
-        retry: retries.Retry = None,
-        timeout: float = None,
+        document_id: Optional[str] = None,
+        retry: Optional[retries.Retry] = None,
+        timeout: Optional[float] = None,
     ) -> Union[Tuple[Any, Any], Coroutine[Any, Any, Tuple[Any, Any]]]:
         raise NotImplementedError
 
     def _prep_list_documents(
         self,
-        page_size: int = None,
-        retry: retries.Retry = None,
-        timeout: float = None,
+        page_size: Optional[int] = None,
+        retry: Optional[retries.Retry] = None,
+        timeout: Optional[float] = None,
     ) -> Tuple[dict, dict]:
         """Shared setup for async / sync :method:`list_documents`"""
         parent, _ = self._parent_info()
@@ -206,9 +207,9 @@ class BaseCollectionReference(object):
 
     def list_documents(
         self,
-        page_size: int = None,
-        retry: retries.Retry = None,
-        timeout: float = None,
+        page_size: Optional[int] = None,
+        retry: Optional[retries.Retry] = None,
+        timeout: Optional[float] = None,
     ) -> Union[
         Generator[DocumentReference, Any, Any], AsyncGenerator[DocumentReference, Any]
     ]:
@@ -236,7 +237,14 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.select(field_paths)
 
-    def where(self, field_path: str, op_string: str, value) -> BaseQuery:
+    def where(
+        self,
+        field_path: Optional[str] = None,
+        op_string: Optional[str] = None,
+        value=None,
+        *,
+        filter=None
+    ) -> BaseQuery:
         """Create a "where" query with this collection as parent.
 
         See
@@ -245,33 +253,43 @@ class BaseCollectionReference(object):
 
         Args:
             field_path (str): A field path (``.``-delimited list of
-                field names) for the field to filter on.
+                field names) for the field to filter on. Optional.
             op_string (str): A comparison operation in the form of a string.
                 Acceptable values are ``<``, ``<=``, ``==``, ``>=``, ``>``,
-                and ``in``.
+                and ``in``. Optional.
             value (Any): The value to compare the field against in the filter.
                 If ``value`` is :data:`None` or a NaN, then ``==`` is the only
                 allowed operation.  If ``op_string`` is ``in``, ``value``
-                must be a sequence of values.
-
+                must be a sequence of values. Optional.
+            filter (class:`~google.cloud.firestore_v1.base_query.BaseFilter`): an instance of a Filter.
+                Either a FieldFilter or a CompositeFilter.
         Returns:
             :class:`~google.cloud.firestore_v1.query.Query`:
             A filtered query.
+        Raises:
+            ValueError, if both the positional arguments (field_path, op_string, value)
+                and the filter keyword argument are passed at the same time.
         """
-        if field_path == "__name__" and op_string == "in":
-            wrapped_names = []
-
-            for name in value:
-
-                if isinstance(name, str):
-                    name = self.document(name)
-
-                wrapped_names.append(name)
-
-            value = wrapped_names
-
         query = self._query()
-        return query.where(field_path, op_string, value)
+        if field_path and op_string:
+            if filter is not None:
+                raise ValueError(
+                    "Can't pass in both the positional arguments and 'filter' at the same time"
+                )
+            if field_path == "__name__" and op_string == "in":
+                wrapped_names = []
+
+                for name in value:
+
+                    if isinstance(name, str):
+                        name = self.document(name)
+
+                    wrapped_names.append(name)
+
+                value = wrapped_names
+            return query.where(field_path, op_string, value)
+        else:
+            return query.where(filter=filter)
 
     def order_by(self, field_path: str, **kwargs) -> BaseQuery:
         """Create an "order by" query with this collection as parent.
@@ -450,8 +468,8 @@ class BaseCollectionReference(object):
 
     def _prep_get_or_stream(
         self,
-        retry: retries.Retry = None,
-        timeout: float = None,
+        retry: Optional[retries.Retry] = None,
+        timeout: Optional[float] = None,
     ) -> Tuple[Any, dict]:
         """Shared setup for async / sync :meth:`get` / :meth:`stream`"""
         query = self._query()
@@ -461,9 +479,9 @@ class BaseCollectionReference(object):
 
     def get(
         self,
-        transaction: Transaction = None,
-        retry: retries.Retry = None,
-        timeout: float = None,
+        transaction: Optional[Transaction] = None,
+        retry: Optional[retries.Retry] = None,
+        timeout: Optional[float] = None,
     ) -> Union[
         Generator[DocumentSnapshot, Any, Any], AsyncGenerator[DocumentSnapshot, Any]
     ]:
@@ -471,9 +489,9 @@ class BaseCollectionReference(object):
 
     def stream(
         self,
-        transaction: Transaction = None,
-        retry: retries.Retry = None,
-        timeout: float = None,
+        transaction: Optional[Transaction] = None,
+        retry: Optional[retries.Retry] = None,
+        timeout: Optional[float] = None,
     ) -> Union[Iterator[DocumentSnapshot], AsyncIterator[DocumentSnapshot]]:
         raise NotImplementedError
 
