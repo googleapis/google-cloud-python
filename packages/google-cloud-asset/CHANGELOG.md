@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.19.0](https://github.com/googleapis/python-asset/compare/v3.18.1...v3.19.0) (2023-04-01)
+
+
+### Features
+
+* Add support for AnalyzeOrgPolicies API ([00dcd06](https://github.com/googleapis/python-asset/commit/00dcd068b0a08425f981c8b6b7a7f8d79f931504))
+* Add support for AnalyzeOrgPolicyGovernedAssets API ([00dcd06](https://github.com/googleapis/python-asset/commit/00dcd068b0a08425f981c8b6b7a7f8d79f931504))
+* Add support for AnalyzeOrgPolicyGovernedContainers API ([00dcd06](https://github.com/googleapis/python-asset/commit/00dcd068b0a08425f981c8b6b7a7f8d79f931504))
+
 ## [3.18.1](https://github.com/googleapis/python-asset/compare/v3.18.0...v3.18.1) (2023-03-24)
 
 
