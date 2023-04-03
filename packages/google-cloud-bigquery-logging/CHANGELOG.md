@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/googleapis/python-bigquery-logging/compare/v1.2.0...v1.2.1) (2023-04-01)
+
+
+### Documentation
+
+* Mark ReservationResourceUsage field as deprecated ([#146](https://github.com/googleapis/python-bigquery-logging/issues/146)) ([01b1ebc](https://github.com/googleapis/python-bigquery-logging/commit/01b1ebc8d685b70d9057c5defff496ab7547b1ca))
+
 ## [1.2.0](https://github.com/googleapis/python-bigquery-logging/compare/v1.1.0...v1.2.0) (2023-01-10)
 
 
