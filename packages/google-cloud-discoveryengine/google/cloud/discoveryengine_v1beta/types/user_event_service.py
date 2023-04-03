@@ -38,7 +38,7 @@ class WriteUserEventRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent DataStore resource name, such as
-            ``projects/{project}/locations/{location}/dataStores/{data_store}``.
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
         user_event (google.cloud.discoveryengine_v1beta.types.UserEvent):
             Required. User event to write.
 
@@ -65,7 +65,7 @@ class CollectUserEventRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent DataStore resource name, such as
-            ``projects/{project}/locations/{location}/dataStores/{data_store}``.
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
         user_event (str):
             Required. URL encoded UserEvent proto with a
             length limit of 2,000,000 characters.

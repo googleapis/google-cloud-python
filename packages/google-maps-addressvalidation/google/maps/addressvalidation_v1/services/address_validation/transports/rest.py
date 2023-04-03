@@ -262,7 +262,6 @@ class AddressValidationRestTransport(AddressValidationTransport):
                     request (~.address_validation_service.ProvideValidationFeedbackRequest):
                         The request object. The request for sending validation
                     feedback.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -368,7 +367,6 @@ class AddressValidationRestTransport(AddressValidationTransport):
                 request (~.address_validation_service.ValidateAddressRequest):
                     The request object. The request for validating an
                 address.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

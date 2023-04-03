@@ -39,12 +39,8 @@ async def sample_create_document():
     client = discoveryengine_v1beta.DocumentServiceAsyncClient()
 
     # Initialize request argument(s)
-    document = discoveryengine_v1beta.Document()
-    document.schema_id = "schema_id_value"
-
     request = discoveryengine_v1beta.CreateDocumentRequest(
         parent="parent_value",
-        document=document,
         document_id="document_id_value",
     )
 

@@ -316,7 +316,6 @@ class DocumentLinkServiceRestTransport(DocumentLinkServiceTransport):
                 request (~.document_link_service.CreateDocumentLinkRequest):
                     The request object. Request message for
                 DocumentLinkService.CreateDocumentLink.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -417,7 +416,6 @@ class DocumentLinkServiceRestTransport(DocumentLinkServiceTransport):
                 request (~.document_link_service.DeleteDocumentLinkRequest):
                     The request object. Request message for
                 DocumentLinkService.DeleteDocumentLink.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -504,7 +502,6 @@ class DocumentLinkServiceRestTransport(DocumentLinkServiceTransport):
                 request (~.document_link_service.ListLinkedSourcesRequest):
                     The request object. Response message for
                 DocumentLinkService.ListLinkedSources.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -605,7 +602,6 @@ class DocumentLinkServiceRestTransport(DocumentLinkServiceTransport):
                 request (~.document_link_service.ListLinkedTargetsRequest):
                     The request object. Request message for
                 DocumentLinkService.ListLinkedTargets.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

@@ -335,7 +335,6 @@ class RuleSetServiceRestTransport(RuleSetServiceTransport):
                 request (~.ruleset_service_request.CreateRuleSetRequest):
                     The request object. Request message for
                 RuleSetService.CreateRuleSet.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -434,7 +433,6 @@ class RuleSetServiceRestTransport(RuleSetServiceTransport):
                 request (~.ruleset_service_request.DeleteRuleSetRequest):
                     The request object. Request message for
                 RuleSetService.DeleteRuleSet.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -510,7 +508,6 @@ class RuleSetServiceRestTransport(RuleSetServiceTransport):
                 request (~.ruleset_service_request.GetRuleSetRequest):
                     The request object. Request message for
                 RuleSetService.GetRuleSet.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -600,7 +597,6 @@ class RuleSetServiceRestTransport(RuleSetServiceTransport):
                 request (~.ruleset_service_request.ListRuleSetsRequest):
                     The request object. Request message for
                 RuleSetService.ListRuleSets.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -690,7 +686,6 @@ class RuleSetServiceRestTransport(RuleSetServiceTransport):
                 request (~.ruleset_service_request.UpdateRuleSetRequest):
                     The request object. Request message for
                 RuleSetService.UpdateRuleSet.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

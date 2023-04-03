@@ -484,7 +484,6 @@ class MapsPlatformDatasetsV1AlphaRestTransport(MapsPlatformDatasetsV1AlphaTransp
                 request (~.maps_platform_datasets.DeleteDatasetRequest):
                     The request object. Request to delete a dataset.
                 The dataset to be deleted.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -560,7 +559,6 @@ class MapsPlatformDatasetsV1AlphaRestTransport(MapsPlatformDatasetsV1AlphaTransp
                 request (~.maps_platform_datasets.DeleteDatasetVersionRequest):
                     The request object. Request to delete a version of a
                 dataset.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -726,7 +724,6 @@ class MapsPlatformDatasetsV1AlphaRestTransport(MapsPlatformDatasetsV1AlphaTransp
                 request (~.maps_platform_datasets.ListDatasetsRequest):
                     The request object. Request to list datasets for the
                 project.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -816,7 +813,6 @@ class MapsPlatformDatasetsV1AlphaRestTransport(MapsPlatformDatasetsV1AlphaTransp
                 request (~.maps_platform_datasets.ListDatasetVersionsRequest):
                     The request object. Request to list of all versions of
                 the dataset.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -908,7 +904,6 @@ class MapsPlatformDatasetsV1AlphaRestTransport(MapsPlatformDatasetsV1AlphaTransp
                 request (~.maps_platform_datasets.UpdateDatasetMetadataRequest):
                     The request object. Request to update the metadata fields
                 of the dataset.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

@@ -411,7 +411,6 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 request (~.document_service_request.CreateDocumentRequest):
                     The request object. Request message for
                 DocumentService.CreateDocument.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -510,7 +509,6 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 request (~.document_service_request.DeleteDocumentRequest):
                     The request object. Request message for
                 DocumentService.DeleteDocument.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -600,7 +598,6 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 request (~.document_service_request.FetchAclRequest):
                     The request object. Request message for
                 DocumentService.FetchAcl
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -704,7 +701,6 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 request (~.document_service_request.GetDocumentRequest):
                     The request object. Request message for
                 DocumentService.GetDocument.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -808,7 +804,6 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 request (~.document_service_request.SearchDocumentsRequest):
                     The request object. Request message for
                 DocumentService.SearchDocuments.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -909,7 +904,6 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 request (~.document_service_request.SetAclRequest):
                     The request object. Request message for
                 DocumentService.SetAcl.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1013,7 +1007,6 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 request (~.document_service_request.UpdateDocumentRequest):
                     The request object. Request message for
                 DocumentService.UpdateDocument.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

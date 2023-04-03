@@ -54,6 +54,7 @@ from google.maps.routing_v2.services.routes import (
 )
 from google.maps.routing_v2.types import (
     fallback_info,
+    geocoding_results,
     location,
     polyline,
     route,

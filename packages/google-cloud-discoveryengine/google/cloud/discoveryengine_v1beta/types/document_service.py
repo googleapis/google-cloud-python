@@ -44,7 +44,7 @@ class GetDocumentRequest(proto.Message):
             Required. Full resource name of
             [Document][google.cloud.discoveryengine.v1beta.Document],
             such as
-            ``projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
 
             If the caller does not have permission to access the
             [Document][google.cloud.discoveryengine.v1beta.Document],
@@ -70,7 +70,7 @@ class ListDocumentsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent branch resource name, such as
-            ``projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}``.
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
             Use ``default_branch`` as the branch ID, to list documents
             under the default branch.
 
@@ -152,7 +152,7 @@ class CreateDocumentRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent resource name, such as
-            ``projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}``.
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
         document (google.cloud.discoveryengine_v1beta.types.Document):
             Required. The
             [Document][google.cloud.discoveryengine.v1beta.Document] to
@@ -243,7 +243,7 @@ class DeleteDocumentRequest(proto.Message):
             Required. Full resource name of
             [Document][google.cloud.discoveryengine.v1beta.Document],
             such as
-            ``projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
 
             If the caller does not have permission to delete the
             [Document][google.cloud.discoveryengine.v1beta.Document],

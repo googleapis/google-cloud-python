@@ -388,8 +388,8 @@ class SynonymSetServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.contentwarehouse_v1.types.GetSynonymSetRequest, dict]]):
                 The request object. Request message for
-                SynonymSetService.GetSynonymSet. Will return synonymSet
-                for a certain context.
+                SynonymSetService.GetSynonymSet. Will
+                return synonymSet for a certain context.
             name (:class:`str`):
                 Required. The name of the synonymSet to retrieve Format:
                 projects/{project_number}/locations/{location}/synonymSets/{context}.
@@ -511,9 +511,10 @@ class SynonymSetServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.contentwarehouse_v1.types.UpdateSynonymSetRequest, dict]]):
                 The request object. Request message for
-                SynonymSetService.UpdateSynonymSet. Removes the
-                SynonymSet for the specified context and replaces it
-                with the SynonymSet in this request.
+                SynonymSetService.UpdateSynonymSet.
+                Removes the SynonymSet for the specified
+                context and replaces it with the
+                SynonymSet in this request.
             name (:class:`str`):
                 Required. The name of the synonymSet to update Format:
                 projects/{project_number}/locations/{location}/synonymSets/{context}.
@@ -727,8 +728,9 @@ class SynonymSetServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.contentwarehouse_v1.types.ListSynonymSetsRequest, dict]]):
                 The request object. Request message for
-                SynonymSetService.ListSynonymSets. Will return all
-                synonymSets belonging to the customer project.
+                SynonymSetService.ListSynonymSets. Will
+                return all synonymSets belonging to the
+                customer project.
             parent (:class:`str`):
                 Required. The parent name. Format:
                 projects/{project_number}/locations/{location}.

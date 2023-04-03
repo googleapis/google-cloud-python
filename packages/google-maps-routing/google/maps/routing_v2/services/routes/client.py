@@ -50,7 +50,12 @@ except AttributeError:  # pragma: NO COVER
 from google.protobuf import duration_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 
-from google.maps.routing_v2.types import fallback_info, route, routes_service
+from google.maps.routing_v2.types import (
+    fallback_info,
+    geocoding_results,
+    route,
+    routes_service,
+)
 
 from .transports.base import DEFAULT_CLIENT_INFO, RoutesTransport
 from .transports.grpc import RoutesGrpcTransport

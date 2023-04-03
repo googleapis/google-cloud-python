@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.4.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.4.0...google-cloud-discoveryengine-v0.4.1) (2023-03-25)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#10867](https://github.com/googleapis/google-cloud-python/issues/10867)) ([d34a425](https://github.com/googleapis/google-cloud-python/commit/d34a425f7d0f02bebaf20d24b725b8c25c699697))
+
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.3.1...google-cloud-discoveryengine-v0.4.0) (2023-03-22)
+
+
+### Features
+
+* add additional resource path with collections ([68d329e](https://github.com/googleapis/google-cloud-python/commit/68d329e886be89629c1961ee87e0b1123f3feda4))
+* document schema id is no longer required ([68d329e](https://github.com/googleapis/google-cloud-python/commit/68d329e886be89629c1961ee87e0b1123f3feda4))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([68d329e](https://github.com/googleapis/google-cloud-python/commit/68d329e886be89629c1961ee87e0b1123f3feda4))
+
 ## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.3.0...google-cloud-discoveryengine-v0.3.1) (2023-01-20)
 
 

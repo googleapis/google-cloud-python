@@ -52,11 +52,17 @@ class Waypoint(proto.Message):
             waypoint.
 
             This field is a member of `oneof`_ ``location_type``.
+        address (str):
+            Human readable address or a plus code.
+            See https://plus.codes for details.
+
+            This field is a member of `oneof`_ ``location_type``.
         via (bool):
             Marks this waypoint as a milestone rather a stopping point.
             For each non-via waypoint in the request, the response
-            appends an entry to the ``legs`` array to provide the
-            details for stopovers on that leg of the trip. Set this
+            appends an entry to the
+            [legs][google.maps.routing.v2.Route.legs] array to provide
+            the details for stopovers on that leg of the trip. Set this
             value to true when you want the route to pass through this
             waypoint without stopping over. Via waypoints don't cause an
             entry to be added to the ``legs`` array, but they do route
@@ -73,7 +79,8 @@ class Waypoint(proto.Message):
             non-\ ``via`` waypoints on roads that are unsuitable for
             pickup and drop-off. This option works only for ``DRIVE``
             and ``TWO_WHEELER`` travel modes, and when the
-            ``location_type`` is ``location``.
+            ``location_type`` is
+            [Location][google.maps.routing.v2.Location].
         side_of_road (bool):
             Indicates that the location of this waypoint is meant to
             have a preference for the vehicle to stop at a particular
@@ -81,7 +88,8 @@ class Waypoint(proto.Message):
             through the location so that the vehicle can stop at the
             side of road that the location is biased towards from the
             center of the road. This option works only for 'DRIVE' and
-            'TWO_WHEELER' travel modes.
+            'TWO_WHEELER'
+            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
     """
 
     location: gmr_location.Location = proto.Field(
@@ -93,6 +101,11 @@ class Waypoint(proto.Message):
     place_id: str = proto.Field(
         proto.STRING,
         number=2,
+        oneof="location_type",
+    )
+    address: str = proto.Field(
+        proto.STRING,
+        number=7,
         oneof="location_type",
     )
     via: bool = proto.Field(

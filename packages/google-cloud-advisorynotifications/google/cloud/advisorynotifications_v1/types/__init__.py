@@ -22,6 +22,7 @@ from .service import (
     LocalizationState,
     Message,
     Notification,
+    NotificationType,
     NotificationView,
     Subject,
     Text,
@@ -38,5 +39,6 @@ __all__ = (
     "Subject",
     "Text",
     "LocalizationState",
+    "NotificationType",
     "NotificationView",
 )
