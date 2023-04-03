@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/googleapis/python-iap/compare/v1.10.0...v1.10.1) (2023-04-01)
+
+
+### Documentation
+
+* Minor changes in AttributePropagationSettings ([#168](https://github.com/googleapis/python-iap/issues/168)) ([2c61c43](https://github.com/googleapis/python-iap/commit/2c61c438f6e254fea0662589f7047d2c8464d9f2))
+
 ## [1.10.0](https://github.com/googleapis/python-iap/compare/v1.9.0...v1.10.0) (2023-03-23)
 
 
