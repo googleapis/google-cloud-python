@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.11.0](https://github.com/googleapis/python-firestore/compare/v2.10.1...v2.11.0) (2023-04-03)
+
+
+### Features
+
+* OR Query implementation ([#698](https://github.com/googleapis/python-firestore/issues/698)) ([44dd5d6](https://github.com/googleapis/python-firestore/commit/44dd5d60a598ff5209263127acbd8f7b869e1c4b))
+
 ## [2.10.1](https://github.com/googleapis/python-firestore/compare/v2.10.0...v2.10.1) (2023-03-23)
 
 
