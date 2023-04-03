@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.30.0](https://github.com/googleapis/python-spanner/compare/v3.29.0...v3.30.0) (2023-03-28)
+
+
+### Features
+
+* Pass custom Client object to dbapi ([#911](https://github.com/googleapis/python-spanner/issues/911)) ([52b1a0a](https://github.com/googleapis/python-spanner/commit/52b1a0af0103a5b91aa5bf9ea1138319bdb90d79))
+
 ## [3.29.0](https://github.com/googleapis/python-spanner/compare/v3.28.0...v3.29.0) (2023-03-23)
 
 
