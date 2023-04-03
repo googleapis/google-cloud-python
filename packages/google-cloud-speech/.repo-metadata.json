@@ -1,0 +1,18 @@
+{
+  "name": "speech",
+  "name_pretty": "Cloud Speech",
+  "product_documentation": "https://cloud.google.com/speech-to-text/docs/",
+  "client_documentation": "https://cloud.google.com/python/docs/reference/speech/latest",
+  "issue_tracker": "https://issuetracker.google.com/savedsearches/559758",
+  "release_level": "stable",
+  "language": "python",
+  "library_type": "GAPIC_COMBO",
+  "repo": "googleapis/google-cloud-python",
+  "distribution_name": "google-cloud-speech",
+  "api_id": "speech.googleapis.com",
+  "requires_billing": false,
+  "default_version": "v1",
+  "codeowner_team": "@googleapis/cdpe-cloudai",
+  "api_shortname": "speech",
+  "api_description": "enables easy integration of Google speech recognition technologies into developer applications. Send audio and receive a text transcription from the Speech-to-Text API service."
+}
