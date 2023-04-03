@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.2](https://github.com/googleapis/python-appengine-admin/compare/v1.9.1...v1.9.2) (2023-04-01)
+
+
+### Documentation
+
+* Point to Search Console for domain ownership verification ([#232](https://github.com/googleapis/python-appengine-admin/issues/232)) ([a45eff9](https://github.com/googleapis/python-appengine-admin/commit/a45eff96750e74230f60e312b2ab0ad9b9933ec5))
+
 ## [1.9.1](https://github.com/googleapis/python-appengine-admin/compare/v1.9.0...v1.9.1) (2023-03-23)
 
 
