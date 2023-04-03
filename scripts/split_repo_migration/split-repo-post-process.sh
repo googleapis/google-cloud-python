@@ -196,7 +196,7 @@ OWP_SPLIT_PATH="${PATH_PACKAGE}/owlbot.py"
 
 [[ ! -f "${OWP_MONO_PATH}" ]] || {
   MESSAGE="${MESSAGE}\n\nWARNING: Deleted ${OWP_MONO_PATH}"
-  ${RM} -rf "${OWP_MONO_PATH}"
+  rm -rf "${OWP_MONO_PATH}"
 }
 ## END owlbot.py migration
 
