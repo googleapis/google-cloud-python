@@ -86,10 +86,7 @@ cat ${PROJECT_ROOT}/**/release_requirements.in >> ${PROJECT_ROOT}/release_requir
 # Compile the combined requirements.txt file for a combined list of all dependencies of packages published
 pip-compile --generate-hashes ${PROJECT_ROOT}/release_requirements.in --output-file ${PROJECT_ROOT}/requirements.txt
 
-# Copy the dependencies of the release tooling into dev_requirements.in
-cp ${PROJECT_ROOT}/.kokoro/requirements.in ${PROJECT_ROOT}/dev_requirements.in
-
-# Compile the dev_requirements.txt file
-pip-compile --generate-hashes ${PROJECT_ROOT}/dev_requirements.in --output-file ${PROJECT_ROOT}/dev_requirements.txt
+# Compile the requirements of the release tooling into dev_requirements.txt
+pip-compile --generate-hashes ${PROJECT_ROOT}/.kokoro/requirements.in --output-file ${PROJECT_ROOT}/dev_requirements.txt
 
 exit ${RETVAL}
