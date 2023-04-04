@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
         "UpdateDocumentRequest",
         "DeleteDocumentRequest",
         "SearchDocumentsRequest",
+        "LockDocumentRequest",
         "FetchAclRequest",
         "SetAclRequest",
     },
@@ -81,16 +82,23 @@ class CreateDocumentRequest(proto.Message):
             service.
         policy (google.iam.v1.policy_pb2.Policy):
             Default document policy during creation.
+            This refers to an Identity and Access (IAM)
+            policy, which specifies access controls for the
+            Document.
             Conditions defined in the policy will be
             ignored.
         cloud_ai_document_option (google.cloud.contentwarehouse_v1.types.CloudAIDocumentOption):
             Request Option for processing Cloud AI
-            Document in CW Document.
+            Document in Document Warehouse. This field
+            offers limited support for mapping entities from
+            Cloud AI Document to Warehouse Document. Please
+            consult with product team before using this
+            field and other available options.
         create_mask (google.protobuf.field_mask_pb2.FieldMask):
             Field mask for creating Document fields. If mask path is
             empty, it means all fields are masked. For the ``FieldMask``
             definition, see
-            https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+            https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.
     """
 
     parent: str = proto.Field(
@@ -167,7 +175,11 @@ class UpdateDocumentRequest(proto.Message):
             service.
         cloud_ai_document_option (google.cloud.contentwarehouse_v1.types.CloudAIDocumentOption):
             Request Option for processing Cloud AI
-            Document in CW Document.
+            Document in Document Warehouse. This field
+            offers limited support for mapping entities from
+            Cloud AI Document to Warehouse Document. Please
+            consult with product team before using this
+            field and other available options.
         update_options (google.cloud.contentwarehouse_v1.types.UpdateOptions):
             Options for the update operation.
     """
@@ -280,6 +292,10 @@ class SearchDocumentsRequest(proto.Message):
             -  ``"upload_date"``: By upload date ascending.
             -  ``"update_date desc"``: By last updated date descending.
             -  ``"update_date"``: By last updated date ascending.
+            -  ``"retrieval_importance desc"``: By retrieval importance
+               of properties descending. This feature is still under
+               development, please do not use unless otherwise
+               instructed to do so.
         histogram_queries (MutableSequence[google.cloud.contentwarehouse_v1.types.HistogramQuery]):
             An expression specifying a histogram request against
             matching documents. Expression syntax is an aggregation
@@ -313,8 +329,8 @@ class SearchDocumentsRequest(proto.Message):
             -  For schema id, abc123, get the counts for MORTGAGE_TYPE:
                count('abc123.MORTGAGE_TYPE')
         require_total_size (bool):
-            Optional. Controls if the search document request requires
-            the return of a total size of matched documents. See
+            Controls if the search document request requires the return
+            of a total size of matched documents. See
             [SearchDocumentsResponse.total_size][google.cloud.contentwarehouse.v1.SearchDocumentsResponse.total_size].
 
             Enabling this flag may adversely impact performance. Hint:
@@ -323,12 +339,34 @@ class SearchDocumentsRequest(proto.Message):
             (keep the total count locally).
 
             Defaults to false.
+        total_result_size (google.cloud.contentwarehouse_v1.types.SearchDocumentsRequest.TotalResultSize):
+            Controls if the search document request requires the return
+            of a total size of matched documents. See
+            [SearchDocumentsResponse.total_size][google.cloud.contentwarehouse.v1.SearchDocumentsResponse.total_size].
         qa_size_limit (int):
             Experimental, do not use. The limit on the number of
             documents returned for the question-answering feature. To
             enable the question-answering feature, set
             [DocumentQuery].[is_nl_query][] to true.
     """
+
+    class TotalResultSize(proto.Enum):
+        r"""The total number of matching documents.
+
+        Values:
+            TOTAL_RESULT_SIZE_UNSPECIFIED (0):
+                Total number calculation will be skipped.
+            ESTIMATED_SIZE (1):
+                Estimate total number. The total result size
+                will be accurated up to 10,000. This option will
+                add cost and latency to your request.
+            ACTUAL_SIZE (2):
+                It may adversely impact performance. The
+                limit is 1000,000.
+        """
+        TOTAL_RESULT_SIZE_UNSPECIFIED = 0
+        ESTIMATED_SIZE = 1
+        ACTUAL_SIZE = 2
 
     parent: str = proto.Field(
         proto.STRING,
@@ -369,9 +407,42 @@ class SearchDocumentsRequest(proto.Message):
         proto.BOOL,
         number=10,
     )
+    total_result_size: TotalResultSize = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=TotalResultSize,
+    )
     qa_size_limit: int = proto.Field(
         proto.INT32,
         number=11,
+    )
+
+
+class LockDocumentRequest(proto.Message):
+    r"""Request message for DocumentService.LockDocument.
+
+    Attributes:
+        name (str):
+            Required. The name of the document to lock. Format:
+            projects/{project_number}/locations/{location}/documents/{document}.
+        collection_id (str):
+            The collection the document connects to.
+        locking_user (google.cloud.contentwarehouse_v1.types.UserInfo):
+            The user information who locks the document.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    collection_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    locking_user: common.UserInfo = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=common.UserInfo,
     )
 
 
@@ -383,6 +454,8 @@ class FetchAclRequest(proto.Message):
             Required. REQUIRED: The resource for which the policy is
             being requested. Format for document:
             projects/{project_number}/locations/{location}/documents/{document_id}.
+            Format for collection:
+            projects/{project_number}/locations/{location}/collections/{collection_id}.
             Format for project: projects/{project_number}.
         request_metadata (google.cloud.contentwarehouse_v1.types.RequestMetadata):
             The meta information collected about the end
@@ -416,11 +489,30 @@ class SetAclRequest(proto.Message):
             Required. REQUIRED: The resource for which the policy is
             being requested. Format for document:
             projects/{project_number}/locations/{location}/documents/{document_id}.
+            Format for collection:
+            projects/{project_number}/locations/{location}/collections/{collection_id}.
             Format for project: projects/{project_number}.
         policy (google.iam.v1.policy_pb2.Policy):
             Required. REQUIRED: The complete policy to be applied to the
             ``resource``. The size of the policy is limited to a few 10s
-            of KB.
+            of KB. This refers to an Identity and Access (IAM) policy,
+            which specifies access controls for the Document.
+
+            You can set ACL with condition for projects only.
+
+            Supported operators are: ``=``, ``!=``, ``<``, ``<=``,
+            ``>``, and ``>=`` where the left of the operator is
+            ``DocumentSchemaId`` or property name and the right of the
+            operator is a number or a quoted string. You must escape
+            backslash (\) and quote (") characters.
+
+            Boolean expressions (AND/OR) are supported up to 3 levels of
+            nesting (for example, "((A AND B AND C) OR D) AND E"), a
+            maximum of 10 comparisons are allowed in the expression. The
+            expression must be < 6000 bytes in length.
+
+            Sample condition:
+            ``"DocumentSchemaId = \"some schema id\" OR SchemaId.floatPropertyName >= 10"``
         request_metadata (google.cloud.contentwarehouse_v1.types.RequestMetadata):
             The meta information collected about the end
             user, used to enforce access control for the

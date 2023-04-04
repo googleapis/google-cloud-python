@@ -203,6 +203,11 @@
                 "get_document"
               ]
             },
+            "LockDocument": {
+              "methods": [
+                "lock_document"
+              ]
+            },
             "SearchDocuments": {
               "methods": [
                 "search_documents"
@@ -243,6 +248,11 @@
                 "get_document"
               ]
             },
+            "LockDocument": {
+              "methods": [
+                "lock_document"
+              ]
+            },
             "SearchDocuments": {
               "methods": [
                 "search_documents"
@@ -281,6 +291,11 @@
             "GetDocument": {
               "methods": [
                 "get_document"
+              ]
+            },
+            "LockDocument": {
+              "methods": [
+                "lock_document"
               ]
             },
             "SearchDocuments": {

@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
         "UpdateType",
         "DatabaseType",
         "AccessControlMode",
+        "DocumentCreatorDefaultRole",
         "RequestMetadata",
         "ResponseMetadata",
         "UserInfo",
@@ -42,7 +43,8 @@ class UpdateType(proto.Enum):
         UPDATE_TYPE_UNSPECIFIED (0):
             Defaults to full replace behavior, ie. FULL_REPLACE.
         UPDATE_TYPE_REPLACE (1):
-            Fully replace all the fields. Any field masks
+            Fully replace all the fields (including
+            previously linked raw document). Any field masks
             will be ignored.
         UPDATE_TYPE_MERGE (2):
             Merge the fields into the existing entities.
@@ -52,6 +54,12 @@ class UpdateType(proto.Enum):
             Replace the properties by names.
         UPDATE_TYPE_DELETE_PROPERTIES_BY_NAMES (5):
             Delete the properties by names.
+        UPDATE_TYPE_MERGE_AND_REPLACE_OR_INSERT_PROPERTIES_BY_NAMES (6):
+            For each of the property, replaces the
+            property if the it exists, otherwise inserts a
+            new property. And for the rest of the fields,
+            merge them based on update mask and merge fields
+            options.
     """
     UPDATE_TYPE_UNSPECIFIED = 0
     UPDATE_TYPE_REPLACE = 1
@@ -59,6 +67,7 @@ class UpdateType(proto.Enum):
     UPDATE_TYPE_INSERT_PROPERTIES_BY_NAMES = 3
     UPDATE_TYPE_REPLACE_PROPERTIES_BY_NAMES = 4
     UPDATE_TYPE_DELETE_PROPERTIES_BY_NAMES = 5
+    UPDATE_TYPE_MERGE_AND_REPLACE_OR_INSERT_PROPERTIES_BY_NAMES = 6
 
 
 class DatabaseType(proto.Enum):
@@ -101,6 +110,29 @@ class AccessControlMode(proto.Enum):
     ACL_MODE_DOCUMENT_LEVEL_ACCESS_CONTROL_GCI = 3
 
 
+class DocumentCreatorDefaultRole(proto.Enum):
+    r"""The default role of the document creator.
+
+    Values:
+        DOCUMENT_CREATOR_DEFAULT_ROLE_UNSPECIFIED (0):
+            Unspecified, will be default to document
+            admin role.
+        DOCUMENT_ADMIN (1):
+            Document Admin, same as
+            contentwarehouse.googleapis.com/documentAdmin.
+        DOCUMENT_EDITOR (2):
+            Document Editor, same as
+            contentwarehouse.googleapis.com/documentEditor.
+        DOCUMENT_VIEWER (3):
+            Document Viewer, same as
+            contentwarehouse.googleapis.com/documentViewer.
+    """
+    DOCUMENT_CREATOR_DEFAULT_ROLE_UNSPECIFIED = 0
+    DOCUMENT_ADMIN = 1
+    DOCUMENT_EDITOR = 2
+    DOCUMENT_VIEWER = 3
+
+
 class RequestMetadata(proto.Message):
     r"""Meta information is used to improve the performance of the
     service.
@@ -135,7 +167,7 @@ class ResponseMetadata(proto.Message):
 
 
 class UserInfo(proto.Message):
-    r"""
+    r"""The user information.
 
     Attributes:
         id (str):
