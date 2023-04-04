@@ -51,7 +51,7 @@ extras = {
     # Keep the no-op bqstorage extra for backward compatibility.
     # See: https://github.com/googleapis/python-bigquery/issues/757
     "bqstorage": [
-        "google-cloud-bigquery-storage >= 2.0.0, <3.0.0dev",
+        "google-cloud-bigquery-storage >= 2.6.0, <3.0.0dev",
         # Due to an issue in pip's dependency resolver, the `grpc` extra is not
         # installed, even though `google-cloud-bigquery-storage` specifies it
         # as `google-api-core[grpc]`. We thus need to explicitly specify it here.
