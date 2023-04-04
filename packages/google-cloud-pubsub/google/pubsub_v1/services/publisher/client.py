@@ -976,7 +976,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
 
         Args:
             request (Union[google.pubsub_v1.types.ListTopicsRequest, dict]):
-                The request object. Request for the `ListTopics` method.
+                The request object. Request for the ``ListTopics`` method.
             project (str):
                 Required. The name of the project in which to list
                 topics. Format is ``projects/{project-id}``.
@@ -1091,8 +1091,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
 
         Args:
             request (Union[google.pubsub_v1.types.ListTopicSubscriptionsRequest, dict]):
-                The request object. Request for the
-                `ListTopicSubscriptions` method.
+                The request object. Request for the ``ListTopicSubscriptions`` method.
             topic (str):
                 Required. The name of the topic that subscriptions are
                 attached to. Format is
@@ -1212,8 +1211,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
 
         Args:
             request (Union[google.pubsub_v1.types.ListTopicSnapshotsRequest, dict]):
-                The request object. Request for the `ListTopicSnapshots`
-                method.
+                The request object. Request for the ``ListTopicSnapshots`` method.
             topic (str):
                 Required. The name of the topic that snapshots are
                 attached to. Format is
@@ -1329,8 +1327,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
 
         Args:
             request (Union[google.pubsub_v1.types.DeleteTopicRequest, dict]):
-                The request object. Request for the `DeleteTopic`
-                method.
+                The request object. Request for the ``DeleteTopic`` method.
             topic (str):
                 Required. Name of the topic to delete. Format is
                 ``projects/{project}/topics/{topic}``.

@@ -718,8 +718,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
         Args:
             request (Union[google.pubsub_v1.types.ListSchemasRequest, dict]):
-                The request object. Request for the `ListSchemas`
-                method.
+                The request object. Request for the ``ListSchemas`` method.
             parent (str):
                 Required. The name of the project in which to list
                 schemas. Format is ``projects/{project-id}``.
@@ -832,8 +831,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
         Args:
             request (Union[google.pubsub_v1.types.ListSchemaRevisionsRequest, dict]):
-                The request object. Request for the
-                `ListSchemaRevisions` method.
+                The request object. Request for the ``ListSchemaRevisions`` method.
             name (str):
                 Required. The name of the schema to
                 list revisions for.
@@ -1061,8 +1059,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
         Args:
             request (Union[google.pubsub_v1.types.RollbackSchemaRequest, dict]):
-                The request object. Request for the `RollbackSchema`
-                method.
+                The request object. Request for the ``RollbackSchema`` method.
             name (str):
                 Required. The schema being rolled
                 back with revision id.
@@ -1173,8 +1170,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
         Args:
             request (Union[google.pubsub_v1.types.DeleteSchemaRevisionRequest, dict]):
-                The request object. Request for the
-                `DeleteSchemaRevision` method.
+                The request object. Request for the ``DeleteSchemaRevision`` method.
             name (str):
                 Required. The name of the schema revision to be deleted,
                 with a revision ID explicitly included.
@@ -1282,8 +1278,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
         Args:
             request (Union[google.pubsub_v1.types.DeleteSchemaRequest, dict]):
-                The request object. Request for the `DeleteSchema`
-                method.
+                The request object. Request for the ``DeleteSchema`` method.
             name (str):
                 Required. Name of the schema to delete. Format is
                 ``projects/{project}/schemas/{schema}``.
@@ -1380,8 +1375,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
         Args:
             request (Union[google.pubsub_v1.types.ValidateSchemaRequest, dict]):
-                The request object. Request for the `ValidateSchema`
-                method.
+                The request object. Request for the ``ValidateSchema`` method.
             parent (str):
                 Required. The name of the project in which to validate
                 schemas. Format is ``projects/{project-id}``.
@@ -1491,8 +1485,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
         Args:
             request (Union[google.pubsub_v1.types.ValidateMessageRequest, dict]):
-                The request object. Request for the `ValidateMessage`
-                method.
+                The request object. Request for the ``ValidateMessage`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

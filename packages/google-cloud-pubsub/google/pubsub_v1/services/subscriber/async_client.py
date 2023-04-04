@@ -279,10 +279,10 @@ class SubscriberAsyncClient:
 
         Args:
             request (Optional[Union[google.pubsub_v1.types.Subscription, dict]]):
-                The request object. A subscription resource. If none of
-                `push_config` or `bigquery_config` is set, then the
-                subscriber will pull and ack messages using API methods.
-                At most one of these fields may be set.
+                The request object. A subscription resource. If none of ``push_config`` or
+                ``bigquery_config`` is set, then the subscriber will
+                pull and ack messages using API methods. At most one of
+                these fields may be set.
             name (:class:`str`):
                 Required. The name of the subscription. It must have the
                 format
@@ -706,8 +706,7 @@ class SubscriberAsyncClient:
 
         Args:
             request (Optional[Union[google.pubsub_v1.types.ListSubscriptionsRequest, dict]]):
-                The request object. Request for the `ListSubscriptions`
-                method.
+                The request object. Request for the ``ListSubscriptions`` method.
             project (:class:`str`):
                 Required. The name of the project in which to list
                 subscriptions. Format is ``projects/{project-id}``.
@@ -1194,7 +1193,7 @@ class SubscriberAsyncClient:
 
         Args:
             request (Optional[Union[google.pubsub_v1.types.PullRequest, dict]]):
-                The request object. Request for the `Pull` method.
+                The request object. Request for the ``Pull`` method.
             subscription (:class:`str`):
                 Required. The subscription from which messages should be
                 pulled. Format is
@@ -1360,11 +1359,10 @@ class SubscriberAsyncClient:
 
         Args:
             requests (AsyncIterator[`google.pubsub_v1.types.StreamingPullRequest`]):
-                The request object AsyncIterator. Request for the `StreamingPull`
-                streaming RPC method. This request is used to establish
-                the initial stream as well as to stream acknowledgements
-                and ack deadline modifications from the client to the
-                server.
+                The request object AsyncIterator. Request for the ``StreamingPull`` streaming RPC method.
+                This request is used to establish the initial stream as
+                well as to stream acknowledgements and ack deadline
+                modifications from the client to the server.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1697,8 +1695,7 @@ class SubscriberAsyncClient:
 
         Args:
             request (Optional[Union[google.pubsub_v1.types.ListSnapshotsRequest, dict]]):
-                The request object. Request for the `ListSnapshots`
-                method.
+                The request object. Request for the ``ListSnapshots`` method.
             project (:class:`str`):
                 Required. The name of the project in which to list
                 snapshots. Format is ``projects/{project-id}``.
@@ -1841,8 +1838,7 @@ class SubscriberAsyncClient:
 
         Args:
             request (Optional[Union[google.pubsub_v1.types.CreateSnapshotRequest, dict]]):
-                The request object. Request for the `CreateSnapshot`
-                method.
+                The request object. Request for the ``CreateSnapshot`` method.
             name (:class:`str`):
                 Required. User-provided name for this snapshot. If the
                 name is not provided in the request, the server will
@@ -2116,8 +2112,7 @@ class SubscriberAsyncClient:
 
         Args:
             request (Optional[Union[google.pubsub_v1.types.DeleteSnapshotRequest, dict]]):
-                The request object. Request for the `DeleteSnapshot`
-                method.
+                The request object. Request for the ``DeleteSnapshot`` method.
             snapshot (:class:`str`):
                 Required. The name of the snapshot to delete. Format is
                 ``projects/{project}/snapshots/{snap}``.
@@ -2225,7 +2220,7 @@ class SubscriberAsyncClient:
 
         Args:
             request (Optional[Union[google.pubsub_v1.types.SeekRequest, dict]]):
-                The request object. Request for the `Seek` method.
+                The request object. Request for the ``Seek`` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
