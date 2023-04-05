@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-security-private-ca/compare/v1.7.1...v1.8.0) (2023-04-05)
+
+
+### Features
+
+* Added ignore_dependent_resources to DeleteCaPoolRequest, DeleteCertificateAuthorityRequest, DisableCertificateAuthorityRequest ([#345](https://github.com/googleapis/python-security-private-ca/issues/345)) ([7f71213](https://github.com/googleapis/python-security-private-ca/commit/7f7121369343b67d1bd8182888272185d9262162))
+
 ## [1.7.1](https://github.com/googleapis/python-security-private-ca/compare/v1.7.0...v1.7.1) (2023-03-23)
 
 
