@@ -17,7 +17,7 @@ Demonstrates how to connect to Cloud Bigtable and run some basic operations. Mor
 
 To run this sample:
 
-1. If this is your first time working with GCP products, you will need to set up [the Cloud SDK][cloud_sdk] or utilize [Google Cloud Shell][gcloud_shell]. This sample may [require authetication][authentication] and you will need to [enable billing][enable_billing].
+1. If this is your first time working with GCP products, you will need to set up [the Cloud SDK][cloud_sdk] or utilize [Google Cloud Shell][gcloud_shell]. This sample may [require authentication][authentication] and you will need to [enable billing][enable_billing].
 
 1. Make a fork of this repo and clone the branch locally, then navigate to the sample directory you want to use.
 
