@@ -441,19 +441,32 @@ class Credentials(
         # https://google.aip.dev/auth/4111
         if self._always_use_jwt_access:
             if self._scopes:
-                self._jwt_credentials = jwt.Credentials.from_signing_credentials(
-                    self, None, additional_claims={"scope": " ".join(self._scopes)}
-                )
+                additional_claims = {"scope": " ".join(self._scopes)}
+                if (
+                    self._jwt_credentials is None
+                    or self._jwt_credentials.additional_claims != additional_claims
+                ):
+                    self._jwt_credentials = jwt.Credentials.from_signing_credentials(
+                        self, None, additional_claims=additional_claims
+                    )
             elif audience:
-                self._jwt_credentials = jwt.Credentials.from_signing_credentials(
-                    self, audience
-                )
+                if (
+                    self._jwt_credentials is None
+                    or self._jwt_credentials._audience != audience
+                ):
+
+                    self._jwt_credentials = jwt.Credentials.from_signing_credentials(
+                        self, audience
+                    )
             elif self._default_scopes:
-                self._jwt_credentials = jwt.Credentials.from_signing_credentials(
-                    self,
-                    None,
-                    additional_claims={"scope": " ".join(self._default_scopes)},
-                )
+                additional_claims = {"scope": " ".join(self._default_scopes)}
+                if (
+                    self._jwt_credentials is None
+                    or additional_claims != self._jwt_credentials.additional_claims
+                ):
+                    self._jwt_credentials = jwt.Credentials.from_signing_credentials(
+                        self, None, additional_claims=additional_claims
+                    )
         elif not self._scopes and audience:
             self._jwt_credentials = jwt.Credentials.from_signing_credentials(
                 self, audience

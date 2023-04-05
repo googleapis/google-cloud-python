@@ -82,6 +82,9 @@ class HttpStub(object):
         self.requests.append((method, url, body, headers, kwargs))
         return self.responses.pop(0)
 
+    def clear(self):
+        pass
+
 
 class ResponseStub(object):
     def __init__(self, status=http_client.OK, data=None):

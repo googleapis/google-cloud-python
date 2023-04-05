@@ -464,6 +464,7 @@ class TestCredentials(object):
         assert new_credentials._subject == self.credentials._subject
         assert new_credentials._audience == self.credentials._audience
         assert new_credentials._additional_claims == self.credentials._additional_claims
+        assert new_credentials.additional_claims == self.credentials._additional_claims
         assert new_credentials._quota_project_id == quota_project_id
 
     def test_sign_bytes(self):

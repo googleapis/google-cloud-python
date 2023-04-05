@@ -590,6 +590,11 @@ class Credentials(
     def signer(self):
         return self._signer
 
+    @property  # type: ignore
+    def additional_claims(self):
+        """ Additional claims the JWT object was created with."""
+        return self._additional_claims
+
 
 class OnDemandCredentials(
     google.auth.credentials.Signing, google.auth.credentials.CredentialsWithQuotaProject
