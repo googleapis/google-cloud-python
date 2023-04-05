@@ -526,6 +526,13 @@ class DisableCertificateAuthorityRequest(proto.Message):
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
+        ignore_dependent_resources (bool):
+            Optional. This field allows this CA to be
+            disabled even if it's being depended on by
+            another resource. However, doing so may result
+            in unintended and unrecoverable effects on any
+            dependent resource(s) since the CA will no
+            longer be able to issue certificates.
     """
 
     name: str = proto.Field(
@@ -535,6 +542,10 @@ class DisableCertificateAuthorityRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    ignore_dependent_resources: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 
@@ -805,6 +816,13 @@ class DeleteCertificateAuthorityRequest(proto.Message):
             undeletion would have been allowed. If you
             proceed, there will be no way to recover this
             CA.
+        ignore_dependent_resources (bool):
+            Optional. This field allows this ca to be
+            deleted even if it's being depended on by
+            another resource. However, doing so may result
+            in unintended and unrecoverable effects on any
+            dependent resource(s) since the CA will no
+            longer be able to issue certificates.
     """
 
     name: str = proto.Field(
@@ -822,6 +840,10 @@ class DeleteCertificateAuthorityRequest(proto.Message):
     skip_grace_period: bool = proto.Field(
         proto.BOOL,
         number=5,
+    )
+    ignore_dependent_resources: bool = proto.Field(
+        proto.BOOL,
+        number=6,
     )
 
 
@@ -1007,6 +1029,13 @@ class DeleteCaPoolRequest(proto.Message):
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
+        ignore_dependent_resources (bool):
+            Optional. This field allows this pool to be
+            deleted even if it's being depended on by
+            another resource. However, doing so may result
+            in unintended and unrecoverable effects on any
+            dependent resource(s) since the pool will no
+            longer be able to issue certificates.
     """
 
     name: str = proto.Field(
@@ -1016,6 +1045,10 @@ class DeleteCaPoolRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    ignore_dependent_resources: bool = proto.Field(
+        proto.BOOL,
+        number=4,
     )
 
 

@@ -13808,6 +13808,7 @@ def test_delete_certificate_authority_rest_required_fields(
     assert not set(unset_fields) - set(
         (
             "ignore_active_certificates",
+            "ignore_dependent_resources",
             "request_id",
             "skip_grace_period",
         )
@@ -13866,6 +13867,7 @@ def test_delete_certificate_authority_rest_unset_required_fields():
         set(
             (
                 "ignoreActiveCertificates",
+                "ignoreDependentResources",
                 "requestId",
                 "skipGracePeriod",
             )
@@ -16264,7 +16266,12 @@ def test_delete_ca_pool_rest_required_fields(request_type=service.DeleteCaPoolRe
         credentials=ga_credentials.AnonymousCredentials()
     ).delete_ca_pool._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "ignore_dependent_resources",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -16315,7 +16322,15 @@ def test_delete_ca_pool_rest_unset_required_fields():
     )
 
     unset_fields = transport.delete_ca_pool._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+    assert set(unset_fields) == (
+        set(
+            (
+                "ignoreDependentResources",
+                "requestId",
+            )
+        )
+        & set(("name",))
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

@@ -128,7 +128,7 @@ class SubjectRequestMode(proto.Enum):
             permission.
         REFLECTED_SPIFFE (2):
             A mode reserved for special cases. Indicates that the
-            certificate should have one or more SPIFFE
+            certificate should have one SPIFFE
             [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames]
             set by the service based on the caller's identity. This mode
             will ignore any explicitly specified
