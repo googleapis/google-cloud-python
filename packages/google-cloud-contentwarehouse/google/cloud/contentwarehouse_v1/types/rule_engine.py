@@ -104,11 +104,11 @@ class Rule(proto.Message):
     """
 
     class TriggerType(proto.Enum):
-        r"""
+        r"""The trigger types for actions.
 
         Values:
             UNKNOWN (0):
-                No description available.
+                Trigger for unknown action.
             ON_CREATE (1):
                 Trigger for create document action.
             ON_UPDATE (4):
@@ -254,7 +254,7 @@ class AccessControlAction(proto.Message):
 
         Values:
             UNKNOWN (0):
-                No description available.
+                The unknown operation type.
             ADD_POLICY_BINDING (1):
                 Adds newly given policy bindings in the
                 existing bindings list.
@@ -544,7 +544,7 @@ class ActionOutput(proto.Message):
 
         Values:
             UNKNOWN (0):
-                No description available.
+                The unknown state.
             ACTION_SUCCEEDED (1):
                 State indicating action executed
                 successfully.

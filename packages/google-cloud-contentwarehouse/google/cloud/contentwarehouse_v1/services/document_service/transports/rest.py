@@ -98,6 +98,14 @@ class DocumentServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_lock_document(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_lock_document(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_search_documents(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -213,6 +221,29 @@ class DocumentServiceRestInterceptor:
         """
         return response
 
+    def pre_lock_document(
+        self,
+        request: document_service_request.LockDocumentRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[document_service_request.LockDocumentRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for lock_document
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DocumentService server.
+        """
+        return request, metadata
+
+    def post_lock_document(
+        self, response: gcc_document.Document
+    ) -> gcc_document.Document:
+        """Post-rpc interceptor for lock_document
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DocumentService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_search_documents(
         self,
         request: document_service_request.SearchDocumentsRequest,
@@ -279,6 +310,29 @@ class DocumentServiceRestInterceptor:
         self, response: document_service.UpdateDocumentResponse
     ) -> document_service.UpdateDocumentResponse:
         """Post-rpc interceptor for update_document
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DocumentService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_operation(
+        self,
+        request: operations_pb2.GetOperationRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DocumentService server.
+        """
+        return request, metadata
+
+    def post_get_operation(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
         after it is returned by the DocumentService server but before
@@ -776,6 +830,104 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
             resp = self._interceptor.post_get_document(resp)
             return resp
 
+    class _LockDocument(DocumentServiceRestStub):
+        def __hash__(self):
+            return hash("LockDocument")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: document_service_request.LockDocumentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gcc_document.Document:
+            r"""Call the lock document method over HTTP.
+
+            Args:
+                request (~.document_service_request.LockDocumentRequest):
+                    The request object. Request message for
+                DocumentService.LockDocument.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.gcc_document.Document:
+                    Defines the structure for content
+                warehouse document proto.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*/documents/*}:lock",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_lock_document(request, metadata)
+            pb_request = document_service_request.LockDocumentRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gcc_document.Document()
+            pb_resp = gcc_document.Document.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_lock_document(resp)
+            return resp
+
     class _SearchDocuments(DocumentServiceRestStub):
         def __hash__(self):
             return hash("SearchDocuments")
@@ -1120,6 +1272,16 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
         return self._GetDocument(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def lock_document(
+        self,
+    ) -> Callable[
+        [document_service_request.LockDocumentRequest], gcc_document.Document
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._LockDocument(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def search_documents(
         self,
     ) -> Callable[
@@ -1150,6 +1312,73 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDocument(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_operation(self):
+        return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _GetOperation(DocumentServiceRestStub):
+        def __call__(
+            self,
+            request: operations_pb2.GetOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+
+            r"""Call the get operation method over HTTP.
+
+            Args:
+                request (operations_pb2.GetOperationRequest):
+                    The request object for GetOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                operations_pb2.Operation: Response from GetOperation method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_get_operation(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = operations_pb2.Operation()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_get_operation(resp)
+            return resp
 
     @property
     def kind(self) -> str:
