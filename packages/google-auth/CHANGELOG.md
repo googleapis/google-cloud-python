@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.17.2](https://github.com/googleapis/google-auth-library-python/compare/v2.17.1...v2.17.2) (2023-04-05)
+
+
+### Bug Fixes
+
+* Do not create new JWT credentials if they make the same claims as the existing. ([#1267](https://github.com/googleapis/google-auth-library-python/issues/1267)) ([eebb7b6](https://github.com/googleapis/google-auth-library-python/commit/eebb7b6630a7fc1e943a4d5f8fc76e9dd6dbe687))
+
 ## [2.17.1](https://github.com/googleapis/google-auth-library-python/compare/v2.17.0...v2.17.1) (2023-03-30)
 
 
