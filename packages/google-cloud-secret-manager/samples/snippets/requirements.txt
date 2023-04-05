@@ -1,2 +1,0 @@
-google-cloud-secret-manager==2.16.0
-google-crc32c==1.5.0
