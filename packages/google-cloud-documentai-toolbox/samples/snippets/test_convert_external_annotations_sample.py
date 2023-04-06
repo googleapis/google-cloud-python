@@ -26,9 +26,9 @@ def test_convert_external_annotations_sample(capsys: pytest.CaptureFixture) -> N
     convert_external_annotations_sample.convert_external_annotations_sample(
         location=location,
         processor_id="52a38e080c1a7296",
-        project_id="project_id",
-        gcs_input_path="gs://documentai_toolbox_samples/documentai_toolbox_samples/converter/azure",
-        gcs_output_path="gs://documentai_toolbox_samples/documentai_toolbox_samples/converter/output",
+        project_id=project_id,
+        gcs_input_path="gs://documentai_toolbox_samples/converter/azure",
+        gcs_output_path="gs://documentai_toolbox_samples/converter/output",
     )
     out, _ = capsys.readouterr()
 
