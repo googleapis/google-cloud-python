@@ -46,7 +46,7 @@ git clone "git@github.com:googleapis/${SPLIT_REPO}.git" "/tmp/${SPLIT_REPO}"
 cd "/tmp/${SPLIT_REPO}"
 
 # Create a git branch
-git checkout -b 'delete-library'
+git checkout -b 'migrate-library'
 
 # Quick check to make sure there are no handwritten samples. 
 # Handwritten samples should be migrated to python-docs-samples before repository code is deleted.
