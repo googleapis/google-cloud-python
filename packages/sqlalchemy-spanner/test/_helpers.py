@@ -71,6 +71,10 @@ def use_test_ot_exporter():
     _TEST_OT_PROVIDER_INITIALIZED = True
 
 
+def get_project():
+    return PROJECT
+
+
 class OpenTelemetryBase(fixtures.TestBase):
     @classmethod
     def setup_class(cls):

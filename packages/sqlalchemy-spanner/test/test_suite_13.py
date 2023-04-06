@@ -24,7 +24,7 @@ import random
 import time
 from unittest import mock
 
-from google.cloud.spanner_v1 import RequestOptions
+from google.cloud.spanner_v1 import RequestOptions, Client
 
 import sqlalchemy
 from sqlalchemy import create_engine
@@ -120,7 +120,7 @@ from sqlalchemy.testing.suite.test_types import (  # noqa: F401, F403
     UnicodeVarcharTest as _UnicodeVarcharTest,
     UnicodeTextTest as _UnicodeTextTest,
 )
-from test._helpers import get_db_url
+from test._helpers import get_db_url, get_project
 
 config.test_schema = ""
 
@@ -1961,3 +1961,30 @@ class JSONTest(_JSONTest):
     )
     def test_round_trip_none_as_sql_null(self):
         pass
+
+
+class CreateEngineWithClientObjectTest(fixtures.TestBase):
+    def test_create_engine_w_valid_client_object(self):
+        """
+        SPANNER TEST:
+
+        Check that we can connect to SqlAlchemy
+        by passing custom Client object.
+        """
+        client = Client(project=get_project())
+        engine = create_engine(get_db_url(), connect_args={"client": client})
+        with engine.connect() as connection:
+            assert connection.connection.instance._client == client
+
+    def test_create_engine_w_invalid_client_object(self):
+        """
+        SPANNER TEST:
+
+        Check that if project id in url and custom Client
+        Object passed to enginer mismatch, error is thrown.
+        """
+        client = Client(project="project_id")
+        engine = create_engine(get_db_url(), connect_args={"client": client})
+
+        with pytest.raises(ValueError):
+            engine.connect()

@@ -76,6 +76,15 @@ on this step in a dialect prefix part:
    # for SQLAlchemy 1.4:
    spanner+spanner:///projects/project-id/instances/instance-id/databases/database-id
 
+To pass your custom client object directly to be be used, create engine as following:
+
+.. code:: python
+
+    engine = create_engine(
+        "spanner+spanner:///projects/project-id/instances/instance-id/databases/database-id",
+        connect_args={'client': spanner.Client(project="project-id")}
+    )
+
 Create a table
 ~~~~~~~~~~~~~~
 
