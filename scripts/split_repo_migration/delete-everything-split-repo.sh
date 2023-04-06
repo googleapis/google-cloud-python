@@ -92,14 +92,19 @@ ls -A | grep -v 'LICENCE\|SECURITY.md\|README.rst\|.git\|.repo-metadata.json' | 
 rm -rf .github
 rm -rf .gitignore
 
-# Add a header to the README to state that this repository has been archived and the source has moved.
+# Append a prefix to the README to state that this repository has been archived and the source has moved.
 README_RST="/tmp/${SPLIT_REPO}/README.rst"
+
+if [[ ! -f $README_RST ]]; then
+  echo "README.rst file not found"
+  exit 1
+fi
 
 echo -e ':**NOTE**: **This github repository is archived. The repository contents and history have moved to** `google-cloud-python`_.
 
 .. _google-cloud-python: https://github.com/googleapis/google-cloud-python/tree/main/packages/'${ARTIFACT_NAME} > README_HEADER.rst 
 
-# Create temp file for the header
+# Create temp file for the prefix that we want to add to the README.
 README_HEADER_RST="/tmp/${SPLIT_REPO}/README_HEADER.rst"
 
 # Merge the HEADER into the existing README
