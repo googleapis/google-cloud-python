@@ -48,7 +48,7 @@ class DocumentSchema(proto.Message):
             The name is ignored when creating a document schema.
         display_name (str):
             Required. Name of the schema given by the
-            user. Must be unique per customer.
+            user. Must be unique per project.
         property_definitions (MutableSequence[google.cloud.contentwarehouse_v1.types.PropertyDefinition]):
             Document details.
         document_is_folder (bool):
@@ -128,12 +128,18 @@ class PropertyDefinition(proto.Message):
             included in a global search.
         is_metadata (bool):
             Whether the property is user supplied
-            metadata.
+            metadata. This out-of-the box placeholder
+            setting can be used to tag derived properties.
+            Its value and interpretation logic should be
+            implemented by API user.
         is_required (bool):
             Whether the property is mandatory.
             Default is 'false', i.e. populating property
             value can be skipped. If 'true' then user must
             populate the value for this property.
+        retrieval_importance (google.cloud.contentwarehouse_v1.types.PropertyDefinition.RetrievalImportance):
+            The retrieval importance of the property
+            during search.
         integer_type_options (google.cloud.contentwarehouse_v1.types.IntegerTypeOptions):
             Integer property.
 
@@ -170,7 +176,57 @@ class PropertyDefinition(proto.Message):
             deployment.
 
             This field is a member of `oneof`_ ``value_type_options``.
+        schema_sources (MutableSequence[google.cloud.contentwarehouse_v1.types.PropertyDefinition.SchemaSource]):
+            The mapping information between this property
+            to another schema source.
     """
+
+    class RetrievalImportance(proto.Enum):
+        r"""Stores the retrieval importance.
+
+        Values:
+            RETRIEVAL_IMPORTANCE_UNSPECIFIED (0):
+                No importance specified. Default medium
+                importance.
+            HIGHEST (1):
+                Highest importance.
+            HIGHER (2):
+                Higher importance.
+            HIGH (3):
+                High importance.
+            MEDIUM (4):
+                Medium importance.
+            LOW (5):
+                Low importance (negative).
+            LOWEST (6):
+                Lowest importance (negative).
+        """
+        RETRIEVAL_IMPORTANCE_UNSPECIFIED = 0
+        HIGHEST = 1
+        HIGHER = 2
+        HIGH = 3
+        MEDIUM = 4
+        LOW = 5
+        LOWEST = 6
+
+    class SchemaSource(proto.Message):
+        r"""The schema source information.
+
+        Attributes:
+            name (str):
+                The schema name in the source.
+            processor_type (str):
+                The Doc AI processor type name.
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        processor_type: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -199,6 +255,11 @@ class PropertyDefinition(proto.Message):
     is_required: bool = proto.Field(
         proto.BOOL,
         number=14,
+    )
+    retrieval_importance: RetrievalImportance = proto.Field(
+        proto.ENUM,
+        number=18,
+        enum=RetrievalImportance,
     )
     integer_type_options: "IntegerTypeOptions" = proto.Field(
         proto.MESSAGE,
@@ -247,6 +308,11 @@ class PropertyDefinition(proto.Message):
         number=16,
         oneof="value_type_options",
         message="TimestampTypeOptions",
+    )
+    schema_sources: MutableSequence[SchemaSource] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=19,
+        message=SchemaSource,
     )
 
 

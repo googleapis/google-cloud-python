@@ -39,6 +39,7 @@ from .types.async_document_service_request import (
 from .types.common import (
     AccessControlMode,
     DatabaseType,
+    DocumentCreatorDefaultRole,
     MergeFieldsOptions,
     RequestMetadata,
     ResponseMetadata,
@@ -47,6 +48,7 @@ from .types.common import (
     UserInfo,
 )
 from .types.document import (
+    ContentCategory,
     DateTimeArray,
     Document,
     DocumentReference,
@@ -106,11 +108,19 @@ from .types.document_service_request import (
     DeleteDocumentRequest,
     FetchAclRequest,
     GetDocumentRequest,
+    LockDocumentRequest,
     SearchDocumentsRequest,
     SetAclRequest,
     UpdateDocumentRequest,
 )
-from .types.filters import DocumentQuery, FileTypeFilter, PropertyFilter, TimeFilter
+from .types.filters import (
+    CustomWeightsMetadata,
+    DocumentQuery,
+    FileTypeFilter,
+    PropertyFilter,
+    TimeFilter,
+    WeightedSchemaProperty,
+)
 from .types.histogram import (
     HistogramQuery,
     HistogramQueryPropertyNameFilter,
@@ -165,6 +175,7 @@ __all__ = (
     "ActionOutput",
     "AddToFolderAction",
     "CloudAIDocumentOption",
+    "ContentCategory",
     "CreateDocumentLinkRequest",
     "CreateDocumentMetadata",
     "CreateDocumentRequest",
@@ -172,6 +183,7 @@ __all__ = (
     "CreateDocumentSchemaRequest",
     "CreateRuleSetRequest",
     "CreateSynonymSetRequest",
+    "CustomWeightsMetadata",
     "DataUpdateAction",
     "DataValidationAction",
     "DatabaseType",
@@ -184,6 +196,7 @@ __all__ = (
     "DeleteRuleSetRequest",
     "DeleteSynonymSetRequest",
     "Document",
+    "DocumentCreatorDefaultRole",
     "DocumentLink",
     "DocumentLinkServiceClient",
     "DocumentQuery",
@@ -219,6 +232,7 @@ __all__ = (
     "ListRuleSetsResponse",
     "ListSynonymSetsRequest",
     "ListSynonymSetsResponse",
+    "LockDocumentRequest",
     "MapProperty",
     "MapTypeOptions",
     "MergeFieldsOptions",
@@ -261,4 +275,5 @@ __all__ = (
     "UpdateType",
     "UserInfo",
     "Value",
+    "WeightedSchemaProperty",
 )

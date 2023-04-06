@@ -36,7 +36,7 @@ from google.cloud.documentai_v1.types import barcode
 from google.cloud.documentai_v1.types import document as gcd_document
 from google.cloud.documentai_v1.types import geometry
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
@@ -1019,7 +1019,9 @@ def test_get_document(request_type, transport: str = "grpc"):
             structured_content_uri="structured_content_uri_value",
             raw_document_file_type=gcc_document.RawDocumentFileType.RAW_DOCUMENT_FILE_TYPE_PDF,
             async_enabled=True,
+            content_category=gcc_document.ContentCategory.CONTENT_CATEGORY_IMAGE,
             text_extraction_disabled=True,
+            text_extraction_enabled=True,
             creator="creator_value",
             updater="updater_value",
             plain_text="plain_text_value",
@@ -1046,7 +1048,11 @@ def test_get_document(request_type, transport: str = "grpc"):
         == gcc_document.RawDocumentFileType.RAW_DOCUMENT_FILE_TYPE_PDF
     )
     assert response.async_enabled is True
+    assert (
+        response.content_category == gcc_document.ContentCategory.CONTENT_CATEGORY_IMAGE
+    )
     assert response.text_extraction_disabled is True
+    assert response.text_extraction_enabled is True
     assert response.creator == "creator_value"
     assert response.updater == "updater_value"
 
@@ -1095,7 +1101,9 @@ async def test_get_document_async(
                 structured_content_uri="structured_content_uri_value",
                 raw_document_file_type=gcc_document.RawDocumentFileType.RAW_DOCUMENT_FILE_TYPE_PDF,
                 async_enabled=True,
+                content_category=gcc_document.ContentCategory.CONTENT_CATEGORY_IMAGE,
                 text_extraction_disabled=True,
+                text_extraction_enabled=True,
                 creator="creator_value",
                 updater="updater_value",
             )
@@ -1121,7 +1129,11 @@ async def test_get_document_async(
         == gcc_document.RawDocumentFileType.RAW_DOCUMENT_FILE_TYPE_PDF
     )
     assert response.async_enabled is True
+    assert (
+        response.content_category == gcc_document.ContentCategory.CONTENT_CATEGORY_IMAGE
+    )
     assert response.text_extraction_disabled is True
+    assert response.text_extraction_enabled is True
     assert response.creator == "creator_value"
     assert response.updater == "updater_value"
 
@@ -2166,6 +2178,303 @@ async def test_search_documents_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
+        document_service_request.LockDocumentRequest,
+        dict,
+    ],
+)
+def test_lock_document(request_type, transport: str = "grpc"):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lock_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcc_document.Document(
+            name="name_value",
+            reference_id="reference_id_value",
+            display_name="display_name_value",
+            title="title_value",
+            display_uri="display_uri_value",
+            document_schema_name="document_schema_name_value",
+            structured_content_uri="structured_content_uri_value",
+            raw_document_file_type=gcc_document.RawDocumentFileType.RAW_DOCUMENT_FILE_TYPE_PDF,
+            async_enabled=True,
+            content_category=gcc_document.ContentCategory.CONTENT_CATEGORY_IMAGE,
+            text_extraction_disabled=True,
+            text_extraction_enabled=True,
+            creator="creator_value",
+            updater="updater_value",
+            plain_text="plain_text_value",
+            raw_document_path="raw_document_path_value",
+        )
+        response = client.lock_document(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.LockDocumentRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcc_document.Document)
+    assert response.name == "name_value"
+    assert response.reference_id == "reference_id_value"
+    assert response.display_name == "display_name_value"
+    assert response.title == "title_value"
+    assert response.display_uri == "display_uri_value"
+    assert response.document_schema_name == "document_schema_name_value"
+    assert response.structured_content_uri == "structured_content_uri_value"
+    assert (
+        response.raw_document_file_type
+        == gcc_document.RawDocumentFileType.RAW_DOCUMENT_FILE_TYPE_PDF
+    )
+    assert response.async_enabled is True
+    assert (
+        response.content_category == gcc_document.ContentCategory.CONTENT_CATEGORY_IMAGE
+    )
+    assert response.text_extraction_disabled is True
+    assert response.text_extraction_enabled is True
+    assert response.creator == "creator_value"
+    assert response.updater == "updater_value"
+
+
+def test_lock_document_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lock_document), "__call__") as call:
+        client.lock_document()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.LockDocumentRequest()
+
+
+@pytest.mark.asyncio
+async def test_lock_document_async(
+    transport: str = "grpc_asyncio",
+    request_type=document_service_request.LockDocumentRequest,
+):
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lock_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcc_document.Document(
+                name="name_value",
+                reference_id="reference_id_value",
+                display_name="display_name_value",
+                title="title_value",
+                display_uri="display_uri_value",
+                document_schema_name="document_schema_name_value",
+                structured_content_uri="structured_content_uri_value",
+                raw_document_file_type=gcc_document.RawDocumentFileType.RAW_DOCUMENT_FILE_TYPE_PDF,
+                async_enabled=True,
+                content_category=gcc_document.ContentCategory.CONTENT_CATEGORY_IMAGE,
+                text_extraction_disabled=True,
+                text_extraction_enabled=True,
+                creator="creator_value",
+                updater="updater_value",
+            )
+        )
+        response = await client.lock_document(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.LockDocumentRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcc_document.Document)
+    assert response.name == "name_value"
+    assert response.reference_id == "reference_id_value"
+    assert response.display_name == "display_name_value"
+    assert response.title == "title_value"
+    assert response.display_uri == "display_uri_value"
+    assert response.document_schema_name == "document_schema_name_value"
+    assert response.structured_content_uri == "structured_content_uri_value"
+    assert (
+        response.raw_document_file_type
+        == gcc_document.RawDocumentFileType.RAW_DOCUMENT_FILE_TYPE_PDF
+    )
+    assert response.async_enabled is True
+    assert (
+        response.content_category == gcc_document.ContentCategory.CONTENT_CATEGORY_IMAGE
+    )
+    assert response.text_extraction_disabled is True
+    assert response.text_extraction_enabled is True
+    assert response.creator == "creator_value"
+    assert response.updater == "updater_value"
+
+
+@pytest.mark.asyncio
+async def test_lock_document_async_from_dict():
+    await test_lock_document_async(request_type=dict)
+
+
+def test_lock_document_field_headers():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document_service_request.LockDocumentRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lock_document), "__call__") as call:
+        call.return_value = gcc_document.Document()
+        client.lock_document(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_lock_document_field_headers_async():
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document_service_request.LockDocumentRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lock_document), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcc_document.Document()
+        )
+        await client.lock_document(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_lock_document_flattened():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lock_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcc_document.Document()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.lock_document(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_lock_document_flattened_error():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.lock_document(
+            document_service_request.LockDocumentRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_lock_document_flattened_async():
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lock_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcc_document.Document()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcc_document.Document()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.lock_document(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_lock_document_flattened_error_async():
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.lock_document(
+            document_service_request.LockDocumentRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         document_service_request.FetchAclRequest,
         dict,
     ],
@@ -2931,7 +3240,9 @@ def test_get_document_rest(request_type):
             structured_content_uri="structured_content_uri_value",
             raw_document_file_type=gcc_document.RawDocumentFileType.RAW_DOCUMENT_FILE_TYPE_PDF,
             async_enabled=True,
+            content_category=gcc_document.ContentCategory.CONTENT_CATEGORY_IMAGE,
             text_extraction_disabled=True,
+            text_extraction_enabled=True,
             creator="creator_value",
             updater="updater_value",
             plain_text="plain_text_value",
@@ -2962,7 +3273,11 @@ def test_get_document_rest(request_type):
         == gcc_document.RawDocumentFileType.RAW_DOCUMENT_FILE_TYPE_PDF
     )
     assert response.async_enabled is True
+    assert (
+        response.content_category == gcc_document.ContentCategory.CONTENT_CATEGORY_IMAGE
+    )
     assert response.text_extraction_disabled is True
+    assert response.text_extraction_enabled is True
     assert response.creator == "creator_value"
     assert response.updater == "updater_value"
 
@@ -4067,6 +4382,310 @@ def test_search_documents_rest_pager(transport: str = "rest"):
 @pytest.mark.parametrize(
     "request_type",
     [
+        document_service_request.LockDocumentRequest,
+        dict,
+    ],
+)
+def test_lock_document_rest(request_type):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/documents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcc_document.Document(
+            name="name_value",
+            reference_id="reference_id_value",
+            display_name="display_name_value",
+            title="title_value",
+            display_uri="display_uri_value",
+            document_schema_name="document_schema_name_value",
+            structured_content_uri="structured_content_uri_value",
+            raw_document_file_type=gcc_document.RawDocumentFileType.RAW_DOCUMENT_FILE_TYPE_PDF,
+            async_enabled=True,
+            content_category=gcc_document.ContentCategory.CONTENT_CATEGORY_IMAGE,
+            text_extraction_disabled=True,
+            text_extraction_enabled=True,
+            creator="creator_value",
+            updater="updater_value",
+            plain_text="plain_text_value",
+            raw_document_path="raw_document_path_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcc_document.Document.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.lock_document(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcc_document.Document)
+    assert response.name == "name_value"
+    assert response.reference_id == "reference_id_value"
+    assert response.display_name == "display_name_value"
+    assert response.title == "title_value"
+    assert response.display_uri == "display_uri_value"
+    assert response.document_schema_name == "document_schema_name_value"
+    assert response.structured_content_uri == "structured_content_uri_value"
+    assert (
+        response.raw_document_file_type
+        == gcc_document.RawDocumentFileType.RAW_DOCUMENT_FILE_TYPE_PDF
+    )
+    assert response.async_enabled is True
+    assert (
+        response.content_category == gcc_document.ContentCategory.CONTENT_CATEGORY_IMAGE
+    )
+    assert response.text_extraction_disabled is True
+    assert response.text_extraction_enabled is True
+    assert response.creator == "creator_value"
+    assert response.updater == "updater_value"
+
+
+def test_lock_document_rest_required_fields(
+    request_type=document_service_request.LockDocumentRequest,
+):
+    transport_class = transports.DocumentServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).lock_document._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).lock_document._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcc_document.Document()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gcc_document.Document.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.lock_document(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_lock_document_rest_unset_required_fields():
+    transport = transports.DocumentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.lock_document._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_lock_document_rest_interceptors(null_interceptor):
+    transport = transports.DocumentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DocumentServiceRestInterceptor(),
+    )
+    client = DocumentServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DocumentServiceRestInterceptor, "post_lock_document"
+    ) as post, mock.patch.object(
+        transports.DocumentServiceRestInterceptor, "pre_lock_document"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = document_service_request.LockDocumentRequest.pb(
+            document_service_request.LockDocumentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcc_document.Document.to_json(
+            gcc_document.Document()
+        )
+
+        request = document_service_request.LockDocumentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcc_document.Document()
+
+        client.lock_document(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_lock_document_rest_bad_request(
+    transport: str = "rest", request_type=document_service_request.LockDocumentRequest
+):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/documents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.lock_document(request)
+
+
+def test_lock_document_rest_flattened():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcc_document.Document()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/documents/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcc_document.Document.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.lock_document(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/documents/*}:lock"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_lock_document_rest_flattened_error(transport: str = "rest"):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.lock_document(
+            document_service_request.LockDocumentRequest(),
+            name="name_value",
+        )
+
+
+def test_lock_document_rest_error():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         document_service_request.FetchAclRequest,
         dict,
     ],
@@ -4754,8 +5373,10 @@ def test_document_service_base_transport():
         "update_document",
         "delete_document",
         "search_documents",
+        "lock_document",
         "fetch_acl",
         "set_acl",
+        "get_operation",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -5028,6 +5649,9 @@ def test_document_service_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.search_documents._session
     session2 = client2.transport.search_documents._session
+    assert session1 != session2
+    session1 = client1.transport.lock_document._session
+    session2 = client2.transport.lock_document._session
     assert session1 != session2
     session1 = client1.transport.fetch_acl._session
     session2 = client2.transport.fetch_acl._session
@@ -5378,6 +6002,209 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_get_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
+):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_get_operation(transport: str = "grpc"):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.GetOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+        response = client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+@pytest.mark.asyncio
+async def test_get_operation_async(transport: str = "grpc"):
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.GetOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_get_operation_field_headers():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.GetOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_operation_field_headers_async():
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.GetOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_get_operation_from_dict():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        response = client.get_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_from_dict_async():
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.get_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
 
 
 def test_transport_close():

@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.4.1...google-cloud-contentwarehouse-v0.5.0) (2023-04-05)
+
+
+### Features
+
+* add `content_category`, `text_extraction_enabled`, `retrieval_importance`, `schema_sources`, `total_result_size` fields ([80a9ff4](https://github.com/googleapis/google-cloud-python/commit/80a9ff4a68b3c40696e95d2b1faecea7c8397a5b))
+* add `DocumentCreatorDefaultRole`,  `ContentCategory`, `RetrievalImportance`, `SchemaSource`, `TotalResultSize`, `LockDocumentRequest`, `CustomWeightsMetadata`, `WeightedSchemaProperty` ([80a9ff4](https://github.com/googleapis/google-cloud-python/commit/80a9ff4a68b3c40696e95d2b1faecea7c8397a5b))
+* add LockDocument service ([80a9ff4](https://github.com/googleapis/google-cloud-python/commit/80a9ff4a68b3c40696e95d2b1faecea7c8397a5b))
+* deprecate `text_extraction_disabled`, `structured_content_uri`, `async_enabled` field ([80a9ff4](https://github.com/googleapis/google-cloud-python/commit/80a9ff4a68b3c40696e95d2b1faecea7c8397a5b))
+
 ## [0.4.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.4.0...google-cloud-contentwarehouse-v0.4.1) (2023-03-25)
 
 
