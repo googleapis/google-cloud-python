@@ -22,12 +22,14 @@
 set -e
 
 # Ensure that both arguments are provided
-# Args:
-#   split-repo-name - The name of the split repository. For example `python-access-approval`.
-#   artifact-name - The name of the artifact on PyPI. For example `google-cloud-access-approval`.
 if [ $# -lt 2 ]
 then
-  echo "Usage: $0 <split-repo-name> <target-path>"
+  echo "Usage: $0 <split-repo-name> <target-path>
+
+Args:
+   split-repo-name: The name of the split repository. For example, \`python-access-approval\`.
+   artifact-name: The name of the artifact on PyPI. For example, \`google-cloud-access-approval\`.
+"
   exit 1
 fi
 
