@@ -38,14 +38,11 @@ SPLIT_REPO=$1
 # The name of the artifact on PyPI. (e.g. google-cloud-access-approval)
 ARTIFACT_NAME=$2
 
-# Quick clean up in case a folder already exists in /tmp/
-rm -rf "/tmp/${SPLIT_REPO}"
+SPLIT_REPO_DIR="/tmp/delete-library.${SPLIT_REPO}.$(date +"%Y-%m-%d.%H:%M:%S")"
 
-# Clone the split repo into /tmp/<name of split repo>
-git clone "git@github.com:googleapis/${SPLIT_REPO}.git" "/tmp/${SPLIT_REPO}"
+git clone "git@github.com:googleapis/${SPLIT_REPO}.git" $SPLIT_REPO_DIR
 
-# cd into the split repo clone
-cd "/tmp/${SPLIT_REPO}"
+cd $SPLIT_REPO_DIR
 
 # Create a git branch
 git checkout -b 'migrate-library'
@@ -93,7 +90,7 @@ rm -rf .github
 rm -rf .gitignore
 
 # Append a prefix to the README to state that this repository has been archived and the source has moved.
-README_RST="/tmp/${SPLIT_REPO}/README.rst"
+README_RST="${SPLIT_REPO_DIR}/README.rst"
 
 if [[ ! -f $README_RST ]]; then
   echo "README.rst file not found"
@@ -102,10 +99,10 @@ fi
 
 echo -e ':**NOTE**: **This github repository is archived. The repository contents and history have moved to** `google-cloud-python`_.
 
-.. _google-cloud-python: https://github.com/googleapis/google-cloud-python/tree/main/packages/'${ARTIFACT_NAME} > /tmp/${SPLIT_REPO}/README_CONTENT_PREFIX.rst
+.. _google-cloud-python: https://github.com/googleapis/google-cloud-python/tree/main/packages/'${ARTIFACT_NAME} > ${SPLIT_REPO_DIR}/README_CONTENT_PREFIX.rst
 
 # Create temp file for the prefix that we want to add to the README content.
-README_CONTENT_PREFIX_RST="/tmp/${SPLIT_REPO}/README_CONTENT_PREFIX.rst"
+README_CONTENT_PREFIX_RST="${SPLIT_REPO_DIR}/README_CONTENT_PREFIX.rst"
 
 # Concatenate the README prefix and the README content into the existing README
 cat $README_CONTENT_PREFIX_RST $README_RST | sponge $README_RST
