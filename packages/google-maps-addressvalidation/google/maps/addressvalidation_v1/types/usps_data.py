@@ -91,7 +91,11 @@ class UspsAddress(proto.Message):
 
 
 class UspsData(proto.Message):
-    r"""The USPS data for the address.
+    r"""The USPS data for the address. ``uspsData`` is not guaranteed to be
+    fully populated for every US or PR address sent to the Address
+    Validation API. It's recommended to integrate the backup address
+    fields in the response if you utilize uspsData as the primary part
+    of the response.
 
     Attributes:
         standardized_address (google.maps.addressvalidation_v1.types.UspsAddress):
