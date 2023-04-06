@@ -73,6 +73,8 @@ from .contact_center_insights import (
     UpdatePhraseMatcherRequest,
     UpdateSettingsRequest,
     UpdateViewRequest,
+    UploadConversationMetadata,
+    UploadConversationRequest,
 )
 from .resources import (
     Analysis,
@@ -109,6 +111,7 @@ from .resources import (
     PhraseMatchRule,
     PhraseMatchRuleConfig,
     PhraseMatchRuleGroup,
+    RedactionConfig,
     RuntimeAnnotation,
     SentimentData,
     Settings,
@@ -177,6 +180,8 @@ __all__ = (
     "UpdatePhraseMatcherRequest",
     "UpdateSettingsRequest",
     "UpdateViewRequest",
+    "UploadConversationMetadata",
+    "UploadConversationRequest",
     "ConversationView",
     "Analysis",
     "AnalysisResult",
@@ -212,6 +217,7 @@ __all__ = (
     "PhraseMatchRule",
     "PhraseMatchRuleConfig",
     "PhraseMatchRuleGroup",
+    "RedactionConfig",
     "RuntimeAnnotation",
     "SentimentData",
     "Settings",

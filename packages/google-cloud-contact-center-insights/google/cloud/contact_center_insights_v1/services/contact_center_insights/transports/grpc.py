@@ -278,6 +278,36 @@ class ContactCenterInsightsGrpcTransport(ContactCenterInsightsTransport):
         return self._stubs["create_conversation"]
 
     @property
+    def upload_conversation(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UploadConversationRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the upload conversation method over gRPC.
+
+        Create a longrunning conversation upload operation.
+        This method differs from CreateConversation by allowing
+        audio transcription and optional DLP redaction.
+
+        Returns:
+            Callable[[~.UploadConversationRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "upload_conversation" not in self._stubs:
+            self._stubs["upload_conversation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UploadConversation",
+                request_serializer=contact_center_insights.UploadConversationRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["upload_conversation"]
+
+    @property
     def update_conversation(
         self,
     ) -> Callable[

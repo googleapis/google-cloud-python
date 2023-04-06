@@ -132,6 +132,11 @@ class ContactCenterInsightsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.upload_conversation: gapic_v1.method.wrap_method(
+                self.upload_conversation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.update_conversation: gapic_v1.method.wrap_method(
                 self.update_conversation,
                 default_timeout=None,
@@ -334,6 +339,15 @@ class ContactCenterInsightsTransport(abc.ABC):
     ) -> Callable[
         [contact_center_insights.CreateConversationRequest],
         Union[resources.Conversation, Awaitable[resources.Conversation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def upload_conversation(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UploadConversationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

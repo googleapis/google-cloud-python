@@ -33,6 +33,8 @@ __protobuf__ = proto.module(
         "CalculateStatsResponse",
         "CreateAnalysisOperationMetadata",
         "CreateConversationRequest",
+        "UploadConversationRequest",
+        "UploadConversationMetadata",
         "ListConversationsRequest",
         "ListConversationsResponse",
         "GetConversationRequest",
@@ -332,6 +334,97 @@ class CreateConversationRequest(proto.Message):
     conversation_id: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class UploadConversationRequest(proto.Message):
+    r"""Request to upload a conversation.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource of the
+            conversation.
+        conversation (google.cloud.contact_center_insights_v1.types.Conversation):
+            Required. The conversation resource to
+            create.
+        conversation_id (str):
+            Optional. A unique ID for the new conversation. This ID will
+            become the final component of the conversation's resource
+            name. If no ID is specified, a server-generated ID will be
+            used.
+
+            This value should be 4-64 characters and must match the
+            regular expression ``^[a-z0-9-]{4,64}$``. Valid characters
+            are ``[a-z][0-9]-``
+        redaction_config (google.cloud.contact_center_insights_v1.types.RedactionConfig):
+            Optional. DLP settings for transcript
+            redaction. Optional, will default to the config
+            specified in Settings.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    conversation: resources.Conversation = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.Conversation,
+    )
+    conversation_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    redaction_config: resources.RedactionConfig = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=resources.RedactionConfig,
+    )
+
+
+class UploadConversationMetadata(proto.Message):
+    r"""The metadata for an UploadConversation operation.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation was
+            created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation finished
+            running.
+        request (google.cloud.contact_center_insights_v1.types.UploadConversationRequest):
+            Output only. The original request.
+        analysis_operation (str):
+            Output only. The operation name for a
+            successfully created analysis operation, if any.
+        applied_redaction_config (google.cloud.contact_center_insights_v1.types.RedactionConfig):
+            Output only. The redaction config applied to
+            the uploaded conversation.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    request: "UploadConversationRequest" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="UploadConversationRequest",
+    )
+    analysis_operation: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    applied_redaction_config: resources.RedactionConfig = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=resources.RedactionConfig,
     )
 
 

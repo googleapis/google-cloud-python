@@ -55,6 +55,7 @@ __protobuf__ = proto.module(
         "PhraseMatchRuleConfig",
         "ExactMatchConfig",
         "Settings",
+        "RedactionConfig",
         "RuntimeAnnotation",
         "AnswerFeedback",
         "ArticleSuggestionData",
@@ -1688,6 +1689,9 @@ class Settings(proto.Message):
             is: projects/{project}/topics/{topic}
         analysis_config (google.cloud.contact_center_insights_v1.types.Settings.AnalysisConfig):
             Default analysis settings.
+        redaction_config (google.cloud.contact_center_insights_v1.types.RedactionConfig):
+            Default DLP redaction resources to be applied
+            while ingesting conversations.
     """
 
     class AnalysisConfig(proto.Message):
@@ -1753,6 +1757,35 @@ class Settings(proto.Message):
         proto.MESSAGE,
         number=7,
         message=AnalysisConfig,
+    )
+    redaction_config: "RedactionConfig" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="RedactionConfig",
+    )
+
+
+class RedactionConfig(proto.Message):
+    r"""DLP resources used for redaction while ingesting
+    conversations.
+
+    Attributes:
+        deidentify_template (str):
+            The fully-qualified DLP deidentify template resource name.
+            Format:
+            ``projects/{project}/deidentifyTemplates/{template}``
+        inspect_template (str):
+            The fully-qualified DLP inspect template resource name.
+            Format: ``projects/{project}/inspectTemplates/{template}``
+    """
+
+    deidentify_template: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    inspect_template: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

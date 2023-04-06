@@ -76,6 +76,7 @@ class contact_center_insightsCallTransformer(cst.CSTTransformer):
         'update_phrase_matcher': ('phrase_matcher', 'update_mask', ),
         'update_settings': ('settings', 'update_mask', ),
         'update_view': ('view', 'update_mask', ),
+        'upload_conversation': ('parent', 'conversation', 'conversation_id', 'redaction_config', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

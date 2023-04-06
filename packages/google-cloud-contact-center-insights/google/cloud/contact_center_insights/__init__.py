@@ -84,6 +84,8 @@ from google.cloud.contact_center_insights_v1.types.contact_center_insights impor
     UpdatePhraseMatcherRequest,
     UpdateSettingsRequest,
     UpdateViewRequest,
+    UploadConversationMetadata,
+    UploadConversationRequest,
 )
 from google.cloud.contact_center_insights_v1.types.resources import (
     Analysis,
@@ -120,6 +122,7 @@ from google.cloud.contact_center_insights_v1.types.resources import (
     PhraseMatchRule,
     PhraseMatchRuleConfig,
     PhraseMatchRuleGroup,
+    RedactionConfig,
     RuntimeAnnotation,
     SentimentData,
     Settings,
@@ -190,6 +193,8 @@ __all__ = (
     "UpdatePhraseMatcherRequest",
     "UpdateSettingsRequest",
     "UpdateViewRequest",
+    "UploadConversationMetadata",
+    "UploadConversationRequest",
     "ConversationView",
     "Analysis",
     "AnalysisResult",
@@ -225,6 +230,7 @@ __all__ = (
     "PhraseMatchRule",
     "PhraseMatchRuleConfig",
     "PhraseMatchRuleGroup",
+    "RedactionConfig",
     "RuntimeAnnotation",
     "SentimentData",
     "Settings",

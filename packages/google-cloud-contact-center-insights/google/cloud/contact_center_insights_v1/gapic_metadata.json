@@ -194,6 +194,11 @@
               "methods": [
                 "update_view"
               ]
+            },
+            "UploadConversation": {
+              "methods": [
+                "upload_conversation"
+              ]
             }
           }
         },
@@ -384,6 +389,11 @@
               "methods": [
                 "update_view"
               ]
+            },
+            "UploadConversation": {
+              "methods": [
+                "upload_conversation"
+              ]
             }
           }
         },
@@ -573,6 +583,11 @@
             "UpdateView": {
               "methods": [
                 "update_view"
+              ]
+            },
+            "UploadConversation": {
+              "methods": [
+                "upload_conversation"
               ]
             }
           }
