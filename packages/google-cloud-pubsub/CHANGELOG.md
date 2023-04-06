@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.16.0](https://github.com/googleapis/python-pubsub/compare/v2.15.2...v2.16.0) (2023-04-06)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#863](https://github.com/googleapis/python-pubsub/issues/863)) ([a80c1d1](https://github.com/googleapis/python-pubsub/commit/a80c1d1f6f880cd13c247231bdc86c824edab8cb))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#894](https://github.com/googleapis/python-pubsub/issues/894)) ([ee2ea73](https://github.com/googleapis/python-pubsub/commit/ee2ea7341268fd5428d98208b8af2fc96efe8d03))
+
 ## [2.15.2](https://github.com/googleapis/python-pubsub/compare/v2.15.1...v2.15.2) (2023-03-20)
 
 
