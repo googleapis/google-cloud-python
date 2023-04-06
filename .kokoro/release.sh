@@ -65,8 +65,6 @@ for subdir in ${subdirs[@]}; do
             # Temporarily allow failure.
             set +e
             ${publish_script}
-            # Compile the dependencies of the package
-            pip-compile -o $d/release_requirements.in $d/setup.py
             ret=$?
             set -e
             if [ ${ret} -ne 0 ]; then
@@ -76,17 +74,5 @@ for subdir in ${subdirs[@]}; do
         fi
     done
 done
-
-# Create `release_requirements.in`
-touch ${PROJECT_ROOT}/release_requirements.in
-
-# Combine all package_requirements.in files
-cat ${PROJECT_ROOT}/packages/*/release_requirements.in >> ${PROJECT_ROOT}/release_requirements.in
-
-# Compile the combined requirements.txt file for a combined list of all dependencies of packages published
-pip-compile --generate-hashes ${PROJECT_ROOT}/release_requirements.in --output-file ${PROJECT_ROOT}/requirements.txt
-
-# Compile the requirements of the release tooling into dev_requirements.txt
-pip-compile --generate-hashes ${PROJECT_ROOT}/.kokoro/requirements.in --output-file ${PROJECT_ROOT}/dev_requirements.txt
 
 exit ${RETVAL}
