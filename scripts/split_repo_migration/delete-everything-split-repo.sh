@@ -102,16 +102,16 @@ fi
 
 echo -e ':**NOTE**: **This github repository is archived. The repository contents and history have moved to** `google-cloud-python`_.
 
-.. _google-cloud-python: https://github.com/googleapis/google-cloud-python/tree/main/packages/'${ARTIFACT_NAME} > README_HEADER.rst 
+.. _google-cloud-python: https://github.com/googleapis/google-cloud-python/tree/main/packages/'${ARTIFACT_NAME} > /tmp/${SPLIT_REPO}/README_CONTENT_PREFIX.rst
 
-# Create temp file for the prefix that we want to add to the README.
-README_HEADER_RST="/tmp/${SPLIT_REPO}/README_HEADER.rst"
+# Create temp file for the prefix that we want to add to the README content.
+README_CONTENT_PREFIX_RST="/tmp/${SPLIT_REPO}/README_CONTENT_PREFIX.rst"
 
-# Merge the HEADER into the existing README
-cat $README_HEADER_RST $README_RST | sponge $README_RST
+# Concatenate the README prefix and the README content into the existing README
+cat $README_CONTENT_PREFIX_RST $README_RST | sponge $README_RST
 
 # Remove temp file
-rm -rf $README_HEADER_RST
+rm -rf $README_CONTENT_PREFIX_RST
 
 # Stage all files
 git add .
