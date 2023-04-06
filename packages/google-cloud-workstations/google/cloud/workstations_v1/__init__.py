@@ -13,16 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.workstations import gapic_version as package_version
+from google.cloud.workstations_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
 
-from google.cloud.workstations_v1.services.workstations.async_client import (
-    WorkstationsAsyncClient,
-)
-from google.cloud.workstations_v1.services.workstations.client import WorkstationsClient
-from google.cloud.workstations_v1.types.workstations import (
+from .services.workstations import WorkstationsAsyncClient, WorkstationsClient
+from .types.workstations import (
     CreateWorkstationClusterRequest,
     CreateWorkstationConfigRequest,
     CreateWorkstationRequest,
@@ -56,7 +53,6 @@ from google.cloud.workstations_v1.types.workstations import (
 )
 
 __all__ = (
-    "WorkstationsClient",
     "WorkstationsAsyncClient",
     "CreateWorkstationClusterRequest",
     "CreateWorkstationConfigRequest",
@@ -88,4 +84,5 @@ __all__ = (
     "Workstation",
     "WorkstationCluster",
     "WorkstationConfig",
+    "WorkstationsClient",
 )

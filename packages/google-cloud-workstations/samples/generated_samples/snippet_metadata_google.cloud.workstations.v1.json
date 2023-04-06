@@ -2,8 +2,8 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.cloud.workstations.v1beta",
-        "version": "v1beta"
+        "id": "google.cloud.workstations.v1",
+        "version": "v1"
       }
     ],
     "language": "PYTHON",
@@ -16,14 +16,14 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.create_workstation_cluster",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.create_workstation_cluster",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.CreateWorkstationCluster",
+          "fullName": "google.cloud.workstations.v1.Workstations.CreateWorkstationCluster",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "CreateWorkstationCluster"
@@ -31,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.CreateWorkstationClusterRequest"
+            "type": "google.cloud.workstations_v1.types.CreateWorkstationClusterRequest"
           },
           {
             "name": "parent",
@@ -39,7 +39,7 @@
           },
           {
             "name": "workstation_cluster",
-            "type": "google.cloud.workstations_v1beta.types.WorkstationCluster"
+            "type": "google.cloud.workstations_v1.types.WorkstationCluster"
           },
           {
             "name": "workstation_cluster_id",
@@ -62,10 +62,10 @@
         "shortName": "create_workstation_cluster"
       },
       "description": "Sample for CreateWorkstationCluster",
-      "file": "workstations_v1beta_generated_workstations_create_workstation_cluster_async.py",
+      "file": "workstations_v1_generated_workstations_create_workstation_cluster_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_CreateWorkstationCluster_async",
+      "regionTag": "workstations_v1_generated_Workstations_CreateWorkstationCluster_async",
       "segments": [
         {
           "end": 56,
@@ -98,20 +98,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_create_workstation_cluster_async.py"
+      "title": "workstations_v1_generated_workstations_create_workstation_cluster_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.create_workstation_cluster",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.create_workstation_cluster",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.CreateWorkstationCluster",
+          "fullName": "google.cloud.workstations.v1.Workstations.CreateWorkstationCluster",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "CreateWorkstationCluster"
@@ -119,7 +119,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.CreateWorkstationClusterRequest"
+            "type": "google.cloud.workstations_v1.types.CreateWorkstationClusterRequest"
           },
           {
             "name": "parent",
@@ -127,7 +127,7 @@
           },
           {
             "name": "workstation_cluster",
-            "type": "google.cloud.workstations_v1beta.types.WorkstationCluster"
+            "type": "google.cloud.workstations_v1.types.WorkstationCluster"
           },
           {
             "name": "workstation_cluster_id",
@@ -150,10 +150,10 @@
         "shortName": "create_workstation_cluster"
       },
       "description": "Sample for CreateWorkstationCluster",
-      "file": "workstations_v1beta_generated_workstations_create_workstation_cluster_sync.py",
+      "file": "workstations_v1_generated_workstations_create_workstation_cluster_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_CreateWorkstationCluster_sync",
+      "regionTag": "workstations_v1_generated_Workstations_CreateWorkstationCluster_sync",
       "segments": [
         {
           "end": 56,
@@ -186,21 +186,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_create_workstation_cluster_sync.py"
+      "title": "workstations_v1_generated_workstations_create_workstation_cluster_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.create_workstation_config",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.create_workstation_config",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.CreateWorkstationConfig",
+          "fullName": "google.cloud.workstations.v1.Workstations.CreateWorkstationConfig",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "CreateWorkstationConfig"
@@ -208,7 +208,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.CreateWorkstationConfigRequest"
+            "type": "google.cloud.workstations_v1.types.CreateWorkstationConfigRequest"
           },
           {
             "name": "parent",
@@ -216,7 +216,7 @@
           },
           {
             "name": "workstation_config",
-            "type": "google.cloud.workstations_v1beta.types.WorkstationConfig"
+            "type": "google.cloud.workstations_v1.types.WorkstationConfig"
           },
           {
             "name": "workstation_config_id",
@@ -239,10 +239,10 @@
         "shortName": "create_workstation_config"
       },
       "description": "Sample for CreateWorkstationConfig",
-      "file": "workstations_v1beta_generated_workstations_create_workstation_config_async.py",
+      "file": "workstations_v1_generated_workstations_create_workstation_config_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_CreateWorkstationConfig_async",
+      "regionTag": "workstations_v1_generated_Workstations_CreateWorkstationConfig_async",
       "segments": [
         {
           "end": 56,
@@ -275,20 +275,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_create_workstation_config_async.py"
+      "title": "workstations_v1_generated_workstations_create_workstation_config_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.create_workstation_config",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.create_workstation_config",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.CreateWorkstationConfig",
+          "fullName": "google.cloud.workstations.v1.Workstations.CreateWorkstationConfig",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "CreateWorkstationConfig"
@@ -296,7 +296,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.CreateWorkstationConfigRequest"
+            "type": "google.cloud.workstations_v1.types.CreateWorkstationConfigRequest"
           },
           {
             "name": "parent",
@@ -304,7 +304,7 @@
           },
           {
             "name": "workstation_config",
-            "type": "google.cloud.workstations_v1beta.types.WorkstationConfig"
+            "type": "google.cloud.workstations_v1.types.WorkstationConfig"
           },
           {
             "name": "workstation_config_id",
@@ -327,10 +327,10 @@
         "shortName": "create_workstation_config"
       },
       "description": "Sample for CreateWorkstationConfig",
-      "file": "workstations_v1beta_generated_workstations_create_workstation_config_sync.py",
+      "file": "workstations_v1_generated_workstations_create_workstation_config_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_CreateWorkstationConfig_sync",
+      "regionTag": "workstations_v1_generated_Workstations_CreateWorkstationConfig_sync",
       "segments": [
         {
           "end": 56,
@@ -363,21 +363,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_create_workstation_config_sync.py"
+      "title": "workstations_v1_generated_workstations_create_workstation_config_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.create_workstation",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.create_workstation",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.CreateWorkstation",
+          "fullName": "google.cloud.workstations.v1.Workstations.CreateWorkstation",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "CreateWorkstation"
@@ -385,7 +385,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.CreateWorkstationRequest"
+            "type": "google.cloud.workstations_v1.types.CreateWorkstationRequest"
           },
           {
             "name": "parent",
@@ -393,7 +393,7 @@
           },
           {
             "name": "workstation",
-            "type": "google.cloud.workstations_v1beta.types.Workstation"
+            "type": "google.cloud.workstations_v1.types.Workstation"
           },
           {
             "name": "workstation_id",
@@ -416,10 +416,10 @@
         "shortName": "create_workstation"
       },
       "description": "Sample for CreateWorkstation",
-      "file": "workstations_v1beta_generated_workstations_create_workstation_async.py",
+      "file": "workstations_v1_generated_workstations_create_workstation_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_CreateWorkstation_async",
+      "regionTag": "workstations_v1_generated_Workstations_CreateWorkstation_async",
       "segments": [
         {
           "end": 56,
@@ -452,20 +452,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_create_workstation_async.py"
+      "title": "workstations_v1_generated_workstations_create_workstation_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.create_workstation",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.create_workstation",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.CreateWorkstation",
+          "fullName": "google.cloud.workstations.v1.Workstations.CreateWorkstation",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "CreateWorkstation"
@@ -473,7 +473,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.CreateWorkstationRequest"
+            "type": "google.cloud.workstations_v1.types.CreateWorkstationRequest"
           },
           {
             "name": "parent",
@@ -481,7 +481,7 @@
           },
           {
             "name": "workstation",
-            "type": "google.cloud.workstations_v1beta.types.Workstation"
+            "type": "google.cloud.workstations_v1.types.Workstation"
           },
           {
             "name": "workstation_id",
@@ -504,10 +504,10 @@
         "shortName": "create_workstation"
       },
       "description": "Sample for CreateWorkstation",
-      "file": "workstations_v1beta_generated_workstations_create_workstation_sync.py",
+      "file": "workstations_v1_generated_workstations_create_workstation_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_CreateWorkstation_sync",
+      "regionTag": "workstations_v1_generated_Workstations_CreateWorkstation_sync",
       "segments": [
         {
           "end": 56,
@@ -540,21 +540,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_create_workstation_sync.py"
+      "title": "workstations_v1_generated_workstations_create_workstation_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.delete_workstation_cluster",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.delete_workstation_cluster",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.DeleteWorkstationCluster",
+          "fullName": "google.cloud.workstations.v1.Workstations.DeleteWorkstationCluster",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "DeleteWorkstationCluster"
@@ -562,7 +562,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.DeleteWorkstationClusterRequest"
+            "type": "google.cloud.workstations_v1.types.DeleteWorkstationClusterRequest"
           },
           {
             "name": "name",
@@ -585,10 +585,10 @@
         "shortName": "delete_workstation_cluster"
       },
       "description": "Sample for DeleteWorkstationCluster",
-      "file": "workstations_v1beta_generated_workstations_delete_workstation_cluster_async.py",
+      "file": "workstations_v1_generated_workstations_delete_workstation_cluster_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_DeleteWorkstationCluster_async",
+      "regionTag": "workstations_v1_generated_Workstations_DeleteWorkstationCluster_async",
       "segments": [
         {
           "end": 55,
@@ -621,20 +621,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_delete_workstation_cluster_async.py"
+      "title": "workstations_v1_generated_workstations_delete_workstation_cluster_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.delete_workstation_cluster",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.delete_workstation_cluster",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.DeleteWorkstationCluster",
+          "fullName": "google.cloud.workstations.v1.Workstations.DeleteWorkstationCluster",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "DeleteWorkstationCluster"
@@ -642,7 +642,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.DeleteWorkstationClusterRequest"
+            "type": "google.cloud.workstations_v1.types.DeleteWorkstationClusterRequest"
           },
           {
             "name": "name",
@@ -665,10 +665,10 @@
         "shortName": "delete_workstation_cluster"
       },
       "description": "Sample for DeleteWorkstationCluster",
-      "file": "workstations_v1beta_generated_workstations_delete_workstation_cluster_sync.py",
+      "file": "workstations_v1_generated_workstations_delete_workstation_cluster_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_DeleteWorkstationCluster_sync",
+      "regionTag": "workstations_v1_generated_Workstations_DeleteWorkstationCluster_sync",
       "segments": [
         {
           "end": 55,
@@ -701,21 +701,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_delete_workstation_cluster_sync.py"
+      "title": "workstations_v1_generated_workstations_delete_workstation_cluster_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.delete_workstation_config",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.delete_workstation_config",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.DeleteWorkstationConfig",
+          "fullName": "google.cloud.workstations.v1.Workstations.DeleteWorkstationConfig",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "DeleteWorkstationConfig"
@@ -723,7 +723,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.DeleteWorkstationConfigRequest"
+            "type": "google.cloud.workstations_v1.types.DeleteWorkstationConfigRequest"
           },
           {
             "name": "name",
@@ -746,10 +746,10 @@
         "shortName": "delete_workstation_config"
       },
       "description": "Sample for DeleteWorkstationConfig",
-      "file": "workstations_v1beta_generated_workstations_delete_workstation_config_async.py",
+      "file": "workstations_v1_generated_workstations_delete_workstation_config_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_DeleteWorkstationConfig_async",
+      "regionTag": "workstations_v1_generated_Workstations_DeleteWorkstationConfig_async",
       "segments": [
         {
           "end": 55,
@@ -782,20 +782,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_delete_workstation_config_async.py"
+      "title": "workstations_v1_generated_workstations_delete_workstation_config_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.delete_workstation_config",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.delete_workstation_config",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.DeleteWorkstationConfig",
+          "fullName": "google.cloud.workstations.v1.Workstations.DeleteWorkstationConfig",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "DeleteWorkstationConfig"
@@ -803,7 +803,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.DeleteWorkstationConfigRequest"
+            "type": "google.cloud.workstations_v1.types.DeleteWorkstationConfigRequest"
           },
           {
             "name": "name",
@@ -826,10 +826,10 @@
         "shortName": "delete_workstation_config"
       },
       "description": "Sample for DeleteWorkstationConfig",
-      "file": "workstations_v1beta_generated_workstations_delete_workstation_config_sync.py",
+      "file": "workstations_v1_generated_workstations_delete_workstation_config_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_DeleteWorkstationConfig_sync",
+      "regionTag": "workstations_v1_generated_Workstations_DeleteWorkstationConfig_sync",
       "segments": [
         {
           "end": 55,
@@ -862,21 +862,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_delete_workstation_config_sync.py"
+      "title": "workstations_v1_generated_workstations_delete_workstation_config_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.delete_workstation",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.delete_workstation",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.DeleteWorkstation",
+          "fullName": "google.cloud.workstations.v1.Workstations.DeleteWorkstation",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "DeleteWorkstation"
@@ -884,7 +884,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.DeleteWorkstationRequest"
+            "type": "google.cloud.workstations_v1.types.DeleteWorkstationRequest"
           },
           {
             "name": "name",
@@ -907,10 +907,10 @@
         "shortName": "delete_workstation"
       },
       "description": "Sample for DeleteWorkstation",
-      "file": "workstations_v1beta_generated_workstations_delete_workstation_async.py",
+      "file": "workstations_v1_generated_workstations_delete_workstation_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_DeleteWorkstation_async",
+      "regionTag": "workstations_v1_generated_Workstations_DeleteWorkstation_async",
       "segments": [
         {
           "end": 55,
@@ -943,20 +943,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_delete_workstation_async.py"
+      "title": "workstations_v1_generated_workstations_delete_workstation_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.delete_workstation",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.delete_workstation",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.DeleteWorkstation",
+          "fullName": "google.cloud.workstations.v1.Workstations.DeleteWorkstation",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "DeleteWorkstation"
@@ -964,7 +964,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.DeleteWorkstationRequest"
+            "type": "google.cloud.workstations_v1.types.DeleteWorkstationRequest"
           },
           {
             "name": "name",
@@ -987,10 +987,10 @@
         "shortName": "delete_workstation"
       },
       "description": "Sample for DeleteWorkstation",
-      "file": "workstations_v1beta_generated_workstations_delete_workstation_sync.py",
+      "file": "workstations_v1_generated_workstations_delete_workstation_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_DeleteWorkstation_sync",
+      "regionTag": "workstations_v1_generated_Workstations_DeleteWorkstation_sync",
       "segments": [
         {
           "end": 55,
@@ -1023,21 +1023,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_delete_workstation_sync.py"
+      "title": "workstations_v1_generated_workstations_delete_workstation_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.generate_access_token",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.generate_access_token",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.GenerateAccessToken",
+          "fullName": "google.cloud.workstations.v1.Workstations.GenerateAccessToken",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "GenerateAccessToken"
@@ -1045,7 +1045,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.GenerateAccessTokenRequest"
+            "type": "google.cloud.workstations_v1.types.GenerateAccessTokenRequest"
           },
           {
             "name": "workstation",
@@ -1064,14 +1064,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workstations_v1beta.types.GenerateAccessTokenResponse",
+        "resultType": "google.cloud.workstations_v1.types.GenerateAccessTokenResponse",
         "shortName": "generate_access_token"
       },
       "description": "Sample for GenerateAccessToken",
-      "file": "workstations_v1beta_generated_workstations_generate_access_token_async.py",
+      "file": "workstations_v1_generated_workstations_generate_access_token_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_GenerateAccessToken_async",
+      "regionTag": "workstations_v1_generated_Workstations_GenerateAccessToken_async",
       "segments": [
         {
           "end": 51,
@@ -1104,20 +1104,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_generate_access_token_async.py"
+      "title": "workstations_v1_generated_workstations_generate_access_token_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.generate_access_token",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.generate_access_token",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.GenerateAccessToken",
+          "fullName": "google.cloud.workstations.v1.Workstations.GenerateAccessToken",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "GenerateAccessToken"
@@ -1125,7 +1125,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.GenerateAccessTokenRequest"
+            "type": "google.cloud.workstations_v1.types.GenerateAccessTokenRequest"
           },
           {
             "name": "workstation",
@@ -1144,14 +1144,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workstations_v1beta.types.GenerateAccessTokenResponse",
+        "resultType": "google.cloud.workstations_v1.types.GenerateAccessTokenResponse",
         "shortName": "generate_access_token"
       },
       "description": "Sample for GenerateAccessToken",
-      "file": "workstations_v1beta_generated_workstations_generate_access_token_sync.py",
+      "file": "workstations_v1_generated_workstations_generate_access_token_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_GenerateAccessToken_sync",
+      "regionTag": "workstations_v1_generated_Workstations_GenerateAccessToken_sync",
       "segments": [
         {
           "end": 51,
@@ -1184,21 +1184,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_generate_access_token_sync.py"
+      "title": "workstations_v1_generated_workstations_generate_access_token_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.get_workstation_cluster",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.get_workstation_cluster",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.GetWorkstationCluster",
+          "fullName": "google.cloud.workstations.v1.Workstations.GetWorkstationCluster",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "GetWorkstationCluster"
@@ -1206,7 +1206,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.GetWorkstationClusterRequest"
+            "type": "google.cloud.workstations_v1.types.GetWorkstationClusterRequest"
           },
           {
             "name": "name",
@@ -1225,14 +1225,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workstations_v1beta.types.WorkstationCluster",
+        "resultType": "google.cloud.workstations_v1.types.WorkstationCluster",
         "shortName": "get_workstation_cluster"
       },
       "description": "Sample for GetWorkstationCluster",
-      "file": "workstations_v1beta_generated_workstations_get_workstation_cluster_async.py",
+      "file": "workstations_v1_generated_workstations_get_workstation_cluster_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_GetWorkstationCluster_async",
+      "regionTag": "workstations_v1_generated_Workstations_GetWorkstationCluster_async",
       "segments": [
         {
           "end": 51,
@@ -1265,20 +1265,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_get_workstation_cluster_async.py"
+      "title": "workstations_v1_generated_workstations_get_workstation_cluster_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.get_workstation_cluster",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.get_workstation_cluster",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.GetWorkstationCluster",
+          "fullName": "google.cloud.workstations.v1.Workstations.GetWorkstationCluster",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "GetWorkstationCluster"
@@ -1286,7 +1286,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.GetWorkstationClusterRequest"
+            "type": "google.cloud.workstations_v1.types.GetWorkstationClusterRequest"
           },
           {
             "name": "name",
@@ -1305,14 +1305,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workstations_v1beta.types.WorkstationCluster",
+        "resultType": "google.cloud.workstations_v1.types.WorkstationCluster",
         "shortName": "get_workstation_cluster"
       },
       "description": "Sample for GetWorkstationCluster",
-      "file": "workstations_v1beta_generated_workstations_get_workstation_cluster_sync.py",
+      "file": "workstations_v1_generated_workstations_get_workstation_cluster_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_GetWorkstationCluster_sync",
+      "regionTag": "workstations_v1_generated_Workstations_GetWorkstationCluster_sync",
       "segments": [
         {
           "end": 51,
@@ -1345,21 +1345,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_get_workstation_cluster_sync.py"
+      "title": "workstations_v1_generated_workstations_get_workstation_cluster_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.get_workstation_config",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.get_workstation_config",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.GetWorkstationConfig",
+          "fullName": "google.cloud.workstations.v1.Workstations.GetWorkstationConfig",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "GetWorkstationConfig"
@@ -1367,7 +1367,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.GetWorkstationConfigRequest"
+            "type": "google.cloud.workstations_v1.types.GetWorkstationConfigRequest"
           },
           {
             "name": "name",
@@ -1386,14 +1386,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workstations_v1beta.types.WorkstationConfig",
+        "resultType": "google.cloud.workstations_v1.types.WorkstationConfig",
         "shortName": "get_workstation_config"
       },
       "description": "Sample for GetWorkstationConfig",
-      "file": "workstations_v1beta_generated_workstations_get_workstation_config_async.py",
+      "file": "workstations_v1_generated_workstations_get_workstation_config_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_GetWorkstationConfig_async",
+      "regionTag": "workstations_v1_generated_Workstations_GetWorkstationConfig_async",
       "segments": [
         {
           "end": 51,
@@ -1426,20 +1426,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_get_workstation_config_async.py"
+      "title": "workstations_v1_generated_workstations_get_workstation_config_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.get_workstation_config",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.get_workstation_config",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.GetWorkstationConfig",
+          "fullName": "google.cloud.workstations.v1.Workstations.GetWorkstationConfig",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "GetWorkstationConfig"
@@ -1447,7 +1447,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.GetWorkstationConfigRequest"
+            "type": "google.cloud.workstations_v1.types.GetWorkstationConfigRequest"
           },
           {
             "name": "name",
@@ -1466,14 +1466,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workstations_v1beta.types.WorkstationConfig",
+        "resultType": "google.cloud.workstations_v1.types.WorkstationConfig",
         "shortName": "get_workstation_config"
       },
       "description": "Sample for GetWorkstationConfig",
-      "file": "workstations_v1beta_generated_workstations_get_workstation_config_sync.py",
+      "file": "workstations_v1_generated_workstations_get_workstation_config_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_GetWorkstationConfig_sync",
+      "regionTag": "workstations_v1_generated_Workstations_GetWorkstationConfig_sync",
       "segments": [
         {
           "end": 51,
@@ -1506,21 +1506,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_get_workstation_config_sync.py"
+      "title": "workstations_v1_generated_workstations_get_workstation_config_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.get_workstation",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.get_workstation",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.GetWorkstation",
+          "fullName": "google.cloud.workstations.v1.Workstations.GetWorkstation",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "GetWorkstation"
@@ -1528,7 +1528,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.GetWorkstationRequest"
+            "type": "google.cloud.workstations_v1.types.GetWorkstationRequest"
           },
           {
             "name": "name",
@@ -1547,14 +1547,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workstations_v1beta.types.Workstation",
+        "resultType": "google.cloud.workstations_v1.types.Workstation",
         "shortName": "get_workstation"
       },
       "description": "Sample for GetWorkstation",
-      "file": "workstations_v1beta_generated_workstations_get_workstation_async.py",
+      "file": "workstations_v1_generated_workstations_get_workstation_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_GetWorkstation_async",
+      "regionTag": "workstations_v1_generated_Workstations_GetWorkstation_async",
       "segments": [
         {
           "end": 51,
@@ -1587,20 +1587,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_get_workstation_async.py"
+      "title": "workstations_v1_generated_workstations_get_workstation_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.get_workstation",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.get_workstation",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.GetWorkstation",
+          "fullName": "google.cloud.workstations.v1.Workstations.GetWorkstation",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "GetWorkstation"
@@ -1608,7 +1608,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.GetWorkstationRequest"
+            "type": "google.cloud.workstations_v1.types.GetWorkstationRequest"
           },
           {
             "name": "name",
@@ -1627,14 +1627,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workstations_v1beta.types.Workstation",
+        "resultType": "google.cloud.workstations_v1.types.Workstation",
         "shortName": "get_workstation"
       },
       "description": "Sample for GetWorkstation",
-      "file": "workstations_v1beta_generated_workstations_get_workstation_sync.py",
+      "file": "workstations_v1_generated_workstations_get_workstation_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_GetWorkstation_sync",
+      "regionTag": "workstations_v1_generated_Workstations_GetWorkstation_sync",
       "segments": [
         {
           "end": 51,
@@ -1667,21 +1667,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_get_workstation_sync.py"
+      "title": "workstations_v1_generated_workstations_get_workstation_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.list_usable_workstation_configs",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.list_usable_workstation_configs",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.ListUsableWorkstationConfigs",
+          "fullName": "google.cloud.workstations.v1.Workstations.ListUsableWorkstationConfigs",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "ListUsableWorkstationConfigs"
@@ -1689,7 +1689,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.ListUsableWorkstationConfigsRequest"
+            "type": "google.cloud.workstations_v1.types.ListUsableWorkstationConfigsRequest"
           },
           {
             "name": "parent",
@@ -1708,14 +1708,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workstations_v1beta.services.workstations.pagers.ListUsableWorkstationConfigsAsyncPager",
+        "resultType": "google.cloud.workstations_v1.services.workstations.pagers.ListUsableWorkstationConfigsAsyncPager",
         "shortName": "list_usable_workstation_configs"
       },
       "description": "Sample for ListUsableWorkstationConfigs",
-      "file": "workstations_v1beta_generated_workstations_list_usable_workstation_configs_async.py",
+      "file": "workstations_v1_generated_workstations_list_usable_workstation_configs_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_ListUsableWorkstationConfigs_async",
+      "regionTag": "workstations_v1_generated_Workstations_ListUsableWorkstationConfigs_async",
       "segments": [
         {
           "end": 52,
@@ -1748,20 +1748,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_list_usable_workstation_configs_async.py"
+      "title": "workstations_v1_generated_workstations_list_usable_workstation_configs_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.list_usable_workstation_configs",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.list_usable_workstation_configs",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.ListUsableWorkstationConfigs",
+          "fullName": "google.cloud.workstations.v1.Workstations.ListUsableWorkstationConfigs",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "ListUsableWorkstationConfigs"
@@ -1769,7 +1769,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.ListUsableWorkstationConfigsRequest"
+            "type": "google.cloud.workstations_v1.types.ListUsableWorkstationConfigsRequest"
           },
           {
             "name": "parent",
@@ -1788,14 +1788,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workstations_v1beta.services.workstations.pagers.ListUsableWorkstationConfigsPager",
+        "resultType": "google.cloud.workstations_v1.services.workstations.pagers.ListUsableWorkstationConfigsPager",
         "shortName": "list_usable_workstation_configs"
       },
       "description": "Sample for ListUsableWorkstationConfigs",
-      "file": "workstations_v1beta_generated_workstations_list_usable_workstation_configs_sync.py",
+      "file": "workstations_v1_generated_workstations_list_usable_workstation_configs_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_ListUsableWorkstationConfigs_sync",
+      "regionTag": "workstations_v1_generated_Workstations_ListUsableWorkstationConfigs_sync",
       "segments": [
         {
           "end": 52,
@@ -1828,21 +1828,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_list_usable_workstation_configs_sync.py"
+      "title": "workstations_v1_generated_workstations_list_usable_workstation_configs_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.list_usable_workstations",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.list_usable_workstations",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.ListUsableWorkstations",
+          "fullName": "google.cloud.workstations.v1.Workstations.ListUsableWorkstations",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "ListUsableWorkstations"
@@ -1850,7 +1850,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.ListUsableWorkstationsRequest"
+            "type": "google.cloud.workstations_v1.types.ListUsableWorkstationsRequest"
           },
           {
             "name": "parent",
@@ -1869,14 +1869,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workstations_v1beta.services.workstations.pagers.ListUsableWorkstationsAsyncPager",
+        "resultType": "google.cloud.workstations_v1.services.workstations.pagers.ListUsableWorkstationsAsyncPager",
         "shortName": "list_usable_workstations"
       },
       "description": "Sample for ListUsableWorkstations",
-      "file": "workstations_v1beta_generated_workstations_list_usable_workstations_async.py",
+      "file": "workstations_v1_generated_workstations_list_usable_workstations_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_ListUsableWorkstations_async",
+      "regionTag": "workstations_v1_generated_Workstations_ListUsableWorkstations_async",
       "segments": [
         {
           "end": 52,
@@ -1909,20 +1909,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_list_usable_workstations_async.py"
+      "title": "workstations_v1_generated_workstations_list_usable_workstations_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.list_usable_workstations",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.list_usable_workstations",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.ListUsableWorkstations",
+          "fullName": "google.cloud.workstations.v1.Workstations.ListUsableWorkstations",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "ListUsableWorkstations"
@@ -1930,7 +1930,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.ListUsableWorkstationsRequest"
+            "type": "google.cloud.workstations_v1.types.ListUsableWorkstationsRequest"
           },
           {
             "name": "parent",
@@ -1949,14 +1949,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workstations_v1beta.services.workstations.pagers.ListUsableWorkstationsPager",
+        "resultType": "google.cloud.workstations_v1.services.workstations.pagers.ListUsableWorkstationsPager",
         "shortName": "list_usable_workstations"
       },
       "description": "Sample for ListUsableWorkstations",
-      "file": "workstations_v1beta_generated_workstations_list_usable_workstations_sync.py",
+      "file": "workstations_v1_generated_workstations_list_usable_workstations_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_ListUsableWorkstations_sync",
+      "regionTag": "workstations_v1_generated_Workstations_ListUsableWorkstations_sync",
       "segments": [
         {
           "end": 52,
@@ -1989,21 +1989,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_list_usable_workstations_sync.py"
+      "title": "workstations_v1_generated_workstations_list_usable_workstations_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.list_workstation_clusters",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.list_workstation_clusters",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.ListWorkstationClusters",
+          "fullName": "google.cloud.workstations.v1.Workstations.ListWorkstationClusters",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "ListWorkstationClusters"
@@ -2011,7 +2011,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.ListWorkstationClustersRequest"
+            "type": "google.cloud.workstations_v1.types.ListWorkstationClustersRequest"
           },
           {
             "name": "parent",
@@ -2030,14 +2030,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workstations_v1beta.services.workstations.pagers.ListWorkstationClustersAsyncPager",
+        "resultType": "google.cloud.workstations_v1.services.workstations.pagers.ListWorkstationClustersAsyncPager",
         "shortName": "list_workstation_clusters"
       },
       "description": "Sample for ListWorkstationClusters",
-      "file": "workstations_v1beta_generated_workstations_list_workstation_clusters_async.py",
+      "file": "workstations_v1_generated_workstations_list_workstation_clusters_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_ListWorkstationClusters_async",
+      "regionTag": "workstations_v1_generated_Workstations_ListWorkstationClusters_async",
       "segments": [
         {
           "end": 52,
@@ -2070,20 +2070,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_list_workstation_clusters_async.py"
+      "title": "workstations_v1_generated_workstations_list_workstation_clusters_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.list_workstation_clusters",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.list_workstation_clusters",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.ListWorkstationClusters",
+          "fullName": "google.cloud.workstations.v1.Workstations.ListWorkstationClusters",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "ListWorkstationClusters"
@@ -2091,7 +2091,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.ListWorkstationClustersRequest"
+            "type": "google.cloud.workstations_v1.types.ListWorkstationClustersRequest"
           },
           {
             "name": "parent",
@@ -2110,14 +2110,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workstations_v1beta.services.workstations.pagers.ListWorkstationClustersPager",
+        "resultType": "google.cloud.workstations_v1.services.workstations.pagers.ListWorkstationClustersPager",
         "shortName": "list_workstation_clusters"
       },
       "description": "Sample for ListWorkstationClusters",
-      "file": "workstations_v1beta_generated_workstations_list_workstation_clusters_sync.py",
+      "file": "workstations_v1_generated_workstations_list_workstation_clusters_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_ListWorkstationClusters_sync",
+      "regionTag": "workstations_v1_generated_Workstations_ListWorkstationClusters_sync",
       "segments": [
         {
           "end": 52,
@@ -2150,21 +2150,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_list_workstation_clusters_sync.py"
+      "title": "workstations_v1_generated_workstations_list_workstation_clusters_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.list_workstation_configs",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.list_workstation_configs",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.ListWorkstationConfigs",
+          "fullName": "google.cloud.workstations.v1.Workstations.ListWorkstationConfigs",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "ListWorkstationConfigs"
@@ -2172,7 +2172,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.ListWorkstationConfigsRequest"
+            "type": "google.cloud.workstations_v1.types.ListWorkstationConfigsRequest"
           },
           {
             "name": "parent",
@@ -2191,14 +2191,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workstations_v1beta.services.workstations.pagers.ListWorkstationConfigsAsyncPager",
+        "resultType": "google.cloud.workstations_v1.services.workstations.pagers.ListWorkstationConfigsAsyncPager",
         "shortName": "list_workstation_configs"
       },
       "description": "Sample for ListWorkstationConfigs",
-      "file": "workstations_v1beta_generated_workstations_list_workstation_configs_async.py",
+      "file": "workstations_v1_generated_workstations_list_workstation_configs_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_ListWorkstationConfigs_async",
+      "regionTag": "workstations_v1_generated_Workstations_ListWorkstationConfigs_async",
       "segments": [
         {
           "end": 52,
@@ -2231,20 +2231,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_list_workstation_configs_async.py"
+      "title": "workstations_v1_generated_workstations_list_workstation_configs_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.list_workstation_configs",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.list_workstation_configs",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.ListWorkstationConfigs",
+          "fullName": "google.cloud.workstations.v1.Workstations.ListWorkstationConfigs",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "ListWorkstationConfigs"
@@ -2252,7 +2252,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.ListWorkstationConfigsRequest"
+            "type": "google.cloud.workstations_v1.types.ListWorkstationConfigsRequest"
           },
           {
             "name": "parent",
@@ -2271,14 +2271,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workstations_v1beta.services.workstations.pagers.ListWorkstationConfigsPager",
+        "resultType": "google.cloud.workstations_v1.services.workstations.pagers.ListWorkstationConfigsPager",
         "shortName": "list_workstation_configs"
       },
       "description": "Sample for ListWorkstationConfigs",
-      "file": "workstations_v1beta_generated_workstations_list_workstation_configs_sync.py",
+      "file": "workstations_v1_generated_workstations_list_workstation_configs_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_ListWorkstationConfigs_sync",
+      "regionTag": "workstations_v1_generated_Workstations_ListWorkstationConfigs_sync",
       "segments": [
         {
           "end": 52,
@@ -2311,21 +2311,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_list_workstation_configs_sync.py"
+      "title": "workstations_v1_generated_workstations_list_workstation_configs_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.list_workstations",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.list_workstations",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.ListWorkstations",
+          "fullName": "google.cloud.workstations.v1.Workstations.ListWorkstations",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "ListWorkstations"
@@ -2333,7 +2333,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.ListWorkstationsRequest"
+            "type": "google.cloud.workstations_v1.types.ListWorkstationsRequest"
           },
           {
             "name": "parent",
@@ -2352,14 +2352,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workstations_v1beta.services.workstations.pagers.ListWorkstationsAsyncPager",
+        "resultType": "google.cloud.workstations_v1.services.workstations.pagers.ListWorkstationsAsyncPager",
         "shortName": "list_workstations"
       },
       "description": "Sample for ListWorkstations",
-      "file": "workstations_v1beta_generated_workstations_list_workstations_async.py",
+      "file": "workstations_v1_generated_workstations_list_workstations_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_ListWorkstations_async",
+      "regionTag": "workstations_v1_generated_Workstations_ListWorkstations_async",
       "segments": [
         {
           "end": 52,
@@ -2392,20 +2392,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_list_workstations_async.py"
+      "title": "workstations_v1_generated_workstations_list_workstations_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.list_workstations",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.list_workstations",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.ListWorkstations",
+          "fullName": "google.cloud.workstations.v1.Workstations.ListWorkstations",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "ListWorkstations"
@@ -2413,7 +2413,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.ListWorkstationsRequest"
+            "type": "google.cloud.workstations_v1.types.ListWorkstationsRequest"
           },
           {
             "name": "parent",
@@ -2432,14 +2432,14 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.workstations_v1beta.services.workstations.pagers.ListWorkstationsPager",
+        "resultType": "google.cloud.workstations_v1.services.workstations.pagers.ListWorkstationsPager",
         "shortName": "list_workstations"
       },
       "description": "Sample for ListWorkstations",
-      "file": "workstations_v1beta_generated_workstations_list_workstations_sync.py",
+      "file": "workstations_v1_generated_workstations_list_workstations_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_ListWorkstations_sync",
+      "regionTag": "workstations_v1_generated_Workstations_ListWorkstations_sync",
       "segments": [
         {
           "end": 52,
@@ -2472,21 +2472,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_list_workstations_sync.py"
+      "title": "workstations_v1_generated_workstations_list_workstations_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.start_workstation",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.start_workstation",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.StartWorkstation",
+          "fullName": "google.cloud.workstations.v1.Workstations.StartWorkstation",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "StartWorkstation"
@@ -2494,7 +2494,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.StartWorkstationRequest"
+            "type": "google.cloud.workstations_v1.types.StartWorkstationRequest"
           },
           {
             "name": "name",
@@ -2517,10 +2517,10 @@
         "shortName": "start_workstation"
       },
       "description": "Sample for StartWorkstation",
-      "file": "workstations_v1beta_generated_workstations_start_workstation_async.py",
+      "file": "workstations_v1_generated_workstations_start_workstation_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_StartWorkstation_async",
+      "regionTag": "workstations_v1_generated_Workstations_StartWorkstation_async",
       "segments": [
         {
           "end": 55,
@@ -2553,20 +2553,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_start_workstation_async.py"
+      "title": "workstations_v1_generated_workstations_start_workstation_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.start_workstation",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.start_workstation",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.StartWorkstation",
+          "fullName": "google.cloud.workstations.v1.Workstations.StartWorkstation",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "StartWorkstation"
@@ -2574,7 +2574,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.StartWorkstationRequest"
+            "type": "google.cloud.workstations_v1.types.StartWorkstationRequest"
           },
           {
             "name": "name",
@@ -2597,10 +2597,10 @@
         "shortName": "start_workstation"
       },
       "description": "Sample for StartWorkstation",
-      "file": "workstations_v1beta_generated_workstations_start_workstation_sync.py",
+      "file": "workstations_v1_generated_workstations_start_workstation_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_StartWorkstation_sync",
+      "regionTag": "workstations_v1_generated_Workstations_StartWorkstation_sync",
       "segments": [
         {
           "end": 55,
@@ -2633,21 +2633,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_start_workstation_sync.py"
+      "title": "workstations_v1_generated_workstations_start_workstation_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.stop_workstation",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.stop_workstation",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.StopWorkstation",
+          "fullName": "google.cloud.workstations.v1.Workstations.StopWorkstation",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "StopWorkstation"
@@ -2655,7 +2655,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.StopWorkstationRequest"
+            "type": "google.cloud.workstations_v1.types.StopWorkstationRequest"
           },
           {
             "name": "name",
@@ -2678,10 +2678,10 @@
         "shortName": "stop_workstation"
       },
       "description": "Sample for StopWorkstation",
-      "file": "workstations_v1beta_generated_workstations_stop_workstation_async.py",
+      "file": "workstations_v1_generated_workstations_stop_workstation_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_StopWorkstation_async",
+      "regionTag": "workstations_v1_generated_Workstations_StopWorkstation_async",
       "segments": [
         {
           "end": 55,
@@ -2714,20 +2714,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_stop_workstation_async.py"
+      "title": "workstations_v1_generated_workstations_stop_workstation_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.stop_workstation",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.stop_workstation",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.StopWorkstation",
+          "fullName": "google.cloud.workstations.v1.Workstations.StopWorkstation",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "StopWorkstation"
@@ -2735,7 +2735,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.StopWorkstationRequest"
+            "type": "google.cloud.workstations_v1.types.StopWorkstationRequest"
           },
           {
             "name": "name",
@@ -2758,10 +2758,10 @@
         "shortName": "stop_workstation"
       },
       "description": "Sample for StopWorkstation",
-      "file": "workstations_v1beta_generated_workstations_stop_workstation_sync.py",
+      "file": "workstations_v1_generated_workstations_stop_workstation_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_StopWorkstation_sync",
+      "regionTag": "workstations_v1_generated_Workstations_StopWorkstation_sync",
       "segments": [
         {
           "end": 55,
@@ -2794,21 +2794,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_stop_workstation_sync.py"
+      "title": "workstations_v1_generated_workstations_stop_workstation_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.update_workstation_cluster",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.update_workstation_cluster",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.UpdateWorkstationCluster",
+          "fullName": "google.cloud.workstations.v1.Workstations.UpdateWorkstationCluster",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "UpdateWorkstationCluster"
@@ -2816,11 +2816,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.UpdateWorkstationClusterRequest"
+            "type": "google.cloud.workstations_v1.types.UpdateWorkstationClusterRequest"
           },
           {
             "name": "workstation_cluster",
-            "type": "google.cloud.workstations_v1beta.types.WorkstationCluster"
+            "type": "google.cloud.workstations_v1.types.WorkstationCluster"
           },
           {
             "name": "update_mask",
@@ -2843,10 +2843,10 @@
         "shortName": "update_workstation_cluster"
       },
       "description": "Sample for UpdateWorkstationCluster",
-      "file": "workstations_v1beta_generated_workstations_update_workstation_cluster_async.py",
+      "file": "workstations_v1_generated_workstations_update_workstation_cluster_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_UpdateWorkstationCluster_async",
+      "regionTag": "workstations_v1_generated_Workstations_UpdateWorkstationCluster_async",
       "segments": [
         {
           "end": 54,
@@ -2879,20 +2879,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_update_workstation_cluster_async.py"
+      "title": "workstations_v1_generated_workstations_update_workstation_cluster_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.update_workstation_cluster",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.update_workstation_cluster",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.UpdateWorkstationCluster",
+          "fullName": "google.cloud.workstations.v1.Workstations.UpdateWorkstationCluster",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "UpdateWorkstationCluster"
@@ -2900,11 +2900,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.UpdateWorkstationClusterRequest"
+            "type": "google.cloud.workstations_v1.types.UpdateWorkstationClusterRequest"
           },
           {
             "name": "workstation_cluster",
-            "type": "google.cloud.workstations_v1beta.types.WorkstationCluster"
+            "type": "google.cloud.workstations_v1.types.WorkstationCluster"
           },
           {
             "name": "update_mask",
@@ -2927,10 +2927,10 @@
         "shortName": "update_workstation_cluster"
       },
       "description": "Sample for UpdateWorkstationCluster",
-      "file": "workstations_v1beta_generated_workstations_update_workstation_cluster_sync.py",
+      "file": "workstations_v1_generated_workstations_update_workstation_cluster_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_UpdateWorkstationCluster_sync",
+      "regionTag": "workstations_v1_generated_Workstations_UpdateWorkstationCluster_sync",
       "segments": [
         {
           "end": 54,
@@ -2963,21 +2963,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_update_workstation_cluster_sync.py"
+      "title": "workstations_v1_generated_workstations_update_workstation_cluster_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.update_workstation_config",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.update_workstation_config",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.UpdateWorkstationConfig",
+          "fullName": "google.cloud.workstations.v1.Workstations.UpdateWorkstationConfig",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "UpdateWorkstationConfig"
@@ -2985,11 +2985,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.UpdateWorkstationConfigRequest"
+            "type": "google.cloud.workstations_v1.types.UpdateWorkstationConfigRequest"
           },
           {
             "name": "workstation_config",
-            "type": "google.cloud.workstations_v1beta.types.WorkstationConfig"
+            "type": "google.cloud.workstations_v1.types.WorkstationConfig"
           },
           {
             "name": "update_mask",
@@ -3012,10 +3012,10 @@
         "shortName": "update_workstation_config"
       },
       "description": "Sample for UpdateWorkstationConfig",
-      "file": "workstations_v1beta_generated_workstations_update_workstation_config_async.py",
+      "file": "workstations_v1_generated_workstations_update_workstation_config_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_UpdateWorkstationConfig_async",
+      "regionTag": "workstations_v1_generated_Workstations_UpdateWorkstationConfig_async",
       "segments": [
         {
           "end": 54,
@@ -3048,20 +3048,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_update_workstation_config_async.py"
+      "title": "workstations_v1_generated_workstations_update_workstation_config_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.update_workstation_config",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.update_workstation_config",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.UpdateWorkstationConfig",
+          "fullName": "google.cloud.workstations.v1.Workstations.UpdateWorkstationConfig",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "UpdateWorkstationConfig"
@@ -3069,11 +3069,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.UpdateWorkstationConfigRequest"
+            "type": "google.cloud.workstations_v1.types.UpdateWorkstationConfigRequest"
           },
           {
             "name": "workstation_config",
-            "type": "google.cloud.workstations_v1beta.types.WorkstationConfig"
+            "type": "google.cloud.workstations_v1.types.WorkstationConfig"
           },
           {
             "name": "update_mask",
@@ -3096,10 +3096,10 @@
         "shortName": "update_workstation_config"
       },
       "description": "Sample for UpdateWorkstationConfig",
-      "file": "workstations_v1beta_generated_workstations_update_workstation_config_sync.py",
+      "file": "workstations_v1_generated_workstations_update_workstation_config_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_UpdateWorkstationConfig_sync",
+      "regionTag": "workstations_v1_generated_Workstations_UpdateWorkstationConfig_sync",
       "segments": [
         {
           "end": 54,
@@ -3132,21 +3132,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_update_workstation_config_sync.py"
+      "title": "workstations_v1_generated_workstations_update_workstation_config_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient",
           "shortName": "WorkstationsAsyncClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsAsyncClient.update_workstation",
+        "fullName": "google.cloud.workstations_v1.WorkstationsAsyncClient.update_workstation",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.UpdateWorkstation",
+          "fullName": "google.cloud.workstations.v1.Workstations.UpdateWorkstation",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "UpdateWorkstation"
@@ -3154,11 +3154,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.UpdateWorkstationRequest"
+            "type": "google.cloud.workstations_v1.types.UpdateWorkstationRequest"
           },
           {
             "name": "workstation",
-            "type": "google.cloud.workstations_v1beta.types.Workstation"
+            "type": "google.cloud.workstations_v1.types.Workstation"
           },
           {
             "name": "update_mask",
@@ -3181,10 +3181,10 @@
         "shortName": "update_workstation"
       },
       "description": "Sample for UpdateWorkstation",
-      "file": "workstations_v1beta_generated_workstations_update_workstation_async.py",
+      "file": "workstations_v1_generated_workstations_update_workstation_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_UpdateWorkstation_async",
+      "regionTag": "workstations_v1_generated_Workstations_UpdateWorkstation_async",
       "segments": [
         {
           "end": 54,
@@ -3217,20 +3217,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_update_workstation_async.py"
+      "title": "workstations_v1_generated_workstations_update_workstation_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.workstations_v1beta.WorkstationsClient",
+          "fullName": "google.cloud.workstations_v1.WorkstationsClient",
           "shortName": "WorkstationsClient"
         },
-        "fullName": "google.cloud.workstations_v1beta.WorkstationsClient.update_workstation",
+        "fullName": "google.cloud.workstations_v1.WorkstationsClient.update_workstation",
         "method": {
-          "fullName": "google.cloud.workstations.v1beta.Workstations.UpdateWorkstation",
+          "fullName": "google.cloud.workstations.v1.Workstations.UpdateWorkstation",
           "service": {
-            "fullName": "google.cloud.workstations.v1beta.Workstations",
+            "fullName": "google.cloud.workstations.v1.Workstations",
             "shortName": "Workstations"
           },
           "shortName": "UpdateWorkstation"
@@ -3238,11 +3238,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.workstations_v1beta.types.UpdateWorkstationRequest"
+            "type": "google.cloud.workstations_v1.types.UpdateWorkstationRequest"
           },
           {
             "name": "workstation",
-            "type": "google.cloud.workstations_v1beta.types.Workstation"
+            "type": "google.cloud.workstations_v1.types.Workstation"
           },
           {
             "name": "update_mask",
@@ -3265,10 +3265,10 @@
         "shortName": "update_workstation"
       },
       "description": "Sample for UpdateWorkstation",
-      "file": "workstations_v1beta_generated_workstations_update_workstation_sync.py",
+      "file": "workstations_v1_generated_workstations_update_workstation_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workstations_v1beta_generated_Workstations_UpdateWorkstation_sync",
+      "regionTag": "workstations_v1_generated_Workstations_UpdateWorkstation_sync",
       "segments": [
         {
           "end": 54,
@@ -3301,7 +3301,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workstations_v1beta_generated_workstations_update_workstation_sync.py"
+      "title": "workstations_v1_generated_workstations_update_workstation_sync.py"
     }
   ]
 }
