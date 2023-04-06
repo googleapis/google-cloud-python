@@ -56,7 +56,7 @@ git checkout -b 'migrate-library'
 NUM_PY_SAMPLES_FILES=$(find samples -type f -name "*.py" ! -path "samples/generated_samples/*" | wc -l)
 
 # Fail if there are handwritten samples.
-if [[ $NUM_PY_SAMPLES_FILES != "0" ]]; then
+if [[ $NUM_PY_SAMPLES_FILES -ne "0" ]]; then
   echo "Please migrate handwritten samples to python-docs-samples before deleting the source."
   exit 1
 fi
