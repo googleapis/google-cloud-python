@@ -58,6 +58,7 @@ import grpc
 from .transports.base import SchemaServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import SchemaServiceGrpcTransport
 from .transports.grpc_asyncio import SchemaServiceGrpcAsyncIOTransport
+from .transports.rest import SchemaServiceRestTransport
 
 
 class SchemaServiceClientMeta(type):
@@ -71,6 +72,7 @@ class SchemaServiceClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[SchemaServiceTransport]]
     _transport_registry["grpc"] = SchemaServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = SchemaServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = SchemaServiceRestTransport
 
     def get_transport_class(
         cls,

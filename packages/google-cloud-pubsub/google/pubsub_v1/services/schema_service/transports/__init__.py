@@ -19,15 +19,20 @@ from typing import Dict, Type
 from .base import SchemaServiceTransport
 from .grpc import SchemaServiceGrpcTransport
 from .grpc_asyncio import SchemaServiceGrpcAsyncIOTransport
+from .rest import SchemaServiceRestTransport
+from .rest import SchemaServiceRestInterceptor
 
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[SchemaServiceTransport]]
 _transport_registry["grpc"] = SchemaServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = SchemaServiceGrpcAsyncIOTransport
+_transport_registry["rest"] = SchemaServiceRestTransport
 
 __all__ = (
     "SchemaServiceTransport",
     "SchemaServiceGrpcTransport",
     "SchemaServiceGrpcAsyncIOTransport",
+    "SchemaServiceRestTransport",
+    "SchemaServiceRestInterceptor",
 )

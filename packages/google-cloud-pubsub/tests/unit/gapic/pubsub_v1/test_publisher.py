@@ -104,6 +104,7 @@ def test__get_default_mtls_endpoint():
     [
         (PublisherClient, "grpc"),
         (PublisherAsyncClient, "grpc_asyncio"),
+        (PublisherClient, "rest"),
     ],
 )
 def test_publisher_client_from_service_account_info(client_class, transport_name):
@@ -117,7 +118,11 @@ def test_publisher_client_from_service_account_info(client_class, transport_name
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("pubsub.googleapis.com:443")
+        assert client.transport._host == (
+            "pubsub.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://pubsub.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -125,6 +130,7 @@ def test_publisher_client_from_service_account_info(client_class, transport_name
     [
         (transports.PublisherGrpcTransport, "grpc"),
         (transports.PublisherGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.PublisherRestTransport, "rest"),
     ],
 )
 def test_publisher_client_service_account_always_use_jwt(
@@ -150,6 +156,7 @@ def test_publisher_client_service_account_always_use_jwt(
     [
         (PublisherClient, "grpc"),
         (PublisherAsyncClient, "grpc_asyncio"),
+        (PublisherClient, "rest"),
     ],
 )
 def test_publisher_client_from_service_account_file(client_class, transport_name):
@@ -170,13 +177,18 @@ def test_publisher_client_from_service_account_file(client_class, transport_name
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("pubsub.googleapis.com:443")
+        assert client.transport._host == (
+            "pubsub.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://pubsub.googleapis.com"
+        )
 
 
 def test_publisher_client_get_transport_class():
     transport = PublisherClient.get_transport_class()
     available_transports = [
         transports.PublisherGrpcTransport,
+        transports.PublisherRestTransport,
     ]
     assert transport in available_transports
 
@@ -193,6 +205,7 @@ def test_publisher_client_get_transport_class():
             transports.PublisherGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (PublisherClient, transports.PublisherRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -334,6 +347,8 @@ def test_publisher_client_client_options(client_class, transport_class, transpor
             "grpc_asyncio",
             "false",
         ),
+        (PublisherClient, transports.PublisherRestTransport, "rest", "true"),
+        (PublisherClient, transports.PublisherRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -527,6 +542,7 @@ def test_publisher_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.PublisherGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (PublisherClient, transports.PublisherRestTransport, "rest"),
     ],
 )
 def test_publisher_client_client_options_scopes(
@@ -562,6 +578,7 @@ def test_publisher_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (PublisherClient, transports.PublisherRestTransport, "rest", None),
     ],
 )
 def test_publisher_client_client_options_credentials_file(
@@ -3318,6 +3335,2529 @@ async def test_detach_subscription_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.Topic,
+        dict,
+    ],
+)
+def test_create_topic_rest(request_type):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/topics/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.Topic(
+            name="name_value",
+            kms_key_name="kms_key_name_value",
+            satisfies_pzs=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.Topic.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_topic(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pubsub.Topic)
+    assert response.name == "name_value"
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.satisfies_pzs is True
+
+
+def test_create_topic_rest_required_fields(request_type=pubsub.Topic):
+    transport_class = transports.PublisherRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_topic._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_topic._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = pubsub.Topic()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "put",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = pubsub.Topic.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_topic(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_topic_rest_unset_required_fields():
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_topic._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_topic_rest_interceptors(null_interceptor):
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.PublisherRestInterceptor(),
+    )
+    client = PublisherClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PublisherRestInterceptor, "post_create_topic"
+    ) as post, mock.patch.object(
+        transports.PublisherRestInterceptor, "pre_create_topic"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = pubsub.Topic.pb(pubsub.Topic())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = pubsub.Topic.to_json(pubsub.Topic())
+
+        request = pubsub.Topic()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = pubsub.Topic()
+
+        client.create_topic(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_topic_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.Topic
+):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/topics/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_topic(request)
+
+
+def test_create_topic_rest_flattened():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.Topic()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/topics/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.Topic.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_topic(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/topics/*}" % client.transport._host, args[1]
+        )
+
+
+def test_create_topic_rest_flattened_error(transport: str = "rest"):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_topic(
+            pubsub.Topic(),
+            name="name_value",
+        )
+
+
+def test_create_topic_rest_error():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.UpdateTopicRequest,
+        dict,
+    ],
+)
+def test_update_topic_rest(request_type):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"topic": {"name": "projects/sample1/topics/sample2"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.Topic(
+            name="name_value",
+            kms_key_name="kms_key_name_value",
+            satisfies_pzs=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.Topic.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_topic(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pubsub.Topic)
+    assert response.name == "name_value"
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.satisfies_pzs is True
+
+
+def test_update_topic_rest_required_fields(request_type=pubsub.UpdateTopicRequest):
+    transport_class = transports.PublisherRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_topic._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_topic._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = pubsub.Topic()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = pubsub.Topic.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_topic(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_topic_rest_unset_required_fields():
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_topic._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "topic",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_topic_rest_interceptors(null_interceptor):
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.PublisherRestInterceptor(),
+    )
+    client = PublisherClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PublisherRestInterceptor, "post_update_topic"
+    ) as post, mock.patch.object(
+        transports.PublisherRestInterceptor, "pre_update_topic"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = pubsub.UpdateTopicRequest.pb(pubsub.UpdateTopicRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = pubsub.Topic.to_json(pubsub.Topic())
+
+        request = pubsub.UpdateTopicRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = pubsub.Topic()
+
+        client.update_topic(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_topic_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.UpdateTopicRequest
+):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"topic": {"name": "projects/sample1/topics/sample2"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_topic(request)
+
+
+def test_update_topic_rest_flattened():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.Topic()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"topic": {"name": "projects/sample1/topics/sample2"}}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            topic=pubsub.Topic(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.Topic.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_topic(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{topic.name=projects/*/topics/*}" % client.transport._host, args[1]
+        )
+
+
+def test_update_topic_rest_flattened_error(transport: str = "rest"):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_topic(
+            pubsub.UpdateTopicRequest(),
+            topic=pubsub.Topic(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_topic_rest_error():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.PublishRequest,
+        dict,
+    ],
+)
+def test_publish_rest(request_type):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"topic": "projects/sample1/topics/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.PublishResponse(
+            message_ids=["message_ids_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.PublishResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.publish(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pubsub.PublishResponse)
+    assert response.message_ids == ["message_ids_value"]
+
+
+def test_publish_rest_required_fields(request_type=pubsub.PublishRequest):
+    transport_class = transports.PublisherRestTransport
+
+    request_init = {}
+    request_init["topic"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).publish._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["topic"] = "topic_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).publish._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "topic" in jsonified_request
+    assert jsonified_request["topic"] == "topic_value"
+
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = pubsub.PublishResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = pubsub.PublishResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.publish(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_publish_rest_unset_required_fields():
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.publish._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "topic",
+                "messages",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_publish_rest_interceptors(null_interceptor):
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.PublisherRestInterceptor(),
+    )
+    client = PublisherClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PublisherRestInterceptor, "post_publish"
+    ) as post, mock.patch.object(
+        transports.PublisherRestInterceptor, "pre_publish"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = pubsub.PublishRequest.pb(pubsub.PublishRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = pubsub.PublishResponse.to_json(
+            pubsub.PublishResponse()
+        )
+
+        request = pubsub.PublishRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = pubsub.PublishResponse()
+
+        client.publish(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_publish_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.PublishRequest
+):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"topic": "projects/sample1/topics/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.publish(request)
+
+
+def test_publish_rest_flattened():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.PublishResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"topic": "projects/sample1/topics/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            topic="topic_value",
+            messages=[pubsub.PubsubMessage(data=b"data_blob")],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.PublishResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.publish(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{topic=projects/*/topics/*}:publish" % client.transport._host,
+            args[1],
+        )
+
+
+def test_publish_rest_flattened_error(transport: str = "rest"):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.publish(
+            pubsub.PublishRequest(),
+            topic="topic_value",
+            messages=[pubsub.PubsubMessage(data=b"data_blob")],
+        )
+
+
+def test_publish_rest_error():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.GetTopicRequest,
+        dict,
+    ],
+)
+def test_get_topic_rest(request_type):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"topic": "projects/sample1/topics/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.Topic(
+            name="name_value",
+            kms_key_name="kms_key_name_value",
+            satisfies_pzs=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.Topic.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_topic(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pubsub.Topic)
+    assert response.name == "name_value"
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.satisfies_pzs is True
+
+
+def test_get_topic_rest_required_fields(request_type=pubsub.GetTopicRequest):
+    transport_class = transports.PublisherRestTransport
+
+    request_init = {}
+    request_init["topic"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_topic._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["topic"] = "topic_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_topic._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "topic" in jsonified_request
+    assert jsonified_request["topic"] == "topic_value"
+
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = pubsub.Topic()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = pubsub.Topic.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_topic(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_topic_rest_unset_required_fields():
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_topic._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("topic",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_topic_rest_interceptors(null_interceptor):
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.PublisherRestInterceptor(),
+    )
+    client = PublisherClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PublisherRestInterceptor, "post_get_topic"
+    ) as post, mock.patch.object(
+        transports.PublisherRestInterceptor, "pre_get_topic"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = pubsub.GetTopicRequest.pb(pubsub.GetTopicRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = pubsub.Topic.to_json(pubsub.Topic())
+
+        request = pubsub.GetTopicRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = pubsub.Topic()
+
+        client.get_topic(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_topic_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.GetTopicRequest
+):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"topic": "projects/sample1/topics/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_topic(request)
+
+
+def test_get_topic_rest_flattened():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.Topic()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"topic": "projects/sample1/topics/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            topic="topic_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.Topic.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_topic(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{topic=projects/*/topics/*}" % client.transport._host, args[1]
+        )
+
+
+def test_get_topic_rest_flattened_error(transport: str = "rest"):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_topic(
+            pubsub.GetTopicRequest(),
+            topic="topic_value",
+        )
+
+
+def test_get_topic_rest_error():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.ListTopicsRequest,
+        dict,
+    ],
+)
+def test_list_topics_rest(request_type):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.ListTopicsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.ListTopicsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_topics(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListTopicsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_topics_rest_required_fields(request_type=pubsub.ListTopicsRequest):
+    transport_class = transports.PublisherRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_topics._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_topics._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = pubsub.ListTopicsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = pubsub.ListTopicsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_topics(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_topics_rest_unset_required_fields():
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_topics._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("project",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_topics_rest_interceptors(null_interceptor):
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.PublisherRestInterceptor(),
+    )
+    client = PublisherClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PublisherRestInterceptor, "post_list_topics"
+    ) as post, mock.patch.object(
+        transports.PublisherRestInterceptor, "pre_list_topics"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = pubsub.ListTopicsRequest.pb(pubsub.ListTopicsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = pubsub.ListTopicsResponse.to_json(
+            pubsub.ListTopicsResponse()
+        )
+
+        request = pubsub.ListTopicsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = pubsub.ListTopicsResponse()
+
+        client.list_topics(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_topics_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.ListTopicsRequest
+):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_topics(request)
+
+
+def test_list_topics_rest_flattened():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.ListTopicsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.ListTopicsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_topics(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{project=projects/*}/topics" % client.transport._host, args[1]
+        )
+
+
+def test_list_topics_rest_flattened_error(transport: str = "rest"):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_topics(
+            pubsub.ListTopicsRequest(),
+            project="project_value",
+        )
+
+
+def test_list_topics_rest_pager(transport: str = "rest"):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            pubsub.ListTopicsResponse(
+                topics=[
+                    pubsub.Topic(),
+                    pubsub.Topic(),
+                    pubsub.Topic(),
+                ],
+                next_page_token="abc",
+            ),
+            pubsub.ListTopicsResponse(
+                topics=[],
+                next_page_token="def",
+            ),
+            pubsub.ListTopicsResponse(
+                topics=[
+                    pubsub.Topic(),
+                ],
+                next_page_token="ghi",
+            ),
+            pubsub.ListTopicsResponse(
+                topics=[
+                    pubsub.Topic(),
+                    pubsub.Topic(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(pubsub.ListTopicsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"project": "projects/sample1"}
+
+        pager = client.list_topics(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, pubsub.Topic) for i in results)
+
+        pages = list(client.list_topics(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.ListTopicSubscriptionsRequest,
+        dict,
+    ],
+)
+def test_list_topic_subscriptions_rest(request_type):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"topic": "projects/sample1/topics/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.ListTopicSubscriptionsResponse(
+            subscriptions=["subscriptions_value"],
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.ListTopicSubscriptionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_topic_subscriptions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListTopicSubscriptionsPager)
+    assert response.subscriptions == ["subscriptions_value"]
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_topic_subscriptions_rest_required_fields(
+    request_type=pubsub.ListTopicSubscriptionsRequest,
+):
+    transport_class = transports.PublisherRestTransport
+
+    request_init = {}
+    request_init["topic"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_topic_subscriptions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["topic"] = "topic_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_topic_subscriptions._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "topic" in jsonified_request
+    assert jsonified_request["topic"] == "topic_value"
+
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = pubsub.ListTopicSubscriptionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = pubsub.ListTopicSubscriptionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_topic_subscriptions(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_topic_subscriptions_rest_unset_required_fields():
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_topic_subscriptions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("topic",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_topic_subscriptions_rest_interceptors(null_interceptor):
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.PublisherRestInterceptor(),
+    )
+    client = PublisherClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PublisherRestInterceptor, "post_list_topic_subscriptions"
+    ) as post, mock.patch.object(
+        transports.PublisherRestInterceptor, "pre_list_topic_subscriptions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = pubsub.ListTopicSubscriptionsRequest.pb(
+            pubsub.ListTopicSubscriptionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = pubsub.ListTopicSubscriptionsResponse.to_json(
+            pubsub.ListTopicSubscriptionsResponse()
+        )
+
+        request = pubsub.ListTopicSubscriptionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = pubsub.ListTopicSubscriptionsResponse()
+
+        client.list_topic_subscriptions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_topic_subscriptions_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.ListTopicSubscriptionsRequest
+):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"topic": "projects/sample1/topics/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_topic_subscriptions(request)
+
+
+def test_list_topic_subscriptions_rest_flattened():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.ListTopicSubscriptionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"topic": "projects/sample1/topics/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            topic="topic_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.ListTopicSubscriptionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_topic_subscriptions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{topic=projects/*/topics/*}/subscriptions" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_topic_subscriptions_rest_flattened_error(transport: str = "rest"):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_topic_subscriptions(
+            pubsub.ListTopicSubscriptionsRequest(),
+            topic="topic_value",
+        )
+
+
+def test_list_topic_subscriptions_rest_pager(transport: str = "rest"):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            pubsub.ListTopicSubscriptionsResponse(
+                subscriptions=[
+                    str(),
+                    str(),
+                    str(),
+                ],
+                next_page_token="abc",
+            ),
+            pubsub.ListTopicSubscriptionsResponse(
+                subscriptions=[],
+                next_page_token="def",
+            ),
+            pubsub.ListTopicSubscriptionsResponse(
+                subscriptions=[
+                    str(),
+                ],
+                next_page_token="ghi",
+            ),
+            pubsub.ListTopicSubscriptionsResponse(
+                subscriptions=[
+                    str(),
+                    str(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            pubsub.ListTopicSubscriptionsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"topic": "projects/sample1/topics/sample2"}
+
+        pager = client.list_topic_subscriptions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, str) for i in results)
+
+        pages = list(client.list_topic_subscriptions(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.ListTopicSnapshotsRequest,
+        dict,
+    ],
+)
+def test_list_topic_snapshots_rest(request_type):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"topic": "projects/sample1/topics/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.ListTopicSnapshotsResponse(
+            snapshots=["snapshots_value"],
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.ListTopicSnapshotsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_topic_snapshots(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListTopicSnapshotsPager)
+    assert response.snapshots == ["snapshots_value"]
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_topic_snapshots_rest_required_fields(
+    request_type=pubsub.ListTopicSnapshotsRequest,
+):
+    transport_class = transports.PublisherRestTransport
+
+    request_init = {}
+    request_init["topic"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_topic_snapshots._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["topic"] = "topic_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_topic_snapshots._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "topic" in jsonified_request
+    assert jsonified_request["topic"] == "topic_value"
+
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = pubsub.ListTopicSnapshotsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = pubsub.ListTopicSnapshotsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_topic_snapshots(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_topic_snapshots_rest_unset_required_fields():
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_topic_snapshots._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("topic",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_topic_snapshots_rest_interceptors(null_interceptor):
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.PublisherRestInterceptor(),
+    )
+    client = PublisherClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PublisherRestInterceptor, "post_list_topic_snapshots"
+    ) as post, mock.patch.object(
+        transports.PublisherRestInterceptor, "pre_list_topic_snapshots"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = pubsub.ListTopicSnapshotsRequest.pb(
+            pubsub.ListTopicSnapshotsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = pubsub.ListTopicSnapshotsResponse.to_json(
+            pubsub.ListTopicSnapshotsResponse()
+        )
+
+        request = pubsub.ListTopicSnapshotsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = pubsub.ListTopicSnapshotsResponse()
+
+        client.list_topic_snapshots(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_topic_snapshots_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.ListTopicSnapshotsRequest
+):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"topic": "projects/sample1/topics/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_topic_snapshots(request)
+
+
+def test_list_topic_snapshots_rest_flattened():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.ListTopicSnapshotsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"topic": "projects/sample1/topics/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            topic="topic_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.ListTopicSnapshotsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_topic_snapshots(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{topic=projects/*/topics/*}/snapshots" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_topic_snapshots_rest_flattened_error(transport: str = "rest"):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_topic_snapshots(
+            pubsub.ListTopicSnapshotsRequest(),
+            topic="topic_value",
+        )
+
+
+def test_list_topic_snapshots_rest_pager(transport: str = "rest"):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            pubsub.ListTopicSnapshotsResponse(
+                snapshots=[
+                    str(),
+                    str(),
+                    str(),
+                ],
+                next_page_token="abc",
+            ),
+            pubsub.ListTopicSnapshotsResponse(
+                snapshots=[],
+                next_page_token="def",
+            ),
+            pubsub.ListTopicSnapshotsResponse(
+                snapshots=[
+                    str(),
+                ],
+                next_page_token="ghi",
+            ),
+            pubsub.ListTopicSnapshotsResponse(
+                snapshots=[
+                    str(),
+                    str(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(pubsub.ListTopicSnapshotsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"topic": "projects/sample1/topics/sample2"}
+
+        pager = client.list_topic_snapshots(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, str) for i in results)
+
+        pages = list(client.list_topic_snapshots(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.DeleteTopicRequest,
+        dict,
+    ],
+)
+def test_delete_topic_rest(request_type):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"topic": "projects/sample1/topics/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_topic(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_topic_rest_required_fields(request_type=pubsub.DeleteTopicRequest):
+    transport_class = transports.PublisherRestTransport
+
+    request_init = {}
+    request_init["topic"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_topic._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["topic"] = "topic_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_topic._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "topic" in jsonified_request
+    assert jsonified_request["topic"] == "topic_value"
+
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_topic(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_topic_rest_unset_required_fields():
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_topic._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("topic",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_topic_rest_interceptors(null_interceptor):
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.PublisherRestInterceptor(),
+    )
+    client = PublisherClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PublisherRestInterceptor, "pre_delete_topic"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = pubsub.DeleteTopicRequest.pb(pubsub.DeleteTopicRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = pubsub.DeleteTopicRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_topic(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_topic_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.DeleteTopicRequest
+):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"topic": "projects/sample1/topics/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_topic(request)
+
+
+def test_delete_topic_rest_flattened():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"topic": "projects/sample1/topics/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            topic="topic_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_topic(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{topic=projects/*/topics/*}" % client.transport._host, args[1]
+        )
+
+
+def test_delete_topic_rest_flattened_error(transport: str = "rest"):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_topic(
+            pubsub.DeleteTopicRequest(),
+            topic="topic_value",
+        )
+
+
+def test_delete_topic_rest_error():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.DetachSubscriptionRequest,
+        dict,
+    ],
+)
+def test_detach_subscription_rest(request_type):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"subscription": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.DetachSubscriptionResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.DetachSubscriptionResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.detach_subscription(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pubsub.DetachSubscriptionResponse)
+
+
+def test_detach_subscription_rest_required_fields(
+    request_type=pubsub.DetachSubscriptionRequest,
+):
+    transport_class = transports.PublisherRestTransport
+
+    request_init = {}
+    request_init["subscription"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).detach_subscription._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["subscription"] = "subscription_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).detach_subscription._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "subscription" in jsonified_request
+    assert jsonified_request["subscription"] == "subscription_value"
+
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = pubsub.DetachSubscriptionResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = pubsub.DetachSubscriptionResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.detach_subscription(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_detach_subscription_rest_unset_required_fields():
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.detach_subscription._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("subscription",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_detach_subscription_rest_interceptors(null_interceptor):
+    transport = transports.PublisherRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.PublisherRestInterceptor(),
+    )
+    client = PublisherClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PublisherRestInterceptor, "post_detach_subscription"
+    ) as post, mock.patch.object(
+        transports.PublisherRestInterceptor, "pre_detach_subscription"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = pubsub.DetachSubscriptionRequest.pb(
+            pubsub.DetachSubscriptionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = pubsub.DetachSubscriptionResponse.to_json(
+            pubsub.DetachSubscriptionResponse()
+        )
+
+        request = pubsub.DetachSubscriptionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = pubsub.DetachSubscriptionResponse()
+
+        client.detach_subscription(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_detach_subscription_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.DetachSubscriptionRequest
+):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"subscription": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.detach_subscription(request)
+
+
+def test_detach_subscription_rest_error():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.PublisherGrpcTransport(
@@ -3399,6 +5939,7 @@ def test_transport_get_channel():
     [
         transports.PublisherGrpcTransport,
         transports.PublisherGrpcAsyncIOTransport,
+        transports.PublisherRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -3413,6 +5954,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -3562,6 +6104,7 @@ def test_publisher_transport_auth_adc(transport_class):
     [
         transports.PublisherGrpcTransport,
         transports.PublisherGrpcAsyncIOTransport,
+        transports.PublisherRestTransport,
     ],
 )
 def test_publisher_transport_auth_gdch_credentials(transport_class):
@@ -3663,11 +6206,23 @@ def test_publisher_grpc_transport_client_cert_source_for_mtls(transport_class):
             )
 
 
+def test_publisher_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.PublisherRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_publisher_host_no_port(transport_name):
@@ -3678,7 +6233,11 @@ def test_publisher_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("pubsub.googleapis.com:443")
+    assert client.transport._host == (
+        "pubsub.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://pubsub.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -3686,6 +6245,7 @@ def test_publisher_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_publisher_host_with_port(transport_name):
@@ -3696,7 +6256,57 @@ def test_publisher_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("pubsub.googleapis.com:8000")
+    assert client.transport._host == (
+        "pubsub.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://pubsub.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_publisher_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = PublisherClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = PublisherClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_topic._session
+    session2 = client2.transport.create_topic._session
+    assert session1 != session2
+    session1 = client1.transport.update_topic._session
+    session2 = client2.transport.update_topic._session
+    assert session1 != session2
+    session1 = client1.transport.publish._session
+    session2 = client2.transport.publish._session
+    assert session1 != session2
+    session1 = client1.transport.get_topic._session
+    session2 = client2.transport.get_topic._session
+    assert session1 != session2
+    session1 = client1.transport.list_topics._session
+    session2 = client2.transport.list_topics._session
+    assert session1 != session2
+    session1 = client1.transport.list_topic_subscriptions._session
+    session2 = client2.transport.list_topic_subscriptions._session
+    assert session1 != session2
+    session1 = client1.transport.list_topic_snapshots._session
+    session2 = client2.transport.list_topic_snapshots._session
+    assert session1 != session2
+    session1 = client1.transport.delete_topic._session
+    session2 = client2.transport.delete_topic._session
+    assert session1 != session2
+    session1 = client1.transport.detach_subscription._session
+    session2 = client2.transport.detach_subscription._session
+    assert session1 != session2
 
 
 def test_publisher_grpc_transport_channel():
@@ -4028,6 +6638,180 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_get_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
+):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/topics/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest(request_type):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"resource": "projects/sample1/topics/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_set_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
+):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/topics/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_set_iam_policy_rest(request_type):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"resource": "projects/sample1/topics/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.set_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_test_iam_permissions_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
+):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/subscriptions/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.test_iam_permissions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
+)
+def test_test_iam_permissions_rest(request_type):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"resource": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.test_iam_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
 
 
 def test_set_iam_policy(transport: str = "grpc"):
@@ -4540,6 +7324,7 @@ async def test_test_iam_permissions_from_dict_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -4557,6 +7342,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

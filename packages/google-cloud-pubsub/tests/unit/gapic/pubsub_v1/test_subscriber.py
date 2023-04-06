@@ -106,6 +106,7 @@ def test__get_default_mtls_endpoint():
     [
         (SubscriberClient, "grpc"),
         (SubscriberAsyncClient, "grpc_asyncio"),
+        (SubscriberClient, "rest"),
     ],
 )
 def test_subscriber_client_from_service_account_info(client_class, transport_name):
@@ -119,7 +120,11 @@ def test_subscriber_client_from_service_account_info(client_class, transport_nam
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("pubsub.googleapis.com:443")
+        assert client.transport._host == (
+            "pubsub.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://pubsub.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -127,6 +132,7 @@ def test_subscriber_client_from_service_account_info(client_class, transport_nam
     [
         (transports.SubscriberGrpcTransport, "grpc"),
         (transports.SubscriberGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.SubscriberRestTransport, "rest"),
     ],
 )
 def test_subscriber_client_service_account_always_use_jwt(
@@ -152,6 +158,7 @@ def test_subscriber_client_service_account_always_use_jwt(
     [
         (SubscriberClient, "grpc"),
         (SubscriberAsyncClient, "grpc_asyncio"),
+        (SubscriberClient, "rest"),
     ],
 )
 def test_subscriber_client_from_service_account_file(client_class, transport_name):
@@ -172,13 +179,18 @@ def test_subscriber_client_from_service_account_file(client_class, transport_nam
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("pubsub.googleapis.com:443")
+        assert client.transport._host == (
+            "pubsub.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://pubsub.googleapis.com"
+        )
 
 
 def test_subscriber_client_get_transport_class():
     transport = SubscriberClient.get_transport_class()
     available_transports = [
         transports.SubscriberGrpcTransport,
+        transports.SubscriberRestTransport,
     ]
     assert transport in available_transports
 
@@ -195,6 +207,7 @@ def test_subscriber_client_get_transport_class():
             transports.SubscriberGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (SubscriberClient, transports.SubscriberRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
@@ -338,6 +351,8 @@ def test_subscriber_client_client_options(
             "grpc_asyncio",
             "false",
         ),
+        (SubscriberClient, transports.SubscriberRestTransport, "rest", "true"),
+        (SubscriberClient, transports.SubscriberRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
@@ -531,6 +546,7 @@ def test_subscriber_client_get_mtls_endpoint_and_cert_source(client_class):
             transports.SubscriberGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (SubscriberClient, transports.SubscriberRestTransport, "rest"),
     ],
 )
 def test_subscriber_client_client_options_scopes(
@@ -566,6 +582,7 @@ def test_subscriber_client_client_options_scopes(
             "grpc_asyncio",
             grpc_helpers_async,
         ),
+        (SubscriberClient, transports.SubscriberRestTransport, "rest", None),
     ],
 )
 def test_subscriber_client_client_options_credentials_file(
@@ -4740,6 +4757,4156 @@ async def test_seek_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.Subscription,
+        dict,
+    ],
+)
+def test_create_subscription_rest(request_type):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.Subscription(
+            name="name_value",
+            topic="topic_value",
+            ack_deadline_seconds=2066,
+            retain_acked_messages=True,
+            enable_message_ordering=True,
+            filter="filter_value",
+            detached=True,
+            enable_exactly_once_delivery=True,
+            state=pubsub.Subscription.State.ACTIVE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.Subscription.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_subscription(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pubsub.Subscription)
+    assert response.name == "name_value"
+    assert response.topic == "topic_value"
+    assert response.ack_deadline_seconds == 2066
+    assert response.retain_acked_messages is True
+    assert response.enable_message_ordering is True
+    assert response.filter == "filter_value"
+    assert response.detached is True
+    assert response.enable_exactly_once_delivery is True
+    assert response.state == pubsub.Subscription.State.ACTIVE
+
+
+def test_create_subscription_rest_required_fields(request_type=pubsub.Subscription):
+    transport_class = transports.SubscriberRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["topic"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_subscription._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["topic"] = "topic_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_subscription._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "topic" in jsonified_request
+    assert jsonified_request["topic"] == "topic_value"
+
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = pubsub.Subscription()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "put",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = pubsub.Subscription.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_subscription(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_subscription_rest_unset_required_fields():
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_subscription._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "topic",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_subscription_rest_interceptors(null_interceptor):
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SubscriberRestInterceptor(),
+    )
+    client = SubscriberClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SubscriberRestInterceptor, "post_create_subscription"
+    ) as post, mock.patch.object(
+        transports.SubscriberRestInterceptor, "pre_create_subscription"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = pubsub.Subscription.pb(pubsub.Subscription())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = pubsub.Subscription.to_json(pubsub.Subscription())
+
+        request = pubsub.Subscription()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = pubsub.Subscription()
+
+        client.create_subscription(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_subscription_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.Subscription
+):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_subscription(request)
+
+
+def test_create_subscription_rest_flattened():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.Subscription()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/subscriptions/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            topic="topic_value",
+            push_config=pubsub.PushConfig(push_endpoint="push_endpoint_value"),
+            ack_deadline_seconds=2066,
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.Subscription.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_subscription(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/subscriptions/*}" % client.transport._host, args[1]
+        )
+
+
+def test_create_subscription_rest_flattened_error(transport: str = "rest"):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_subscription(
+            pubsub.Subscription(),
+            name="name_value",
+            topic="topic_value",
+            push_config=pubsub.PushConfig(push_endpoint="push_endpoint_value"),
+            ack_deadline_seconds=2066,
+        )
+
+
+def test_create_subscription_rest_error():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.GetSubscriptionRequest,
+        dict,
+    ],
+)
+def test_get_subscription_rest(request_type):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"subscription": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.Subscription(
+            name="name_value",
+            topic="topic_value",
+            ack_deadline_seconds=2066,
+            retain_acked_messages=True,
+            enable_message_ordering=True,
+            filter="filter_value",
+            detached=True,
+            enable_exactly_once_delivery=True,
+            state=pubsub.Subscription.State.ACTIVE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.Subscription.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_subscription(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pubsub.Subscription)
+    assert response.name == "name_value"
+    assert response.topic == "topic_value"
+    assert response.ack_deadline_seconds == 2066
+    assert response.retain_acked_messages is True
+    assert response.enable_message_ordering is True
+    assert response.filter == "filter_value"
+    assert response.detached is True
+    assert response.enable_exactly_once_delivery is True
+    assert response.state == pubsub.Subscription.State.ACTIVE
+
+
+def test_get_subscription_rest_required_fields(
+    request_type=pubsub.GetSubscriptionRequest,
+):
+    transport_class = transports.SubscriberRestTransport
+
+    request_init = {}
+    request_init["subscription"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_subscription._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["subscription"] = "subscription_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_subscription._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "subscription" in jsonified_request
+    assert jsonified_request["subscription"] == "subscription_value"
+
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = pubsub.Subscription()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = pubsub.Subscription.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_subscription(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_subscription_rest_unset_required_fields():
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_subscription._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("subscription",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_subscription_rest_interceptors(null_interceptor):
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SubscriberRestInterceptor(),
+    )
+    client = SubscriberClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SubscriberRestInterceptor, "post_get_subscription"
+    ) as post, mock.patch.object(
+        transports.SubscriberRestInterceptor, "pre_get_subscription"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = pubsub.GetSubscriptionRequest.pb(pubsub.GetSubscriptionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = pubsub.Subscription.to_json(pubsub.Subscription())
+
+        request = pubsub.GetSubscriptionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = pubsub.Subscription()
+
+        client.get_subscription(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_subscription_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.GetSubscriptionRequest
+):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"subscription": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_subscription(request)
+
+
+def test_get_subscription_rest_flattened():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.Subscription()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"subscription": "projects/sample1/subscriptions/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            subscription="subscription_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.Subscription.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_subscription(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{subscription=projects/*/subscriptions/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_subscription_rest_flattened_error(transport: str = "rest"):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_subscription(
+            pubsub.GetSubscriptionRequest(),
+            subscription="subscription_value",
+        )
+
+
+def test_get_subscription_rest_error():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.UpdateSubscriptionRequest,
+        dict,
+    ],
+)
+def test_update_subscription_rest(request_type):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"subscription": {"name": "projects/sample1/subscriptions/sample2"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.Subscription(
+            name="name_value",
+            topic="topic_value",
+            ack_deadline_seconds=2066,
+            retain_acked_messages=True,
+            enable_message_ordering=True,
+            filter="filter_value",
+            detached=True,
+            enable_exactly_once_delivery=True,
+            state=pubsub.Subscription.State.ACTIVE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.Subscription.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_subscription(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pubsub.Subscription)
+    assert response.name == "name_value"
+    assert response.topic == "topic_value"
+    assert response.ack_deadline_seconds == 2066
+    assert response.retain_acked_messages is True
+    assert response.enable_message_ordering is True
+    assert response.filter == "filter_value"
+    assert response.detached is True
+    assert response.enable_exactly_once_delivery is True
+    assert response.state == pubsub.Subscription.State.ACTIVE
+
+
+def test_update_subscription_rest_required_fields(
+    request_type=pubsub.UpdateSubscriptionRequest,
+):
+    transport_class = transports.SubscriberRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_subscription._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_subscription._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = pubsub.Subscription()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = pubsub.Subscription.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_subscription(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_subscription_rest_unset_required_fields():
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_subscription._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "subscription",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_subscription_rest_interceptors(null_interceptor):
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SubscriberRestInterceptor(),
+    )
+    client = SubscriberClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SubscriberRestInterceptor, "post_update_subscription"
+    ) as post, mock.patch.object(
+        transports.SubscriberRestInterceptor, "pre_update_subscription"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = pubsub.UpdateSubscriptionRequest.pb(
+            pubsub.UpdateSubscriptionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = pubsub.Subscription.to_json(pubsub.Subscription())
+
+        request = pubsub.UpdateSubscriptionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = pubsub.Subscription()
+
+        client.update_subscription(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_subscription_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.UpdateSubscriptionRequest
+):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"subscription": {"name": "projects/sample1/subscriptions/sample2"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_subscription(request)
+
+
+def test_update_subscription_rest_flattened():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.Subscription()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "subscription": {"name": "projects/sample1/subscriptions/sample2"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            subscription=pubsub.Subscription(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.Subscription.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_subscription(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{subscription.name=projects/*/subscriptions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_subscription_rest_flattened_error(transport: str = "rest"):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_subscription(
+            pubsub.UpdateSubscriptionRequest(),
+            subscription=pubsub.Subscription(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_subscription_rest_error():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.ListSubscriptionsRequest,
+        dict,
+    ],
+)
+def test_list_subscriptions_rest(request_type):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.ListSubscriptionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.ListSubscriptionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_subscriptions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSubscriptionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_subscriptions_rest_required_fields(
+    request_type=pubsub.ListSubscriptionsRequest,
+):
+    transport_class = transports.SubscriberRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_subscriptions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_subscriptions._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = pubsub.ListSubscriptionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = pubsub.ListSubscriptionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_subscriptions(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_subscriptions_rest_unset_required_fields():
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_subscriptions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("project",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_subscriptions_rest_interceptors(null_interceptor):
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SubscriberRestInterceptor(),
+    )
+    client = SubscriberClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SubscriberRestInterceptor, "post_list_subscriptions"
+    ) as post, mock.patch.object(
+        transports.SubscriberRestInterceptor, "pre_list_subscriptions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = pubsub.ListSubscriptionsRequest.pb(
+            pubsub.ListSubscriptionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = pubsub.ListSubscriptionsResponse.to_json(
+            pubsub.ListSubscriptionsResponse()
+        )
+
+        request = pubsub.ListSubscriptionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = pubsub.ListSubscriptionsResponse()
+
+        client.list_subscriptions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_subscriptions_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.ListSubscriptionsRequest
+):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_subscriptions(request)
+
+
+def test_list_subscriptions_rest_flattened():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.ListSubscriptionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.ListSubscriptionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_subscriptions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{project=projects/*}/subscriptions" % client.transport._host, args[1]
+        )
+
+
+def test_list_subscriptions_rest_flattened_error(transport: str = "rest"):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_subscriptions(
+            pubsub.ListSubscriptionsRequest(),
+            project="project_value",
+        )
+
+
+def test_list_subscriptions_rest_pager(transport: str = "rest"):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            pubsub.ListSubscriptionsResponse(
+                subscriptions=[
+                    pubsub.Subscription(),
+                    pubsub.Subscription(),
+                    pubsub.Subscription(),
+                ],
+                next_page_token="abc",
+            ),
+            pubsub.ListSubscriptionsResponse(
+                subscriptions=[],
+                next_page_token="def",
+            ),
+            pubsub.ListSubscriptionsResponse(
+                subscriptions=[
+                    pubsub.Subscription(),
+                ],
+                next_page_token="ghi",
+            ),
+            pubsub.ListSubscriptionsResponse(
+                subscriptions=[
+                    pubsub.Subscription(),
+                    pubsub.Subscription(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(pubsub.ListSubscriptionsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"project": "projects/sample1"}
+
+        pager = client.list_subscriptions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, pubsub.Subscription) for i in results)
+
+        pages = list(client.list_subscriptions(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.DeleteSubscriptionRequest,
+        dict,
+    ],
+)
+def test_delete_subscription_rest(request_type):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"subscription": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_subscription(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_subscription_rest_required_fields(
+    request_type=pubsub.DeleteSubscriptionRequest,
+):
+    transport_class = transports.SubscriberRestTransport
+
+    request_init = {}
+    request_init["subscription"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_subscription._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["subscription"] = "subscription_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_subscription._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "subscription" in jsonified_request
+    assert jsonified_request["subscription"] == "subscription_value"
+
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_subscription(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_subscription_rest_unset_required_fields():
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_subscription._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("subscription",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_subscription_rest_interceptors(null_interceptor):
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SubscriberRestInterceptor(),
+    )
+    client = SubscriberClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SubscriberRestInterceptor, "pre_delete_subscription"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = pubsub.DeleteSubscriptionRequest.pb(
+            pubsub.DeleteSubscriptionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = pubsub.DeleteSubscriptionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_subscription(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_subscription_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.DeleteSubscriptionRequest
+):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"subscription": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_subscription(request)
+
+
+def test_delete_subscription_rest_flattened():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"subscription": "projects/sample1/subscriptions/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            subscription="subscription_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_subscription(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{subscription=projects/*/subscriptions/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_subscription_rest_flattened_error(transport: str = "rest"):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_subscription(
+            pubsub.DeleteSubscriptionRequest(),
+            subscription="subscription_value",
+        )
+
+
+def test_delete_subscription_rest_error():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.ModifyAckDeadlineRequest,
+        dict,
+    ],
+)
+def test_modify_ack_deadline_rest(request_type):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"subscription": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.modify_ack_deadline(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_modify_ack_deadline_rest_required_fields(
+    request_type=pubsub.ModifyAckDeadlineRequest,
+):
+    transport_class = transports.SubscriberRestTransport
+
+    request_init = {}
+    request_init["subscription"] = ""
+    request_init["ack_ids"] = ""
+    request_init["ack_deadline_seconds"] = 0
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).modify_ack_deadline._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["subscription"] = "subscription_value"
+    jsonified_request["ackIds"] = "ack_ids_value"
+    jsonified_request["ackDeadlineSeconds"] = 2066
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).modify_ack_deadline._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "subscription" in jsonified_request
+    assert jsonified_request["subscription"] == "subscription_value"
+    assert "ackIds" in jsonified_request
+    assert jsonified_request["ackIds"] == "ack_ids_value"
+    assert "ackDeadlineSeconds" in jsonified_request
+    assert jsonified_request["ackDeadlineSeconds"] == 2066
+
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.modify_ack_deadline(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_modify_ack_deadline_rest_unset_required_fields():
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.modify_ack_deadline._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "subscription",
+                "ackIds",
+                "ackDeadlineSeconds",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_modify_ack_deadline_rest_interceptors(null_interceptor):
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SubscriberRestInterceptor(),
+    )
+    client = SubscriberClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SubscriberRestInterceptor, "pre_modify_ack_deadline"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = pubsub.ModifyAckDeadlineRequest.pb(
+            pubsub.ModifyAckDeadlineRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = pubsub.ModifyAckDeadlineRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.modify_ack_deadline(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_modify_ack_deadline_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.ModifyAckDeadlineRequest
+):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"subscription": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.modify_ack_deadline(request)
+
+
+def test_modify_ack_deadline_rest_flattened():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"subscription": "projects/sample1/subscriptions/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            subscription="subscription_value",
+            ack_ids=["ack_ids_value"],
+            ack_deadline_seconds=2066,
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.modify_ack_deadline(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{subscription=projects/*/subscriptions/*}:modifyAckDeadline"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_modify_ack_deadline_rest_flattened_error(transport: str = "rest"):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.modify_ack_deadline(
+            pubsub.ModifyAckDeadlineRequest(),
+            subscription="subscription_value",
+            ack_ids=["ack_ids_value"],
+            ack_deadline_seconds=2066,
+        )
+
+
+def test_modify_ack_deadline_rest_error():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.AcknowledgeRequest,
+        dict,
+    ],
+)
+def test_acknowledge_rest(request_type):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"subscription": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.acknowledge(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_acknowledge_rest_required_fields(request_type=pubsub.AcknowledgeRequest):
+    transport_class = transports.SubscriberRestTransport
+
+    request_init = {}
+    request_init["subscription"] = ""
+    request_init["ack_ids"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).acknowledge._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["subscription"] = "subscription_value"
+    jsonified_request["ackIds"] = "ack_ids_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).acknowledge._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "subscription" in jsonified_request
+    assert jsonified_request["subscription"] == "subscription_value"
+    assert "ackIds" in jsonified_request
+    assert jsonified_request["ackIds"] == "ack_ids_value"
+
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.acknowledge(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_acknowledge_rest_unset_required_fields():
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.acknowledge._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "subscription",
+                "ackIds",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_acknowledge_rest_interceptors(null_interceptor):
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SubscriberRestInterceptor(),
+    )
+    client = SubscriberClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SubscriberRestInterceptor, "pre_acknowledge"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = pubsub.AcknowledgeRequest.pb(pubsub.AcknowledgeRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = pubsub.AcknowledgeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.acknowledge(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_acknowledge_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.AcknowledgeRequest
+):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"subscription": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.acknowledge(request)
+
+
+def test_acknowledge_rest_flattened():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"subscription": "projects/sample1/subscriptions/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            subscription="subscription_value",
+            ack_ids=["ack_ids_value"],
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.acknowledge(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{subscription=projects/*/subscriptions/*}:acknowledge"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_acknowledge_rest_flattened_error(transport: str = "rest"):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.acknowledge(
+            pubsub.AcknowledgeRequest(),
+            subscription="subscription_value",
+            ack_ids=["ack_ids_value"],
+        )
+
+
+def test_acknowledge_rest_error():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.PullRequest,
+        dict,
+    ],
+)
+def test_pull_rest(request_type):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"subscription": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.PullResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.PullResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.pull(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pubsub.PullResponse)
+
+
+def test_pull_rest_required_fields(request_type=pubsub.PullRequest):
+    transport_class = transports.SubscriberRestTransport
+
+    request_init = {}
+    request_init["subscription"] = ""
+    request_init["max_messages"] = 0
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).pull._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["subscription"] = "subscription_value"
+    jsonified_request["maxMessages"] = 1277
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).pull._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "subscription" in jsonified_request
+    assert jsonified_request["subscription"] == "subscription_value"
+    assert "maxMessages" in jsonified_request
+    assert jsonified_request["maxMessages"] == 1277
+
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = pubsub.PullResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = pubsub.PullResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.pull(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_pull_rest_unset_required_fields():
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.pull._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "subscription",
+                "maxMessages",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_pull_rest_interceptors(null_interceptor):
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SubscriberRestInterceptor(),
+    )
+    client = SubscriberClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SubscriberRestInterceptor, "post_pull"
+    ) as post, mock.patch.object(
+        transports.SubscriberRestInterceptor, "pre_pull"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = pubsub.PullRequest.pb(pubsub.PullRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = pubsub.PullResponse.to_json(pubsub.PullResponse())
+
+        request = pubsub.PullRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = pubsub.PullResponse()
+
+        client.pull(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_pull_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.PullRequest
+):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"subscription": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.pull(request)
+
+
+def test_pull_rest_flattened():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.PullResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"subscription": "projects/sample1/subscriptions/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            subscription="subscription_value",
+            return_immediately=True,
+            max_messages=1277,
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.PullResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.pull(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{subscription=projects/*/subscriptions/*}:pull"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_pull_rest_flattened_error(transport: str = "rest"):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.pull(
+            pubsub.PullRequest(),
+            subscription="subscription_value",
+            return_immediately=True,
+            max_messages=1277,
+        )
+
+
+def test_pull_rest_error():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+def test_streaming_pull_rest_no_http_options():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = pubsub.StreamingPullRequest()
+    requests = [request]
+    with pytest.raises(RuntimeError):
+        client.streaming_pull(requests)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.ModifyPushConfigRequest,
+        dict,
+    ],
+)
+def test_modify_push_config_rest(request_type):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"subscription": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.modify_push_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_modify_push_config_rest_required_fields(
+    request_type=pubsub.ModifyPushConfigRequest,
+):
+    transport_class = transports.SubscriberRestTransport
+
+    request_init = {}
+    request_init["subscription"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).modify_push_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["subscription"] = "subscription_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).modify_push_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "subscription" in jsonified_request
+    assert jsonified_request["subscription"] == "subscription_value"
+
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.modify_push_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_modify_push_config_rest_unset_required_fields():
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.modify_push_config._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "subscription",
+                "pushConfig",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_modify_push_config_rest_interceptors(null_interceptor):
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SubscriberRestInterceptor(),
+    )
+    client = SubscriberClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SubscriberRestInterceptor, "pre_modify_push_config"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = pubsub.ModifyPushConfigRequest.pb(pubsub.ModifyPushConfigRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = pubsub.ModifyPushConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.modify_push_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_modify_push_config_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.ModifyPushConfigRequest
+):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"subscription": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.modify_push_config(request)
+
+
+def test_modify_push_config_rest_flattened():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"subscription": "projects/sample1/subscriptions/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            subscription="subscription_value",
+            push_config=pubsub.PushConfig(push_endpoint="push_endpoint_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.modify_push_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{subscription=projects/*/subscriptions/*}:modifyPushConfig"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_modify_push_config_rest_flattened_error(transport: str = "rest"):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.modify_push_config(
+            pubsub.ModifyPushConfigRequest(),
+            subscription="subscription_value",
+            push_config=pubsub.PushConfig(push_endpoint="push_endpoint_value"),
+        )
+
+
+def test_modify_push_config_rest_error():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.GetSnapshotRequest,
+        dict,
+    ],
+)
+def test_get_snapshot_rest(request_type):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"snapshot": "projects/sample1/snapshots/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.Snapshot(
+            name="name_value",
+            topic="topic_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.Snapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_snapshot(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pubsub.Snapshot)
+    assert response.name == "name_value"
+    assert response.topic == "topic_value"
+
+
+def test_get_snapshot_rest_required_fields(request_type=pubsub.GetSnapshotRequest):
+    transport_class = transports.SubscriberRestTransport
+
+    request_init = {}
+    request_init["snapshot"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["snapshot"] = "snapshot_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "snapshot" in jsonified_request
+    assert jsonified_request["snapshot"] == "snapshot_value"
+
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = pubsub.Snapshot()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = pubsub.Snapshot.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_snapshot(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_snapshot_rest_unset_required_fields():
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_snapshot._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("snapshot",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_snapshot_rest_interceptors(null_interceptor):
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SubscriberRestInterceptor(),
+    )
+    client = SubscriberClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SubscriberRestInterceptor, "post_get_snapshot"
+    ) as post, mock.patch.object(
+        transports.SubscriberRestInterceptor, "pre_get_snapshot"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = pubsub.GetSnapshotRequest.pb(pubsub.GetSnapshotRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = pubsub.Snapshot.to_json(pubsub.Snapshot())
+
+        request = pubsub.GetSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = pubsub.Snapshot()
+
+        client.get_snapshot(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_snapshot_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.GetSnapshotRequest
+):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"snapshot": "projects/sample1/snapshots/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_snapshot(request)
+
+
+def test_get_snapshot_rest_flattened():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.Snapshot()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"snapshot": "projects/sample1/snapshots/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            snapshot="snapshot_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.Snapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_snapshot(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{snapshot=projects/*/snapshots/*}" % client.transport._host, args[1]
+        )
+
+
+def test_get_snapshot_rest_flattened_error(transport: str = "rest"):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_snapshot(
+            pubsub.GetSnapshotRequest(),
+            snapshot="snapshot_value",
+        )
+
+
+def test_get_snapshot_rest_error():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.ListSnapshotsRequest,
+        dict,
+    ],
+)
+def test_list_snapshots_rest(request_type):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.ListSnapshotsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.ListSnapshotsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_snapshots(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSnapshotsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_snapshots_rest_required_fields(request_type=pubsub.ListSnapshotsRequest):
+    transport_class = transports.SubscriberRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_snapshots._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_snapshots._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = pubsub.ListSnapshotsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = pubsub.ListSnapshotsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_snapshots(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_snapshots_rest_unset_required_fields():
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_snapshots._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("project",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_snapshots_rest_interceptors(null_interceptor):
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SubscriberRestInterceptor(),
+    )
+    client = SubscriberClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SubscriberRestInterceptor, "post_list_snapshots"
+    ) as post, mock.patch.object(
+        transports.SubscriberRestInterceptor, "pre_list_snapshots"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = pubsub.ListSnapshotsRequest.pb(pubsub.ListSnapshotsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = pubsub.ListSnapshotsResponse.to_json(
+            pubsub.ListSnapshotsResponse()
+        )
+
+        request = pubsub.ListSnapshotsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = pubsub.ListSnapshotsResponse()
+
+        client.list_snapshots(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_snapshots_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.ListSnapshotsRequest
+):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_snapshots(request)
+
+
+def test_list_snapshots_rest_flattened():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.ListSnapshotsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.ListSnapshotsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_snapshots(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{project=projects/*}/snapshots" % client.transport._host, args[1]
+        )
+
+
+def test_list_snapshots_rest_flattened_error(transport: str = "rest"):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_snapshots(
+            pubsub.ListSnapshotsRequest(),
+            project="project_value",
+        )
+
+
+def test_list_snapshots_rest_pager(transport: str = "rest"):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            pubsub.ListSnapshotsResponse(
+                snapshots=[
+                    pubsub.Snapshot(),
+                    pubsub.Snapshot(),
+                    pubsub.Snapshot(),
+                ],
+                next_page_token="abc",
+            ),
+            pubsub.ListSnapshotsResponse(
+                snapshots=[],
+                next_page_token="def",
+            ),
+            pubsub.ListSnapshotsResponse(
+                snapshots=[
+                    pubsub.Snapshot(),
+                ],
+                next_page_token="ghi",
+            ),
+            pubsub.ListSnapshotsResponse(
+                snapshots=[
+                    pubsub.Snapshot(),
+                    pubsub.Snapshot(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(pubsub.ListSnapshotsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"project": "projects/sample1"}
+
+        pager = client.list_snapshots(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, pubsub.Snapshot) for i in results)
+
+        pages = list(client.list_snapshots(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.CreateSnapshotRequest,
+        dict,
+    ],
+)
+def test_create_snapshot_rest(request_type):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/snapshots/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.Snapshot(
+            name="name_value",
+            topic="topic_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.Snapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_snapshot(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pubsub.Snapshot)
+    assert response.name == "name_value"
+    assert response.topic == "topic_value"
+
+
+def test_create_snapshot_rest_required_fields(
+    request_type=pubsub.CreateSnapshotRequest,
+):
+    transport_class = transports.SubscriberRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["subscription"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["subscription"] = "subscription_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "subscription" in jsonified_request
+    assert jsonified_request["subscription"] == "subscription_value"
+
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = pubsub.Snapshot()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "put",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = pubsub.Snapshot.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_snapshot(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_snapshot_rest_unset_required_fields():
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_snapshot._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "subscription",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_snapshot_rest_interceptors(null_interceptor):
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SubscriberRestInterceptor(),
+    )
+    client = SubscriberClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SubscriberRestInterceptor, "post_create_snapshot"
+    ) as post, mock.patch.object(
+        transports.SubscriberRestInterceptor, "pre_create_snapshot"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = pubsub.CreateSnapshotRequest.pb(pubsub.CreateSnapshotRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = pubsub.Snapshot.to_json(pubsub.Snapshot())
+
+        request = pubsub.CreateSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = pubsub.Snapshot()
+
+        client.create_snapshot(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_snapshot_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.CreateSnapshotRequest
+):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/snapshots/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_snapshot(request)
+
+
+def test_create_snapshot_rest_flattened():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.Snapshot()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/snapshots/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            subscription="subscription_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.Snapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_snapshot(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/snapshots/*}" % client.transport._host, args[1]
+        )
+
+
+def test_create_snapshot_rest_flattened_error(transport: str = "rest"):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_snapshot(
+            pubsub.CreateSnapshotRequest(),
+            name="name_value",
+            subscription="subscription_value",
+        )
+
+
+def test_create_snapshot_rest_error():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.UpdateSnapshotRequest,
+        dict,
+    ],
+)
+def test_update_snapshot_rest(request_type):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"snapshot": {"name": "projects/sample1/snapshots/sample2"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.Snapshot(
+            name="name_value",
+            topic="topic_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.Snapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_snapshot(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pubsub.Snapshot)
+    assert response.name == "name_value"
+    assert response.topic == "topic_value"
+
+
+def test_update_snapshot_rest_required_fields(
+    request_type=pubsub.UpdateSnapshotRequest,
+):
+    transport_class = transports.SubscriberRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = pubsub.Snapshot()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = pubsub.Snapshot.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_snapshot(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_snapshot_rest_unset_required_fields():
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_snapshot._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "snapshot",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_snapshot_rest_interceptors(null_interceptor):
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SubscriberRestInterceptor(),
+    )
+    client = SubscriberClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SubscriberRestInterceptor, "post_update_snapshot"
+    ) as post, mock.patch.object(
+        transports.SubscriberRestInterceptor, "pre_update_snapshot"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = pubsub.UpdateSnapshotRequest.pb(pubsub.UpdateSnapshotRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = pubsub.Snapshot.to_json(pubsub.Snapshot())
+
+        request = pubsub.UpdateSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = pubsub.Snapshot()
+
+        client.update_snapshot(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_snapshot_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.UpdateSnapshotRequest
+):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"snapshot": {"name": "projects/sample1/snapshots/sample2"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_snapshot(request)
+
+
+def test_update_snapshot_rest_flattened():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.Snapshot()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"snapshot": {"name": "projects/sample1/snapshots/sample2"}}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            snapshot=pubsub.Snapshot(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.Snapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_snapshot(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{snapshot.name=projects/*/snapshots/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_snapshot_rest_flattened_error(transport: str = "rest"):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_snapshot(
+            pubsub.UpdateSnapshotRequest(),
+            snapshot=pubsub.Snapshot(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_snapshot_rest_error():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.DeleteSnapshotRequest,
+        dict,
+    ],
+)
+def test_delete_snapshot_rest(request_type):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"snapshot": "projects/sample1/snapshots/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_snapshot(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_snapshot_rest_required_fields(
+    request_type=pubsub.DeleteSnapshotRequest,
+):
+    transport_class = transports.SubscriberRestTransport
+
+    request_init = {}
+    request_init["snapshot"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["snapshot"] = "snapshot_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "snapshot" in jsonified_request
+    assert jsonified_request["snapshot"] == "snapshot_value"
+
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_snapshot(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_snapshot_rest_unset_required_fields():
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_snapshot._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("snapshot",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_snapshot_rest_interceptors(null_interceptor):
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SubscriberRestInterceptor(),
+    )
+    client = SubscriberClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SubscriberRestInterceptor, "pre_delete_snapshot"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = pubsub.DeleteSnapshotRequest.pb(pubsub.DeleteSnapshotRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = pubsub.DeleteSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_snapshot(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_snapshot_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.DeleteSnapshotRequest
+):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"snapshot": "projects/sample1/snapshots/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_snapshot(request)
+
+
+def test_delete_snapshot_rest_flattened():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"snapshot": "projects/sample1/snapshots/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            snapshot="snapshot_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_snapshot(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{snapshot=projects/*/snapshots/*}" % client.transport._host, args[1]
+        )
+
+
+def test_delete_snapshot_rest_flattened_error(transport: str = "rest"):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_snapshot(
+            pubsub.DeleteSnapshotRequest(),
+            snapshot="snapshot_value",
+        )
+
+
+def test_delete_snapshot_rest_error():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.SeekRequest,
+        dict,
+    ],
+)
+def test_seek_rest(request_type):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"subscription": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = pubsub.SeekResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = pubsub.SeekResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.seek(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pubsub.SeekResponse)
+
+
+def test_seek_rest_required_fields(request_type=pubsub.SeekRequest):
+    transport_class = transports.SubscriberRestTransport
+
+    request_init = {}
+    request_init["subscription"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).seek._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["subscription"] = "subscription_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).seek._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "subscription" in jsonified_request
+    assert jsonified_request["subscription"] == "subscription_value"
+
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = pubsub.SeekResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = pubsub.SeekResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.seek(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_seek_rest_unset_required_fields():
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.seek._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("subscription",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_seek_rest_interceptors(null_interceptor):
+    transport = transports.SubscriberRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SubscriberRestInterceptor(),
+    )
+    client = SubscriberClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SubscriberRestInterceptor, "post_seek"
+    ) as post, mock.patch.object(
+        transports.SubscriberRestInterceptor, "pre_seek"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = pubsub.SeekRequest.pb(pubsub.SeekRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = pubsub.SeekResponse.to_json(pubsub.SeekResponse())
+
+        request = pubsub.SeekRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = pubsub.SeekResponse()
+
+        client.seek(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_seek_rest_bad_request(
+    transport: str = "rest", request_type=pubsub.SeekRequest
+):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"subscription": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.seek(request)
+
+
+def test_seek_rest_error():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+def test_streaming_pull_rest_error():
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.streaming_pull({})
+    assert "Method StreamingPull is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.SubscriberGrpcTransport(
@@ -4821,6 +8988,7 @@ def test_transport_get_channel():
     [
         transports.SubscriberGrpcTransport,
         transports.SubscriberGrpcAsyncIOTransport,
+        transports.SubscriberRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -4835,6 +9003,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -4991,6 +9160,7 @@ def test_subscriber_transport_auth_adc(transport_class):
     [
         transports.SubscriberGrpcTransport,
         transports.SubscriberGrpcAsyncIOTransport,
+        transports.SubscriberRestTransport,
     ],
 )
 def test_subscriber_transport_auth_gdch_credentials(transport_class):
@@ -5092,11 +9262,23 @@ def test_subscriber_grpc_transport_client_cert_source_for_mtls(transport_class):
             )
 
 
+def test_subscriber_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.SubscriberRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_subscriber_host_no_port(transport_name):
@@ -5107,7 +9289,11 @@ def test_subscriber_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("pubsub.googleapis.com:443")
+    assert client.transport._host == (
+        "pubsub.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://pubsub.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -5115,6 +9301,7 @@ def test_subscriber_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_subscriber_host_with_port(transport_name):
@@ -5125,7 +9312,78 @@ def test_subscriber_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("pubsub.googleapis.com:8000")
+    assert client.transport._host == (
+        "pubsub.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://pubsub.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_subscriber_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = SubscriberClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = SubscriberClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_subscription._session
+    session2 = client2.transport.create_subscription._session
+    assert session1 != session2
+    session1 = client1.transport.get_subscription._session
+    session2 = client2.transport.get_subscription._session
+    assert session1 != session2
+    session1 = client1.transport.update_subscription._session
+    session2 = client2.transport.update_subscription._session
+    assert session1 != session2
+    session1 = client1.transport.list_subscriptions._session
+    session2 = client2.transport.list_subscriptions._session
+    assert session1 != session2
+    session1 = client1.transport.delete_subscription._session
+    session2 = client2.transport.delete_subscription._session
+    assert session1 != session2
+    session1 = client1.transport.modify_ack_deadline._session
+    session2 = client2.transport.modify_ack_deadline._session
+    assert session1 != session2
+    session1 = client1.transport.acknowledge._session
+    session2 = client2.transport.acknowledge._session
+    assert session1 != session2
+    session1 = client1.transport.pull._session
+    session2 = client2.transport.pull._session
+    assert session1 != session2
+    session1 = client1.transport.streaming_pull._session
+    session2 = client2.transport.streaming_pull._session
+    assert session1 != session2
+    session1 = client1.transport.modify_push_config._session
+    session2 = client2.transport.modify_push_config._session
+    assert session1 != session2
+    session1 = client1.transport.get_snapshot._session
+    session2 = client2.transport.get_snapshot._session
+    assert session1 != session2
+    session1 = client1.transport.list_snapshots._session
+    session2 = client2.transport.list_snapshots._session
+    assert session1 != session2
+    session1 = client1.transport.create_snapshot._session
+    session2 = client2.transport.create_snapshot._session
+    assert session1 != session2
+    session1 = client1.transport.update_snapshot._session
+    session2 = client2.transport.update_snapshot._session
+    assert session1 != session2
+    session1 = client1.transport.delete_snapshot._session
+    session2 = client2.transport.delete_snapshot._session
+    assert session1 != session2
+    session1 = client1.transport.seek._session
+    session2 = client2.transport.seek._session
+    assert session1 != session2
 
 
 def test_subscriber_grpc_transport_channel():
@@ -5457,6 +9715,180 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_get_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
+):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/topics/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest(request_type):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"resource": "projects/sample1/topics/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_set_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
+):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/topics/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_set_iam_policy_rest(request_type):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"resource": "projects/sample1/topics/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.set_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_test_iam_permissions_rest_bad_request(
+    transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
+):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/subscriptions/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.test_iam_permissions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
+)
+def test_test_iam_permissions_rest(request_type):
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"resource": "projects/sample1/subscriptions/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.test_iam_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
 
 
 def test_set_iam_policy(transport: str = "grpc"):
@@ -5969,6 +10401,7 @@ async def test_test_iam_permissions_from_dict_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -5986,6 +10419,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

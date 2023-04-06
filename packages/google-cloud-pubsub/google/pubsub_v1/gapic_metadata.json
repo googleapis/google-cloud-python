@@ -106,6 +106,56 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "PublisherClient",
+          "rpcs": {
+            "CreateTopic": {
+              "methods": [
+                "create_topic"
+              ]
+            },
+            "DeleteTopic": {
+              "methods": [
+                "delete_topic"
+              ]
+            },
+            "DetachSubscription": {
+              "methods": [
+                "detach_subscription"
+              ]
+            },
+            "GetTopic": {
+              "methods": [
+                "get_topic"
+              ]
+            },
+            "ListTopicSnapshots": {
+              "methods": [
+                "list_topic_snapshots"
+              ]
+            },
+            "ListTopicSubscriptions": {
+              "methods": [
+                "list_topic_subscriptions"
+              ]
+            },
+            "ListTopics": {
+              "methods": [
+                "list_topics"
+              ]
+            },
+            "Publish": {
+              "methods": [
+                "publish"
+              ]
+            },
+            "UpdateTopic": {
+              "methods": [
+                "update_topic"
+              ]
+            }
+          }
         }
       }
     },
@@ -168,6 +218,61 @@
         },
         "grpc-async": {
           "libraryClient": "SchemaServiceAsyncClient",
+          "rpcs": {
+            "CommitSchema": {
+              "methods": [
+                "commit_schema"
+              ]
+            },
+            "CreateSchema": {
+              "methods": [
+                "create_schema"
+              ]
+            },
+            "DeleteSchema": {
+              "methods": [
+                "delete_schema"
+              ]
+            },
+            "DeleteSchemaRevision": {
+              "methods": [
+                "delete_schema_revision"
+              ]
+            },
+            "GetSchema": {
+              "methods": [
+                "get_schema"
+              ]
+            },
+            "ListSchemaRevisions": {
+              "methods": [
+                "list_schema_revisions"
+              ]
+            },
+            "ListSchemas": {
+              "methods": [
+                "list_schemas"
+              ]
+            },
+            "RollbackSchema": {
+              "methods": [
+                "rollback_schema"
+              ]
+            },
+            "ValidateMessage": {
+              "methods": [
+                "validate_message"
+              ]
+            },
+            "ValidateSchema": {
+              "methods": [
+                "validate_schema"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "SchemaServiceClient",
           "rpcs": {
             "CommitSchema": {
               "methods": [
@@ -312,6 +417,91 @@
         },
         "grpc-async": {
           "libraryClient": "SubscriberAsyncClient",
+          "rpcs": {
+            "Acknowledge": {
+              "methods": [
+                "acknowledge"
+              ]
+            },
+            "CreateSnapshot": {
+              "methods": [
+                "create_snapshot"
+              ]
+            },
+            "CreateSubscription": {
+              "methods": [
+                "create_subscription"
+              ]
+            },
+            "DeleteSnapshot": {
+              "methods": [
+                "delete_snapshot"
+              ]
+            },
+            "DeleteSubscription": {
+              "methods": [
+                "delete_subscription"
+              ]
+            },
+            "GetSnapshot": {
+              "methods": [
+                "get_snapshot"
+              ]
+            },
+            "GetSubscription": {
+              "methods": [
+                "get_subscription"
+              ]
+            },
+            "ListSnapshots": {
+              "methods": [
+                "list_snapshots"
+              ]
+            },
+            "ListSubscriptions": {
+              "methods": [
+                "list_subscriptions"
+              ]
+            },
+            "ModifyAckDeadline": {
+              "methods": [
+                "modify_ack_deadline"
+              ]
+            },
+            "ModifyPushConfig": {
+              "methods": [
+                "modify_push_config"
+              ]
+            },
+            "Pull": {
+              "methods": [
+                "pull"
+              ]
+            },
+            "Seek": {
+              "methods": [
+                "seek"
+              ]
+            },
+            "StreamingPull": {
+              "methods": [
+                "streaming_pull"
+              ]
+            },
+            "UpdateSnapshot": {
+              "methods": [
+                "update_snapshot"
+              ]
+            },
+            "UpdateSubscription": {
+              "methods": [
+                "update_subscription"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "SubscriberClient",
           "rpcs": {
             "Acknowledge": {
               "methods": [

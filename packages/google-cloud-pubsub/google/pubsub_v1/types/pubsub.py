@@ -264,7 +264,9 @@ class PubsubMessage(proto.Message):
             will be delivered to subscribers in the order in which they
             are received by the Pub/Sub system. All ``PubsubMessage``\ s
             published in a given ``PublishRequest`` must specify the
-            same ``ordering_key`` value.
+            same ``ordering_key`` value. For more information, see
+            `ordering
+            messages <https://cloud.google.com/pubsub/docs/ordering>`__.
     """
 
     data: bytes = proto.Field(
@@ -667,7 +669,9 @@ class Subscription(proto.Message):
             operations on the subscription. If ``expiration_policy`` is
             not set, a *default policy* with ``ttl`` of 31 days will be
             used. The minimum allowed value for
-            ``expiration_policy.ttl`` is 1 day.
+            ``expiration_policy.ttl`` is 1 day. If ``expiration_policy``
+            is set, but ``expiration_policy.ttl`` is not set, the
+            subscription never expires.
         filter (str):
             An expression written in the Pub/Sub `filter
             language <https://cloud.google.com/pubsub/docs/filtering>`__.

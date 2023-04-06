@@ -55,12 +55,12 @@ def project():
     yield default_project
 
 
-@pytest.fixture(params=["grpc"])
+@pytest.fixture(params=["grpc", "rest"])
 def publisher(request):
     yield pubsub_v1.PublisherClient(transport=request.param)
 
 
-@pytest.fixture(params=["grpc"])
+@pytest.fixture(params=["grpc", "rest"])
 def subscriber(request):
     yield pubsub_v1.SubscriberClient(transport=request.param)
 
@@ -107,7 +107,8 @@ def test_publish_messages(publisher, topic_path_base, cleanup):
         assert isinstance(result, str)
 
 
-def test_publish_large_messages(publisher, topic_path_base, cleanup):
+def test_publish_large_messages(topic_path_base, cleanup):
+    publisher = pubsub_v1.PublisherClient(transport="grpc")
     # Customize topic path to test.
     topic_path = topic_path_base + "-publish-large-messages"
     # Make sure the topic gets deleted.
@@ -139,8 +140,9 @@ def test_publish_large_messages(publisher, topic_path_base, cleanup):
 
 
 def test_subscribe_to_messages(
-    publisher, topic_path_base, subscriber, subscription_path_base, cleanup
+    publisher, topic_path_base, subscription_path_base, cleanup
 ):
+    subscriber = pubsub_v1.SubscriberClient(transport="grpc")
     # Customize topic path to test.
     topic_path = topic_path_base + "-subscribe-to-messages"
     subscription_path = subscription_path_base + "-subscribe-to-messages"
@@ -187,8 +189,9 @@ def test_subscribe_to_messages(
 
 
 def test_subscribe_to_messages_async_callbacks(
-    publisher, topic_path_base, subscriber, subscription_path_base, cleanup
+    publisher, topic_path_base, subscription_path_base, cleanup
 ):
+    subscriber = pubsub_v1.SubscriberClient(transport="grpc")
     # Customize topic path to test.
     custom_str = "-subscribe-to-messages-async-callback"
     topic_path = topic_path_base + custom_str
@@ -366,10 +369,10 @@ def test_listing_topic_subscriptions(publisher, subscriber, project, cleanup):
     assert subscriptions == {subscription_paths[0], subscription_paths[2]}
 
 
-def test_managing_topic_iam_policy(publisher, topic_path_base, cleanup):
+def test_managing_topic_iam_policy(topic_path_base, cleanup):
+    publisher = pubsub_v1.PublisherClient(transport="grpc")
     topic_path = topic_path_base + "-managing-topic-iam-policy"
     cleanup.append((publisher.delete_topic, (), {"topic": topic_path}))
-
     # create a topic and customize its policy
     publisher.create_topic(name=topic_path)
     topic_policy = publisher.get_iam_policy(request={"resource": topic_path})
@@ -396,8 +399,9 @@ def test_managing_topic_iam_policy(publisher, topic_path_base, cleanup):
 
 
 def test_managing_subscription_iam_policy(
-    publisher, subscriber, topic_path_base, subscription_path_base, cleanup
+    publisher, topic_path_base, subscription_path_base, cleanup
 ):
+    subscriber = pubsub_v1.SubscriberClient(transport="grpc")
     custom_str = "-managing-subscription-iam-policy"
     topic_path = topic_path_base + custom_str
     subscription_path = subscription_path_base + custom_str
@@ -433,8 +437,9 @@ def test_managing_subscription_iam_policy(
     assert bindings[1].members == ["group:cloud-logs@google.com"]
 
 
+@pytest.mark.parametrize("transport", ["grpc", "rest"])
 def test_subscriber_not_leaking_open_sockets(
-    publisher, topic_path_base, subscription_path_base, cleanup
+    publisher, topic_path_base, subscription_path_base, cleanup, transport
 ):
     # Make sure the topic and the supscription get deleted.
     # NOTE: Since subscriber client will be closed in the test, we should not
@@ -516,8 +521,9 @@ def test_synchronous_pull_no_deadline_error_if_no_messages(
 
 class TestStreamingPull(object):
     def test_streaming_pull_callback_error_propagation(
-        self, publisher, topic_path_base, subscriber, subscription_path_base, cleanup
+        self, publisher, topic_path_base, subscription_path_base, cleanup
     ):
+        subscriber = pubsub_v1.SubscriberClient(transport="grpc")
         custom_str = "-streaming-pull-callback-error-propagation"
         topic_path = topic_path_base + custom_str
         subscription_path = subscription_path_base + custom_str
@@ -550,12 +556,12 @@ class TestStreamingPull(object):
     def test_streaming_pull_ack_deadline(
         self,
         publisher,
-        subscriber,
         project,
         topic_path_base,
         subscription_path_base,
         cleanup,
     ):
+        subscriber = pubsub_v1.SubscriberClient(transport="grpc")
         custom_str = "-streaming-pull-ack-deadline"
         topic_path = topic_path_base + custom_str
         subscription_path = subscription_path_base + custom_str
@@ -608,8 +614,9 @@ class TestStreamingPull(object):
             subscription_future.cancel()
 
     def test_streaming_pull_max_messages(
-        self, publisher, topic_path_base, subscriber, subscription_path_base, cleanup
+        self, publisher, topic_path_base, subscription_path_base, cleanup
     ):
+        subscriber = pubsub_v1.SubscriberClient(transport="grpc")
         custom_str = "-streaming-pull-max-messages"
         topic_path = topic_path_base + custom_str
         subscription_path = subscription_path_base + custom_str
@@ -668,8 +675,9 @@ class TestStreamingPull(object):
 
     @typed_flaky
     def test_streaming_pull_blocking_shutdown(
-        self, publisher, topic_path_base, subscriber, subscription_path_base, cleanup
+        self, publisher, topic_path_base, subscription_path_base, cleanup
     ):
+        subscriber = pubsub_v1.SubscriberClient(transport="grpc")
         custom_str = "-streaming-pull-blocking-shutdown"
         topic_path = topic_path_base + custom_str
         subscription_path = subscription_path_base + custom_str
@@ -753,8 +761,9 @@ class TestStreamingPull(object):
 )
 class TestBasicRBAC(object):
     def test_streaming_pull_subscriber_permissions_sufficient(
-        self, publisher, topic_path_base, subscriber, subscription_path_base, cleanup
+        self, publisher, topic_path_base, subscription_path_base, cleanup
     ):
+        subscriber = pubsub_v1.SubscriberClient(transport="grpc")
         custom_str = "-streaming-pull-subscriber-permissions-sufficient"
         topic_path = topic_path_base + custom_str
         subscription_path = subscription_path_base + custom_str
