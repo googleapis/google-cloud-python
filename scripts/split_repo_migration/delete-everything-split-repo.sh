@@ -114,6 +114,3 @@ git commit -m 'build: update README to indicate that source has moved and delete
 
 # Push the branch. Note force push option is used to allow this script to be called multiple times.
 git push origin -f delete-library
-
-# Remove the temporary working directory
-rm -rf "/tmp/${SPLIT_REPO}"
