@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-contact-center-insights/compare/v1.9.1...v1.10.0) (2023-04-06)
+
+
+### Features
+
+* Launch UploadConversation endpoint ([#301](https://github.com/googleapis/python-contact-center-insights/issues/301)) ([dc5ab1c](https://github.com/googleapis/python-contact-center-insights/commit/dc5ab1c7763bc1ac8badc44f29026ed6b033d2f4))
+
 ## [1.9.1](https://github.com/googleapis/python-contact-center-insights/compare/v1.9.0...v1.9.1) (2023-03-23)
 
 
