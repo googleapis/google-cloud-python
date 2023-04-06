@@ -14,8 +14,18 @@
 # limitations under the License.
 #
 
+import pytest
+
 from google.cloud import documentai
+
+from google.cloud.documentai_toolbox import document
 from google.cloud.documentai_toolbox import entity
+
+
+@pytest.fixture
+def docproto():
+    with open("tests/unit/resources/images/dl3-0.json", "r", encoding="utf-8") as f:
+        return documentai.Document.from_json(f.read())
 
 
 def test_Entity():
@@ -58,3 +68,10 @@ def test_Entity_splitter():
     assert wrapper_entity.type_ == "invoice_statement"
     assert wrapper_entity.start_page == 0
     assert wrapper_entity.end_page == 2
+
+
+def test_crop_image(docproto):
+    doc = document.Document.from_documentai_document(docproto)
+    doc.entities[0].crop_image(documentai_document=docproto)
+
+    assert doc.entities[0].image

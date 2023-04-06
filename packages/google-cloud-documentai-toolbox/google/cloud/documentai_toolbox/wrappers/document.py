@@ -60,10 +60,17 @@ def _entities_from_shards(
     """
     result = []
     for shard in shards:
-        for entity in shard.entities:
-            result.append(Entity(documentai_entity=entity))
-            for prop in entity.properties:
-                result.append(Entity(documentai_entity=prop))
+        for documentai_entity in shard.entities:
+            entity = Entity(documentai_entity=documentai_entity)
+            entity.crop_image(shard)
+            result.append(entity)
+            for documentai_prop in documentai_entity.properties:
+                prop = Entity(documentai_entity=documentai_prop)
+                prop.crop_image(shard)
+                result.append(prop)
+
+    if len(result) > 1 and result[0].documentai_entity.id:
+        result.sort(key=lambda x: int(x.documentai_entity.id))
     return result
 
 
@@ -504,3 +511,37 @@ class Document:
                 Proto with TextAnnotations.
         """
         return _convert_to_vision_annotate_file_response(self.text, self.pages)
+
+    def export_images(
+        self, output_path: str, output_file_prefix: str, output_file_extension: str
+    ) -> List[str]:
+        r"""Exports images from `Document` to files.
+
+        Args:
+            output_path (str):
+                Required. The path to the output directory.
+            output_file_prefix (str):
+                Required. The output file name prefix.
+            output_file_extension (str):
+                Required. The output file extension.
+
+                Format: `png`, `jpg`, etc.
+        Returns:
+            List[str]:
+                A list of output image file names.
+                Format: `{output_path}/{output_file_prefix}_{index}_{Entity.type_}.{output_file_extension}`
+        """
+        output_filenames: List[str] = []
+        index = 0
+        for entity in self.entities:
+            if not entity.image:
+                continue
+
+            output_filename = (
+                f"{output_file_prefix}_{index}_{entity.type_}.{output_file_extension}"
+            )
+            entity.image.save(os.path.join(output_path, output_filename))
+            output_filenames.append(output_filename)
+            index += 1
+
+        return output_filenames

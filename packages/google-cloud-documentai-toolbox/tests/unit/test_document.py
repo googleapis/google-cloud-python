@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import os
+import shutil
 
 # try/except added for compatibility with python < 3.8
 try:
@@ -72,6 +73,13 @@ def get_bytes_form_parser_mock():
 def get_bytes_splitter_mock():
     with mock.patch.object(document, "_get_bytes") as byte_factory:
         byte_factory.return_value = get_bytes("tests/unit/resources/splitter")
+        yield byte_factory
+
+
+@pytest.fixture
+def get_bytes_images_mock():
+    with mock.patch.object(document, "_get_bytes") as byte_factory:
+        byte_factory.return_value = get_bytes("tests/unit/resources/images")
         yield byte_factory
 
 
@@ -379,3 +387,26 @@ def test_convert_document_to_annotate_file_response():
     actual = doc.convert_document_to_annotate_file_response()
 
     assert actual != AnnotateFileResponse()
+
+
+def test_export_images(get_bytes_images_mock):
+    doc = document.Document.from_gcs(
+        gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0"
+    )
+    output_path = "resources/output/"
+
+    os.makedirs(output_path)
+
+    actual = doc.export_images(
+        output_path=output_path,
+        output_file_prefix="exported_photo",
+        output_file_extension="png",
+    )
+    get_bytes_images_mock.assert_called_once()
+
+    assert os.path.exists(output_path)
+    shutil.rmtree(output_path)
+
+    assert actual == [
+        "exported_photo_0_Portrait.png",
+    ]

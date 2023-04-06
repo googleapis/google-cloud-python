@@ -37,3 +37,5 @@ VALID_MIME_TYPES = {
     "image/tiff",
     "image/webp",
 }
+
+IMAGE_ENTITIES = {"Portrait"}
