@@ -45,7 +45,8 @@ setuptools.setup(
     include_package_data=True,
     install_requires=(
         "google-api-core >= 1.31.5, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0",
-        "pandas >= 1.0.0, <2.0.0",
+        "pandas >= 1.0.0, <3.0.0",
+        "pandas >= 1.0.0, <2.0.0; python_version<'3.8'",
         "proto-plus >= 1.22.0, <2.0.0dev",
         "proto-plus >= 1.22.2, <2.0.0dev; python_version>='3.11'",
         "grpc-google-iam-v1 >= 0.12.4, < 0.13dev",
@@ -56,6 +57,7 @@ setuptools.setup(
         "numpy >= 1.18.1",
         "intervaltree >= 3.0.0",
         "pikepdf >= 6.2.9, < 8.0.0",
+        "pikepdf >= 6.2.9, < 7.0.0; python_version<'3.8'",
         "immutabledict >= 2.0.0, < 3.0.0dev",
     ),
     python_requires=">=3.7",
