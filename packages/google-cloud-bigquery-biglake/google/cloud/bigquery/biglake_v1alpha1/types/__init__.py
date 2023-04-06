@@ -39,7 +39,9 @@ from .metastore import (
     ListTablesRequest,
     ListTablesResponse,
     Lock,
+    RenameTableRequest,
     Table,
+    TableView,
     UpdateDatabaseRequest,
     UpdateTableRequest,
 )
@@ -70,7 +72,9 @@ __all__ = (
     "ListTablesRequest",
     "ListTablesResponse",
     "Lock",
+    "RenameTableRequest",
     "Table",
     "UpdateDatabaseRequest",
     "UpdateTableRequest",
+    "TableView",
 )

@@ -24,6 +24,7 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.biglake.v1alpha1",
     manifest={
+        "TableView",
         "Catalog",
         "Database",
         "Table",
@@ -42,6 +43,7 @@ __protobuf__ = proto.module(
         "CreateTableRequest",
         "DeleteTableRequest",
         "UpdateTableRequest",
+        "RenameTableRequest",
         "GetTableRequest",
         "ListTablesRequest",
         "ListTablesResponse",
@@ -54,6 +56,25 @@ __protobuf__ = proto.module(
         "HiveTableOptions",
     },
 )
+
+
+class TableView(proto.Enum):
+    r"""View on Table. Represents which fields will be populated for
+    calls that return Table objects.
+
+    Values:
+        TABLE_VIEW_UNSPECIFIED (0):
+            Default value. The API will default to the
+            BASIC view.
+        BASIC (1):
+            Include only table names.
+            This is the default value.
+        FULL (2):
+            Include everything.
+    """
+    TABLE_VIEW_UNSPECIFIED = 0
+    BASIC = 1
+    FULL = 2
 
 
 class Catalog(proto.Message):
@@ -212,6 +233,13 @@ class Table(proto.Message):
             deleted.
         type_ (google.cloud.bigquery.biglake_v1alpha1.types.Table.Type):
             The table type.
+        etag (str):
+            The checksum of a table object computed by
+            the server based on the value of other fields.
+            It may be sent on update requests to ensure the
+            client has an up-to-date value before
+            proceeding. It is only checked for update table
+            operations.
     """
 
     class Type(proto.Enum):
@@ -261,6 +289,10 @@ class Table(proto.Message):
         proto.ENUM,
         number=6,
         enum=Type,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 
@@ -678,8 +710,8 @@ class UpdateTableRequest(proto.Message):
         table (google.cloud.bigquery.biglake_v1alpha1.types.Table):
             Required. The table to update.
 
-            The table's ``name`` field is used to identify the database
-            to update. Format:
+            The table's ``name`` field is used to identify the table to
+            update. Format:
             projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}/tables/{table_id}
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The list of fields to update.
@@ -699,6 +731,31 @@ class UpdateTableRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
+    )
+
+
+class RenameTableRequest(proto.Message):
+    r"""Request message for the RenameTable method in
+    MetastoreService
+
+    Attributes:
+        name (str):
+            Required. The table's ``name`` field is used to identify the
+            table to rename. Format:
+            projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}/tables/{table_id}
+        new_name (str):
+            Required. The new ``name`` for the specified table, must be
+            in the same database. Format:
+            projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}/tables/{table_id}
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    new_name: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -738,6 +795,8 @@ class ListTablesRequest(proto.Message):
             When paginating, all other parameters provided to
             ``ListTables`` must match the call that provided the page
             token.
+        view (google.cloud.bigquery.biglake_v1alpha1.types.TableView):
+            The view for the returned tables.
     """
 
     parent: str = proto.Field(
@@ -751,6 +810,11 @@ class ListTablesRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    view: "TableView" = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="TableView",
     )
 
 
