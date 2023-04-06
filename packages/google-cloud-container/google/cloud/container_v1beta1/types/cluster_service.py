@@ -71,6 +71,7 @@ __protobuf__ = proto.module(
         "MasterAuthorizedNetworksConfig",
         "LegacyAbac",
         "NetworkPolicy",
+        "PodCIDROverprovisionConfig",
         "IPAllocationPolicy",
         "BinaryAuthorization",
         "PodSecurityPolicyConfig",
@@ -902,6 +903,20 @@ class NodeNetworkConfig(proto.Message):
             Network bandwidth tier configuration.
 
             This field is a member of `oneof`_ ``_network_performance_config``.
+        pod_cidr_overprovision_config (google.cloud.container_v1beta1.types.PodCIDROverprovisionConfig):
+            [PRIVATE FIELD] Pod CIDR size overprovisioning config for
+            the nodepool.
+
+            Pod CIDR size per node depends on max_pods_per_node. By
+            default, the value of max_pods_per_node is rounded off to
+            next power of 2 and we then double that to get the size of
+            pod CIDR block per node. Example: max_pods_per_node of 30
+            would result in 64 IPs (/26).
+
+            This config can disable the doubling of IPs (we still round
+            off to next power of 2) Example: max_pods_per_node of 30
+            will result in 32 IPs (/27) when overprovisioning is
+            disabled.
     """
 
     class NetworkPerformanceConfig(proto.Message):
@@ -971,6 +986,11 @@ class NodeNetworkConfig(proto.Message):
         number=11,
         optional=True,
         message=NetworkPerformanceConfig,
+    )
+    pod_cidr_overprovision_config: "PodCIDROverprovisionConfig" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message="PodCIDROverprovisionConfig",
     )
 
 
@@ -1933,6 +1953,22 @@ class NetworkPolicy(proto.Message):
     )
 
 
+class PodCIDROverprovisionConfig(proto.Message):
+    r"""[PRIVATE FIELD] Config for pod CIDR size overprovisioning.
+
+    Attributes:
+        disable (bool):
+            Whether Pod CIDR overprovisioning is
+            disabled. Note: Pod CIDR overprovisioning is
+            enabled by default.
+    """
+
+    disable: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
 class IPAllocationPolicy(proto.Message):
     r"""Configuration for controlling how IPs are allocated in the
     cluster.
@@ -2075,6 +2111,20 @@ class IPAllocationPolicy(proto.Message):
         ipv6_access_type (google.cloud.container_v1beta1.types.IPAllocationPolicy.IPv6AccessType):
             The ipv6 access type (internal or external) when
             create_subnetwork is true
+        pod_cidr_overprovision_config (google.cloud.container_v1beta1.types.PodCIDROverprovisionConfig):
+            [PRIVATE FIELD] Pod CIDR size overprovisioning config for
+            the cluster.
+
+            Pod CIDR size per node depends on max_pods_per_node. By
+            default, the value of max_pods_per_node is doubled and then
+            rounded off to next power of 2 to get the size of pod CIDR
+            block per node. Example: max_pods_per_node of 30 would
+            result in 64 IPs (/26).
+
+            This config can disable the doubling of IPs (we still round
+            off to next power of 2) Example: max_pods_per_node of 30
+            will result in 32 IPs (/27) when overprovisioning is
+            disabled.
         subnet_ipv6_cidr_block (str):
             Output only. [Output only] The subnet's IPv6 CIDR block used
             by nodes and pods.
@@ -2182,6 +2232,11 @@ class IPAllocationPolicy(proto.Message):
         proto.ENUM,
         number=17,
         enum=IPv6AccessType,
+    )
+    pod_cidr_overprovision_config: "PodCIDROverprovisionConfig" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message="PodCIDROverprovisionConfig",
     )
     subnet_ipv6_cidr_block: str = proto.Field(
         proto.STRING,
