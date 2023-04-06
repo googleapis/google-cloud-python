@@ -54,7 +54,8 @@ class biglakeCallTransformer(cst.CSTTransformer):
         'list_catalogs': ('parent', 'page_size', 'page_token', ),
         'list_databases': ('parent', 'page_size', 'page_token', ),
         'list_locks': ('parent', 'page_size', 'page_token', ),
-        'list_tables': ('parent', 'page_size', 'page_token', ),
+        'list_tables': ('parent', 'page_size', 'page_token', 'view', ),
+        'rename_table': ('name', 'new_name', ),
         'update_database': ('database', 'update_mask', ),
         'update_table': ('table', 'update_mask', ),
     }

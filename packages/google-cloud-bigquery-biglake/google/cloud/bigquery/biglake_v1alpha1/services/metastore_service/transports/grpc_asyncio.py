@@ -562,6 +562,32 @@ class MetastoreServiceGrpcAsyncIOTransport(MetastoreServiceTransport):
         return self._stubs["update_table"]
 
     @property
+    def rename_table(
+        self,
+    ) -> Callable[[metastore.RenameTableRequest], Awaitable[metastore.Table]]:
+        r"""Return a callable for the rename table method over gRPC.
+
+        Renames an existing table specified by the table ID.
+
+        Returns:
+            Callable[[~.RenameTableRequest],
+                    Awaitable[~.Table]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "rename_table" not in self._stubs:
+            self._stubs["rename_table"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.biglake.v1alpha1.MetastoreService/RenameTable",
+                request_serializer=metastore.RenameTableRequest.serialize,
+                response_deserializer=metastore.Table.deserialize,
+            )
+        return self._stubs["rename_table"]
+
+    @property
     def get_table(
         self,
     ) -> Callable[[metastore.GetTableRequest], Awaitable[metastore.Table]]:
