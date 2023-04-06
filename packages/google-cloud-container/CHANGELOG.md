@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.19.0](https://github.com/googleapis/python-container/compare/v2.18.0...v2.19.0) (2023-04-06)
+
+
+### Features
+
+* Add support for disabling pod IP cidr overprovision. This feature requires special allowlisting for the projects. ([56f65fa](https://github.com/googleapis/python-container/commit/56f65fa23de31317e4cf39e50351ad1e1bb04b57))
+* Add update support for accelerator config ([56f65fa](https://github.com/googleapis/python-container/commit/56f65fa23de31317e4cf39e50351ad1e1bb04b57))
+
 ## [2.18.0](https://github.com/googleapis/python-container/compare/v2.17.4...v2.18.0) (2023-03-28)
 
 
