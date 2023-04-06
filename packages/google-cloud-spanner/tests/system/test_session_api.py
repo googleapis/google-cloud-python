@@ -1875,7 +1875,7 @@ def test_read_with_range_keys_and_index_open_open(sessions_database):
         assert rows == expected
 
 
-def test_partition_read_w_index(sessions_database):
+def test_partition_read_w_index(sessions_database, not_emulator):
     sd = _sample_data
     row_count = 10
     columns = sd.COLUMNS[1], sd.COLUMNS[2]
@@ -1886,7 +1886,11 @@ def test_partition_read_w_index(sessions_database):
 
     batch_txn = sessions_database.batch_snapshot(read_timestamp=committed)
     batches = batch_txn.generate_read_batches(
-        sd.TABLE, columns, spanner_v1.KeySet(all_=True), index="name"
+        sd.TABLE,
+        columns,
+        spanner_v1.KeySet(all_=True),
+        index="name",
+        data_boost_enabled=True,
     )
     for batch in batches:
         p_results_iter = batch_txn.process(batch)
@@ -2494,7 +2498,7 @@ def test_execute_sql_returning_transfinite_floats(sessions_database, not_postgre
         assert math.isnan(float_array[2])
 
 
-def test_partition_query(sessions_database):
+def test_partition_query(sessions_database, not_emulator):
     row_count = 40
     sql = f"SELECT * FROM {_sample_data.TABLE}"
     committed = _set_up_table(sessions_database, row_count)
@@ -2503,7 +2507,7 @@ def test_partition_query(sessions_database):
     all_data_rows = set(_row_data(row_count))
     union = set()
     batch_txn = sessions_database.batch_snapshot(read_timestamp=committed)
-    for batch in batch_txn.generate_query_batches(sql):
+    for batch in batch_txn.generate_query_batches(sql, data_boost_enabled=True):
         p_results_iter = batch_txn.process(batch)
         # Lists aren't hashable so the results need to be converted
         rows = [tuple(result) for result in p_results_iter]

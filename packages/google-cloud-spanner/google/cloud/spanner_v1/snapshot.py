@@ -167,6 +167,7 @@ class _SnapshotBase(_SessionWrapper):
         limit=0,
         partition=None,
         request_options=None,
+        data_boost_enabled=False,
         *,
         retry=gapic_v1.method.DEFAULT,
         timeout=gapic_v1.method.DEFAULT,
@@ -210,6 +211,14 @@ class _SnapshotBase(_SessionWrapper):
         :type timeout: float
         :param timeout: (Optional) The timeout for this request.
 
+        :type data_boost_enabled:
+        :param data_boost_enabled:
+                (Optional) If this is for a partitioned read and this field is
+                set ``true``, the request will be executed via offline access.
+                If the field is set to ``true`` but the request does not set
+                ``partition_token``, the API will return an
+                ``INVALID_ARGUMENT`` error.
+
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
 
@@ -247,6 +256,7 @@ class _SnapshotBase(_SessionWrapper):
             limit=limit,
             partition_token=partition,
             request_options=request_options,
+            data_boost_enabled=data_boost_enabled,
         )
         restart = functools.partial(
             api.streaming_read,
@@ -302,6 +312,7 @@ class _SnapshotBase(_SessionWrapper):
         partition=None,
         retry=gapic_v1.method.DEFAULT,
         timeout=gapic_v1.method.DEFAULT,
+        data_boost_enabled=False,
     ):
         """Perform an ``ExecuteStreamingSql`` API request.
 
@@ -350,6 +361,14 @@ class _SnapshotBase(_SessionWrapper):
 
         :type timeout: float
         :param timeout: (Optional) The timeout for this request.
+
+        :type data_boost_enabled:
+        :param data_boost_enabled:
+                (Optional) If this is for a partitioned query and this field is
+                set ``true``, the request will be executed via offline access.
+                If the field is set to ``true`` but the request does not set
+                ``partition_token``, the API will return an
+                ``INVALID_ARGUMENT`` error.
 
         :raises ValueError:
             for reuse of single-use snapshots, or if a transaction ID is
@@ -400,6 +419,7 @@ class _SnapshotBase(_SessionWrapper):
             seqno=self._execute_sql_count,
             query_options=query_options,
             request_options=request_options,
+            data_boost_enabled=data_boost_enabled,
         )
         restart = functools.partial(
             api.execute_streaming_sql,

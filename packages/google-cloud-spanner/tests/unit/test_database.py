@@ -2114,6 +2114,7 @@ class TestBatchSnapshot(_BaseTest):
             "columns": self.COLUMNS,
             "keyset": {"all": True},
             "index": "",
+            "data_boost_enabled": False,
         }
         self.assertEqual(len(batches), len(self.TOKENS))
         for batch, token in zip(batches, self.TOKENS):
@@ -2155,6 +2156,7 @@ class TestBatchSnapshot(_BaseTest):
             "columns": self.COLUMNS,
             "keyset": {"all": True},
             "index": "",
+            "data_boost_enabled": False,
         }
         self.assertEqual(len(batches), len(self.TOKENS))
         for batch, token in zip(batches, self.TOKENS):
@@ -2195,6 +2197,7 @@ class TestBatchSnapshot(_BaseTest):
             "columns": self.COLUMNS,
             "keyset": {"all": True},
             "index": self.INDEX,
+            "data_boost_enabled": False,
         }
         self.assertEqual(len(batches), len(self.TOKENS))
         for batch, token in zip(batches, self.TOKENS):
@@ -2207,6 +2210,47 @@ class TestBatchSnapshot(_BaseTest):
             keyset=keyset,
             index=self.INDEX,
             partition_size_bytes=size,
+            max_partitions=None,
+            retry=gapic_v1.method.DEFAULT,
+            timeout=gapic_v1.method.DEFAULT,
+        )
+
+    def test_generate_read_batches_w_data_boost_enabled(self):
+        data_boost_enabled = True
+        keyset = self._make_keyset()
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        snapshot = batch_txn._snapshot = self._make_snapshot()
+        snapshot.partition_read.return_value = self.TOKENS
+
+        batches = list(
+            batch_txn.generate_read_batches(
+                self.TABLE,
+                self.COLUMNS,
+                keyset,
+                index=self.INDEX,
+                data_boost_enabled=data_boost_enabled,
+            )
+        )
+
+        expected_read = {
+            "table": self.TABLE,
+            "columns": self.COLUMNS,
+            "keyset": {"all": True},
+            "index": self.INDEX,
+            "data_boost_enabled": True,
+        }
+        self.assertEqual(len(batches), len(self.TOKENS))
+        for batch, token in zip(batches, self.TOKENS):
+            self.assertEqual(batch["partition"], token)
+            self.assertEqual(batch["read"], expected_read)
+
+        snapshot.partition_read.assert_called_once_with(
+            table=self.TABLE,
+            columns=self.COLUMNS,
+            keyset=keyset,
+            index=self.INDEX,
+            partition_size_bytes=None,
             max_partitions=None,
             retry=gapic_v1.method.DEFAULT,
             timeout=gapic_v1.method.DEFAULT,
@@ -2288,7 +2332,11 @@ class TestBatchSnapshot(_BaseTest):
             batch_txn.generate_query_batches(sql, max_partitions=max_partitions)
         )
 
-        expected_query = {"sql": sql, "query_options": client._query_options}
+        expected_query = {
+            "sql": sql,
+            "data_boost_enabled": False,
+            "query_options": client._query_options,
+        }
         self.assertEqual(len(batches), len(self.TOKENS))
         for batch, token in zip(batches, self.TOKENS):
             self.assertEqual(batch["partition"], token)
@@ -2326,6 +2374,7 @@ class TestBatchSnapshot(_BaseTest):
 
         expected_query = {
             "sql": sql,
+            "data_boost_enabled": False,
             "params": params,
             "param_types": param_types,
             "query_options": client._query_options,
@@ -2372,6 +2421,7 @@ class TestBatchSnapshot(_BaseTest):
 
         expected_query = {
             "sql": sql,
+            "data_boost_enabled": False,
             "params": params,
             "param_types": param_types,
             "query_options": client._query_options,
@@ -2389,6 +2439,37 @@ class TestBatchSnapshot(_BaseTest):
             max_partitions=None,
             retry=retry,
             timeout=2.0,
+        )
+
+    def test_generate_query_batches_w_data_boost_enabled(self):
+        sql = "SELECT COUNT(*) FROM table_name"
+        client = _Client(self.PROJECT_ID)
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        database = _Database(self.DATABASE_NAME, instance=instance)
+        batch_txn = self._make_one(database)
+        snapshot = batch_txn._snapshot = self._make_snapshot()
+        snapshot.partition_query.return_value = self.TOKENS
+
+        batches = list(batch_txn.generate_query_batches(sql, data_boost_enabled=True))
+
+        expected_query = {
+            "sql": sql,
+            "data_boost_enabled": True,
+            "query_options": client._query_options,
+        }
+        self.assertEqual(len(batches), len(self.TOKENS))
+        for batch, token in zip(batches, self.TOKENS):
+            self.assertEqual(batch["partition"], token)
+            self.assertEqual(batch["query"], expected_query)
+
+        snapshot.partition_query.assert_called_once_with(
+            sql=sql,
+            params=None,
+            param_types=None,
+            partition_size_bytes=None,
+            max_partitions=None,
+            retry=gapic_v1.method.DEFAULT,
+            timeout=gapic_v1.method.DEFAULT,
         )
 
     def test_process_query_batch(self):

@@ -47,6 +47,10 @@ def run_batch_query(instance_id, database_id):
         table="Singers",
         columns=("SingerId", "FirstName", "LastName"),
         keyset=spanner.KeySet(all_=True),
+        # A Partition object is serializable and can be used from a different process.
+        # DataBoost option is an optional parameter which can also be used for partition read
+        # and query to execute the request via spanner independent compute resources.
+        data_boost_enabled=True,
     )
 
     # Create a pool of workers for the tasks
@@ -87,4 +91,5 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    run_batch_query(args.instance_id, args.database_id)
+    if args.command == "run_batch_query":
+        run_batch_query(args.instance_id, args.database_id)
