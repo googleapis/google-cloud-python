@@ -17,7 +17,7 @@
 # [START documentai_toolbox_create_batches]
 
 from google.cloud import documentai
-from google.cloud.documentai_toolbox import utilities
+from google.cloud.documentai_toolbox import gcs_utilities
 
 # TODO(developer): Uncomment these variables before running the sample.
 # Given unprocessed documents in path gs://bucket/path/to/folder
@@ -32,7 +32,7 @@ def create_batches_sample(
     batch_size: int = 50,
 ) -> None:
     # Creating batches of documents for processing
-    batches = utilities.create_batches(
+    batches = gcs_utilities.create_batches(
         gcs_bucket_name=gcs_bucket_name, gcs_prefix=gcs_prefix, batch_size=batch_size
     )
 

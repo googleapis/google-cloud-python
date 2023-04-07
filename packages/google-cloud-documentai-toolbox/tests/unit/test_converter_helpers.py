@@ -1,3 +1,4 @@
+# pylint: disable=protected-access
 # -*- coding: utf-8 -*-
 # Copyright 2023 Google LLC
 #
@@ -210,7 +211,7 @@ def test_convert_to_docproto_with_config_with_error_and_retry(mock_ocr, capfd):
     assert "Could Not Convert test_document" in out
 
 
-@mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
+@mock.patch("google.cloud.documentai_toolbox.utilities.gcs_utilities.storage")
 def test_get_bytes(mock_storage):
     client = mock_storage.Client.return_value
     mock_bucket = mock.Mock()
@@ -251,7 +252,7 @@ def test_get_bytes(mock_storage):
     ]
 
 
-@mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
+@mock.patch("google.cloud.documentai_toolbox.utilities.gcs_utilities.storage")
 def test_get_bytes_with_error(mock_storage):
     with pytest.raises(Exception, match="Fail"):
         client = mock_storage.Client.return_value
@@ -272,7 +273,7 @@ def test_get_bytes_with_error(mock_storage):
         )
 
 
-@mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
+@mock.patch("google.cloud.documentai_toolbox.utilities.gcs_utilities.storage")
 def test_upload_file(mock_storage):
     client = mock_storage.Client.return_value
 
@@ -284,7 +285,7 @@ def test_upload_file(mock_storage):
     )
 
 
-@mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
+@mock.patch("google.cloud.documentai_toolbox.utilities.gcs_utilities.storage")
 @mock.patch(
     "google.cloud.documentai_toolbox.converters.config.converter_helpers._get_bytes",
     return_value="file_bytes",
@@ -324,7 +325,6 @@ def test_get_files(mock_storage, mock_get_bytes):
     "google.cloud.documentai_toolbox.converters.config.converter_helpers._convert_to_docproto_with_config",
 )
 def test_get_docproto_files(mocked_convert_docproto):
-
     mock_result = mock.Mock()
     mock_result.result.return_value = [
         "annotated_bytes",
@@ -367,7 +367,6 @@ def test_get_docproto_files(mocked_convert_docproto):
     "google.cloud.documentai_toolbox.converters.config.converter_helpers._convert_to_docproto_with_config",
 )
 def test_get_docproto_files_with_no_docproto(mocked_convert_docproto):
-
     mock_result = mock.Mock()
     mock_result.result.return_value = [
         "annotated_bytes",
@@ -425,7 +424,7 @@ def test_upload_with_file_error():
         converter_helpers._upload(files, gcs_output_path="gs://output/path.json")
 
 
-@mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
+@mock.patch("google.cloud.documentai_toolbox.utilities.gcs_utilities.storage")
 @mock.patch(
     "google.cloud.documentai_toolbox.converters.config.converter_helpers._get_docproto_files",
     return_value=(["file1"], ["test_label"], ["document_2"]),

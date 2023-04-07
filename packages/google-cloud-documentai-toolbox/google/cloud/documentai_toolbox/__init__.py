@@ -29,7 +29,7 @@ from .converters import (
 )
 
 from .utilities import (
-    utilities,
+    gcs_utilities,
 )
 
-__all__ = (document, page, entity, converter, utilities)
+__all__ = (document, page, entity, converter, gcs_utilities)

@@ -16,18 +16,113 @@
 """Document AI utilities."""
 import os
 import re
-from typing import Dict, List, Optional
+from typing import Dict, List, Tuple
 
+from google.api_core import client_info
 from google.cloud import documentai
+from google.cloud import storage
+from google.cloud import documentai_toolbox
 
 from google.cloud.documentai_toolbox import constants
-from google.cloud.documentai_toolbox.wrappers.document import _get_storage_client
+
+
+def _get_storage_client():
+    r"""Returns a Storage client with custom user agent header.
+
+    Returns:
+        storage.Client.
+
+    """
+    user_agent = f"{constants.USER_AGENT_PRODUCT}/{documentai_toolbox.__version__}"
+
+    info = client_info.ClientInfo(
+        client_library_version=documentai_toolbox.__version__,
+        user_agent=user_agent,
+    )
+
+    return storage.Client(client_info=info)
+
+
+def get_bytes(gcs_bucket_name: str, gcs_prefix: str) -> List[bytes]:
+    r"""Returns a list of bytes of json files from Cloud Storage.
+
+    Args:
+        gcs_bucket_name (str):
+            Required. The name of the gcs bucket.
+
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_bucket_name=`bucket`.
+        gcs_prefix (str):
+            Required. The prefix of the json files in the target_folder
+
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_prefix=`{optional_folder}/{target_folder}`.
+    Returns:
+        List[bytes]:
+            A list of bytes.
+
+    """
+    result = []
+
+    storage_client = _get_storage_client()
+    blob_list = storage_client.list_blobs(gcs_bucket_name, prefix=gcs_prefix)
+
+    for blob in blob_list:
+        if (
+            blob.name.endswith(constants.JSON_EXTENSION)
+            or blob.content_type == constants.JSON_MIMETYPE
+        ):
+            result.append(blob.download_as_bytes())
+
+    return result
+
+
+def split_gcs_uri(gcs_uri: str) -> Tuple[str, str]:
+    r"""Splits a Cloud Storage uri into the bucket_name and prefix.
+
+    Args:
+        gcs_uri (str):
+            Required. The full Cloud Storage URI.
+
+            Format: `gs://{bucket_name}/{gcs_prefix}`.
+    Returns:
+        Tuple[str, str]:
+            The Cloud Storage Bucket and Prefix.
+
+    """
+    matches = re.match("gs://(.*?)/(.*)", gcs_uri)
+
+    if not matches:
+        raise ValueError(
+            "gcs_uri must follow format 'gs://{bucket_name}/{gcs_prefix}'."
+        )
+    bucket, prefix = matches.groups()
+    return str(bucket), str(prefix)
+
+
+def create_gcs_uri(gcs_bucket_name: str, gcs_prefix: str) -> str:
+    r"""Creates a Cloud Storage uri from the bucket_name and prefix.
+
+    Args:
+        gcs_bucket_name (str):
+            Required. The name of the gcs bucket.
+
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_bucket_name=`bucket`.
+        gcs_prefix (str):
+            Required. The prefix of the files in the target_folder.
+
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_prefix=`{optional_folder}/{target_folder}`.
+    Returns:
+        str
+            The full Cloud Storage uri.
+            Format: `gs://{gcs_bucket_name}/{gcs_prefix}`
+
+    """
+    return f"gs://{gcs_bucket_name}/{gcs_prefix}"
 
 
 def list_gcs_document_tree(
     gcs_bucket_name: str, gcs_prefix: str
 ) -> Dict[str, List[str]]:
-    r"""Returns a list path to files in Cloud Storage folder and prints the tree to terminal.
+    r"""Returns a list path to files in Cloud Storage folder.
 
     Args:
         gcs_bucket_name (str):
@@ -64,8 +159,10 @@ def list_gcs_document_tree(
     return path_list
 
 
-def print_gcs_document_tree(gcs_bucket_name: str, gcs_prefix: str) -> None:
-    r"""Prints a tree of filenames in Cloud Storage folder..
+def print_gcs_document_tree(
+    gcs_bucket_name: str, gcs_prefix: str, files_to_display: int = 4
+) -> None:
+    r"""Prints a tree of filenames in a Cloud Storage folder.
 
     Args:
         gcs_bucket_name (str):
@@ -76,13 +173,14 @@ def print_gcs_document_tree(gcs_bucket_name: str, gcs_prefix: str) -> None:
             Required. The prefix of the json files in the target_folder.
 
             Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_prefix=`{optional_folder}/{target_folder}`.
+        files_to_display (int):
+            Optional. The amount of files to display. Default is `4`.
     Returns:
         None.
 
     """
     FILENAME_TREE_MIDDLE = "├──"
     FILENAME_TREE_LAST = "└──"
-    FILES_TO_DISPLAY = 4
 
     path_list = list_gcs_document_tree(
         gcs_bucket_name=gcs_bucket_name, gcs_prefix=gcs_prefix
@@ -93,18 +191,18 @@ def print_gcs_document_tree(gcs_bucket_name: str, gcs_prefix: str) -> None:
         dir_size = len(files)
         for idx, file_name in enumerate(files):
             if idx == dir_size - 1:
-                if dir_size > FILES_TO_DISPLAY:
+                if dir_size > files_to_display:
                     print("│  ....")
                 print(f"{FILENAME_TREE_LAST}{file_name}\n")
                 break
-            if idx <= FILES_TO_DISPLAY:
+            if idx <= files_to_display:
                 print(f"{FILENAME_TREE_MIDDLE}{file_name}")
 
 
 def create_batches(
     gcs_bucket_name: str,
     gcs_prefix: str,
-    batch_size: Optional[int] = constants.BATCH_MAX_FILES,
+    batch_size: int = constants.BATCH_MAX_FILES,
 ) -> List[documentai.BatchDocumentsInputConfig]:
     """Create batches of documents in Cloud Storage to process with `batch_process_documents()`.
 
@@ -117,7 +215,7 @@ def create_batches(
             Required. The prefix of the json files in the `target_folder`
 
             Format: `gs://bucket/optional_folder/target_folder/` where gcs_prefix=`optional_folder/target_folder`.
-        batch_size (Optional[int]):
+        batch_size (int):
             Optional. Size of each batch of documents. Default is `50`.
 
     Returns:
@@ -143,7 +241,7 @@ def create_batches(
             print(f"Skipping file {blob.name}. Invalid Mime Type {blob.content_type}.")
             continue
 
-        if blob.size > constants.BATCH_MAX_FILE_SIZE:
+        if int(blob.size) > constants.BATCH_MAX_FILE_SIZE:
             print(
                 f"Skipping file {blob.name}. File size must be less than {constants.BATCH_MAX_FILE_SIZE} bytes. File size is {blob.size} bytes."
             )
@@ -159,7 +257,7 @@ def create_batches(
 
         batch.append(
             documentai.GcsDocument(
-                gcs_uri=f"gs://{gcs_bucket_name}/{blob.name}",
+                gcs_uri=create_gcs_uri(gcs_bucket_name, blob.name),
                 mime_type=blob.content_type,
             )
         )

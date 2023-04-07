@@ -27,6 +27,7 @@ import pytest
 import glob
 
 from google.cloud.documentai_toolbox import document
+from google.cloud.documentai_toolbox import gcs_utilities
 
 from google.cloud import documentai
 from google.cloud.vision import AnnotateFileResponse
@@ -43,42 +44,49 @@ def get_bytes(file_name):
 
 @pytest.fixture
 def get_bytes_single_file_mock():
-    with mock.patch.object(document, "_get_bytes") as byte_factory:
+    with mock.patch.object(gcs_utilities, "get_bytes") as byte_factory:
         byte_factory.return_value = get_bytes("tests/unit/resources/0")
         yield byte_factory
 
 
 @pytest.fixture
 def get_bytes_multiple_files_mock():
-    with mock.patch.object(document, "_get_bytes") as byte_factory:
+    with mock.patch.object(gcs_utilities, "get_bytes") as byte_factory:
         byte_factory.return_value = get_bytes("tests/unit/resources/1")
         yield byte_factory
 
 
 @pytest.fixture
 def get_bytes_unordered_files_mock():
-    with mock.patch.object(document, "_get_bytes") as byte_factory:
+    with mock.patch.object(gcs_utilities, "get_bytes") as byte_factory:
         byte_factory.return_value = get_bytes("tests/unit/resources/unordered_shards")
+        yield byte_factory
+
+
+@pytest.fixture(params=["tests/unit/resources/0", "tests/unit/resources/1"])
+def get_bytes_multiple_directories_mock(request):
+    with mock.patch.object(gcs_utilities, "get_bytes") as byte_factory:
+        byte_factory.return_value = get_bytes(request.param)
         yield byte_factory
 
 
 @pytest.fixture
 def get_bytes_form_parser_mock():
-    with mock.patch.object(document, "_get_bytes") as byte_factory:
+    with mock.patch.object(gcs_utilities, "get_bytes") as byte_factory:
         byte_factory.return_value = get_bytes("tests/unit/resources/form_parser")
         yield byte_factory
 
 
 @pytest.fixture
 def get_bytes_splitter_mock():
-    with mock.patch.object(document, "_get_bytes") as byte_factory:
+    with mock.patch.object(gcs_utilities, "get_bytes") as byte_factory:
         byte_factory.return_value = get_bytes("tests/unit/resources/splitter")
         yield byte_factory
 
 
 @pytest.fixture
 def get_bytes_images_mock():
-    with mock.patch.object(document, "_get_bytes") as byte_factory:
+    with mock.patch.object(gcs_utilities, "get_bytes") as byte_factory:
         byte_factory.return_value = get_bytes("tests/unit/resources/images")
         yield byte_factory
 
@@ -125,6 +133,77 @@ def test_entities_from_shard():
     assert actual[1].mention_text == "$140.00"
     assert actual[1].type_ == "vat/tax_amount"
     assert actual[1].normalized_text == "140 USD"
+
+
+@mock.patch("google.cloud.documentai_toolbox.wrappers.document.documentai")
+def test_get_batch_process_metadata_with_valid_operation(
+    mock_docai,
+):
+    mock_client = mock_docai.DocumentProcessorServiceClient.return_value
+
+    metadata = documentai.BatchProcessMetadata(
+        state=documentai.BatchProcessMetadata.State.SUCCEEDED,
+        individual_process_statuses=[
+            documentai.BatchProcessMetadata.IndividualProcessStatus(
+                input_gcs_source="gs://test-directory/documentai/input.pdf",
+                output_gcs_destination="gs://test-directory/documentai/output/123456789/1/",
+            )
+        ],
+    )
+
+    mock_operation = mock.Mock(
+        done=True,
+        metadata=mock.Mock(
+            type_url="type.googleapis.com/google.cloud.documentai.v1.BatchProcessMetadata",
+            value=documentai.BatchProcessMetadata.serialize(metadata),
+        ),
+    )
+
+    mock_client.get_operation.return_value = mock_operation
+
+    location = "us"
+    operation_name = "projects/123456/locations/us/operations/7890123"
+    document._get_batch_process_metadata(location, operation_name)
+
+    mock_client.get_operation.assert_called()
+    mock_docai.BatchProcessMetadata.deserialize.assert_called()
+
+
+@mock.patch("google.cloud.documentai_toolbox.wrappers.document.documentai")
+def test_get_batch_process_metadata_with_no_metadata(mock_docai):
+    with pytest.raises(
+        ValueError,
+        match="Operation does not contain metadata:",
+    ):
+        mock_client = mock_docai.DocumentProcessorServiceClient.return_value
+
+        location = "us"
+        operation_name = "projects/123456/locations/us/operations/7890123"
+        mock_operation = mock.Mock(done=True, metadata=None)
+        mock_client.get_operation.return_value = mock_operation
+
+        document._get_batch_process_metadata(location, operation_name)
+
+
+@mock.patch("google.cloud.documentai_toolbox.wrappers.document.documentai")
+def test_document_from_batch_process_operation_with_invalid_metadata_type(mock_docai):
+    with pytest.raises(
+        ValueError,
+        match="Operation metadata type is not",
+    ):
+        mock_client = mock_docai.DocumentProcessorServiceClient.return_value
+
+        location = "us"
+        operation_name = "projects/123456/locations/us/operations/7890123"
+        mock_operation = mock.Mock(
+            done=True,
+            metadata=mock.Mock(
+                type_url="type.googleapis.com/google.cloud.documentai.uiv1beta3.TrainProcessorVersionResponse",
+            ),
+        )
+        mock_client.get_operation.return_value = mock_operation
+
+        document._get_batch_process_metadata(location, operation_name)
 
 
 def test_document_from_document_path_with_single_shard():
@@ -178,6 +257,49 @@ def test_document_from_gcs_with_unordered_shards(get_bytes_unordered_files_mock)
 
     for page_index, page in enumerate(actual.pages):
         assert page.documentai_page.page_number == page_index + 1
+
+
+def test_document_from_batch_process_metadata_with_multiple_input_files(
+    get_bytes_multiple_directories_mock,
+):
+    mock_metadata = mock.Mock(
+        state=documentai.BatchProcessMetadata.State.SUCCEEDED,
+        individual_process_statuses=[
+            mock.Mock(
+                input_gcs_source="gs://test-directory/documentai/input.pdf",
+                output_gcs_destination="gs://test-directory/documentai/output/123456789/1/",
+            ),
+            mock.Mock(
+                input_gcs_source="gs://test-directory/documentai/input2.pdf",
+                output_gcs_destination="gs://test-directory/documentai/output/123456789/2/",
+            ),
+        ],
+    )
+    documents = document.Document.from_batch_process_metadata(mock_metadata)
+
+    get_bytes_multiple_directories_mock.assert_called()
+    assert get_bytes_multiple_directories_mock.call_count == 2
+    assert len(documents) == 2
+
+    assert documents[0].gcs_bucket_name == "test-directory"
+    assert documents[0].gcs_prefix == "documentai/output/123456789/1/"
+    assert documents[0].gcs_input_uri == "gs://test-directory/documentai/input.pdf"
+
+    assert documents[1].gcs_bucket_name == "test-directory"
+    assert documents[1].gcs_prefix == "documentai/output/123456789/2/"
+    assert documents[1].gcs_input_uri == "gs://test-directory/documentai/input2.pdf"
+
+
+def test_document_from_batch_process_metadata_with_failed_operation():
+    with pytest.raises(
+        ValueError,
+        match="Batch Process Failed: Internal Error Occured",
+    ):
+        mock_metadata = mock.Mock(
+            state=documentai.BatchProcessMetadata.State.FAILED,
+            state_message="Internal Error Occured",
+        )
+        document.Document.from_batch_process_metadata(mock_metadata)
 
 
 def test_search_page_with_target_string(get_bytes_single_file_mock):
@@ -264,42 +386,6 @@ def test_get_entity_by_type(get_bytes_single_file_mock):
     assert len(actual) == 1
     assert actual[0].type_ == "receiver_address"
     assert actual[0].mention_text == "222 Main Street\nAnytown, USA"
-
-
-@mock.patch("google.cloud.documentai_toolbox.wrappers.document.storage")
-def test_get_bytes(mock_storage):
-    client = mock_storage.Client.return_value
-    mock_bucket = mock.Mock()
-    client.Bucket.return_value = mock_bucket
-
-    mock_ds_store = mock.Mock(name=[])
-    mock_ds_store.name = "DS_Store"
-
-    mock_blob1 = mock.Mock(name=[])
-    mock_blob1.name = "gs://test-directory/1/test-annotations.json"
-    mock_blob1.download_as_bytes.return_value = (
-        "gs://test-directory/1/test-annotations.json"
-    )
-
-    mock_blob2 = mock.Mock(name=[])
-    mock_blob2.name = "gs://test-directory/1/test-config.json"
-    mock_blob2.download_as_bytes.return_value = "gs://test-directory/1/test-config.json"
-
-    mock_blob3 = mock.Mock(name=[])
-    mock_blob3.name = "gs://test-directory/1/test.pdf"
-    mock_blob3.download_as_bytes.return_value = "gs://test-directory/1/test.pdf"
-
-    client.list_blobs.return_value = [mock_ds_store, mock_blob1, mock_blob2, mock_blob3]
-
-    actual = document._get_bytes(
-        gcs_bucket_name="bucket",
-        gcs_prefix="prefix",
-    )
-
-    assert actual == [
-        "gs://test-directory/1/test-annotations.json",
-        "gs://test-directory/1/test-config.json",
-    ]
 
 
 def test_get_form_field_by_name(get_bytes_form_parser_mock):

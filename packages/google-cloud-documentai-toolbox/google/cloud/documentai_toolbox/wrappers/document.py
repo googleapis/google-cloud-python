@@ -20,13 +20,15 @@ import os
 import re
 from typing import Dict, List, Optional
 
-from google.api_core import client_info
+from google.api_core.client_options import ClientOptions
+
 from google.cloud import bigquery
 from google.cloud import documentai
-from google.cloud import storage
-from google.cloud import documentai_toolbox
 
 from google.cloud.documentai_toolbox import constants
+
+from google.cloud.documentai_toolbox.utilities import gcs_utilities
+
 from google.cloud.documentai_toolbox.wrappers.page import Page
 from google.cloud.documentai_toolbox.wrappers.page import FormField
 from google.cloud.documentai_toolbox.wrappers.entity import Entity
@@ -41,6 +43,8 @@ from google.cloud.documentai_toolbox.converters.vision_helpers import (
     _get_text_anchor_substring,
     PageInfo,
 )
+
+from google.longrunning.operations_pb2 import Operation, GetOperationRequest
 
 from pikepdf import Pdf
 
@@ -94,55 +98,6 @@ def _pages_from_shards(shards: List[documentai.Document]) -> List[Page]:
     return result
 
 
-def _get_storage_client():
-    r"""Returns a Storage client with custom user agent header.
-
-    Returns:
-        storage.Client.
-
-    """
-    user_agent = f"{constants.USER_AGENT_PRODUCT}/{documentai_toolbox.__version__}"
-
-    info = client_info.ClientInfo(
-        client_library_version=documentai_toolbox.__version__,
-        user_agent=user_agent,
-    )
-
-    return storage.Client(client_info=info)
-
-
-def _get_bytes(gcs_bucket_name: str, gcs_prefix: str) -> List[bytes]:
-    r"""Returns a list of bytes of json files from Cloud Storage.
-
-    Args:
-        gcs_bucket_name (str):
-            Required. The name of the gcs bucket.
-
-            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_bucket_name=`bucket`.
-        gcs_prefix (str):
-            Required. The prefix of the json files in the target_folder
-
-            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_prefix=`{optional_folder}/{target_folder}`.
-    Returns:
-        List[bytes]:
-            A list of bytes.
-
-    """
-    result = []
-
-    storage_client = _get_storage_client()
-    blob_list = storage_client.list_blobs(gcs_bucket_name, prefix=gcs_prefix)
-
-    for blob in blob_list:
-        if (
-            blob.name.endswith(constants.JSON_EXTENSION)
-            or blob.content_type == constants.JSON_MIMETYPE
-        ):
-            result.append(blob.download_as_bytes())
-
-    return result
-
-
 def _get_shards(gcs_bucket_name: str, gcs_prefix: str) -> List[documentai.Document]:
     r"""Returns a list of documentai.Document shards from a Cloud Storage folder.
 
@@ -167,7 +122,7 @@ def _get_shards(gcs_bucket_name: str, gcs_prefix: str) -> List[documentai.Docume
     if file_check is not None:
         raise ValueError("gcs_prefix cannot contain file types")
 
-    byte_array = _get_bytes(gcs_bucket_name, gcs_prefix)
+    byte_array = gcs_utilities.get_bytes(gcs_bucket_name, gcs_prefix)
 
     for byte in byte_array:
         shards.append(documentai.Document.from_json(byte, ignore_unknown_fields=True))
@@ -231,14 +186,62 @@ def _convert_to_vision_annotate_file_response(text: str, pages: List[page.Page])
     return vision_file_response
 
 
+def _get_batch_process_metadata(
+    location: str, operation_name: str
+) -> documentai.BatchProcessMetadata:
+    r"""Get `BatchProcessMetadata` from a `batch_process_documents()` long-running operation.
+
+    Args:
+        location (str):
+            Required. The location of the processor used for `batch_process_documents()`.
+
+        operation_name (str):
+            Required. The fully qualified operation name for a `batch_process_documents()` operation.
+    Returns:
+        documentai.BatchProcessMetadata:
+            Metadata from batch process.
+    """
+    client = documentai.DocumentProcessorServiceClient(
+        client_options=ClientOptions(
+            api_endpoint=f"{location}-documentai.googleapis.com"
+        )
+    )
+
+    while True:
+        operation: Operation = client.get_operation(
+            request=GetOperationRequest(name=operation_name)
+        )
+
+        if operation.done:
+            break
+
+    if not operation.metadata:
+        raise ValueError(f"Operation does not contain metadata: {operation}")
+
+    metadata_type = (
+        "type.googleapis.com/google.cloud.documentai.v1.BatchProcessMetadata"
+    )
+
+    if not operation.metadata.type_url or operation.metadata.type_url != metadata_type:
+        raise ValueError(
+            f"Operation metadata type is not `{metadata_type}`. Type is `{operation.metadata.type_url}`."
+        )
+
+    metadata: documentai.BatchProcessMetadata = (
+        documentai.BatchProcessMetadata.deserialize(operation.metadata.value)
+    )
+
+    return metadata
+
+
 @dataclasses.dataclass
 class Document:
-    r"""Represents a wrapped Document.
+    r"""Represents a wrapped `Document`.
 
-    This class hides away the complexities of using Document protobuf
-    response outputted by BatchProcessDocuments or ProcessDocument
+    This class hides away the complexities of using `Document` protobuf
+    response outputted by `BatchProcessDocuments` or `ProcessDocument`
     methods and implements convenient methods for searching and
-    extracting information within the Document.
+    extracting information within the `Document`.
 
     Attributes:
         shards: (List[google.cloud.documentai.Document]):
@@ -263,6 +266,7 @@ class Document:
     shards: List[documentai.Document] = dataclasses.field(repr=False)
     gcs_bucket_name: Optional[str] = dataclasses.field(default=None, repr=False)
     gcs_prefix: Optional[str] = dataclasses.field(default=None, repr=False)
+    gcs_input_uri: Optional[str] = dataclasses.field(default=None, repr=False)
 
     pages: List[Page] = dataclasses.field(init=False, repr=False)
     entities: List[Entity] = dataclasses.field(init=False, repr=False)
@@ -279,6 +283,13 @@ class Document:
         document_path: str,
     ):
         r"""Loads Document from local document_path.
+
+            .. code-block:: python
+
+                from google.cloud.documentai_toolbox import document
+
+                document_path = "/path/to/local/file.json
+                wrapped_document = document.Document.from_document_path(document_path)
 
         Args:
             document_path (str):
@@ -300,6 +311,14 @@ class Document:
     ):
         r"""Loads Document from local documentai_document.
 
+            .. code-block:: python
+
+                from google.cloud import documentai
+                from google.cloud.documentai_toolbox import document
+
+                documentai_document = client.process_documents(request).document
+                wrapped_document = document.Document.from_documentai_document(documentai_document)
+
         Args:
             documentai_document (documentai.Document):
                 Optional. The Document.proto response.
@@ -311,7 +330,7 @@ class Document:
         return cls(shards=[documentai_document])
 
     @classmethod
-    def from_gcs(cls, gcs_bucket_name: str, gcs_prefix: str):
+    def from_gcs(cls, gcs_bucket_name: str, gcs_prefix: str, gcs_input_uri: str = None):
         r"""Loads Document from Cloud Storage.
 
         Args:
@@ -323,13 +342,87 @@ class Document:
                 Required. The prefix to the location of the target folder.
 
                 Format: Given `gs://{bucket_name}/{optional_folder}/{target_folder}` where gcs_prefix=`{optional_folder}/{target_folder}`.
+            gcs_input_uri (str):
+                Optional. The gcs uri to the original input file.
+
+                Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/{file_name}.pdf`
         Returns:
             Document:
                 A document from gcs.
         """
         shards = _get_shards(gcs_bucket_name=gcs_bucket_name, gcs_prefix=gcs_prefix)
         return cls(
-            shards=shards, gcs_prefix=gcs_prefix, gcs_bucket_name=gcs_bucket_name
+            shards=shards,
+            gcs_bucket_name=gcs_bucket_name,
+            gcs_prefix=gcs_prefix,
+            gcs_input_uri=gcs_input_uri,
+        )
+
+    @classmethod
+    def from_batch_process_metadata(cls, metadata: documentai.BatchProcessMetadata):
+        r"""Loads Documents from Cloud Storage, using the output from `BatchProcessMetadata`.
+
+            .. code-block:: python
+
+                from google.cloud import documentai
+
+                operation = client.batch_process_documents(request)
+                operation.result(timeout=timeout)
+                metadata = documentai.BatchProcessMetadata(operation.metadata)
+
+        Args:
+            metadata (documentai.BatchProcessMetadata):
+                Required. The operation metadata after a `batch_process_documents()` operation completes.
+
+        Returns:
+            List[Document]:
+                A list of wrapped documents from gcs. Each document corresponds to an input file.
+        """
+        if metadata.state != documentai.BatchProcessMetadata.State.SUCCEEDED:
+            raise ValueError(f"Batch Process Failed: {metadata.state_message}")
+
+        documents: List[Document] = []
+        # Each process corresponds to one input document
+        for process in list(metadata.individual_process_statuses):
+            # output_gcs_destination format: gs://BUCKET/PREFIX/OPERATION_NUMBER/INPUT_FILE_NUMBER/
+            gcs_bucket_name, gcs_prefix = gcs_utilities.split_gcs_uri(
+                process.output_gcs_destination
+            )
+
+            documents.append(
+                Document.from_gcs(
+                    gcs_bucket_name, gcs_prefix, gcs_input_uri=process.input_gcs_source
+                )
+            )
+
+        return documents
+
+    @classmethod
+    def from_batch_process_operation(cls, location: str, operation_name: str):
+        r"""Loads Documents from Cloud Storage, using the operation name returned from `batch_process_documents()`.
+
+            .. code-block:: python
+
+                from google.cloud import documentai
+
+                operation = client.batch_process_documents(request)
+                operation_name = operation.operation.name
+
+        Args:
+            location (str):
+                Required. The location of the processor used for `batch_process_documents()`.
+
+            operation_name (str):
+                Required. The fully qualified operation name for a `batch_process_documents()` operation.
+
+        Returns:
+            List[Document]:
+                A list of wrapped documents from gcs. Each document corresponds to an input file.
+        """
+        return cls.from_batch_process_metadata(
+            metadata=_get_batch_process_metadata(
+                location=location, operation_name=operation_name
+            )
         )
 
     def search_pages(

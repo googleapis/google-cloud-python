@@ -109,10 +109,10 @@ def _table_wrapper_from_documentai_table(
     """
 
     header_rows = _table_rows_from_documentai_table_rows(
-        table_rows=documentai_table.header_rows, text=text
+        table_rows=list(documentai_table.header_rows), text=text
     )
     body_rows = _table_rows_from_documentai_table_rows(
-        table_rows=documentai_table.body_rows, text=text
+        table_rows=list(documentai_table.body_rows), text=text
     )
 
     return Table(
@@ -292,7 +292,7 @@ def _get_form_fields(
 
 def _table_rows_from_documentai_table_rows(
     table_rows: List[documentai.Document.Page.Table.TableRow], text: str
-) -> List[str]:
+) -> List[List[str]]:
     r"""Returns a list of rows from table_rows.
 
     Args:
@@ -303,17 +303,19 @@ def _table_rows_from_documentai_table_rows(
             from the document.
 
     Returns:
-        List[str]:
+        List[List[str]]:
             A list of table rows.
     """
-    body_rows = []
+    body_rows: List[List[str]] = []
     for row in table_rows:
         row_text = []
 
         for cell in row.cells:
-            row_text.append(_text_from_layout(layout=cell.layout, text=text))
+            row_text.append(
+                _text_from_layout(layout=cell.layout, text=text).replace("\n", "")
+            )
 
-        body_rows.append([x.replace("\n", "") for x in row_text])
+        body_rows.append(row_text)
     return body_rows
 
 
