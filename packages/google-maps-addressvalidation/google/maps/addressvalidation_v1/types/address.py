@@ -31,11 +31,13 @@ __protobuf__ = proto.module(
 
 
 class Address(proto.Message):
-    r"""Details of the address parsed from the input.
+    r"""Details of the post-processed address. Post-processing
+    includes correcting misspelled parts of the address, replacing
+    incorrect parts, and inferring missing parts.
 
     Attributes:
         formatted_address (str):
-            The corrected address, formatted as a
+            The post-processed address, formatted as a
             single-line address following the address
             formatting rules of the region where the address
             is located.
