@@ -341,13 +341,13 @@ class WorkstationConfig(proto.Message):
                 machine_type (str):
                     The name of a Compute Engine machine type.
                 service_account (str):
-                    Email address of the service account that
-                    will be used on VM instances used to support
-                    this config. This service account must have
+                    Email address of the service account used on
+                    VM instances used to support this configuration.
+                    If not set, VMs run with a Google-managed
+                    service account. This service account must have
                     permission to pull the specified container
-                    image. If not set, VMs will run without a
-                    service account, in which case the image must be
-                    publicly accessible.
+                    image; otherwise, the image must be publicly
+                    accessible.
                 tags (MutableSequence[str]):
                     Network tags to add to the Compute Engine
                     machines backing the Workstations.
