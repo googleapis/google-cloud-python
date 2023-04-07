@@ -50,5 +50,5 @@ ${SCRIPT_DIR}/git-migrate-history.sh \
   "googleapis/google-cloud-python" \
   "" \
   "${PACKAGE_PATH}" \
-  ".kokoro,.github,.trampolinerc,SECURITY.md,renovate.json,samples" \
+  "" \
   ".github/.OwlBot.yaml"

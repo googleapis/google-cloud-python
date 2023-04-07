@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -133,7 +133,26 @@ then
   bash "${UPDATE_SCRIPT}"
 fi
 echo "Success"
-# git push -u origin "${BRANCH}" --force
+
+popd # back to workdir
+
+# Do a diff between source code split repl and migrated code.
+git clone "git@github.com:${SOURCE_REPO}.git" source-repo-validation  # Not ideal to clone again.
+rm -rf source-repo-validation/.git  # That folder is not needed for validation.
+
+if diff -r target-repo/"${TARGET_PATH}" source-repo-validation; then
+  echo "No diff"
+else
+  echo "Diff non-empty"
+  exit 1
+fi
+
+pushd target-repo  # To target repo
+
+# Uncomment this to push to branch and create a pull request.
+# BRANCH here is something like python-speech-migration.
+
+# git push -u origin "${BRANCH}" --force  
 
 # # create pull request
 # if gh --help > /dev/null
