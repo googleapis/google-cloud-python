@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ export PACKAGE_PATH="packages/${ARTIFACT_NAME}"
 # 5. comma-separated list of files/folders to skip
 # 6. keep these specific files that would otherwise be deleted by IGNORE_FOLDERS
 # 7. override the HEAD branch name for the migration PR
+# 8. path for update script.
 
 echo ${PACKAGE_PATH}
 

@@ -41,6 +41,9 @@ KEEP_FILES=$6
 # override the HEAD branch name for the migration PR
 BRANCH=$7
 
+# Path for update script for migration postprocessing.
+UPDATE_SCRIPT=$8
+
 if [[ ! -z "${UPDATE_SCRIPT}" ]]
 then
   UPDATE_SCRIPT=$(realpath "${UPDATE_SCRIPT}")
