@@ -331,7 +331,7 @@ def call_iam_generate_id_token_endpoint(request, signer_email, audience, access_
     Returns:
         Tuple[str, datetime]: The ID token and expiration.
     """
-    body = {"audience": audience, "includeEmail": "true"}
+    body = {"audience": audience, "includeEmail": "true", "useEmailAzp": "true"}
 
     response_data = _token_endpoint_request(
         request,

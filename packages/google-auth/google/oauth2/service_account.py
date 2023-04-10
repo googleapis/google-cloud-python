@@ -743,10 +743,9 @@ class IDTokenCredentials(
         request to IAM generateIdToken endpoint. The request body is:
             {
                 "audience": self._target_audience,
-                "includeEmail": "true"
+                "includeEmail": "true",
+                "useEmailAzp": "true",
             }
-        TODO: add "set_azp_to_email": "true" once it's ready from server side.
-        https://github.com/googleapis/google-auth-library-python/issues/1263
 
         If the request is succesfully, it will return {"token":"the ID token"},
         and we can extract the ID token and compute its expiry.
