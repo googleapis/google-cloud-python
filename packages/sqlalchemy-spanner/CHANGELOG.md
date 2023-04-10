@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.3.0...v1.4.0) (2023-04-06)
+
+
+### Features
+
+* User provided client ([#311](https://github.com/googleapis/python-spanner-sqlalchemy/issues/311)) ([5b07111](https://github.com/googleapis/python-spanner-sqlalchemy/commit/5b0711102bb45f5775addbda61cb4da5231c96d7))
+
 ## [1.3.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.2.2...v1.3.0) (2023-03-20)
 
 
