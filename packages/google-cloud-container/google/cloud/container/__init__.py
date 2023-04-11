@@ -26,6 +26,7 @@ from google.cloud.container_v1.services.cluster_manager.client import (
 )
 from google.cloud.container_v1.types.cluster_service import (
     AcceleratorConfig,
+    AdditionalPodRangesConfig,
     AddonsConfig,
     AdvancedMachineFeatures,
     AuthenticatorGroupsConfig,
@@ -178,6 +179,7 @@ __all__ = (
     "ClusterManagerClient",
     "ClusterManagerAsyncClient",
     "AcceleratorConfig",
+    "AdditionalPodRangesConfig",
     "AddonsConfig",
     "AdvancedMachineFeatures",
     "AuthenticatorGroupsConfig",

@@ -21,6 +21,7 @@ __version__ = package_version.__version__
 from .services.cluster_manager import ClusterManagerAsyncClient, ClusterManagerClient
 from .types.cluster_service import (
     AcceleratorConfig,
+    AdditionalPodRangesConfig,
     AddonsConfig,
     AdvancedMachineFeatures,
     AuthenticatorGroupsConfig,
@@ -172,6 +173,7 @@ from .types.cluster_service import (
 __all__ = (
     "ClusterManagerAsyncClient",
     "AcceleratorConfig",
+    "AdditionalPodRangesConfig",
     "AddonsConfig",
     "AdvancedMachineFeatures",
     "AuthenticatorGroupsConfig",

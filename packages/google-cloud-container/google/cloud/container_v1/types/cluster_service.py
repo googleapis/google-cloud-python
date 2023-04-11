@@ -75,6 +75,7 @@ __protobuf__ = proto.module(
         "NodePoolDefaults",
         "NodeConfigDefaults",
         "ClusterUpdate",
+        "AdditionalPodRangesConfig",
         "Operation",
         "OperationProgress",
         "CreateClusterRequest",
@@ -2026,6 +2027,11 @@ class IPAllocationPolicy(proto.Message):
         services_ipv6_cidr_block (str):
             Output only. [Output only] The services IPv6 CIDR block for
             the cluster.
+        additional_pod_ranges_config (google.cloud.container_v1.types.AdditionalPodRangesConfig):
+            Output only. [Output only] The additional pod ranges that
+            are added to the cluster. These pod ranges can be used by
+            new node pools to allocate pod IPs automatically. Once the
+            range is removed it will not show up in IPAllocationPolicy.
     """
 
     use_ip_aliases: bool = proto.Field(
@@ -2102,6 +2108,11 @@ class IPAllocationPolicy(proto.Message):
     services_ipv6_cidr_block: str = proto.Field(
         proto.STRING,
         number=23,
+    )
+    additional_pod_ranges_config: "AdditionalPodRangesConfig" = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message="AdditionalPodRangesConfig",
     )
 
 
@@ -2987,6 +2998,15 @@ class ClusterUpdate(proto.Message):
             the current stack type of the cluster, update
             will attempt to change the stack type to the new
             type.
+        additional_pod_ranges_config (google.cloud.container_v1.types.AdditionalPodRangesConfig):
+            The additional pod ranges to be added to the
+            cluster. These pod ranges can be used by node
+            pools to allocate pod IPs.
+        removed_additional_pod_ranges_config (google.cloud.container_v1.types.AdditionalPodRangesConfig):
+            The additional pod ranges that are to be removed from the
+            cluster. The pod ranges specified here must have been
+            specified earlier in the 'additional_pod_ranges_config'
+            argument.
     """
 
     desired_node_version: str = proto.Field(
@@ -3183,6 +3203,23 @@ class ClusterUpdate(proto.Message):
         number=119,
         enum="StackType",
     )
+    additional_pod_ranges_config: "AdditionalPodRangesConfig" = proto.Field(
+        proto.MESSAGE,
+        number=120,
+        message="AdditionalPodRangesConfig",
+    )
+    removed_additional_pod_ranges_config: "AdditionalPodRangesConfig" = proto.Field(
+        proto.MESSAGE,
+        number=121,
+        message="AdditionalPodRangesConfig",
+    )
+
+
+class AdditionalPodRangesConfig(proto.Message):
+    r"""AdditionalPodRangesConfig is the configuration for additional
+    pod secondary ranges supporting the ClusterUpdate message.
+
+    """
 
 
 class Operation(proto.Message):
