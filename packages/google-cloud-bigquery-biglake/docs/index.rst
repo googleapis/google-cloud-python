@@ -2,6 +2,17 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of BigLake API.
+By default, you will get version ``biglake_v1``.
+
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    biglake_v1/services
+    biglake_v1/types
 
 API Reference
 -------------
