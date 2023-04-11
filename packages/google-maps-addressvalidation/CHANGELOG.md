@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.1...google-maps-addressvalidation-v0.3.2) (2023-04-11)
+
+
+### Documentation
+
+* Update some Address Validation API proto descriptions to improve clarity ([#11056](https://github.com/googleapis/google-cloud-python/issues/11056)) ([7ca4918](https://github.com/googleapis/google-cloud-python/commit/7ca4918465957e510028d4d2465d8ba0424ad97d))
+
 ## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.0...google-maps-addressvalidation-v0.3.1) (2023-03-25)
 
 
