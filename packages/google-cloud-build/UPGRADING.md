@@ -68,7 +68,7 @@ In `google-cloud-build<2.0.0`, parameters required by the API were positional pa
 
 In the 2.0.0 release, all methods have a single positional parameter `request`. Method docstrings indicate whether a parameter is required or optional.
 
-Some methods have additional keyword only parameters. The available parameters depend on the [`google.api.method_signature` annotation](https://github.com/googleapis/googleapis/blob/master/google/devtools/cloudbuild/v1/cloudbuild.proto#L82) specified by the API producer.
+Some methods have additional keyword-only parameters. The available parameters depend on the `google.api.method_signature` annotations provided by the API producer ([example](https://github.com/googleapis/googleapis/blob/6f5d107aadb4782b71c530f4dc17ec86c922d8a9/google/devtools/cloudbuild/v1/cloudbuild.proto#L93)).
 
 
 **After:**
