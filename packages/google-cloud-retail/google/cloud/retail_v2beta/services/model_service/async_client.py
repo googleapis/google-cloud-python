@@ -370,6 +370,113 @@ class ModelServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def get_model(
+        self,
+        request: Optional[Union[model_service.GetModelRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> model.Model:
+        r"""Gets a model.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import retail_v2beta
+
+            async def sample_get_model():
+                # Create a client
+                client = retail_v2beta.ModelServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = retail_v2beta.GetModelRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_model(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.retail_v2beta.types.GetModelRequest, dict]]):
+                The request object. Request for getting a model.
+            name (:class:`str`):
+                Required. The resource name of the
+                [Model][google.cloud.retail.v2beta.Model] to get.
+                Format:
+                ``projects/{project_number}/locations/{location_id}/catalogs/{catalog}/models/{model_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.retail_v2beta.types.Model:
+                Metadata that describes the training and serving parameters of a
+                   [Model][google.cloud.retail.v2beta.Model]. A
+                   [Model][google.cloud.retail.v2beta.Model] can be
+                   associated with a
+                   [ServingConfig][google.cloud.retail.v2beta.ServingConfig]
+                   and then queried through the Predict API.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = model_service.GetModelRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_model,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def pause_model(
         self,
         request: Optional[Union[model_service.PauseModelRequest, dict]] = None,

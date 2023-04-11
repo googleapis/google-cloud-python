@@ -215,11 +215,25 @@ class DeleteProductRequest(proto.Message):
             All inventory information for the named
             [Product][google.cloud.retail.v2alpha.Product] will be
             deleted.
+        force (bool):
+            This value only applies to the case when the
+            target product is of type PRIMARY.
+            When deleting a product of VARIANT/COLLECTION
+            type, this value will be ignored.
+            When set to true, the subsequent variant
+            products will be deleted.
+            When set to false, if the primary product has
+            active variant products, an error will be
+            returned.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=4,
     )
 
 

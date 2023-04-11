@@ -32,6 +32,10 @@ from google.cloud.retail_v2.services.control_service.async_client import (
     ControlServiceAsyncClient,
 )
 from google.cloud.retail_v2.services.control_service.client import ControlServiceClient
+from google.cloud.retail_v2.services.model_service.async_client import (
+    ModelServiceAsyncClient,
+)
+from google.cloud.retail_v2.services.model_service.client import ModelServiceClient
 from google.cloud.retail_v2.services.prediction_service.async_client import (
     PredictionServiceAsyncClient,
 )
@@ -92,6 +96,7 @@ from google.cloud.retail_v2.types.common import (
     LocalInventory,
     PriceInfo,
     Rating,
+    RecommendationsFilteringOption,
     Rule,
     SearchSolutionUseCase,
     SolutionType,
@@ -128,6 +133,21 @@ from google.cloud.retail_v2.types.import_config import (
     UserEventInlineSource,
     UserEventInputConfig,
 )
+from google.cloud.retail_v2.types.model import Model
+from google.cloud.retail_v2.types.model_service import (
+    CreateModelMetadata,
+    CreateModelRequest,
+    DeleteModelRequest,
+    GetModelRequest,
+    ListModelsRequest,
+    ListModelsResponse,
+    PauseModelRequest,
+    ResumeModelRequest,
+    TuneModelMetadata,
+    TuneModelRequest,
+    TuneModelResponse,
+    UpdateModelRequest,
+)
 from google.cloud.retail_v2.types.prediction_service import (
     PredictRequest,
     PredictResponse,
@@ -162,7 +182,11 @@ from google.cloud.retail_v2.types.purge_config import (
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
-from google.cloud.retail_v2.types.search_service import SearchRequest, SearchResponse
+from google.cloud.retail_v2.types.search_service import (
+    ExperimentInfo,
+    SearchRequest,
+    SearchResponse,
+)
 from google.cloud.retail_v2.types.serving_config import ServingConfig
 from google.cloud.retail_v2.types.serving_config_service import (
     AddControlRequest,
@@ -195,6 +219,8 @@ __all__ = (
     "CompletionServiceAsyncClient",
     "ControlServiceClient",
     "ControlServiceAsyncClient",
+    "ModelServiceClient",
+    "ModelServiceAsyncClient",
     "PredictionServiceClient",
     "PredictionServiceAsyncClient",
     "ProductServiceClient",
@@ -236,6 +262,7 @@ __all__ = (
     "Rule",
     "UserInfo",
     "AttributeConfigLevel",
+    "RecommendationsFilteringOption",
     "SearchSolutionUseCase",
     "SolutionType",
     "CompleteQueryRequest",
@@ -263,6 +290,19 @@ __all__ = (
     "UserEventImportSummary",
     "UserEventInlineSource",
     "UserEventInputConfig",
+    "Model",
+    "CreateModelMetadata",
+    "CreateModelRequest",
+    "DeleteModelRequest",
+    "GetModelRequest",
+    "ListModelsRequest",
+    "ListModelsResponse",
+    "PauseModelRequest",
+    "ResumeModelRequest",
+    "TuneModelMetadata",
+    "TuneModelRequest",
+    "TuneModelResponse",
+    "UpdateModelRequest",
     "PredictRequest",
     "PredictResponse",
     "Product",
@@ -291,6 +331,7 @@ __all__ = (
     "PurgeMetadata",
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
+    "ExperimentInfo",
     "SearchRequest",
     "SearchResponse",
     "ServingConfig",

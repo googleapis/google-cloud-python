@@ -100,6 +100,7 @@ from .model_service import (
     CreateModelMetadata,
     CreateModelRequest,
     DeleteModelRequest,
+    GetModelRequest,
     ListModelsRequest,
     ListModelsResponse,
     PauseModelRequest,
@@ -136,7 +137,7 @@ from .product_service import (
 )
 from .promotion import Promotion
 from .purge_config import PurgeMetadata, PurgeUserEventsRequest, PurgeUserEventsResponse
-from .search_service import SearchRequest, SearchResponse
+from .search_service import ExperimentInfo, SearchRequest, SearchResponse
 from .serving_config import ServingConfig
 from .serving_config_service import (
     AddControlRequest,
@@ -233,6 +234,7 @@ __all__ = (
     "CreateModelMetadata",
     "CreateModelRequest",
     "DeleteModelRequest",
+    "GetModelRequest",
     "ListModelsRequest",
     "ListModelsResponse",
     "PauseModelRequest",
@@ -269,6 +271,7 @@ __all__ = (
     "PurgeMetadata",
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
+    "ExperimentInfo",
     "SearchRequest",
     "SearchResponse",
     "ServingConfig",

@@ -96,11 +96,22 @@ from .import_config import (
     UserEventInlineSource,
     UserEventInputConfig,
 )
+from .merchant_center_account_link import (
+    CreateMerchantCenterAccountLinkMetadata,
+    MerchantCenterAccountLink,
+)
+from .merchant_center_account_link_service import (
+    CreateMerchantCenterAccountLinkRequest,
+    DeleteMerchantCenterAccountLinkRequest,
+    ListMerchantCenterAccountLinksRequest,
+    ListMerchantCenterAccountLinksResponse,
+)
 from .model import Model
 from .model_service import (
     CreateModelMetadata,
     CreateModelRequest,
     DeleteModelRequest,
+    GetModelRequest,
     ListModelsRequest,
     ListModelsResponse,
     PauseModelRequest,
@@ -144,7 +155,7 @@ from .purge_config import (
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
-from .search_service import SearchRequest, SearchResponse
+from .search_service import ExperimentInfo, SearchRequest, SearchResponse
 from .serving_config import ServingConfig
 from .serving_config_service import (
     AddControlRequest,
@@ -238,10 +249,17 @@ __all__ = (
     "UserEventImportSummary",
     "UserEventInlineSource",
     "UserEventInputConfig",
+    "CreateMerchantCenterAccountLinkMetadata",
+    "MerchantCenterAccountLink",
+    "CreateMerchantCenterAccountLinkRequest",
+    "DeleteMerchantCenterAccountLinkRequest",
+    "ListMerchantCenterAccountLinksRequest",
+    "ListMerchantCenterAccountLinksResponse",
     "Model",
     "CreateModelMetadata",
     "CreateModelRequest",
     "DeleteModelRequest",
+    "GetModelRequest",
     "ListModelsRequest",
     "ListModelsResponse",
     "PauseModelRequest",
@@ -281,6 +299,7 @@ __all__ = (
     "PurgeProductsResponse",
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
+    "ExperimentInfo",
     "SearchRequest",
     "SearchResponse",
     "ServingConfig",

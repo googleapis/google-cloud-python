@@ -5511,6 +5511,8 @@ def test_delete_product_rest_required_fields(
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete_product._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("force",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5561,7 +5563,7 @@ def test_delete_product_rest_unset_required_fields():
     )
 
     unset_fields = transport.delete_product._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    assert set(unset_fields) == (set(("force",)) & set(("name",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

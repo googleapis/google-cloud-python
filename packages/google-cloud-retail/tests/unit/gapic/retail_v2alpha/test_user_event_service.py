@@ -792,6 +792,7 @@ def test_write_user_event(request_type, transport: str = "grpc"):
             uri="uri_value",
             referrer_uri="referrer_uri_value",
             page_view_id="page_view_id_value",
+            entity="entity_value",
         )
         response = client.write_user_event(request)
 
@@ -816,6 +817,7 @@ def test_write_user_event(request_type, transport: str = "grpc"):
     assert response.uri == "uri_value"
     assert response.referrer_uri == "referrer_uri_value"
     assert response.page_view_id == "page_view_id_value"
+    assert response.entity == "entity_value"
 
 
 def test_write_user_event_empty_call():
@@ -867,6 +869,7 @@ async def test_write_user_event_async(
                 uri="uri_value",
                 referrer_uri="referrer_uri_value",
                 page_view_id="page_view_id_value",
+                entity="entity_value",
             )
         )
         response = await client.write_user_event(request)
@@ -892,6 +895,7 @@ async def test_write_user_event_async(
     assert response.uri == "uri_value"
     assert response.referrer_uri == "referrer_uri_value"
     assert response.page_view_id == "page_view_id_value"
+    assert response.entity == "entity_value"
 
 
 @pytest.mark.asyncio
@@ -1726,6 +1730,7 @@ def test_write_user_event_rest(request_type):
         "uri": "uri_value",
         "referrer_uri": "referrer_uri_value",
         "page_view_id": "page_view_id_value",
+        "entity": "entity_value",
     }
     request = request_type(**request_init)
 
@@ -1747,6 +1752,7 @@ def test_write_user_event_rest(request_type):
             uri="uri_value",
             referrer_uri="referrer_uri_value",
             page_view_id="page_view_id_value",
+            entity="entity_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -1775,6 +1781,7 @@ def test_write_user_event_rest(request_type):
     assert response.uri == "uri_value"
     assert response.referrer_uri == "referrer_uri_value"
     assert response.page_view_id == "page_view_id_value"
+    assert response.entity == "entity_value"
 
 
 def test_write_user_event_rest_required_fields(
@@ -2062,6 +2069,7 @@ def test_write_user_event_rest_bad_request(
         "uri": "uri_value",
         "referrer_uri": "referrer_uri_value",
         "page_view_id": "page_view_id_value",
+        "entity": "entity_value",
     }
     request = request_type(**request_init)
 

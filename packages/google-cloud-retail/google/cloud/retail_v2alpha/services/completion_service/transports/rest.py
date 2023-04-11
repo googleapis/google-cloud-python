@@ -198,7 +198,7 @@ class CompletionServiceRestStub:
 class CompletionServiceRestTransport(CompletionServiceTransport):
     """REST backend transport for CompletionService.
 
-    Auto-completion service for retail.
+    Autocomplete service for retail.
     This feature is only available for users who have Retail Search
     enabled. Enable Retail Search on Cloud Console before using this
     feature.
@@ -380,7 +380,7 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
 
             Args:
                 request (~.completion_service.CompleteQueryRequest):
-                    The request object. Auto-complete parameters.
+                    The request object. Autocomplete parameters.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -389,7 +389,7 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
 
             Returns:
                 ~.completion_service.CompleteQueryResponse:
-                    Response of the auto-complete query.
+                    Response of the autocomplete query.
             """
 
             http_options: List[Dict[str, str]] = [

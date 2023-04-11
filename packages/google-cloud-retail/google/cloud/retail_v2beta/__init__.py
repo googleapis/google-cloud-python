@@ -126,6 +126,7 @@ from .types.model_service import (
     CreateModelMetadata,
     CreateModelRequest,
     DeleteModelRequest,
+    GetModelRequest,
     ListModelsRequest,
     ListModelsResponse,
     PauseModelRequest,
@@ -166,7 +167,7 @@ from .types.purge_config import (
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
-from .types.search_service import SearchRequest, SearchResponse
+from .types.search_service import ExperimentInfo, SearchRequest, SearchResponse
 from .types.serving_config import ServingConfig
 from .types.serving_config_service import (
     AddControlRequest,
@@ -241,6 +242,7 @@ __all__ = (
     "DeleteModelRequest",
     "DeleteProductRequest",
     "DeleteServingConfigRequest",
+    "ExperimentInfo",
     "ExportErrorsConfig",
     "ExportMetadata",
     "ExportProductsResponse",
@@ -253,6 +255,7 @@ __all__ = (
     "GetControlRequest",
     "GetDefaultBranchRequest",
     "GetDefaultBranchResponse",
+    "GetModelRequest",
     "GetProductRequest",
     "GetServingConfigRequest",
     "Image",

@@ -24,6 +24,10 @@ from .services.completion_service import (
     CompletionServiceClient,
 )
 from .services.control_service import ControlServiceAsyncClient, ControlServiceClient
+from .services.merchant_center_account_link_service import (
+    MerchantCenterAccountLinkServiceAsyncClient,
+    MerchantCenterAccountLinkServiceClient,
+)
 from .services.model_service import ModelServiceAsyncClient, ModelServiceClient
 from .services.prediction_service import (
     PredictionServiceAsyncClient,
@@ -122,11 +126,22 @@ from .types.import_config import (
     UserEventInlineSource,
     UserEventInputConfig,
 )
+from .types.merchant_center_account_link import (
+    CreateMerchantCenterAccountLinkMetadata,
+    MerchantCenterAccountLink,
+)
+from .types.merchant_center_account_link_service import (
+    CreateMerchantCenterAccountLinkRequest,
+    DeleteMerchantCenterAccountLinkRequest,
+    ListMerchantCenterAccountLinksRequest,
+    ListMerchantCenterAccountLinksResponse,
+)
 from .types.model import Model
 from .types.model_service import (
     CreateModelMetadata,
     CreateModelRequest,
     DeleteModelRequest,
+    GetModelRequest,
     ListModelsRequest,
     ListModelsResponse,
     PauseModelRequest,
@@ -170,7 +185,7 @@ from .types.purge_config import (
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
-from .types.search_service import SearchRequest, SearchResponse
+from .types.search_service import ExperimentInfo, SearchRequest, SearchResponse
 from .types.serving_config import ServingConfig
 from .types.serving_config_service import (
     AddControlRequest,
@@ -200,6 +215,7 @@ __all__ = (
     "CatalogServiceAsyncClient",
     "CompletionServiceAsyncClient",
     "ControlServiceAsyncClient",
+    "MerchantCenterAccountLinkServiceAsyncClient",
     "ModelServiceAsyncClient",
     "PredictionServiceAsyncClient",
     "ProductServiceAsyncClient",
@@ -236,15 +252,19 @@ __all__ = (
     "Control",
     "ControlServiceClient",
     "CreateControlRequest",
+    "CreateMerchantCenterAccountLinkMetadata",
+    "CreateMerchantCenterAccountLinkRequest",
     "CreateModelMetadata",
     "CreateModelRequest",
     "CreateProductRequest",
     "CreateServingConfigRequest",
     "CustomAttribute",
     "DeleteControlRequest",
+    "DeleteMerchantCenterAccountLinkRequest",
     "DeleteModelRequest",
     "DeleteProductRequest",
     "DeleteServingConfigRequest",
+    "ExperimentInfo",
     "ExportErrorsConfig",
     "ExportMetadata",
     "ExportProductsResponse",
@@ -257,6 +277,7 @@ __all__ = (
     "GetControlRequest",
     "GetDefaultBranchRequest",
     "GetDefaultBranchResponse",
+    "GetModelRequest",
     "GetProductRequest",
     "GetServingConfigRequest",
     "Image",
@@ -273,6 +294,8 @@ __all__ = (
     "ListCatalogsResponse",
     "ListControlsRequest",
     "ListControlsResponse",
+    "ListMerchantCenterAccountLinksRequest",
+    "ListMerchantCenterAccountLinksResponse",
     "ListModelsRequest",
     "ListModelsResponse",
     "ListProductsRequest",
@@ -280,6 +303,8 @@ __all__ = (
     "ListServingConfigsRequest",
     "ListServingConfigsResponse",
     "LocalInventory",
+    "MerchantCenterAccountLink",
+    "MerchantCenterAccountLinkServiceClient",
     "MerchantCenterFeedFilter",
     "MerchantCenterLink",
     "MerchantCenterLinkingConfig",

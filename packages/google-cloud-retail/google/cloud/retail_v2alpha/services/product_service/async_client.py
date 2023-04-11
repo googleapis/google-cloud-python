@@ -1167,10 +1167,6 @@ class ProductServiceAsyncClient:
         [done][google.longrunning.Operation.done] until they are
         obsolete.
 
-        This feature is only available for users who have Retail Search
-        enabled. Enable Retail Search on Cloud Console before using this
-        feature.
-
         .. code-block:: python
 
             # This snippet has been automatically generated and should be regarded as a
@@ -1374,7 +1370,15 @@ class ProductServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Incrementally adds place IDs to
+        r"""It is recommended to use the
+        [ProductService.AddLocalInventories][google.cloud.retail.v2alpha.ProductService.AddLocalInventories]
+        method instead of
+        [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.AddFulfillmentPlaces].
+        [ProductService.AddLocalInventories][google.cloud.retail.v2alpha.ProductService.AddLocalInventories]
+        achieves the same results but provides more fine-grained control
+        over ingesting local inventory data.
+
+        Incrementally adds place IDs to
         [Product.fulfillment_info.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids].
 
         This process is asynchronous and does not require the
@@ -1397,10 +1401,6 @@ class ProductServiceAsyncClient:
         [Operation][google.longrunning.Operation]s associated with the
         stale updates will not be marked as
         [done][google.longrunning.Operation.done] until being obsolete.
-
-        This feature is only available for users who have Retail Search
-        enabled. Enable Retail Search on Cloud Console before using this
-        feature.
 
         .. code-block:: python
 
@@ -1529,7 +1529,15 @@ class ProductServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Incrementally removes place IDs from a
+        r"""It is recommended to use the
+        [ProductService.RemoveLocalInventories][google.cloud.retail.v2alpha.ProductService.RemoveLocalInventories]
+        method instead of
+        [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2alpha.ProductService.RemoveFulfillmentPlaces].
+        [ProductService.RemoveLocalInventories][google.cloud.retail.v2alpha.ProductService.RemoveLocalInventories]
+        achieves the same results but provides more fine-grained control
+        over ingesting local inventory data.
+
+        Incrementally removes place IDs from a
         [Product.fulfillment_info.place_ids][google.cloud.retail.v2alpha.FulfillmentInfo.place_ids].
 
         This process is asynchronous and does not require the
@@ -1552,10 +1560,6 @@ class ProductServiceAsyncClient:
         [Operation][google.longrunning.Operation]s associated with the
         stale updates will not be marked as
         [done][google.longrunning.Operation.done] until being obsolete.
-
-        This feature is only available for users who have Retail Search
-        enabled. Enable Retail Search on Cloud Console before using this
-        feature.
 
         .. code-block:: python
 
@@ -1717,10 +1721,6 @@ class ProductServiceAsyncClient:
         stale updates will not be marked as
         [done][google.longrunning.Operation.done] until being obsolete.
 
-        This feature is only available for users who have Retail Search
-        enabled. Enable Retail Search on Cloud Console before using this
-        feature.
-
         .. code-block:: python
 
             # This snippet has been automatically generated and should be regarded as a
@@ -1877,10 +1877,6 @@ class ProductServiceAsyncClient:
         [Operation][google.longrunning.Operation]s associated with the
         stale updates will not be marked as
         [done][google.longrunning.Operation.done] until being obsolete.
-
-        This feature is only available for users who have Retail Search
-        enabled. Enable Retail Search on Cloud Console before using this
-        feature.
 
         .. code-block:: python
 

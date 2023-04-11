@@ -1916,12 +1916,41 @@ def test_parse_branch_path():
     assert expected == actual
 
 
-def test_product_path():
+def test_experiment_path():
     project = "winkle"
     location = "nautilus"
     catalog = "scallop"
-    branch = "abalone"
-    product = "squid"
+    experiment = "abalone"
+    expected = "projects/{project}/locations/{location}/catalogs/{catalog}/experiments/{experiment}".format(
+        project=project,
+        location=location,
+        catalog=catalog,
+        experiment=experiment,
+    )
+    actual = SearchServiceClient.experiment_path(project, location, catalog, experiment)
+    assert expected == actual
+
+
+def test_parse_experiment_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "catalog": "whelk",
+        "experiment": "octopus",
+    }
+    path = SearchServiceClient.experiment_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SearchServiceClient.parse_experiment_path(path)
+    assert expected == actual
+
+
+def test_product_path():
+    project = "oyster"
+    location = "nudibranch"
+    catalog = "cuttlefish"
+    branch = "mussel"
+    product = "winkle"
     expected = "projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}/products/{product}".format(
         project=project,
         location=location,
@@ -1937,11 +1966,11 @@ def test_product_path():
 
 def test_parse_product_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "catalog": "octopus",
-        "branch": "oyster",
-        "product": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "catalog": "abalone",
+        "branch": "squid",
+        "product": "clam",
     }
     path = SearchServiceClient.product_path(**expected)
 
@@ -1950,8 +1979,39 @@ def test_parse_product_path():
     assert expected == actual
 
 
+def test_serving_config_path():
+    project = "whelk"
+    location = "octopus"
+    catalog = "oyster"
+    serving_config = "nudibranch"
+    expected = "projects/{project}/locations/{location}/catalogs/{catalog}/servingConfigs/{serving_config}".format(
+        project=project,
+        location=location,
+        catalog=catalog,
+        serving_config=serving_config,
+    )
+    actual = SearchServiceClient.serving_config_path(
+        project, location, catalog, serving_config
+    )
+    assert expected == actual
+
+
+def test_parse_serving_config_path():
+    expected = {
+        "project": "cuttlefish",
+        "location": "mussel",
+        "catalog": "winkle",
+        "serving_config": "nautilus",
+    }
+    path = SearchServiceClient.serving_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SearchServiceClient.parse_serving_config_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -1961,7 +2021,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "abalone",
     }
     path = SearchServiceClient.common_billing_account_path(**expected)
 
@@ -1971,7 +2031,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -1981,7 +2041,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "clam",
     }
     path = SearchServiceClient.common_folder_path(**expected)
 
@@ -1991,7 +2051,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -2001,7 +2061,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "octopus",
     }
     path = SearchServiceClient.common_organization_path(**expected)
 
@@ -2011,7 +2071,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -2021,7 +2081,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "nudibranch",
     }
     path = SearchServiceClient.common_project_path(**expected)
 
@@ -2031,8 +2091,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -2043,8 +2103,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = SearchServiceClient.common_location_path(**expected)
 

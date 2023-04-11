@@ -207,6 +207,30 @@ class SearchServiceClient(metaclass=SearchServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def experiment_path(
+        project: str,
+        location: str,
+        catalog: str,
+        experiment: str,
+    ) -> str:
+        """Returns a fully-qualified experiment string."""
+        return "projects/{project}/locations/{location}/catalogs/{catalog}/experiments/{experiment}".format(
+            project=project,
+            location=location,
+            catalog=catalog,
+            experiment=experiment,
+        )
+
+    @staticmethod
+    def parse_experiment_path(path: str) -> Dict[str, str]:
+        """Parses a experiment path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/catalogs/(?P<catalog>.+?)/experiments/(?P<experiment>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def product_path(
         project: str,
         location: str,
@@ -228,6 +252,30 @@ class SearchServiceClient(metaclass=SearchServiceClientMeta):
         """Parses a product path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/catalogs/(?P<catalog>.+?)/branches/(?P<branch>.+?)/products/(?P<product>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def serving_config_path(
+        project: str,
+        location: str,
+        catalog: str,
+        serving_config: str,
+    ) -> str:
+        """Returns a fully-qualified serving_config string."""
+        return "projects/{project}/locations/{location}/catalogs/{catalog}/servingConfigs/{serving_config}".format(
+            project=project,
+            location=location,
+            catalog=catalog,
+            serving_config=serving_config,
+        )
+
+    @staticmethod
+    def parse_serving_config_path(path: str) -> Dict[str, str]:
+        """Parses a serving_config path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/catalogs/(?P<catalog>.+?)/servingConfigs/(?P<serving_config>.+?)$",
             path,
         )
         return m.groupdict() if m else {}

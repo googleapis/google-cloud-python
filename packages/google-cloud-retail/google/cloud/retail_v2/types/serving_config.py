@@ -64,7 +64,7 @@ class ServingConfig(proto.Message):
             click-through and conversion rates. Allowed values are:
 
             -  ``no-price-reranking``
-            -  ``low-price-raranking``
+            -  ``low-price-reranking``
             -  ``medium-price-reranking``
             -  ``high-price-reranking``
 

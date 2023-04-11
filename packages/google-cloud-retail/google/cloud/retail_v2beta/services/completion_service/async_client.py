@@ -55,7 +55,7 @@ from .transports.grpc_asyncio import CompletionServiceGrpcAsyncIOTransport
 
 
 class CompletionServiceAsyncClient:
-    """Auto-completion service for retail.
+    """Autocomplete service for retail.
     This feature is only available for users who have Retail Search
     enabled. Enable Retail Search on Cloud Console before using this
     feature.
@@ -265,7 +265,7 @@ class CompletionServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.retail_v2beta.types.CompleteQueryRequest, dict]]):
-                The request object. Auto-complete parameters.
+                The request object. Autocomplete parameters.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -274,7 +274,7 @@ class CompletionServiceAsyncClient:
 
         Returns:
             google.cloud.retail_v2beta.types.CompleteQueryResponse:
-                Response of the auto-complete query.
+                Response of the autocomplete query.
         """
         # Create or coerce a protobuf request object.
         request = completion_service.CompleteQueryRequest(request)

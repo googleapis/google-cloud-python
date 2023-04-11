@@ -97,7 +97,7 @@ class CompletionServiceClientMeta(type):
 
 
 class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
-    """Auto-completion service for retail.
+    """Autocomplete service for retail.
     This feature is only available for users who have Retail Search
     enabled. Enable Retail Search on Cloud Console before using this
     feature.
@@ -494,7 +494,7 @@ class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
 
         Args:
             request (Union[google.cloud.retail_v2.types.CompleteQueryRequest, dict]):
-                The request object. Auto-complete parameters.
+                The request object. Autocomplete parameters.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -503,7 +503,7 @@ class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
 
         Returns:
             google.cloud.retail_v2.types.CompleteQueryResponse:
-                Response of the auto-complete query.
+                Response of the autocomplete query.
         """
         # Create or coerce a protobuf request object.
         # Minor optimization to avoid making a copy if the user passes

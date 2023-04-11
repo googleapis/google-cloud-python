@@ -132,6 +132,11 @@ class ModelServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_model: gapic_v1.method.wrap_method(
+                self.get_model,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.pause_model: gapic_v1.method.wrap_method(
                 self.pause_model,
                 default_timeout=None,
@@ -184,6 +189,14 @@ class ModelServiceTransport(abc.ABC):
     ) -> Callable[
         [model_service.CreateModelRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_model(
+        self,
+    ) -> Callable[
+        [model_service.GetModelRequest], Union[model.Model, Awaitable[model.Model]]
     ]:
         raise NotImplementedError()
 

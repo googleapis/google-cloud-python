@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-retail",
-    "version": "1.15.1"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -3063,6 +3063,491 @@
       "clientMethod": {
         "async": true,
         "client": {
+          "fullName": "google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceAsyncClient",
+          "shortName": "MerchantCenterAccountLinkServiceAsyncClient"
+        },
+        "fullName": "google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceAsyncClient.create_merchant_center_account_link",
+        "method": {
+          "fullName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService.CreateMerchantCenterAccountLink",
+          "service": {
+            "fullName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService",
+            "shortName": "MerchantCenterAccountLinkService"
+          },
+          "shortName": "CreateMerchantCenterAccountLink"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.retail_v2alpha.types.CreateMerchantCenterAccountLinkRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "merchant_center_account_link",
+            "type": "google.cloud.retail_v2alpha.types.MerchantCenterAccountLink"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_merchant_center_account_link"
+      },
+      "description": "Sample for CreateMerchantCenterAccountLink",
+      "file": "retail_v2alpha_generated_merchant_center_account_link_service_create_merchant_center_account_link_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "retail_v2alpha_generated_MerchantCenterAccountLinkService_CreateMerchantCenterAccountLink_async",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "retail_v2alpha_generated_merchant_center_account_link_service_create_merchant_center_account_link_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceClient",
+          "shortName": "MerchantCenterAccountLinkServiceClient"
+        },
+        "fullName": "google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceClient.create_merchant_center_account_link",
+        "method": {
+          "fullName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService.CreateMerchantCenterAccountLink",
+          "service": {
+            "fullName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService",
+            "shortName": "MerchantCenterAccountLinkService"
+          },
+          "shortName": "CreateMerchantCenterAccountLink"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.retail_v2alpha.types.CreateMerchantCenterAccountLinkRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "merchant_center_account_link",
+            "type": "google.cloud.retail_v2alpha.types.MerchantCenterAccountLink"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_merchant_center_account_link"
+      },
+      "description": "Sample for CreateMerchantCenterAccountLink",
+      "file": "retail_v2alpha_generated_merchant_center_account_link_service_create_merchant_center_account_link_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "retail_v2alpha_generated_MerchantCenterAccountLinkService_CreateMerchantCenterAccountLink_sync",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "retail_v2alpha_generated_merchant_center_account_link_service_create_merchant_center_account_link_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceAsyncClient",
+          "shortName": "MerchantCenterAccountLinkServiceAsyncClient"
+        },
+        "fullName": "google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceAsyncClient.delete_merchant_center_account_link",
+        "method": {
+          "fullName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService.DeleteMerchantCenterAccountLink",
+          "service": {
+            "fullName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService",
+            "shortName": "MerchantCenterAccountLinkService"
+          },
+          "shortName": "DeleteMerchantCenterAccountLink"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.retail_v2alpha.types.DeleteMerchantCenterAccountLinkRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_merchant_center_account_link"
+      },
+      "description": "Sample for DeleteMerchantCenterAccountLink",
+      "file": "retail_v2alpha_generated_merchant_center_account_link_service_delete_merchant_center_account_link_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "retail_v2alpha_generated_MerchantCenterAccountLinkService_DeleteMerchantCenterAccountLink_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "retail_v2alpha_generated_merchant_center_account_link_service_delete_merchant_center_account_link_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceClient",
+          "shortName": "MerchantCenterAccountLinkServiceClient"
+        },
+        "fullName": "google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceClient.delete_merchant_center_account_link",
+        "method": {
+          "fullName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService.DeleteMerchantCenterAccountLink",
+          "service": {
+            "fullName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService",
+            "shortName": "MerchantCenterAccountLinkService"
+          },
+          "shortName": "DeleteMerchantCenterAccountLink"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.retail_v2alpha.types.DeleteMerchantCenterAccountLinkRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_merchant_center_account_link"
+      },
+      "description": "Sample for DeleteMerchantCenterAccountLink",
+      "file": "retail_v2alpha_generated_merchant_center_account_link_service_delete_merchant_center_account_link_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "retail_v2alpha_generated_MerchantCenterAccountLinkService_DeleteMerchantCenterAccountLink_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "retail_v2alpha_generated_merchant_center_account_link_service_delete_merchant_center_account_link_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceAsyncClient",
+          "shortName": "MerchantCenterAccountLinkServiceAsyncClient"
+        },
+        "fullName": "google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceAsyncClient.list_merchant_center_account_links",
+        "method": {
+          "fullName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService.ListMerchantCenterAccountLinks",
+          "service": {
+            "fullName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService",
+            "shortName": "MerchantCenterAccountLinkService"
+          },
+          "shortName": "ListMerchantCenterAccountLinks"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.retail_v2alpha.types.ListMerchantCenterAccountLinksRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.retail_v2alpha.types.ListMerchantCenterAccountLinksResponse",
+        "shortName": "list_merchant_center_account_links"
+      },
+      "description": "Sample for ListMerchantCenterAccountLinks",
+      "file": "retail_v2alpha_generated_merchant_center_account_link_service_list_merchant_center_account_links_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "retail_v2alpha_generated_MerchantCenterAccountLinkService_ListMerchantCenterAccountLinks_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "retail_v2alpha_generated_merchant_center_account_link_service_list_merchant_center_account_links_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceClient",
+          "shortName": "MerchantCenterAccountLinkServiceClient"
+        },
+        "fullName": "google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceClient.list_merchant_center_account_links",
+        "method": {
+          "fullName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService.ListMerchantCenterAccountLinks",
+          "service": {
+            "fullName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService",
+            "shortName": "MerchantCenterAccountLinkService"
+          },
+          "shortName": "ListMerchantCenterAccountLinks"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.retail_v2alpha.types.ListMerchantCenterAccountLinksRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.retail_v2alpha.types.ListMerchantCenterAccountLinksResponse",
+        "shortName": "list_merchant_center_account_links"
+      },
+      "description": "Sample for ListMerchantCenterAccountLinks",
+      "file": "retail_v2alpha_generated_merchant_center_account_link_service_list_merchant_center_account_links_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "retail_v2alpha_generated_MerchantCenterAccountLinkService_ListMerchantCenterAccountLinks_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "retail_v2alpha_generated_merchant_center_account_link_service_list_merchant_center_account_links_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
           "fullName": "google.cloud.retail_v2alpha.ModelServiceAsyncClient",
           "shortName": "ModelServiceAsyncClient"
         },
@@ -3381,6 +3866,167 @@
         }
       ],
       "title": "retail_v2alpha_generated_model_service_delete_model_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.retail_v2alpha.ModelServiceAsyncClient",
+          "shortName": "ModelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.retail_v2alpha.ModelServiceAsyncClient.get_model",
+        "method": {
+          "fullName": "google.cloud.retail.v2alpha.ModelService.GetModel",
+          "service": {
+            "fullName": "google.cloud.retail.v2alpha.ModelService",
+            "shortName": "ModelService"
+          },
+          "shortName": "GetModel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.retail_v2alpha.types.GetModelRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.retail_v2alpha.types.Model",
+        "shortName": "get_model"
+      },
+      "description": "Sample for GetModel",
+      "file": "retail_v2alpha_generated_model_service_get_model_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "retail_v2alpha_generated_ModelService_GetModel_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "retail_v2alpha_generated_model_service_get_model_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.retail_v2alpha.ModelServiceClient",
+          "shortName": "ModelServiceClient"
+        },
+        "fullName": "google.cloud.retail_v2alpha.ModelServiceClient.get_model",
+        "method": {
+          "fullName": "google.cloud.retail.v2alpha.ModelService.GetModel",
+          "service": {
+            "fullName": "google.cloud.retail.v2alpha.ModelService",
+            "shortName": "ModelService"
+          },
+          "shortName": "GetModel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.retail_v2alpha.types.GetModelRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.retail_v2alpha.types.Model",
+        "shortName": "get_model"
+      },
+      "description": "Sample for GetModel",
+      "file": "retail_v2alpha_generated_model_service_get_model_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "retail_v2alpha_generated_ModelService_GetModel_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "retail_v2alpha_generated_model_service_get_model_sync.py"
     },
     {
       "canonical": true,

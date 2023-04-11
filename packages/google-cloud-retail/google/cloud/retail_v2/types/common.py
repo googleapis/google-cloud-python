@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
     manifest={
         "AttributeConfigLevel",
         "SolutionType",
+        "RecommendationsFilteringOption",
         "SearchSolutionUseCase",
         "Condition",
         "Rule",
@@ -76,6 +77,24 @@ class SolutionType(proto.Enum):
     SOLUTION_TYPE_UNSPECIFIED = 0
     SOLUTION_TYPE_RECOMMENDATION = 1
     SOLUTION_TYPE_SEARCH = 2
+
+
+class RecommendationsFilteringOption(proto.Enum):
+    r"""If filtering for recommendations is enabled.
+
+    Values:
+        RECOMMENDATIONS_FILTERING_OPTION_UNSPECIFIED (0):
+            Value used when unset. In this case, server behavior
+            defaults to
+            [RECOMMENDATIONS_FILTERING_DISABLED][google.cloud.retail.v2.RecommendationsFilteringOption.RECOMMENDATIONS_FILTERING_DISABLED].
+        RECOMMENDATIONS_FILTERING_DISABLED (1):
+            Recommendation filtering is disabled.
+        RECOMMENDATIONS_FILTERING_ENABLED (3):
+            Recommendation filtering is enabled.
+    """
+    RECOMMENDATIONS_FILTERING_OPTION_UNSPECIFIED = 0
+    RECOMMENDATIONS_FILTERING_DISABLED = 1
+    RECOMMENDATIONS_FILTERING_ENABLED = 3
 
 
 class SearchSolutionUseCase(proto.Enum):
@@ -603,7 +622,7 @@ class ColorInfo(proto.Message):
             only 1 color. May consider using single "Mixed" instead of
             multiple values.
 
-            A maximum of 25 colors are allowed. Each value must be a
+            A maximum of 75 colors are allowed. Each value must be a
             UTF-8 encoded string with a length limit of 128 characters.
             Otherwise, an INVALID_ARGUMENT error is returned.
 

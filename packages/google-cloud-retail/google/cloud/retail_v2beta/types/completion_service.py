@@ -31,7 +31,7 @@ __protobuf__ = proto.module(
 
 
 class CompleteQueryRequest(proto.Message):
-    r"""Auto-complete parameters.
+    r"""Autocomplete parameters.
 
     Attributes:
         catalog (str):
@@ -106,6 +106,14 @@ class CompleteQueryRequest(proto.Message):
 
             The maximum allowed max suggestions is 20. If it is set
             higher, it will be capped by 20.
+        entity (str):
+            The entity for customers that may run multiple different
+            entities, domains, sites or regions, for example,
+            ``Google US``, ``Google Ads``, ``Waymo``, ``google.com``,
+            ``youtube.com``, etc. If this is set, it should be exactly
+            matched with
+            [UserEvent.entity][google.cloud.retail.v2beta.UserEvent.entity]
+            to get per-entity autocomplete results.
     """
 
     catalog: str = proto.Field(
@@ -136,10 +144,14 @@ class CompleteQueryRequest(proto.Message):
         proto.INT32,
         number=5,
     )
+    entity: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
 
 
 class CompleteQueryResponse(proto.Message):
-    r"""Response of the auto-complete query.
+    r"""Response of the autocomplete query.
 
     Attributes:
         completion_results (MutableSequence[google.cloud.retail_v2beta.types.CompleteQueryResponse.CompletionResult]):

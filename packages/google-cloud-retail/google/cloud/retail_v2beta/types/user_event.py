@@ -290,6 +290,13 @@ class UserEvent(proto.Message):
             When using the client side event reporting with JavaScript
             pixel and Google Tag Manager, this value is filled in
             automatically.
+        entity (str):
+            The entity for customers that may run multiple different
+            entities, domains, sites or regions, for example,
+            ``Google US``, ``Google Ads``, ``Waymo``, ``google.com``,
+            ``youtube.com``, etc. It is recommended to set this field to
+            get better per-entity search, completion and prediction
+            results.
     """
 
     event_type: str = proto.Field(
@@ -378,6 +385,10 @@ class UserEvent(proto.Message):
     page_view_id: str = proto.Field(
         proto.STRING,
         number=15,
+    )
+    entity: str = proto.Field(
+        proto.STRING,
+        number=23,
     )
 
 

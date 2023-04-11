@@ -65,7 +65,7 @@ class ServingConfig(proto.Message):
             click-through and conversion rates. Allowed values are:
 
             -  ``no-price-reranking``
-            -  ``low-price-raranking``
+            -  ``low-price-reranking``
             -  ``medium-price-reranking``
             -  ``high-price-reranking``
 
@@ -212,8 +212,9 @@ class ServingConfig(proto.Message):
             is
             [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
         diversity_type (google.cloud.retail_v2alpha.types.ServingConfig.DiversityType):
-            What kind of diversity to use - data driven
-            or rule based.
+            What kind of diversity to use - data driven or rule based.
+            If unset, the server behavior defaults to
+            [RULE_BASED_DIVERSITY][google.cloud.retail.v2alpha.ServingConfig.DiversityType.RULE_BASED_DIVERSITY].
         enable_category_filter_level (str):
             Whether to add additional category filters on the
             ``similar-items`` model. If not specified, we enable it by
@@ -259,7 +260,6 @@ class ServingConfig(proto.Message):
 
     class DiversityType(proto.Enum):
         r"""What type of diversity - data or rule based.
-        If none is specified, default to rule based.
 
         Values:
             DIVERSITY_TYPE_UNSPECIFIED (0):

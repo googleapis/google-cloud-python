@@ -118,6 +118,11 @@ class CatalogAttribute(proto.Message):
             example, an attribute named ``attributes.abc_xyz`` can be
             indexed, but an attribute named ``attributes.abc-xyz``
             cannot be indexed.
+
+            If the attribute key starts with ``attributes.``, then the
+            attribute is a custom attribute. Attributes such as
+            ``brands``, ``patterns``, and ``title`` are built-in and
+            called system attributes.
         in_use (bool):
             Output only. Indicates whether this attribute has been used
             by any products. ``True`` if at least one
@@ -185,10 +190,13 @@ class CatalogAttribute(proto.Message):
             If EXACT_SEARCHABLE_ENABLED, attribute values will be exact
             searchable. This property only applies to textual custom
             attributes and requires indexable set to enabled to enable
-            exact-searchable.
+            exact-searchable. If unset, the server behavior defaults to
+            [EXACT_SEARCHABLE_DISABLED][google.cloud.retail.v2.CatalogAttribute.ExactSearchableOption.EXACT_SEARCHABLE_DISABLED].
         retrievable_option (google.cloud.retail_v2.types.CatalogAttribute.RetrievableOption):
             If RETRIEVABLE_ENABLED, attribute values are retrievable in
-            the search results.
+            the search results. If unset, the server behavior defaults
+            to
+            [RETRIEVABLE_DISABLED][google.cloud.retail.v2.CatalogAttribute.RetrievableOption.RETRIEVABLE_DISABLED].
     """
 
     class AttributeType(proto.Enum):
@@ -263,8 +271,7 @@ class CatalogAttribute(proto.Message):
 
         Values:
             EXACT_SEARCHABLE_OPTION_UNSPECIFIED (0):
-                Value used when unset. Defaults to
-                [EXACT_SEARCHABLE_DISABLED][google.cloud.retail.v2.CatalogAttribute.ExactSearchableOption.EXACT_SEARCHABLE_DISABLED].
+                Value used when unset.
             EXACT_SEARCHABLE_ENABLED (1):
                 Exact searchable option enabled for an
                 attribute.
@@ -281,8 +288,7 @@ class CatalogAttribute(proto.Message):
 
         Values:
             RETRIEVABLE_OPTION_UNSPECIFIED (0):
-                Value used when unset. Defaults to
-                [RETRIEVABLE_DISABLED][google.cloud.retail.v2.CatalogAttribute.RetrievableOption.RETRIEVABLE_DISABLED].
+                Value used when unset.
             RETRIEVABLE_ENABLED (1):
                 Retrievable option enabled for an attribute.
             RETRIEVABLE_DISABLED (2):

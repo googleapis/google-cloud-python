@@ -1129,6 +1129,7 @@ def test_complete_query_rest_required_fields(
         (
             "dataset",
             "device_type",
+            "entity",
             "language_codes",
             "max_suggestions",
             "query",
@@ -1200,6 +1201,7 @@ def test_complete_query_rest_unset_required_fields():
             (
                 "dataset",
                 "deviceType",
+                "entity",
                 "languageCodes",
                 "maxSuggestions",
                 "query",

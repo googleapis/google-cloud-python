@@ -47,6 +47,7 @@ from .common import (
     LocalInventory,
     PriceInfo,
     Rating,
+    RecommendationsFilteringOption,
     Rule,
     SearchSolutionUseCase,
     SolutionType,
@@ -80,6 +81,21 @@ from .import_config import (
     UserEventInlineSource,
     UserEventInputConfig,
 )
+from .model import Model
+from .model_service import (
+    CreateModelMetadata,
+    CreateModelRequest,
+    DeleteModelRequest,
+    GetModelRequest,
+    ListModelsRequest,
+    ListModelsResponse,
+    PauseModelRequest,
+    ResumeModelRequest,
+    TuneModelMetadata,
+    TuneModelRequest,
+    TuneModelResponse,
+    UpdateModelRequest,
+)
 from .prediction_service import PredictRequest, PredictResponse
 from .product import Product
 from .product_service import (
@@ -107,7 +123,7 @@ from .product_service import (
 )
 from .promotion import Promotion
 from .purge_config import PurgeMetadata, PurgeUserEventsRequest, PurgeUserEventsResponse
-from .search_service import SearchRequest, SearchResponse
+from .search_service import ExperimentInfo, SearchRequest, SearchResponse
 from .serving_config import ServingConfig
 from .serving_config_service import (
     AddControlRequest,
@@ -160,6 +176,7 @@ __all__ = (
     "Rule",
     "UserInfo",
     "AttributeConfigLevel",
+    "RecommendationsFilteringOption",
     "SearchSolutionUseCase",
     "SolutionType",
     "CompleteQueryRequest",
@@ -187,6 +204,19 @@ __all__ = (
     "UserEventImportSummary",
     "UserEventInlineSource",
     "UserEventInputConfig",
+    "Model",
+    "CreateModelMetadata",
+    "CreateModelRequest",
+    "DeleteModelRequest",
+    "GetModelRequest",
+    "ListModelsRequest",
+    "ListModelsResponse",
+    "PauseModelRequest",
+    "ResumeModelRequest",
+    "TuneModelMetadata",
+    "TuneModelRequest",
+    "TuneModelResponse",
+    "UpdateModelRequest",
     "PredictRequest",
     "PredictResponse",
     "Product",
@@ -215,6 +245,7 @@ __all__ = (
     "PurgeMetadata",
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
+    "ExperimentInfo",
     "SearchRequest",
     "SearchResponse",
     "ServingConfig",

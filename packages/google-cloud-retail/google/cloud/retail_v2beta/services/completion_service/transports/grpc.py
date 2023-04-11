@@ -32,7 +32,7 @@ from .base import DEFAULT_CLIENT_INFO, CompletionServiceTransport
 class CompletionServiceGrpcTransport(CompletionServiceTransport):
     """gRPC backend transport for CompletionService.
 
-    Auto-completion service for retail.
+    Autocomplete service for retail.
     This feature is only available for users who have Retail Search
     enabled. Enable Retail Search on Cloud Console before using this
     feature.

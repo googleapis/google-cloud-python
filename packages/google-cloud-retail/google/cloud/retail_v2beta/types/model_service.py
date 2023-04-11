@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
     manifest={
         "CreateModelRequest",
         "UpdateModelRequest",
+        "GetModelRequest",
         "PauseModelRequest",
         "ResumeModelRequest",
         "ListModelsRequest",
@@ -94,6 +95,22 @@ class UpdateModelRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
+    )
+
+
+class GetModelRequest(proto.Message):
+    r"""Request for getting a model.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the
+            [Model][google.cloud.retail.v2beta.Model] to get. Format:
+            ``projects/{project_number}/locations/{location_id}/catalogs/{catalog}/models/{model_id}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

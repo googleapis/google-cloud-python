@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
     manifest={
         "SearchRequest",
         "SearchResponse",
+        "ExperimentInfo",
     },
 )
 
@@ -145,7 +146,7 @@ class SearchRequest(proto.Message):
             Facet specifications for faceted search. If empty, no facets
             are returned.
 
-            A maximum of 100 values are allowed. Otherwise, an
+            A maximum of 200 values are allowed. Otherwise, an
             INVALID_ARGUMENT error is returned.
         dynamic_facet_spec (google.cloud.retail_v2.types.SearchRequest.DynamicFacetSpec):
             Deprecated. Refer to
@@ -313,6 +314,14 @@ class SearchRequest(proto.Message):
             will take effect.
 
             This field is a member of `oneof`_ ``_spell_correction_spec``.
+        entity (str):
+            The entity for customers that may run multiple different
+            entities, domains, sites or regions, for example,
+            ``Google US``, ``Google Ads``, ``Waymo``, ``google.com``,
+            ``youtube.com``, etc. If this is set, it should be exactly
+            matched with
+            [UserEvent.entity][google.cloud.retail.v2.UserEvent.entity]
+            to get search results boosted by entity.
     """
 
     class SearchMode(proto.Enum):
@@ -491,7 +500,19 @@ class SearchRequest(proto.Message):
                     Set only if values should be bucketized into
                     intervals. Must be set for facets with numerical
                     values. Must not be set for facet with text
-                    values. Maximum number of intervals is 30.
+                    values. Maximum number of intervals is 40.
+
+                    For all numerical facet keys that appear in the
+                    list of products from the catalog, the
+                    percentiles 0, 10, 30, 50, 70, 90 and 100 are
+                    computed from their distribution weekly. If the
+                    model assigns a high score to a numerical facet
+                    key and its intervals are not specified in the
+                    search request, these percentiles will become
+                    the bounds for its intervals and will be
+                    returned in the response. If the facet key
+                    intervals are specified in the request, then the
+                    specified intervals will be returned instead.
                 restricted_values (MutableSequence[str]):
                     Only get facet for the given restricted values. For example,
                     when using "pickupInStore" as key and set restricted values
@@ -978,6 +999,10 @@ class SearchRequest(proto.Message):
         optional=True,
         message=SpellCorrectionSpec,
     )
+    entity: str = proto.Field(
+        proto.STRING,
+        number=38,
+    )
 
 
 class SearchResponse(proto.Message):
@@ -1030,6 +1055,10 @@ class SearchResponse(proto.Message):
             The invalid
             [SearchRequest.BoostSpec.condition_boost_specs][google.cloud.retail.v2.SearchRequest.BoostSpec.condition_boost_specs]
             that are not applied during serving.
+        experiment_info (MutableSequence[google.cloud.retail_v2.types.ExperimentInfo]):
+            Metadata related to A/B testing [Experiment][] associated
+            with this response. Only exists when an experiment is
+            triggered.
     """
 
     class SearchResult(proto.Message):
@@ -1325,6 +1354,67 @@ class SearchResponse(proto.Message):
         proto.MESSAGE,
         number=14,
         message="SearchRequest.BoostSpec.ConditionBoostSpec",
+    )
+    experiment_info: MutableSequence["ExperimentInfo"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=17,
+        message="ExperimentInfo",
+    )
+
+
+class ExperimentInfo(proto.Message):
+    r"""Metadata for active A/B testing [Experiments][].
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        serving_config_experiment (google.cloud.retail_v2.types.ExperimentInfo.ServingConfigExperiment):
+            A/B test between existing Cloud Retail Search
+            [ServingConfig][google.cloud.retail.v2.ServingConfig]s.
+
+            This field is a member of `oneof`_ ``experiment_metadata``.
+        experiment (str):
+            The fully qualified resource name of the experiment that
+            provides the serving config under test, should an active
+            experiment exist. For example:
+            ``projects/*/locations/global/catalogs/default_catalog/experiments/experiment_id``
+    """
+
+    class ServingConfigExperiment(proto.Message):
+        r"""Metadata for active serving config A/B tests.
+
+        Attributes:
+            original_serving_config (str):
+                The fully qualified resource name of the original
+                [SearchRequest.placement][google.cloud.retail.v2.SearchRequest.placement]
+                in the search request prior to reassignment by experiment
+                API. For example:
+                ``projects/*/locations/*/catalogs/*/servingConfigs/*``.
+            experiment_serving_config (str):
+                The fully qualified resource name of the serving config
+                [VariantArm.serving_config_id][] responsible for generating
+                the search response. For example:
+                ``projects/*/locations/*/catalogs/*/servingConfigs/*``.
+        """
+
+        original_serving_config: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        experiment_serving_config: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    serving_config_experiment: ServingConfigExperiment = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="experiment_metadata",
+        message=ServingConfigExperiment,
+    )
+    experiment: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

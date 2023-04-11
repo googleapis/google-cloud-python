@@ -88,6 +88,14 @@ class ModelServiceRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_get_model(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_model(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_models(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -168,6 +176,27 @@ class ModelServiceRestInterceptor:
         before they are sent to the ModelService server.
         """
         return request, metadata
+
+    def pre_get_model(
+        self,
+        request: model_service.GetModelRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[model_service.GetModelRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_model
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ModelService server.
+        """
+        return request, metadata
+
+    def post_get_model(self, response: model.Model) -> model.Model:
+        """Post-rpc interceptor for get_model
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ModelService server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_list_models(
         self,
@@ -662,6 +691,99 @@ class ModelServiceRestTransport(ModelServiceTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+    class _GetModel(ModelServiceRestStub):
+        def __hash__(self):
+            return hash("GetModel")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: model_service.GetModelRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> model.Model:
+            r"""Call the get model method over HTTP.
+
+            Args:
+                request (~.model_service.GetModelRequest):
+                    The request object. Request for getting a model.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.model.Model:
+                    Metadata that describes the training and serving
+                parameters of a
+                [Model][google.cloud.retail.v2beta.Model]. A
+                [Model][google.cloud.retail.v2beta.Model] can be
+                associated with a
+                [ServingConfig][google.cloud.retail.v2beta.ServingConfig]
+                and then queried through the Predict API.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2beta/{name=projects/*/locations/*/catalogs/*/models/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_model(request, metadata)
+            pb_request = model_service.GetModelRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = model.Model()
+            pb_resp = model.Model.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_model(resp)
+            return resp
 
     class _ListModels(ModelServiceRestStub):
         def __hash__(self):
@@ -1173,6 +1295,12 @@ class ModelServiceRestTransport(ModelServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteModel(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_model(self) -> Callable[[model_service.GetModelRequest], model.Model]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_models(
