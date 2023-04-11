@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.16.0](https://github.com/googleapis/python-retail/compare/v1.15.1...v1.16.0) (2023-04-11)
+
+
+### Features
+
+* Add model get API ([4167a2c](https://github.com/googleapis/python-retail/commit/4167a2c7c755a8ab55536214845707ec337dc344))
+* Expose A/B experiment info in search response ([4167a2c](https://github.com/googleapis/python-retail/commit/4167a2c7c755a8ab55536214845707ec337dc344))
+* Expose facets and product counts in autocomplete ([4167a2c](https://github.com/googleapis/python-retail/commit/4167a2c7c755a8ab55536214845707ec337dc344))
+* Support new filter syntax for recommendation ([4167a2c](https://github.com/googleapis/python-retail/commit/4167a2c7c755a8ab55536214845707ec337dc344))
+* Support per-entity search and autocomplete ([4167a2c](https://github.com/googleapis/python-retail/commit/4167a2c7c755a8ab55536214845707ec337dc344))
+
+
+### Documentation
+
+* Keep the API doc up-to-date with recent changes ([4167a2c](https://github.com/googleapis/python-retail/commit/4167a2c7c755a8ab55536214845707ec337dc344))
+
 ## [1.15.1](https://github.com/googleapis/python-retail/compare/v1.15.0...v1.15.1) (2023-03-23)
 
 
