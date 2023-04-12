@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.31.0](https://github.com/googleapis/python-spanner/compare/v3.30.0...v3.31.0) (2023-04-12)
+
+
+### Features
+
+* Add databoost enabled property for batch transactions  ([#892](https://github.com/googleapis/python-spanner/issues/892)) ([ffb3915](https://github.com/googleapis/python-spanner/commit/ffb39158be5a551b698739c003ee6125a11c1c7a))
+
+
+### Bug Fixes
+
+* Set databoost false ([#928](https://github.com/googleapis/python-spanner/issues/928)) ([c9ed9d2](https://github.com/googleapis/python-spanner/commit/c9ed9d24d19594dfff57c979fa3bf68d84bbc3b5))
+
 ## [3.30.0](https://github.com/googleapis/python-spanner/compare/v3.29.0...v3.30.0) (2023-03-28)
 
 
