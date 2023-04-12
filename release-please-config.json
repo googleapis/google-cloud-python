@@ -186,7 +186,13 @@
             "release-type": "python",
             "extra-files": [
                 "google/cloud/bigquery/biglake/gapic_version.py",
+                "google/cloud/bigquery/biglake_v1/gapic_version.py",
                 "google/cloud/bigquery/biglake_v1alpha1/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.biglake.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                },
                 {
                     "type": "json",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.biglake.v1alpha1.json",
