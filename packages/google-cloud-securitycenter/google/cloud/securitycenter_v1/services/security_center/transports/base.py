@@ -29,6 +29,10 @@ from google.oauth2 import service_account  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.securitycenter_v1 import gapic_version as package_version
+from google.cloud.securitycenter_v1.types import (
+    bigquery_export,
+    effective_security_health_analytics_custom_module,
+)
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import (
     notification_config as gcs_notification_config,
@@ -36,8 +40,11 @@ from google.cloud.securitycenter_v1.types import (
 from google.cloud.securitycenter_v1.types import (
     organization_settings as gcs_organization_settings,
 )
+from google.cloud.securitycenter_v1.types import security_health_analytics_custom_module
+from google.cloud.securitycenter_v1.types import (
+    security_health_analytics_custom_module as gcs_security_health_analytics_custom_module,
+)
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
-from google.cloud.securitycenter_v1.types import bigquery_export
 from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import mute_config
@@ -148,6 +155,11 @@ class SecurityCenterTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_security_health_analytics_custom_module: gapic_v1.method.wrap_method(
+                self.create_security_health_analytics_custom_module,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.create_source: gapic_v1.method.wrap_method(
                 self.create_source,
                 default_timeout=60.0,
@@ -175,6 +187,11 @@ class SecurityCenterTransport(abc.ABC):
             ),
             self.delete_notification_config: gapic_v1.method.wrap_method(
                 self.delete_notification_config,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_security_health_analytics_custom_module: gapic_v1.method.wrap_method(
+                self.delete_security_health_analytics_custom_module,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
@@ -220,6 +237,36 @@ class SecurityCenterTransport(abc.ABC):
             ),
             self.get_organization_settings: gapic_v1.method.wrap_method(
                 self.get_organization_settings,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_effective_security_health_analytics_custom_module: gapic_v1.method.wrap_method(
+                self.get_effective_security_health_analytics_custom_module,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_security_health_analytics_custom_module: gapic_v1.method.wrap_method(
+                self.get_security_health_analytics_custom_module,
                 default_retry=retries.Retry(
                     initial=0.1,
                     maximum=60.0,
@@ -293,6 +340,21 @@ class SecurityCenterTransport(abc.ABC):
                 default_timeout=480.0,
                 client_info=client_info,
             ),
+            self.list_descendant_security_health_analytics_custom_modules: gapic_v1.method.wrap_method(
+                self.list_descendant_security_health_analytics_custom_modules,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.list_findings: gapic_v1.method.wrap_method(
                 self.list_findings,
                 default_retry=retries.Retry(
@@ -315,6 +377,36 @@ class SecurityCenterTransport(abc.ABC):
             ),
             self.list_notification_configs: gapic_v1.method.wrap_method(
                 self.list_notification_configs,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_effective_security_health_analytics_custom_modules: gapic_v1.method.wrap_method(
+                self.list_effective_security_health_analytics_custom_modules,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_security_health_analytics_custom_modules: gapic_v1.method.wrap_method(
+                self.list_security_health_analytics_custom_modules,
                 default_retry=retries.Retry(
                     initial=0.1,
                     maximum=60.0,
@@ -403,6 +495,11 @@ class SecurityCenterTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.update_security_health_analytics_custom_module: gapic_v1.method.wrap_method(
+                self.update_security_health_analytics_custom_module,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.update_source: gapic_v1.method.wrap_method(
                 self.update_source,
                 default_timeout=60.0,
@@ -455,6 +552,20 @@ class SecurityCenterTransport(abc.ABC):
     ) -> Callable[
         [securitycenter_service.BulkMuteFindingsRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_security_health_analytics_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest],
+        Union[
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+            Awaitable[
+                gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
+            ],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -516,6 +627,15 @@ class SecurityCenterTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def delete_security_health_analytics_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_big_query_export(
         self,
     ) -> Callable[
@@ -569,6 +689,34 @@ class SecurityCenterTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def get_effective_security_health_analytics_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest],
+        Union[
+            effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule,
+            Awaitable[
+                effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_security_health_analytics_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest],
+        Union[
+            security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+            Awaitable[
+                security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_source(
         self,
     ) -> Callable[
@@ -614,6 +762,22 @@ class SecurityCenterTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def list_descendant_security_health_analytics_custom_modules(
+        self,
+    ) -> Callable[
+        [
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest
+        ],
+        Union[
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
+            Awaitable[
+                securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_findings(
         self,
     ) -> Callable[
@@ -645,6 +809,36 @@ class SecurityCenterTransport(abc.ABC):
         Union[
             securitycenter_service.ListNotificationConfigsResponse,
             Awaitable[securitycenter_service.ListNotificationConfigsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_effective_security_health_analytics_custom_modules(
+        self,
+    ) -> Callable[
+        [
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest
+        ],
+        Union[
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
+            Awaitable[
+                securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_security_health_analytics_custom_modules(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest],
+        Union[
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse,
+            Awaitable[
+                securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse
+            ],
         ],
     ]:
         raise NotImplementedError()
@@ -759,6 +953,20 @@ class SecurityCenterTransport(abc.ABC):
         Union[
             gcs_organization_settings.OrganizationSettings,
             Awaitable[gcs_organization_settings.OrganizationSettings],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_security_health_analytics_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest],
+        Union[
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+            Awaitable[
+                gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
+            ],
         ],
     ]:
         raise NotImplementedError()

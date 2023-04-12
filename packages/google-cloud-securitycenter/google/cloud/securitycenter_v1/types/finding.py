@@ -137,7 +137,7 @@ class Finding(proto.Message):
             https://en.wikipedia.org/wiki/Indicator_of_compromise
         vulnerability (google.cloud.securitycenter_v1.types.Vulnerability):
             Represents vulnerability-specific fields like
-            CVE and CVS scores. CVE stands for Common
+            CVE and CVSS scores. CVE stands for Common
             Vulnerabilities and Exposures
             (https://cve.mitre.org/about/)
         mute_update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -204,6 +204,10 @@ class Finding(proto.Message):
             Finding.
         next_steps (str):
             Next steps associate to the finding.
+        module_name (str):
+            Unique identifier of the module which
+            generated the finding. Example:
+            folders/598186756061/securityHealthAnalyticsSettings/customModules/56799441161885
         containers (MutableSequence[google.cloud.securitycenter_v1.types.Container]):
             Containers associated with the finding.
             containers provides information for both
@@ -505,6 +509,10 @@ class Finding(proto.Message):
     next_steps: str = proto.Field(
         proto.STRING,
         number=40,
+    )
+    module_name: str = proto.Field(
+        proto.STRING,
+        number=41,
     )
     containers: MutableSequence[container.Container] = proto.RepeatedField(
         proto.MESSAGE,

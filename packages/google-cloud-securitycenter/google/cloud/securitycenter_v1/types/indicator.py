@@ -28,16 +28,17 @@ __protobuf__ = proto.module(
 
 
 class Indicator(proto.Message):
-    r"""Represents what's commonly known as an Indicator of compromise (IoC)
-    in computer forensics. This is an artifact observed on a network or
-    in an operating system that, with high confidence, indicates a
-    computer intrusion. Reference:
-    https://en.wikipedia.org/wiki/Indicator_of_compromise
+    r"""Represents what's commonly known as an *indicator of compromise*
+    (IoC) in computer forensics. This is an artifact observed on a
+    network or in an operating system that, with high confidence,
+    indicates a computer intrusion. For more information, see `Indicator
+    of
+    compromise <https://en.wikipedia.org/wiki/Indicator_of_compromise>`__.
 
     Attributes:
         ip_addresses (MutableSequence[str]):
-            List of ip addresses associated to the
-            Finding.
+            The list of IP addresses that are associated
+            with the finding.
         domains (MutableSequence[str]):
             List of domains associated to the Finding.
         signatures (MutableSequence[google.cloud.securitycenter_v1.types.Indicator.ProcessSignature]):

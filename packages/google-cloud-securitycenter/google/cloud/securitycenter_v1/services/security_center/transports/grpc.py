@@ -26,6 +26,10 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 
+from google.cloud.securitycenter_v1.types import (
+    bigquery_export,
+    effective_security_health_analytics_custom_module,
+)
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import (
     notification_config as gcs_notification_config,
@@ -33,8 +37,11 @@ from google.cloud.securitycenter_v1.types import (
 from google.cloud.securitycenter_v1.types import (
     organization_settings as gcs_organization_settings,
 )
+from google.cloud.securitycenter_v1.types import security_health_analytics_custom_module
+from google.cloud.securitycenter_v1.types import (
+    security_health_analytics_custom_module as gcs_security_health_analytics_custom_module,
+)
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
-from google.cloud.securitycenter_v1.types import bigquery_export
 from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import mute_config
@@ -296,6 +303,43 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["bulk_mute_findings"]
 
     @property
+    def create_security_health_analytics_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest],
+        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    ]:
+        r"""Return a callable for the create security health
+        analytics custom module method over gRPC.
+
+        Creates a resident
+        SecurityHealthAnalyticsCustomModule at the scope of the
+        given CRM parent, and also creates inherited
+        SecurityHealthAnalyticsCustomModules for all CRM
+        descendants of the given parent. These modules are
+        enabled by default.
+
+        Returns:
+            Callable[[~.CreateSecurityHealthAnalyticsCustomModuleRequest],
+                    ~.SecurityHealthAnalyticsCustomModule]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_security_health_analytics_custom_module" not in self._stubs:
+            self._stubs[
+                "create_security_health_analytics_custom_module"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/CreateSecurityHealthAnalyticsCustomModule",
+                request_serializer=securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest.serialize,
+                response_deserializer=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.deserialize,
+            )
+        return self._stubs["create_security_health_analytics_custom_module"]
+
+    @property
     def create_source(
         self,
     ) -> Callable[[securitycenter_service.CreateSourceRequest], gcs_source.Source]:
@@ -460,6 +504,41 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["delete_notification_config"]
 
     @property
+    def delete_security_health_analytics_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest],
+        empty_pb2.Empty,
+    ]:
+        r"""Return a callable for the delete security health
+        analytics custom module method over gRPC.
+
+        Deletes the specified
+        SecurityHealthAnalyticsCustomModule and all of its
+        descendants in the CRM hierarchy. This method is only
+        supported for resident custom modules.
+
+        Returns:
+            Callable[[~.DeleteSecurityHealthAnalyticsCustomModuleRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_security_health_analytics_custom_module" not in self._stubs:
+            self._stubs[
+                "delete_security_health_analytics_custom_module"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/DeleteSecurityHealthAnalyticsCustomModule",
+                request_serializer=securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_security_health_analytics_custom_module"]
+
+    @property
     def get_big_query_export(
         self,
     ) -> Callable[
@@ -602,6 +681,71 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["get_organization_settings"]
 
     @property
+    def get_effective_security_health_analytics_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest],
+        effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule,
+    ]:
+        r"""Return a callable for the get effective security health
+        analytics custom module method over gRPC.
+
+        Retrieves an
+        EffectiveSecurityHealthAnalyticsCustomModule.
+
+        Returns:
+            Callable[[~.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest],
+                    ~.EffectiveSecurityHealthAnalyticsCustomModule]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_effective_security_health_analytics_custom_module" not in self._stubs:
+            self._stubs[
+                "get_effective_security_health_analytics_custom_module"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/GetEffectiveSecurityHealthAnalyticsCustomModule",
+                request_serializer=securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest.serialize,
+                response_deserializer=effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule.deserialize,
+            )
+        return self._stubs["get_effective_security_health_analytics_custom_module"]
+
+    @property
+    def get_security_health_analytics_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest],
+        security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    ]:
+        r"""Return a callable for the get security health analytics
+        custom module method over gRPC.
+
+        Retrieves a SecurityHealthAnalyticsCustomModule.
+
+        Returns:
+            Callable[[~.GetSecurityHealthAnalyticsCustomModuleRequest],
+                    ~.SecurityHealthAnalyticsCustomModule]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_security_health_analytics_custom_module" not in self._stubs:
+            self._stubs[
+                "get_security_health_analytics_custom_module"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/GetSecurityHealthAnalyticsCustomModule",
+                request_serializer=securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest.serialize,
+                response_deserializer=security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.deserialize,
+            )
+        return self._stubs["get_security_health_analytics_custom_module"]
+
+    @property
     def get_source(
         self,
     ) -> Callable[[securitycenter_service.GetSourceRequest], source.Source]:
@@ -722,6 +866,45 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["list_assets"]
 
     @property
+    def list_descendant_security_health_analytics_custom_modules(
+        self,
+    ) -> Callable[
+        [
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest
+        ],
+        securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
+    ]:
+        r"""Return a callable for the list descendant security
+        health analytics custom modules method over gRPC.
+
+        Returns a list of all resident
+        SecurityHealthAnalyticsCustomModules under the given CRM
+        parent and all of the parent’s CRM descendants.
+
+        Returns:
+            Callable[[~.ListDescendantSecurityHealthAnalyticsCustomModulesRequest],
+                    ~.ListDescendantSecurityHealthAnalyticsCustomModulesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if (
+            "list_descendant_security_health_analytics_custom_modules"
+            not in self._stubs
+        ):
+            self._stubs[
+                "list_descendant_security_health_analytics_custom_modules"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/ListDescendantSecurityHealthAnalyticsCustomModules",
+                request_serializer=securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest.serialize,
+                response_deserializer=securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.deserialize,
+            )
+        return self._stubs["list_descendant_security_health_analytics_custom_modules"]
+
+    @property
     def list_findings(
         self,
     ) -> Callable[
@@ -810,6 +993,80 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
                 response_deserializer=securitycenter_service.ListNotificationConfigsResponse.deserialize,
             )
         return self._stubs["list_notification_configs"]
+
+    @property
+    def list_effective_security_health_analytics_custom_modules(
+        self,
+    ) -> Callable[
+        [
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest
+        ],
+        securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
+    ]:
+        r"""Return a callable for the list effective security health
+        analytics custom modules method over gRPC.
+
+        Returns a list of all
+        EffectiveSecurityHealthAnalyticsCustomModules for the
+        given parent. This includes resident modules defined at
+        the scope of the parent, and inherited modules,
+        inherited from CRM ancestors.
+
+        Returns:
+            Callable[[~.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest],
+                    ~.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_effective_security_health_analytics_custom_modules" not in self._stubs:
+            self._stubs[
+                "list_effective_security_health_analytics_custom_modules"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/ListEffectiveSecurityHealthAnalyticsCustomModules",
+                request_serializer=securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest.serialize,
+                response_deserializer=securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.deserialize,
+            )
+        return self._stubs["list_effective_security_health_analytics_custom_modules"]
+
+    @property
+    def list_security_health_analytics_custom_modules(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest],
+        securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse,
+    ]:
+        r"""Return a callable for the list security health analytics
+        custom modules method over gRPC.
+
+        Returns a list of all
+        SecurityHealthAnalyticsCustomModules for the given
+        parent. This includes resident modules defined at the
+        scope of the parent, and inherited modules, inherited
+        from CRM ancestors.
+
+        Returns:
+            Callable[[~.ListSecurityHealthAnalyticsCustomModulesRequest],
+                    ~.ListSecurityHealthAnalyticsCustomModulesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_security_health_analytics_custom_modules" not in self._stubs:
+            self._stubs[
+                "list_security_health_analytics_custom_modules"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/ListSecurityHealthAnalyticsCustomModules",
+                request_serializer=securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest.serialize,
+                response_deserializer=securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse.deserialize,
+            )
+        return self._stubs["list_security_health_analytics_custom_modules"]
 
     @property
     def list_sources(
@@ -1124,6 +1381,44 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
                 response_deserializer=gcs_organization_settings.OrganizationSettings.deserialize,
             )
         return self._stubs["update_organization_settings"]
+
+    @property
+    def update_security_health_analytics_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest],
+        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    ]:
+        r"""Return a callable for the update security health
+        analytics custom module method over gRPC.
+
+        Updates the SecurityHealthAnalyticsCustomModule under
+        the given name based on the given update mask. Updating
+        the enablement state is supported on both resident and
+        inherited modules (though resident modules cannot have
+        an enablement state of “inherited”). Updating the
+        display name and custom config of a module is supported
+        on resident modules only.
+
+        Returns:
+            Callable[[~.UpdateSecurityHealthAnalyticsCustomModuleRequest],
+                    ~.SecurityHealthAnalyticsCustomModule]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_security_health_analytics_custom_module" not in self._stubs:
+            self._stubs[
+                "update_security_health_analytics_custom_module"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/UpdateSecurityHealthAnalyticsCustomModule",
+                request_serializer=securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest.serialize,
+                response_deserializer=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.deserialize,
+            )
+        return self._stubs["update_security_health_analytics_custom_module"]
 
     @property
     def update_source(

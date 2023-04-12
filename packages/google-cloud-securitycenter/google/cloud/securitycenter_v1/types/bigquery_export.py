@@ -74,24 +74,24 @@ class BigQueryExport(proto.Message):
             BigQuery Dataset unique ID must contain only letters (a-z,
             A-Z), numbers (0-9), or underscores (_).
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time at which the big query
+            Output only. The time at which the BigQuery
             export was created. This field is set by the
             server and will be ignored if provided on export
             on creation.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The most recent time at which
-            the big export was updated. This field is set by
-            the server and will be ignored if provided on
-            export creation or update.
+            the BigQuery export was updated. This field is
+            set by the server and will be ignored if
+            provided on export creation or update.
         most_recent_editor (str):
             Output only. Email address of the user who
-            last edited the big query export. This field is
+            last edited the BigQuery export. This field is
             set by the server and will be ignored if
             provided on export creation or update.
         principal (str):
             Output only. The service account that needs
-            permission to create table, upload data to the
-            big query dataset.
+            permission to create table and upload data to
+            the BigQuery dataset.
     """
 
     name: str = proto.Field(

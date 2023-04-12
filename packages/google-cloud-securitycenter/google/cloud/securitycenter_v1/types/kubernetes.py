@@ -30,7 +30,7 @@ __protobuf__ = proto.module(
 
 
 class Kubernetes(proto.Message):
-    r"""Kubernetes related attributes.
+    r"""Kubernetes-related attributes.
 
     Attributes:
         pods (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.Pod]):
@@ -178,8 +178,9 @@ class Kubernetes(proto.Message):
                 The Role or ClusterRole referenced by the
                 binding.
             subjects (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.Subject]):
-                Represents the subjects(s) bound to the role.
-                Not always available for PATCH requests.
+                Represents one or more subjects that are
+                bound to the role. Not always available for
+                PATCH requests.
         """
 
         ns: str = proto.Field(

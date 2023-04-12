@@ -34,7 +34,7 @@ class Database(proto.Message):
     database instance itself. Some database resources may not have
     the full resource name populated because these resource types
     are not yet supported by Cloud Asset Inventory (e.g. CloudSQL
-    databases).  In these cases only the display name will be
+    databases). In these cases only the display name will be
     provided.
 
     Attributes:

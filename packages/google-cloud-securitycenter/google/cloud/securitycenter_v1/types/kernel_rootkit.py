@@ -34,35 +34,36 @@ class KernelRootkit(proto.Message):
         name (str):
             Rootkit name when available.
         unexpected_code_modification (bool):
-            True if unexpected modifications of kernel
+            True when unexpected modifications of kernel
             code memory are present.
         unexpected_read_only_data_modification (bool):
-            True if unexpected modifications of kernel
+            True when unexpected modifications of kernel
             read-only data memory are present.
         unexpected_ftrace_handler (bool):
-            True if ``ftrace`` points are present with callbacks
+            True when ``ftrace`` points are present with callbacks
             pointing to regions that are not in the expected kernel or
             module code range.
         unexpected_kprobe_handler (bool):
-            True if ``kprobe`` points are present with callbacks
+            True when ``kprobe`` points are present with callbacks
             pointing to regions that are not in the expected kernel or
             module code range.
         unexpected_kernel_code_pages (bool):
-            True if kernel code pages that are not in the
-            expected kernel or module code regions are
+            True when kernel code pages that are not in
+            the expected kernel or module code regions are
             present.
         unexpected_system_call_handler (bool):
-            True if system call handlers that are are not
-            in the expected kernel or module code regions
-            are present.
+            True when system call handlers that are are
+            not in the expected kernel or module code
+            regions are present.
         unexpected_interrupt_handler (bool):
-            True if interrupt handlers that are are not
+            True when interrupt handlers that are are not
             in the expected kernel or module code regions
             are present.
         unexpected_processes_in_runqueue (bool):
-            True if unexpected processes in the scheduler
-            run queue are present. Such processes are in the
-            run queue, but not in the process task list.
+            True when unexpected processes in the
+            scheduler run queue are present. Such processes
+            are in the run queue, but not in the process
+            task list.
     """
 
     name: str = proto.Field(

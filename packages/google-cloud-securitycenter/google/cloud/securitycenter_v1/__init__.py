@@ -27,6 +27,9 @@ from .types.connection import Connection
 from .types.contact_details import Contact, ContactDetails
 from .types.container import Container
 from .types.database import Database
+from .types.effective_security_health_analytics_custom_module import (
+    EffectiveSecurityHealthAnalyticsCustomModule,
+)
 from .types.exfiltration import ExfilResource, Exfiltration
 from .types.external_system import ExternalSystem
 from .types.file import File
@@ -45,6 +48,10 @@ from .types.organization_settings import OrganizationSettings
 from .types.process import EnvironmentVariable, Process
 from .types.resource import Resource
 from .types.run_asset_discovery_response import RunAssetDiscoveryResponse
+from .types.security_health_analytics_custom_config import CustomConfig
+from .types.security_health_analytics_custom_module import (
+    SecurityHealthAnalyticsCustomModule,
+)
 from .types.security_marks import SecurityMarks
 from .types.securitycenter_service import (
     BulkMuteFindingsRequest,
@@ -53,14 +60,18 @@ from .types.securitycenter_service import (
     CreateFindingRequest,
     CreateMuteConfigRequest,
     CreateNotificationConfigRequest,
+    CreateSecurityHealthAnalyticsCustomModuleRequest,
     CreateSourceRequest,
     DeleteBigQueryExportRequest,
     DeleteMuteConfigRequest,
     DeleteNotificationConfigRequest,
+    DeleteSecurityHealthAnalyticsCustomModuleRequest,
     GetBigQueryExportRequest,
+    GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
     GetMuteConfigRequest,
     GetNotificationConfigRequest,
     GetOrganizationSettingsRequest,
+    GetSecurityHealthAnalyticsCustomModuleRequest,
     GetSourceRequest,
     GroupAssetsRequest,
     GroupAssetsResponse,
@@ -71,12 +82,18 @@ from .types.securitycenter_service import (
     ListAssetsResponse,
     ListBigQueryExportsRequest,
     ListBigQueryExportsResponse,
+    ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
+    ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
+    ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
+    ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
     ListFindingsRequest,
     ListFindingsResponse,
     ListMuteConfigsRequest,
     ListMuteConfigsResponse,
     ListNotificationConfigsRequest,
     ListNotificationConfigsResponse,
+    ListSecurityHealthAnalyticsCustomModulesRequest,
+    ListSecurityHealthAnalyticsCustomModulesResponse,
     ListSourcesRequest,
     ListSourcesResponse,
     RunAssetDiscoveryRequest,
@@ -88,6 +105,7 @@ from .types.securitycenter_service import (
     UpdateMuteConfigRequest,
     UpdateNotificationConfigRequest,
     UpdateOrganizationSettingsRequest,
+    UpdateSecurityHealthAnalyticsCustomModuleRequest,
     UpdateSecurityMarksRequest,
     UpdateSourceRequest,
 )
@@ -110,13 +128,17 @@ __all__ = (
     "CreateFindingRequest",
     "CreateMuteConfigRequest",
     "CreateNotificationConfigRequest",
+    "CreateSecurityHealthAnalyticsCustomModuleRequest",
     "CreateSourceRequest",
+    "CustomConfig",
     "Cve",
     "Cvssv3",
     "Database",
     "DeleteBigQueryExportRequest",
     "DeleteMuteConfigRequest",
     "DeleteNotificationConfigRequest",
+    "DeleteSecurityHealthAnalyticsCustomModuleRequest",
+    "EffectiveSecurityHealthAnalyticsCustomModule",
     "EnvironmentVariable",
     "ExfilResource",
     "Exfiltration",
@@ -126,9 +148,11 @@ __all__ = (
     "Folder",
     "Geolocation",
     "GetBigQueryExportRequest",
+    "GetEffectiveSecurityHealthAnalyticsCustomModuleRequest",
     "GetMuteConfigRequest",
     "GetNotificationConfigRequest",
     "GetOrganizationSettingsRequest",
+    "GetSecurityHealthAnalyticsCustomModuleRequest",
     "GetSourceRequest",
     "GroupAssetsRequest",
     "GroupAssetsResponse",
@@ -144,12 +168,18 @@ __all__ = (
     "ListAssetsResponse",
     "ListBigQueryExportsRequest",
     "ListBigQueryExportsResponse",
+    "ListDescendantSecurityHealthAnalyticsCustomModulesRequest",
+    "ListDescendantSecurityHealthAnalyticsCustomModulesResponse",
+    "ListEffectiveSecurityHealthAnalyticsCustomModulesRequest",
+    "ListEffectiveSecurityHealthAnalyticsCustomModulesResponse",
     "ListFindingsRequest",
     "ListFindingsResponse",
     "ListMuteConfigsRequest",
     "ListMuteConfigsResponse",
     "ListNotificationConfigsRequest",
     "ListNotificationConfigsResponse",
+    "ListSecurityHealthAnalyticsCustomModulesRequest",
+    "ListSecurityHealthAnalyticsCustomModulesResponse",
     "ListSourcesRequest",
     "ListSourcesResponse",
     "MitreAttack",
@@ -163,6 +193,7 @@ __all__ = (
     "RunAssetDiscoveryRequest",
     "RunAssetDiscoveryResponse",
     "SecurityCenterClient",
+    "SecurityHealthAnalyticsCustomModule",
     "SecurityMarks",
     "ServiceAccountDelegationInfo",
     "SetFindingStateRequest",
@@ -174,6 +205,7 @@ __all__ = (
     "UpdateMuteConfigRequest",
     "UpdateNotificationConfigRequest",
     "UpdateOrganizationSettingsRequest",
+    "UpdateSecurityHealthAnalyticsCustomModuleRequest",
     "UpdateSecurityMarksRequest",
     "UpdateSourceRequest",
     "Vulnerability",

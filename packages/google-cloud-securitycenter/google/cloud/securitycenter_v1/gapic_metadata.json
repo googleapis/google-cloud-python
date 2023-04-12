@@ -35,6 +35,11 @@
                 "create_notification_config"
               ]
             },
+            "CreateSecurityHealthAnalyticsCustomModule": {
+              "methods": [
+                "create_security_health_analytics_custom_module"
+              ]
+            },
             "CreateSource": {
               "methods": [
                 "create_source"
@@ -55,9 +60,19 @@
                 "delete_notification_config"
               ]
             },
+            "DeleteSecurityHealthAnalyticsCustomModule": {
+              "methods": [
+                "delete_security_health_analytics_custom_module"
+              ]
+            },
             "GetBigQueryExport": {
               "methods": [
                 "get_big_query_export"
+              ]
+            },
+            "GetEffectiveSecurityHealthAnalyticsCustomModule": {
+              "methods": [
+                "get_effective_security_health_analytics_custom_module"
               ]
             },
             "GetIamPolicy": {
@@ -78,6 +93,11 @@
             "GetOrganizationSettings": {
               "methods": [
                 "get_organization_settings"
+              ]
+            },
+            "GetSecurityHealthAnalyticsCustomModule": {
+              "methods": [
+                "get_security_health_analytics_custom_module"
               ]
             },
             "GetSource": {
@@ -105,6 +125,16 @@
                 "list_big_query_exports"
               ]
             },
+            "ListDescendantSecurityHealthAnalyticsCustomModules": {
+              "methods": [
+                "list_descendant_security_health_analytics_custom_modules"
+              ]
+            },
+            "ListEffectiveSecurityHealthAnalyticsCustomModules": {
+              "methods": [
+                "list_effective_security_health_analytics_custom_modules"
+              ]
+            },
             "ListFindings": {
               "methods": [
                 "list_findings"
@@ -118,6 +148,11 @@
             "ListNotificationConfigs": {
               "methods": [
                 "list_notification_configs"
+              ]
+            },
+            "ListSecurityHealthAnalyticsCustomModules": {
+              "methods": [
+                "list_security_health_analytics_custom_modules"
               ]
             },
             "ListSources": {
@@ -178,6 +213,11 @@
             "UpdateOrganizationSettings": {
               "methods": [
                 "update_organization_settings"
+              ]
+            },
+            "UpdateSecurityHealthAnalyticsCustomModule": {
+              "methods": [
+                "update_security_health_analytics_custom_module"
               ]
             },
             "UpdateSecurityMarks": {
@@ -220,6 +260,11 @@
                 "create_notification_config"
               ]
             },
+            "CreateSecurityHealthAnalyticsCustomModule": {
+              "methods": [
+                "create_security_health_analytics_custom_module"
+              ]
+            },
             "CreateSource": {
               "methods": [
                 "create_source"
@@ -240,9 +285,19 @@
                 "delete_notification_config"
               ]
             },
+            "DeleteSecurityHealthAnalyticsCustomModule": {
+              "methods": [
+                "delete_security_health_analytics_custom_module"
+              ]
+            },
             "GetBigQueryExport": {
               "methods": [
                 "get_big_query_export"
+              ]
+            },
+            "GetEffectiveSecurityHealthAnalyticsCustomModule": {
+              "methods": [
+                "get_effective_security_health_analytics_custom_module"
               ]
             },
             "GetIamPolicy": {
@@ -263,6 +318,11 @@
             "GetOrganizationSettings": {
               "methods": [
                 "get_organization_settings"
+              ]
+            },
+            "GetSecurityHealthAnalyticsCustomModule": {
+              "methods": [
+                "get_security_health_analytics_custom_module"
               ]
             },
             "GetSource": {
@@ -290,6 +350,16 @@
                 "list_big_query_exports"
               ]
             },
+            "ListDescendantSecurityHealthAnalyticsCustomModules": {
+              "methods": [
+                "list_descendant_security_health_analytics_custom_modules"
+              ]
+            },
+            "ListEffectiveSecurityHealthAnalyticsCustomModules": {
+              "methods": [
+                "list_effective_security_health_analytics_custom_modules"
+              ]
+            },
             "ListFindings": {
               "methods": [
                 "list_findings"
@@ -303,6 +373,11 @@
             "ListNotificationConfigs": {
               "methods": [
                 "list_notification_configs"
+              ]
+            },
+            "ListSecurityHealthAnalyticsCustomModules": {
+              "methods": [
+                "list_security_health_analytics_custom_modules"
               ]
             },
             "ListSources": {
@@ -363,6 +438,11 @@
             "UpdateOrganizationSettings": {
               "methods": [
                 "update_organization_settings"
+              ]
+            },
+            "UpdateSecurityHealthAnalyticsCustomModule": {
+              "methods": [
+                "update_security_health_analytics_custom_module"
               ]
             },
             "UpdateSecurityMarks": {
@@ -405,6 +485,11 @@
                 "create_notification_config"
               ]
             },
+            "CreateSecurityHealthAnalyticsCustomModule": {
+              "methods": [
+                "create_security_health_analytics_custom_module"
+              ]
+            },
             "CreateSource": {
               "methods": [
                 "create_source"
@@ -425,9 +510,19 @@
                 "delete_notification_config"
               ]
             },
+            "DeleteSecurityHealthAnalyticsCustomModule": {
+              "methods": [
+                "delete_security_health_analytics_custom_module"
+              ]
+            },
             "GetBigQueryExport": {
               "methods": [
                 "get_big_query_export"
+              ]
+            },
+            "GetEffectiveSecurityHealthAnalyticsCustomModule": {
+              "methods": [
+                "get_effective_security_health_analytics_custom_module"
               ]
             },
             "GetIamPolicy": {
@@ -448,6 +543,11 @@
             "GetOrganizationSettings": {
               "methods": [
                 "get_organization_settings"
+              ]
+            },
+            "GetSecurityHealthAnalyticsCustomModule": {
+              "methods": [
+                "get_security_health_analytics_custom_module"
               ]
             },
             "GetSource": {
@@ -475,6 +575,16 @@
                 "list_big_query_exports"
               ]
             },
+            "ListDescendantSecurityHealthAnalyticsCustomModules": {
+              "methods": [
+                "list_descendant_security_health_analytics_custom_modules"
+              ]
+            },
+            "ListEffectiveSecurityHealthAnalyticsCustomModules": {
+              "methods": [
+                "list_effective_security_health_analytics_custom_modules"
+              ]
+            },
             "ListFindings": {
               "methods": [
                 "list_findings"
@@ -488,6 +598,11 @@
             "ListNotificationConfigs": {
               "methods": [
                 "list_notification_configs"
+              ]
+            },
+            "ListSecurityHealthAnalyticsCustomModules": {
+              "methods": [
+                "list_security_health_analytics_custom_modules"
               ]
             },
             "ListSources": {
@@ -548,6 +663,11 @@
             "UpdateOrganizationSettings": {
               "methods": [
                 "update_organization_settings"
+              ]
+            },
+            "UpdateSecurityHealthAnalyticsCustomModule": {
+              "methods": [
+                "update_security_health_analytics_custom_module"
               ]
             },
             "UpdateSecurityMarks": {

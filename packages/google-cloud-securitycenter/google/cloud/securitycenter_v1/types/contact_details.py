@@ -44,11 +44,11 @@ class ContactDetails(proto.Message):
 
 
 class Contact(proto.Message):
-    r"""Representa a single contact's email address
+    r"""The email address of a contact.
 
     Attributes:
         email (str):
-            An email address e.g. "person123@company.com".
+            An email address. For example, "``person123@company.com``".
     """
 
     email: str = proto.Field(

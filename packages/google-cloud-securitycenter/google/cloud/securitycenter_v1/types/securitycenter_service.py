@@ -23,6 +23,10 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.securitycenter_v1.types import (
+    bigquery_export,
+    effective_security_health_analytics_custom_module,
+)
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import (
     notification_config as gcs_notification_config,
@@ -30,9 +34,11 @@ from google.cloud.securitycenter_v1.types import (
 from google.cloud.securitycenter_v1.types import (
     organization_settings as gcs_organization_settings,
 )
+from google.cloud.securitycenter_v1.types import (
+    security_health_analytics_custom_module as gcs_security_health_analytics_custom_module,
+)
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1.types import asset as gcs_asset
-from google.cloud.securitycenter_v1.types import bigquery_export
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import folder
 from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
@@ -46,23 +52,33 @@ __protobuf__ = proto.module(
         "CreateFindingRequest",
         "CreateMuteConfigRequest",
         "CreateNotificationConfigRequest",
+        "CreateSecurityHealthAnalyticsCustomModuleRequest",
         "CreateSourceRequest",
         "DeleteMuteConfigRequest",
         "DeleteNotificationConfigRequest",
+        "DeleteSecurityHealthAnalyticsCustomModuleRequest",
         "GetBigQueryExportRequest",
         "GetMuteConfigRequest",
         "GetNotificationConfigRequest",
         "GetOrganizationSettingsRequest",
+        "GetEffectiveSecurityHealthAnalyticsCustomModuleRequest",
+        "GetSecurityHealthAnalyticsCustomModuleRequest",
         "GetSourceRequest",
         "GroupAssetsRequest",
         "GroupAssetsResponse",
         "GroupFindingsRequest",
         "GroupFindingsResponse",
         "GroupResult",
+        "ListDescendantSecurityHealthAnalyticsCustomModulesRequest",
+        "ListDescendantSecurityHealthAnalyticsCustomModulesResponse",
         "ListMuteConfigsRequest",
         "ListMuteConfigsResponse",
         "ListNotificationConfigsRequest",
         "ListNotificationConfigsResponse",
+        "ListEffectiveSecurityHealthAnalyticsCustomModulesRequest",
+        "ListEffectiveSecurityHealthAnalyticsCustomModulesResponse",
+        "ListSecurityHealthAnalyticsCustomModulesRequest",
+        "ListSecurityHealthAnalyticsCustomModulesResponse",
         "ListSourcesRequest",
         "ListSourcesResponse",
         "ListAssetsRequest",
@@ -77,6 +93,7 @@ __protobuf__ = proto.module(
         "UpdateMuteConfigRequest",
         "UpdateNotificationConfigRequest",
         "UpdateOrganizationSettingsRequest",
+        "UpdateSecurityHealthAnalyticsCustomModuleRequest",
         "UpdateSourceRequest",
         "UpdateSecurityMarksRequest",
         "CreateBigQueryExportRequest",
@@ -254,6 +271,36 @@ class CreateNotificationConfigRequest(proto.Message):
     )
 
 
+class CreateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
+    r"""Request message for creating security health analytics custom
+    modules.
+
+    Attributes:
+        parent (str):
+            Required. Resource name of the new custom
+            module's parent. Its format is
+            "organizations/{organization}/securityHealthAnalyticsSettings",
+            "folders/{folder}/securityHealthAnalyticsSettings",
+            or
+            "projects/{project}/securityHealthAnalyticsSettings".
+        security_health_analytics_custom_module (google.cloud.securitycenter_v1.types.SecurityHealthAnalyticsCustomModule):
+            Required. SecurityHealthAnalytics custom
+            module to create. The provided name is ignored
+            and reset with provided parent information and
+            server-generated ID.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    security_health_analytics_custom_module: gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    )
+
+
 class CreateSourceRequest(proto.Message):
     r"""Request message for creating a source.
 
@@ -305,6 +352,26 @@ class DeleteNotificationConfigRequest(proto.Message):
             "organizations/[organization_id]/notificationConfigs/[config_id]",
             "folders/[folder_id]/notificationConfigs/[config_id]", or
             "projects/[project_id]/notificationConfigs/[config_id]".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DeleteSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
+    r"""Request message for deleting security health analytics custom
+    modules.
+
+    Attributes:
+        name (str):
+            Required. Name of the custom module to
+            delete. Its format is
+            "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{customModule}",
+            "folders/{folder}/securityHealthAnalyticsSettings/customModules/{customModule}",
+            or
+            "projects/{project}/securityHealthAnalyticsSettings/customModules/{customModule}".
     """
 
     name: str = proto.Field(
@@ -374,6 +441,46 @@ class GetOrganizationSettingsRequest(proto.Message):
             Required. Name of the organization to get organization
             settings for. Its format is
             "organizations/[organization_id]/organizationSettings".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
+    r"""Request message for getting effective security health
+    analytics custom modules.
+
+    Attributes:
+        name (str):
+            Required. Name of the effective custom module
+            to get. Its format is
+            "organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}",
+            "folders/{folder}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}",
+            or
+            "projects/{project}/securityHealthAnalyticsSettings/effectiveCustomModules/{customModule}".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
+    r"""Request message for getting security health analytics custom
+    modules.
+
+    Attributes:
+        name (str):
+            Required. Name of the custom module to get.
+            Its format is
+            "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{customModule}",
+            "folders/{folder}/securityHealthAnalyticsSettings/customModules/{customModule}",
+            or
+            "projects/{project}/securityHealthAnalyticsSettings/customModules/{customModule}".
     """
 
     name: str = proto.Field(
@@ -895,6 +1002,71 @@ class GroupResult(proto.Message):
     )
 
 
+class ListDescendantSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
+    r"""Request message for listing descendant security health
+    analytics custom modules.
+
+    Attributes:
+        parent (str):
+            Required. Name of parent to list descendant
+            custom modules. Its format is
+            "organizations/{organization}/securityHealthAnalyticsSettings",
+            "folders/{folder}/securityHealthAnalyticsSettings",
+            or
+            "projects/{project}/securityHealthAnalyticsSettings".
+        page_size (int):
+            The maximum number of results to return in a
+            single response. Default is 10, minimum is 1,
+            maximum is 1000.
+        page_token (str):
+            The value returned by the last call
+            indicating a continuation
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListDescendantSecurityHealthAnalyticsCustomModulesResponse(proto.Message):
+    r"""Response message for listing descendant security health
+    analytics custom modules.
+
+    Attributes:
+        security_health_analytics_custom_modules (MutableSequence[google.cloud.securitycenter_v1.types.SecurityHealthAnalyticsCustomModule]):
+            Custom modules belonging to the requested
+            parent and its descendants.
+        next_page_token (str):
+            If not empty, indicates that there may be
+            more custom modules to be returned.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    security_health_analytics_custom_modules: MutableSequence[
+        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class ListMuteConfigsRequest(proto.Message):
     r"""Request message for listing  mute configs at a given scope
     e.g. organization, folder or project.
@@ -1016,6 +1188,136 @@ class ListNotificationConfigsResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message=gcs_notification_config.NotificationConfig,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
+    r"""Request message for listing effective security health
+    analytics custom modules.
+
+    Attributes:
+        parent (str):
+            Required. Name of parent to list effective
+            custom modules. Its format is
+            "organizations/{organization}/securityHealthAnalyticsSettings",
+            "folders/{folder}/securityHealthAnalyticsSettings",
+            or
+            "projects/{project}/securityHealthAnalyticsSettings".
+        page_size (int):
+            The maximum number of results to return in a
+            single response. Default is 10, minimum is 1,
+            maximum is 1000.
+        page_token (str):
+            The value returned by the last call
+            indicating a continuation
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(proto.Message):
+    r"""Response message for listing effective security health
+    analytics custom modules.
+
+    Attributes:
+        effective_security_health_analytics_custom_modules (MutableSequence[google.cloud.securitycenter_v1.types.EffectiveSecurityHealthAnalyticsCustomModule]):
+            Effective custom modules belonging to the
+            requested parent.
+        next_page_token (str):
+            If not empty, indicates that there may be
+            more effective custom modules to be returned.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    effective_security_health_analytics_custom_modules: MutableSequence[
+        effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
+    r"""Request message for listing security health analytics custom
+    modules.
+
+    Attributes:
+        parent (str):
+            Required. Name of parent to list custom
+            modules. Its format is
+            "organizations/{organization}/securityHealthAnalyticsSettings",
+            "folders/{folder}/securityHealthAnalyticsSettings",
+            or
+            "projects/{project}/securityHealthAnalyticsSettings".
+        page_size (int):
+            The maximum number of results to return in a
+            single response. Default is 10, minimum is 1,
+            maximum is 1000.
+        page_token (str):
+            The value returned by the last call
+            indicating a continuation
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListSecurityHealthAnalyticsCustomModulesResponse(proto.Message):
+    r"""Response message for listing security health analytics custom
+    modules.
+
+    Attributes:
+        security_health_analytics_custom_modules (MutableSequence[google.cloud.securitycenter_v1.types.SecurityHealthAnalyticsCustomModule]):
+            Custom modules belonging to the requested
+            parent.
+        next_page_token (str):
+            If not empty, indicates that there may be
+            more custom modules to be returned.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    security_health_analytics_custom_modules: MutableSequence[
+        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1934,6 +2236,30 @@ class UpdateOrganizationSettingsRequest(proto.Message):
         proto.MESSAGE,
         number=1,
         message=gcs_organization_settings.OrganizationSettings,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class UpdateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
+    r"""Request message for updating security health analytics custom
+    modules.
+
+    Attributes:
+        security_health_analytics_custom_module (google.cloud.securitycenter_v1.types.SecurityHealthAnalyticsCustomModule):
+            Required. The SecurityHealthAnalytics custom
+            module to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The list of fields to update.
+    """
+
+    security_health_analytics_custom_module: gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,

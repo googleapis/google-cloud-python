@@ -75,7 +75,13 @@ from google.cloud.securitycenter_v1.types import (
     contact_details,
     container,
     database,
+    effective_security_health_analytics_custom_module,
     exfiltration,
+)
+from google.cloud.securitycenter_v1.types import (
+    process,
+    run_asset_discovery_response,
+    security_health_analytics_custom_config,
 )
 from google.cloud.securitycenter_v1.types import (
     iam_binding,
@@ -85,13 +91,16 @@ from google.cloud.securitycenter_v1.types import (
     label,
     mitre_attack,
 )
-from google.cloud.securitycenter_v1.types import process, run_asset_discovery_response
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import (
     notification_config as gcs_notification_config,
 )
 from google.cloud.securitycenter_v1.types import (
     organization_settings as gcs_organization_settings,
+)
+from google.cloud.securitycenter_v1.types import security_health_analytics_custom_module
+from google.cloud.securitycenter_v1.types import (
+    security_health_analytics_custom_module as gcs_security_health_analytics_custom_module,
 )
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1.types import external_system
@@ -1004,6 +1013,327 @@ async def test_bulk_mute_findings_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest,
+        dict,
+    ],
+)
+def test_create_security_health_analytics_custom_module(
+    request_type, transport: str = "grpc"
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+            name="name_value",
+            display_name="display_name_value",
+            enablement_state=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED,
+            last_editor="last_editor_value",
+            ancestor_module="ancestor_module_value",
+        )
+        response = client.create_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    )
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.enablement_state
+        == gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED
+    )
+    assert response.last_editor == "last_editor_value"
+    assert response.ancestor_module == "ancestor_module_value"
+
+
+def test_create_security_health_analytics_custom_module_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        client.create_security_health_analytics_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_security_health_analytics_custom_module_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+                name="name_value",
+                display_name="display_name_value",
+                enablement_state=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED,
+                last_editor="last_editor_value",
+                ancestor_module="ancestor_module_value",
+            )
+        )
+        response = await client.create_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    )
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.enablement_state
+        == gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED
+    )
+    assert response.last_editor == "last_editor_value"
+    assert response.ancestor_module == "ancestor_module_value"
+
+
+@pytest.mark.asyncio
+async def test_create_security_health_analytics_custom_module_async_from_dict():
+    await test_create_security_health_analytics_custom_module_async(request_type=dict)
+
+
+def test_create_security_health_analytics_custom_module_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        call.return_value = (
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+        client.create_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_security_health_analytics_custom_module_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+        await client.create_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_security_health_analytics_custom_module_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_security_health_analytics_custom_module(
+            parent="parent_value",
+            security_health_analytics_custom_module=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+                name="name_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].security_health_analytics_custom_module
+        mock_val = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+            name="name_value"
+        )
+        assert arg == mock_val
+
+
+def test_create_security_health_analytics_custom_module_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_security_health_analytics_custom_module(
+            securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest(),
+            parent="parent_value",
+            security_health_analytics_custom_module=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+                name="name_value"
+            ),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_security_health_analytics_custom_module_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_security_health_analytics_custom_module(
+            parent="parent_value",
+            security_health_analytics_custom_module=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+                name="name_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].security_health_analytics_custom_module
+        mock_val = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+            name="name_value"
+        )
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_security_health_analytics_custom_module_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_security_health_analytics_custom_module(
+            securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest(),
+            parent="parent_value",
+            security_health_analytics_custom_module=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+                name="name_value"
+            ),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         securitycenter_service.CreateSourceRequest,
         dict,
     ],
@@ -1287,6 +1617,7 @@ def test_create_finding(request_type, transport: str = "grpc"):
             parent_display_name="parent_display_name_value",
             description="description_value",
             next_steps="next_steps_value",
+            module_name="module_name_value",
         )
         response = client.create_finding(request)
 
@@ -1311,6 +1642,7 @@ def test_create_finding(request_type, transport: str = "grpc"):
     assert response.parent_display_name == "parent_display_name_value"
     assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
+    assert response.module_name == "module_name_value"
 
 
 def test_create_finding_empty_call():
@@ -1362,6 +1694,7 @@ async def test_create_finding_async(
                 parent_display_name="parent_display_name_value",
                 description="description_value",
                 next_steps="next_steps_value",
+                module_name="module_name_value",
             )
         )
         response = await client.create_finding(request)
@@ -1387,6 +1720,7 @@ async def test_create_finding_async(
     assert response.parent_display_name == "parent_display_name_value"
     assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
+    assert response.module_name == "module_name_value"
 
 
 @pytest.mark.asyncio
@@ -2592,6 +2926,259 @@ async def test_delete_notification_config_flattened_error_async():
     with pytest.raises(ValueError):
         await client.delete_notification_config(
             securitycenter_service.DeleteNotificationConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest,
+        dict,
+    ],
+)
+def test_delete_security_health_analytics_custom_module(
+    request_type, transport: str = "grpc"
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_security_health_analytics_custom_module_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        client.delete_security_health_analytics_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_security_health_analytics_custom_module_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_security_health_analytics_custom_module_async_from_dict():
+    await test_delete_security_health_analytics_custom_module_async(request_type=dict)
+
+
+def test_delete_security_health_analytics_custom_module_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        call.return_value = None
+        client.delete_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_security_health_analytics_custom_module_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_security_health_analytics_custom_module_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_security_health_analytics_custom_module(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_security_health_analytics_custom_module_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_security_health_analytics_custom_module(
+            securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_security_health_analytics_custom_module_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_security_health_analytics_custom_module(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_security_health_analytics_custom_module_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_security_health_analytics_custom_module(
+            securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest(),
             name="name_value",
         )
 
@@ -3870,6 +4457,597 @@ async def test_get_organization_settings_flattened_error_async():
     with pytest.raises(ValueError):
         await client.get_organization_settings(
             securitycenter_service.GetOrganizationSettingsRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
+        dict,
+    ],
+)
+def test_get_effective_security_health_analytics_custom_module(
+    request_type, transport: str = "grpc"
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(
+            name="name_value",
+            enablement_state=effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule.EnablementState.ENABLED,
+            display_name="display_name_value",
+        )
+        response = client.get_effective_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule,
+    )
+    assert response.name == "name_value"
+    assert (
+        response.enablement_state
+        == effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule.EnablementState.ENABLED
+    )
+    assert response.display_name == "display_name_value"
+
+
+def test_get_effective_security_health_analytics_custom_module_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        client.get_effective_security_health_analytics_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_effective_security_health_analytics_custom_module_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(
+                name="name_value",
+                enablement_state=effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule.EnablementState.ENABLED,
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_effective_security_health_analytics_custom_module(
+            request
+        )
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule,
+    )
+    assert response.name == "name_value"
+    assert (
+        response.enablement_state
+        == effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule.EnablementState.ENABLED
+    )
+    assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_effective_security_health_analytics_custom_module_async_from_dict():
+    await test_get_effective_security_health_analytics_custom_module_async(
+        request_type=dict
+    )
+
+
+def test_get_effective_security_health_analytics_custom_module_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = (
+        securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
+    )
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        call.return_value = (
+            effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
+        )
+        client.get_effective_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_effective_security_health_analytics_custom_module_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = (
+        securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
+    )
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
+        )
+        await client.get_effective_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_effective_security_health_analytics_custom_module_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_effective_security_health_analytics_custom_module(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_effective_security_health_analytics_custom_module_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_effective_security_health_analytics_custom_module(
+            securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_effective_security_health_analytics_custom_module_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_effective_security_health_analytics_custom_module(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_effective_security_health_analytics_custom_module_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_effective_security_health_analytics_custom_module(
+            securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest,
+        dict,
+    ],
+)
+def test_get_security_health_analytics_custom_module(
+    request_type, transport: str = "grpc"
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_health_analytics_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+            name="name_value",
+            display_name="display_name_value",
+            enablement_state=security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED,
+            last_editor="last_editor_value",
+            ancestor_module="ancestor_module_value",
+        )
+        response = client.get_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    )
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.enablement_state
+        == security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED
+    )
+    assert response.last_editor == "last_editor_value"
+    assert response.ancestor_module == "ancestor_module_value"
+
+
+def test_get_security_health_analytics_custom_module_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_health_analytics_custom_module), "__call__"
+    ) as call:
+        client.get_security_health_analytics_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_security_health_analytics_custom_module_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_health_analytics_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+                name="name_value",
+                display_name="display_name_value",
+                enablement_state=security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED,
+                last_editor="last_editor_value",
+                ancestor_module="ancestor_module_value",
+            )
+        )
+        response = await client.get_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    )
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.enablement_state
+        == security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED
+    )
+    assert response.last_editor == "last_editor_value"
+    assert response.ancestor_module == "ancestor_module_value"
+
+
+@pytest.mark.asyncio
+async def test_get_security_health_analytics_custom_module_async_from_dict():
+    await test_get_security_health_analytics_custom_module_async(request_type=dict)
+
+
+def test_get_security_health_analytics_custom_module_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_health_analytics_custom_module), "__call__"
+    ) as call:
+        call.return_value = (
+            security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+        client.get_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_security_health_analytics_custom_module_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_health_analytics_custom_module), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+        await client.get_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_security_health_analytics_custom_module_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_health_analytics_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_security_health_analytics_custom_module(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_security_health_analytics_custom_module_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_security_health_analytics_custom_module(
+            securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_security_health_analytics_custom_module_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_security_health_analytics_custom_module), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_security_health_analytics_custom_module(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_security_health_analytics_custom_module_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_security_health_analytics_custom_module(
+            securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest(),
             name="name_value",
         )
 
@@ -5245,6 +6423,519 @@ async def test_list_assets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
+        securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
+        dict,
+    ],
+)
+def test_list_descendant_security_health_analytics_custom_modules(
+    request_type, transport: str = "grpc"
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_descendant_security_health_analytics_custom_modules(
+            request
+        )
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, pagers.ListDescendantSecurityHealthAnalyticsCustomModulesPager
+    )
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_descendant_security_health_analytics_custom_modules_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        client.list_descendant_security_health_analytics_custom_modules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_security_health_analytics_custom_modules_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = (
+            await client.list_descendant_security_health_analytics_custom_modules(
+                request
+            )
+        )
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, pagers.ListDescendantSecurityHealthAnalyticsCustomModulesAsyncPager
+    )
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_security_health_analytics_custom_modules_async_from_dict():
+    await test_list_descendant_security_health_analytics_custom_modules_async(
+        request_type=dict
+    )
+
+
+def test_list_descendant_security_health_analytics_custom_modules_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = (
+        securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
+    )
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        call.return_value = (
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
+        )
+        client.list_descendant_security_health_analytics_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_security_health_analytics_custom_modules_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = (
+        securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
+    )
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
+        )
+        await client.list_descendant_security_health_analytics_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_descendant_security_health_analytics_custom_modules_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_descendant_security_health_analytics_custom_modules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_descendant_security_health_analytics_custom_modules_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_descendant_security_health_analytics_custom_modules(
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_security_health_analytics_custom_modules_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = (
+            await client.list_descendant_security_health_analytics_custom_modules(
+                parent="parent_value",
+            )
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_security_health_analytics_custom_modules_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_descendant_security_health_analytics_custom_modules(
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_descendant_security_health_analytics_custom_modules_pager(
+    transport_name: str = "grpc",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_descendant_security_health_analytics_custom_modules(
+            request={}
+        )
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(
+                i,
+                security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+            )
+            for i in results
+        )
+
+
+def test_list_descendant_security_health_analytics_custom_modules_pages(
+    transport_name: str = "grpc",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(
+            client.list_descendant_security_health_analytics_custom_modules(
+                request={}
+            ).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_security_health_analytics_custom_modules_async_pager():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_security_health_analytics_custom_modules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = (
+            await client.list_descendant_security_health_analytics_custom_modules(
+                request={},
+            )
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(
+                i,
+                security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+            )
+            for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_descendant_security_health_analytics_custom_modules_async_pages():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_descendant_security_health_analytics_custom_modules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_descendant_security_health_analytics_custom_modules(
+                request={}
+            )
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         securitycenter_service.ListFindingsRequest,
         dict,
     ],
@@ -6488,6 +8179,997 @@ async def test_list_notification_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
+        securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
+        dict,
+    ],
+)
+def test_list_effective_security_health_analytics_custom_modules(
+    request_type, transport: str = "grpc"
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_effective_security_health_analytics_custom_modules(
+            request
+        )
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, pagers.ListEffectiveSecurityHealthAnalyticsCustomModulesPager
+    )
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_effective_security_health_analytics_custom_modules_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        client.list_effective_security_health_analytics_custom_modules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_effective_security_health_analytics_custom_modules_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_effective_security_health_analytics_custom_modules(
+            request
+        )
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, pagers.ListEffectiveSecurityHealthAnalyticsCustomModulesAsyncPager
+    )
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_effective_security_health_analytics_custom_modules_async_from_dict():
+    await test_list_effective_security_health_analytics_custom_modules_async(
+        request_type=dict
+    )
+
+
+def test_list_effective_security_health_analytics_custom_modules_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = (
+        securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
+    )
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        call.return_value = (
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
+        )
+        client.list_effective_security_health_analytics_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_effective_security_health_analytics_custom_modules_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = (
+        securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
+    )
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
+        )
+        await client.list_effective_security_health_analytics_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_effective_security_health_analytics_custom_modules_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_effective_security_health_analytics_custom_modules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_effective_security_health_analytics_custom_modules_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_effective_security_health_analytics_custom_modules(
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_effective_security_health_analytics_custom_modules_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_effective_security_health_analytics_custom_modules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_effective_security_health_analytics_custom_modules_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_effective_security_health_analytics_custom_modules(
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_effective_security_health_analytics_custom_modules_pager(
+    transport_name: str = "grpc",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_effective_security_health_analytics_custom_modules(
+            request={}
+        )
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(
+                i,
+                effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule,
+            )
+            for i in results
+        )
+
+
+def test_list_effective_security_health_analytics_custom_modules_pages(
+    transport_name: str = "grpc",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_security_health_analytics_custom_modules),
+        "__call__",
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(
+            client.list_effective_security_health_analytics_custom_modules(
+                request={}
+            ).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_effective_security_health_analytics_custom_modules_async_pager():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_security_health_analytics_custom_modules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = (
+            await client.list_effective_security_health_analytics_custom_modules(
+                request={},
+            )
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(
+                i,
+                effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule,
+            )
+            for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_effective_security_health_analytics_custom_modules_async_pages():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_security_health_analytics_custom_modules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_effective_security_health_analytics_custom_modules(
+                request={}
+            )
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest,
+        dict,
+    ],
+)
+def test_list_security_health_analytics_custom_modules(
+    request_type, transport: str = "grpc"
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_security_health_analytics_custom_modules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = client.list_security_health_analytics_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSecurityHealthAnalyticsCustomModulesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_security_health_analytics_custom_modules_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_security_health_analytics_custom_modules), "__call__"
+    ) as call:
+        client.list_security_health_analytics_custom_modules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_security_health_analytics_custom_modules_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_security_health_analytics_custom_modules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_security_health_analytics_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, pagers.ListSecurityHealthAnalyticsCustomModulesAsyncPager
+    )
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_security_health_analytics_custom_modules_async_from_dict():
+    await test_list_security_health_analytics_custom_modules_async(request_type=dict)
+
+
+def test_list_security_health_analytics_custom_modules_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_security_health_analytics_custom_modules), "__call__"
+    ) as call:
+        call.return_value = (
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse()
+        )
+        client.list_security_health_analytics_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_security_health_analytics_custom_modules_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_security_health_analytics_custom_modules), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse()
+        )
+        await client.list_security_health_analytics_custom_modules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_security_health_analytics_custom_modules_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_security_health_analytics_custom_modules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_security_health_analytics_custom_modules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_security_health_analytics_custom_modules_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_security_health_analytics_custom_modules(
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_security_health_analytics_custom_modules_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_security_health_analytics_custom_modules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_security_health_analytics_custom_modules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_security_health_analytics_custom_modules_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_security_health_analytics_custom_modules(
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_security_health_analytics_custom_modules_pager(
+    transport_name: str = "grpc",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_security_health_analytics_custom_modules), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_security_health_analytics_custom_modules(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(
+                i,
+                security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+            )
+            for i in results
+        )
+
+
+def test_list_security_health_analytics_custom_modules_pages(
+    transport_name: str = "grpc",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_security_health_analytics_custom_modules), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(
+            client.list_security_health_analytics_custom_modules(request={}).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_security_health_analytics_custom_modules_async_pager():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_security_health_analytics_custom_modules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_security_health_analytics_custom_modules(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(
+                i,
+                security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+            )
+            for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_security_health_analytics_custom_modules_async_pages():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_security_health_analytics_custom_modules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_security_health_analytics_custom_modules(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         securitycenter_service.ListSourcesRequest,
         dict,
     ],
@@ -7184,6 +9866,7 @@ def test_set_finding_state(request_type, transport: str = "grpc"):
             parent_display_name="parent_display_name_value",
             description="description_value",
             next_steps="next_steps_value",
+            module_name="module_name_value",
         )
         response = client.set_finding_state(request)
 
@@ -7208,6 +9891,7 @@ def test_set_finding_state(request_type, transport: str = "grpc"):
     assert response.parent_display_name == "parent_display_name_value"
     assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
+    assert response.module_name == "module_name_value"
 
 
 def test_set_finding_state_empty_call():
@@ -7263,6 +9947,7 @@ async def test_set_finding_state_async(
                 parent_display_name="parent_display_name_value",
                 description="description_value",
                 next_steps="next_steps_value",
+                module_name="module_name_value",
             )
         )
         response = await client.set_finding_state(request)
@@ -7288,6 +9973,7 @@ async def test_set_finding_state_async(
     assert response.parent_display_name == "parent_display_name_value"
     assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
+    assert response.module_name == "module_name_value"
 
 
 @pytest.mark.asyncio
@@ -7497,6 +10183,7 @@ def test_set_mute(request_type, transport: str = "grpc"):
             parent_display_name="parent_display_name_value",
             description="description_value",
             next_steps="next_steps_value",
+            module_name="module_name_value",
         )
         response = client.set_mute(request)
 
@@ -7521,6 +10208,7 @@ def test_set_mute(request_type, transport: str = "grpc"):
     assert response.parent_display_name == "parent_display_name_value"
     assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
+    assert response.module_name == "module_name_value"
 
 
 def test_set_mute_empty_call():
@@ -7571,6 +10259,7 @@ async def test_set_mute_async(
                 parent_display_name="parent_display_name_value",
                 description="description_value",
                 next_steps="next_steps_value",
+                module_name="module_name_value",
             )
         )
         response = await client.set_mute(request)
@@ -7596,6 +10285,7 @@ async def test_set_mute_async(
     assert response.parent_display_name == "parent_display_name_value"
     assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
+    assert response.module_name == "module_name_value"
 
 
 @pytest.mark.asyncio
@@ -8582,6 +11272,7 @@ def test_update_finding(request_type, transport: str = "grpc"):
             parent_display_name="parent_display_name_value",
             description="description_value",
             next_steps="next_steps_value",
+            module_name="module_name_value",
         )
         response = client.update_finding(request)
 
@@ -8606,6 +11297,7 @@ def test_update_finding(request_type, transport: str = "grpc"):
     assert response.parent_display_name == "parent_display_name_value"
     assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
+    assert response.module_name == "module_name_value"
 
 
 def test_update_finding_empty_call():
@@ -8657,6 +11349,7 @@ async def test_update_finding_async(
                 parent_display_name="parent_display_name_value",
                 description="description_value",
                 next_steps="next_steps_value",
+                module_name="module_name_value",
             )
         )
         response = await client.update_finding(request)
@@ -8682,6 +11375,7 @@ async def test_update_finding_async(
     assert response.parent_display_name == "parent_display_name_value"
     assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
+    assert response.module_name == "module_name_value"
 
 
 @pytest.mark.asyncio
@@ -9637,6 +12331,327 @@ async def test_update_organization_settings_flattened_error_async():
             organization_settings=gcs_organization_settings.OrganizationSettings(
                 name="name_value"
             ),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest,
+        dict,
+    ],
+)
+def test_update_security_health_analytics_custom_module(
+    request_type, transport: str = "grpc"
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+            name="name_value",
+            display_name="display_name_value",
+            enablement_state=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED,
+            last_editor="last_editor_value",
+            ancestor_module="ancestor_module_value",
+        )
+        response = client.update_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    )
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.enablement_state
+        == gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED
+    )
+    assert response.last_editor == "last_editor_value"
+    assert response.ancestor_module == "ancestor_module_value"
+
+
+def test_update_security_health_analytics_custom_module_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        client.update_security_health_analytics_custom_module()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_security_health_analytics_custom_module_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+                name="name_value",
+                display_name="display_name_value",
+                enablement_state=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED,
+                last_editor="last_editor_value",
+                ancestor_module="ancestor_module_value",
+            )
+        )
+        response = await client.update_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0]
+            == securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    )
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.enablement_state
+        == gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED
+    )
+    assert response.last_editor == "last_editor_value"
+    assert response.ancestor_module == "ancestor_module_value"
+
+
+@pytest.mark.asyncio
+async def test_update_security_health_analytics_custom_module_async_from_dict():
+    await test_update_security_health_analytics_custom_module_async(request_type=dict)
+
+
+def test_update_security_health_analytics_custom_module_field_headers():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest()
+
+    request.security_health_analytics_custom_module.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        call.return_value = (
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+        client.update_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "security_health_analytics_custom_module.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_security_health_analytics_custom_module_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest()
+
+    request.security_health_analytics_custom_module.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+        await client.update_security_health_analytics_custom_module(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "security_health_analytics_custom_module.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_security_health_analytics_custom_module_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_security_health_analytics_custom_module(
+            security_health_analytics_custom_module=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].security_health_analytics_custom_module
+        mock_val = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+            name="name_value"
+        )
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_security_health_analytics_custom_module_flattened_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_security_health_analytics_custom_module(
+            securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest(),
+            security_health_analytics_custom_module=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_security_health_analytics_custom_module_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_health_analytics_custom_module),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_security_health_analytics_custom_module(
+            security_health_analytics_custom_module=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].security_health_analytics_custom_module
+        mock_val = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+            name="name_value"
+        )
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_security_health_analytics_custom_module_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_security_health_analytics_custom_module(
+            securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest(),
+            security_health_analytics_custom_module=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -11640,6 +14655,382 @@ def test_bulk_mute_findings_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest,
+        dict,
+    ],
+)
+def test_create_security_health_analytics_custom_module_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/securityHealthAnalyticsSettings"}
+    request_init["security_health_analytics_custom_module"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "enablement_state": 1,
+        "update_time": {"seconds": 751, "nanos": 543},
+        "last_editor": "last_editor_value",
+        "ancestor_module": "ancestor_module_value",
+        "custom_config": {
+            "predicate": {
+                "expression": "expression_value",
+                "title": "title_value",
+                "description": "description_value",
+                "location": "location_value",
+            },
+            "custom_output": {
+                "properties": [{"name": "name_value", "value_expression": {}}]
+            },
+            "resource_selector": {
+                "resource_types": ["resource_types_value1", "resource_types_value2"]
+            },
+            "severity": 1,
+            "description": "description_value",
+            "recommendation": "recommendation_value",
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+            name="name_value",
+            display_name="display_name_value",
+            enablement_state=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED,
+            last_editor="last_editor_value",
+            ancestor_module="ancestor_module_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_security_health_analytics_custom_module(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    )
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.enablement_state
+        == gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED
+    )
+    assert response.last_editor == "last_editor_value"
+    assert response.ancestor_module == "ancestor_module_value"
+
+
+def test_create_security_health_analytics_custom_module_rest_required_fields(
+    request_type=securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_security_health_analytics_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_security_health_analytics_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_security_health_analytics_custom_module(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_security_health_analytics_custom_module_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_security_health_analytics_custom_module._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "securityHealthAnalyticsCustomModule",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_security_health_analytics_custom_module_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_create_security_health_analytics_custom_module",
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_create_security_health_analytics_custom_module",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest.pb(
+            securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.to_json(
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+
+        request = (
+            securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+
+        client.create_security_health_analytics_custom_module(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_security_health_analytics_custom_module_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/securityHealthAnalyticsSettings"}
+    request_init["security_health_analytics_custom_module"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "enablement_state": 1,
+        "update_time": {"seconds": 751, "nanos": 543},
+        "last_editor": "last_editor_value",
+        "ancestor_module": "ancestor_module_value",
+        "custom_config": {
+            "predicate": {
+                "expression": "expression_value",
+                "title": "title_value",
+                "description": "description_value",
+                "location": "location_value",
+            },
+            "custom_output": {
+                "properties": [{"name": "name_value", "value_expression": {}}]
+            },
+            "resource_selector": {
+                "resource_types": ["resource_types_value1", "resource_types_value2"]
+            },
+            "severity": 1,
+            "description": "description_value",
+            "recommendation": "recommendation_value",
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_security_health_analytics_custom_module(request)
+
+
+def test_create_security_health_analytics_custom_module_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "organizations/sample1/securityHealthAnalyticsSettings"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            security_health_analytics_custom_module=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+                name="name_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_security_health_analytics_custom_module(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/customModules"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_security_health_analytics_custom_module_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_security_health_analytics_custom_module(
+            securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest(),
+            parent="parent_value",
+            security_health_analytics_custom_module=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+                name="name_value"
+            ),
+        )
+
+
+def test_create_security_health_analytics_custom_module_rest_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         securitycenter_service.CreateSourceRequest,
         dict,
     ],
@@ -12076,6 +15467,7 @@ def test_create_finding_rest(request_type):
         },
         "iam_bindings": [{"action": 1, "role": "role_value", "member": "member_value"}],
         "next_steps": "next_steps_value",
+        "module_name": "module_name_value",
         "containers": [
             {
                 "name": "name_value",
@@ -12151,6 +15543,7 @@ def test_create_finding_rest(request_type):
             parent_display_name="parent_display_name_value",
             description="description_value",
             next_steps="next_steps_value",
+            module_name="module_name_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -12179,6 +15572,7 @@ def test_create_finding_rest(request_type):
     assert response.parent_display_name == "parent_display_name_value"
     assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
+    assert response.module_name == "module_name_value"
 
 
 def test_create_finding_rest_required_fields(
@@ -12488,6 +15882,7 @@ def test_create_finding_rest_bad_request(
         },
         "iam_bindings": [{"action": 1, "role": "role_value", "member": "member_value"}],
         "next_steps": "next_steps_value",
+        "module_name": "module_name_value",
         "containers": [
             {
                 "name": "name_value",
@@ -13773,6 +17168,279 @@ def test_delete_notification_config_rest_flattened_error(transport: str = "rest"
 
 
 def test_delete_notification_config_rest_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest,
+        dict,
+    ],
+)
+def test_delete_security_health_analytics_custom_module_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/securityHealthAnalyticsSettings/customModules/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_security_health_analytics_custom_module(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_security_health_analytics_custom_module_rest_required_fields(
+    request_type=securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_security_health_analytics_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_security_health_analytics_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_security_health_analytics_custom_module(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_security_health_analytics_custom_module_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_security_health_analytics_custom_module._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_security_health_analytics_custom_module_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_delete_security_health_analytics_custom_module",
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest.pb(
+            securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = (
+            securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_security_health_analytics_custom_module(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_security_health_analytics_custom_module_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/securityHealthAnalyticsSettings/customModules/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_security_health_analytics_custom_module(request)
+
+
+def test_delete_security_health_analytics_custom_module_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "organizations/sample1/securityHealthAnalyticsSettings/customModules/sample2"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_security_health_analytics_custom_module(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=organizations/*/securityHealthAnalyticsSettings/customModules/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_security_health_analytics_custom_module_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_security_health_analytics_custom_module(
+            securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_security_health_analytics_custom_module_rest_error():
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -15152,6 +18820,634 @@ def test_get_organization_settings_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
+        dict,
+    ],
+)
+def test_get_effective_security_health_analytics_custom_module_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/securityHealthAnalyticsSettings/effectiveCustomModules/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(
+            name="name_value",
+            enablement_state=effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule.EnablementState.ENABLED,
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_effective_security_health_analytics_custom_module(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule,
+    )
+    assert response.name == "name_value"
+    assert (
+        response.enablement_state
+        == effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule.EnablementState.ENABLED
+    )
+    assert response.display_name == "display_name_value"
+
+
+def test_get_effective_security_health_analytics_custom_module_rest_required_fields(
+    request_type=securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_effective_security_health_analytics_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_effective_security_health_analytics_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_effective_security_health_analytics_custom_module(
+                request
+            )
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_effective_security_health_analytics_custom_module_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_effective_security_health_analytics_custom_module._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_effective_security_health_analytics_custom_module_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_get_effective_security_health_analytics_custom_module",
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_get_effective_security_health_analytics_custom_module",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest.pb(
+            securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule.to_json(
+            effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
+        )
+
+        request = (
+            securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
+        )
+
+        client.get_effective_security_health_analytics_custom_module(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_effective_security_health_analytics_custom_module_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/securityHealthAnalyticsSettings/effectiveCustomModules/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_effective_security_health_analytics_custom_module(request)
+
+
+def test_get_effective_security_health_analytics_custom_module_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "organizations/sample1/securityHealthAnalyticsSettings/effectiveCustomModules/sample2"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_effective_security_health_analytics_custom_module(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=organizations/*/securityHealthAnalyticsSettings/effectiveCustomModules/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_effective_security_health_analytics_custom_module_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_effective_security_health_analytics_custom_module(
+            securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(),
+            name="name_value",
+        )
+
+
+def test_get_effective_security_health_analytics_custom_module_rest_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest,
+        dict,
+    ],
+)
+def test_get_security_health_analytics_custom_module_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/securityHealthAnalyticsSettings/customModules/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+            name="name_value",
+            display_name="display_name_value",
+            enablement_state=security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED,
+            last_editor="last_editor_value",
+            ancestor_module="ancestor_module_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_security_health_analytics_custom_module(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    )
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.enablement_state
+        == security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED
+    )
+    assert response.last_editor == "last_editor_value"
+    assert response.ancestor_module == "ancestor_module_value"
+
+
+def test_get_security_health_analytics_custom_module_rest_required_fields(
+    request_type=securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_security_health_analytics_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_security_health_analytics_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_security_health_analytics_custom_module(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_security_health_analytics_custom_module_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_security_health_analytics_custom_module._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_security_health_analytics_custom_module_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_get_security_health_analytics_custom_module",
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_get_security_health_analytics_custom_module",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = (
+            securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest.pb(
+                securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.to_json(
+            security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+
+        request = securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+
+        client.get_security_health_analytics_custom_module(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_security_health_analytics_custom_module_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/securityHealthAnalyticsSettings/customModules/sample2"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_security_health_analytics_custom_module(request)
+
+
+def test_get_security_health_analytics_custom_module_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "organizations/sample1/securityHealthAnalyticsSettings/customModules/sample2"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_security_health_analytics_custom_module(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=organizations/*/securityHealthAnalyticsSettings/customModules/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_security_health_analytics_custom_module_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_security_health_analytics_custom_module(
+            securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest(),
+            name="name_value",
+        )
+
+
+def test_get_security_health_analytics_custom_module_rest_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         securitycenter_service.GetSourceRequest,
         dict,
     ],
@@ -16353,6 +20649,400 @@ def test_list_assets_rest_pager(transport: str = "rest"):
 @pytest.mark.parametrize(
     "request_type",
     [
+        securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
+        dict,
+    ],
+)
+def test_list_descendant_security_health_analytics_custom_modules_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/securityHealthAnalyticsSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_descendant_security_health_analytics_custom_modules(
+            request
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, pagers.ListDescendantSecurityHealthAnalyticsCustomModulesPager
+    )
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_descendant_security_health_analytics_custom_modules_rest_required_fields(
+    request_type=securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_descendant_security_health_analytics_custom_modules._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_descendant_security_health_analytics_custom_modules._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_descendant_security_health_analytics_custom_modules(
+                request
+            )
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_descendant_security_health_analytics_custom_modules_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_descendant_security_health_analytics_custom_modules._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_descendant_security_health_analytics_custom_modules_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_list_descendant_security_health_analytics_custom_modules",
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_list_descendant_security_health_analytics_custom_modules",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest.pb(
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.to_json(
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
+        )
+
+        request = (
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
+        )
+
+        client.list_descendant_security_health_analytics_custom_modules(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_descendant_security_health_analytics_custom_modules_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/securityHealthAnalyticsSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_descendant_security_health_analytics_custom_modules(request)
+
+
+def test_list_descendant_security_health_analytics_custom_modules_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "organizations/sample1/securityHealthAnalyticsSettings"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_descendant_security_health_analytics_custom_modules(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/customModules:listDescendant"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_descendant_security_health_analytics_custom_modules_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_descendant_security_health_analytics_custom_modules(
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_descendant_security_health_analytics_custom_modules_rest_pager(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.to_json(
+                x
+            )
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "organizations/sample1/securityHealthAnalyticsSettings"
+        }
+
+        pager = client.list_descendant_security_health_analytics_custom_modules(
+            request=sample_request
+        )
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(
+                i,
+                security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+            )
+            for i in results
+        )
+
+        pages = list(
+            client.list_descendant_security_health_analytics_custom_modules(
+                request=sample_request
+            ).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         securitycenter_service.ListFindingsRequest,
         dict,
     ],
@@ -17355,6 +22045,796 @@ def test_list_notification_configs_rest_pager(transport: str = "rest"):
 @pytest.mark.parametrize(
     "request_type",
     [
+        securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
+        dict,
+    ],
+)
+def test_list_effective_security_health_analytics_custom_modules_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/securityHealthAnalyticsSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_effective_security_health_analytics_custom_modules(
+            request
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, pagers.ListEffectiveSecurityHealthAnalyticsCustomModulesPager
+    )
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_effective_security_health_analytics_custom_modules_rest_required_fields(
+    request_type=securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_effective_security_health_analytics_custom_modules._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_effective_security_health_analytics_custom_modules._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_effective_security_health_analytics_custom_modules(
+                request
+            )
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_effective_security_health_analytics_custom_modules_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_effective_security_health_analytics_custom_modules._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_effective_security_health_analytics_custom_modules_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_list_effective_security_health_analytics_custom_modules",
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_list_effective_security_health_analytics_custom_modules",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest.pb(
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.to_json(
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
+        )
+
+        request = (
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
+        )
+
+        client.list_effective_security_health_analytics_custom_modules(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_effective_security_health_analytics_custom_modules_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/securityHealthAnalyticsSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_effective_security_health_analytics_custom_modules(request)
+
+
+def test_list_effective_security_health_analytics_custom_modules_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "organizations/sample1/securityHealthAnalyticsSettings"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_effective_security_health_analytics_custom_modules(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/effectiveCustomModules"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_effective_security_health_analytics_custom_modules_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_effective_security_health_analytics_custom_modules(
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_effective_security_health_analytics_custom_modules_rest_pager(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(
+                effective_security_health_analytics_custom_modules=[
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                    effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.to_json(
+                x
+            )
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "organizations/sample1/securityHealthAnalyticsSettings"
+        }
+
+        pager = client.list_effective_security_health_analytics_custom_modules(
+            request=sample_request
+        )
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(
+                i,
+                effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule,
+            )
+            for i in results
+        )
+
+        pages = list(
+            client.list_effective_security_health_analytics_custom_modules(
+                request=sample_request
+            ).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest,
+        dict,
+    ],
+)
+def test_list_security_health_analytics_custom_modules_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/securityHealthAnalyticsSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = (
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_security_health_analytics_custom_modules(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSecurityHealthAnalyticsCustomModulesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_security_health_analytics_custom_modules_rest_required_fields(
+    request_type=securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_security_health_analytics_custom_modules._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_security_health_analytics_custom_modules._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_security_health_analytics_custom_modules(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_security_health_analytics_custom_modules_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_security_health_analytics_custom_modules._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_security_health_analytics_custom_modules_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_list_security_health_analytics_custom_modules",
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_list_security_health_analytics_custom_modules",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = (
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest.pb(
+                securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse.to_json(
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse()
+        )
+
+        request = (
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse()
+        )
+
+        client.list_security_health_analytics_custom_modules(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_security_health_analytics_custom_modules_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/securityHealthAnalyticsSettings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_security_health_analytics_custom_modules(request)
+
+
+def test_list_security_health_analytics_custom_modules_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "organizations/sample1/securityHealthAnalyticsSettings"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = (
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_security_health_analytics_custom_modules(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/customModules"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_security_health_analytics_custom_modules_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_security_health_analytics_custom_modules(
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_security_health_analytics_custom_modules_rest_pager(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="abc",
+            ),
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[],
+                next_page_token="def",
+            ),
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+                next_page_token="ghi",
+            ),
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(
+                security_health_analytics_custom_modules=[
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                    security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse.to_json(
+                x
+            )
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "organizations/sample1/securityHealthAnalyticsSettings"
+        }
+
+        pager = client.list_security_health_analytics_custom_modules(
+            request=sample_request
+        )
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(
+                i,
+                security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+            )
+            for i in results
+        )
+
+        pages = list(
+            client.list_security_health_analytics_custom_modules(
+                request=sample_request
+            ).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         securitycenter_service.ListSourcesRequest,
         dict,
     ],
@@ -17992,6 +23472,7 @@ def test_set_finding_state_rest(request_type):
             parent_display_name="parent_display_name_value",
             description="description_value",
             next_steps="next_steps_value",
+            module_name="module_name_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -18020,6 +23501,7 @@ def test_set_finding_state_rest(request_type):
     assert response.parent_display_name == "parent_display_name_value"
     assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
+    assert response.module_name == "module_name_value"
 
 
 def test_set_finding_state_rest_required_fields(
@@ -18300,6 +23782,7 @@ def test_set_mute_rest(request_type):
             parent_display_name="parent_display_name_value",
             description="description_value",
             next_steps="next_steps_value",
+            module_name="module_name_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -18328,6 +23811,7 @@ def test_set_mute_rest(request_type):
     assert response.parent_display_name == "parent_display_name_value"
     assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
+    assert response.module_name == "module_name_value"
 
 
 def test_set_mute_rest_required_fields(
@@ -19575,6 +25059,7 @@ def test_update_finding_rest(request_type):
         },
         "iam_bindings": [{"action": 1, "role": "role_value", "member": "member_value"}],
         "next_steps": "next_steps_value",
+        "module_name": "module_name_value",
         "containers": [
             {
                 "name": "name_value",
@@ -19650,6 +25135,7 @@ def test_update_finding_rest(request_type):
             parent_display_name="parent_display_name_value",
             description="description_value",
             next_steps="next_steps_value",
+            module_name="module_name_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -19678,6 +25164,7 @@ def test_update_finding_rest(request_type):
     assert response.parent_display_name == "parent_display_name_value"
     assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
+    assert response.module_name == "module_name_value"
 
 
 def test_update_finding_rest_required_fields(
@@ -19962,6 +25449,7 @@ def test_update_finding_rest_bad_request(
         },
         "iam_bindings": [{"action": 1, "role": "role_value", "member": "member_value"}],
         "next_steps": "next_steps_value",
+        "module_name": "module_name_value",
         "containers": [
             {
                 "name": "name_value",
@@ -21009,6 +26497,383 @@ def test_update_organization_settings_rest_flattened_error(transport: str = "res
 
 
 def test_update_organization_settings_rest_error():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest,
+        dict,
+    ],
+)
+def test_update_security_health_analytics_custom_module_rest(request_type):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "security_health_analytics_custom_module": {
+            "name": "organizations/sample1/securityHealthAnalyticsSettings/customModules/sample2"
+        }
+    }
+    request_init["security_health_analytics_custom_module"] = {
+        "name": "organizations/sample1/securityHealthAnalyticsSettings/customModules/sample2",
+        "display_name": "display_name_value",
+        "enablement_state": 1,
+        "update_time": {"seconds": 751, "nanos": 543},
+        "last_editor": "last_editor_value",
+        "ancestor_module": "ancestor_module_value",
+        "custom_config": {
+            "predicate": {
+                "expression": "expression_value",
+                "title": "title_value",
+                "description": "description_value",
+                "location": "location_value",
+            },
+            "custom_output": {
+                "properties": [{"name": "name_value", "value_expression": {}}]
+            },
+            "resource_selector": {
+                "resource_types": ["resource_types_value1", "resource_types_value2"]
+            },
+            "severity": 1,
+            "description": "description_value",
+            "recommendation": "recommendation_value",
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+            name="name_value",
+            display_name="display_name_value",
+            enablement_state=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED,
+            last_editor="last_editor_value",
+            ancestor_module="ancestor_module_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_security_health_analytics_custom_module(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    )
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert (
+        response.enablement_state
+        == gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.EnablementState.ENABLED
+    )
+    assert response.last_editor == "last_editor_value"
+    assert response.ancestor_module == "ancestor_module_value"
+
+
+def test_update_security_health_analytics_custom_module_rest_required_fields(
+    request_type=securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest,
+):
+    transport_class = transports.SecurityCenterRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_security_health_analytics_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_security_health_analytics_custom_module._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_security_health_analytics_custom_module(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_security_health_analytics_custom_module_rest_unset_required_fields():
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_security_health_analytics_custom_module._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(("updateMask",)) & set(("securityHealthAnalyticsCustomModule",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_security_health_analytics_custom_module_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.SecurityCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityCenterRestInterceptor(),
+    )
+    client = SecurityCenterClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_update_security_health_analytics_custom_module",
+    ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "pre_update_security_health_analytics_custom_module",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest.pb(
+            securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.to_json(
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+
+        request = (
+            securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+
+        client.update_security_health_analytics_custom_module(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_security_health_analytics_custom_module_rest_bad_request(
+    transport: str = "rest",
+    request_type=securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "security_health_analytics_custom_module": {
+            "name": "organizations/sample1/securityHealthAnalyticsSettings/customModules/sample2"
+        }
+    }
+    request_init["security_health_analytics_custom_module"] = {
+        "name": "organizations/sample1/securityHealthAnalyticsSettings/customModules/sample2",
+        "display_name": "display_name_value",
+        "enablement_state": 1,
+        "update_time": {"seconds": 751, "nanos": 543},
+        "last_editor": "last_editor_value",
+        "ancestor_module": "ancestor_module_value",
+        "custom_config": {
+            "predicate": {
+                "expression": "expression_value",
+                "title": "title_value",
+                "description": "description_value",
+                "location": "location_value",
+            },
+            "custom_output": {
+                "properties": [{"name": "name_value", "value_expression": {}}]
+            },
+            "resource_selector": {
+                "resource_types": ["resource_types_value1", "resource_types_value2"]
+            },
+            "severity": 1,
+            "description": "description_value",
+            "recommendation": "recommendation_value",
+        },
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_security_health_analytics_custom_module(request)
+
+
+def test_update_security_health_analytics_custom_module_rest_flattened():
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "security_health_analytics_custom_module": {
+                "name": "organizations/sample1/securityHealthAnalyticsSettings/customModules/sample2"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            security_health_analytics_custom_module=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_security_health_analytics_custom_module(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{security_health_analytics_custom_module.name=organizations/*/securityHealthAnalyticsSettings/customModules/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_security_health_analytics_custom_module_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_security_health_analytics_custom_module(
+            securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest(),
+            security_health_analytics_custom_module=gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_security_health_analytics_custom_module_rest_error():
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -22971,24 +28836,31 @@ def test_security_center_base_transport():
     # raise NotImplementedError.
     methods = (
         "bulk_mute_findings",
+        "create_security_health_analytics_custom_module",
         "create_source",
         "create_finding",
         "create_mute_config",
         "create_notification_config",
         "delete_mute_config",
         "delete_notification_config",
+        "delete_security_health_analytics_custom_module",
         "get_big_query_export",
         "get_iam_policy",
         "get_mute_config",
         "get_notification_config",
         "get_organization_settings",
+        "get_effective_security_health_analytics_custom_module",
+        "get_security_health_analytics_custom_module",
         "get_source",
         "group_assets",
         "group_findings",
         "list_assets",
+        "list_descendant_security_health_analytics_custom_modules",
         "list_findings",
         "list_mute_configs",
         "list_notification_configs",
+        "list_effective_security_health_analytics_custom_modules",
+        "list_security_health_analytics_custom_modules",
         "list_sources",
         "run_asset_discovery",
         "set_finding_state",
@@ -23000,6 +28872,7 @@ def test_security_center_base_transport():
         "update_mute_config",
         "update_notification_config",
         "update_organization_settings",
+        "update_security_health_analytics_custom_module",
         "update_source",
         "update_security_marks",
         "create_big_query_export",
@@ -23293,6 +29166,9 @@ def test_security_center_client_transport_session_collision(transport_name):
     session1 = client1.transport.bulk_mute_findings._session
     session2 = client2.transport.bulk_mute_findings._session
     assert session1 != session2
+    session1 = client1.transport.create_security_health_analytics_custom_module._session
+    session2 = client2.transport.create_security_health_analytics_custom_module._session
+    assert session1 != session2
     session1 = client1.transport.create_source._session
     session2 = client2.transport.create_source._session
     assert session1 != session2
@@ -23311,6 +29187,9 @@ def test_security_center_client_transport_session_collision(transport_name):
     session1 = client1.transport.delete_notification_config._session
     session2 = client2.transport.delete_notification_config._session
     assert session1 != session2
+    session1 = client1.transport.delete_security_health_analytics_custom_module._session
+    session2 = client2.transport.delete_security_health_analytics_custom_module._session
+    assert session1 != session2
     session1 = client1.transport.get_big_query_export._session
     session2 = client2.transport.get_big_query_export._session
     assert session1 != session2
@@ -23326,6 +29205,16 @@ def test_security_center_client_transport_session_collision(transport_name):
     session1 = client1.transport.get_organization_settings._session
     session2 = client2.transport.get_organization_settings._session
     assert session1 != session2
+    session1 = (
+        client1.transport.get_effective_security_health_analytics_custom_module._session
+    )
+    session2 = (
+        client2.transport.get_effective_security_health_analytics_custom_module._session
+    )
+    assert session1 != session2
+    session1 = client1.transport.get_security_health_analytics_custom_module._session
+    session2 = client2.transport.get_security_health_analytics_custom_module._session
+    assert session1 != session2
     session1 = client1.transport.get_source._session
     session2 = client2.transport.get_source._session
     assert session1 != session2
@@ -23338,6 +29227,13 @@ def test_security_center_client_transport_session_collision(transport_name):
     session1 = client1.transport.list_assets._session
     session2 = client2.transport.list_assets._session
     assert session1 != session2
+    session1 = (
+        client1.transport.list_descendant_security_health_analytics_custom_modules._session
+    )
+    session2 = (
+        client2.transport.list_descendant_security_health_analytics_custom_modules._session
+    )
+    assert session1 != session2
     session1 = client1.transport.list_findings._session
     session2 = client2.transport.list_findings._session
     assert session1 != session2
@@ -23346,6 +29242,16 @@ def test_security_center_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.list_notification_configs._session
     session2 = client2.transport.list_notification_configs._session
+    assert session1 != session2
+    session1 = (
+        client1.transport.list_effective_security_health_analytics_custom_modules._session
+    )
+    session2 = (
+        client2.transport.list_effective_security_health_analytics_custom_modules._session
+    )
+    assert session1 != session2
+    session1 = client1.transport.list_security_health_analytics_custom_modules._session
+    session2 = client2.transport.list_security_health_analytics_custom_modules._session
     assert session1 != session2
     session1 = client1.transport.list_sources._session
     session2 = client2.transport.list_sources._session
@@ -23379,6 +29285,9 @@ def test_security_center_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.update_organization_settings._session
     session2 = client2.transport.update_organization_settings._session
+    assert session1 != session2
+    session1 = client1.transport.update_security_health_analytics_custom_module._session
+    session2 = client2.transport.update_security_health_analytics_custom_module._session
     assert session1 != session2
     session1 = client1.transport.update_source._session
     session2 = client2.transport.update_source._session
@@ -23606,11 +29515,42 @@ def test_parse_big_query_export_path():
     assert expected == actual
 
 
-def test_external_system_path():
+def test_effective_security_health_analytics_custom_module_path():
     organization = "winkle"
-    source = "nautilus"
-    finding = "scallop"
-    externalsystem = "abalone"
+    effective_custom_module = "nautilus"
+    expected = "organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}".format(
+        organization=organization,
+        effective_custom_module=effective_custom_module,
+    )
+    actual = (
+        SecurityCenterClient.effective_security_health_analytics_custom_module_path(
+            organization, effective_custom_module
+        )
+    )
+    assert expected == actual
+
+
+def test_parse_effective_security_health_analytics_custom_module_path():
+    expected = {
+        "organization": "scallop",
+        "effective_custom_module": "abalone",
+    }
+    path = SecurityCenterClient.effective_security_health_analytics_custom_module_path(
+        **expected
+    )
+
+    # Check that the path construction is reversible.
+    actual = SecurityCenterClient.parse_effective_security_health_analytics_custom_module_path(
+        path
+    )
+    assert expected == actual
+
+
+def test_external_system_path():
+    organization = "squid"
+    source = "clam"
+    finding = "whelk"
+    externalsystem = "octopus"
     expected = "organizations/{organization}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}".format(
         organization=organization,
         source=source,
@@ -23625,10 +29565,10 @@ def test_external_system_path():
 
 def test_parse_external_system_path():
     expected = {
-        "organization": "squid",
-        "source": "clam",
-        "finding": "whelk",
-        "externalsystem": "octopus",
+        "organization": "oyster",
+        "source": "nudibranch",
+        "finding": "cuttlefish",
+        "externalsystem": "mussel",
     }
     path = SecurityCenterClient.external_system_path(**expected)
 
@@ -23638,9 +29578,9 @@ def test_parse_external_system_path():
 
 
 def test_finding_path():
-    organization = "oyster"
-    source = "nudibranch"
-    finding = "cuttlefish"
+    organization = "winkle"
+    source = "nautilus"
+    finding = "scallop"
     expected = (
         "organizations/{organization}/sources/{source}/findings/{finding}".format(
             organization=organization,
@@ -23654,9 +29594,9 @@ def test_finding_path():
 
 def test_parse_finding_path():
     expected = {
-        "organization": "mussel",
-        "source": "winkle",
-        "finding": "nautilus",
+        "organization": "abalone",
+        "source": "squid",
+        "finding": "clam",
     }
     path = SecurityCenterClient.finding_path(**expected)
 
@@ -23666,8 +29606,8 @@ def test_parse_finding_path():
 
 
 def test_mute_config_path():
-    organization = "scallop"
-    mute_config = "abalone"
+    organization = "whelk"
+    mute_config = "octopus"
     expected = "organizations/{organization}/muteConfigs/{mute_config}".format(
         organization=organization,
         mute_config=mute_config,
@@ -23678,8 +29618,8 @@ def test_mute_config_path():
 
 def test_parse_mute_config_path():
     expected = {
-        "organization": "squid",
-        "mute_config": "clam",
+        "organization": "oyster",
+        "mute_config": "nudibranch",
     }
     path = SecurityCenterClient.mute_config_path(**expected)
 
@@ -23689,8 +29629,8 @@ def test_parse_mute_config_path():
 
 
 def test_notification_config_path():
-    organization = "whelk"
-    notification_config = "octopus"
+    organization = "cuttlefish"
+    notification_config = "mussel"
     expected = (
         "organizations/{organization}/notificationConfigs/{notification_config}".format(
             organization=organization,
@@ -23705,8 +29645,8 @@ def test_notification_config_path():
 
 def test_parse_notification_config_path():
     expected = {
-        "organization": "oyster",
-        "notification_config": "nudibranch",
+        "organization": "winkle",
+        "notification_config": "nautilus",
     }
     path = SecurityCenterClient.notification_config_path(**expected)
 
@@ -23716,7 +29656,7 @@ def test_parse_notification_config_path():
 
 
 def test_organization_settings_path():
-    organization = "cuttlefish"
+    organization = "scallop"
     expected = "organizations/{organization}/organizationSettings".format(
         organization=organization,
     )
@@ -23726,7 +29666,7 @@ def test_organization_settings_path():
 
 def test_parse_organization_settings_path():
     expected = {
-        "organization": "mussel",
+        "organization": "abalone",
     }
     path = SecurityCenterClient.organization_settings_path(**expected)
 
@@ -23735,9 +29675,36 @@ def test_parse_organization_settings_path():
     assert expected == actual
 
 
+def test_security_health_analytics_custom_module_path():
+    organization = "squid"
+    custom_module = "clam"
+    expected = "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{custom_module}".format(
+        organization=organization,
+        custom_module=custom_module,
+    )
+    actual = SecurityCenterClient.security_health_analytics_custom_module_path(
+        organization, custom_module
+    )
+    assert expected == actual
+
+
+def test_parse_security_health_analytics_custom_module_path():
+    expected = {
+        "organization": "whelk",
+        "custom_module": "octopus",
+    }
+    path = SecurityCenterClient.security_health_analytics_custom_module_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SecurityCenterClient.parse_security_health_analytics_custom_module_path(
+        path
+    )
+    assert expected == actual
+
+
 def test_security_marks_path():
-    organization = "winkle"
-    asset = "nautilus"
+    organization = "oyster"
+    asset = "nudibranch"
     expected = "organizations/{organization}/assets/{asset}/securityMarks".format(
         organization=organization,
         asset=asset,
@@ -23748,8 +29715,8 @@ def test_security_marks_path():
 
 def test_parse_security_marks_path():
     expected = {
-        "organization": "scallop",
-        "asset": "abalone",
+        "organization": "cuttlefish",
+        "asset": "mussel",
     }
     path = SecurityCenterClient.security_marks_path(**expected)
 
@@ -23759,8 +29726,8 @@ def test_parse_security_marks_path():
 
 
 def test_source_path():
-    organization = "squid"
-    source = "clam"
+    organization = "winkle"
+    source = "nautilus"
     expected = "organizations/{organization}/sources/{source}".format(
         organization=organization,
         source=source,
@@ -23771,8 +29738,8 @@ def test_source_path():
 
 def test_parse_source_path():
     expected = {
-        "organization": "whelk",
-        "source": "octopus",
+        "organization": "scallop",
+        "source": "abalone",
     }
     path = SecurityCenterClient.source_path(**expected)
 
@@ -23782,8 +29749,8 @@ def test_parse_source_path():
 
 
 def test_topic_path():
-    project = "oyster"
-    topic = "nudibranch"
+    project = "squid"
+    topic = "clam"
     expected = "projects/{project}/topics/{topic}".format(
         project=project,
         topic=topic,
@@ -23794,8 +29761,8 @@ def test_topic_path():
 
 def test_parse_topic_path():
     expected = {
-        "project": "cuttlefish",
-        "topic": "mussel",
+        "project": "whelk",
+        "topic": "octopus",
     }
     path = SecurityCenterClient.topic_path(**expected)
 
@@ -23805,7 +29772,7 @@ def test_parse_topic_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -23815,7 +29782,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "nudibranch",
     }
     path = SecurityCenterClient.common_billing_account_path(**expected)
 
@@ -23825,7 +29792,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -23835,7 +29802,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "mussel",
     }
     path = SecurityCenterClient.common_folder_path(**expected)
 
@@ -23845,7 +29812,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -23855,7 +29822,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "nautilus",
     }
     path = SecurityCenterClient.common_organization_path(**expected)
 
@@ -23865,7 +29832,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -23875,7 +29842,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "abalone",
     }
     path = SecurityCenterClient.common_project_path(**expected)
 
@@ -23885,8 +29852,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -23897,8 +29864,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = SecurityCenterClient.common_location_path(**expected)
 

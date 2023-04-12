@@ -48,6 +48,10 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
+from google.cloud.securitycenter_v1.types import (
+    bigquery_export,
+    effective_security_health_analytics_custom_module,
+)
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import (
     notification_config as gcs_notification_config,
@@ -55,8 +59,11 @@ from google.cloud.securitycenter_v1.types import (
 from google.cloud.securitycenter_v1.types import (
     organization_settings as gcs_organization_settings,
 )
+from google.cloud.securitycenter_v1.types import security_health_analytics_custom_module
+from google.cloud.securitycenter_v1.types import (
+    security_health_analytics_custom_module as gcs_security_health_analytics_custom_module,
+)
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
-from google.cloud.securitycenter_v1.types import bigquery_export
 from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import mute_config
@@ -132,6 +139,14 @@ class SecurityCenterRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_security_health_analytics_custom_module(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_security_health_analytics_custom_module(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_source(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -152,11 +167,23 @@ class SecurityCenterRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_delete_security_health_analytics_custom_module(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_get_big_query_export(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_big_query_export(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_effective_security_health_analytics_custom_module(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_effective_security_health_analytics_custom_module(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -189,6 +216,14 @@ class SecurityCenterRestInterceptor:
                 return request, metadata
 
             def post_get_organization_settings(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_security_health_analytics_custom_module(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_security_health_analytics_custom_module(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -232,6 +267,22 @@ class SecurityCenterRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_descendant_security_health_analytics_custom_modules(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_descendant_security_health_analytics_custom_modules(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_effective_security_health_analytics_custom_modules(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_effective_security_health_analytics_custom_modules(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_findings(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -253,6 +304,14 @@ class SecurityCenterRestInterceptor:
                 return request, metadata
 
             def post_list_notification_configs(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_security_health_analytics_custom_modules(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_security_health_analytics_custom_modules(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -349,6 +408,14 @@ class SecurityCenterRestInterceptor:
                 return request, metadata
 
             def post_update_organization_settings(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_security_health_analytics_custom_module(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_security_health_analytics_custom_module(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -496,6 +563,33 @@ class SecurityCenterRestInterceptor:
         """
         return response
 
+    def pre_create_security_health_analytics_custom_module(
+        self,
+        request: securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for create_security_health_analytics_custom_module
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_create_security_health_analytics_custom_module(
+        self,
+        response: gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    ) -> gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule:
+        """Post-rpc interceptor for create_security_health_analytics_custom_module
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_source(
         self,
         request: securitycenter_service.CreateSourceRequest,
@@ -560,6 +654,21 @@ class SecurityCenterRestInterceptor:
         """
         return request, metadata
 
+    def pre_delete_security_health_analytics_custom_module(
+        self,
+        request: securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for delete_security_health_analytics_custom_module
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
     def pre_get_big_query_export(
         self,
         request: securitycenter_service.GetBigQueryExportRequest,
@@ -578,6 +687,33 @@ class SecurityCenterRestInterceptor:
         self, response: bigquery_export.BigQueryExport
     ) -> bigquery_export.BigQueryExport:
         """Post-rpc interceptor for get_big_query_export
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_effective_security_health_analytics_custom_module(
+        self,
+        request: securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for get_effective_security_health_analytics_custom_module
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_get_effective_security_health_analytics_custom_module(
+        self,
+        response: effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule,
+    ) -> effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule:
+        """Post-rpc interceptor for get_effective_security_health_analytics_custom_module
 
         Override in a subclass to manipulate the response
         after it is returned by the SecurityCenter server but before
@@ -672,6 +808,33 @@ class SecurityCenterRestInterceptor:
         self, response: organization_settings.OrganizationSettings
     ) -> organization_settings.OrganizationSettings:
         """Post-rpc interceptor for get_organization_settings
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_security_health_analytics_custom_module(
+        self,
+        request: securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for get_security_health_analytics_custom_module
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_get_security_health_analytics_custom_module(
+        self,
+        response: security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    ) -> security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule:
+        """Post-rpc interceptor for get_security_health_analytics_custom_module
 
         Override in a subclass to manipulate the response
         after it is returned by the SecurityCenter server but before
@@ -794,6 +957,60 @@ class SecurityCenterRestInterceptor:
         """
         return response
 
+    def pre_list_descendant_security_health_analytics_custom_modules(
+        self,
+        request: securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for list_descendant_security_health_analytics_custom_modules
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_list_descendant_security_health_analytics_custom_modules(
+        self,
+        response: securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
+    ) -> securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse:
+        """Post-rpc interceptor for list_descendant_security_health_analytics_custom_modules
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_effective_security_health_analytics_custom_modules(
+        self,
+        request: securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for list_effective_security_health_analytics_custom_modules
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_list_effective_security_health_analytics_custom_modules(
+        self,
+        response: securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
+    ) -> securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse:
+        """Post-rpc interceptor for list_effective_security_health_analytics_custom_modules
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_findings(
         self,
         request: securitycenter_service.ListFindingsRequest,
@@ -860,6 +1077,33 @@ class SecurityCenterRestInterceptor:
         self, response: securitycenter_service.ListNotificationConfigsResponse
     ) -> securitycenter_service.ListNotificationConfigsResponse:
         """Post-rpc interceptor for list_notification_configs
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_security_health_analytics_custom_modules(
+        self,
+        request: securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for list_security_health_analytics_custom_modules
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_list_security_health_analytics_custom_modules(
+        self,
+        response: securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse,
+    ) -> securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse:
+        """Post-rpc interceptor for list_security_health_analytics_custom_modules
 
         Override in a subclass to manipulate the response
         after it is returned by the SecurityCenter server but before
@@ -1144,6 +1388,33 @@ class SecurityCenterRestInterceptor:
         self, response: gcs_organization_settings.OrganizationSettings
     ) -> gcs_organization_settings.OrganizationSettings:
         """Post-rpc interceptor for update_organization_settings
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecurityCenter server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_security_health_analytics_custom_module(
+        self,
+        request: securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for update_security_health_analytics_custom_module
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecurityCenter server.
+        """
+        return request, metadata
+
+    def post_update_security_health_analytics_custom_module(
+        self,
+        response: gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    ) -> gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule:
+        """Post-rpc interceptor for update_security_health_analytics_custom_module
 
         Override in a subclass to manipulate the response
         after it is returned by the SecurityCenter server but before
@@ -2001,6 +2272,138 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_create_notification_config(resp)
             return resp
 
+    class _CreateSecurityHealthAnalyticsCustomModule(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("CreateSecurityHealthAnalyticsCustomModule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule:
+            r"""Call the create security health
+            analytics custom module method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest):
+                        The request object. Request message for creating security
+                    health analytics custom modules.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule:
+                        Represents an instance of a Security
+                    Health Analytics custom module,
+                    including its full module name, display
+                    name, enablement state, and last updated
+                    time. You can create a custom module at
+                    the organization, folder, or project
+                    level. Custom modules that you create at
+                    the organization or folder level are
+                    inherited by the child folders and
+                    projects.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/customModules",
+                    "body": "security_health_analytics_custom_module",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=folders/*/securityHealthAnalyticsSettings}/customModules",
+                    "body": "security_health_analytics_custom_module",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/securityHealthAnalyticsSettings}/customModules",
+                    "body": "security_health_analytics_custom_module",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_create_security_health_analytics_custom_module(
+                request, metadata
+            )
+            pb_request = securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = (
+                gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+            )
+            pb_resp = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = (
+                self._interceptor.post_create_security_health_analytics_custom_module(
+                    resp
+                )
+            )
+            return resp
+
     class _CreateSource(SecurityCenterRestStub):
         def __hash__(self):
             return hash("CreateSource")
@@ -2361,6 +2764,97 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _DeleteSecurityHealthAnalyticsCustomModule(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("DeleteSecurityHealthAnalyticsCustomModule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete security health
+            analytics custom module method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest):
+                        The request object. Request message for deleting security
+                    health analytics custom modules.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=organizations/*/securityHealthAnalyticsSettings/customModules/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=folders/*/securityHealthAnalyticsSettings/customModules/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/securityHealthAnalyticsSettings/customModules/*}",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_delete_security_health_analytics_custom_module(
+                request, metadata
+            )
+            pb_request = securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _GetBigQueryExport(SecurityCenterRestStub):
         def __hash__(self):
             return hash("GetBigQueryExport")
@@ -2458,6 +2952,130 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_big_query_export(resp)
+            return resp
+
+    class _GetEffectiveSecurityHealthAnalyticsCustomModule(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("GetEffectiveSecurityHealthAnalyticsCustomModule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule:
+            r"""Call the get effective security
+            health analytics custom module method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest):
+                        The request object. Request message for getting effective
+                    security health analytics custom
+                    modules.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule:
+                        An EffectiveSecurityHealthAnalyticsCustomModule is the
+                    representation of a Security Health Analytics custom
+                    module at a specified level of the resource hierarchy:
+                    organization, folder, or project. If a custom module is
+                    inherited from a parent organization or folder, the
+                    value of the ``enablementState`` property in
+                    EffectiveSecurityHealthAnalyticsCustomModule is set to
+                    the value that is effective in the parent, instead of
+                    ``INHERITED``. For example, if the module is enabled in
+                    a parent organization or folder, the effective
+                    enablement_state for the module in all child folders or
+                    projects is also ``enabled``.
+                    EffectiveSecurityHealthAnalyticsCustomModule is
+                    read-only.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=organizations/*/securityHealthAnalyticsSettings/effectiveCustomModules/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=folders/*/securityHealthAnalyticsSettings/effectiveCustomModules/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/securityHealthAnalyticsSettings/effectiveCustomModules/*}",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_get_effective_security_health_analytics_custom_module(
+                request, metadata
+            )
+            pb_request = securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = (
+                effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
+            )
+            pb_resp = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_effective_security_health_analytics_custom_module(
+                resp
+            )
             return resp
 
     class _GetIamPolicy(SecurityCenterRestStub):
@@ -2923,6 +3541,127 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_organization_settings(resp)
+            return resp
+
+    class _GetSecurityHealthAnalyticsCustomModule(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("GetSecurityHealthAnalyticsCustomModule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule:
+            r"""Call the get security health
+            analytics custom module method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest):
+                        The request object. Request message for getting security
+                    health analytics custom modules.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule:
+                        Represents an instance of a Security
+                    Health Analytics custom module,
+                    including its full module name, display
+                    name, enablement state, and last updated
+                    time. You can create a custom module at
+                    the organization, folder, or project
+                    level. Custom modules that you create at
+                    the organization or folder level are
+                    inherited by the child folders and
+                    projects.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=organizations/*/securityHealthAnalyticsSettings/customModules/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=folders/*/securityHealthAnalyticsSettings/customModules/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/securityHealthAnalyticsSettings/customModules/*}",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_get_security_health_analytics_custom_module(
+                request, metadata
+            )
+            pb_request = (
+                securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest.pb(
+                    request
+                )
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = (
+                security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+            )
+            pb_resp = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_security_health_analytics_custom_module(
+                resp
+            )
             return resp
 
     class _GetSource(SecurityCenterRestStub):
@@ -3427,6 +4166,232 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_list_big_query_exports(resp)
             return resp
 
+    class _ListDescendantSecurityHealthAnalyticsCustomModules(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("ListDescendantSecurityHealthAnalyticsCustomModules")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse:
+            r"""Call the list descendant security
+            health analytics custom modules method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest):
+                        The request object. Request message for listing
+                    descendant security health analytics
+                    custom modules.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse:
+                        Response message for listing
+                    descendant security health analytics
+                    custom modules.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/customModules:listDescendant",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=folders/*/securityHealthAnalyticsSettings}/customModules:listDescendant",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/securityHealthAnalyticsSettings}/customModules:listDescendant",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_list_descendant_security_health_analytics_custom_modules(
+                request, metadata
+            )
+            pb_request = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = (
+                securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
+            )
+            pb_resp = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_descendant_security_health_analytics_custom_modules(
+                resp
+            )
+            return resp
+
+    class _ListEffectiveSecurityHealthAnalyticsCustomModules(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("ListEffectiveSecurityHealthAnalyticsCustomModules")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse:
+            r"""Call the list effective security
+            health analytics custom modules method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest):
+                        The request object. Request message for listing effective
+                    security health analytics custom
+                    modules.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse:
+                        Response message for listing
+                    effective security health analytics
+                    custom modules.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/effectiveCustomModules",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=folders/*/securityHealthAnalyticsSettings}/effectiveCustomModules",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/securityHealthAnalyticsSettings}/effectiveCustomModules",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_list_effective_security_health_analytics_custom_modules(
+                request, metadata
+            )
+            pb_request = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = (
+                securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
+            )
+            pb_resp = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_effective_security_health_analytics_custom_modules(
+                resp
+            )
+            return resp
+
     class _ListFindings(SecurityCenterRestStub):
         def __hash__(self):
             return hash("ListFindings")
@@ -3722,6 +4687,117 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_notification_configs(resp)
+            return resp
+
+    class _ListSecurityHealthAnalyticsCustomModules(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("ListSecurityHealthAnalyticsCustomModules")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse:
+            r"""Call the list security health
+            analytics custom modules method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest):
+                        The request object. Request message for listing security
+                    health analytics custom modules.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse:
+                        Response message for listing security
+                    health analytics custom modules.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/customModules",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=folders/*/securityHealthAnalyticsSettings}/customModules",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/securityHealthAnalyticsSettings}/customModules",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_list_security_health_analytics_custom_modules(
+                request, metadata
+            )
+            pb_request = securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = (
+                securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse()
+            )
+            pb_resp = securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_security_health_analytics_custom_modules(
+                resp
+            )
             return resp
 
     class _ListSources(SecurityCenterRestStub):
@@ -5083,6 +6159,138 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_update_organization_settings(resp)
             return resp
 
+    class _UpdateSecurityHealthAnalyticsCustomModule(SecurityCenterRestStub):
+        def __hash__(self):
+            return hash("UpdateSecurityHealthAnalyticsCustomModule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule:
+            r"""Call the update security health
+            analytics custom module method over HTTP.
+
+                Args:
+                    request (~.securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest):
+                        The request object. Request message for updating security
+                    health analytics custom modules.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule:
+                        Represents an instance of a Security
+                    Health Analytics custom module,
+                    including its full module name, display
+                    name, enablement state, and last updated
+                    time. You can create a custom module at
+                    the organization, folder, or project
+                    level. Custom modules that you create at
+                    the organization or folder level are
+                    inherited by the child folders and
+                    projects.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{security_health_analytics_custom_module.name=organizations/*/securityHealthAnalyticsSettings/customModules/*}",
+                    "body": "security_health_analytics_custom_module",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{security_health_analytics_custom_module.name=folders/*/securityHealthAnalyticsSettings/customModules/*}",
+                    "body": "security_health_analytics_custom_module",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{security_health_analytics_custom_module.name=projects/*/securityHealthAnalyticsSettings/customModules/*}",
+                    "body": "security_health_analytics_custom_module",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_update_security_health_analytics_custom_module(
+                request, metadata
+            )
+            pb_request = securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = (
+                gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
+            )
+            pb_resp = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = (
+                self._interceptor.post_update_security_health_analytics_custom_module(
+                    resp
+                )
+            )
+            return resp
+
     class _UpdateSecurityMarks(SecurityCenterRestStub):
         def __hash__(self):
             return hash("UpdateSecurityMarks")
@@ -5367,6 +6575,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         return self._CreateNotificationConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_security_health_analytics_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest],
+        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateSecurityHealthAnalyticsCustomModule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_source(
         self,
     ) -> Callable[[securitycenter_service.CreateSourceRequest], gcs_source.Source]:
@@ -5403,6 +6622,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         return self._DeleteNotificationConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_security_health_analytics_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest],
+        empty_pb2.Empty,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteSecurityHealthAnalyticsCustomModule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_big_query_export(
         self,
     ) -> Callable[
@@ -5412,6 +6642,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBigQueryExport(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_effective_security_health_analytics_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest],
+        effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetEffectiveSecurityHealthAnalyticsCustomModule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_iam_policy(
@@ -5452,6 +6693,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOrganizationSettings(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_security_health_analytics_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest],
+        security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetSecurityHealthAnalyticsCustomModule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_source(
@@ -5506,6 +6758,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         return self._ListBigQueryExports(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_descendant_security_health_analytics_custom_modules(
+        self,
+    ) -> Callable[
+        [
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest
+        ],
+        securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListDescendantSecurityHealthAnalyticsCustomModules(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_effective_security_health_analytics_custom_modules(
+        self,
+    ) -> Callable[
+        [
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest
+        ],
+        securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListEffectiveSecurityHealthAnalyticsCustomModules(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_findings(
         self,
     ) -> Callable[
@@ -5537,6 +6815,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListNotificationConfigs(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_security_health_analytics_custom_modules(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest],
+        securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListSecurityHealthAnalyticsCustomModules(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_sources(
@@ -5655,6 +6944,17 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateOrganizationSettings(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_security_health_analytics_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest],
+        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateSecurityHealthAnalyticsCustomModule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_security_marks(
