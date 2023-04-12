@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.17.3](https://github.com/googleapis/google-auth-library-python/compare/v2.17.2...v2.17.3) (2023-04-12)
+
+
+### Bug Fixes
+
+* Add useEmailAzp claim for id token iam flow ([#1270](https://github.com/googleapis/google-auth-library-python/issues/1270)) ([7a9c6f2](https://github.com/googleapis/google-auth-library-python/commit/7a9c6f2d90688e57583437c0872eb12dc5b0d833))
+
 ## [2.17.2](https://github.com/googleapis/google-auth-library-python/compare/v2.17.1...v2.17.2) (2023-04-05)
 
 
