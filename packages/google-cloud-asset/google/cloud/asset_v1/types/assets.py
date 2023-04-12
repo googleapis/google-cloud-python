@@ -20,7 +20,7 @@ from typing import MutableMapping, MutableSequence
 import proto  # type: ignore
 
 from google.cloud.orgpolicy.v1 import orgpolicy_pb2  # type: ignore
-from google.cloud.osconfig_v1 import Inventory  # type: ignore
+from google.cloud.osconfig_v1.types import inventory
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.identity.accesscontextmanager.v1 import access_level_pb2  # type: ignore
 from google.identity.accesscontextmanager.v1 import access_policy_pb2  # type: ignore
@@ -214,7 +214,7 @@ class Asset(proto.Message):
             guide <https://cloud.google.com/vpc-service-controls/docs/overview>`__.
 
             This field is a member of `oneof`_ ``access_context_policy``.
-        os_inventory (google.cloud.osconfig.v1.Inventory):
+        os_inventory (google.cloud.osconfig_v1.types.Inventory):
             A representation of runtime OS Inventory information. See
             `this
             topic <https://cloud.google.com/compute/docs/instances/os-inventory-management>`__
@@ -287,10 +287,10 @@ class Asset(proto.Message):
         oneof="access_context_policy",
         message=service_perimeter_pb2.ServicePerimeter,
     )
-    os_inventory: Inventory = proto.Field(
+    os_inventory: inventory.Inventory = proto.Field(
         proto.MESSAGE,
         number=12,
-        message=Inventory,
+        message=inventory.Inventory,
     )
     related_assets: "RelatedAssets" = proto.Field(
         proto.MESSAGE,
