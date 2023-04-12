@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.20.0](https://github.com/googleapis/python-securitycenter/compare/v1.19.1...v1.20.0) (2023-04-12)
+
+
+### Features
+
+* Add Security Health Analytics (SHA) custom modules with Create, Get, List, Update, Delete ([#447](https://github.com/googleapis/python-securitycenter/issues/447)) ([ff0ec29](https://github.com/googleapis/python-securitycenter/commit/ff0ec2928e4730c8b3bbfc27a0ee339d0e3c8145))
+
 ## [1.19.1](https://github.com/googleapis/python-securitycenter/compare/v1.19.0...v1.19.1) (2023-03-23)
 
 
