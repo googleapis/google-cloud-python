@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.2](https://github.com/googleapis/python-video-transcoder/compare/v1.8.1...v1.8.2) (2023-04-12)
+
+
+### Documentation
+
+* **samples:** Remove restriction of JPEGs only for overlay images ([#299](https://github.com/googleapis/python-video-transcoder/issues/299)) ([a73bdbb](https://github.com/googleapis/python-video-transcoder/commit/a73bdbb1048d2cfacc80cef3db8fd135da2fcc35))
+* **samples:** Update captions code samples for display name and language ([10adada](https://github.com/googleapis/python-video-transcoder/commit/10adada9a3b4e0bbe37e2a1ba630f819916a78e0))
+
 ## [1.8.1](https://github.com/googleapis/python-video-transcoder/compare/v1.8.0...v1.8.1) (2023-03-23)
 
 
