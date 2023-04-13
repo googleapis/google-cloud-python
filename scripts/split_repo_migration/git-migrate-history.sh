@@ -15,10 +15,12 @@
 
 set -ex
 
+[[ "${BASH_SOURCE[0]}" != "${0}" ]] && EXIT=return || EXIT=exit
+
 if [ $# -lt 4 ]
 then
   echo "Usage: $0 <source-repo> <target-repo> <source-path> <target-path> [folders,to,skip] [files,to,keep] [branch-name]"
-  exit 1
+  $EXIT 1
 fi
 
 # source GitHub repository. format: <owner>/<repo>
@@ -41,24 +43,16 @@ KEEP_FILES=$6
 # override the HEAD branch name for the migration PR
 BRANCH=$7
 
-# Path for update script for migration postprocessing.
-UPDATE_SCRIPT=$8
-
-if [[ ! -z "${UPDATE_SCRIPT}" ]]
-then
-  UPDATE_SCRIPT=$(realpath "${UPDATE_SCRIPT}")
-fi
 
 if [[ -z "${BRANCH}" ]]
 then
   # default the branch name to be generated from the source repo name
   BRANCH=$(basename ${SOURCE_REPO})-migration
 fi
-echo "here"
 export FILTER_BRANCH_SQUELCH_WARNING=1
 
 # create a working directory
-WORKDIR=$(mktemp -d -t code-migration-XXXXXXXXXX)
+WORKDIR="$(mktemp -d -t code-migration-XXXXXXXXXX)"
 echo "Created working directory: ${WORKDIR}"
 
 pushd "${WORKDIR}"  # cd into workdir
@@ -81,7 +75,7 @@ fi
 if [[ ! -z "${IGNORE_FOLDERS}" ]]
 then
   echo "Ignoring folder: ${IGNORE_FOLDERS}"
-  mkdir -p ${WORKDIR}/filtered-source
+  mkdir -p "${WORKDIR}/filtered-source"
   FOLDERS=$(echo ${IGNORE_FOLDERS} | tr "," " ")
   # remove files/folders we don't want
   FILTER="(rm -rf ${FOLDERS} || true)"
@@ -131,15 +125,11 @@ git remote add --fetch migration ../source-repo
 git checkout -b "${BRANCH}"
 git merge --allow-unrelated-histories migration/main --no-edit
 
-if [[ ! -z "${UPDATE_SCRIPT}" ]]
-then
-  bash "${UPDATE_SCRIPT}"
-fi
 echo "Success"
 
 popd # back to workdir
 
-# Do a diff between source code split repl and migrated code.
+# Do a diff between source code split repo and migrated code.
 git clone "git@github.com:${SOURCE_REPO}.git" source-repo-validation  # Not ideal to clone again.
 rm -rf source-repo-validation/.git  # That folder is not needed for validation.
 
@@ -147,7 +137,7 @@ if diff -r target-repo/"${TARGET_PATH}" source-repo-validation; then
   echo "No diff"
 else
   echo "Diff non-empty"
-  exit 1
+  $EXIT 1
 fi
 
 pushd target-repo  # To target repo
