@@ -10,8 +10,6 @@ API Reference
 
     bigquery_data_exchange_v1beta1/services
     bigquery_data_exchange_v1beta1/types
-    common/services
-    common/types
 
 
 Changelog
