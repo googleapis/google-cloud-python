@@ -306,10 +306,13 @@ class CVSS(proto.Message):
                 No description available.
             ATTACK_COMPLEXITY_HIGH (2):
                 No description available.
+            ATTACK_COMPLEXITY_MEDIUM (3):
+                No description available.
         """
         ATTACK_COMPLEXITY_UNSPECIFIED = 0
         ATTACK_COMPLEXITY_LOW = 1
         ATTACK_COMPLEXITY_HIGH = 2
+        ATTACK_COMPLEXITY_MEDIUM = 3
 
     class Authentication(proto.Enum):
         r"""
@@ -389,11 +392,17 @@ class CVSS(proto.Message):
                 No description available.
             IMPACT_NONE (3):
                 No description available.
+            IMPACT_PARTIAL (4):
+                No description available.
+            IMPACT_COMPLETE (5):
+                No description available.
         """
         IMPACT_UNSPECIFIED = 0
         IMPACT_HIGH = 1
         IMPACT_LOW = 2
         IMPACT_NONE = 3
+        IMPACT_PARTIAL = 4
+        IMPACT_COMPLETE = 5
 
     base_score: float = proto.Field(
         proto.FLOAT,
