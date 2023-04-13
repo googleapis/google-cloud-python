@@ -762,6 +762,7 @@ def test_create_job(request_type, transport: str = "grpc"):
             output_uri="output_uri_value",
             state=resources.Job.ProcessingState.PENDING,
             ttl_after_completion_days=2670,
+            mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
             template_id="template_id_value",
         )
         response = client.create_job(request)
@@ -778,6 +779,7 @@ def test_create_job(request_type, transport: str = "grpc"):
     assert response.output_uri == "output_uri_value"
     assert response.state == resources.Job.ProcessingState.PENDING
     assert response.ttl_after_completion_days == 2670
+    assert response.mode == resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE
 
 
 def test_create_job_empty_call():
@@ -819,6 +821,7 @@ async def test_create_job_async(
                 output_uri="output_uri_value",
                 state=resources.Job.ProcessingState.PENDING,
                 ttl_after_completion_days=2670,
+                mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
             )
         )
         response = await client.create_job(request)
@@ -835,6 +838,7 @@ async def test_create_job_async(
     assert response.output_uri == "output_uri_value"
     assert response.state == resources.Job.ProcessingState.PENDING
     assert response.ttl_after_completion_days == 2670
+    assert response.mode == resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE
 
 
 @pytest.mark.asyncio
@@ -1441,6 +1445,7 @@ def test_get_job(request_type, transport: str = "grpc"):
             output_uri="output_uri_value",
             state=resources.Job.ProcessingState.PENDING,
             ttl_after_completion_days=2670,
+            mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
             template_id="template_id_value",
         )
         response = client.get_job(request)
@@ -1457,6 +1462,7 @@ def test_get_job(request_type, transport: str = "grpc"):
     assert response.output_uri == "output_uri_value"
     assert response.state == resources.Job.ProcessingState.PENDING
     assert response.ttl_after_completion_days == 2670
+    assert response.mode == resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE
 
 
 def test_get_job_empty_call():
@@ -1498,6 +1504,7 @@ async def test_get_job_async(
                 output_uri="output_uri_value",
                 state=resources.Job.ProcessingState.PENDING,
                 ttl_after_completion_days=2670,
+                mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
             )
         )
         response = await client.get_job(request)
@@ -1514,6 +1521,7 @@ async def test_get_job_async(
     assert response.output_uri == "output_uri_value"
     assert response.state == resources.Job.ProcessingState.PENDING
     assert response.ttl_after_completion_days == 2670
+    assert response.mode == resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE
 
 
 @pytest.mark.asyncio
@@ -3302,6 +3310,7 @@ def test_create_job_rest(request_type):
                 }
             ],
         },
+        "mode": 1,
     }
     request = request_type(**request_init)
 
@@ -3314,6 +3323,7 @@ def test_create_job_rest(request_type):
             output_uri="output_uri_value",
             state=resources.Job.ProcessingState.PENDING,
             ttl_after_completion_days=2670,
+            mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
             template_id="template_id_value",
         )
 
@@ -3334,6 +3344,7 @@ def test_create_job_rest(request_type):
     assert response.output_uri == "output_uri_value"
     assert response.state == resources.Job.ProcessingState.PENDING
     assert response.ttl_after_completion_days == 2670
+    assert response.mode == resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE
 
 
 def test_create_job_rest_required_fields(request_type=services.CreateJobRequest):
@@ -3721,6 +3732,7 @@ def test_create_job_rest_bad_request(
                 }
             ],
         },
+        "mode": 1,
     }
     request = request_type(**request_init)
 
@@ -4164,6 +4176,7 @@ def test_get_job_rest(request_type):
             output_uri="output_uri_value",
             state=resources.Job.ProcessingState.PENDING,
             ttl_after_completion_days=2670,
+            mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
             template_id="template_id_value",
         )
 
@@ -4184,6 +4197,7 @@ def test_get_job_rest(request_type):
     assert response.output_uri == "output_uri_value"
     assert response.state == resources.Job.ProcessingState.PENDING
     assert response.ttl_after_completion_days == 2670
+    assert response.mode == resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE
 
 
 def test_get_job_rest_required_fields(request_type=services.GetJobRequest):

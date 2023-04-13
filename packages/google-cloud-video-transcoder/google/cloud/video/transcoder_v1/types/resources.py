@@ -79,13 +79,10 @@ class Job(proto.Message):
             formats <https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>`__.
         template_id (str):
             Input only. Specify the ``template_id`` to use for
-            populating ``Job.config``. The default is ``preset/web-hd``.
+            populating ``Job.config``. The default is ``preset/web-hd``,
+            which is the only supported preset.
 
-            Preset Transcoder templates:
-
-            -  ``preset/{preset_id}``
-
-            -  User defined JobTemplate: ``{job_template_id}``
+            User defined JobTemplate: ``{job_template_id}``
 
             This field is a member of `oneof`_ ``job_config``.
         config (google.cloud.video.transcoder_v1.types.JobConfig):
@@ -114,6 +111,9 @@ class Job(proto.Message):
             Output only. An error object that describes the reason for
             the failure. This property is always present when ``state``
             is ``FAILED``.
+        mode (google.cloud.video.transcoder_v1.types.Job.ProcessingMode):
+            The processing mode of the job. The default is
+            ``PROCESSING_MODE_INTERACTIVE``.
     """
 
     class ProcessingState(proto.Enum):
@@ -138,6 +138,24 @@ class Job(proto.Message):
         RUNNING = 2
         SUCCEEDED = 3
         FAILED = 4
+
+    class ProcessingMode(proto.Enum):
+        r"""The processing mode of the job.
+
+        Values:
+            PROCESSING_MODE_UNSPECIFIED (0):
+                The job processing mode is not specified.
+            PROCESSING_MODE_INTERACTIVE (1):
+                The job processing mode is interactive mode.
+                Interactive job will either be ran or rejected
+                if quota does not allow for it.
+            PROCESSING_MODE_BATCH (2):
+                The job processing mode is batch mode.
+                Batch mode allows queuing of jobs.
+        """
+        PROCESSING_MODE_UNSPECIFIED = 0
+        PROCESSING_MODE_INTERACTIVE = 1
+        PROCESSING_MODE_BATCH = 2
 
     name: str = proto.Field(
         proto.STRING,
@@ -195,6 +213,11 @@ class Job(proto.Message):
         proto.MESSAGE,
         number=17,
         message=status_pb2.Status,
+    )
+    mode: ProcessingMode = proto.Field(
+        proto.ENUM,
+        number=20,
+        enum=ProcessingMode,
     )
 
 
@@ -785,13 +808,13 @@ class Overlay(proto.Message):
         )
 
     class Image(proto.Message):
-        r"""Overlaid jpeg image.
+        r"""Overlaid image.
 
         Attributes:
             uri (str):
-                Required. URI of the JPEG image in Cloud Storage. For
-                example, ``gs://bucket/inputs/image.jpeg``. JPEG is the only
-                supported image type.
+                Required. URI of the image in Cloud Storage. For example,
+                ``gs://bucket/inputs/image.png``. Only PNG and JPEG images
+                are supported.
             resolution (google.cloud.video.transcoder_v1.types.Overlay.NormalizedCoordinate):
                 Normalized image resolution, based on output video
                 resolution. Valid values: ``0.0``–``1.0``. To respect the
@@ -2047,9 +2070,11 @@ class AudioStream(proto.Message):
             The BCP-47 language code, such as ``en-US`` or ``sr-Latn``.
             For more information, see
             https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+            Not supported in MP4 files.
         display_name (str):
             The name for this particular audio stream
-            that will be added to the HLS/DASH manifest.
+            that will be added to the HLS/DASH manifest. Not
+            supported in MP4 files.
     """
 
     class AudioMapping(proto.Message):
@@ -2156,12 +2181,14 @@ class TextStream(proto.Message):
             The BCP-47 language code, such as ``en-US`` or ``sr-Latn``.
             For more information, see
             https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+            Not supported in MP4 files.
         mapping_ (MutableSequence[google.cloud.video.transcoder_v1.types.TextStream.TextMapping]):
             The mapping for the ``Job.edit_list`` atoms with text
             ``EditAtom.inputs``.
         display_name (str):
             The name for this particular text stream that
-            will be added to the HLS/DASH manifest.
+            will be added to the HLS/DASH manifest. Not
+            supported in MP4 files.
     """
 
     class TextMapping(proto.Message):
