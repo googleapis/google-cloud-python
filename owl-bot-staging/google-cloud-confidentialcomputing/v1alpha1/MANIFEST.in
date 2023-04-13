@@ -1,0 +1,2 @@
+recursive-include google/cloud/confidentialcomputing *.py
+recursive-include google/cloud/confidentialcomputing_v1alpha1 *.py
