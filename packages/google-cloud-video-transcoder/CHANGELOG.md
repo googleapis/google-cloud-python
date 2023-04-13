@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-video-transcoder/compare/v1.8.2...v1.9.0) (2023-04-13)
+
+
+### Features
+
+* Add support for batch processing mode ([#300](https://github.com/googleapis/python-video-transcoder/issues/300)) ([b1bbc0d](https://github.com/googleapis/python-video-transcoder/commit/b1bbc0dbd10ae60da462b0e50207da7e440cb86a))
+
 ## [1.8.2](https://github.com/googleapis/python-video-transcoder/compare/v1.8.1...v1.8.2) (2023-04-12)
 
 
