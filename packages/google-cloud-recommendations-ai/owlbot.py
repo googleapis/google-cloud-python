@@ -38,12 +38,6 @@ for library in s.get_staging_dirs(default_version):
         clean_up_generated_samples = False
     s.move([library], excludes=["**/gapic_version.py"])
 
-
-    s.replace(
-        library / "google/**/import_.py",
-        "gs://bucket/directory/\*\.json",
-        "``gs://bucket/directory/*.json``",
-    )
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
