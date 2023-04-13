@@ -407,7 +407,7 @@ def test_upload(mock_upload_file):
     files["document_1"] = "Document"
     converter_helpers._upload(files, gcs_output_path="gs://output/")
 
-    mock_upload_file.assert_called_with("output", "/document_1.json", "Document")
+    mock_upload_file.assert_called_with("output", "/document_1.json", "Document", None)
 
 
 def test_upload_with_format_error():

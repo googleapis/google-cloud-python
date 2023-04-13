@@ -26,13 +26,25 @@ from google.cloud import documentai_toolbox
 from google.cloud.documentai_toolbox import constants
 
 
-def _get_storage_client():
+def _get_storage_client(module: str = None):
     r"""Returns a Storage client with custom user agent header.
 
     Returns:
         storage.Client.
 
     """
+
+    if module:
+        user_agent = (
+            f"{constants.USER_AGENT_PRODUCT}/{documentai_toolbox.__version__}-{module}"
+        )
+
+        info = client_info.ClientInfo(
+            client_library_version=f"{documentai_toolbox.__version__}-{module}",
+            user_agent=user_agent,
+        )
+        return storage.Client(client_info=info)
+
     user_agent = f"{constants.USER_AGENT_PRODUCT}/{documentai_toolbox.__version__}"
 
     info = client_info.ClientInfo(
@@ -62,7 +74,7 @@ def get_bytes(gcs_bucket_name: str, gcs_prefix: str) -> List[bytes]:
     """
     result = []
 
-    storage_client = _get_storage_client()
+    storage_client = _get_storage_client(module="get-bytes")
     blob_list = storage_client.list_blobs(gcs_bucket_name, prefix=gcs_prefix)
 
     for blob in blob_list:
@@ -143,7 +155,7 @@ def list_gcs_document_tree(
     if file_check is not None:
         raise ValueError("gcs_prefix cannot contain file types")
 
-    storage_client = _get_storage_client()
+    storage_client = _get_storage_client(module="list-document")
     blob_list = storage_client.list_blobs(gcs_bucket_name, prefix=gcs_prefix)
 
     path_list: Dict[str, List[str]] = {}
@@ -227,7 +239,7 @@ def create_batches(
             f"Batch size must be less than {constants.BATCH_MAX_FILES}. You provided {batch_size}."
         )
 
-    storage_client = _get_storage_client()
+    storage_client = _get_storage_client(module="create-batches")
     blob_list = storage_client.list_blobs(gcs_bucket_name, prefix=gcs_prefix)
     batches: List[documentai.BatchDocumentsInputConfig] = []
     batch: List[documentai.GcsDocument] = []

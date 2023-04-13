@@ -214,6 +214,7 @@ def _get_bytes(
     annotation_file_prefix: str,
     config_file_prefix: str,
     config_path: str = None,
+    storage_client: storage.Client = None,
 ) -> List[bytes]:
     r"""Downloads documents and returns them as bytes.
 
@@ -233,8 +234,9 @@ def _get_bytes(
         List[bytes].
 
     """
+    if not storage_client:
+        storage_client = gcs_utilities._get_storage_client(module="get-bytes")
 
-    storage_client = gcs_utilities._get_storage_client()
     bucket = storage_client.bucket(bucket_name=bucket_name)
     blobs = storage_client.list_blobs(bucket_or_name=bucket_name, prefix=prefix)
 
@@ -273,6 +275,7 @@ def _upload_file(
     bucket_name: str,
     output_prefix: str,
     file: str,
+    storage_client: storage.Client = None,
 ) -> None:
     r"""Uploads the converted docproto to gcs.
 
@@ -288,7 +291,9 @@ def _upload_file(
         None.
 
     """
-    storage_client = gcs_utilities._get_storage_client()
+    if not storage_client:
+        storage_client = gcs_utilities._get_storage_client(module="upload-file")
+
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(output_prefix)
 
@@ -301,6 +306,7 @@ def _get_files(
     input_bucket: str,
     input_prefix: str,
     config_path: str = None,
+    storage_client: storage.Client = None,
 ):
     r"""Returns a list of Futures of documents as bytes.
 
@@ -340,6 +346,7 @@ def _get_files(
             "annotation",
             "config",
             config_path,
+            storage_client,
         )
         downloads.append(download)
 
@@ -399,7 +406,9 @@ def _get_docproto_files(
     return files, unique_types, did_not_convert
 
 
-def _upload(files: dict, gcs_output_path: str) -> None:
+def _upload(
+    files: dict, gcs_output_path: str, storage_client: storage.Client = None
+) -> None:
     r"""Upload converted document.proto to gcs location.
 
     Args:
@@ -440,6 +449,7 @@ def _upload(files: dict, gcs_output_path: str) -> None:
                 output_bucket,
                 f"{output_prefix}/{key}.json",
                 files[key],
+                storage_client,
             )
             uploads.append(upload)
 
@@ -495,7 +505,7 @@ def _convert_documents_with_config(
     if file_check:
         raise ValueError("gcs_prefix cannot contain file types")
 
-    storage_client = gcs_utilities._get_storage_client()
+    storage_client = gcs_utilities._get_storage_client(module="config-converter")
 
     blob_list = storage_client.list_blobs(input_bucket, prefix=input_prefix)
 
@@ -504,6 +514,7 @@ def _convert_documents_with_config(
         input_prefix=input_prefix,
         input_bucket=input_bucket,
         config_path=config_path,
+        storage_client=storage_client,
     )
 
     f, _ = futures.wait(downloads)
@@ -525,7 +536,7 @@ def _convert_documents_with_config(
         print(f"Did not convert {len(did_not_convert)} documents")
         print(did_not_convert)
 
-    _upload(files, gcs_output_path)
+    _upload(files, gcs_output_path, storage_client)
 
     print("-------- Finished Uploading --------")
     print("-------- Schema Information --------")
