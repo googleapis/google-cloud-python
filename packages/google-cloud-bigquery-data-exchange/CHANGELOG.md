@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.3](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.5.2...v0.5.3) (2023-04-13)
+
+
+### Bug Fixes
+
+* Remove `common` module ([#71](https://github.com/googleapis/python-bigquery-data-exchange/issues/71)) ([3bed959](https://github.com/googleapis/python-bigquery-data-exchange/commit/3bed9598d04e9c67e3ef3208d4ff5ff21b1779f6))
+
 ## [0.5.2](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.5.1...v0.5.2) (2023-03-23)
 
 
