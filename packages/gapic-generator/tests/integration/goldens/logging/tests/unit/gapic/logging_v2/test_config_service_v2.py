@@ -959,7 +959,11 @@ async def test_list_buckets_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_buckets(request={})).pages: # pragma: no branch
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in ( # pragma: no branch
+            await client.list_buckets(request={})
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
@@ -2165,7 +2169,11 @@ async def test_list_views_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_views(request={})).pages: # pragma: no branch
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in ( # pragma: no branch
+            await client.list_views(request={})
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
@@ -3203,7 +3211,11 @@ async def test_list_sinks_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_sinks(request={})).pages: # pragma: no branch
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in ( # pragma: no branch
+            await client.list_sinks(request={})
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
@@ -4662,7 +4674,11 @@ async def test_list_exclusions_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_exclusions(request={})).pages: # pragma: no branch
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in ( # pragma: no branch
+            await client.list_exclusions(request={})
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
