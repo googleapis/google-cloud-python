@@ -230,22 +230,6 @@ $RM -f ${PCC_SPLIT_PATH}
 ## END .pre-commit-config migration
 
 
-## START run post-processor #############################################
-IMAGE="gcr.io/cloud-devrel-public-resources/owlbot-python-mono-repo:latest"
-read -r -d '' NEWMESSAGE <<EOF
-optional: Consider generating the image "${IMAGE}" by running the following:
-
-  docker pull "${IMAGE}"
-  docker run --rm \\
-    --user $(id -u):$(id -g) \\
-    -v $(pwd):/workspace/google-cloud-python \\
-    -w /workspace/google-cloud-python \\
-    -e "DEFAULT_BRANCH=main" \\
-    "${IMAGE}"
-EOF
-MESSAGE="${MESSAGE}\n\n${NEWMESSAGE}"
-## END run pre-processor
-
 ## START commit changes #############################################
 echo "Committing changes locally"
 ${GIT} add .
