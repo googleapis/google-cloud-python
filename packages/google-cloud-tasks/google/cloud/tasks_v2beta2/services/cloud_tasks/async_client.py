@@ -282,7 +282,7 @@ class CloudTasksAsyncClient:
         Returns:
             google.cloud.tasks_v2beta2.services.cloud_tasks.pagers.ListQueuesAsyncPager:
                 Response message for
-                [ListQueues][google.cloud.tasks.v2beta2.CloudTasks.ListQueues].
+                   [ListQueues][google.cloud.tasks.v2beta2.CloudTasks.ListQueues].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1755,7 +1755,7 @@ class CloudTasksAsyncClient:
         Returns:
             google.cloud.tasks_v2beta2.services.cloud_tasks.pagers.ListTasksAsyncPager:
                 Response message for listing tasks using
-                [ListTasks][google.cloud.tasks.v2beta2.CloudTasks.ListTasks].
+                   [ListTasks][google.cloud.tasks.v2beta2.CloudTasks.ListTasks].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -2306,7 +2306,7 @@ class CloudTasksAsyncClient:
         Returns:
             google.cloud.tasks_v2beta2.types.LeaseTasksResponse:
                 Response message for leasing tasks using
-                [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks].
+                   [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks].
 
         """
         # Create or coerce a protobuf request object.
