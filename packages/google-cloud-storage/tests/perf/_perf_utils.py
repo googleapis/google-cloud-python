@@ -123,10 +123,14 @@ def convert_to_cloud_monitoring(bucket_name, results, workers):
     # thus results is structured as List[List[Dict[str, any]]].
     for result in results:
         for res in result:
+            # Only output successful benchmarking runs to cloud monitoring.
+            status = res.get("Status").pop()  # convert ["OK"] --> "OK"
+            if status != "OK":
+                continue
+
             range_read_size = res.get("RangeReadSize", 0)
             object_size = res.get("ObjectSize")
             elapsed_time_us = res.get("ElapsedTimeUs")
-            status = res.get("Status").pop()  # convert ["OK"] --> "OK"
 
             # Handle range reads and calculate throughput using range_read_size.
             if range_read_size > 0:
@@ -214,3 +218,17 @@ def get_min_max_size(object_size):
         min_size = int(split_sizes[0])
         max_size = int(split_sizes[1])
     return min_size, max_size
+
+
+class logCount(logging.Handler):
+    class LogType:
+        def __init__(self):
+            self.errors = 0
+
+    def __init__(self):
+        super().__init__()
+        self.count = self.LogType()
+
+    def emit(self, record):
+        if record.levelname == "ERROR":
+            self.count.errors += 1

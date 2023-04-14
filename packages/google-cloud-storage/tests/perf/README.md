@@ -6,12 +6,12 @@ This benchmarking script is used by Storage client library maintainers to benchm
 Currently the benchmarking runs a Write-1-Read-3 workload and measures the usual two QoS performance attributes, latency and throughput.
 
 ## Run example:
-This runs 10K iterations of Write-1-Read-3 on 5KiB to 16KiB files, and generates output to a default csv file `benchmarking<TIMESTAMP>.csv`:
+This runs 10K iterations of Write-1-Read-3 on 5KiB to 16KiB files, and generates output to a default csv file `output_bench<TIMESTAMP>.csv`:
 ```bash
 $ cd python-storage
 $ pip install -e . # install google.cloud.storage locally
 $ cd tests/perf
-$ python3 benchmarking.py --num_samples 10000 --max_size 16384
+$ python3 benchmarking.py --num_samples 10000 --object_size 5120..16384 --output_type csv
 ```
 
 ## CLI parameters

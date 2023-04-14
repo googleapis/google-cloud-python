@@ -17,6 +17,7 @@
 import argparse
 import logging
 import multiprocessing
+import sys
 
 from google.cloud import storage
 
@@ -30,7 +31,13 @@ PROFILE_RANGE_READ = "range"
 
 
 def main(args):
-    logging.info("Start benchmarking main script")
+    # Track error logging for BBMC reporting.
+    counter = _pu.logCount()
+    logging.basicConfig(
+        level=logging.ERROR,
+        handlers=[counter, logging.StreamHandler(sys.stderr)],
+    )
+
     # Create a storage bucket to run benchmarking.
     if args.project is not None:
         client = storage.Client(project=args.project)
@@ -74,6 +81,10 @@ def main(args):
 
     # Cleanup and delete blobs.
     _pu.cleanup_bucket(bucket)
+
+    # BBMC will not surface errors unless the process is terminated with a non zero code.
+    if counter.count.errors != 0:
+        sys.exit(1)
 
 
 if __name__ == "__main__":
