@@ -267,7 +267,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         def __hash__(self):
             return hash("{{method.name}}")
 
-        {% if not method.client_streaming %}
+        {% if method.http_options and not method.client_streaming %}
         {% if method.input.required_fields %}
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
         {% for req_field in method.input.required_fields if req_field.name in method.query_params %}
