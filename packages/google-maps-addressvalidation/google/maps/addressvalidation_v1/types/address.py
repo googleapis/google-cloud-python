@@ -42,8 +42,8 @@ class Address(proto.Message):
             formatting rules of the region where the address
             is located.
         postal_address (google.type.postal_address_pb2.PostalAddress):
-            The validated address represented as a postal
-            address.
+            The post-processed address represented as a
+            postal address.
         address_components (MutableSequence[google.maps.addressvalidation_v1.types.AddressComponent]):
             Unordered list. The individual address
             components of the formatted and corrected
