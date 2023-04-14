@@ -136,23 +136,21 @@ rm -rf source-repo-validation/.git  # That folder is not needed for validation.
 if diff -r target-repo/"${TARGET_PATH}" source-repo-validation; then
   echo "No diff"
 else
-  echo "Diff non-empty"
+  diff -r target-repo/"${TARGET_PATH}" source-repo-validation > "diff.txt"
+  echo "Diff non-empty. See ${WORKDIR}/diff.txt"
   $EXIT 1
 fi
 
 pushd target-repo  # To target repo
 
-# Uncomment this to push to branch and create a pull request.
-# BRANCH here is something like python-speech-migration.
+git push -u origin "${BRANCH}" --force
 
-# git push -u origin "${BRANCH}" --force  
-
-# # create pull request
-# if gh --help > /dev/null
-# then
-#   gh pr create --title "migrate code from ${SOURCE_REPO}"
-# else
-#   hub pull-request -m "migrate code from ${SOURCE_REPO}"
-# fi
+# create pull request
+if gh --help > /dev/null
+then
+  gh pr create --title "migrate code from ${SOURCE_REPO}"
+else
+  hub pull-request -m "migrate code from ${SOURCE_REPO}"
+fi
 
 popd

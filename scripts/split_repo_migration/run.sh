@@ -14,11 +14,13 @@
 # limitations under the License.
  
 set -e
- 
+
+[[ "${BASH_SOURCE[0]}" != "${0}" ]] && EXIT=return || EXIT=exit
+
 if [ $# -lt 2 ]
 then
   echo "Usage: $0 <split-repo-name> <target-path>"
-  exit 1
+  $EXIT 1
 fi
  
 # repo name (e.g. nodejs-asset)
@@ -29,7 +31,6 @@ ARTIFACT_NAME=$2
 ## Get the directory of the build script
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
  
-#export UPDATE_SCRIPT="${SCRIPT_DIR}/split-repo-post-process.sh"
 export PACKAGE_PATH="packages/${ARTIFACT_NAME}"
  
 # Args to migrate git
