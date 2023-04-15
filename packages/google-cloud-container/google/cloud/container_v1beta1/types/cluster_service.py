@@ -3719,7 +3719,16 @@ class AdditionalPodRangesConfig(proto.Message):
     r"""AdditionalPodRangesConfig is the configuration for additional
     pod secondary ranges supporting the ClusterUpdate message.
 
+    Attributes:
+        pod_range_names (MutableSequence[str]):
+            Name for pod secondary ipv4 range which has
+            the actual range defined ahead.
     """
+
+    pod_range_names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Operation(proto.Message):
