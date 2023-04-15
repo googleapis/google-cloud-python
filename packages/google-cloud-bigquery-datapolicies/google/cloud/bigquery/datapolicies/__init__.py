@@ -18,13 +18,13 @@ from google.cloud.bigquery.datapolicies import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.bigquery.datapolicies_v1beta1.services.data_policy_service.async_client import (
+from google.cloud.bigquery.datapolicies_v1.services.data_policy_service.async_client import (
     DataPolicyServiceAsyncClient,
 )
-from google.cloud.bigquery.datapolicies_v1beta1.services.data_policy_service.client import (
+from google.cloud.bigquery.datapolicies_v1.services.data_policy_service.client import (
     DataPolicyServiceClient,
 )
-from google.cloud.bigquery.datapolicies_v1beta1.types.datapolicy import (
+from google.cloud.bigquery.datapolicies_v1.types.datapolicy import (
     CreateDataPolicyRequest,
     DataMaskingPolicy,
     DataPolicy,
@@ -32,6 +32,7 @@ from google.cloud.bigquery.datapolicies_v1beta1.types.datapolicy import (
     GetDataPolicyRequest,
     ListDataPoliciesRequest,
     ListDataPoliciesResponse,
+    RenameDataPolicyRequest,
     UpdateDataPolicyRequest,
 )
 
@@ -45,5 +46,6 @@ __all__ = (
     "GetDataPolicyRequest",
     "ListDataPoliciesRequest",
     "ListDataPoliciesResponse",
+    "RenameDataPolicyRequest",
     "UpdateDataPolicyRequest",
 )

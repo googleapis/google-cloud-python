@@ -10,7 +10,7 @@
     "repo": "googleapis/python-bigquery-datapolicies",
     "distribution_name": "google-cloud-bigquery-datapolicies",
     "api_id": "bigquerydatapolicy.googleapis.com",
-    "default_version": "v1beta1",
+    "default_version": "v1",
     "codeowner_team": "",
     "api_shortname": "bigquerydatapolicy",
     "api_description": "Allows users to manage BigQuery data policies."
