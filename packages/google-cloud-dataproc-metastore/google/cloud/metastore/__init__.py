@@ -31,6 +31,7 @@ from google.cloud.metastore_v1.services.dataproc_metastore_federation.client imp
     DataprocMetastoreFederationClient,
 )
 from google.cloud.metastore_v1.types.metastore import (
+    AuxiliaryVersionConfig,
     Backup,
     CreateBackupRequest,
     CreateMetadataImportRequest,
@@ -60,6 +61,7 @@ from google.cloud.metastore_v1.types.metastore import (
     OperationMetadata,
     Restore,
     RestoreServiceRequest,
+    ScalingConfig,
     Secret,
     Service,
     TelemetryConfig,
@@ -82,6 +84,7 @@ __all__ = (
     "DataprocMetastoreAsyncClient",
     "DataprocMetastoreFederationClient",
     "DataprocMetastoreFederationAsyncClient",
+    "AuxiliaryVersionConfig",
     "Backup",
     "CreateBackupRequest",
     "CreateMetadataImportRequest",
@@ -111,6 +114,7 @@ __all__ = (
     "OperationMetadata",
     "Restore",
     "RestoreServiceRequest",
+    "ScalingConfig",
     "Secret",
     "Service",
     "TelemetryConfig",

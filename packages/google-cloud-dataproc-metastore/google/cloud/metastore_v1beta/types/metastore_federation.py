@@ -170,10 +170,6 @@ class BackendMetastore(proto.Message):
             federated. The formats of the relative resource names for
             the currently supported metastores are listed below:
 
-            -  Dataplex
-
-               -  ``projects/{project_id}/locations/{location}/lakes/{lake_id}``
-
             -  BigQuery
 
                -  ``projects/{project_id}``
@@ -191,12 +187,15 @@ class BackendMetastore(proto.Message):
         Values:
             METASTORE_TYPE_UNSPECIFIED (0):
                 The metastore type is not set.
+            DATAPLEX (1):
+                The backend metastore is Dataplex.
             BIGQUERY (2):
                 The backend metastore is BigQuery.
             DATAPROC_METASTORE (3):
                 The backend metastore is Dataproc Metastore.
         """
         METASTORE_TYPE_UNSPECIFIED = 0
+        DATAPLEX = 1
         BIGQUERY = 2
         DATAPROC_METASTORE = 3
 

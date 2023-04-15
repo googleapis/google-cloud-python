@@ -27,6 +27,7 @@ from .services.dataproc_metastore_federation import (
     DataprocMetastoreFederationClient,
 )
 from .types.metastore import (
+    AuxiliaryVersionConfig,
     Backup,
     CreateBackupRequest,
     CreateMetadataImportRequest,
@@ -56,6 +57,7 @@ from .types.metastore import (
     OperationMetadata,
     Restore,
     RestoreServiceRequest,
+    ScalingConfig,
     Secret,
     Service,
     TelemetryConfig,
@@ -76,6 +78,7 @@ from .types.metastore_federation import (
 __all__ = (
     "DataprocMetastoreAsyncClient",
     "DataprocMetastoreFederationAsyncClient",
+    "AuxiliaryVersionConfig",
     "BackendMetastore",
     "Backup",
     "CreateBackupRequest",
@@ -114,6 +117,7 @@ __all__ = (
     "OperationMetadata",
     "Restore",
     "RestoreServiceRequest",
+    "ScalingConfig",
     "Secret",
     "Service",
     "TelemetryConfig",

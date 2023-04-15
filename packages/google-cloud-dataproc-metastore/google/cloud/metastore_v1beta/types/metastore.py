@@ -44,6 +44,7 @@ __protobuf__ = proto.module(
         "MetadataExport",
         "Backup",
         "Restore",
+        "ScalingConfig",
         "ListServicesRequest",
         "ListServicesResponse",
         "GetServiceRequest",
@@ -162,6 +163,9 @@ class Service(proto.Message):
             The configuration specifying telemetry settings for the
             Dataproc Metastore service. If unspecified defaults to
             ``JSON``.
+        scaling_config (google.cloud.metastore_v1beta.types.ScalingConfig):
+            Scaling configuration of the metastore
+            service.
     """
 
     class State(proto.Enum):
@@ -361,6 +365,11 @@ class Service(proto.Message):
         proto.MESSAGE,
         number=23,
         message="TelemetryConfig",
+    )
+    scaling_config: "ScalingConfig" = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message="ScalingConfig",
     )
 
 
@@ -667,6 +676,10 @@ class NetworkConfig(proto.Message):
             Immutable. The consumer-side network
             configuration for the Dataproc Metastore
             instance.
+        custom_routes_enabled (bool):
+            Enables custom routes to be imported and
+            exported for the Dataproc Metastore service's
+            peered VPC network.
     """
 
     class Consumer(proto.Message):
@@ -708,6 +721,10 @@ class NetworkConfig(proto.Message):
         proto.MESSAGE,
         number=1,
         message=Consumer,
+    )
+    custom_routes_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 
@@ -1151,6 +1168,73 @@ class Restore(proto.Message):
     details: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+
+
+class ScalingConfig(proto.Message):
+    r"""Represents the scaling configuration of a metastore service.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instance_size (google.cloud.metastore_v1beta.types.ScalingConfig.InstanceSize):
+            An enum of readable instance sizes, with each instance size
+            mapping to a float value (e.g. InstanceSize.EXTRA_SMALL =
+            scaling_factor(0.1))
+
+            This field is a member of `oneof`_ ``scaling_model``.
+        scaling_factor (float):
+            Scaling factor, increments of 0.1 for values
+            less than 1.0, and increments of 1.0 for values
+            greater than 1.0.
+
+            This field is a member of `oneof`_ ``scaling_model``.
+    """
+
+    class InstanceSize(proto.Enum):
+        r"""Metastore instance sizes.
+
+        Values:
+            INSTANCE_SIZE_UNSPECIFIED (0):
+                Unspecified instance size
+            EXTRA_SMALL (1):
+                Extra small instance size, maps to a scaling
+                factor of 0.1.
+            SMALL (2):
+                Small instance size, maps to a scaling factor
+                of 0.5.
+            MEDIUM (3):
+                Medium instance size, maps to a scaling
+                factor of 1.0.
+            LARGE (4):
+                Large instance size, maps to a scaling factor
+                of 3.0.
+            EXTRA_LARGE (5):
+                Extra large instance size, maps to a scaling
+                factor of 6.0.
+        """
+        INSTANCE_SIZE_UNSPECIFIED = 0
+        EXTRA_SMALL = 1
+        SMALL = 2
+        MEDIUM = 3
+        LARGE = 4
+        EXTRA_LARGE = 5
+
+    instance_size: InstanceSize = proto.Field(
+        proto.ENUM,
+        number=1,
+        oneof="scaling_model",
+        enum=InstanceSize,
+    )
+    scaling_factor: float = proto.Field(
+        proto.FLOAT,
+        number=2,
+        oneof="scaling_model",
     )
 
 

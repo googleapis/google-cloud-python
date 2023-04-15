@@ -438,6 +438,12 @@ class DataprocMetastoreTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
     def delete_operation(
         self,
     ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:

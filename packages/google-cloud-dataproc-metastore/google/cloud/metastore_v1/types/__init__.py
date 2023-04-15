@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from .metastore import (
+    AuxiliaryVersionConfig,
     Backup,
     CreateBackupRequest,
     CreateMetadataImportRequest,
@@ -43,6 +44,7 @@ from .metastore import (
     OperationMetadata,
     Restore,
     RestoreServiceRequest,
+    ScalingConfig,
     Secret,
     Service,
     TelemetryConfig,
@@ -61,6 +63,7 @@ from .metastore_federation import (
 )
 
 __all__ = (
+    "AuxiliaryVersionConfig",
     "Backup",
     "CreateBackupRequest",
     "CreateMetadataImportRequest",
@@ -90,6 +93,7 @@ __all__ = (
     "OperationMetadata",
     "Restore",
     "RestoreServiceRequest",
+    "ScalingConfig",
     "Secret",
     "Service",
     "TelemetryConfig",

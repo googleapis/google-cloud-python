@@ -32,6 +32,7 @@ __protobuf__ = proto.module(
         "KerberosConfig",
         "Secret",
         "EncryptionConfig",
+        "AuxiliaryVersionConfig",
         "NetworkConfig",
         "TelemetryConfig",
         "MetadataManagementActivity",
@@ -39,6 +40,7 @@ __protobuf__ = proto.module(
         "MetadataExport",
         "Backup",
         "Restore",
+        "ScalingConfig",
         "ListServicesRequest",
         "ListServicesResponse",
         "GetServiceRequest",
@@ -145,6 +147,9 @@ class Service(proto.Message):
             The configuration specifying telemetry settings for the
             Dataproc Metastore service. If unspecified defaults to
             ``JSON``.
+        scaling_config (google.cloud.metastore_v1.types.ScalingConfig):
+            Scaling configuration of the metastore
+            service.
     """
 
     class State(proto.Enum):
@@ -340,6 +345,11 @@ class Service(proto.Message):
         number=23,
         message="TelemetryConfig",
     )
+    scaling_config: "ScalingConfig" = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message="ScalingConfig",
+    )
 
 
 class MaintenanceWindow(proto.Message):
@@ -387,6 +397,17 @@ class HiveMetastoreConfig(proto.Message):
             field's path (``hive_metastore_config.kerberos_config``) in
             the request's ``update_mask`` while omitting this field from
             the request's ``service``.
+        auxiliary_versions (MutableMapping[str, google.cloud.metastore_v1.types.AuxiliaryVersionConfig]):
+            A mapping of Hive metastore version to the auxiliary version
+            configuration. When specified, a secondary Hive metastore
+            service is created along with the primary service. All
+            auxiliary versions must be less than the service's primary
+            version. The key is the auxiliary service name and it must
+            match the regular expression `a-z <[-a-z0-9]*[a-z0-9]>`__?.
+            This means that the first character must be a lowercase
+            letter, and all the following characters must be hyphens,
+            lowercase letters, or digits, except the last character,
+            which cannot be a hyphen.
     """
 
     version: str = proto.Field(
@@ -402,6 +423,12 @@ class HiveMetastoreConfig(proto.Message):
         proto.MESSAGE,
         number=3,
         message="KerberosConfig",
+    )
+    auxiliary_versions: MutableMapping[str, "AuxiliaryVersionConfig"] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=5,
+        message="AuxiliaryVersionConfig",
     )
 
 
@@ -475,6 +502,44 @@ class EncryptionConfig(proto.Message):
     kms_key: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class AuxiliaryVersionConfig(proto.Message):
+    r"""Configuration information for the auxiliary service versions.
+
+    Attributes:
+        version (str):
+            The Hive metastore version of the auxiliary
+            service. It must be less than the primary Hive
+            metastore service's version.
+        config_overrides (MutableMapping[str, str]):
+            A mapping of Hive metastore configuration key-value pairs to
+            apply to the auxiliary Hive metastore (configured in
+            ``hive-site.xml``) in addition to the primary version's
+            overrides. If keys are present in both the auxiliary
+            version's overrides and the primary version's overrides, the
+            value from the auxiliary version's overrides takes
+            precedence.
+        network_config (google.cloud.metastore_v1.types.NetworkConfig):
+            Output only. The network configuration
+            contains the endpoint URI(s) of the auxiliary
+            Hive metastore service.
+    """
+
+    version: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    config_overrides: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+    network_config: "NetworkConfig" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="NetworkConfig",
     )
 
 
@@ -964,6 +1029,73 @@ class Restore(proto.Message):
     details: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+
+
+class ScalingConfig(proto.Message):
+    r"""Represents the scaling configuration of a metastore service.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instance_size (google.cloud.metastore_v1.types.ScalingConfig.InstanceSize):
+            An enum of readable instance sizes, with each instance size
+            mapping to a float value (e.g. InstanceSize.EXTRA_SMALL =
+            scaling_factor(0.1))
+
+            This field is a member of `oneof`_ ``scaling_model``.
+        scaling_factor (float):
+            Scaling factor, increments of 0.1 for values
+            less than 1.0, and increments of 1.0 for values
+            greater than 1.0.
+
+            This field is a member of `oneof`_ ``scaling_model``.
+    """
+
+    class InstanceSize(proto.Enum):
+        r"""Metastore instance sizes.
+
+        Values:
+            INSTANCE_SIZE_UNSPECIFIED (0):
+                Unspecified instance size
+            EXTRA_SMALL (1):
+                Extra small instance size, maps to a scaling
+                factor of 0.1.
+            SMALL (2):
+                Small instance size, maps to a scaling factor
+                of 0.5.
+            MEDIUM (3):
+                Medium instance size, maps to a scaling
+                factor of 1.0.
+            LARGE (4):
+                Large instance size, maps to a scaling factor
+                of 3.0.
+            EXTRA_LARGE (5):
+                Extra large instance size, maps to a scaling
+                factor of 6.0.
+        """
+        INSTANCE_SIZE_UNSPECIFIED = 0
+        EXTRA_SMALL = 1
+        SMALL = 2
+        MEDIUM = 3
+        LARGE = 4
+        EXTRA_LARGE = 5
+
+    instance_size: InstanceSize = proto.Field(
+        proto.ENUM,
+        number=1,
+        oneof="scaling_model",
+        enum=InstanceSize,
+    )
+    scaling_factor: float = proto.Field(
+        proto.FLOAT,
+        number=2,
+        oneof="scaling_model",
     )
 
 
