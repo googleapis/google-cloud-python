@@ -52,6 +52,7 @@ __protobuf__ = proto.module(
         "GetQueuedResourceRequest",
         "CreateQueuedResourceRequest",
         "DeleteQueuedResourceRequest",
+        "ResetQueuedResourceRequest",
         "ServiceIdentity",
         "GenerateServiceIdentityRequest",
         "GenerateServiceIdentityResponse",
@@ -638,6 +639,10 @@ class QueuedResource(proto.Message):
         state (google.cloud.tpu_v2alpha1.types.QueuedResourceState):
             Output only. State of the QueuedResource
             request.
+        reservation_name (str):
+            Name of the reservation in which the resource
+            should be provisioned. Format:
+            projects/{project}/locations/{zone}/reservations/{reservation}
     """
 
     class Tpu(proto.Message):
@@ -818,6 +823,10 @@ class QueuedResource(proto.Message):
         proto.MESSAGE,
         number=6,
         message="QueuedResourceState",
+    )
+    reservation_name: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 
@@ -1318,6 +1327,21 @@ class DeleteQueuedResourceRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class ResetQueuedResourceRequest(proto.Message):
+    r"""Request for
+    [ResetQueuedResource][google.cloud.tpu.v2alpha1.Tpu.ResetQueuedResource].
+
+    Attributes:
+        name (str):
+            Required. The name of the queued resource.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

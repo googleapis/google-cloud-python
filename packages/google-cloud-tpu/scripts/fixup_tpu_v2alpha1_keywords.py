@@ -53,6 +53,7 @@ class tpuCallTransformer(cst.CSTTransformer):
         'list_nodes': ('parent', 'page_size', 'page_token', ),
         'list_queued_resources': ('parent', 'page_size', 'page_token', ),
         'list_runtime_versions': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'reset_queued_resource': ('name', ),
         'simulate_maintenance_event': ('name', 'worker_ids', ),
         'start_node': ('name', ),
         'stop_node': ('name', ),

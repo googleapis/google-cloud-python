@@ -548,6 +548,34 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
         return self._stubs["delete_queued_resource"]
 
     @property
+    def reset_queued_resource(
+        self,
+    ) -> Callable[
+        [cloud_tpu.ResetQueuedResourceRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the reset queued resource method over gRPC.
+
+        Resets a QueuedResource TPU instance
+
+        Returns:
+            Callable[[~.ResetQueuedResourceRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "reset_queued_resource" not in self._stubs:
+            self._stubs["reset_queued_resource"] = self.grpc_channel.unary_unary(
+                "/google.cloud.tpu.v2alpha1.Tpu/ResetQueuedResource",
+                request_serializer=cloud_tpu.ResetQueuedResourceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["reset_queued_resource"]
+
+    @property
     def generate_service_identity(
         self,
     ) -> Callable[

@@ -80,6 +80,11 @@
                 "list_runtime_versions"
               ]
             },
+            "ResetQueuedResource": {
+              "methods": [
+                "reset_queued_resource"
+              ]
+            },
             "SimulateMaintenanceEvent": {
               "methods": [
                 "simulate_maintenance_event"
@@ -173,6 +178,11 @@
             "ListRuntimeVersions": {
               "methods": [
                 "list_runtime_versions"
+              ]
+            },
+            "ResetQueuedResource": {
+              "methods": [
+                "reset_queued_resource"
               ]
             },
             "SimulateMaintenanceEvent": {

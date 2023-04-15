@@ -179,6 +179,11 @@ class TpuTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.reset_queued_resource: gapic_v1.method.wrap_method(
+                self.reset_queued_resource,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.generate_service_identity: gapic_v1.method.wrap_method(
                 self.generate_service_identity,
                 default_timeout=None,
@@ -327,6 +332,15 @@ class TpuTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloud_tpu.DeleteQueuedResourceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def reset_queued_resource(
+        self,
+    ) -> Callable[
+        [cloud_tpu.ResetQueuedResourceRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
