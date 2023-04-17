@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.15.0](https://github.com/googleapis/python-cloudbuild/compare/v3.14.0...v3.15.0) (2023-04-17)
+
+
+### Features
+
+* **v1:** Update third party clodubuild.proto library to include git_source ([#400](https://github.com/googleapis/python-cloudbuild/issues/400)) ([4ae6238](https://github.com/googleapis/python-cloudbuild/commit/4ae6238bc2c15d5b92d14efda2042280f2872303))
+
 ## [3.14.0](https://github.com/googleapis/python-cloudbuild/compare/v3.13.0...v3.14.0) (2023-03-23)
 
 
