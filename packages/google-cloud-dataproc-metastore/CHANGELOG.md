@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/python-dataproc-metastore/compare/v1.10.1...v1.11.0) (2023-04-15)
+
+
+### Features
+
+* **v1:** Added Auxiliary Versions Config ([3035b4c](https://github.com/googleapis/python-dataproc-metastore/commit/3035b4cff43cc9ce62a03b1fa166260bc2aa7fbf))
+* **v1:** Added ScalingConfig ([3035b4c](https://github.com/googleapis/python-dataproc-metastore/commit/3035b4cff43cc9ce62a03b1fa166260bc2aa7fbf))
+* **v1alpa:** Added Dataplex and BQ metastore types for federation ([3035b4c](https://github.com/googleapis/python-dataproc-metastore/commit/3035b4cff43cc9ce62a03b1fa166260bc2aa7fbf))
+* **v1beta:** Added Dataplex and BQ metastore types for federation ([3035b4c](https://github.com/googleapis/python-dataproc-metastore/commit/3035b4cff43cc9ce62a03b1fa166260bc2aa7fbf))
+
 ## [1.10.1](https://github.com/googleapis/python-dataproc-metastore/compare/v1.10.0...v1.10.1) (2023-03-23)
 
 
