@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-notebooks/compare/v1.6.1...v1.7.0) (2023-04-14)
+
+
+### Features
+
+* **v1beta1:** Enable "rest" transport in Python for services supporting numeric enums ([5c1ef22](https://github.com/googleapis/python-notebooks/commit/5c1ef225177d7d5705be9b6e142572d6ebf9e9ea))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#231](https://github.com/googleapis/python-notebooks/issues/231)) ([2722796](https://github.com/googleapis/python-notebooks/commit/272279664b99670d2a105db8bf40b3089428896f))
+
 ## [1.6.1](https://github.com/googleapis/python-notebooks/compare/v1.6.0...v1.6.1) (2023-01-20)
 
 
