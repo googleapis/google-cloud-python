@@ -1,5 +1,5 @@
 backoff==2.2.1
 pytest==7.3.1
-mock==5.0.1
+mock==5.0.2
 flaky==3.7.0
 google-cloud-bigquery==3.9.0
