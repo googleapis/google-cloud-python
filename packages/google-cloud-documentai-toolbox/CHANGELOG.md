@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.5.0-alpha...v0.6.0-alpha) (2023-04-17)
+
+
+### Features
+
+* Add blocks to PageWrapper ([#107](https://github.com/googleapis/python-documentai-toolbox/issues/107)) ([df7dfe7](https://github.com/googleapis/python-documentai-toolbox/commit/df7dfe7b79d39010d5addb3fa861a9c803caae45))
+* Added `form_fields_to_bigquery()` method ([#104](https://github.com/googleapis/python-documentai-toolbox/issues/104)) ([96abe22](https://github.com/googleapis/python-documentai-toolbox/commit/96abe220c9909bcc5642ea146c06fd082a2f8009))
+
 ## [0.5.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.4.1-alpha...v0.5.0-alpha) (2023-04-07)
 
 
