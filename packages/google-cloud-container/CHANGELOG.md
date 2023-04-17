@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.21.0](https://github.com/googleapis/python-container/compare/v2.20.0...v2.21.0) (2023-04-15)
+
+
+### Features
+
+* Add support for updating additional pod IPv4 ranges for Standard and Autopilot clusters ([#367](https://github.com/googleapis/python-container/issues/367)) ([533b4f9](https://github.com/googleapis/python-container/commit/533b4f91a9175cbd9bf892b93a38b283316f272d))
+
 ## [2.20.0](https://github.com/googleapis/python-container/compare/v2.19.0...v2.20.0) (2023-04-11)
 
 
