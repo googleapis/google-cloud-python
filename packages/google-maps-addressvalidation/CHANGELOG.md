@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.2...google-maps-addressvalidation-v0.3.3) (2023-04-15)
+
+
+### Documentation
+
+* Update description of the postal address ([#11066](https://github.com/googleapis/google-cloud-python/issues/11066)) ([a0b1149](https://github.com/googleapis/google-cloud-python/commit/a0b11490ea6488d725a4738fdaa63e98947f8528))
+
 ## [0.3.2](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.1...google-maps-addressvalidation-v0.3.2) (2023-04-11)
 
 
