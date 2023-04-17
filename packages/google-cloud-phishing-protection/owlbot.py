@@ -38,13 +38,6 @@ for library in s.get_staging_dirs(default_version):
     s.move([library], excludes=["**/gapic_version.py"])
 s.remove_staging_dirs()
 
-# This replacement will no longer be required once this repo is migrated to google-cloud-python
-s.replace(
-    "setup.py",
-    "https://github.com/googleapis/python-phishing-protection",
-    "https://github.com/googleapis/python-phishingprotection",
-)
-
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
