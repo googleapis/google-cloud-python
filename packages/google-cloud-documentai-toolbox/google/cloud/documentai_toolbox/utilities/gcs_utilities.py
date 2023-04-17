@@ -26,33 +26,32 @@ from google.cloud import documentai_toolbox
 from google.cloud.documentai_toolbox import constants
 
 
-def _get_storage_client(module: str = None):
+def _get_client_info(module: str = None) -> client_info.ClientInfo:
+    r"""Returns a custom user agent header.
+
+    Returns:
+        client_info.ClientInfo.
+
+    """
+    client_library_version = documentai_toolbox.__version__
+
+    if module:
+        client_library_version = f"{client_library_version}-{module}"
+
+    return client_info.ClientInfo(
+        client_library_version=client_library_version,
+        user_agent=f"{constants.USER_AGENT_PRODUCT}/{client_library_version}",
+    )
+
+
+def _get_storage_client(module: str = None) -> storage.Client:
     r"""Returns a Storage client with custom user agent header.
 
     Returns:
         storage.Client.
 
     """
-
-    if module:
-        user_agent = (
-            f"{constants.USER_AGENT_PRODUCT}/{documentai_toolbox.__version__}-{module}"
-        )
-
-        info = client_info.ClientInfo(
-            client_library_version=f"{documentai_toolbox.__version__}-{module}",
-            user_agent=user_agent,
-        )
-        return storage.Client(client_info=info)
-
-    user_agent = f"{constants.USER_AGENT_PRODUCT}/{documentai_toolbox.__version__}"
-
-    info = client_info.ClientInfo(
-        client_library_version=documentai_toolbox.__version__,
-        user_agent=user_agent,
-    )
-
-    return storage.Client(client_info=info)
+    return storage.Client(client_info=_get_client_info(module))
 
 
 def get_bytes(gcs_bucket_name: str, gcs_prefix: str) -> List[bytes]:

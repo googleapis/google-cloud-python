@@ -234,6 +234,106 @@ def _get_batch_process_metadata(
     return metadata
 
 
+def _insert_into_dictionary_with_list(dic: Dict, key: str, value: str) -> Dict:
+    r"""Inserts value into a dictionary that can contain lists.
+
+    Args:
+        dic (Dict):
+            Required. The dictionary to insert into.
+        key (str):
+            Required. The key to be created or inserted into.
+        value (str):
+            Required. The value to be inserted.
+
+    Returns:
+        Dict:
+            The dictionary after adding the key value pair.
+    """
+    existing_value = dic.get(key)
+
+    if existing_value:
+        # For duplicate keys,
+        # Change Type to a List if not already
+        if not isinstance(existing_value, list):
+            existing_value = [existing_value]
+
+        existing_value.append(value)
+        dic[key] = existing_value
+    else:
+        dic[key] = value
+
+    return dic
+
+
+def _bigquery_column_name(input_string: str) -> str:
+    r"""Converts a string into a BigQuery column name.
+        https://cloud.google.com/bigquery/docs/schemas#column_names
+
+    Args:
+        input_string (str):
+            Required: The string to convert.
+    Returns:
+        str
+            The converted string.
+
+    """
+    char_map: Dict[str, str] = {
+        r":|;|\(|\)|\[|\]|,|\.|\?|\!|\'|\n": "",
+        r"/| ": "_",
+        r"#": "num",
+        r"@": "at",
+    }
+
+    for key, value in char_map.items():
+        input_string = re.sub(key, value, input_string)
+
+    return input_string.lower()
+
+
+def _dict_to_bigquery(
+    dic: Dict,
+    dataset_name: str,
+    table_name: str,
+    project_id: Optional[str],
+) -> bigquery.job.LoadJob:
+    r"""Loads dictionary to a BigQuery table.
+
+    Args:
+        dic (Dict):
+            Required: The dictionary to insert.
+        dataset_name (str):
+            Required. Name of the BigQuery dataset.
+        table_name (str):
+            Required. Name of the BigQuery table.
+        project_id (Optional[str]):
+            Optional. Project ID containing the BigQuery table. If not passed, falls back to the default inferred from the environment.
+    Returns:
+        bigquery.job.LoadJob:
+            The BigQuery LoadJob for adding the dictionary.
+
+    """
+    bq_client = bigquery.Client(
+        project=project_id, client_info=gcs_utilities._get_client_info()
+    )
+    table_ref = bigquery.DatasetReference(
+        project=project_id, dataset_id=dataset_name
+    ).table(table_name)
+
+    job_config = bigquery.LoadJobConfig(
+        schema_update_options=[
+            bigquery.SchemaUpdateOption.ALLOW_FIELD_ADDITION,
+            bigquery.SchemaUpdateOption.ALLOW_FIELD_RELAXATION,
+        ],
+        source_format=bigquery.SourceFormat.NEWLINE_DELIMITED_JSON,
+    )
+
+    return bq_client.load_table_from_json(
+        json_rows=[dic],
+        destination=table_ref,
+        job_config=job_config,
+    )
+
+
 @dataclasses.dataclass
 class Document:
     r"""Represents a wrapped `Document`.
@@ -476,6 +576,49 @@ class Document:
 
         return found_fields
 
+    def form_fields_to_dict(self) -> Dict:
+        r"""Returns Dictionary of form fields in document.
+
+        Returns:
+            Dict:
+                The Dict of the form fields indexed by type.
+
+        """
+        form_fields_dict: Dict = {}
+        for p in self.pages:
+            for form_field in p.form_fields:
+                field_name = _bigquery_column_name(form_field.field_name)
+                form_fields_dict = _insert_into_dictionary_with_list(
+                    form_fields_dict, field_name, form_field.field_value
+                )
+
+        return form_fields_dict
+
+    def form_fields_to_bigquery(
+        self, dataset_name: str, table_name: str, project_id: Optional[str] = None
+    ) -> bigquery.job.LoadJob:
+        r"""Adds extracted form fields to a BigQuery table.
+
+        Args:
+            dataset_name (str):
+                Required. Name of the BigQuery dataset.
+            table_name (str):
+                Required. Name of the BigQuery table.
+            project_id (Optional[str]):
+                Optional. Project ID containing the BigQuery table. If not passed, falls back to the default inferred from the environment.
+        Returns:
+            bigquery.job.LoadJob:
+                The BigQuery LoadJob for adding the form fields.
+
+        """
+
+        return _dict_to_bigquery(
+            self.form_fields_to_dict(),
+            dataset_name,
+            table_name,
+            project_id,
+        )
+
     def get_entity_by_type(self, target_type: str) -> List[Entity]:
         r"""Returns the list of Entities of target_type.
 
@@ -500,20 +643,10 @@ class Document:
         """
         entities_dict: Dict = {}
         for entity in self.entities:
-            entity_type = entity.type_.replace("/", "_")
-
-            existing_entity = entities_dict.get(entity_type)
-            if not existing_entity:
-                entities_dict[entity_type] = entity.mention_text
-                continue
-
-            # For entities that can have multiple (e.g. line_item)
-            # Change Entity Type to a List
-            if not isinstance(existing_entity, list):
-                existing_entity = [existing_entity]
-
-            existing_entity.append(entity.mention_text)
-            entities_dict[entity_type] = existing_entity
+            entity_type = _bigquery_column_name(entity.type_)
+            entities_dict = _insert_into_dictionary_with_list(
+                entities_dict, entity_type, entity.mention_text
+            )
 
         return entities_dict
 
@@ -534,23 +667,12 @@ class Document:
                 The BigQuery LoadJob for adding the entities.
 
         """
-        bq_client = bigquery.Client(project=project_id)
-        table_ref = bigquery.DatasetReference(
-            project=project_id, dataset_id=dataset_name
-        ).table(table_name)
 
-        job_config = bigquery.LoadJobConfig(
-            schema_update_options=[
-                bigquery.SchemaUpdateOption.ALLOW_FIELD_ADDITION,
-                bigquery.SchemaUpdateOption.ALLOW_FIELD_RELAXATION,
-            ],
-            source_format=bigquery.SourceFormat.NEWLINE_DELIMITED_JSON,
-        )
-
-        return bq_client.load_table_from_json(
-            json_rows=[self.entities_to_dict()],
-            destination=table_ref,
-            job_config=job_config,
+        return _dict_to_bigquery(
+            self.entities_to_dict(),
+            dataset_name,
+            table_name,
+            project_id,
         )
 
     def split_pdf(self, pdf_path: str, output_path: str) -> List[str]:

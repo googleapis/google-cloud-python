@@ -186,7 +186,7 @@ def test_get_batch_process_metadata_with_no_metadata(mock_docai):
 
 
 @mock.patch("google.cloud.documentai_toolbox.wrappers.document.documentai")
-def test_document_from_batch_process_operation_with_invalid_metadata_type(mock_docai):
+def test_get_batch_process_metadata_with_invalid_metadata_type(mock_docai):
     with pytest.raises(
         ValueError,
         match="Operation metadata type is not",
@@ -204,6 +204,19 @@ def test_document_from_batch_process_operation_with_invalid_metadata_type(mock_d
         mock_client.get_operation.return_value = mock_operation
 
         document._get_batch_process_metadata(location, operation_name)
+
+
+def test_bigquery_column_name():
+    string_map = {
+        "Phone #:": "phone_num",
+        "Emergency Contact:": "emergency_contact",
+        "Marital Status:": "marital_status",
+        "Are you currently taking any medication? (If yes, please describe):": "are_you_currently_taking_any_medication_if_yes_please_describe",
+        "Describe your medical concerns (symptoms, diagnoses, etc):": "describe_your_medical_concerns_symptoms_diagnoses_etc",
+    }
+
+    for key, value in string_map.items():
+        assert document._bigquery_column_name(key) == value
 
 
 def test_document_from_document_path_with_single_shard():
@@ -399,6 +412,43 @@ def test_get_form_field_by_name(get_bytes_form_parser_mock):
     assert len(actual) == 1
     assert actual[0].field_name == "Phone #:"
     assert actual[0].field_value == "(906) 917-3486"
+
+
+def test_form_fields_to_dict(get_bytes_form_parser_mock):
+    doc = document.Document.from_gcs(
+        gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0"
+    )
+    actual = doc.form_fields_to_dict()
+
+    get_bytes_form_parser_mock.assert_called_once()
+
+    assert len(actual) == 17
+    assert actual.get("address") == "24 Barney Lane"
+    assert actual.get("city") == "Towaco"
+
+
+@mock.patch("google.cloud.documentai_toolbox.wrappers.document.bigquery")
+def test_form_fields_to_bigquery(mock_bigquery, get_bytes_form_parser_mock):
+    client = mock_bigquery.Client.return_value
+
+    mock_table = mock.Mock()
+    client.dataset.table.return_value = mock_table
+
+    mock_load_job = mock.Mock()
+    client.load_table_from_json.return_value = mock_load_job
+
+    doc = document.Document.from_gcs(
+        gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0"
+    )
+
+    actual = doc.form_fields_to_bigquery(
+        dataset_name="test_dataset", table_name="test_table", project_id="test_project"
+    )
+
+    get_bytes_form_parser_mock.assert_called_once()
+    mock_bigquery.Client.assert_called_once()
+
+    assert actual
 
 
 def test_entities_to_dict(get_bytes_single_file_mock):

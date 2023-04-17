@@ -42,6 +42,11 @@ def entities_to_bigquery_sample(
         dataset_name=dataset_name, table_name=table_name, project_id=project_id
     )
 
+    # Also supported:
+    # job = wrapped_document.form_fields_to_bigquery(
+    #     dataset_name=dataset_name, table_name=table_name, project_id=project_id
+    # )
+
     print("Document entities loaded into BigQuery")
     print(f"Job ID: {job.job_id}")
     print(f"Table: {job.destination.path}")
