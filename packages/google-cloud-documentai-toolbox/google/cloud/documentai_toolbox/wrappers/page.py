@@ -121,6 +121,21 @@ def _table_wrapper_from_documentai_table(
 
 
 @dataclasses.dataclass
+class Block:
+    """Represents a wrapped documentai.Document.Page.Block.
+
+    Attributes:
+        documentai_block (google.cloud.documentai.Document.Page.Block):
+            Required. The original google.cloud.documentai.Document.Page.Block object.
+        text (str):
+            Required. UTF-8 encoded text.
+    """
+
+    documentai_block: documentai.Document.Page.Block
+    text: str
+
+
+@dataclasses.dataclass
 class Paragraph:
     """Represents a wrapped documentai.Document.Page.Paragraph.
 
@@ -189,6 +204,32 @@ def _text_from_layout(layout: documentai.Document.Page.Layout, text: str) -> str
         result_text += text[int(text_segment.start_index) : int(text_segment.end_index)]
 
     return result_text
+
+
+def _get_blocks(blocks: List[documentai.Document.Page.Block], text: str) -> List[Block]:
+    r"""Returns a list of Block.
+
+    Args:
+        blocks (List[documentai.Document.Page.Block]):
+            Required. A list of documentai.Document.Page.Block objects.
+        text (str):
+            Required. UTF-8 encoded text in reading order
+            from the document.
+    Returns:
+        List[Block]:
+             A list of Blocks.
+    """
+    result = []
+
+    for block in blocks:
+        result.append(
+            Block(
+                documentai_block=block,
+                text=_text_from_layout(layout=block.layout, text=text),
+            )
+        )
+
+    return result
 
 
 def _get_paragraphs(
@@ -339,6 +380,10 @@ class Page:
             Required. A list of visually detected text paragraphs
             on the page. A collection of lines that a human
             would perceive as a paragraph.
+        blocks (List[Block]):
+            Required. A list of visually detected text blocks
+            on the page. A collection of lines that a human
+            would perceive as a block.
         tables (List[Table]):
             Required. A list of visually detected tables on the
             page.
@@ -350,6 +395,7 @@ class Page:
     form_fields: List[FormField] = dataclasses.field(init=False, repr=False)
     lines: List[Line] = dataclasses.field(init=False, repr=False)
     paragraphs: List[Paragraph] = dataclasses.field(init=False, repr=False)
+    blocks: List[Block] = dataclasses.field(init=False, repr=False)
     tables: List[Table] = dataclasses.field(init=False, repr=False)
 
     def __post_init__(self):
@@ -369,4 +415,5 @@ class Page:
         self.paragraphs = _get_paragraphs(
             paragraphs=self.documentai_page.paragraphs, text=self.text
         )
+        self.blocks = _get_blocks(blocks=self.documentai_page.blocks, text=self.text)
         self.tables = tables

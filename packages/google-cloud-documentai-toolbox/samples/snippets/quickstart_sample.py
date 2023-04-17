@@ -41,6 +41,8 @@ def quickstart_sample(gcs_bucket_name: str, gcs_prefix: str) -> None:
 
     for idx, page in enumerate(wrapped_document.pages):
         print(f"Page {idx}")
+        for block in page.blocks:
+            print(block.text)
         for paragraph in page.paragraphs:
             print(paragraph.text)
 

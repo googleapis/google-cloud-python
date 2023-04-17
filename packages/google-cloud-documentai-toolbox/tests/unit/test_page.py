@@ -172,6 +172,15 @@ def test_text_from_element_with_layout(docproto):
     assert text == "Invoice\n"
 
 
+def test_get_blocks(docproto):
+    docproto_blocks = docproto.pages[0].blocks
+
+    blocks = page._get_blocks(blocks=docproto_blocks, text=docproto.text)
+
+    assert len(blocks) == 31
+    assert blocks[0].text == "Invoice\n"
+
+
 def test_get_paragraphs(docproto):
     docproto_paragraphs = docproto.pages[0].paragraphs
 
@@ -218,6 +227,13 @@ def test_FormField():
     assert form_field.field_value == "Sally Walker"
 
 
+def test_Block():
+    docai_block = documentai.Document.Page.Block()
+    block = page.Block(documentai_block=docai_block, text="test_block")
+
+    assert block.text == "test_block"
+
+
 def test_Paragraph():
     docai_paragraph = documentai.Document.Page.Paragraph()
     paragraph = page.Paragraph(
@@ -254,5 +270,7 @@ def test_Page(docproto):
 
     assert len(wrapped_page.lines) == 37
     assert len(wrapped_page.paragraphs) == 31
+    assert len(wrapped_page.blocks) == 31
     assert wrapped_page.lines[0].text == "Invoice\n"
     assert wrapped_page.paragraphs[30].text == "Supplies used for Project Q.\n"
+    assert wrapped_page.blocks[30].text == "Supplies used for Project Q.\n"
