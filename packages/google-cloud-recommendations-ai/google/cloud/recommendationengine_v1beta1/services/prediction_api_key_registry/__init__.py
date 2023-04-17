@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import PredictionApiKeyRegistryClient
 from .async_client import PredictionApiKeyRegistryAsyncClient
+from .client import PredictionApiKeyRegistryClient
 
 __all__ = (
     "PredictionApiKeyRegistryClient",

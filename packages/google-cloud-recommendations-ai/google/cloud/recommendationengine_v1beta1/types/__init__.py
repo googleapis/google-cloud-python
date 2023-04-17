@@ -13,11 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .catalog import (
-    CatalogItem,
-    Image,
-    ProductCatalogItem,
-)
+from .catalog import CatalogItem, Image, ProductCatalogItem
 from .catalog_service import (
     CreateCatalogItemRequest,
     DeleteCatalogItemRequest,
@@ -26,9 +22,7 @@ from .catalog_service import (
     ListCatalogItemsResponse,
     UpdateCatalogItemRequest,
 )
-from .common import (
-    FeatureMap,
-)
+from .common import FeatureMap
 from .import_ import (
     CatalogInlineSource,
     GcsSource,
@@ -49,10 +43,7 @@ from .prediction_apikey_registry_service import (
     ListPredictionApiKeyRegistrationsResponse,
     PredictionApiKeyRegistration,
 )
-from .prediction_service import (
-    PredictRequest,
-    PredictResponse,
-)
+from .prediction_service import PredictRequest, PredictResponse
 from .user_event import (
     EventDetail,
     ProductDetail,

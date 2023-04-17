@@ -14,7 +14,6 @@
 
 import json
 from pathlib import Path
-import re
 import shutil
 
 import synthtool as s
@@ -37,7 +36,6 @@ for library in s.get_staging_dirs(default_version):
         shutil.rmtree("samples/generated_samples", ignore_errors=True)
         clean_up_generated_samples = False
     s.move([library], excludes=["**/gapic_version.py"])
-
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
@@ -55,4 +53,4 @@ python.py_samples(skip_readmes=True)
 
 # run format session for all directories which have a noxfile
 for noxfile in Path(".").glob("**/noxfile.py"):
-    s.shell.run(["nox", "-s", "blacken"], cwd=noxfile.parent, hide_output=False)
+    s.shell.run(["nox", "-s", "format"], cwd=noxfile.parent, hide_output=False)

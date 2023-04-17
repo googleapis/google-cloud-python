@@ -21,7 +21,6 @@ import proto  # type: ignore
 
 from google.cloud.recommendationengine_v1beta1.types import common
 
-
 __protobuf__ = proto.module(
     package="google.cloud.recommendationengine.v1beta1",
     manifest={

@@ -18,64 +18,67 @@ from google.cloud.recommendationengine_v1beta1 import gapic_version as package_v
 __version__ = package_version.__version__
 
 
-from .services.catalog_service import CatalogServiceClient
-from .services.catalog_service import CatalogServiceAsyncClient
-from .services.prediction_api_key_registry import PredictionApiKeyRegistryClient
-from .services.prediction_api_key_registry import PredictionApiKeyRegistryAsyncClient
-from .services.prediction_service import PredictionServiceClient
-from .services.prediction_service import PredictionServiceAsyncClient
-from .services.user_event_service import UserEventServiceClient
-from .services.user_event_service import UserEventServiceAsyncClient
-
-from .types.catalog import CatalogItem
-from .types.catalog import Image
-from .types.catalog import ProductCatalogItem
-from .types.catalog_service import CreateCatalogItemRequest
-from .types.catalog_service import DeleteCatalogItemRequest
-from .types.catalog_service import GetCatalogItemRequest
-from .types.catalog_service import ListCatalogItemsRequest
-from .types.catalog_service import ListCatalogItemsResponse
-from .types.catalog_service import UpdateCatalogItemRequest
+from .services.catalog_service import CatalogServiceAsyncClient, CatalogServiceClient
+from .services.prediction_api_key_registry import (
+    PredictionApiKeyRegistryAsyncClient,
+    PredictionApiKeyRegistryClient,
+)
+from .services.prediction_service import (
+    PredictionServiceAsyncClient,
+    PredictionServiceClient,
+)
+from .services.user_event_service import (
+    UserEventServiceAsyncClient,
+    UserEventServiceClient,
+)
+from .types.catalog import CatalogItem, Image, ProductCatalogItem
+from .types.catalog_service import (
+    CreateCatalogItemRequest,
+    DeleteCatalogItemRequest,
+    GetCatalogItemRequest,
+    ListCatalogItemsRequest,
+    ListCatalogItemsResponse,
+    UpdateCatalogItemRequest,
+)
 from .types.common import FeatureMap
-from .types.import_ import CatalogInlineSource
-from .types.import_ import GcsSource
-from .types.import_ import ImportCatalogItemsRequest
-from .types.import_ import ImportCatalogItemsResponse
-from .types.import_ import ImportErrorsConfig
-from .types.import_ import ImportMetadata
-from .types.import_ import ImportUserEventsRequest
-from .types.import_ import ImportUserEventsResponse
-from .types.import_ import InputConfig
-from .types.import_ import UserEventImportSummary
-from .types.import_ import UserEventInlineSource
+from .types.import_ import (
+    CatalogInlineSource,
+    GcsSource,
+    ImportCatalogItemsRequest,
+    ImportCatalogItemsResponse,
+    ImportErrorsConfig,
+    ImportMetadata,
+    ImportUserEventsRequest,
+    ImportUserEventsResponse,
+    InputConfig,
+    UserEventImportSummary,
+    UserEventInlineSource,
+)
 from .types.prediction_apikey_registry_service import (
     CreatePredictionApiKeyRegistrationRequest,
-)
-from .types.prediction_apikey_registry_service import (
     DeletePredictionApiKeyRegistrationRequest,
-)
-from .types.prediction_apikey_registry_service import (
     ListPredictionApiKeyRegistrationsRequest,
-)
-from .types.prediction_apikey_registry_service import (
     ListPredictionApiKeyRegistrationsResponse,
+    PredictionApiKeyRegistration,
 )
-from .types.prediction_apikey_registry_service import PredictionApiKeyRegistration
-from .types.prediction_service import PredictRequest
-from .types.prediction_service import PredictResponse
-from .types.user_event import EventDetail
-from .types.user_event import ProductDetail
-from .types.user_event import ProductEventDetail
-from .types.user_event import PurchaseTransaction
-from .types.user_event import UserEvent
-from .types.user_event import UserInfo
-from .types.user_event_service import CollectUserEventRequest
-from .types.user_event_service import ListUserEventsRequest
-from .types.user_event_service import ListUserEventsResponse
-from .types.user_event_service import PurgeUserEventsMetadata
-from .types.user_event_service import PurgeUserEventsRequest
-from .types.user_event_service import PurgeUserEventsResponse
-from .types.user_event_service import WriteUserEventRequest
+from .types.prediction_service import PredictRequest, PredictResponse
+from .types.user_event import (
+    EventDetail,
+    ProductDetail,
+    ProductEventDetail,
+    PurchaseTransaction,
+    UserEvent,
+    UserInfo,
+)
+from .types.user_event_service import (
+    CollectUserEventRequest,
+    ListUserEventsRequest,
+    ListUserEventsResponse,
+    PurgeUserEventsMetadata,
+    PurgeUserEventsRequest,
+    PurgeUserEventsResponse,
+    WriteUserEventRequest,
+)
 
 __all__ = (
     "CatalogServiceAsyncClient",

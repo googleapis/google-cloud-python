@@ -28,14 +28,14 @@ from typing import (
     Union,
 )
 
-from google.cloud.recommendationengine_v1beta1 import gapic_version as package_version
-
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.recommendationengine_v1beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -44,15 +44,19 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.recommendationengine_v1beta1.services.catalog_service import pagers
-from google.cloud.recommendationengine_v1beta1.types import catalog
-from google.cloud.recommendationengine_v1beta1.types import catalog_service
-from google.cloud.recommendationengine_v1beta1.types import common
-from google.cloud.recommendationengine_v1beta1.types import import_
 from google.protobuf import field_mask_pb2  # type: ignore
-from .transports.base import CatalogServiceTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import CatalogServiceGrpcAsyncIOTransport
+
+from google.cloud.recommendationengine_v1beta1.services.catalog_service import pagers
+from google.cloud.recommendationengine_v1beta1.types import (
+    catalog,
+    catalog_service,
+    common,
+    import_,
+)
+
 from .client import CatalogServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, CatalogServiceTransport
+from .transports.grpc_asyncio import CatalogServiceGrpcAsyncIOTransport
 
 
 class CatalogServiceAsyncClient:

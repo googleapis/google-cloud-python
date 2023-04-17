@@ -18,14 +18,16 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.recommendationengine_v1beta1.types import user_event
-from google.cloud.recommendationengine_v1beta1.types import user_event_service
+from google.cloud.recommendationengine_v1beta1.types import (
+    user_event,
+    user_event_service,
+)
 
 
 class ListUserEventsPager:

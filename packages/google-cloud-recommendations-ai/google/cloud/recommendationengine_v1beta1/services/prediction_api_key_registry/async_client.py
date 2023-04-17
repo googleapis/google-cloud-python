@@ -28,14 +28,14 @@ from typing import (
     Union,
 )
 
-from google.cloud.recommendationengine_v1beta1 import gapic_version as package_version
-
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.recommendationengine_v1beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -48,9 +48,10 @@ from google.cloud.recommendationengine_v1beta1.services.prediction_api_key_regis
 from google.cloud.recommendationengine_v1beta1.types import (
     prediction_apikey_registry_service,
 )
-from .transports.base import PredictionApiKeyRegistryTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import PredictionApiKeyRegistryGrpcAsyncIOTransport
+
 from .client import PredictionApiKeyRegistryClient
+from .transports.base import DEFAULT_CLIENT_INFO, PredictionApiKeyRegistryTransport
+from .transports.grpc_asyncio import PredictionApiKeyRegistryGrpcAsyncIOTransport
 
 
 class PredictionApiKeyRegistryAsyncClient:

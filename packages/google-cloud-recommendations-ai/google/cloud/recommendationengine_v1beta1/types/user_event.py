@@ -17,12 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.recommendationengine_v1beta1.types import catalog
-from google.cloud.recommendationengine_v1beta1.types import common
-from google.protobuf import timestamp_pb2  # type: ignore
-
+from google.cloud.recommendationengine_v1beta1.types import catalog, common
 
 __protobuf__ = proto.module(
     package="google.cloud.recommendationengine.v1beta1",

@@ -19,9 +19,10 @@ from typing import Dict, Type
 from .base import PredictionApiKeyRegistryTransport
 from .grpc import PredictionApiKeyRegistryGrpcTransport
 from .grpc_asyncio import PredictionApiKeyRegistryGrpcAsyncIOTransport
-from .rest import PredictionApiKeyRegistryRestTransport
-from .rest import PredictionApiKeyRegistryRestInterceptor
-
+from .rest import (
+    PredictionApiKeyRegistryRestInterceptor,
+    PredictionApiKeyRegistryRestTransport,
+)
 
 # Compile a registry of transports.
 _transport_registry = (
