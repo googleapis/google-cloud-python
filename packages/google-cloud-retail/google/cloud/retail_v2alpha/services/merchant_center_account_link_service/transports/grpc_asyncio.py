@@ -301,11 +301,8 @@ class MerchantCenterAccountLinkServiceGrpcAsyncIOTransport(
         r"""Return a callable for the create merchant center account
         link method over gRPC.
 
-        Creates a MerchantCenterAccountLink.
-
-        [MerchantCenterAccountLink][google.cloud.retail.v2alpha.MerchantCenterAccountLink]
-        cannot be set to a different oneof field, if so an
-        INVALID_ARGUMENT is returned.
+        Creates a
+        [MerchantCenterAccountLink][google.cloud.retail.v2alpha.MerchantCenterAccountLink].
 
         Returns:
             Callable[[~.CreateMerchantCenterAccountLinkRequest],
@@ -337,7 +334,9 @@ class MerchantCenterAccountLinkServiceGrpcAsyncIOTransport(
         r"""Return a callable for the delete merchant center account
         link method over gRPC.
 
-        Deletes a MerchantCenterAccountLink. If the
+        Deletes a
+        [MerchantCenterAccountLink][google.cloud.retail.v2alpha.MerchantCenterAccountLink].
+        If the
         [MerchantCenterAccountLink][google.cloud.retail.v2alpha.MerchantCenterAccountLink]
         to delete does not exist, a NOT_FOUND error is returned.
 

@@ -1161,7 +1161,7 @@ def test_create_merchant_center_account_link_field_headers():
         merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
     )
 
-    request.merchant_center_account_link.name = "name_value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1179,7 +1179,7 @@ def test_create_merchant_center_account_link_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "merchant_center_account_link.name=name_value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1195,7 +1195,7 @@ async def test_create_merchant_center_account_link_field_headers_async():
         merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
     )
 
-    request.merchant_center_account_link.name = "name_value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1215,7 +1215,7 @@ async def test_create_merchant_center_account_link_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "merchant_center_account_link.name=name_value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1882,13 +1882,9 @@ def test_create_merchant_center_account_link_rest(request_type):
     )
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "merchant_center_account_link": {
-            "name": "projects/sample1/locations/sample2/catalogs/sample3/merchantCenterAccountLinks/sample4"
-        }
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
     request_init["merchant_center_account_link"] = {
-        "name": "projects/sample1/locations/sample2/catalogs/sample3/merchantCenterAccountLinks/sample4",
+        "name": "name_value",
         "id": "id_value",
         "merchant_center_account_id": 2730,
         "branch_id": "branch_id_value",
@@ -1938,7 +1934,6 @@ def test_create_merchant_center_account_link_rest_required_fields(
     )
 
     # verify fields with default values are dropped
-    assert "parent" not in jsonified_request
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -1946,16 +1941,12 @@ def test_create_merchant_center_account_link_rest_required_fields(
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == request_init["parent"]
 
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).create_merchant_center_account_link._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("parent",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -1996,13 +1987,7 @@ def test_create_merchant_center_account_link_rest_required_fields(
 
             response = client.create_merchant_center_account_link(request)
 
-            expected_params = [
-                (
-                    "parent",
-                    "",
-                ),
-                ("$alt", "json;enum-encoding=int"),
-            ]
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2016,7 +2001,7 @@ def test_create_merchant_center_account_link_rest_unset_required_fields():
         transport.create_merchant_center_account_link._get_unset_required_fields({})
     )
     assert set(unset_fields) == (
-        set(("parent",))
+        set(())
         & set(
             (
                 "parent",
@@ -2099,13 +2084,9 @@ def test_create_merchant_center_account_link_rest_bad_request(
     )
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "merchant_center_account_link": {
-            "name": "projects/sample1/locations/sample2/catalogs/sample3/merchantCenterAccountLinks/sample4"
-        }
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
     request_init["merchant_center_account_link"] = {
-        "name": "projects/sample1/locations/sample2/catalogs/sample3/merchantCenterAccountLinks/sample4",
+        "name": "name_value",
         "id": "id_value",
         "merchant_center_account_id": 2730,
         "branch_id": "branch_id_value",
@@ -2144,9 +2125,7 @@ def test_create_merchant_center_account_link_rest_flattened():
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
-            "merchant_center_account_link": {
-                "name": "projects/sample1/locations/sample2/catalogs/sample3/merchantCenterAccountLinks/sample4"
-            }
+            "parent": "projects/sample1/locations/sample2/catalogs/sample3"
         }
 
         # get truthy value for each flattened field
@@ -2172,7 +2151,7 @@ def test_create_merchant_center_account_link_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2alpha/{merchant_center_account_link.name=projects/*/locations/*/catalogs/*/merchantCenterAccountLinks/*}"
+            "%s/v2alpha/{parent=projects/*/locations/*/catalogs/*}/merchantCenterAccountLinks"
             % client.transport._host,
             args[1],
         )

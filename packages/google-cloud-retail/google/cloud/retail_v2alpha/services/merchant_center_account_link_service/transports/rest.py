@@ -385,9 +385,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
         def __hash__(self):
             return hash("CreateMerchantCenterAccountLink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "parent": "",
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -430,7 +428,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v2alpha/{merchant_center_account_link.name=projects/*/locations/*/catalogs/*/merchantCenterAccountLinks/*}",
+                    "uri": "/v2alpha/{parent=projects/*/locations/*/catalogs/*}/merchantCenterAccountLinks",
                     "body": "merchant_center_account_link",
                 },
             ]

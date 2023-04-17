@@ -625,11 +625,8 @@ class MerchantCenterAccountLinkServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Creates a MerchantCenterAccountLink.
-
-        [MerchantCenterAccountLink][google.cloud.retail.v2alpha.MerchantCenterAccountLink]
-        cannot be set to a different oneof field, if so an
-        INVALID_ARGUMENT is returned.
+        r"""Creates a
+        [MerchantCenterAccountLink][google.cloud.retail.v2alpha.MerchantCenterAccountLink].
 
         .. code-block:: python
 
@@ -745,14 +742,7 @@ class MerchantCenterAccountLinkServiceClient(
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "merchant_center_account_link.name",
-                        request.merchant_center_account_link.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
@@ -788,7 +778,9 @@ class MerchantCenterAccountLinkServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes a MerchantCenterAccountLink. If the
+        r"""Deletes a
+        [MerchantCenterAccountLink][google.cloud.retail.v2alpha.MerchantCenterAccountLink].
+        If the
         [MerchantCenterAccountLink][google.cloud.retail.v2alpha.MerchantCenterAccountLink]
         to delete does not exist, a NOT_FOUND error is returned.
 
