@@ -1,0 +1,37 @@
+{
+    "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+    "packages": {
+      ".": {
+        "release-type": "python",
+        "extra-files": [
+          "google/cloud/speech_v2/gapic_version.py",
+          "google/cloud/speech_v1/gapic_version.py",
+          "google/cloud/speech_v1p1beta1/gapic_version.py",
+          "google/cloud/speech/gapic_version.py",
+          {
+            "type": "json",
+            "path": "samples/generated_samples/snippet_metadata_google.cloud.speech.v1p1beta1.json",
+            "jsonpath": "$.clientLibrary.version"
+          },
+          {
+            "type": "json",
+            "path": "samples/generated_samples/snippet_metadata_google.cloud.speech.v2.json",
+            "jsonpath": "$.clientLibrary.version"
+          },
+          {
+            "type": "json",
+            "path": "samples/generated_samples/snippet_metadata_google.cloud.speech.v1.json",
+            "jsonpath": "$.clientLibrary.version"
+          }
+        ]
+      }
+    },
+    "release-type": "python",
+    "plugins": [
+      {
+        "type": "sentence-case"
+      }
+    ],
+    "initial-version": "0.1.0"
+}
+  
