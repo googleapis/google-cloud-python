@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-tpu/compare/v1.9.0...v1.10.0) (2023-04-15)
+
+
+### Features
+
+* **v2alpha1:** Add reset_queued_resource ([45b85f2](https://github.com/googleapis/python-tpu/commit/45b85f2e7692e7df11e763bc618137f100a52298))
+* **v2alpha1:** Make reservation_name parameter generally visible in QueuedResource message ([45b85f2](https://github.com/googleapis/python-tpu/commit/45b85f2e7692e7df11e763bc618137f100a52298))
+
 ## [1.9.0](https://github.com/googleapis/python-tpu/compare/v1.8.0...v1.9.0) (2023-03-24)
 
 
