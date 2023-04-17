@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "RetryBuildRequest",
         "RunBuildTriggerRequest",
         "StorageSource",
+        "GitSource",
         "RepoSource",
         "StorageSourceManifest",
         "Source",
@@ -186,6 +187,49 @@ class StorageSource(proto.Message):
     )
 
 
+class GitSource(proto.Message):
+    r"""Location of the source in any accessible Git repository.
+
+    Attributes:
+        url (str):
+            Location of the Git repo to build.
+
+            This will be used as a ``git remote``, see
+            https://git-scm.com/docs/git-remote.
+        dir_ (str):
+            Directory, relative to the source root, in which to run the
+            build.
+
+            This must be a relative path. If a step's ``dir`` is
+            specified and is an absolute path, this value is ignored for
+            that step's execution.
+        revision (str):
+            The revision to fetch from the Git repository such as a
+            branch, a tag, a commit SHA, or any Git ref.
+
+            Cloud Build uses ``git fetch`` to fetch the revision from
+            the Git repository; therefore make sure that the string you
+            provide for ``revision`` is parsable by the command. For
+            information on string values accepted by ``git fetch``, see
+            https://git-scm.com/docs/gitrevisions#_specifying_revisions.
+            For information on ``git fetch``, see
+            https://git-scm.com/docs/git-fetch.
+    """
+
+    url: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dir_: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    revision: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
 class RepoSource(proto.Message):
     r"""Location of the source in a Google Cloud Source Repository.
 
@@ -329,6 +373,11 @@ class Source(proto.Message):
             location in a Cloud Source Repository.
 
             This field is a member of `oneof`_ ``source``.
+        git_source (google.cloud.devtools.cloudbuild_v1.types.GitSource):
+            If provided, get the source from this Git
+            repository.
+
+            This field is a member of `oneof`_ ``source``.
         storage_source_manifest (google.cloud.devtools.cloudbuild_v1.types.StorageSourceManifest):
             If provided, get the source from this manifest in Google
             Cloud Storage. This feature is in Preview; see description
@@ -348,6 +397,12 @@ class Source(proto.Message):
         number=3,
         oneof="source",
         message="RepoSource",
+    )
+    git_source: "GitSource" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="source",
+        message="GitSource",
     )
     storage_source_manifest: "StorageSourceManifest" = proto.Field(
         proto.MESSAGE,

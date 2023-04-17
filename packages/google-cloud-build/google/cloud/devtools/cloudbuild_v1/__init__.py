@@ -46,6 +46,7 @@ from .types.cloudbuild import GetBuildRequest
 from .types.cloudbuild import GetBuildTriggerRequest
 from .types.cloudbuild import GetWorkerPoolRequest
 from .types.cloudbuild import GitHubEventsConfig
+from .types.cloudbuild import GitSource
 from .types.cloudbuild import Hash
 from .types.cloudbuild import InlineSecret
 from .types.cloudbuild import ListBuildsRequest
@@ -109,6 +110,7 @@ __all__ = (
     "GetBuildTriggerRequest",
     "GetWorkerPoolRequest",
     "GitHubEventsConfig",
+    "GitSource",
     "Hash",
     "InlineSecret",
     "ListBuildTriggersRequest",

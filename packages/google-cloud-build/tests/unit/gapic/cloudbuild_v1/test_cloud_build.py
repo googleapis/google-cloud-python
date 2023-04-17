@@ -5884,6 +5884,11 @@ def test_create_build_rest(request_type):
                 "invert_regex": True,
                 "substitutions": {},
             },
+            "git_source": {
+                "url": "url_value",
+                "dir_": "dir__value",
+                "revision": "revision_value",
+            },
             "storage_source_manifest": {
                 "bucket": "bucket_value",
                 "object_": "object__value",
@@ -6222,6 +6227,11 @@ def test_create_build_rest_bad_request(
                 "dir_": "dir__value",
                 "invert_regex": True,
                 "substitutions": {},
+            },
+            "git_source": {
+                "url": "url_value",
+                "dir_": "dir__value",
+                "revision": "revision_value",
             },
             "storage_source_manifest": {
                 "bucket": "bucket_value",
@@ -7971,6 +7981,11 @@ def test_create_build_trigger_rest(request_type):
                     "generation": 1068,
                 },
                 "repo_source": {},
+                "git_source": {
+                    "url": "url_value",
+                    "dir_": "dir__value",
+                    "revision": "revision_value",
+                },
                 "storage_source_manifest": {
                     "bucket": "bucket_value",
                     "object_": "object__value",
@@ -8376,6 +8391,11 @@ def test_create_build_trigger_rest_bad_request(
                     "generation": 1068,
                 },
                 "repo_source": {},
+                "git_source": {
+                    "url": "url_value",
+                    "dir_": "dir__value",
+                    "revision": "revision_value",
+                },
                 "storage_source_manifest": {
                     "bucket": "bucket_value",
                     "object_": "object__value",
@@ -9577,6 +9597,11 @@ def test_update_build_trigger_rest(request_type):
                     "generation": 1068,
                 },
                 "repo_source": {},
+                "git_source": {
+                    "url": "url_value",
+                    "dir_": "dir__value",
+                    "revision": "revision_value",
+                },
                 "storage_source_manifest": {
                     "bucket": "bucket_value",
                     "object_": "object__value",
@@ -9985,6 +10010,11 @@ def test_update_build_trigger_rest_bad_request(
                     "generation": 1068,
                 },
                 "repo_source": {},
+                "git_source": {
+                    "url": "url_value",
+                    "dir_": "dir__value",
+                    "revision": "revision_value",
+                },
                 "storage_source_manifest": {
                     "bucket": "bucket_value",
                     "object_": "object__value",

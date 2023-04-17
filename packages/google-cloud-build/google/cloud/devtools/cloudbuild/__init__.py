@@ -58,6 +58,7 @@ from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import GetBuildRequest
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import GetBuildTriggerRequest
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import GetWorkerPoolRequest
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import GitHubEventsConfig
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import GitSource
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Hash
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import InlineSecret
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import ListBuildsRequest
@@ -133,6 +134,7 @@ __all__ = (
     "GetBuildTriggerRequest",
     "GetWorkerPoolRequest",
     "GitHubEventsConfig",
+    "GitSource",
     "Hash",
     "InlineSecret",
     "ListBuildsRequest",
