@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-bigquery-datapolicies/compare/v0.3.2...v0.4.0) (2023-04-15)
+
+
+### Features
+
+* Set the default import to datapolicies_v1 ([#12](https://github.com/googleapis/python-bigquery-datapolicies/issues/12)) ([56e1269](https://github.com/googleapis/python-bigquery-datapolicies/commit/56e1269e6fee69856e22ec24f1dc7e52e2a2caea))
+
 ## [0.3.2](https://github.com/googleapis/python-bigquery-datapolicies/compare/v0.3.1...v0.3.2) (2023-03-23)
 
 
