@@ -35,14 +35,6 @@ for library in s.get_staging_dirs(default_version):
     if clean_up_generated_samples:
         shutil.rmtree("samples/generated_samples", ignore_errors=True)
         clean_up_generated_samples = False
-    
-    # remove replacement once a new gapic-generator-python version is released
-    # which includes this fix https://github.com/googleapis/gapic-generator-python/pull/1483
-    s.replace(
-        library / "testing/constraints-3.7.txt",
-        "grpc-google-iam-v1=0",
-        "grpc-google-iam-v1==0",
-    )
     s.move([library], excludes=["**/gapic_version.py"])
 s.remove_staging_dirs()
 
