@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.1](https://github.com/googleapis/python-retail/compare/v1.16.0...v1.16.1) (2023-04-17)
+
+
+### Bug Fixes
+
+* **v2alpha:** Fix the HTTP format for merchant center link service ([#408](https://github.com/googleapis/python-retail/issues/408)) ([88bd93c](https://github.com/googleapis/python-retail/commit/88bd93c6d7dea495f18acbf0519e1ed7bdcf330c))
+
 ## [1.16.0](https://github.com/googleapis/python-retail/compare/v1.15.1...v1.16.0) (2023-04-11)
 
 
