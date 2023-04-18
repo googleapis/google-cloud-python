@@ -199,6 +199,13 @@
                     "jsonpath": "$.clientLibrary.version"
                 }
             ]
+        },
+        "packages/google-cloud-storageinsights": {
+            "component": "google-cloud-storageinsights",
+            "release-type": "python",
+            "extra-files": [
+                "google/cloud/storageinsights/gapic_version.py"
+            ]
         }
     }
 }
