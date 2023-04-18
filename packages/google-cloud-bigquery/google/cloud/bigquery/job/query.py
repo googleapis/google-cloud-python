@@ -764,7 +764,6 @@ class QueryJob(_AsyncJob):
             _helpers._set_sub_prop(
                 self._properties, ["configuration", "query", "query"], query
             )
-
         self._query_results = None
         self._done_timeout = None
         self._transport_timeout = None
@@ -1332,6 +1331,15 @@ class QueryJob(_AsyncJob):
         # the timeout from the futures API is respected. See:
         # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/4135
         timeout_ms = None
+
+        # Python_API_core, as part of a major rewrite of the deadline, timeout,
+        # retry process sets the timeout value as a Python object().
+        # Our system does not natively handle that and instead expects
+        # either none or a numeric value. If passed a Python object, convert to
+        # None.
+        if type(self._done_timeout) == object:  # pragma: NO COVER
+            self._done_timeout = None
+
         if self._done_timeout is not None:
             # Subtract a buffer for context switching, network latency, etc.
             api_timeout = self._done_timeout - _TIMEOUT_BUFFER_SECS
