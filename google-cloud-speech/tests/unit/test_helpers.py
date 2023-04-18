@@ -15,7 +15,7 @@
 from __future__ import absolute_import
 from types import GeneratorType
 
-import mock
+from unittest import mock
 
 import google.auth.credentials
 from google.cloud.speech_v1 import SpeechClient
