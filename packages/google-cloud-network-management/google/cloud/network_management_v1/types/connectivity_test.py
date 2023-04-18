@@ -205,8 +205,8 @@ class Endpoint(proto.Message):
             you provide a VM instance or network URI.
             The following are two cases where you must
             provide the project ID: 1. Only the IP address
-            is specified, and the IP address is within a GCP
-            project.
+            is specified, and the IP address is within a
+            Google Cloud project.
             2. When you are using Shared VPC and the IP
             address that you provide is from the service
             project. In this case, the network that the IP
@@ -222,14 +222,13 @@ class Endpoint(proto.Message):
             NETWORK_TYPE_UNSPECIFIED (0):
                 Default type if unspecified.
             GCP_NETWORK (1):
-                A network hosted within Google Cloud
-                Platform. To receive more detailed output,
-                specify the URI for the source or destination
-                network.
+                A network hosted within Google Cloud.
+                To receive more detailed output, specify the URI
+                for the source or destination network.
             NON_GCP_NETWORK (2):
-                A network hosted outside of Google Cloud
-                Platform. This can be an on-premises network, or
-                a network hosted by another cloud provider.
+                A network hosted outside of Google Cloud.
+                This can be an on-premises network, or a network
+                hosted by another cloud provider.
         """
         NETWORK_TYPE_UNSPECIFIED = 0
         GCP_NETWORK = 1
