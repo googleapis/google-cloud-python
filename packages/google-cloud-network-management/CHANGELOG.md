@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.2](https://github.com/googleapis/python-network-management/compare/v1.8.1...v1.8.2) (2023-04-18)
+
+
+### Documentation
+
+* Update comments in Connectivity Test protos ([#182](https://github.com/googleapis/python-network-management/issues/182)) ([f570808](https://github.com/googleapis/python-network-management/commit/f570808c03887e60e07064cf7acc482bd73d40ba))
+
 ## [1.8.1](https://github.com/googleapis/python-network-management/compare/v1.8.0...v1.8.1) (2023-03-23)
 
 
