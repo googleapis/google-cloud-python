@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.16.0](https://github.com/googleapis/python-cloudbuild/compare/v3.15.0...v3.16.0) (2023-04-18)
+
+
+### Features
+
+* Add NpmPackages to Artifact and Results messages and new SHA512 hash type ([95ebbce](https://github.com/googleapis/python-cloudbuild/commit/95ebbcee69e23394de42442d6ccb56e0179efaf8))
+* Add PeeredNetworkIpRange to NetworkConfigs message ([95ebbce](https://github.com/googleapis/python-cloudbuild/commit/95ebbcee69e23394de42442d6ccb56e0179efaf8))
+
+
+### Documentation
+
+* Various doc updates ([95ebbce](https://github.com/googleapis/python-cloudbuild/commit/95ebbcee69e23394de42442d6ccb56e0179efaf8))
+
 ## [3.15.0](https://github.com/googleapis/python-cloudbuild/compare/v3.14.0...v3.15.0) (2023-04-17)
 
 
