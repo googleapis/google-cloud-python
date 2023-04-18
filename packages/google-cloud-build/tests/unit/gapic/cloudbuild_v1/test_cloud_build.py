@@ -5946,6 +5946,9 @@ def test_create_build_rest(request_type):
             "maven_artifacts": [
                 {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
             ],
+            "npm_packages": [
+                {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
+            ],
         },
         "create_time": {},
         "start_time": {},
@@ -5974,6 +5977,9 @@ def test_create_build_rest(request_type):
                     "repository": "repository_value",
                     "paths": ["paths_value1", "paths_value2"],
                 }
+            ],
+            "npm_packages": [
+                {"repository": "repository_value", "package_path": "package_path_value"}
             ],
         },
         "logs_bucket": "logs_bucket_value",
@@ -6290,6 +6296,9 @@ def test_create_build_rest_bad_request(
             "maven_artifacts": [
                 {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
             ],
+            "npm_packages": [
+                {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
+            ],
         },
         "create_time": {},
         "start_time": {},
@@ -6318,6 +6327,9 @@ def test_create_build_rest_bad_request(
                     "repository": "repository_value",
                     "paths": ["paths_value1", "paths_value2"],
                 }
+            ],
+            "npm_packages": [
+                {"repository": "repository_value", "package_path": "package_path_value"}
             ],
         },
         "logs_bucket": "logs_bucket_value",
@@ -8043,6 +8055,9 @@ def test_create_build_trigger_rest(request_type):
                 "maven_artifacts": [
                     {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
                 ],
+                "npm_packages": [
+                    {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
+                ],
             },
             "create_time": {},
             "start_time": {},
@@ -8070,6 +8085,12 @@ def test_create_build_trigger_rest(request_type):
                     {
                         "repository": "repository_value",
                         "paths": ["paths_value1", "paths_value2"],
+                    }
+                ],
+                "npm_packages": [
+                    {
+                        "repository": "repository_value",
+                        "package_path": "package_path_value",
                     }
                 ],
             },
@@ -8453,6 +8474,9 @@ def test_create_build_trigger_rest_bad_request(
                 "maven_artifacts": [
                     {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
                 ],
+                "npm_packages": [
+                    {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
+                ],
             },
             "create_time": {},
             "start_time": {},
@@ -8480,6 +8504,12 @@ def test_create_build_trigger_rest_bad_request(
                     {
                         "repository": "repository_value",
                         "paths": ["paths_value1", "paths_value2"],
+                    }
+                ],
+                "npm_packages": [
+                    {
+                        "repository": "repository_value",
+                        "package_path": "package_path_value",
                     }
                 ],
             },
@@ -9659,6 +9689,9 @@ def test_update_build_trigger_rest(request_type):
                 "maven_artifacts": [
                     {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
                 ],
+                "npm_packages": [
+                    {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
+                ],
             },
             "create_time": {},
             "start_time": {},
@@ -9686,6 +9719,12 @@ def test_update_build_trigger_rest(request_type):
                     {
                         "repository": "repository_value",
                         "paths": ["paths_value1", "paths_value2"],
+                    }
+                ],
+                "npm_packages": [
+                    {
+                        "repository": "repository_value",
+                        "package_path": "package_path_value",
                     }
                 ],
             },
@@ -10072,6 +10111,9 @@ def test_update_build_trigger_rest_bad_request(
                 "maven_artifacts": [
                     {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
                 ],
+                "npm_packages": [
+                    {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
+                ],
             },
             "create_time": {},
             "start_time": {},
@@ -10099,6 +10141,12 @@ def test_update_build_trigger_rest_bad_request(
                     {
                         "repository": "repository_value",
                         "paths": ["paths_value1", "paths_value2"],
+                    }
+                ],
+                "npm_packages": [
+                    {
+                        "repository": "repository_value",
+                        "package_path": "package_path_value",
                     }
                 ],
             },
@@ -10718,6 +10766,7 @@ def test_create_worker_pool_rest(request_type):
             "network_config": {
                 "peered_network": "peered_network_value",
                 "egress_option": 1,
+                "peered_network_ip_range": "peered_network_ip_range_value",
             },
         },
         "etag": "etag_value",
@@ -10947,6 +10996,7 @@ def test_create_worker_pool_rest_bad_request(
             "network_config": {
                 "peered_network": "peered_network_value",
                 "egress_option": 1,
+                "peered_network_ip_range": "peered_network_ip_range_value",
             },
         },
         "etag": "etag_value",
@@ -11631,6 +11681,7 @@ def test_update_worker_pool_rest(request_type):
             "network_config": {
                 "peered_network": "peered_network_value",
                 "egress_option": 1,
+                "peered_network_ip_range": "peered_network_ip_range_value",
             },
         },
         "etag": "etag_value",
@@ -11840,6 +11891,7 @@ def test_update_worker_pool_rest_bad_request(
             "network_config": {
                 "peered_network": "peered_network_value",
                 "egress_option": 1,
+                "peered_network_ip_range": "peered_network_ip_range_value",
             },
         },
         "etag": "etag_value",

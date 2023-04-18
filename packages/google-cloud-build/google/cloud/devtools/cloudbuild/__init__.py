@@ -101,6 +101,7 @@ from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
 )
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import UpdateWorkerPoolRequest
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import UploadedMavenArtifact
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import UploadedNpmPackage
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import UploadedPythonPackage
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Volume
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import WebhookConfig
@@ -165,6 +166,7 @@ __all__ = (
     "UpdateWorkerPoolOperationMetadata",
     "UpdateWorkerPoolRequest",
     "UploadedMavenArtifact",
+    "UploadedNpmPackage",
     "UploadedPythonPackage",
     "Volume",
     "WebhookConfig",

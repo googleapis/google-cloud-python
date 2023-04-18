@@ -77,6 +77,7 @@ from .types.cloudbuild import UpdateBuildTriggerRequest
 from .types.cloudbuild import UpdateWorkerPoolOperationMetadata
 from .types.cloudbuild import UpdateWorkerPoolRequest
 from .types.cloudbuild import UploadedMavenArtifact
+from .types.cloudbuild import UploadedNpmPackage
 from .types.cloudbuild import UploadedPythonPackage
 from .types.cloudbuild import Volume
 from .types.cloudbuild import WebhookConfig
@@ -141,6 +142,7 @@ __all__ = (
     "UpdateWorkerPoolOperationMetadata",
     "UpdateWorkerPoolRequest",
     "UploadedMavenArtifact",
+    "UploadedNpmPackage",
     "UploadedPythonPackage",
     "Volume",
     "WebhookConfig",
