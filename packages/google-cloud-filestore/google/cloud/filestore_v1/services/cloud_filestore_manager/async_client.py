@@ -44,9 +44,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.common.types import (
-    operation_metadata as operation_metadata_pb2,
-)  # type: ignore
+from google.cloud.common.types import operation_metadata
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -636,7 +634,7 @@ class CloudFilestoreManagerAsyncClient:
             response,
             self._client._transport.operations_client,
             cloud_filestore_service.Instance,
-            metadata_type=operation_metadata_pb2.OperationMetadata,
+            metadata_type=operation_metadata.OperationMetadata,
         )
 
         # Done; return the response.
@@ -769,7 +767,7 @@ class CloudFilestoreManagerAsyncClient:
             response,
             self._client._transport.operations_client,
             cloud_filestore_service.Instance,
-            metadata_type=operation_metadata_pb2.OperationMetadata,
+            metadata_type=operation_metadata.OperationMetadata,
         )
 
         # Done; return the response.
@@ -873,7 +871,7 @@ class CloudFilestoreManagerAsyncClient:
             response,
             self._client._transport.operations_client,
             cloud_filestore_service.Instance,
-            metadata_type=operation_metadata_pb2.OperationMetadata,
+            metadata_type=operation_metadata.OperationMetadata,
         )
 
         # Done; return the response.
@@ -999,7 +997,7 @@ class CloudFilestoreManagerAsyncClient:
             response,
             self._client._transport.operations_client,
             empty_pb2.Empty,
-            metadata_type=operation_metadata_pb2.OperationMetadata,
+            metadata_type=operation_metadata.OperationMetadata,
         )
 
         # Done; return the response.
@@ -1363,7 +1361,7 @@ class CloudFilestoreManagerAsyncClient:
             response,
             self._client._transport.operations_client,
             cloud_filestore_service.Snapshot,
-            metadata_type=operation_metadata_pb2.OperationMetadata,
+            metadata_type=operation_metadata.OperationMetadata,
         )
 
         # Done; return the response.
@@ -1489,7 +1487,7 @@ class CloudFilestoreManagerAsyncClient:
             response,
             self._client._transport.operations_client,
             empty_pb2.Empty,
-            metadata_type=operation_metadata_pb2.OperationMetadata,
+            metadata_type=operation_metadata.OperationMetadata,
         )
 
         # Done; return the response.
@@ -1619,7 +1617,7 @@ class CloudFilestoreManagerAsyncClient:
             response,
             self._client._transport.operations_client,
             cloud_filestore_service.Snapshot,
-            metadata_type=operation_metadata_pb2.OperationMetadata,
+            metadata_type=operation_metadata.OperationMetadata,
         )
 
         # Done; return the response.
@@ -2005,7 +2003,7 @@ class CloudFilestoreManagerAsyncClient:
             response,
             self._client._transport.operations_client,
             cloud_filestore_service.Backup,
-            metadata_type=operation_metadata_pb2.OperationMetadata,
+            metadata_type=operation_metadata.OperationMetadata,
         )
 
         # Done; return the response.
@@ -2130,7 +2128,7 @@ class CloudFilestoreManagerAsyncClient:
             response,
             self._client._transport.operations_client,
             empty_pb2.Empty,
-            metadata_type=operation_metadata_pb2.OperationMetadata,
+            metadata_type=operation_metadata.OperationMetadata,
         )
 
         # Done; return the response.
@@ -2261,7 +2259,7 @@ class CloudFilestoreManagerAsyncClient:
             response,
             self._client._transport.operations_client,
             cloud_filestore_service.Backup,
-            metadata_type=operation_metadata_pb2.OperationMetadata,
+            metadata_type=operation_metadata.OperationMetadata,
         )
 
         # Done; return the response.
