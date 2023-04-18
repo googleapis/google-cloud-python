@@ -90,6 +90,12 @@ class DefaultPandasDTypes(enum.Enum):
     INT_DTYPE = object()
     """Specifies default integer dtype"""
 
+    DATE_DTYPE = object()
+    """Specifies default date dtype"""
+
+    TIME_DTYPE = object()
+    """Specifies default time dtype"""
+
 
 class DestinationFormat(object):
     """The exported file format. The default value is :attr:`CSV`.

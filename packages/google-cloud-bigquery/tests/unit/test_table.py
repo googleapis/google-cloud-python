@@ -46,6 +46,7 @@ pyarrow = _helpers.PYARROW_VERSIONS.try_import()
 PYARROW_VERSION = pkg_resources.parse_version("0.0.1")
 
 if pyarrow:
+    import pyarrow
     import pyarrow.types
 
     PYARROW_VERSION = pkg_resources.parse_version(pyarrow.__version__)
@@ -3471,11 +3472,45 @@ class TestRowIterator(unittest.TestCase):
             SchemaField("age", "INTEGER"),
             SchemaField("seconds", "INT64"),
             SchemaField("miles", "FLOAT64"),
+            SchemaField("date", "DATE"),
+            SchemaField("datetime", "DATETIME"),
+            SchemaField("time", "TIME"),
+            SchemaField("timestamp", "TIMESTAMP"),
         ]
         row_data = [
-            ["Phred Phlyntstone", "true", "32", "23000", "1.77"],
-            ["Bharney Rhubble", "false", "33", "454000", "6.66"],
-            ["Wylma Phlyntstone", "true", "29", "341000", "2.0"],
+            [
+                "Phred Phlyntstone",
+                "true",
+                "32",
+                "23000",
+                "1.77",
+                "1999-12-01",
+                "1999-12-31T00:00:00.000000",
+                "00:00:00.000000",
+                "1433836800000000",
+            ],
+            [
+                "Bharney Rhubble",
+                "false",
+                "33",
+                "454000",
+                "6.66",
+                "4567-06-14",
+                "4567-12-31T00:00:00.000000",
+                "12:00:00.232413",
+                "81953424000000000",
+            ],
+            [
+                "Wylma Phlyntstone",
+                "true",
+                "29",
+                "341000",
+                "2.0",
+                "9999-12-31",
+                "9999-12-31T23:59:59.999999",
+                "23:59:59.999999",
+                "253402261199999999",
+            ],
         ]
         rows = [{"f": [{"v": field} for field in row]} for row in row_data]
         path = "/foo"
@@ -3492,17 +3527,135 @@ class TestRowIterator(unittest.TestCase):
                 else pandas.StringDtype()
             ),
             string_dtype=pandas.StringDtype(),
+            date_dtype=(
+                pandas.ArrowDtype(pyarrow.date32())
+                if hasattr(pandas, "ArrowDtype")
+                else None
+            ),
+            datetime_dtype=(
+                pandas.ArrowDtype(pyarrow.timestamp("us"))
+                if hasattr(pandas, "ArrowDtype")
+                else None
+            ),
+            time_dtype=(
+                pandas.ArrowDtype(pyarrow.time64("us"))
+                if hasattr(pandas, "ArrowDtype")
+                else None
+            ),
+            timestamp_dtype=(
+                pandas.ArrowDtype(pyarrow.timestamp("us", tz="UTC"))
+                if hasattr(pandas, "ArrowDtype")
+                else None
+            ),
         )
 
         self.assertIsInstance(df, pandas.DataFrame)
+
+        self.assertEqual(list(df.complete), [True, False, True])
         self.assertEqual(df.complete.dtype.name, "boolean")
+
+        self.assertEqual(list(df.age), [32, 33, 29])
         self.assertEqual(df.age.dtype.name, "Int32")
+
+        self.assertEqual(list(df.seconds), [23000, 454000, 341000])
         self.assertEqual(df.seconds.dtype.name, "Int32")
+
         self.assertEqual(
-            df.miles.dtype.name,
-            "Float64" if hasattr(pandas, "Float64Dtype") else "string",
+            list(df.name), ["Phred Phlyntstone", "Bharney Rhubble", "Wylma Phlyntstone"]
         )
         self.assertEqual(df.name.dtype.name, "string")
+
+        if hasattr(pandas, "Float64Dtype"):
+            self.assertEqual(list(df.miles), [1.77, 6.66, 2.0])
+            self.assertEqual(df.miles.dtype.name, "Float64")
+        else:
+            self.assertEqual(list(df.miles), ["1.77", "6.66", "2.0"])
+            self.assertEqual(df.miles.dtype.name, "string")
+
+        if hasattr(pandas, "ArrowDtype"):
+            self.assertEqual(
+                list(df.date),
+                [
+                    datetime.date(1999, 12, 1),
+                    datetime.date(4567, 6, 14),
+                    datetime.date(9999, 12, 31),
+                ],
+            )
+            self.assertEqual(df.date.dtype.name, "date32[day][pyarrow]")
+
+            self.assertEqual(
+                list(df.datetime),
+                [
+                    datetime.datetime(1999, 12, 31, 0, 0),
+                    datetime.datetime(4567, 12, 31, 0, 0),
+                    datetime.datetime(9999, 12, 31, 23, 59, 59, 999999),
+                ],
+            )
+            self.assertEqual(df.datetime.dtype.name, "timestamp[us][pyarrow]")
+
+            self.assertEqual(
+                list(df.time),
+                [
+                    datetime.time(0, 0),
+                    datetime.time(12, 0, 0, 232413),
+                    datetime.time(23, 59, 59, 999999),
+                ],
+            )
+            self.assertEqual(df.time.dtype.name, "time64[us][pyarrow]")
+
+            self.assertEqual(
+                list(df.timestamp),
+                [
+                    datetime.datetime(2015, 6, 9, 8, 0, tzinfo=datetime.timezone.utc),
+                    datetime.datetime(4567, 1, 1, 0, 0, tzinfo=datetime.timezone.utc),
+                    datetime.datetime(
+                        9999, 12, 31, 12, 59, 59, 999999, tzinfo=datetime.timezone.utc
+                    ),
+                ],
+            )
+            self.assertEqual(df.timestamp.dtype.name, "timestamp[us, tz=UTC][pyarrow]")
+        else:
+            self.assertEqual(
+                list(df.date),
+                [
+                    pandas.Timestamp("1999-12-01 00:00:00"),
+                    pandas.Timestamp("2229-03-27 01:41:45.161793536"),
+                    pandas.Timestamp("1816-03-29 05:56:08.066277376"),
+                ],
+            )
+            self.assertEqual(df.date.dtype.name, "datetime64[ns]")
+
+            self.assertEqual(
+                list(df.datetime),
+                [
+                    datetime.datetime(1999, 12, 31, 0, 0),
+                    datetime.datetime(4567, 12, 31, 0, 0),
+                    datetime.datetime(9999, 12, 31, 23, 59, 59, 999999),
+                ],
+            )
+            self.assertEqual(df.datetime.dtype.name, "object")
+
+            self.assertEqual(
+                list(df.time),
+                [
+                    datetime.time(0, 0),
+                    datetime.time(12, 0, 0, 232413),
+                    datetime.time(23, 59, 59, 999999),
+                ],
+            )
+            self.assertEqual(df.time.dtype.name, "object")
+
+            self.assertEqual(
+                list(df.timestamp),
+                [
+                    datetime.datetime(2015, 6, 9, 8, 0, tzinfo=datetime.timezone.utc),
+                    datetime.datetime(4567, 1, 1, 0, 0, tzinfo=datetime.timezone.utc),
+                    datetime.datetime(
+                        9999, 12, 31, 12, 59, 59, 999999, tzinfo=datetime.timezone.utc
+                    ),
+                ],
+            )
+            self.assertEqual(df.timestamp.dtype.name, "object")
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_w_none_dtypes_mapper(self):
@@ -3514,11 +3667,23 @@ class TestRowIterator(unittest.TestCase):
             SchemaField("age", "INTEGER"),
             SchemaField("seconds", "INT64"),
             SchemaField("miles", "FLOAT64"),
+            SchemaField("date", "DATE"),
+            SchemaField("datetime", "DATETIME"),
+            SchemaField("time", "TIME"),
+            SchemaField("timestamp", "TIMESTAMP"),
         ]
         row_data = [
-            ["Phred Phlyntstone", "true", "32", "23000", "1.77"],
-            ["Bharney Rhubble", "false", "33", "454000", "6.66"],
-            ["Wylma Phlyntstone", "true", "29", "341000", "2.0"],
+            [
+                "Phred Phlyntstone",
+                "true",
+                "32",
+                "23000",
+                "1.77",
+                "1999-12-01",
+                "1999-12-31T00:00:00.000000",
+                "23:59:59.999999",
+                "1433836800000000",
+            ],
         ]
         rows = [{"f": [{"v": field} for field in row]} for row in row_data]
         path = "/foo"
@@ -3531,6 +3696,10 @@ class TestRowIterator(unittest.TestCase):
             int_dtype=None,
             float_dtype=None,
             string_dtype=None,
+            date_dtype=None,
+            datetime_dtype=None,
+            time_dtype=None,
+            timestamp_dtype=None,
         )
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(df.complete.dtype.name, "bool")
@@ -3538,6 +3707,10 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(df.seconds.dtype.name, "int64")
         self.assertEqual(df.miles.dtype.name, "float64")
         self.assertEqual(df.name.dtype.name, "object")
+        self.assertEqual(df.date.dtype.name, "datetime64[ns]")
+        self.assertEqual(df.datetime.dtype.name, "datetime64[ns]")
+        self.assertEqual(df.time.dtype.name, "object")
+        self.assertEqual(df.timestamp.dtype.name, "datetime64[ns, UTC]")
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_w_unsupported_dtypes_mapper(self):
@@ -3574,6 +3747,26 @@ class TestRowIterator(unittest.TestCase):
             row_iterator.to_dataframe(
                 create_bqstorage_client=False,
                 string_dtype=numpy.dtype("object"),
+            )
+        with self.assertRaises(ValueError):
+            row_iterator.to_dataframe(
+                create_bqstorage_client=False,
+                date_dtype=numpy.dtype("object"),
+            )
+        with self.assertRaises(ValueError):
+            row_iterator.to_dataframe(
+                create_bqstorage_client=False,
+                datetime_dtype=numpy.dtype("datetime64[us]"),
+            )
+        with self.assertRaises(ValueError):
+            row_iterator.to_dataframe(
+                create_bqstorage_client=False,
+                time_dtype=numpy.dtype("datetime64[us]"),
+            )
+        with self.assertRaises(ValueError):
+            row_iterator.to_dataframe(
+                create_bqstorage_client=False,
+                timestamp_dtype=numpy.dtype("datetime64[us]"),
             )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")

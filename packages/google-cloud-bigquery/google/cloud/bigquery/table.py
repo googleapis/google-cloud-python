@@ -1935,6 +1935,10 @@ class RowIterator(HTTPIterator):
         int_dtype: Union[Any, None] = DefaultPandasDTypes.INT_DTYPE,
         float_dtype: Union[Any, None] = None,
         string_dtype: Union[Any, None] = None,
+        date_dtype: Union[Any, None] = DefaultPandasDTypes.DATE_DTYPE,
+        datetime_dtype: Union[Any, None] = None,
+        time_dtype: Union[Any, None] = DefaultPandasDTypes.TIME_DTYPE,
+        timestamp_dtype: Union[Any, None] = None,
     ) -> "pandas.DataFrame":
         """Create a pandas DataFrame by loading all pages of a query.
 
@@ -1999,7 +2003,7 @@ class RowIterator(HTTPIterator):
                 type can be found at:
                 https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#boolean_type
 
-                .. versionadded:: 3.7.1
+                .. versionadded:: 3.8.0
 
             int_dtype (Optional[pandas.Series.dtype, None]):
                 If set, indicate a pandas ExtensionDtype (e.g. ``pandas.Int64Dtype()``)
@@ -2009,7 +2013,7 @@ class RowIterator(HTTPIterator):
                 Integer types can be found at:
                 https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_types
 
-                .. versionadded:: 3.7.1
+                .. versionadded:: 3.8.0
 
             float_dtype (Optional[pandas.Series.dtype, None]):
                 If set, indicate a pandas ExtensionDtype (e.g. ``pandas.Float32Dtype()``)
@@ -2019,7 +2023,7 @@ class RowIterator(HTTPIterator):
                 type can be found at:
                 https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#floating_point_types
 
-                .. versionadded:: 3.7.1
+                .. versionadded:: 3.8.0
 
             string_dtype (Optional[pandas.Series.dtype, None]):
                 If set, indicate a pandas ExtensionDtype (e.g. ``pandas.StringDtype()``) to
@@ -2029,7 +2033,50 @@ class RowIterator(HTTPIterator):
                 type can be found at:
                 https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#string_type
 
-                .. versionadded:: 3.7.1
+                .. versionadded:: 3.8.0
+
+            date_dtype (Optional[pandas.Series.dtype, None]):
+                If set, indicate a pandas ExtensionDtype (e.g.
+                ``pandas.ArrowDtype(pyarrow.date32())``) to convert BigQuery Date
+                type, instead of relying on the default ``db_dtypes.DateDtype()``.
+                If you explicitly set the value to ``None``, then the data type will be
+                ``numpy.dtype("datetime64[ns]")`` or ``object`` if out of bound. BigQuery
+                Date type can be found at:
+                https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#date_type
+
+                .. versionadded:: 3.10.0
+
+            datetime_dtype (Optional[pandas.Series.dtype, None]):
+                If set, indicate a pandas ExtensionDtype (e.g.
+                ``pandas.ArrowDtype(pyarrow.timestamp("us"))``) to convert BigQuery Datetime
+                type, instead of relying on the default ``numpy.dtype("datetime64[ns]``.
+                If you explicitly set the value to ``None``, then the data type will be
+                ``numpy.dtype("datetime64[ns]")`` or ``object`` if out of bound. BigQuery
+                Datetime type can be found at:
+                https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime_type
+
+                .. versionadded:: 3.10.0
+
+            time_dtype (Optional[pandas.Series.dtype, None]):
+                If set, indicate a pandas ExtensionDtype (e.g.
+                ``pandas.ArrowDtype(pyarrow.time64("us"))``) to convert BigQuery Time
+                type, instead of relying on the default ``db_dtypes.TimeDtype()``.
+                If you explicitly set the value to ``None``, then the data type will be
+                ``numpy.dtype("object")``. BigQuery Time type can be found at:
+                https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#time_type
+
+                .. versionadded:: 3.10.0
+
+            timestamp_dtype (Optional[pandas.Series.dtype, None]):
+                If set, indicate a pandas ExtensionDtype (e.g.
+                ``pandas.ArrowDtype(pyarrow.timestamp("us", tz="UTC"))``) to convert BigQuery Timestamp
+                type, instead of relying on the default ``numpy.dtype("datetime64[ns, UTC]")``.
+                If you explicitly set the value to ``None``, then the data type will be
+                ``numpy.dtype("datetime64[ns, UTC]")`` or ``object`` if out of bound. BigQuery
+                Datetime type can be found at:
+                https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#timestamp_type
+
+                .. versionadded:: 3.10.0
 
         Returns:
             pandas.DataFrame:
@@ -2059,6 +2106,9 @@ class RowIterator(HTTPIterator):
         if int_dtype is DefaultPandasDTypes.INT_DTYPE:
             int_dtype = pandas.Int64Dtype()
 
+        if time_dtype is DefaultPandasDTypes.TIME_DTYPE:
+            time_dtype = db_dtypes.TimeDtype()
+
         if bool_dtype is not None and not hasattr(bool_dtype, "__from_arrow__"):
             raise ValueError("bool_dtype", _NO_SUPPORTED_DTYPE)
 
@@ -2070,6 +2120,24 @@ class RowIterator(HTTPIterator):
 
         if string_dtype is not None and not hasattr(string_dtype, "__from_arrow__"):
             raise ValueError("string_dtype", _NO_SUPPORTED_DTYPE)
+
+        if (
+            date_dtype is not None
+            and date_dtype is not DefaultPandasDTypes.DATE_DTYPE
+            and not hasattr(date_dtype, "__from_arrow__")
+        ):
+            raise ValueError("date_dtype", _NO_SUPPORTED_DTYPE)
+
+        if datetime_dtype is not None and not hasattr(datetime_dtype, "__from_arrow__"):
+            raise ValueError("datetime_dtype", _NO_SUPPORTED_DTYPE)
+
+        if time_dtype is not None and not hasattr(time_dtype, "__from_arrow__"):
+            raise ValueError("time_dtype", _NO_SUPPORTED_DTYPE)
+
+        if timestamp_dtype is not None and not hasattr(
+            timestamp_dtype, "__from_arrow__"
+        ):
+            raise ValueError("timestamp_dtype", _NO_SUPPORTED_DTYPE)
 
         if dtypes is None:
             dtypes = {}
@@ -2086,25 +2154,29 @@ class RowIterator(HTTPIterator):
             create_bqstorage_client=create_bqstorage_client,
         )
 
-        # When converting date or timestamp values to nanosecond precision, the result
-        # can be out of pyarrow bounds. To avoid the error when converting to
-        # Pandas, we set the date_as_object or timestamp_as_object parameter to True,
-        # if necessary.
-        date_as_object = not all(
-            self.__can_cast_timestamp_ns(col)
-            for col in record_batch
-            # Type can be date32 or date64 (plus units).
-            # See: https://arrow.apache.org/docs/python/api/datatypes.html
-            if pyarrow.types.is_date(col.type)
-        )
+        # Default date dtype is `db_dtypes.DateDtype()` that could cause out of bounds error,
+        # when pyarrow converts date values to nanosecond precision. To avoid the error, we
+        # set the date_as_object parameter to True, if necessary.
+        date_as_object = False
+        if date_dtype is DefaultPandasDTypes.DATE_DTYPE:
+            date_dtype = db_dtypes.DateDtype()
+            date_as_object = not all(
+                self.__can_cast_timestamp_ns(col)
+                for col in record_batch
+                # Type can be date32 or date64 (plus units).
+                # See: https://arrow.apache.org/docs/python/api/datatypes.html
+                if pyarrow.types.is_date(col.type)
+            )
 
-        timestamp_as_object = not all(
-            self.__can_cast_timestamp_ns(col)
-            for col in record_batch
-            # Type can be datetime and timestamp (plus units and time zone).
-            # See: https://arrow.apache.org/docs/python/api/datatypes.html
-            if pyarrow.types.is_timestamp(col.type)
-        )
+        timestamp_as_object = False
+        if datetime_dtype is None and timestamp_dtype is None:
+            timestamp_as_object = not all(
+                self.__can_cast_timestamp_ns(col)
+                for col in record_batch
+                # Type can be datetime and timestamp (plus units and time zone).
+                # See: https://arrow.apache.org/docs/python/api/datatypes.html
+                if pyarrow.types.is_timestamp(col.type)
+            )
 
         if len(record_batch) > 0:
             df = record_batch.to_pandas(
@@ -2117,6 +2189,10 @@ class RowIterator(HTTPIterator):
                     int_dtype=int_dtype,
                     float_dtype=float_dtype,
                     string_dtype=string_dtype,
+                    date_dtype=date_dtype,
+                    datetime_dtype=datetime_dtype,
+                    time_dtype=time_dtype,
+                    timestamp_dtype=timestamp_dtype,
                 ),
             )
         else:
@@ -2317,6 +2393,10 @@ class _EmptyRowIterator(RowIterator):
         int_dtype=None,
         float_dtype=None,
         string_dtype=None,
+        date_dtype=None,
+        datetime_dtype=None,
+        time_dtype=None,
+        timestamp_dtype=None,
     ) -> "pandas.DataFrame":
         """Create an empty dataframe.
 
@@ -2330,6 +2410,10 @@ class _EmptyRowIterator(RowIterator):
             int_dtype (Any): Ignored. Added for compatibility with RowIterator.
             float_dtype (Any): Ignored. Added for compatibility with RowIterator.
             string_dtype (Any): Ignored. Added for compatibility with RowIterator.
+            date_dtype (Any): Ignored. Added for compatibility with RowIterator.
+            datetime_dtype (Any): Ignored. Added for compatibility with RowIterator.
+            time_dtype (Any): Ignored. Added for compatibility with RowIterator.
+            timestamp_dtype (Any): Ignored. Added for compatibility with RowIterator.
 
         Returns:
             pandas.DataFrame: An empty :class:`~pandas.DataFrame`.

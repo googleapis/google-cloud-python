@@ -290,6 +290,10 @@ def default_types_mapper(
     int_dtype: Union[Any, None] = None,
     float_dtype: Union[Any, None] = None,
     string_dtype: Union[Any, None] = None,
+    date_dtype: Union[Any, None] = None,
+    datetime_dtype: Union[Any, None] = None,
+    time_dtype: Union[Any, None] = None,
+    timestamp_dtype: Union[Any, None] = None,
 ):
     """Create a mapping from pyarrow types to pandas types.
 
@@ -321,13 +325,28 @@ def default_types_mapper(
         elif (
             # If date_as_object is True, we know some DATE columns are
             # out-of-bounds of what is supported by pandas.
-            not date_as_object
+            date_dtype is not None
+            and not date_as_object
             and pyarrow.types.is_date(arrow_data_type)
         ):
-            return db_dtypes.DateDtype()
+            return date_dtype
 
-        elif pyarrow.types.is_time(arrow_data_type):
-            return db_dtypes.TimeDtype()
+        elif (
+            datetime_dtype is not None
+            and pyarrow.types.is_timestamp(arrow_data_type)
+            and arrow_data_type.tz is None
+        ):
+            return datetime_dtype
+
+        elif (
+            timestamp_dtype is not None
+            and pyarrow.types.is_timestamp(arrow_data_type)
+            and arrow_data_type.tz is not None
+        ):
+            return timestamp_dtype
+
+        elif time_dtype is not None and pyarrow.types.is_time(arrow_data_type):
+            return time_dtype
 
     return types_mapper
 
