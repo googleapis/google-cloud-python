@@ -13,13 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Sample usage:
+#
+# git-migrate-history.sh \
+# "googleapis/python-speech" \
+# "~/temp/google-cloud-python" \
+# "" \
+# "" \
+# ".github/.OwlBot.yaml"
+#
+# This invocation runs migration script on python-speech, where the source path is root directory,
+# nothing is ignored, and .OwlBot.yaml is being kept.
+
 set -ex
 
 [[ "${BASH_SOURCE[0]}" != "${0}" ]] && EXIT=return || EXIT=exit
 
-if [ $# -lt 4 ]
+if [ $# -lt 3 ]
 then
-  echo "Usage: $0 <source-repo> <target-repo> <source-path> <target-path> [folders,to,skip] [files,to,keep] [branch-name]"
+  echo "Usage: $0 <source-repo> <target-repo> <source-path> [folders,to,skip] [files,to,keep] [branch-name]"
   $EXIT 1
 fi
 
@@ -27,21 +39,19 @@ fi
 SOURCE_REPO=$1
 
 # destination GitHub repository. format: <owner>/<repo>
-TARGET_REPO=$2
+TARGET_REPO=$2  # Path to google-cloud-python
 
 # path in the source repo to copy code from. Defaults to the root directory
 SOURCE_PATH=$3
 
-# path in the target repo to put the copied code
-TARGET_PATH=$4
-
 # comma-separated list of files/folders to skip
-IGNORE_FOLDERS=$5
+IGNORE_FOLDERS=$4
+
 # keep these specific files that would otherwise be deleted by IGNORE_FOLDERS
-KEEP_FILES=$6
+KEEP_FILES=$5
 
 # override the HEAD branch name for the migration PR
-BRANCH=$7
+BRANCH=$6
 
 
 if [[ -z "${BRANCH}" ]]
@@ -102,6 +112,8 @@ then
     --tree-filter "${FILTER}"
 fi
 
+TARGET_PATH=$(jq -r '.distribution_name' .repo-metadata.json)  # -r removes quotes around the name.
+
 # reorganize the filtered code into the desired target locations
 if [[ ! -z "${TARGET_PATH}" ]]
 then
@@ -117,12 +129,10 @@ fi
 popd
 
 # merge histories
-echo "Cloning target repository: ${SOURCE_REPO}"
-git clone "git@github.com:${TARGET_REPO}.git" target-repo
-pushd target-repo
+pushd $TARGET_REPO
 
-git remote add --fetch migration ../source-repo
-git checkout -b "${BRANCH}"
+git remote add --fetch migration ${WORKDIR}/source-repo
+git checkout -B "${BRANCH}"
 git merge --allow-unrelated-histories migration/main --no-edit
 
 echo "Success"
@@ -133,15 +143,15 @@ popd # back to workdir
 git clone "git@github.com:${SOURCE_REPO}.git" source-repo-validation  # Not ideal to clone again.
 rm -rf source-repo-validation/.git  # That folder is not needed for validation.
 
-if diff -r target-repo/"${TARGET_PATH}" source-repo-validation; then
+DIFF_FILE="${WORKDIR}/diff.txt"
+if diff -r "${TARGET_REPO}/${TARGET_PATH}" source-repo-validation > "${DIFF_FILE}" ; then
   echo "No diff"
 else
-  diff -r target-repo/"${TARGET_PATH}" source-repo-validation > "diff.txt"
-  echo "Diff non-empty. See ${WORKDIR}/diff.txt"
+  echo "Diff non-empty. See ${DIFF_FILE}"
   $EXIT 1
 fi
 
-pushd target-repo  # To target repo
+pushd "${TARGET_REPO}"  # To target repo
 
 git push -u origin "${BRANCH}" --force
 
