@@ -40,7 +40,7 @@
 set -e
 
 NOP="echo -n"
-DEBUG="yes"  # set to blank for a real run
+DEBUG=""  # "yes"  # set to blank for a real run
 MESSAGE=""
 
 [[ -n ${DEBUG} ]] && {
