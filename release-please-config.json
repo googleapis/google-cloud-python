@@ -217,7 +217,19 @@
             "component": "google-cloud-confidentialcomputing",
             "release-type": "python",
             "extra-files": [
-                "google/cloud/confidentialcomputing/gapic_version.py"
+                "google/cloud/confidentialcomputing/gapic_version.py",
+                "google/cloud/confidentialcomputing_v1/gapic_version.py",
+                "google/cloud/confidentialcomputing_v1alpha1/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.confidentialcomputing.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                },
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.confidentialcomputing.v1alpha1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
             ]
         }
     }

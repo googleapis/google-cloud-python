@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Confidential VM.
+This package includes clients for multiple versions of Confidential Computing API.
 By default, you will get version ``confidentialcomputing_v1``.
 
 
