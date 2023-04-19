@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.4.0...v1.5.0) (2023-04-19)
+
+
+### Features
+
+* Feat: SQLAlchemy 2.0 support ([#314](https://github.com/googleapis/python-spanner-sqlalchemy/issues/314)) ([61d836b](https://github.com/googleapis/python-spanner-sqlalchemy/commit/61d836bade2a89d04b5c61e4ca9c56e7163f6cc6))
+
 ## [1.4.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.3.0...v1.4.0) (2023-04-06)
 
 
