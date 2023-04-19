@@ -206,8 +206,10 @@ echo "Migrating: ${OWP_MONO_PATH}"
 RMJ_MONO_PATH="${MONOREPO_PATH_PACKAGE}/.repo-metadata.json"
 echo "Migrating: ${RMJ_MONO_PATH}"
 
+[[ -z ${DEBUG} ]] || { \
 RMJ_SPLIT_PATH="${PATH_PACKAGE}/.repo-metadata.json"
-cp ${RMJ_SPLIT_PATH} ${RMJ_MONO_PATH}  # only needed for dev runs
+cp ${RMJ_SPLIT_PATH} ${RMJ_MONO_PATH}
+}
 
 jq '.repo = "googleapis/google-cloud-python"' ${RMJ_MONO_PATH} | sponge ${RMJ_MONO_PATH}
 jq -r ".issue_tracker" "${RMJ_MONO_PATH}" | grep -q "github.com"  && {
