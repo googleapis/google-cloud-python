@@ -40,7 +40,7 @@
 set -e
 
 NOP="echo -n"
-DEBUG="yes"  # set to blank for a real run
+DEBUG=""  # "yes"  # set to blank for a real run, or non-blank to prevent modifying the split-repo
 MESSAGE=""
 
 [[ -n ${DEBUG} ]] && {
@@ -190,9 +190,10 @@ $RM ${OWY_SPLIT_PATH}
 OWP_MONO_PATH="${MONOREPO_PATH_PACKAGE}/owlbot.py"
 echo "Migrating: ${OWP_MONO_PATH}"
 
-# the next two lines are only needed for dev runs
-OWP_SPLIT_PATH="${PATH_PACKAGE}/owlbot.py"
-[[ ! -f "${OWP_SPLIT_PATH}" ]] || cp ${OWP_SPLIT_PATH} ${OWP_MONO_PATH}
+[[ -z ${DEBUG} ]] || { \
+  OWP_SPLIT_PATH="${PATH_PACKAGE}/owlbot.py"
+  [[ ! -f "${OWP_SPLIT_PATH}" ]] || cp -u ${OWP_SPLIT_PATH} ${OWP_MONO_PATH}
+}
 
 [[ ! -f "${OWP_MONO_PATH}" ]] || {
   MESSAGE="${MESSAGE}\n\nWARNING: Deleted ${OWP_MONO_PATH}"
@@ -205,8 +206,10 @@ OWP_SPLIT_PATH="${PATH_PACKAGE}/owlbot.py"
 RMJ_MONO_PATH="${MONOREPO_PATH_PACKAGE}/.repo-metadata.json"
 echo "Migrating: ${RMJ_MONO_PATH}"
 
+[[ -z ${DEBUG} ]] || { \
 RMJ_SPLIT_PATH="${PATH_PACKAGE}/.repo-metadata.json"
-cp ${RMJ_SPLIT_PATH} ${RMJ_MONO_PATH}  # only needed for dev runs
+cp ${RMJ_SPLIT_PATH} ${RMJ_MONO_PATH}
+}
 
 jq '.repo = "googleapis/google-cloud-python"' ${RMJ_MONO_PATH} | sponge ${RMJ_MONO_PATH}
 jq -r ".issue_tracker" "${RMJ_MONO_PATH}" | grep -q "github.com"  && {
