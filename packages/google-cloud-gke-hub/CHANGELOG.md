@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-gke-hub/compare/v1.8.1...v1.9.0) (2023-04-19)
+
+
+### Features
+
+* Add `cluster_missing` on `GkeResource` ([3e1d60b](https://github.com/googleapis/python-gke-hub/commit/3e1d60b836aedc9a68a152fb1b3b04013aea0e22))
+* Add `force` on `DeleteMembershipRequest` ([3e1d60b](https://github.com/googleapis/python-gke-hub/commit/3e1d60b836aedc9a68a152fb1b3b04013aea0e22))
+* Add `google_managed` on `MembershipEndpoint` ([3e1d60b](https://github.com/googleapis/python-gke-hub/commit/3e1d60b836aedc9a68a152fb1b3b04013aea0e22))
+* Add `monitoring_config` field ([3e1d60b](https://github.com/googleapis/python-gke-hub/commit/3e1d60b836aedc9a68a152fb1b3b04013aea0e22))
+
+
+### Documentation
+
+* Update API annotation ([3e1d60b](https://github.com/googleapis/python-gke-hub/commit/3e1d60b836aedc9a68a152fb1b3b04013aea0e22))
+
 ## [1.8.1](https://github.com/googleapis/python-gke-hub/compare/v1.8.0...v1.8.1) (2023-03-23)
 
 
