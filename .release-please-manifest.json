@@ -15,4 +15,10 @@
     "packages/google-maps-addressvalidation": "0.3.3",
     "packages/google-maps-mapsplatformdatasets": "0.2.1",
     "packages/google-maps-routing": "0.5.0"
+    "packages/google-cloud-advisorynotifications": "0.2.0",
+    "packages/google-cloud-alloydb": "0.1.1",
+    "packages/google-cloud-workstations": "0.2.1",
+    "packages/google-cloud-bigquery-biglake": "0.3.0",
+    "packages/google-cloud-storageinsights": "0.1.0",
+    "packages/google-cloud-confidentialcomputing": "0.1.0"
 }
