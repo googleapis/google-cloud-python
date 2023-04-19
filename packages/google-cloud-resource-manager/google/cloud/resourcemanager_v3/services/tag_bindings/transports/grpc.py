@@ -32,8 +32,8 @@ class TagBindingsGrpcTransport(TagBindingsTransport):
     """gRPC backend transport for TagBindings.
 
     Allow users to create and manage TagBindings between
-    TagValues and different cloud resources throughout the GCP
-    resource hierarchy.
+    TagValues and different Google Cloud resources throughout the
+    GCP resource hierarchy.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -254,8 +254,8 @@ class TagBindingsGrpcTransport(TagBindingsTransport):
     ]:
         r"""Return a callable for the list tag bindings method over gRPC.
 
-        Lists the TagBindings for the given cloud resource, as specified
-        with ``parent``.
+        Lists the TagBindings for the given Google Cloud resource, as
+        specified with ``parent``.
 
         NOTE: The ``parent`` field is expected to be a full resource
         name:
@@ -285,8 +285,8 @@ class TagBindingsGrpcTransport(TagBindingsTransport):
     ) -> Callable[[tag_bindings.CreateTagBindingRequest], operations_pb2.Operation]:
         r"""Return a callable for the create tag binding method over gRPC.
 
-        Creates a TagBinding between a TagValue and a cloud
-        resource (currently project, folder, or organization).
+        Creates a TagBinding between a TagValue and a Google
+        Cloud resource.
 
         Returns:
             Callable[[~.CreateTagBindingRequest],
@@ -332,8 +332,54 @@ class TagBindingsGrpcTransport(TagBindingsTransport):
             )
         return self._stubs["delete_tag_binding"]
 
+    @property
+    def list_effective_tags(
+        self,
+    ) -> Callable[
+        [tag_bindings.ListEffectiveTagsRequest], tag_bindings.ListEffectiveTagsResponse
+    ]:
+        r"""Return a callable for the list effective tags method over gRPC.
+
+        Return a list of effective tags for the given Google Cloud
+        resource, as specified in ``parent``.
+
+        Returns:
+            Callable[[~.ListEffectiveTagsRequest],
+                    ~.ListEffectiveTagsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_effective_tags" not in self._stubs:
+            self._stubs["list_effective_tags"] = self.grpc_channel.unary_unary(
+                "/google.cloud.resourcemanager.v3.TagBindings/ListEffectiveTags",
+                request_serializer=tag_bindings.ListEffectiveTagsRequest.serialize,
+                response_deserializer=tag_bindings.ListEffectiveTagsResponse.deserialize,
+            )
+        return self._stubs["list_effective_tags"]
+
     def close(self):
         self.grpc_channel.close()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the get_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_operation" not in self._stubs:
+            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/GetOperation",
+                request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["get_operation"]
 
     @property
     def kind(self) -> str:

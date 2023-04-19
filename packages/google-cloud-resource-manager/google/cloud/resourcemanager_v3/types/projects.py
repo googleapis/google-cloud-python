@@ -100,7 +100,7 @@ class Project(proto.Message):
             must conform to the regular expression
             ([a-z]([-a-z0-9]*[a-z0-9])?)?.
 
-            No more than 256 labels can be associated with a given
+            No more than 64 labels can be associated with a given
             resource.
 
             Clients should store labels in a representation such as JSON
@@ -202,11 +202,13 @@ class ListProjectsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the parent resource to
-            list projects under.
-            For example, setting this field to
-            'folders/1234' would list all projects directly
-            under that folder.
+            Required. The name of the parent resource whose projects are
+            being listed. Only children of this parent resource are
+            listed; descendants are not listed.
+
+            If the parent is a folder, use the value
+            ``folders/{folder_id}``. If the parent is an organization,
+            use the value ``organizations/{org_id}``.
         page_token (str):
             Optional. A pagination token returned from a previous call
             to [ListProjects]
@@ -297,7 +299,7 @@ class SearchProjectsRequest(proto.Message):
         query (str):
             Optional. A query string for searching for projects that the
             caller has ``resourcemanager.projects.get`` permission to.
-            If multiple fields are included in the query, the it will
+            If multiple fields are included in the query, then it will
             return results that match any of the fields. Some eligible
             fields are:
 
@@ -306,15 +308,15 @@ class SearchProjectsRequest(proto.Message):
                | Field                   | Description                                  |
                |-------------------------|----------------------------------------------|
                | displayName, name       | Filters by displayName.                      |
-               | parent                  | Project's parent. (for example: folders/123,
-               organizations/*) Prefer parent field over parent.type and parent.id. |
-               | parent.type             | Parent's type: `folder` or `organization`.   |
-               | parent.id               | Parent's id number (for example: 123)        |
-               | id, projectId           | Filters by projectId.                        |
-               | state, lifecycleState   | Filters by state.                            |
-               | labels                  | Filters by label name or value.              |
-               | labels.<key> (where *key* is the name of a label) | Filters by label
-               name. |
+               | parent                  | Project's parent (for example: folders/123,
+               organizations/*). Prefer parent field over parent.type and parent.id.| |
+               parent.type             | Parent's type: `folder` or `organization`.   | |
+               parent.id               | Parent's id number (for example: 123)        | |
+               id, projectId           | Filters by projectId.                        | |
+               state, lifecycleState   | Filters by state.                            | |
+               labels                  | Filters by label name or value.              | |
+               labels.\<key\> (where *key* is the name of a label) | Filters by label
+               name.|
 
             Search expressions are case insensitive.
 
@@ -330,8 +332,8 @@ class SearchProjectsRequest(proto.Message):
                | NAME:howl        | Equivalent to above.                                |
                | labels.color:*   | The project has the label `color`.                  |
                | labels.color:red | The project's label `color` has the value `red`.    |
-               | labels.color:red&nbsp;labels.size:big | The project's label `color` has
-               the value `red` and its label `size` has the value `big`.                |
+               | labels.color:red labels.size:big | The project's label `color` has the
+               value `red` or its label `size` has the value `big`.                     |
 
             If no query is specified, the call will return projects for
             which the user has the ``resourcemanager.projects.get``
@@ -421,7 +423,7 @@ class CreateProjectRequest(proto.Message):
             If the ``parent`` field is set, the
             ``resourcemanager.projects.create`` permission is checked on
             the parent resource. If no parent is set and the
-            authorization credentials belong to an Organziation, the
+            authorization credentials belong to an Organization, the
             parent will be set to that Organization.
     """
 

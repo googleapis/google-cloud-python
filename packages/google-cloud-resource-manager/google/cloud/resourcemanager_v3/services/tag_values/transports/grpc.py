@@ -278,9 +278,9 @@ class TagValuesGrpcTransport(TagValuesTransport):
     ) -> Callable[[tag_values.GetTagValueRequest], tag_values.TagValue]:
         r"""Return a callable for the get tag value method over gRPC.
 
-        Retrieves TagValue. If the TagValue or namespaced name does not
-        exist, or if the user does not have permission to view it, this
-        method will return ``PERMISSION_DENIED``.
+        Retrieves a TagValue. This method will return
+        ``PERMISSION_DENIED`` if the value does not exist or the user
+        does not have permission to view it.
 
         Returns:
             Callable[[~.GetTagValueRequest],
@@ -301,6 +301,34 @@ class TagValuesGrpcTransport(TagValuesTransport):
         return self._stubs["get_tag_value"]
 
     @property
+    def get_namespaced_tag_value(
+        self,
+    ) -> Callable[[tag_values.GetNamespacedTagValueRequest], tag_values.TagValue]:
+        r"""Return a callable for the get namespaced tag value method over gRPC.
+
+        Retrieves a TagValue by its namespaced name. This method will
+        return ``PERMISSION_DENIED`` if the value does not exist or the
+        user does not have permission to view it.
+
+        Returns:
+            Callable[[~.GetNamespacedTagValueRequest],
+                    ~.TagValue]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_namespaced_tag_value" not in self._stubs:
+            self._stubs["get_namespaced_tag_value"] = self.grpc_channel.unary_unary(
+                "/google.cloud.resourcemanager.v3.TagValues/GetNamespacedTagValue",
+                request_serializer=tag_values.GetNamespacedTagValueRequest.serialize,
+                response_deserializer=tag_values.TagValue.deserialize,
+            )
+        return self._stubs["get_namespaced_tag_value"]
+
+    @property
     def create_tag_value(
         self,
     ) -> Callable[[tag_values.CreateTagValueRequest], operations_pb2.Operation]:
@@ -309,7 +337,7 @@ class TagValuesGrpcTransport(TagValuesTransport):
         Creates a TagValue as a child of the specified
         TagKey. If a another request with the same parameters is
         sent while the original request is in process the second
-        request will receive an error. A maximum of 300
+        request will receive an error. A maximum of 1000
         TagValues can exist under a TagKey at any given time.
 
         Returns:
@@ -480,6 +508,23 @@ class TagValuesGrpcTransport(TagValuesTransport):
 
     def close(self):
         self.grpc_channel.close()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the get_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_operation" not in self._stubs:
+            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/GetOperation",
+                request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["get_operation"]
 
     @property
     def kind(self) -> str:

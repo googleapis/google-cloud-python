@@ -159,8 +159,10 @@ class SearchOrganizationsRequest(proto.Message):
     Attributes:
         page_size (int):
             Optional. The maximum number of organizations
-            to return in the response. If unspecified,
-            server picks an appropriate default.
+            to return in the response. The server can return
+            fewer organizations than requested. If
+            unspecified, server picks an appropriate
+            default.
         page_token (str):
             Optional. A pagination token returned from a previous call
             to ``SearchOrganizations`` that indicates from where listing

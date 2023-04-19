@@ -24,10 +24,12 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.resourcemanager.v3",
     manifest={
+        "Purpose",
         "TagKey",
         "ListTagKeysRequest",
         "ListTagKeysResponse",
         "GetTagKeyRequest",
+        "GetNamespacedTagKeyRequest",
         "CreateTagKeyRequest",
         "CreateTagKeyMetadata",
         "UpdateTagKeyRequest",
@@ -36,6 +38,30 @@ __protobuf__ = proto.module(
         "DeleteTagKeyMetadata",
     },
 )
+
+
+class Purpose(proto.Enum):
+    r"""A purpose for each policy engine requiring such an
+    integration. A single policy engine may have multiple purposes
+    defined, however a TagKey may only specify a single purpose.
+
+    Values:
+        PURPOSE_UNSPECIFIED (0):
+            Unspecified purpose.
+        GCE_FIREWALL (1):
+            Purpose for Compute Engine firewalls. A corresponding
+            purpose_data should be set for the network the tag is
+            intended for. The key should be 'network' and the value
+            should be in either of these two formats:
+            -https://www.googleapis.com/compute/{compute_version}/projects/{project_id}/global/networks/{network_id}
+            -{project_id}/{network_name}
+
+            Examples:
+            -https://www.googleapis.com/compute/staging_v1/projects/fail-closed-load-testing/global/networks/6992953698831725600
+            -fail-closed-load-testing/load-testing-network
+    """
+    PURPOSE_UNSPECIFIED = 0
+    GCE_FIREWALL = 1
 
 
 class TagKey(proto.Message):
@@ -63,6 +89,7 @@ class TagKey(proto.Message):
         description (str):
             Optional. User-assigned description of the
             TagKey. Must not exceed 256 characters.
+
             Read-write.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Creation time.
@@ -73,6 +100,22 @@ class TagKey(proto.Message):
             prevent race conditions. This field is always
             set in server responses. See UpdateTagKeyRequest
             for details.
+        purpose (google.cloud.resourcemanager_v3.types.Purpose):
+            Optional. A purpose denotes that this Tag is
+            intended for use in policies of a specific
+            policy engine, and will involve that policy
+            engine in management operations involving this
+            Tag. A purpose does not grant a policy engine
+            exclusive rights to the Tag, and it may be
+            referenced by other policy engines.
+
+            A purpose cannot be changed once set.
+        purpose_data (MutableMapping[str, str]):
+            Optional. Purpose data corresponds to the policy system that
+            the tag is intended for. See documentation for ``Purpose``
+            for formatting of this field.
+
+            Purpose data cannot be changed once set.
     """
 
     name: str = proto.Field(
@@ -108,6 +151,16 @@ class TagKey(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+    purpose: "Purpose" = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum="Purpose",
+    )
+    purpose_data: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=12,
     )
 
 
@@ -189,6 +242,25 @@ class GetTagKeyRequest(proto.Message):
     )
 
 
+class GetNamespacedTagKeyRequest(proto.Message):
+    r"""The request message for getting a TagKey by its namespaced
+    name.
+
+    Attributes:
+        name (str):
+            Required. A namespaced tag key name in the format
+            ``{parentId}/{tagKeyShort}``, such as ``42/foo`` for a key
+            with short name "foo" under the organization with ID 42 or
+            ``r2-d2/bar`` for a key with short name "bar" under the
+            project ``r2-d2``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class CreateTagKeyRequest(proto.Message):
     r"""The request message for creating a TagKey.
 
@@ -227,7 +299,7 @@ class UpdateTagKeyRequest(proto.Message):
             ``description`` and ``etag`` fields can be updated by this
             request. If the ``etag`` field is not empty, it must match
             the ``etag`` field of the existing tag key. Otherwise,
-            ``FAILED_PRECONDITION`` will be returned.
+            ``ABORTED`` will be returned.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Fields to be updated. The mask may only contain
             ``description`` or ``etag``. If omitted entirely, both

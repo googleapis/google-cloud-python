@@ -299,6 +299,34 @@ class TagKeysGrpcTransport(TagKeysTransport):
         return self._stubs["get_tag_key"]
 
     @property
+    def get_namespaced_tag_key(
+        self,
+    ) -> Callable[[tag_keys.GetNamespacedTagKeyRequest], tag_keys.TagKey]:
+        r"""Return a callable for the get namespaced tag key method over gRPC.
+
+        Retrieves a TagKey by its namespaced name. This method will
+        return ``PERMISSION_DENIED`` if the key does not exist or the
+        user does not have permission to view it.
+
+        Returns:
+            Callable[[~.GetNamespacedTagKeyRequest],
+                    ~.TagKey]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_namespaced_tag_key" not in self._stubs:
+            self._stubs["get_namespaced_tag_key"] = self.grpc_channel.unary_unary(
+                "/google.cloud.resourcemanager.v3.TagKeys/GetNamespacedTagKey",
+                request_serializer=tag_keys.GetNamespacedTagKeyRequest.serialize,
+                response_deserializer=tag_keys.TagKey.deserialize,
+            )
+        return self._stubs["get_namespaced_tag_key"]
+
+    @property
     def create_tag_key(
         self,
     ) -> Callable[[tag_keys.CreateTagKeyRequest], operations_pb2.Operation]:
@@ -307,7 +335,7 @@ class TagKeysGrpcTransport(TagKeysTransport):
         Creates a new TagKey. If another request with the
         same parameters is sent while the original request is in
         process, the second request will receive an error. A
-        maximum of 300 TagKeys can exist under a parent at any
+        maximum of 1000 TagKeys can exist under a parent at any
         given time.
 
         Returns:
@@ -477,6 +505,23 @@ class TagKeysGrpcTransport(TagKeysTransport):
 
     def close(self):
         self.grpc_channel.close()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the get_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_operation" not in self._stubs:
+            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/GetOperation",
+                request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["get_operation"]
 
     @property
     def kind(self) -> str:

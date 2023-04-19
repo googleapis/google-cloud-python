@@ -46,6 +46,7 @@ from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -381,11 +382,13 @@ class ProjectsAsyncClient:
                 [ListProjects][google.cloud.resourcemanager.v3.Projects.ListProjects]
                 method.
             parent (:class:`str`):
-                Required. The name of the parent
-                resource to list projects under.
-                For example, setting this field to
-                'folders/1234' would list all projects
-                directly under that folder.
+                Required. The name of the parent resource whose projects
+                are being listed. Only children of this parent resource
+                are listed; descendants are not listed.
+
+                If the parent is a folder, use the value
+                ``folders/{folder_id}``. If the parent is an
+                organization, use the value ``organizations/{org_id}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -525,7 +528,7 @@ class ProjectsAsyncClient:
                 Optional. A query string for searching for projects that
                 the caller has ``resourcemanager.projects.get``
                 permission to. If multiple fields are included in the
-                query, the it will return results that match any of the
+                query, then it will return results that match any of the
                 fields. Some eligible fields are:
 
                 ::
@@ -533,15 +536,15 @@ class ProjectsAsyncClient:
                    | Field                   | Description                                  |
                    |-------------------------|----------------------------------------------|
                    | displayName, name       | Filters by displayName.                      |
-                   | parent                  | Project's parent. (for example: folders/123,
-                   organizations/*) Prefer parent field over parent.type and parent.id. |
-                   | parent.type             | Parent's type: `folder` or `organization`.   |
-                   | parent.id               | Parent's id number (for example: 123)        |
-                   | id, projectId           | Filters by projectId.                        |
-                   | state, lifecycleState   | Filters by state.                            |
-                   | labels                  | Filters by label name or value.              |
-                   | labels.<key> (where *key* is the name of a label) | Filters by label
-                   name. |
+                   | parent                  | Project's parent (for example: folders/123,
+                   organizations/*). Prefer parent field over parent.type and parent.id.| |
+                   parent.type             | Parent's type: `folder` or `organization`.   | |
+                   parent.id               | Parent's id number (for example: 123)        | |
+                   id, projectId           | Filters by projectId.                        | |
+                   state, lifecycleState   | Filters by state.                            | |
+                   labels                  | Filters by label name or value.              | |
+                   labels.\<key\> (where *key* is the name of a label) | Filters by label
+                   name.|
 
                 Search expressions are case insensitive.
 
@@ -557,8 +560,8 @@ class ProjectsAsyncClient:
                    | NAME:howl        | Equivalent to above.                                |
                    | labels.color:*   | The project has the label `color`.                  |
                    | labels.color:red | The project's label `color` has the value `red`.    |
-                   | labels.color:red&nbsp;labels.size:big | The project's label `color` has
-                   the value `red` and its label `size` has the value `big`.                |
+                   | labels.color:red labels.size:big | The project's label `color` has the
+                   value `red` or its label `size` has the value `big`.                     |
 
                 If no query is specified, the call will return projects
                 for which the user has the
@@ -691,7 +694,7 @@ class ProjectsAsyncClient:
                 If the ``parent`` field is set, the
                 ``resourcemanager.projects.create`` permission is
                 checked on the parent resource. If no parent is set and
-                the authorization credentials belong to an Organziation,
+                the authorization credentials belong to an Organization,
                 the parent will be set to that Organization.
 
                 This corresponds to the ``project`` field
@@ -914,10 +917,14 @@ class ProjectsAsyncClient:
         ``Operation.response`` field will be populated with the moved
         project.
 
-        The caller must have ``resourcemanager.projects.update``
-        permission on the project and have
-        ``resourcemanager.projects.move`` permission on the project's
-        current and proposed new parent.
+        The caller must have ``resourcemanager.projects.move``
+        permission on the project, on the project's current and proposed
+        new parent.
+
+        If project has no current parent, or it currently does not have
+        an associated organization resource, you will also need the
+        ``resourcemanager.projects.setIamPolicy`` permission in the
+        project.
 
         .. code-block:: python
 
@@ -1323,9 +1330,10 @@ class ProjectsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
-        r"""Returns the IAM access control policy for the
-        specified project. Permission is denied if the policy or
-        the resource do not exist.
+        r"""Returns the IAM access control policy for the specified project,
+        in the format ``projects/{ProjectIdOrNumber}`` e.g.
+        projects/123. Permission is denied if the policy or the resource
+        do not exist.
 
         .. code-block:: python
 
@@ -1499,7 +1507,8 @@ class ProjectsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
-        r"""Sets the IAM access control policy for the specified project.
+        r"""Sets the IAM access control policy for the specified project, in
+        the format ``projects/{ProjectIdOrNumber}`` e.g. projects/123.
 
         CAUTION: This method will replace the existing policy, and
         cannot be used to append additional IAM settings.
@@ -1536,10 +1545,6 @@ class ProjectsAsyncClient:
            ``setIamPolicy()``; they must be sent only using the Cloud
            Platform Console.
 
-        -  Membership changes that leave the project without any owners
-           that have accepted the Terms of Service (ToS) will be
-           rejected.
-
         -  If the project is not part of an organization, there must be
            at least one owner who has accepted the Terms of Service
            (ToS) agreement in the policy. Calling ``setIamPolicy()`` to
@@ -1547,10 +1552,9 @@ class ProjectsAsyncClient:
            This restriction also applies to legacy projects that no
            longer have owners who have accepted the ToS. Edits to IAM
            policies will be rejected until the lack of a ToS-accepting
-           owner is rectified.
-
-        -  Calling this method requires enabling the App Engine Admin
-           API.
+           owner is rectified. If the project is part of an
+           organization, you can remove all owners, potentially making
+           the organization inaccessible.
 
         .. code-block:: python
 
@@ -1716,8 +1720,9 @@ class ProjectsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
-        r"""Returns permissions that a caller has on the
-        specified project.
+        r"""Returns permissions that a caller has on the specified project,
+        in the format ``projects/{ProjectIdOrNumber}`` e.g.
+        projects/123..
 
         .. code-block:: python
 
@@ -1810,6 +1815,60 @@ class ProjectsAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_operation(
+        self,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.Operation:
+        r"""Gets the latest state of a long-running operation.
+
+        Args:
+            request (:class:`~.operations_pb2.GetOperationRequest`):
+                The request object. Request message for
+                `GetOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.Operation:
+                An ``Operation`` object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.GetOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.get_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.

@@ -50,6 +50,7 @@ from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -481,12 +482,12 @@ class TagValuesClient(metaclass=TagValuesClientMeta):
 
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.ListTagValuesRequest, dict]):
-                The request object. The request message for listing
-                TagValues for the specified TagKey.
+                The request object. The request message for listing TagValues for the
+                specified TagKey. Resource name for TagKey, parent of
+                the TagValues to be listed, in the format
+                ``tagKeys/123``.
             parent (str):
-                Required. Resource name for TagKey, parent of the
-                TagValues to be listed, in the format ``tagKeys/123``.
-
+                Required.
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -558,9 +559,9 @@ class TagValuesClient(metaclass=TagValuesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tag_values.TagValue:
-        r"""Retrieves TagValue. If the TagValue or namespaced name does not
-        exist, or if the user does not have permission to view it, this
-        method will return ``PERMISSION_DENIED``.
+        r"""Retrieves a TagValue. This method will return
+        ``PERMISSION_DENIED`` if the value does not exist or the user
+        does not have permission to view it.
 
         .. code-block:: python
 
@@ -655,6 +656,117 @@ class TagValuesClient(metaclass=TagValuesClientMeta):
         # Done; return the response.
         return response
 
+    def get_namespaced_tag_value(
+        self,
+        request: Optional[Union[tag_values.GetNamespacedTagValueRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> tag_values.TagValue:
+        r"""Retrieves a TagValue by its namespaced name. This method will
+        return ``PERMISSION_DENIED`` if the value does not exist or the
+        user does not have permission to view it.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import resourcemanager_v3
+
+            def sample_get_namespaced_tag_value():
+                # Create a client
+                client = resourcemanager_v3.TagValuesClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.GetNamespacedTagValueRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_namespaced_tag_value(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.resourcemanager_v3.types.GetNamespacedTagValueRequest, dict]):
+                The request object. The request message for getting a
+                TagValue by its namespaced name.
+            name (str):
+                Required. A namespaced tag value name in the following
+                format:
+
+                ``{parentId}/{tagKeyShort}/{tagValueShort}``
+
+                Examples:
+
+                -  ``42/foo/abc`` for a value with short name "abc"
+                   under the key with short name "foo" under the
+                   organization with ID 42
+                -  ``r2-d2/bar/xyz`` for a value with short name "xyz"
+                   under the key with short name "bar" under the project
+                   with ID "r2-d2"
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.resourcemanager_v3.types.TagValue:
+                A TagValue is a child of a particular
+                TagKey. This is used to group cloud
+                resources for the purpose of controlling
+                them using policies.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a tag_values.GetNamespacedTagValueRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, tag_values.GetNamespacedTagValueRequest):
+            request = tag_values.GetNamespacedTagValueRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_namespaced_tag_value]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def create_tag_value(
         self,
         request: Optional[Union[tag_values.CreateTagValueRequest, dict]] = None,
@@ -667,7 +779,7 @@ class TagValuesClient(metaclass=TagValuesClientMeta):
         r"""Creates a TagValue as a child of the specified
         TagKey. If a another request with the same parameters is
         sent while the original request is in process the second
-        request will receive an error. A maximum of 300
+        request will receive an error. A maximum of 1000
         TagValues can exist under a TagKey at any given time.
 
         .. code-block:: python
@@ -828,8 +940,8 @@ class TagValuesClient(metaclass=TagValuesClientMeta):
                 fields ``description`` and ``etag`` fields can be
                 updated by this request. If the ``etag`` field is
                 nonempty, it must match the ``etag`` field of the
-                existing ControlGroup. Otherwise,
-                ``FAILED_PRECONDITION`` will be returned.
+                existing ControlGroup. Otherwise, ``ABORTED`` will be
+                returned.
 
                 This corresponds to the ``tag_value`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1491,6 +1603,60 @@ class TagValuesClient(metaclass=TagValuesClientMeta):
             and may cause errors in other clients!
         """
         self.transport.close()
+
+    def get_operation(
+        self,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.Operation:
+        r"""Gets the latest state of a long-running operation.
+
+        Args:
+            request (:class:`~.operations_pb2.GetOperationRequest`):
+                The request object. Request message for
+                `GetOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.Operation:
+                An ``Operation`` object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.GetOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.get_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

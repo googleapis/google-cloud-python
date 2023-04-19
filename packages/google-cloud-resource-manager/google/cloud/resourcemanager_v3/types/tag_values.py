@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
         "ListTagValuesRequest",
         "ListTagValuesResponse",
         "GetTagValueRequest",
+        "GetNamespacedTagValueRequest",
         "CreateTagValueRequest",
         "CreateTagValueMetadata",
         "UpdateTagValueRequest",
@@ -60,9 +61,11 @@ class TagValue(proto.Message):
             dashes (-), underscores (_), dots (.), and alphanumerics
             between.
         namespaced_name (str):
-            Output only. Namespaced name of the TagValue. Must be in the
-            format
+            Output only. Namespaced name of the TagValue. Now only
+            supported in the format
             ``{organization_id}/{tag_key_short_name}/{short_name}``.
+            Other formats will be supported when we add non-org parented
+            tags.
         description (str):
             Optional. User-assigned description of the
             TagValue. Must not exceed 256 characters.
@@ -116,13 +119,13 @@ class TagValue(proto.Message):
 
 
 class ListTagValuesRequest(proto.Message):
-    r"""The request message for listing TagValues for the specified
-    TagKey.
+    r"""The request message for listing TagValues for the specified TagKey.
+    Resource name for TagKey, parent of the TagValues to be listed, in
+    the format ``tagKeys/123``.
 
     Attributes:
         parent (str):
-            Required. Resource name for TagKey, parent of the TagValues
-            to be listed, in the format ``tagKeys/123``.
+            Required.
         page_size (int):
             Optional. The maximum number of TagValues to
             return in the response. The server allows a
@@ -194,6 +197,33 @@ class GetTagValueRequest(proto.Message):
     )
 
 
+class GetNamespacedTagValueRequest(proto.Message):
+    r"""The request message for getting a TagValue by its namespaced
+    name.
+
+    Attributes:
+        name (str):
+            Required. A namespaced tag value name in the following
+            format:
+
+            ``{parentId}/{tagKeyShort}/{tagValueShort}``
+
+            Examples:
+
+            -  ``42/foo/abc`` for a value with short name "abc" under
+               the key with short name "foo" under the organization with
+               ID 42
+            -  ``r2-d2/bar/xyz`` for a value with short name "xyz" under
+               the key with short name "bar" under the project with ID
+               "r2-d2".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class CreateTagValueRequest(proto.Message):
     r"""The request message for creating a TagValue.
 
@@ -232,7 +262,7 @@ class UpdateTagValueRequest(proto.Message):
             ``description`` and ``etag`` fields can be updated by this
             request. If the ``etag`` field is nonempty, it must match
             the ``etag`` field of the existing ControlGroup. Otherwise,
-            ``FAILED_PRECONDITION`` will be returned.
+            ``ABORTED`` will be returned.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. Fields to be updated.
         validate_only (bool):

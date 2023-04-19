@@ -150,6 +150,11 @@ class TagBindingsTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.list_effective_tags: gapic_v1.method.wrap_method(
+                self.list_effective_tags,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -192,6 +197,27 @@ class TagBindingsTransport(abc.ABC):
         self,
     ) -> Callable[
         [tag_bindings.DeleteTagBindingRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_effective_tags(
+        self,
+    ) -> Callable[
+        [tag_bindings.ListEffectiveTagsRequest],
+        Union[
+            tag_bindings.ListEffectiveTagsResponse,
+            Awaitable[tag_bindings.ListEffectiveTagsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

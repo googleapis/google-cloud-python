@@ -44,6 +44,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
+from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.resourcemanager_v3.services.tag_bindings import pagers
@@ -56,8 +57,8 @@ from .transports.grpc_asyncio import TagBindingsGrpcAsyncIOTransport
 
 class TagBindingsAsyncClient:
     """Allow users to create and manage TagBindings between
-    TagValues and different cloud resources throughout the GCP
-    resource hierarchy.
+    TagValues and different Google Cloud resources throughout the
+    GCP resource hierarchy.
     """
 
     _client: TagBindingsClient
@@ -67,6 +68,10 @@ class TagBindingsAsyncClient:
 
     tag_binding_path = staticmethod(TagBindingsClient.tag_binding_path)
     parse_tag_binding_path = staticmethod(TagBindingsClient.parse_tag_binding_path)
+    tag_key_path = staticmethod(TagBindingsClient.tag_key_path)
+    parse_tag_key_path = staticmethod(TagBindingsClient.parse_tag_key_path)
+    tag_value_path = staticmethod(TagBindingsClient.tag_value_path)
+    parse_tag_value_path = staticmethod(TagBindingsClient.parse_tag_value_path)
     common_billing_account_path = staticmethod(
         TagBindingsClient.common_billing_account_path
     )
@@ -226,8 +231,8 @@ class TagBindingsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTagBindingsAsyncPager:
-        r"""Lists the TagBindings for the given cloud resource, as specified
-        with ``parent``.
+        r"""Lists the TagBindings for the given Google Cloud resource, as
+        specified with ``parent``.
 
         NOTE: The ``parent`` field is expected to be a full resource
         name:
@@ -350,8 +355,8 @@ class TagBindingsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Creates a TagBinding between a TagValue and a cloud
-        resource (currently project, folder, or organization).
+        r"""Creates a TagBinding between a TagValue and a Google
+        Cloud resource.
 
         .. code-block:: python
 
@@ -404,10 +409,9 @@ class TagBindingsAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.cloud.resourcemanager_v3.types.TagBinding` A TagBinding represents a connection between a TagValue and a cloud
-                   resource (currently project, folder, or
-                   organization). Once a TagBinding is created, the
-                   TagValue is applied to all the descendants of the
-                   cloud resource.
+                   resource Once a TagBinding is created, the TagValue
+                   is applied to all the descendants of the Google Cloud
+                   resource.
 
         """
         # Create or coerce a protobuf request object.
@@ -574,6 +578,171 @@ class TagBindingsAsyncClient:
             self._client._transport.operations_client,
             empty_pb2.Empty,
             metadata_type=tag_bindings.DeleteTagBindingMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_effective_tags(
+        self,
+        request: Optional[Union[tag_bindings.ListEffectiveTagsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListEffectiveTagsAsyncPager:
+        r"""Return a list of effective tags for the given Google Cloud
+        resource, as specified in ``parent``.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import resourcemanager_v3
+
+            async def sample_list_effective_tags():
+                # Create a client
+                client = resourcemanager_v3.TagBindingsAsyncClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.ListEffectiveTagsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_effective_tags(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.resourcemanager_v3.types.ListEffectiveTagsRequest, dict]]):
+                The request object. The request message to
+                ListEffectiveTags
+            parent (:class:`str`):
+                Required. The full resource name of a
+                resource for which you want to list the
+                effective tags. E.g.
+                "//cloudresourcemanager.googleapis.com/projects/123"
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.resourcemanager_v3.services.tag_bindings.pagers.ListEffectiveTagsAsyncPager:
+                The response of ListEffectiveTags.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = tag_bindings.ListEffectiveTagsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_effective_tags,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListEffectiveTagsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_operation(
+        self,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.Operation:
+        r"""Gets the latest state of a long-running operation.
+
+        Args:
+            request (:class:`~.operations_pb2.GetOperationRequest`):
+                The request object. Request message for
+                `GetOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.Operation:
+                An ``Operation`` object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.GetOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.get_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.

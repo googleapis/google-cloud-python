@@ -432,10 +432,14 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         ``Operation.response`` field will be populated with the moved
         project.
 
-        The caller must have ``resourcemanager.projects.update``
-        permission on the project and have
-        ``resourcemanager.projects.move`` permission on the project's
-        current and proposed new parent.
+        The caller must have ``resourcemanager.projects.move``
+        permission on the project, on the project's current and proposed
+        new parent.
+
+        If project has no current parent, or it currently does not have
+        an associated organization resource, you will also need the
+        ``resourcemanager.projects.setIamPolicy`` permission in the
+        project.
 
         Returns:
             Callable[[~.MoveProjectRequest],
@@ -556,9 +560,10 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
     ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the get iam policy method over gRPC.
 
-        Returns the IAM access control policy for the
-        specified project. Permission is denied if the policy or
-        the resource do not exist.
+        Returns the IAM access control policy for the specified project,
+        in the format ``projects/{ProjectIdOrNumber}`` e.g.
+        projects/123. Permission is denied if the policy or the resource
+        do not exist.
 
         Returns:
             Callable[[~.GetIamPolicyRequest],
@@ -584,7 +589,8 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
     ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the set iam policy method over gRPC.
 
-        Sets the IAM access control policy for the specified project.
+        Sets the IAM access control policy for the specified project, in
+        the format ``projects/{ProjectIdOrNumber}`` e.g. projects/123.
 
         CAUTION: This method will replace the existing policy, and
         cannot be used to append additional IAM settings.
@@ -621,10 +627,6 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
            ``setIamPolicy()``; they must be sent only using the Cloud
            Platform Console.
 
-        -  Membership changes that leave the project without any owners
-           that have accepted the Terms of Service (ToS) will be
-           rejected.
-
         -  If the project is not part of an organization, there must be
            at least one owner who has accepted the Terms of Service
            (ToS) agreement in the policy. Calling ``setIamPolicy()`` to
@@ -632,10 +634,9 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
            This restriction also applies to legacy projects that no
            longer have owners who have accepted the ToS. Edits to IAM
            policies will be rejected until the lack of a ToS-accepting
-           owner is rectified.
-
-        -  Calling this method requires enabling the App Engine Admin
-           API.
+           owner is rectified. If the project is part of an
+           organization, you can remove all owners, potentially making
+           the organization inaccessible.
 
         Returns:
             Callable[[~.SetIamPolicyRequest],
@@ -664,8 +665,9 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
     ]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
-        Returns permissions that a caller has on the
-        specified project.
+        Returns permissions that a caller has on the specified project,
+        in the format ``projects/{ProjectIdOrNumber}`` e.g.
+        projects/123..
 
         Returns:
             Callable[[~.TestIamPermissionsRequest],
@@ -687,6 +689,23 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
 
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the get_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_operation" not in self._stubs:
+            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/GetOperation",
+                request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["get_operation"]
 
 
 __all__ = ("ProjectsGrpcAsyncIOTransport",)

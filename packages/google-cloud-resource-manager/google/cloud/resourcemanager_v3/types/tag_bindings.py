@@ -29,15 +29,17 @@ __protobuf__ = proto.module(
         "DeleteTagBindingRequest",
         "ListTagBindingsRequest",
         "ListTagBindingsResponse",
+        "ListEffectiveTagsRequest",
+        "ListEffectiveTagsResponse",
+        "EffectiveTag",
     },
 )
 
 
 class TagBinding(proto.Message):
     r"""A TagBinding represents a connection between a TagValue and a
-    cloud resource (currently project, folder, or organization).
-    Once a TagBinding is created, the TagValue is applied to all the
-    descendants of the cloud resource.
+    cloud resource Once a TagBinding is created, the TagValue is
+    applied to all the descendants of the Google Cloud resource.
 
     Attributes:
         name (str):
@@ -52,6 +54,14 @@ class TagBinding(proto.Message):
         tag_value (str):
             The TagValue of the TagBinding. Must be of the form
             ``tagValues/456``.
+        tag_value_namespaced_name (str):
+            The namespaced name for the TagValue of the TagBinding. Must
+            be in the format
+            ``{parent_id}/{tag_key_short_name}/{short_name}``.
+
+            For methods that support TagValue namespaced name, only one
+            of tag_value_namespaced_name or tag_value may be filled.
+            Requests with both fields will be rejected.
     """
 
     name: str = proto.Field(
@@ -65,6 +75,10 @@ class TagBinding(proto.Message):
     tag_value: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    tag_value_namespaced_name: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -156,7 +170,7 @@ class ListTagBindingsResponse(proto.Message):
     Attributes:
         tag_bindings (MutableSequence[google.cloud.resourcemanager_v3.types.TagBinding]):
             A possibly paginated list of TagBindings for
-            the specified TagValue or resource.
+            the specified resource.
         next_page_token (str):
             Pagination token.
 
@@ -185,6 +199,141 @@ class ListTagBindingsResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class ListEffectiveTagsRequest(proto.Message):
+    r"""The request message to ListEffectiveTags
+
+    Attributes:
+        parent (str):
+            Required. The full resource name of a
+            resource for which you want to list the
+            effective tags. E.g.
+            "//cloudresourcemanager.googleapis.com/projects/123".
+        page_size (int):
+            Optional. The maximum number of effective
+            tags to return in the response. The server
+            allows a maximum of 300 effective tags to return
+            in a single page. If unspecified, the server
+            will use 100 as the default.
+        page_token (str):
+            Optional. A pagination token returned from a previous call
+            to ``ListEffectiveTags`` that indicates from where this
+            listing should continue.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListEffectiveTagsResponse(proto.Message):
+    r"""The response of ListEffectiveTags.
+
+    Attributes:
+        effective_tags (MutableSequence[google.cloud.resourcemanager_v3.types.EffectiveTag]):
+            A possibly paginated list of effective tags
+            for the specified resource.
+        next_page_token (str):
+            Pagination token.
+
+            If the result set is too large to fit in a single response,
+            this token is returned. It encodes the position of the
+            current result cursor. Feeding this value into a new list
+            request with the ``page_token`` parameter gives the next
+            page of the results.
+
+            When ``next_page_token`` is not filled in, there is no next
+            page and the list returned is the last page in the result
+            set.
+
+            Pagination tokens have a limited lifetime.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    effective_tags: MutableSequence["EffectiveTag"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="EffectiveTag",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class EffectiveTag(proto.Message):
+    r"""An EffectiveTag represents a tag that applies to a resource during
+    policy evaluation. Tags can be either directly bound to a resource
+    or inherited from its ancestor. EffectiveTag contains the name and
+    namespaced_name of the tag value and tag key, with additional fields
+    of ``inherited`` to indicate the inheritance status of the effective
+    tag.
+
+    Attributes:
+        tag_value (str):
+            Resource name for TagValue in the format ``tagValues/456``.
+        namespaced_tag_value (str):
+            Namespaced name of the TagValue. Now only supported in the
+            format
+            ``{organization_id}/{tag_key_short_name}/{tag_value_short_name}``.
+            Other formats will be supported when we add non-org parented
+            tags.
+        tag_key (str):
+            The name of the TagKey, in the format ``tagKeys/{id}``, such
+            as ``tagKeys/123``.
+        namespaced_tag_key (str):
+            The namespaced_name of the TagKey. Now only supported in the
+            format of ``{organization_id}/{tag_key_short_name}``. Other
+            formats will be supported when we add non-org parented tags.
+        tag_key_parent_name (str):
+            The parent name of the tag key. Must be in the format
+            ``organizations/{organization_id}``.
+        inherited (bool):
+            Indicates the inheritance status of a tag
+            value attached to the given resource. If the tag
+            value is inherited from one of the resource's
+            ancestors, inherited will be true. If false,
+            then the tag value is directly attached to the
+            resource, inherited will be false.
+    """
+
+    tag_value: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    namespaced_tag_value: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    tag_key: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    namespaced_tag_key: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    tag_key_parent_name: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    inherited: bool = proto.Field(
+        proto.BOOL,
+        number=5,
     )
 
 

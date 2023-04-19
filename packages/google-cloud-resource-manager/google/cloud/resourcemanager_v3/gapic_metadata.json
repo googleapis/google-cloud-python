@@ -482,6 +482,11 @@
                 "delete_tag_binding"
               ]
             },
+            "ListEffectiveTags": {
+              "methods": [
+                "list_effective_tags"
+              ]
+            },
             "ListTagBindings": {
               "methods": [
                 "list_tag_bindings"
@@ -500,6 +505,11 @@
             "DeleteTagBinding": {
               "methods": [
                 "delete_tag_binding"
+              ]
+            },
+            "ListEffectiveTags": {
+              "methods": [
+                "list_effective_tags"
               ]
             },
             "ListTagBindings": {
@@ -522,9 +532,78 @@
                 "delete_tag_binding"
               ]
             },
+            "ListEffectiveTags": {
+              "methods": [
+                "list_effective_tags"
+              ]
+            },
             "ListTagBindings": {
               "methods": [
                 "list_tag_bindings"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "TagHolds": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "TagHoldsClient",
+          "rpcs": {
+            "CreateTagHold": {
+              "methods": [
+                "create_tag_hold"
+              ]
+            },
+            "DeleteTagHold": {
+              "methods": [
+                "delete_tag_hold"
+              ]
+            },
+            "ListTagHolds": {
+              "methods": [
+                "list_tag_holds"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "TagHoldsAsyncClient",
+          "rpcs": {
+            "CreateTagHold": {
+              "methods": [
+                "create_tag_hold"
+              ]
+            },
+            "DeleteTagHold": {
+              "methods": [
+                "delete_tag_hold"
+              ]
+            },
+            "ListTagHolds": {
+              "methods": [
+                "list_tag_holds"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "TagHoldsClient",
+          "rpcs": {
+            "CreateTagHold": {
+              "methods": [
+                "create_tag_hold"
+              ]
+            },
+            "DeleteTagHold": {
+              "methods": [
+                "delete_tag_hold"
+              ]
+            },
+            "ListTagHolds": {
+              "methods": [
+                "list_tag_holds"
               ]
             }
           }
@@ -549,6 +628,11 @@
             "GetIamPolicy": {
               "methods": [
                 "get_iam_policy"
+              ]
+            },
+            "GetNamespacedTagKey": {
+              "methods": [
+                "get_namespaced_tag_key"
               ]
             },
             "GetTagKey": {
@@ -596,6 +680,11 @@
                 "get_iam_policy"
               ]
             },
+            "GetNamespacedTagKey": {
+              "methods": [
+                "get_namespaced_tag_key"
+              ]
+            },
             "GetTagKey": {
               "methods": [
                 "get_tag_key"
@@ -639,6 +728,11 @@
             "GetIamPolicy": {
               "methods": [
                 "get_iam_policy"
+              ]
+            },
+            "GetNamespacedTagKey": {
+              "methods": [
+                "get_namespaced_tag_key"
               ]
             },
             "GetTagKey": {
@@ -690,6 +784,11 @@
                 "get_iam_policy"
               ]
             },
+            "GetNamespacedTagValue": {
+              "methods": [
+                "get_namespaced_tag_value"
+              ]
+            },
             "GetTagValue": {
               "methods": [
                 "get_tag_value"
@@ -735,6 +834,11 @@
                 "get_iam_policy"
               ]
             },
+            "GetNamespacedTagValue": {
+              "methods": [
+                "get_namespaced_tag_value"
+              ]
+            },
             "GetTagValue": {
               "methods": [
                 "get_tag_value"
@@ -778,6 +882,11 @@
             "GetIamPolicy": {
               "methods": [
                 "get_iam_policy"
+              ]
+            },
+            "GetNamespacedTagValue": {
+              "methods": [
+                "get_namespaced_tag_value"
               ]
             },
             "GetTagValue": {

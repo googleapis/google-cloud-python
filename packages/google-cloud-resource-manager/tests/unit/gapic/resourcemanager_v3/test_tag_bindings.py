@@ -1485,6 +1485,380 @@ async def test_delete_tag_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        tag_bindings.ListEffectiveTagsRequest,
+        dict,
+    ],
+)
+def test_list_effective_tags(request_type, transport: str = "grpc"):
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_tags), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = tag_bindings.ListEffectiveTagsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_effective_tags(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tag_bindings.ListEffectiveTagsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListEffectiveTagsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_effective_tags_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_tags), "__call__"
+    ) as call:
+        client.list_effective_tags()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tag_bindings.ListEffectiveTagsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_effective_tags_async(
+    transport: str = "grpc_asyncio", request_type=tag_bindings.ListEffectiveTagsRequest
+):
+    client = TagBindingsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_tags), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tag_bindings.ListEffectiveTagsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_effective_tags(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tag_bindings.ListEffectiveTagsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListEffectiveTagsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_effective_tags_async_from_dict():
+    await test_list_effective_tags_async(request_type=dict)
+
+
+def test_list_effective_tags_flattened():
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_tags), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = tag_bindings.ListEffectiveTagsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_effective_tags(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_effective_tags_flattened_error():
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_effective_tags(
+            tag_bindings.ListEffectiveTagsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_effective_tags_flattened_async():
+    client = TagBindingsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_tags), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = tag_bindings.ListEffectiveTagsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tag_bindings.ListEffectiveTagsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_effective_tags(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_effective_tags_flattened_error_async():
+    client = TagBindingsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_effective_tags(
+            tag_bindings.ListEffectiveTagsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_effective_tags_pager(transport_name: str = "grpc"):
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_tags), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[
+                    tag_bindings.EffectiveTag(),
+                    tag_bindings.EffectiveTag(),
+                    tag_bindings.EffectiveTag(),
+                ],
+                next_page_token="abc",
+            ),
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[],
+                next_page_token="def",
+            ),
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[
+                    tag_bindings.EffectiveTag(),
+                ],
+                next_page_token="ghi",
+            ),
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[
+                    tag_bindings.EffectiveTag(),
+                    tag_bindings.EffectiveTag(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        pager = client.list_effective_tags(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, tag_bindings.EffectiveTag) for i in results)
+
+
+def test_list_effective_tags_pages(transport_name: str = "grpc"):
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_tags), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[
+                    tag_bindings.EffectiveTag(),
+                    tag_bindings.EffectiveTag(),
+                    tag_bindings.EffectiveTag(),
+                ],
+                next_page_token="abc",
+            ),
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[],
+                next_page_token="def",
+            ),
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[
+                    tag_bindings.EffectiveTag(),
+                ],
+                next_page_token="ghi",
+            ),
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[
+                    tag_bindings.EffectiveTag(),
+                    tag_bindings.EffectiveTag(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_effective_tags(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_effective_tags_async_pager():
+    client = TagBindingsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_tags),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[
+                    tag_bindings.EffectiveTag(),
+                    tag_bindings.EffectiveTag(),
+                    tag_bindings.EffectiveTag(),
+                ],
+                next_page_token="abc",
+            ),
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[],
+                next_page_token="def",
+            ),
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[
+                    tag_bindings.EffectiveTag(),
+                ],
+                next_page_token="ghi",
+            ),
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[
+                    tag_bindings.EffectiveTag(),
+                    tag_bindings.EffectiveTag(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_effective_tags(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, tag_bindings.EffectiveTag) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_effective_tags_async_pages():
+    client = TagBindingsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_effective_tags),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[
+                    tag_bindings.EffectiveTag(),
+                    tag_bindings.EffectiveTag(),
+                    tag_bindings.EffectiveTag(),
+                ],
+                next_page_token="abc",
+            ),
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[],
+                next_page_token="def",
+            ),
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[
+                    tag_bindings.EffectiveTag(),
+                ],
+                next_page_token="ghi",
+            ),
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[
+                    tag_bindings.EffectiveTag(),
+                    tag_bindings.EffectiveTag(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_effective_tags(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         tag_bindings.ListTagBindingsRequest,
         dict,
     ],
@@ -1850,6 +2224,7 @@ def test_create_tag_binding_rest(request_type):
         "name": "name_value",
         "parent": "parent_value",
         "tag_value": "tag_value_value",
+        "tag_value_namespaced_name": "tag_value_namespaced_name_value",
     }
     request = request_type(**request_init)
 
@@ -2026,6 +2401,7 @@ def test_create_tag_binding_rest_bad_request(
         "name": "name_value",
         "parent": "parent_value",
         "tag_value": "tag_value_value",
+        "tag_value_namespaced_name": "tag_value_namespaced_name_value",
     }
     request = request_type(**request_init)
 
@@ -2361,6 +2737,355 @@ def test_delete_tag_binding_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tag_bindings.ListEffectiveTagsRequest,
+        dict,
+    ],
+)
+def test_list_effective_tags_rest(request_type):
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = tag_bindings.ListEffectiveTagsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = tag_bindings.ListEffectiveTagsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_effective_tags(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListEffectiveTagsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_effective_tags_rest_required_fields(
+    request_type=tag_bindings.ListEffectiveTagsRequest,
+):
+    transport_class = transports.TagBindingsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "parent" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_effective_tags._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == request_init["parent"]
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_effective_tags._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+            "parent",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = tag_bindings.ListEffectiveTagsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = tag_bindings.ListEffectiveTagsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_effective_tags(request)
+
+            expected_params = [
+                (
+                    "parent",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_effective_tags_rest_unset_required_fields():
+    transport = transports.TagBindingsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_effective_tags._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+                "parent",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_effective_tags_rest_interceptors(null_interceptor):
+    transport = transports.TagBindingsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TagBindingsRestInterceptor(),
+    )
+    client = TagBindingsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TagBindingsRestInterceptor, "post_list_effective_tags"
+    ) as post, mock.patch.object(
+        transports.TagBindingsRestInterceptor, "pre_list_effective_tags"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = tag_bindings.ListEffectiveTagsRequest.pb(
+            tag_bindings.ListEffectiveTagsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = tag_bindings.ListEffectiveTagsResponse.to_json(
+            tag_bindings.ListEffectiveTagsResponse()
+        )
+
+        request = tag_bindings.ListEffectiveTagsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = tag_bindings.ListEffectiveTagsResponse()
+
+        client.list_effective_tags(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_effective_tags_rest_bad_request(
+    transport: str = "rest", request_type=tag_bindings.ListEffectiveTagsRequest
+):
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_effective_tags(request)
+
+
+def test_list_effective_tags_rest_flattened():
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = tag_bindings.ListEffectiveTagsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = tag_bindings.ListEffectiveTagsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_effective_tags(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v3/effectiveTags" % client.transport._host, args[1]
+        )
+
+
+def test_list_effective_tags_rest_flattened_error(transport: str = "rest"):
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_effective_tags(
+            tag_bindings.ListEffectiveTagsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_effective_tags_rest_pager(transport: str = "rest"):
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[
+                    tag_bindings.EffectiveTag(),
+                    tag_bindings.EffectiveTag(),
+                    tag_bindings.EffectiveTag(),
+                ],
+                next_page_token="abc",
+            ),
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[],
+                next_page_token="def",
+            ),
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[
+                    tag_bindings.EffectiveTag(),
+                ],
+                next_page_token="ghi",
+            ),
+            tag_bindings.ListEffectiveTagsResponse(
+                effective_tags=[
+                    tag_bindings.EffectiveTag(),
+                    tag_bindings.EffectiveTag(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            tag_bindings.ListEffectiveTagsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {}
+
+        pager = client.list_effective_tags(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, tag_bindings.EffectiveTag) for i in results)
+
+        pages = list(client.list_effective_tags(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.TagBindingsGrpcTransport(
@@ -2503,6 +3228,8 @@ def test_tag_bindings_base_transport():
         "list_tag_bindings",
         "create_tag_binding",
         "delete_tag_binding",
+        "list_effective_tags",
+        "get_operation",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -2801,6 +3528,9 @@ def test_tag_bindings_client_transport_session_collision(transport_name):
     session1 = client1.transport.delete_tag_binding._session
     session2 = client2.transport.delete_tag_binding._session
     assert session1 != session2
+    session1 = client1.transport.list_effective_tags._session
+    session2 = client2.transport.list_effective_tags._session
+    assert session1 != session2
 
 
 def test_tag_bindings_grpc_transport_channel():
@@ -2975,8 +3705,48 @@ def test_parse_tag_binding_path():
     assert expected == actual
 
 
+def test_tag_key_path():
+    tag_key = "whelk"
+    expected = "tagKeys/{tag_key}".format(
+        tag_key=tag_key,
+    )
+    actual = TagBindingsClient.tag_key_path(tag_key)
+    assert expected == actual
+
+
+def test_parse_tag_key_path():
+    expected = {
+        "tag_key": "octopus",
+    }
+    path = TagBindingsClient.tag_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TagBindingsClient.parse_tag_key_path(path)
+    assert expected == actual
+
+
+def test_tag_value_path():
+    tag_value = "oyster"
+    expected = "tagValues/{tag_value}".format(
+        tag_value=tag_value,
+    )
+    actual = TagBindingsClient.tag_value_path(tag_value)
+    assert expected == actual
+
+
+def test_parse_tag_value_path():
+    expected = {
+        "tag_value": "nudibranch",
+    }
+    path = TagBindingsClient.tag_value_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TagBindingsClient.parse_tag_value_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -2986,7 +3756,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "mussel",
     }
     path = TagBindingsClient.common_billing_account_path(**expected)
 
@@ -2996,7 +3766,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -3006,7 +3776,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "nautilus",
     }
     path = TagBindingsClient.common_folder_path(**expected)
 
@@ -3016,7 +3786,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -3026,7 +3796,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "abalone",
     }
     path = TagBindingsClient.common_organization_path(**expected)
 
@@ -3036,7 +3806,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -3046,7 +3816,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "clam",
     }
     path = TagBindingsClient.common_project_path(**expected)
 
@@ -3056,8 +3826,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -3068,8 +3838,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = TagBindingsClient.common_location_path(**expected)
 
@@ -3113,6 +3883,207 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_get_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
+):
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict({"name": "operations/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "operations/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_get_operation(transport: str = "grpc"):
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.GetOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+        response = client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+@pytest.mark.asyncio
+async def test_get_operation_async(transport: str = "grpc"):
+    client = TagBindingsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.GetOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_get_operation_field_headers():
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.GetOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_operation_field_headers_async():
+    client = TagBindingsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.GetOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_get_operation_from_dict():
+    client = TagBindingsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        response = client.get_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_from_dict_async():
+    client = TagBindingsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.get_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
 
 
 def test_transport_close():

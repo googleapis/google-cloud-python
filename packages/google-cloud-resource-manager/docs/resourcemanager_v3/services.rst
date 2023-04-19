@@ -7,5 +7,6 @@ Services for Google Cloud Resourcemanager v3 API
     organizations
     projects
     tag_bindings
+    tag_holds
     tag_keys
     tag_values

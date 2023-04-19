@@ -1303,6 +1303,206 @@ async def test_get_tag_value_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        tag_values.GetNamespacedTagValueRequest,
+        dict,
+    ],
+)
+def test_get_namespaced_tag_value(request_type, transport: str = "grpc"):
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_namespaced_tag_value), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = tag_values.TagValue(
+            name="name_value",
+            parent="parent_value",
+            short_name="short_name_value",
+            namespaced_name="namespaced_name_value",
+            description="description_value",
+            etag="etag_value",
+        )
+        response = client.get_namespaced_tag_value(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tag_values.GetNamespacedTagValueRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, tag_values.TagValue)
+    assert response.name == "name_value"
+    assert response.parent == "parent_value"
+    assert response.short_name == "short_name_value"
+    assert response.namespaced_name == "namespaced_name_value"
+    assert response.description == "description_value"
+    assert response.etag == "etag_value"
+
+
+def test_get_namespaced_tag_value_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_namespaced_tag_value), "__call__"
+    ) as call:
+        client.get_namespaced_tag_value()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tag_values.GetNamespacedTagValueRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_namespaced_tag_value_async(
+    transport: str = "grpc_asyncio",
+    request_type=tag_values.GetNamespacedTagValueRequest,
+):
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_namespaced_tag_value), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tag_values.TagValue(
+                name="name_value",
+                parent="parent_value",
+                short_name="short_name_value",
+                namespaced_name="namespaced_name_value",
+                description="description_value",
+                etag="etag_value",
+            )
+        )
+        response = await client.get_namespaced_tag_value(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tag_values.GetNamespacedTagValueRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, tag_values.TagValue)
+    assert response.name == "name_value"
+    assert response.parent == "parent_value"
+    assert response.short_name == "short_name_value"
+    assert response.namespaced_name == "namespaced_name_value"
+    assert response.description == "description_value"
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.asyncio
+async def test_get_namespaced_tag_value_async_from_dict():
+    await test_get_namespaced_tag_value_async(request_type=dict)
+
+
+def test_get_namespaced_tag_value_flattened():
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_namespaced_tag_value), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = tag_values.TagValue()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_namespaced_tag_value(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_namespaced_tag_value_flattened_error():
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_namespaced_tag_value(
+            tag_values.GetNamespacedTagValueRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_namespaced_tag_value_flattened_async():
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_namespaced_tag_value), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = tag_values.TagValue()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(tag_values.TagValue())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_namespaced_tag_value(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_namespaced_tag_value_flattened_error_async():
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_namespaced_tag_value(
+            tag_values.GetNamespacedTagValueRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         tag_values.CreateTagValueRequest,
         dict,
     ],
@@ -3318,6 +3518,289 @@ def test_get_tag_value_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        tag_values.GetNamespacedTagValueRequest,
+        dict,
+    ],
+)
+def test_get_namespaced_tag_value_rest(request_type):
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = tag_values.TagValue(
+            name="name_value",
+            parent="parent_value",
+            short_name="short_name_value",
+            namespaced_name="namespaced_name_value",
+            description="description_value",
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = tag_values.TagValue.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_namespaced_tag_value(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, tag_values.TagValue)
+    assert response.name == "name_value"
+    assert response.parent == "parent_value"
+    assert response.short_name == "short_name_value"
+    assert response.namespaced_name == "namespaced_name_value"
+    assert response.description == "description_value"
+    assert response.etag == "etag_value"
+
+
+def test_get_namespaced_tag_value_rest_required_fields(
+    request_type=tag_values.GetNamespacedTagValueRequest,
+):
+    transport_class = transports.TagValuesRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "name" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_namespaced_tag_value._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == request_init["name"]
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_namespaced_tag_value._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("name",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = tag_values.TagValue()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = tag_values.TagValue.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_namespaced_tag_value(request)
+
+            expected_params = [
+                (
+                    "name",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_namespaced_tag_value_rest_unset_required_fields():
+    transport = transports.TagValuesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_namespaced_tag_value._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("name",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_namespaced_tag_value_rest_interceptors(null_interceptor):
+    transport = transports.TagValuesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.TagValuesRestInterceptor(),
+    )
+    client = TagValuesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TagValuesRestInterceptor, "post_get_namespaced_tag_value"
+    ) as post, mock.patch.object(
+        transports.TagValuesRestInterceptor, "pre_get_namespaced_tag_value"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = tag_values.GetNamespacedTagValueRequest.pb(
+            tag_values.GetNamespacedTagValueRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = tag_values.TagValue.to_json(tag_values.TagValue())
+
+        request = tag_values.GetNamespacedTagValueRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = tag_values.TagValue()
+
+        client.get_namespaced_tag_value(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_namespaced_tag_value_rest_bad_request(
+    transport: str = "rest", request_type=tag_values.GetNamespacedTagValueRequest
+):
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_namespaced_tag_value(request)
+
+
+def test_get_namespaced_tag_value_rest_flattened():
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = tag_values.TagValue()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = tag_values.TagValue.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_namespaced_tag_value(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v3/tagValues/namespaced" % client.transport._host, args[1]
+        )
+
+
+def test_get_namespaced_tag_value_rest_flattened_error(transport: str = "rest"):
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_namespaced_tag_value(
+            tag_values.GetNamespacedTagValueRequest(),
+            name="name_value",
+        )
+
+
+def test_get_namespaced_tag_value_rest_error():
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         tag_values.CreateTagValueRequest,
         dict,
     ],
@@ -5113,12 +5596,14 @@ def test_tag_values_base_transport():
     methods = (
         "list_tag_values",
         "get_tag_value",
+        "get_namespaced_tag_value",
         "create_tag_value",
         "update_tag_value",
         "delete_tag_value",
         "get_iam_policy",
         "set_iam_policy",
         "test_iam_permissions",
+        "get_operation",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -5413,6 +5898,9 @@ def test_tag_values_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.get_tag_value._session
     session2 = client2.transport.get_tag_value._session
+    assert session1 != session2
+    session1 = client1.transport.get_namespaced_tag_value._session
+    session2 = client2.transport.get_namespaced_tag_value._session
     assert session1 != session2
     session1 = client1.transport.create_tag_value._session
     session2 = client2.transport.create_tag_value._session
@@ -5744,6 +6232,207 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_get_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
+):
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict({"name": "operations/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "operations/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_get_operation(transport: str = "grpc"):
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.GetOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+        response = client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+@pytest.mark.asyncio
+async def test_get_operation_async(transport: str = "grpc"):
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.GetOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_get_operation_field_headers():
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.GetOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_operation_field_headers_async():
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.GetOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_get_operation_from_dict():
+    client = TagValuesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        response = client.get_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_from_dict_async():
+    client = TagValuesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.get_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
 
 
 def test_transport_close():

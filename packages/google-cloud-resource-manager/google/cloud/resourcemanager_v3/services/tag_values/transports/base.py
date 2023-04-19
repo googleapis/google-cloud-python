@@ -156,6 +156,11 @@ class TagValuesTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_namespaced_tag_value: gapic_v1.method.wrap_method(
+                self.get_namespaced_tag_value,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_tag_value: gapic_v1.method.wrap_method(
                 self.create_tag_value,
                 default_timeout=60.0,
@@ -233,6 +238,15 @@ class TagValuesTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def get_namespaced_tag_value(
+        self,
+    ) -> Callable[
+        [tag_values.GetNamespacedTagValueRequest],
+        Union[tag_values.TagValue, Awaitable[tag_values.TagValue]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def create_tag_value(
         self,
     ) -> Callable[
@@ -286,6 +300,15 @@ class TagValuesTransport(abc.ABC):
             iam_policy_pb2.TestIamPermissionsResponse,
             Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
