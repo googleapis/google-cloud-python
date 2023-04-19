@@ -112,7 +112,7 @@ then
     --tree-filter "${FILTER}"
 fi
 
-TARGET_PATH=$(jq -r '.distribution_name' .repo-metadata.json)  # -r removes quotes around the name.
+TARGET_PATH="packages/$(jq -r '.distribution_name' .repo-metadata.json)"  # -r removes quotes around the name.
 
 # reorganize the filtered code into the desired target locations
 if [[ ! -z "${TARGET_PATH}" ]]
@@ -131,9 +131,10 @@ popd
 # merge histories
 pushd $TARGET_REPO
 
-git remote add --fetch migration ${WORKDIR}/source-repo
+REMOTE="remote.${SOURCE_REPO}"
+git remote add --fetch ${REMOTE} ${WORKDIR}/source-repo
 git checkout -B "${BRANCH}"
-git merge --allow-unrelated-histories migration/main --no-edit
+git merge --allow-unrelated-histories ${REMOTE}/main --no-edit
 
 echo "Success"
 
@@ -153,14 +154,14 @@ fi
 
 pushd "${TARGET_REPO}"  # To target repo
 
-git push -u origin "${BRANCH}" --force
+# git push -u origin "${BRANCH}" --force
 
-# create pull request
-if gh --help > /dev/null
-then
-  gh pr create --title "migrate code from ${SOURCE_REPO}"
-else
-  hub pull-request -m "migrate code from ${SOURCE_REPO}"
-fi
+# # create pull request
+# if gh --help > /dev/null
+# then
+#   gh pr create --title "migrate code from ${SOURCE_REPO}"
+# else
+#   hub pull-request -m "migrate code from ${SOURCE_REPO}"
+# fi
 
 popd
