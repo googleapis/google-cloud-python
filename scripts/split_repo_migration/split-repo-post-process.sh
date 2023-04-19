@@ -36,11 +36,33 @@
 # Example from this script's directory:
 #  ./split-repo-post-process.sh ../../../python-speech ../../ google-cloud-speech
 
+# sourced vs execution detection obtained from https://stackoverflow.com/a/28776166
+local SOURCED=0
+if [ -n "$ZSH_VERSION" ]; then 
+  case $ZSH_EVAL_CONTEXT in *:file) SOURCED=1;; esac
+elif [ -n "$KSH_VERSION" ]; then
+  [ "$(cd -- "$(dirname -- "$0")" && pwd -P)/$(basename -- "$0")" != "$(cd -- "$(dirname -- "${.sh.file}")" && pwd -P)/$(basename -- "${.sh.file}")" ] && SOURCED=1
+elif [ -n "$BASH_VERSION" ]; then
+  (return 0 2>/dev/null) && SOURCED=1 
+else # All other shells: examine $0 for known shell binary filenames.
+     # Detects `sh` and `dash`; add additional shell filenames as needed.
+  case ${0##*/} in sh|-sh|dash|-dash) SOURCED=1;; esac
+fi
+
+(( SOURCED != 1 )) || { \
+  echo "Please do not source this script, but execute it directly."
+  return -10
+}
+
+# We require executing the script so that an early exit (explicitly or via -e)
+# does not kill the user's shell.
+                                     
 # `-e` enables the script to automatically fail when a command fails
 set -e
 
+
 NOP="echo -n"
-DEBUG="yes"  # set to blank for a real run
+DEBUG=""  # "yes"  # set to blank for a real run, or non-blank to prevent modifying the split-repo
 MESSAGE=""
 
 [[ -n ${DEBUG} ]] && {
@@ -128,6 +150,7 @@ echo "Migrating: ${RPC_MONO_PATH}"
 RPC_SORT_KEYS="${SORT_JSON_KEYS}"
 
 RPC_SPLIT_PATH="${PATH_PACKAGE}/release-please-config.json"
+jq ".packages.\".\" += {component: \"${MONOREPO_PACKAGE_NAME}\"}" "${RPC_SPLIT_PATH}" | sponge "${RPC_SPLIT_PATH}"
 RPC_NEW_OBJECT="$(jq '.packages."."' "${RPC_SPLIT_PATH}")"
 
 jq ${RPC_SORT_KEYS} --argjson newObject "${RPC_NEW_OBJECT}" ". * {\"packages\": {\"${MONOREPO_PATH_PACKAGE}\": \$newObject}}" ${RPC_MONO_PATH} | sponge ${RPC_MONO_PATH}
@@ -190,9 +213,10 @@ $RM ${OWY_SPLIT_PATH}
 OWP_MONO_PATH="${MONOREPO_PATH_PACKAGE}/owlbot.py"
 echo "Migrating: ${OWP_MONO_PATH}"
 
-# the next two lines are only needed for dev runs
-OWP_SPLIT_PATH="${PATH_PACKAGE}/owlbot.py"
-[[ ! -f "${OWP_SPLIT_PATH}" ]] || cp ${OWP_SPLIT_PATH} ${OWP_MONO_PATH}
+[[ -z ${DEBUG} ]] || { \
+  OWP_SPLIT_PATH="${PATH_PACKAGE}/owlbot.py"
+  [[ ! -f "${OWP_SPLIT_PATH}" ]] || cp -u ${OWP_SPLIT_PATH} ${OWP_MONO_PATH}
+}
 
 [[ ! -f "${OWP_MONO_PATH}" ]] || {
   MESSAGE="${MESSAGE}\n\nWARNING: Deleted ${OWP_MONO_PATH}"
@@ -205,8 +229,10 @@ OWP_SPLIT_PATH="${PATH_PACKAGE}/owlbot.py"
 RMJ_MONO_PATH="${MONOREPO_PATH_PACKAGE}/.repo-metadata.json"
 echo "Migrating: ${RMJ_MONO_PATH}"
 
+[[ -z ${DEBUG} ]] || { \
 RMJ_SPLIT_PATH="${PATH_PACKAGE}/.repo-metadata.json"
-cp ${RMJ_SPLIT_PATH} ${RMJ_MONO_PATH}  # only needed for dev runs
+cp ${RMJ_SPLIT_PATH} ${RMJ_MONO_PATH}
+}
 
 jq '.repo = "googleapis/google-cloud-python"' ${RMJ_MONO_PATH} | sponge ${RMJ_MONO_PATH}
 jq -r ".issue_tracker" "${RMJ_MONO_PATH}" | grep -q "github.com"  && {
