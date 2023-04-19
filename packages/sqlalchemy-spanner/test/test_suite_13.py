@@ -527,6 +527,34 @@ class UnicodeTextTest(UnicodeFixtureTest, _UnicodeTextTest):
 
 class ComponentReflectionTest(_ComponentReflectionTest):
     @classmethod
+    def define_views(cls, metadata, schema):
+        table_info = {
+            "users": ["user_id", "test1", "test2"],
+            "email_addresses": ["address_id", "remote_user_id", "email_address"],
+        }
+        if testing.requires.self_referential_foreign_keys.enabled:
+            table_info["users"] = table_info["users"] + ["parent_user_id"]
+        for table_name in ("users", "email_addresses"):
+            fullname = table_name
+            if schema:
+                fullname = "%s.%s" % (schema, table_name)
+            view_name = fullname + "_v"
+            columns = ""
+            for column in table_info[table_name]:
+                stmt = table_name + "." + column + " AS " + column
+                if columns:
+                    columns = columns + ", " + stmt
+                else:
+                    columns = stmt
+            query = f"""CREATE VIEW {view_name}
+                SQL SECURITY INVOKER
+                AS SELECT {columns}
+                FROM {fullname}"""
+
+            event.listen(metadata, "after_create", DDL(query))
+            event.listen(metadata, "before_drop", DDL("DROP VIEW %s" % view_name))
+
+    @classmethod
     def define_reflected_tables(cls, metadata, schema):
         if schema:
             schema_prefix = schema + "."
@@ -665,10 +693,23 @@ class ComponentReflectionTest(_ComponentReflectionTest):
                     sqlalchemy.Index("noncol_idx_nopk", noncol_idx_test_nopk.c.q.desc())
                     sqlalchemy.Index("noncol_idx_pk", noncol_idx_test_pk.c.q.desc())
 
-        if testing.requires.view_column_reflection.enabled:
+        if testing.requires.view_column_reflection.enabled and not bool(
+            os.environ.get("SPANNER_EMULATOR_HOST")
+        ):
             cls.define_views(metadata, schema)
         if not schema and testing.requires.temp_table_reflection.enabled:
             cls.define_temp_tables(metadata)
+
+    def _test_get_columns(self, schema=None, table_type="table"):
+        if table_type == "view" and bool(os.environ.get("SPANNER_EMULATOR_HOST")):
+            pytest.skip("View tables not supported on emulator")
+        super()._test_get_columns(schema, table_type)
+
+    @testing.provide_metadata
+    def _test_get_view_definition(self, schema=None):
+        if bool(os.environ.get("SPANNER_EMULATOR_HOST")):
+            pytest.skip("View tables not supported on emulator")
+        super()._test_get_view_definition(schema)
 
     @classmethod
     def define_temp_tables(cls, metadata):
@@ -858,7 +899,7 @@ class ComponentReflectionTest(_ComponentReflectionTest):
 
         insp = inspect(meta.bind)
 
-        if table_type == "view":
+        if table_type == "view" and not bool(os.environ.get("SPANNER_EMULATOR_HOST")):
             table_names = insp.get_view_names(schema)
             table_names.sort()
             answer = ["email_addresses_v", "users_v"]
@@ -921,14 +962,14 @@ class ComponentReflectionTest(_ComponentReflectionTest):
 
         str_array = ARRAY(String(16))
         int_array = ARRAY(Integer)
-        Table(
+        arrays_test = Table(
             "arrays_test",
             orig_meta,
             Column("id", Integer, primary_key=True),
             Column("str_array", str_array),
             Column("int_array", int_array),
         )
-        orig_meta.create_all()
+        arrays_test.create(create_engine(get_db_url()))
 
         # autoload the table and check its columns reflection
         tab = Table("arrays_test", orig_meta, autoload=True)
@@ -968,6 +1009,22 @@ class CompositeKeyReflectionTest(_CompositeKeyReflectionTest):
         fkey1 = foreign_keys[0]
         eq_(set(fkey1.get("referred_columns")), {"name", "id", "attr"})
         eq_(set(fkey1.get("constrained_columns")), {"pname", "pid", "pattr"})
+
+    @testing.requires.primary_key_constraint_reflection
+    def test_pk_column_order(self, connection):
+        """
+        SPANNER OVERRIDE:
+        Emultor doesn't support returning pk sorted by ordinal value
+        of columns.
+        """
+        insp = inspect(connection)
+        primary_key = insp.get_pk_constraint(self.tables.tb1.name)
+        exp = (
+            ["id", "name", "attr"]
+            if bool(os.environ.get("SPANNER_EMULATOR_HOST"))
+            else ["name", "id", "attr"]
+        )
+        eq_(primary_key.get("constrained_columns"), exp)
 
 
 class RowFetchTest(_RowFetchTest):

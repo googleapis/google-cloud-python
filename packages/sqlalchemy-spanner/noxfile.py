@@ -165,6 +165,7 @@ def compliance_test_13(session):
         "--cov-fail-under=0",
         "--asyncio-mode=auto",
         "test/test_suite_13.py",
+        *session.posargs,
     )
 
 
@@ -193,7 +194,6 @@ def compliance_test_14(session):
     session.install("-e", ".[tracing]")
     session.run("pip", "install", "sqlalchemy>=1.4,<2.0", "--force-reinstall")
     session.run("python", "create_test_database.py")
-
     session.run(
         "py.test",
         "--cov=google.cloud.sqlalchemy_spanner",
@@ -204,6 +204,45 @@ def compliance_test_14(session):
         "--cov-fail-under=0",
         "--asyncio-mode=auto",
         "test/test_suite_14.py",
+        *session.posargs,
+    )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def compliance_test_20(session):
+    """Run SQLAlchemy dialect compliance test suite."""
+
+    # Sanity check: Only run tests if the environment variable is set.
+    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "") and not os.environ.get(
+        "SPANNER_EMULATOR_HOST", ""
+    ):
+        session.skip(
+            "Credentials or emulator host must be set via environment variable"
+        )
+
+    session.install(
+        "pytest",
+        "pytest-cov",
+        "pytest-asyncio",
+    )
+
+    session.install("mock")
+    session.install("-e", ".[tracing]")
+    session.run("python", "create_test_database.py")
+
+    session.install("sqlalchemy>=2.0")
+
+    session.run(
+        "py.test",
+        "--cov=google.cloud.sqlalchemy_spanner",
+        "--cov=test",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
+        "--asyncio-mode=auto",
+        "test/test_suite_20.py",
+        *session.posargs,
     )
 
 

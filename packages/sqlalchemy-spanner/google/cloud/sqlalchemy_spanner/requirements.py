@@ -14,6 +14,7 @@
 
 from sqlalchemy.testing import exclusions
 from sqlalchemy.testing.requirements import SuiteRequirements
+from sqlalchemy.testing.exclusions import against, only_on
 
 
 class Requirements(SuiteRequirements):  # pragma: no cover
@@ -44,6 +45,15 @@ class Requirements(SuiteRequirements):  # pragma: no cover
     @property
     def schema_reflection(self):
         return exclusions.open()
+
+    @property
+    def array_type(self):
+        return only_on([lambda config: against(config, "postgresql")])
+
+    @property
+    def uuid_data_type(self):
+        """Return databases that support the UUID datatype."""
+        return only_on(("postgresql >= 8.3", "mariadb >= 10.7.0"))
 
     @property
     def implicitly_named_constraints(self):
@@ -98,4 +108,9 @@ class Requirements(SuiteRequirements):  # pragma: no cover
     def precision_numerics_enotation_large(self):
         """target backend supports Decimal() objects using E notation
         to represent very large values."""
+        return exclusions.open()
+
+    @property
+    def views(self):
+        """Target database must support VIEWs."""
         return exclusions.open()

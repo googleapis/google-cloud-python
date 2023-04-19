@@ -22,7 +22,8 @@ from alembic.ddl.base import (
     alter_table,
     format_type,
 )
-from sqlalchemy import ForeignKeyConstraint, types, util
+from sqlalchemy.exc import NoSuchTableError
+from sqlalchemy import ForeignKeyConstraint, types
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
 from sqlalchemy.event import listens_for
@@ -43,19 +44,29 @@ from sqlalchemy.sql.operators import json_getitem_op
 from google.cloud.spanner_v1.data_types import JsonObject
 from google.cloud import spanner_dbapi
 from google.cloud.sqlalchemy_spanner._opentelemetry_tracing import trace_call
+import sqlalchemy
+
+USING_SQLACLCHEMY_20 = False
+if sqlalchemy.__version__.split(".")[0] == "2":
+    USING_SQLACLCHEMY_20 = True
+
+if USING_SQLACLCHEMY_20:
+    from sqlalchemy.engine.reflection import ObjectKind
 
 
 @listens_for(Pool, "reset")
-def reset_connection(dbapi_conn, connection_record):
+def reset_connection(dbapi_conn, connection_record, reset_state=None):
     """An event of returning a connection back to a pool."""
-    if isinstance(dbapi_conn.connection, spanner_dbapi.Connection):
-        if dbapi_conn.connection.inside_transaction:
-            dbapi_conn.connection.rollback()
+    if hasattr(dbapi_conn, "connection"):
+        dbapi_conn = dbapi_conn.connection
+    if isinstance(dbapi_conn, spanner_dbapi.Connection):
+        if dbapi_conn.inside_transaction:
+            dbapi_conn.rollback()
 
-        dbapi_conn.connection.staleness = None
-        dbapi_conn.connection.read_only = False
+        dbapi_conn.staleness = None
+        dbapi_conn.read_only = False
     else:
-        dbapi_conn.connection.rollback()
+        dbapi_conn.rollback()
 
 
 # register a method to get a single value of a JSON object
@@ -186,7 +197,7 @@ class SpannerIdentifierPreparer(IdentifierPreparer):
         return (
             lc_value in self.reserved_words
             or value[0] in self.illegal_initial_characters
-            or not self.legal_characters.match(util.text_type(value))
+            or not self.legal_characters.match(str(value))
             or (lc_value != value)
         )
 
@@ -206,7 +217,7 @@ class SpannerSQLCompiler(SQLCompiler):
         """
         return text
 
-    def visit_empty_set_expr(self, type_):
+    def visit_empty_set_expr(self, type_, **kw):
         """Return an empty set expression of the given type.
 
         Args:
@@ -365,7 +376,7 @@ class SpannerDDLCompiler(DDLCompiler):
         )
         return text
 
-    def visit_drop_table(self, drop_table):
+    def visit_drop_table(self, drop_table, **kw):
         """
         Cloud Spanner doesn't drop tables which have indexes
         or foreign key constraints. This method builds several DDL
@@ -396,7 +407,7 @@ class SpannerDDLCompiler(DDLCompiler):
 
         return indexes + constrs + str(drop_table)
 
-    def visit_primary_key_constraint(self, constraint):
+    def visit_primary_key_constraint(self, constraint, **kw):
         """Build primary key definition.
 
         Primary key in Spanner is defined outside of a table columns definition, see:
@@ -406,7 +417,7 @@ class SpannerDDLCompiler(DDLCompiler):
         """
         return None
 
-    def visit_unique_constraint(self, constraint):
+    def visit_unique_constraint(self, constraint, **kw):
         """Unique constraints in Spanner are defined with indexes:
         https://cloud.google.com/spanner/docs/secondary-indexes#unique-indexes
 
@@ -510,7 +521,8 @@ class SpannerDialect(DefaultDialect):
     positional = False
     paramstyle = "format"
     encoding = "utf-8"
-    max_identifier_length = 128
+    max_identifier_length = 256
+    _legacy_binary_type_literal_encoding = "utf-8"
 
     execute_sequence_format = list
 
@@ -534,6 +546,14 @@ class SpannerDialect(DefaultDialect):
 
     @classmethod
     def dbapi(cls):
+        """A pointer to the Cloud Spanner DB API package.
+
+        Used to initiate connections to the Cloud Spanner databases.
+        """
+        return spanner_dbapi
+
+    @classmethod
+    def import_dbapi(cls):
         """A pointer to the Cloud Spanner DB API package.
 
         Used to initiate connections to the Cloud Spanner databases.
@@ -566,6 +586,58 @@ class SpannerDialect(DefaultDialect):
         """
         return ""
 
+    def _get_table_type_query(self, kind, append_query):
+        """
+        Generates WHERE condition for Kind of Object.
+        Spanner supports Table and View.
+        """
+        if not USING_SQLACLCHEMY_20:
+            return ""
+
+        kind = ObjectKind.TABLE if kind is None else kind
+        if kind == ObjectKind.MATERIALIZED_VIEW:
+            raise NotImplementedError("Spanner does not support MATERIALIZED VIEWS")
+        switch_case = {
+            ObjectKind.ANY: ["BASE TABLE", "VIEW"],
+            ObjectKind.TABLE: ["BASE TABLE"],
+            ObjectKind.VIEW: ["VIEW"],
+            ObjectKind.ANY_VIEW: ["VIEW"],
+        }
+
+        table_type_query = ""
+        for table_type in switch_case[kind]:
+            query = f"t.table_type = '{table_type}'"
+            if table_type_query != "":
+                table_type_query = table_type_query + " OR " + query
+            else:
+                table_type_query = query
+
+        table_type_query = "(" + table_type_query + ") "
+        if append_query:
+            table_type_query = table_type_query + " AND "
+        return table_type_query
+
+    def _get_table_filter_query(
+        self, filter_names, info_schema_table, append_query=False
+    ):
+        """
+        Generates WHERE query for tables or views for which
+        information is reflected.
+        """
+        table_filter_query = ""
+        if filter_names is not None:
+            for table_name in filter_names:
+                query = f"{info_schema_table}.table_name = '{table_name}'"
+                if table_filter_query != "":
+                    table_filter_query = table_filter_query + " OR " + query
+                else:
+                    table_filter_query = query
+            table_filter_query = "(" + table_filter_query + ") "
+            if append_query:
+                table_filter_query = table_filter_query + " AND "
+
+        return table_filter_query
+
     def create_connect_args(self, url):
         """Parse connection args from the given URL.
 
@@ -589,6 +661,19 @@ class SpannerDialect(DefaultDialect):
 
     @engine_to_connection
     def get_view_names(self, connection, schema=None, **kw):
+        """
+        Gets a list of view names.
+
+        The method is used by SQLAlchemy introspection systems.
+
+        Args:
+            connection (sqlalchemy.engine.base.Connection):
+                SQLAlchemy connection or engine object.
+            schema (str): Optional. Schema name
+
+        Returns:
+            list: List of view names.
+        """
         sql = """
             SELECT table_name
             FROM information_schema.views
@@ -606,6 +691,117 @@ class SpannerDialect(DefaultDialect):
         return all_views
 
     @engine_to_connection
+    def get_view_definition(self, connection, view_name, schema=None, **kw):
+        """
+        Gets definition of a particular view.
+
+        The method is used by SQLAlchemy introspection systems.
+
+        Args:
+            connection (sqlalchemy.engine.base.Connection):
+                SQLAlchemy connection or engine object.
+            view_name (str): Name of the view.
+            schema (str): Optional. Schema name
+
+        Returns:
+            str: Definition of view.
+        """
+        sql = """
+            SELECT view_definition
+            FROM information_schema.views
+            WHERE TABLE_SCHEMA='{schema_name}' AND TABLE_NAME='{view_name}'
+            """.format(
+            schema_name=schema or "", view_name=view_name
+        )
+
+        with connection.connection.database.snapshot() as snap:
+            rows = list(snap.execute_sql(sql))
+            if rows == []:
+                raise NoSuchTableError(f"{schema if schema else ''}.{view_name}")
+            result = rows[0][0]
+
+        return result
+
+    @engine_to_connection
+    def get_multi_columns(
+        self, connection, schema=None, filter_names=None, scope=None, kind=None, **kw
+    ):
+        """
+        Return information about columns in all objects in the given
+        schema.
+
+        The method is used by SQLAlchemy introspection systems.
+
+        Args:
+            connection (sqlalchemy.engine.base.Connection):
+                SQLAlchemy connection or engine object.
+            schema (str): Optional. Schema name
+            filter_names (Sequence[str]): Optional. Optionally return information
+                only for the objects listed here.
+            scope (sqlalchemy.engine.reflection.ObjectScope): Optional. Specifies
+                if columns of default, temporary or any tables
+                should be reflected. Spanner does not support temporary.
+            kind (sqlalchemy.engine.reflection.ObjectKind): Optional. Specifies the
+                type of objects to reflect.
+
+        Returns:
+            dictionary: a dictionary where the keys are two-tuple schema,table-name
+                and the values are list of dictionaries, each representing the
+                definition of a database column.
+                The schema is ``None`` if no schema is provided.
+        """
+        table_filter_query = self._get_table_filter_query(filter_names, "col", True)
+        schema_filter_query = " col.table_schema = '{schema}' AND ".format(
+            schema=schema or ""
+        )
+        table_type_query = self._get_table_type_query(kind, True)
+
+        sql = """
+            SELECT col.table_schema, col.table_name, col.column_name,
+                col.spanner_type, col.is_nullable, col.generation_expression
+            FROM information_schema.columns as col
+            JOIN information_schema.tables AS t
+                ON col.table_name = t.table_name
+            WHERE
+                {table_filter_query}
+                {table_type_query}
+                {schema_filter_query}
+                col.table_catalog = ''
+            ORDER BY
+                col.table_catalog,
+                col.table_schema,
+                col.table_name,
+                col.ordinal_position
+        """.format(
+            table_filter_query=table_filter_query,
+            table_type_query=table_type_query,
+            schema_filter_query=schema_filter_query,
+        )
+        with connection.connection.database.snapshot() as snap:
+            columns = list(snap.execute_sql(sql))
+            result_dict = {}
+
+            for col in columns:
+                column_info = {
+                    "name": col[2],
+                    "type": self._designate_type(col[3]),
+                    "nullable": col[4] == "YES",
+                    "default": None,
+                }
+
+                if col[5] is not None:
+                    column_info["computed"] = {
+                        "persisted": True,
+                        "sqltext": col[5],
+                    }
+                col[0] = col[0] or None
+                table_info = result_dict.get((col[0], col[1]), [])
+                table_info.append(column_info)
+                result_dict[(col[0], col[1])] = table_info
+
+        return result_dict
+
+    @engine_to_connection
     def get_columns(self, connection, table_name, schema=None, **kw):
         """Get the table columns description.
 
@@ -620,42 +816,12 @@ class SpannerDialect(DefaultDialect):
         Returns:
             list: The table every column dict-like description.
         """
-        sql = """
-SELECT column_name, spanner_type, is_nullable, generation_expression
-FROM information_schema.columns
-WHERE
-    table_catalog = ''
-    AND table_schema = ''
-    AND table_name = '{}'
-ORDER BY
-    table_catalog,
-    table_schema,
-    table_name,
-    ordinal_position
-""".format(
-            table_name
+        kind = None if not USING_SQLACLCHEMY_20 else ObjectKind.ANY
+        dict = self.get_multi_columns(
+            connection, schema=schema, filter_names=[table_name], kind=kind
         )
-
-        cols_desc = []
-        with connection.connection.database.snapshot() as snap:
-            columns = snap.execute_sql(sql)
-
-            for col in columns:
-                col_desc = {
-                    "name": col[0],
-                    "type": self._designate_type(col[1]),
-                    "nullable": col[2] == "YES",
-                    "default": None,
-                }
-
-                if col[3] is not None:
-                    col_desc["computed"] = {
-                        "persisted": True,
-                        "sqltext": col[3],
-                    }
-                cols_desc.append(col_desc)
-
-        return cols_desc
+        schema = schema or None
+        return dict.get((schema, table_name), [])
 
     def _designate_type(self, str_repr):
         """
@@ -685,6 +851,87 @@ ORDER BY
             return _type_map[str_repr]
 
     @engine_to_connection
+    def get_multi_indexes(
+        self, connection, schema=None, filter_names=None, scope=None, kind=None, **kw
+    ):
+        """
+        Return information about indexes in all objects
+        in the given schema.
+
+        The method is used by SQLAlchemy introspection systems.
+
+        Args:
+            connection (sqlalchemy.engine.base.Connection):
+                SQLAlchemy connection or engine object.
+            schema (str): Optional. Schema name.
+            filter_names (Sequence[str]): Optional. Optionally return information
+                only for the objects listed here.
+            scope (sqlalchemy.engine.reflection.ObjectScope): Optional. Specifies
+                if columns of default, temporary or any tables
+                should be reflected. Spanner does not support temporary.
+            kind (sqlalchemy.engine.reflection.ObjectKind): Optional. Specifies the
+                type of objects to reflect.
+
+        Returns:
+            dictionary: a dictionary where the keys are two-tuple schema,table-name
+                and the values are list of dictionaries, each representing the
+                definition of an index.
+                The schema is ``None`` if no schema is provided.
+        """
+        table_filter_query = self._get_table_filter_query(filter_names, "i", True)
+        schema_filter_query = " i.table_schema = '{schema}' AND ".format(
+            schema=schema or ""
+        )
+        table_type_query = self._get_table_type_query(kind, True)
+
+        sql = """
+            SELECT
+               i.table_schema,
+               i.table_name,
+               i.index_name,
+               ARRAY_AGG(ic.column_name),
+               i.is_unique,
+               ARRAY_AGG(ic.column_ordering)
+            FROM information_schema.indexes as i
+            JOIN information_schema.index_columns AS ic
+                ON ic.index_name = i.index_name AND ic.table_name = i.table_name
+            JOIN information_schema.tables AS t
+                ON i.table_name = t.table_name
+            WHERE
+                {table_filter_query}
+                {table_type_query}
+                {schema_filter_query}
+                i.index_type != 'PRIMARY_KEY'
+                AND i.spanner_is_managed = FALSE
+            GROUP BY i.table_schema, i.table_name, i.index_name, i.is_unique
+            ORDER BY i.index_name
+        """.format(
+            table_filter_query=table_filter_query,
+            table_type_query=table_type_query,
+            schema_filter_query=schema_filter_query,
+        )
+
+        with connection.connection.database.snapshot() as snap:
+            rows = list(snap.execute_sql(sql))
+            result_dict = {}
+
+            for row in rows:
+                index_info = {
+                    "name": row[2],
+                    "column_names": row[3],
+                    "unique": row[4],
+                    "column_sorting": {
+                        col: order for col, order in zip(row[3], row[5])
+                    },
+                }
+                row[0] = row[0] or None
+                table_info = result_dict.get((row[0], row[1]), [])
+                table_info.append(index_info)
+                result_dict[(row[0], row[1])] = table_info
+
+        return result_dict
+
+    @engine_to_connection
     def get_indexes(self, connection, table_name, schema=None, **kw):
         """Get the table indexes.
 
@@ -699,41 +946,75 @@ ORDER BY
         Returns:
             list: List with indexes description.
         """
+        kind = None if not USING_SQLACLCHEMY_20 else ObjectKind.ANY
+        dict = self.get_multi_indexes(
+            connection, schema=schema, filter_names=[table_name], kind=kind
+        )
+        schema = schema or None
+        return dict.get((schema, table_name), [])
+
+    @engine_to_connection
+    def get_multi_pk_constraint(
+        self, connection, schema=None, filter_names=None, scope=None, kind=None, **kw
+    ):
+        """
+        Return information about primary key constraints in
+        all tables in the given schema.
+
+        The method is used by SQLAlchemy introspection systems.
+
+        Args:
+            connection (sqlalchemy.engine.base.Connection):
+                SQLAlchemy connection or engine object.
+            schema (str): Optional. Schema name
+            filter_names (Sequence[str]): Optional. Optionally return information
+                only for the objects listed here.
+            scope (sqlalchemy.engine.reflection.ObjectScope): Optional. Specifies
+                if columns of default, temporary or any tables
+                should be reflected. Spanner does not support temporary.
+            kind (sqlalchemy.engine.reflection.ObjectKind): Optional. Specifies the
+                type of objects to reflect.
+
+        Returns:
+            dictionary: a dictionary where the keys are two-tuple schema,table-name
+                and the values are list of dictionaries, each representing the
+                definition of a primary key constraint.
+                The schema is ``None`` if no schema is provided.
+        """
+        table_filter_query = self._get_table_filter_query(filter_names, "tc", True)
+        schema_filter_query = " tc.table_schema = '{schema}' AND ".format(
+            schema=schema or ""
+        )
+        table_type_query = self._get_table_type_query(kind, True)
+
         sql = """
-SELECT
-    i.index_name,
-    ARRAY_AGG(ic.column_name),
-    i.is_unique,
-    ARRAY_AGG(ic.column_ordering)
-FROM information_schema.indexes as i
-JOIN information_schema.index_columns AS ic
-    ON ic.index_name = i.index_name AND ic.table_name = i.table_name
-WHERE
-    i.table_name="{table_name}"
-    AND i.index_type != 'PRIMARY_KEY'
-    AND i.spanner_is_managed = FALSE
-GROUP BY i.index_name, i.is_unique
-ORDER BY i.index_name
-""".format(
-            table_name=table_name
+            SELECT tc.table_schema, tc.table_name, ccu.COLUMN_NAME
+            FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS tc
+            JOIN INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE AS ccu
+                ON ccu.CONSTRAINT_NAME = tc.CONSTRAINT_NAME
+            JOIN information_schema.tables AS t
+                ON tc.table_name = t.table_name
+            WHERE {table_filter_query} {table_type_query}
+            {schema_filter_query} tc.CONSTRAINT_TYPE = "PRIMARY KEY"
+        """.format(
+            table_filter_query=table_filter_query,
+            table_type_query=table_type_query,
+            schema_filter_query=schema_filter_query,
         )
 
-        ind_desc = []
         with connection.connection.database.snapshot() as snap:
-            rows = snap.execute_sql(sql)
+            rows = list(snap.execute_sql(sql))
+            result_dict = {}
 
             for row in rows:
-                ind_desc.append(
-                    {
-                        "name": row[0],
-                        "column_names": row[1],
-                        "unique": row[2],
-                        "column_sorting": {
-                            col: order for col, order in zip(row[1], row[3])
-                        },
-                    }
+                row[0] = row[0] or None
+                table_info = result_dict.get(
+                    (row[0], row[1]), {"constrained_columns": []}
                 )
-        return ind_desc
+                table_info["constrained_columns"].append(row[2])
+                result_dict[(row[0], row[1])] = table_info
+
+        return result_dict
 
     @engine_to_connection
     def get_pk_constraint(self, connection, table_name, schema=None, **kw):
@@ -750,24 +1031,12 @@ ORDER BY i.index_name
         Returns:
             dict: Dict with the primary key constraint description.
         """
-        sql = """
-SELECT ccu.COLUMN_NAME
-FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS tc
-JOIN INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE AS ccu
-    ON ccu.CONSTRAINT_NAME = tc.CONSTRAINT_NAME
-WHERE tc.TABLE_NAME="{table_name}" AND tc.CONSTRAINT_TYPE = "PRIMARY KEY"
-""".format(
-            table_name=table_name
+        kind = None if not USING_SQLACLCHEMY_20 else ObjectKind.ANY
+        dict = self.get_multi_pk_constraint(
+            connection, schema=schema, filter_names=[table_name], kind=kind
         )
-
-        cols = []
-        with connection.connection.database.snapshot() as snap:
-            rows = snap.execute_sql(sql)
-
-            for row in rows:
-                cols.append(row[0])
-
-        return {"constrained_columns": cols}
+        schema = schema or None
+        return dict.get((schema, table_name), [])
 
     @engine_to_connection
     def get_schema_names(self, connection, **kw):
@@ -792,51 +1061,79 @@ WHERE tc.TABLE_NAME="{table_name}" AND tc.CONSTRAINT_TYPE = "PRIMARY KEY"
         return schemas
 
     @engine_to_connection
-    def get_foreign_keys(self, connection, table_name, schema=None, **kw):
-        """Get the table foreign key constraints.
+    def get_multi_foreign_keys(
+        self, connection, schema=None, filter_names=None, scope=None, kind=None, **kw
+    ):
+        """
+        Return information about foreign_keys in all tables
+        in the given schema.
 
         The method is used by SQLAlchemy introspection systems.
 
         Args:
             connection (sqlalchemy.engine.base.Connection):
                 SQLAlchemy connection or engine object.
-            table_name (str): Name of the table to introspect.
             schema (str): Optional. Schema name
+            filter_names (Sequence[str]): Optional. Optionally return information
+                only for the objects listed here.
+            scope (sqlalchemy.engine.reflection.ObjectScope): Optional. Specifies
+                if columns of default, temporary or any tables
+                should be reflected. Spanner does not support temporary.
+            kind (sqlalchemy.engine.reflection.ObjectKind): Optional. Specifies the
+                type of objects to reflect.
 
         Returns:
-            list: Dicts, each of which describes a foreign key constraint.
+            dictionary: a dictionary where the keys are two-tuple schema,table-name
+                and the values are list of dictionaries, each representing
+                a foreign key definition.
+                The schema is ``None`` if no schema is provided.
         """
-        sql = """
-SELECT
-    tc.constraint_name,
-    ctu.table_name,
-    ctu.table_schema,
-    ARRAY_AGG(DISTINCT ccu.column_name),
-    ARRAY_AGG(
-        DISTINCT CONCAT(
-            CAST(kcu.ordinal_position AS STRING),
-            '_____',
-            kcu.column_name
+        table_filter_query = self._get_table_filter_query(filter_names, "tc", True)
+        schema_filter_query = " tc.table_schema = '{schema}' AND".format(
+            schema=schema or ""
         )
-    )
-FROM information_schema.table_constraints AS tc
-JOIN information_schema.constraint_column_usage AS ccu
-    ON ccu.constraint_name = tc.constraint_name
-JOIN information_schema.constraint_table_usage AS ctu
-    ON ctu.constraint_name = tc.constraint_name
-JOIN information_schema.key_column_usage AS kcu
-    ON kcu.constraint_name = tc.constraint_name
-WHERE
-    tc.table_name="{table_name}"
-    AND tc.constraint_type = "FOREIGN KEY"
-GROUP BY tc.constraint_name, ctu.table_name, ctu.table_schema
-""".format(
-            table_name=table_name
+        table_type_query = self._get_table_type_query(kind, True)
+
+        sql = """
+        SELECT
+            tc.table_schema,
+            tc.table_name,
+            tc.constraint_name,
+            ctu.table_name,
+            ctu.table_schema,
+            ARRAY_AGG(DISTINCT ccu.column_name),
+            ARRAY_AGG(
+                DISTINCT CONCAT(
+                    CAST(kcu.ordinal_position AS STRING),
+                    '_____',
+                    kcu.column_name
+                )
+            )
+            FROM information_schema.table_constraints AS tc
+            JOIN information_schema.constraint_column_usage AS ccu
+                ON ccu.constraint_name = tc.constraint_name
+            JOIN information_schema.constraint_table_usage AS ctu
+                ON ctu.constraint_name = tc.constraint_name
+            JOIN information_schema.key_column_usage AS kcu
+                ON kcu.constraint_name = tc.constraint_name
+            JOIN information_schema.tables AS t
+                ON tc.table_name = t.table_name
+            WHERE
+                {table_filter_query}
+                {table_type_query}
+                {schema_filter_query}
+                tc.constraint_type = "FOREIGN KEY"
+            GROUP BY tc.table_name, tc.table_schema, tc.constraint_name,
+            ctu.table_name, ctu.table_schema
+            """.format(
+            table_filter_query=table_filter_query,
+            table_type_query=table_type_query,
+            schema_filter_query=schema_filter_query,
         )
 
-        keys = []
         with connection.connection.database.snapshot() as snap:
-            rows = snap.execute_sql(sql)
+            rows = list(snap.execute_sql(sql))
+            result_dict = {}
 
             for row in rows:
                 # Due to Spanner limitations, arrays order is not guaranteed during
@@ -851,20 +1148,45 @@ GROUP BY tc.constraint_name, ctu.table_name, ctu.table_schema
                 #
                 # The solution seem a bit clumsy, and should be improved as soon as a
                 # better approach found.
-                for index, value in enumerate(sorted(row[4])):
-                    row[4][index] = value.split("_____")[1]
+                row[0] = row[0] or None
+                table_info = result_dict.get((row[0], row[1]), [])
+                for index, value in enumerate(sorted(row[6])):
+                    row[6][index] = value.split("_____")[1]
 
-                keys.append(
-                    {
-                        "name": row[0],
-                        "referred_table": row[1],
-                        "referred_schema": row[2] or None,
-                        "referred_columns": row[3],
-                        "constrained_columns": row[4],
-                    }
-                )
+                fk_info = {
+                    "name": row[2],
+                    "referred_table": row[3],
+                    "referred_schema": row[4] or None,
+                    "referred_columns": row[5],
+                    "constrained_columns": row[6],
+                }
 
-        return keys
+                table_info.append(fk_info)
+                result_dict[(row[0], row[1])] = table_info
+
+        return result_dict
+
+    @engine_to_connection
+    def get_foreign_keys(self, connection, table_name, schema=None, **kw):
+        """Get the table foreign key constraints.
+
+        The method is used by SQLAlchemy introspection systems.
+
+        Args:
+            connection (sqlalchemy.engine.base.Connection):
+                SQLAlchemy connection or engine object.
+            table_name (str): Name of the table to introspect.
+            schema (str): Optional. Schema name
+
+        Returns:
+            list: Dicts, each of which describes a foreign key constraint.
+        """
+        kind = None if not USING_SQLACLCHEMY_20 else ObjectKind.ANY
+        dict = self.get_multi_foreign_keys(
+            connection, schema=schema, filter_names=[table_name], kind=kind
+        )
+        schema = schema or None
+        return dict.get((schema, table_name), [])
 
     @engine_to_connection
     def get_table_names(self, connection, schema=None, **kw):
@@ -883,9 +1205,9 @@ GROUP BY tc.constraint_name, ctu.table_name, ctu.table_schema
         sql = """
 SELECT table_name
 FROM information_schema.tables
-WHERE table_schema = '{}'
+WHERE table_type = 'BASE TABLE' AND table_schema = '{schema}'
 """.format(
-            schema or ""
+            schema=schema or ""
         )
 
         table_names = []
@@ -937,7 +1259,7 @@ WHERE
         return cols
 
     @engine_to_connection
-    def has_table(self, connection, table_name, schema=None):
+    def has_table(self, connection, table_name, schema=None, **kw):
         """Check if the given table exists.
 
         The method is used by SQLAlchemy introspection systems.

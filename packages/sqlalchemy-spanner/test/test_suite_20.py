@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,14 +24,16 @@ import random
 import time
 from unittest import mock
 
-from google.cloud.spanner_v1 import RequestOptions, Client
-
+from google.cloud.spanner_v1 import RequestOptions
 import sqlalchemy
 from sqlalchemy import create_engine
+from sqlalchemy.engine import Inspector
 from sqlalchemy import inspect
 from sqlalchemy import testing
 from sqlalchemy import ForeignKey
 from sqlalchemy import MetaData
+from sqlalchemy.engine import ObjectKind
+from sqlalchemy.engine import ObjectScope
 from sqlalchemy.schema import DDL
 from sqlalchemy.schema import Computed
 from sqlalchemy.testing import config
@@ -53,14 +55,15 @@ from sqlalchemy import Float
 from sqlalchemy import LargeBinary
 from sqlalchemy import String
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relation
+from sqlalchemy.orm import relationship
 from sqlalchemy.orm import Session
 from sqlalchemy.types import Integer
 from sqlalchemy.types import Numeric
 from sqlalchemy.types import Text
 from sqlalchemy.testing import requires
 from sqlalchemy.testing import is_true
-from sqlalchemy import types as sql_types
+from sqlalchemy import Index
+from sqlalchemy import types
 from sqlalchemy.testing.fixtures import (
     ComputedReflectionFixtureTest as _ComputedReflectionFixtureTest,
 )
@@ -74,9 +77,11 @@ from sqlalchemy.testing.suite.test_ddl import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_dialect import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_insert import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_reflection import *  # noqa: F401, F403
+from sqlalchemy.testing.suite.test_deprecations import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_results import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_select import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_sequence import *  # noqa: F401, F403
+from sqlalchemy.testing.suite.test_unicode_ddl import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_update_delete import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_cte import CTETest as _CTETest
 from sqlalchemy.testing.suite.test_ddl import TableDDLTest as _TableDDLTest
@@ -90,6 +95,7 @@ from sqlalchemy.testing.suite.test_update_delete import (
 from sqlalchemy.testing.suite.test_dialect import (
     DifficultParametersTest as _DifficultParametersTest,
     EscapingTest as _EscapingTest,
+    ReturningGuardsTest as _ReturningGuardsTest,
 )
 from sqlalchemy.testing.suite.test_insert import (
     InsertBehaviorTest as _InsertBehaviorTest,
@@ -103,8 +109,9 @@ from sqlalchemy.testing.suite.test_select import (  # noqa: F401, F403
     LikeFunctionsTest as _LikeFunctionsTest,
     OrderByLabelTest as _OrderByLabelTest,
     PostCompileParamsTest as _PostCompileParamsTest,
+    SameNamedSchemaTableTest as _SameNamedSchemaTableTest,
 )
-from sqlalchemy.testing.suite.test_reflection import (
+from sqlalchemy.testing.suite.test_reflection import (  # noqa: F401, F403
     ComponentReflectionTestExtra as _ComponentReflectionTestExtra,
     QuotedNameArgumentTest as _QuotedNameArgumentTest,
     ComponentReflectionTest as _ComponentReflectionTest,
@@ -113,7 +120,9 @@ from sqlalchemy.testing.suite.test_reflection import (
     HasIndexTest as _HasIndexTest,
     HasTableTest as _HasTableTest,
 )
-from sqlalchemy.testing.suite.test_results import RowFetchTest as _RowFetchTest
+from sqlalchemy.testing.suite.test_results import (
+    RowFetchTest as _RowFetchTest,
+)
 from sqlalchemy.testing.suite.test_types import (  # noqa: F401, F403
     BooleanTest as _BooleanTest,
     DateTest as _DateTest,
@@ -134,8 +143,8 @@ from sqlalchemy.testing.suite.test_types import (  # noqa: F401, F403
     UnicodeVarcharTest as _UnicodeVarcharTest,
     UnicodeTextTest as _UnicodeTextTest,
     _UnicodeFixture as __UnicodeFixture,
-)
-from test._helpers import get_db_url, get_project
+)  # noqa: F401, F403
+from test._helpers import get_db_url
 
 config.test_schema = ""
 
@@ -229,20 +238,161 @@ class ComponentReflectionTestExtra(_ComponentReflectionTestExtra):
             eq_(typ.length, 20)
 
 
+class ComputedReflectionFixtureTest(_ComputedReflectionFixtureTest):
+    @classmethod
+    def define_tables(cls, metadata):
+        """SPANNER OVERRIDE:
+
+        Avoid using default values for computed columns.
+        """
+        Table(
+            "computed_default_table",
+            metadata,
+            Column("id", Integer, primary_key=True),
+            Column("normal", Integer),
+            Column("computed_col", Integer, Computed("normal + 42")),
+            Column("with_default", Integer),
+        )
+
+        t = Table(
+            "computed_column_table",
+            metadata,
+            Column("id", Integer, primary_key=True),
+            Column("normal", Integer),
+            Column("computed_no_flag", Integer, Computed("normal + 42")),
+        )
+
+        if testing.requires.computed_columns_virtual.enabled:
+            t.append_column(
+                Column(
+                    "computed_virtual",
+                    Integer,
+                    Computed("normal + 2", persisted=False),
+                )
+            )
+        if testing.requires.computed_columns_stored.enabled:
+            t.append_column(
+                Column(
+                    "computed_stored",
+                    Integer,
+                    Computed("normal - 42", persisted=True),
+                )
+            )
+
+
+class ComputedReflectionTest(_ComputedReflectionTest, ComputedReflectionFixtureTest):
+    @testing.requires.schemas
+    def test_get_column_returns_persisted_with_schema(self):
+        insp = inspect(config.db)
+
+        cols = insp.get_columns("computed_column_table", schema=config.test_schema)
+        data = {c["name"]: c for c in cols}
+
+        self.check_column(
+            data,
+            "computed_no_flag",
+            "normal+42",
+            testing.requires.computed_columns_default_persisted.enabled,
+        )
+        if testing.requires.computed_columns_virtual.enabled:
+            self.check_column(
+                data,
+                "computed_virtual",
+                "normal/2",
+                False,
+            )
+        if testing.requires.computed_columns_stored.enabled:
+            self.check_column(
+                data,
+                "computed_stored",
+                "normal-42",
+                True,
+            )
+
+    @pytest.mark.skip("Default values are not supported.")
+    def test_computed_col_default_not_set(self):
+        pass
+
+    def test_get_column_returns_computed(self):
+        """
+        SPANNER OVERRIDE:
+
+        In Spanner all the generated columns are STORED,
+        meaning there are no persisted and not persisted
+        (in the terms of the SQLAlchemy) columns. The
+        method override omits the persistence reflection checks.
+        """
+        insp = inspect(config.db)
+
+        cols = insp.get_columns("computed_default_table")
+        data = {c["name"]: c for c in cols}
+        for key in ("id", "normal", "with_default"):
+            is_true("computed" not in data[key])
+        compData = data["computed_col"]
+        is_true("computed" in compData)
+        is_true("sqltext" in compData["computed"])
+        eq_(self.normalize(compData["computed"]["sqltext"]), "normal+42")
+
+    def test_create_not_null_computed_column(self, connection):
+        """
+        SPANNER TEST:
+
+        Check that on creating a computed column with a NOT NULL
+        clause the clause is set in front of the computed column
+        statement definition and doesn't cause failures.
+        """
+        metadata = MetaData()
+
+        Table(
+            "Singers",
+            metadata,
+            Column("SingerId", String(36), primary_key=True, nullable=False),
+            Column("FirstName", String(200)),
+            Column("LastName", String(200), nullable=False),
+            Column(
+                "FullName",
+                String(400),
+                Computed("COALESCE(FirstName || ' ', '') || LastName"),
+                nullable=False,
+            ),
+        )
+
+        metadata.create_all(connection)
+
+
 class ComponentReflectionTest(_ComponentReflectionTest):
+    @pytest.mark.skip("Skip")
+    def test_not_existing_table(self, method, connection):
+        pass
+
+    @classmethod
+    def define_tables(cls, metadata):
+        cls.define_reflected_tables(metadata, None)
+
     @classmethod
     def define_views(cls, metadata, schema):
         table_info = {
+            "dingalings": [
+                "dingaling_id",
+                "address_id",
+                "data",
+                "id_user",
+            ],
             "users": ["user_id", "test1", "test2"],
             "email_addresses": ["address_id", "remote_user_id", "email_address"],
         }
         if testing.requires.self_referential_foreign_keys.enabled:
             table_info["users"] = table_info["users"] + ["parent_user_id"]
-        for table_name in ("users", "email_addresses"):
+        if testing.requires.materialized_views.enabled:
+            materialized = {"dingalings"}
+        else:
+            materialized = set()
+        for table_name in ("users", "email_addresses", "dingalings"):
             fullname = table_name
             if schema:
-                fullname = "%s.%s" % (schema, table_name)
+                fullname = f"{schema}.{table_name}"
             view_name = fullname + "_v"
+            prefix = "MATERIALIZED " if table_name in materialized else ""
             columns = ""
             for column in table_info[table_name]:
                 stmt = table_name + "." + column + " AS " + column
@@ -250,17 +400,19 @@ class ComponentReflectionTest(_ComponentReflectionTest):
                     columns = columns + ", " + stmt
                 else:
                     columns = stmt
-            query = f"""CREATE VIEW {view_name}
+            query = f"""CREATE {prefix}VIEW {view_name}
                 SQL SECURITY INVOKER
                 AS SELECT {columns}
                 FROM {fullname}"""
 
             event.listen(metadata, "after_create", DDL(query))
-            event.listen(metadata, "before_drop", DDL("DROP VIEW %s" % view_name))
-
-    @classmethod
-    def define_tables(cls, metadata):
-        cls.define_reflected_tables(metadata, None)
+            if table_name in materialized:
+                index_name = "mat_index"
+                if schema and testing.against("oracle"):
+                    index_name = f"{schema}.{index_name}"
+                idx = f"CREATE INDEX {index_name} ON {view_name}(data)"
+                event.listen(metadata, "after_create", DDL(idx))
+            event.listen(metadata, "before_drop", DDL(f"DROP {prefix}VIEW {view_name}"))
 
     @classmethod
     def define_reflected_tables(cls, metadata, schema):
@@ -306,6 +458,11 @@ class ComponentReflectionTest(_ComponentReflectionTest):
                 sqlalchemy.Integer,
                 sqlalchemy.ForeignKey("%semail_addresses.address_id" % schema_prefix),
             ),
+            Column(
+                "id_user",
+                sqlalchemy.Integer,
+                sqlalchemy.ForeignKey("%susers.user_id" % schema_prefix),
+            ),
             Column("data", sqlalchemy.String(30)),
             schema=schema,
             test_needs_fk=True,
@@ -336,6 +493,12 @@ class ComponentReflectionTest(_ComponentReflectionTest):
             ),
             schema=schema,
             comment=r"""the test % ' " \ table comment""",
+        )
+        Table(
+            "no_constraints",
+            metadata,
+            Column("data", sqlalchemy.String(20)),
+            schema=schema,
         )
 
         if testing.requires.cross_schema_fk_reflection.enabled:
@@ -377,7 +540,10 @@ class ComponentReflectionTest(_ComponentReflectionTest):
                 )
 
         if testing.requires.index_reflection.enabled:
-            cls.define_index(metadata, users)
+            sqlalchemy.Index("users_t_idx", users.c.test1, users.c.test2, unique=True)
+            sqlalchemy.Index(
+                "users_all_idx", users.c.user_id, users.c.test2, users.c.test1
+            )
 
             if not schema:
                 # test_needs_fk is at the moment to force MySQL InnoDB
@@ -408,26 +574,6 @@ class ComponentReflectionTest(_ComponentReflectionTest):
         ):
             cls.define_views(metadata, schema)
 
-    @pytest.mark.skipif(
-        bool(os.environ.get("SPANNER_EMULATOR_HOST")), reason="Skipped on emulator"
-    )
-    @testing.requires.view_reflection
-    @testing.combinations(
-        (False,), (True, testing.requires.schemas), argnames="use_schema"
-    )
-    def test_get_view_definition(self, connection, use_schema):
-        if use_schema:
-            schema = config.test_schema
-        else:
-            schema = None
-        view_name1 = "users_v"
-        view_name2 = "email_addresses_v"
-        insp = inspect(connection)
-        v1 = insp.get_view_definition(view_name1, schema=schema)
-        self.assert_(v1)
-        v2 = insp.get_view_definition(view_name2, schema=schema)
-        self.assert_(v2)
-
     @testing.combinations(
         (False, False),
         (False, True, testing.requires.schemas),
@@ -444,9 +590,10 @@ class ComponentReflectionTest(_ComponentReflectionTest):
             pytest.skip("Skipped on emulator")
 
         schema = None
+
         users, addresses = (self.tables.users, self.tables.email_addresses)
         if use_views:
-            table_names = ["users_v", "email_addresses_v"]
+            table_names = ["users_v", "email_addresses_v", "dingalings_v"]
         else:
             table_names = ["users", "email_addresses"]
 
@@ -454,7 +601,7 @@ class ComponentReflectionTest(_ComponentReflectionTest):
         for table_name, table in zip(table_names, (users, addresses)):
             schema_name = schema
             cols = insp.get_columns(table_name, schema=schema_name)
-            self.assert_(len(cols) > 0, len(cols))
+            is_true(len(cols) > 0, len(cols))
 
             # should be in order
 
@@ -468,27 +615,27 @@ class ComponentReflectionTest(_ComponentReflectionTest):
                 # Oracle returns Date for DateTime.
 
                 if testing.against("oracle") and ctype_def in (
-                    sql_types.Date,
-                    sql_types.DateTime,
+                    types.Date,
+                    types.DateTime,
                 ):
-                    ctype_def = sql_types.Date
+                    ctype_def = types.Date
 
                 # assert that the desired type and return type share
                 # a base within one of the generic types.
 
-                self.assert_(
+                is_true(
                     len(
                         set(ctype.__mro__)
                         .intersection(ctype_def.__mro__)
                         .intersection(
                             [
-                                sql_types.Integer,
-                                sql_types.Numeric,
-                                sql_types.DateTime,
-                                sql_types.Date,
-                                sql_types.Time,
-                                sql_types.String,
-                                sql_types._Binary,
+                                types.Integer,
+                                types.Numeric,
+                                types.DateTime,
+                                types.Date,
+                                types.Time,
+                                types.String,
+                                types._Binary,
                             ]
                         )
                     )
@@ -498,6 +645,396 @@ class ComponentReflectionTest(_ComponentReflectionTest):
 
                 if not col.primary_key:
                     assert cols[i]["default"] is None
+
+    @pytest.mark.skipif(
+        bool(os.environ.get("SPANNER_EMULATOR_HOST")), reason="Skipped on emulator"
+    )
+    @testing.requires.view_reflection
+    def test_get_view_definition(
+        self,
+        connection,
+    ):
+        schema = None
+        insp = inspect(connection)
+        for view in ["users_v", "email_addresses_v", "dingalings_v"]:
+            v = insp.get_view_definition(view, schema=schema)
+            is_true(bool(v))
+
+    @pytest.mark.skipif(
+        bool(os.environ.get("SPANNER_EMULATOR_HOST")), reason="Skipped on emulator"
+    )
+    @testing.requires.view_reflection
+    def test_get_view_definition_does_not_exist(self, connection):
+        super().test_get_view_definition_does_not_exist(connection)
+
+    def filter_name_values():
+        return testing.combinations(True, False, argnames="use_filter")
+
+    @filter_name_values()
+    @testing.requires.index_reflection
+    def test_get_multi_indexes(
+        self,
+        get_multi_exp,
+        use_filter,
+        schema=None,
+        scope=ObjectScope.DEFAULT,
+        kind=ObjectKind.TABLE,
+    ):
+        """
+        SPANNER OVERRIDE:
+
+        Spanner doesn't support indexes on views and
+        doesn't support temporary tables, so real tables are
+        used for testing. As the original test expects only real
+        tables to be read, and in Spanner all the tables are real,
+        expected results override is required.
+        """
+        insp, kws, exp = get_multi_exp(
+            schema,
+            scope,
+            kind,
+            use_filter,
+            Inspector.get_indexes,
+            self.exp_indexes,
+        )
+        _ignore_tables = [
+            (None, "comment_test"),
+            (None, "dingalings"),
+            (None, "email_addresses"),
+            (None, "no_constraints"),
+        ]
+        exp = {k: v for k, v in exp.items() if k not in _ignore_tables}
+
+        for kw in kws:
+            insp.clear_cache()
+            result = insp.get_multi_indexes(**kw)
+            self._check_table_dict(result, exp, self._required_index_keys)
+
+    def exp_pks(
+        self,
+        schema=None,
+        scope=ObjectScope.ANY,
+        kind=ObjectKind.ANY,
+        filter_names=None,
+    ):
+        def pk(*cols, name=mock.ANY, comment=None):
+            return {
+                "constrained_columns": list(cols),
+                "name": name,
+                "comment": comment,
+            }
+
+        empty = pk(name=None)
+        if testing.requires.materialized_views_reflect_pk.enabled:
+            materialized = {(schema, "dingalings_v"): pk("dingaling_id")}
+        else:
+            materialized = {(schema, "dingalings_v"): empty}
+        views = {
+            (schema, "email_addresses_v"): empty,
+            (schema, "users_v"): empty,
+            (schema, "user_tmp_v"): empty,
+        }
+        self._resolve_views(views, materialized)
+        tables = {
+            (schema, "users"): pk("user_id"),
+            (schema, "dingalings"): pk("dingaling_id"),
+            (schema, "email_addresses"): pk(
+                "address_id", name="email_ad_pk", comment="ea pk comment"
+            ),
+            (schema, "comment_test"): pk("id"),
+            (schema, "no_constraints"): empty,
+            (schema, "local_table"): pk("id"),
+            (schema, "remote_table"): pk("id"),
+            (schema, "remote_table_2"): pk("id"),
+            (schema, "noncol_idx_test_nopk"): pk("id"),
+            (schema, "noncol_idx_test_pk"): pk("id"),
+            (schema, self.temp_table_name()): pk("id"),
+        }
+        if not testing.requires.reflects_pk_names.enabled:
+            for val in tables.values():
+                if val["name"] is not None:
+                    val["name"] = mock.ANY
+        res = self._resolve_kind(kind, tables, views, materialized)
+        res = self._resolve_names(schema, scope, filter_names, res)
+        return res
+
+    @filter_name_values()
+    @testing.requires.primary_key_constraint_reflection
+    def test_get_multi_pk_constraint(
+        self,
+        get_multi_exp,
+        use_filter,
+        schema=None,
+        scope=ObjectScope.DEFAULT,
+        kind=ObjectKind.TABLE,
+    ):
+        """
+        SPANNER OVERRIDE:
+
+        Spanner doesn't support temporary tables, so real tables are
+        used for testing. As the original test expects only real
+        tables to be read, and in Spanner all the tables are real,
+        expected results override is required.
+        """
+        insp, kws, exp = get_multi_exp(
+            schema,
+            scope,
+            kind,
+            use_filter,
+            Inspector.get_pk_constraint,
+            self.exp_pks,
+        )
+        _ignore_tables = [(None, "no_constraints")]
+        exp = {k: v for k, v in exp.items() if k not in _ignore_tables}
+
+        for kw in kws:
+            insp.clear_cache()
+            result = insp.get_multi_pk_constraint(**kw)
+            self._check_table_dict(result, exp, self._required_pk_keys, make_lists=True)
+
+    def exp_fks(
+        self,
+        schema=None,
+        scope=ObjectScope.ANY,
+        kind=ObjectKind.ANY,
+        filter_names=None,
+    ):
+        class tt:
+            def __eq__(self, other):
+                return other is None or config.db.dialect.default_schema_name == other
+
+        def fk(
+            cols,
+            ref_col,
+            ref_table,
+            ref_schema=schema,
+            name=mock.ANY,
+            comment=None,
+        ):
+            return {
+                "constrained_columns": cols,
+                "referred_columns": ref_col,
+                "name": name,
+                "options": mock.ANY,
+                "referred_schema": ref_schema if ref_schema is not None else tt(),
+                "referred_table": ref_table,
+                "comment": comment,
+            }
+
+        materialized = {}
+        views = {}
+        self._resolve_views(views, materialized)
+        tables = {
+            (schema, "users"): [
+                fk(["parent_user_id"], ["user_id"], "users", name="user_id_fk")
+            ],
+            (schema, "dingalings"): [
+                fk(["address_id"], ["address_id"], "email_addresses"),
+                fk(["id_user"], ["user_id"], "users"),
+            ],
+            (schema, "email_addresses"): [fk(["remote_user_id"], ["user_id"], "users")],
+            (schema, "local_table"): [
+                fk(
+                    ["remote_id"],
+                    ["id"],
+                    "remote_table_2",
+                    ref_schema=config.test_schema,
+                )
+            ],
+            (schema, "remote_table"): [
+                fk(["local_id"], ["id"], "local_table", ref_schema=None)
+            ],
+        }
+        if not testing.requires.self_referential_foreign_keys.enabled:
+            tables[(schema, "users")].clear()
+        if not testing.requires.named_constraints.enabled:
+            for vals in tables.values():
+                for val in vals:
+                    if val["name"] is not mock.ANY:
+                        val["name"] = mock.ANY
+
+        res = self._resolve_kind(kind, tables, views, materialized)
+        res = self._resolve_names(schema, scope, filter_names, res)
+        return res
+
+    @filter_name_values()
+    @testing.requires.foreign_key_constraint_reflection
+    def test_get_multi_foreign_keys(
+        self,
+        get_multi_exp,
+        use_filter,
+        schema=None,
+        scope=ObjectScope.DEFAULT,
+        kind=ObjectKind.TABLE,
+    ):
+
+        """
+        SPANNER OVERRIDE:
+
+        Spanner doesn't support temporary tables, so real tables are
+        used for testing. As the original test expects only real
+        tables to be read, and in Spanner all the tables are real,
+        expected results override is required.
+        """
+        insp, kws, exp = get_multi_exp(
+            schema,
+            scope,
+            kind,
+            use_filter,
+            Inspector.get_foreign_keys,
+            self.exp_fks,
+        )
+        for kw in kws:
+            insp.clear_cache()
+            result = insp.get_multi_foreign_keys(**kw)
+            self._adjust_sort(result, exp, lambda d: tuple(d["constrained_columns"]))
+            self._check_table_dict(
+                {
+                    key: sorted(value, key=lambda x: x["constrained_columns"])
+                    for key, value in result.items()
+                },
+                {
+                    key: sorted(value, key=lambda x: x["constrained_columns"])
+                    for key, value in exp.items()
+                },
+                self._required_fk_keys,
+            )
+
+    def exp_columns(
+        self,
+        schema=None,
+        scope=ObjectScope.ANY,
+        kind=ObjectKind.ANY,
+        filter_names=None,
+    ):
+        def col(name, auto=False, default=mock.ANY, comment=None, nullable=True):
+            res = {
+                "name": name,
+                "autoincrement": auto,
+                "type": mock.ANY,
+                "default": default,
+                "comment": comment,
+                "nullable": nullable,
+            }
+            if auto == "omit":
+                res.pop("autoincrement")
+            return res
+
+        def pk(name, **kw):
+            kw = {"auto": True, "default": mock.ANY, "nullable": False, **kw}
+            return col(name, **kw)
+
+        materialized = {
+            (schema, "dingalings_v"): [
+                col("dingaling_id", auto="omit", nullable=mock.ANY),
+                col("address_id"),
+                col("id_user"),
+                col("data"),
+            ]
+        }
+        views = {
+            (schema, "email_addresses_v"): [
+                col("address_id", auto="omit", nullable=mock.ANY),
+                col("remote_user_id"),
+                col("email_address"),
+            ],
+            (schema, "users_v"): [
+                col("user_id", auto="omit", nullable=mock.ANY),
+                col("test1", nullable=mock.ANY),
+                col("test2", nullable=mock.ANY),
+                col("parent_user_id"),
+            ],
+            (schema, "user_tmp_v"): [
+                col("id", auto="omit", nullable=mock.ANY),
+                col("name"),
+                col("foo"),
+            ],
+        }
+        self._resolve_views(views, materialized)
+        tables = {
+            (schema, "users"): [
+                pk("user_id"),
+                col("test1", nullable=False),
+                col("test2", nullable=False),
+                col("parent_user_id"),
+            ],
+            (schema, "dingalings"): [
+                pk("dingaling_id"),
+                col("address_id"),
+                col("id_user"),
+                col("data"),
+            ],
+            (schema, "email_addresses"): [
+                pk("address_id"),
+                col("remote_user_id"),
+                col("email_address"),
+            ],
+            (schema, "comment_test"): [
+                pk("id", comment="id comment"),
+                col("data", comment="data % comment"),
+                col(
+                    "d2",
+                    comment=r"""Comment types type speedily ' " \ '' Fun!""",
+                ),
+            ],
+            (schema, "no_constraints"): [col("data")],
+            (schema, "local_table"): [pk("id"), col("data"), col("remote_id")],
+            (schema, "remote_table"): [pk("id"), col("local_id"), col("data")],
+            (schema, "remote_table_2"): [pk("id"), col("data")],
+            (schema, "noncol_idx_test_nopk"): [pk("id"), col("q")],
+            (schema, "noncol_idx_test_pk"): [pk("id"), col("q")],
+            (schema, self.temp_table_name()): [
+                pk("id"),
+                col("name"),
+                col("foo"),
+            ],
+        }
+        res = self._resolve_kind(kind, tables, views, materialized)
+        res = self._resolve_names(schema, scope, filter_names, res)
+        return res
+
+    @filter_name_values()
+    def test_get_multi_columns(
+        self,
+        get_multi_exp,
+        use_filter,
+        schema=None,
+        scope=ObjectScope.DEFAULT,
+        kind=ObjectKind.TABLE,
+    ):
+        """
+        SPANNER OVERRIDE:
+
+        Spanner doesn't support temporary tables, so real tables are
+        used for testing. As the original test expects only real
+        tables to be read, and in Spanner all the tables are real,
+        expected results override is required.
+        """
+        insp, kws, exp = get_multi_exp(
+            schema,
+            scope,
+            kind,
+            use_filter,
+            Inspector.get_columns,
+            self.exp_columns,
+        )
+
+        for kw in kws:
+            insp.clear_cache()
+            result = insp.get_multi_columns(**kw)
+            self._check_table_dict(result, exp, self._required_column_keys)
+
+    @pytest.mark.skip(
+        "Requires an introspection method to be implemented in SQLAlchemy first"
+    )
+    def test_get_multi_unique_constraints():
+        pass
+
+    @pytest.mark.skip(
+        "Requires an introspection method to be implemented in SQLAlchemy first"
+    )
+    def test_get_multi_check_constraints():
+        pass
 
     @testing.combinations((False,), argnames="use_schema")
     @testing.requires.foreign_key_constraint_reflection
@@ -537,25 +1074,17 @@ class ComponentReflectionTest(_ComponentReflectionTest):
         eq_(fkey1["referred_columns"], ["user_id"])
         eq_(fkey1["constrained_columns"], ["remote_user_id"])
 
-    @testing.requires.foreign_key_constraint_reflection
     @testing.combinations(
-        (None, True, False, False),
-        (None, True, False, True, testing.requires.schemas),
-        ("foreign_key", True, False, False),
-        (None, False, False, False),
-        (None, False, False, True, testing.requires.schemas),
-        (None, True, False, False),
-        (None, True, False, True, testing.requires.schemas),
-        argnames="order_by,include_plain,include_views,use_schema",
+        None,
+        ("foreign_key", testing.requires.foreign_key_constraint_reflection),
+        argnames="order_by",
     )
-    def test_get_table_names(
-        self, connection, order_by, include_plain, include_views, use_schema
-    ):
+    @testing.combinations(
+        (True, testing.requires.schemas), False, argnames="use_schema"
+    )
+    def test_get_table_names(self, connection, order_by, use_schema):
 
-        if use_schema:
-            schema = config.test_schema
-        else:
-            schema = None
+        schema = None
 
         _ignore_tables = [
             "account",
@@ -570,33 +1099,25 @@ class ComponentReflectionTest(_ComponentReflectionTest):
             "remote_table_2",
             "text_table",
             "user_tmp",
+            "no_constraints",
         ]
 
         insp = inspect(connection)
 
-        if include_views:
-            table_names = insp.get_view_names(schema)
-            table_names.sort()
-            answer = ["email_addresses_v", "users_v"]
+        if order_by:
+            tables = [
+                rec[0] for rec in insp.get_sorted_table_and_fkc_names(schema) if rec[0]
+            ]
+        else:
+            tables = insp.get_table_names(schema)
+        table_names = [t for t in tables if t not in _ignore_tables]
+
+        if order_by == "foreign_key":
+            answer = ["users", "email_addresses", "dingalings"]
+            eq_(table_names, answer)
+        else:
+            answer = ["dingalings", "email_addresses", "users"]
             eq_(sorted(table_names), answer)
-
-        if include_plain:
-            if order_by:
-                tables = [
-                    rec[0]
-                    for rec in insp.get_sorted_table_and_fkc_names(schema)
-                    if rec[0]
-                ]
-            else:
-                tables = insp.get_table_names(schema)
-            table_names = [t for t in tables if t not in _ignore_tables]
-
-            if order_by == "foreign_key":
-                answer = ["users", "email_addresses", "dingalings"]
-                eq_(table_names, answer)
-            else:
-                answer = ["dingalings", "email_addresses", "users"]
-                eq_(sorted(table_names), answer)
 
     @classmethod
     def define_temp_tables(cls, metadata):
@@ -631,7 +1152,7 @@ class ComponentReflectionTest(_ComponentReflectionTest):
             event.listen(user_tmp, "before_drop", DDL("drop view user_tmp_v"))
 
     @testing.provide_metadata
-    def test_reflect_string_column_max_len(self):
+    def test_reflect_string_column_max_len(self, connection):
         """
         SPANNER SPECIFIC TEST:
 
@@ -639,13 +1160,13 @@ class ComponentReflectionTest(_ComponentReflectionTest):
         created with size defined as MAX. The test
         checks that such a column is correctly reflected.
         """
-        metadata = MetaData(self.bind)
+        metadata = MetaData()
         Table("text_table", metadata, Column("TestColumn", Text, nullable=False))
-        metadata.create_all()
+        metadata.create_all(connection)
 
         Table("text_table", metadata, autoload=True)
 
-    def test_reflect_bytes_column_max_len(self):
+    def test_reflect_bytes_column_max_len(self, connection):
         """
         SPANNER SPECIFIC TEST:
 
@@ -653,21 +1174,18 @@ class ComponentReflectionTest(_ComponentReflectionTest):
         created with size defined as MAX. The test
         checks that such a column is correctly reflected.
         """
-        metadata = MetaData(self.bind)
+        metadata = MetaData()
         Table(
             "bytes_table",
             metadata,
             Column("TestColumn", LargeBinary, nullable=False),
         )
-        metadata.create_all()
+        metadata.create_all(connection)
 
         Table("bytes_table", metadata, autoload=True)
 
-    @testing.combinations(
-        (True, testing.requires.schemas), (False,), argnames="use_schema"
-    )
     @testing.requires.unique_constraint_reflection
-    def test_get_unique_constraints(self, metadata, connection, use_schema):
+    def test_get_unique_constraints(self, metadata, connection, use_schema=False):
         # SQLite dialect needs to parse the names of the constraints
         # separately from what it gets from PRAGMA index_list(), and
         # then matches them up.  so same set of column_names in two
@@ -752,12 +1270,12 @@ class ComponentReflectionTest(_ComponentReflectionTest):
             eq_(uq_names, set())
 
     @testing.provide_metadata
-    def test_unique_constraint_raises(self):
+    def test_unique_constraint_raises(self, connection):
         """
         Checking that unique constraint creation
         fails due to a ProgrammingError.
         """
-        metadata = MetaData(self.bind)
+        metadata = MetaData()
         Table(
             "user_tmp_failure",
             metadata,
@@ -767,7 +1285,7 @@ class ComponentReflectionTest(_ComponentReflectionTest):
         )
 
         with pytest.raises(spanner_dbapi.exceptions.ProgrammingError):
-            metadata.create_all()
+            metadata.create_all(connection)
 
     @testing.provide_metadata
     def _test_get_table_names(self, schema=None, table_type="table", order_by=None):
@@ -786,6 +1304,7 @@ class ComponentReflectionTest(_ComponentReflectionTest):
             "local_table",
             "remote_table",
             "remote_table_2",
+            "no_constraints",
         ]
         meta = self.metadata
 
@@ -814,6 +1333,20 @@ class ComponentReflectionTest(_ComponentReflectionTest):
                 answer = ["dingalings", "email_addresses", "user_tmp", "users"]
                 eq_(sorted(table_names), answer)
 
+    @pytest.mark.skipif(
+        bool(os.environ.get("SPANNER_EMULATOR_HOST")), reason="Skipped on emulator"
+    )
+    def test_get_view_names(self, connection, use_schema=False):
+        insp = inspect(connection)
+        schema = None
+        table_names = insp.get_view_names(schema)
+        if testing.requires.materialized_views.enabled:
+            eq_(sorted(table_names), ["email_addresses_v", "users_v"])
+            eq_(insp.get_materialized_view_names(schema), ["dingalings_v"])
+        else:
+            answer = ["dingalings_v", "email_addresses_v", "users_v"]
+            eq_(sorted(table_names), answer)
+
     @pytest.mark.skip("Spanner doesn't support temporary tables")
     def test_get_temp_table_indexes(self):
         pass
@@ -826,17 +1359,146 @@ class ComponentReflectionTest(_ComponentReflectionTest):
     def test_get_temp_table_columns(self):
         pass
 
-    def _assert_insp_indexes(self, indexes, expected_indexes):
-        expected_indexes.sort(key=lambda item: item["name"])
+    @pytest.mark.skip("Spanner doesn't support temporary tables")
+    def test_reflect_table_temp_table(self, connection):
+        pass
 
-        index_names = [d["name"] for d in indexes]
-        exp_index_names = [d["name"] for d in expected_indexes]
-        assert sorted(index_names) == sorted(exp_index_names)
+    def exp_indexes(
+        self,
+        schema=None,
+        scope=ObjectScope.ANY,
+        kind=ObjectKind.ANY,
+        filter_names=None,
+    ):
+        def idx(
+            *cols,
+            name,
+            unique=False,
+            column_sorting=None,
+            duplicates=False,
+            fk=False,
+        ):
+            fk_req = testing.requires.foreign_keys_reflect_as_index
+            dup_req = testing.requires.unique_constraints_reflect_as_index
+            if (fk and not fk_req.enabled) or (duplicates and not dup_req.enabled):
+                return ()
+            res = {
+                "unique": unique,
+                "column_names": list(cols),
+                "name": name,
+                "dialect_options": mock.ANY,
+                "include_columns": [],
+            }
+            if column_sorting:
+                res["column_sorting"] = {"q": "DESC"}
+            if duplicates:
+                res["duplicates_constraint"] = name
+            return [res]
+
+        materialized = {(schema, "dingalings_v"): []}
+        views = {
+            (schema, "email_addresses_v"): [],
+            (schema, "users_v"): [],
+            (schema, "user_tmp_v"): [],
+        }
+        self._resolve_views(views, materialized)
+        if materialized:
+            materialized[(schema, "dingalings_v")].extend(idx("data", name="mat_index"))
+        tables = {
+            (schema, "users"): [
+                *idx("parent_user_id", name="user_id_fk", fk=True),
+                *idx("user_id", "test2", "test1", name="users_all_idx"),
+                *idx("test1", "test2", name="users_t_idx", unique=True),
+            ],
+            (schema, "dingalings"): [
+                *idx("data", name=mock.ANY, unique=True, duplicates=True),
+                *idx("id_user", name=mock.ANY, fk=True),
+                *idx(
+                    "address_id",
+                    "dingaling_id",
+                    name="zz_dingalings_multiple",
+                    unique=True,
+                    duplicates=True,
+                ),
+            ],
+            (schema, "email_addresses"): [
+                *idx("email_address", name=mock.ANY),
+                *idx("remote_user_id", name=mock.ANY, fk=True),
+            ],
+            (schema, "comment_test"): [],
+            (schema, "no_constraints"): [],
+            (schema, "local_table"): [*idx("remote_id", name=mock.ANY, fk=True)],
+            (schema, "remote_table"): [*idx("local_id", name=mock.ANY, fk=True)],
+            (schema, "remote_table_2"): [],
+            (schema, "noncol_idx_test_nopk"): [
+                *idx(
+                    "q",
+                    name="noncol_idx_nopk",
+                    column_sorting={"q": "DESC"},
+                )
+            ],
+            (schema, "noncol_idx_test_pk"): [
+                *idx("q", name="noncol_idx_pk", column_sorting={"q": "DESC"})
+            ],
+            (schema, self.temp_table_name()): [
+                *idx("foo", name="user_tmp_ix"),
+                *idx(
+                    "name",
+                    name=f"user_tmp_uq_{config.ident}",
+                    duplicates=True,
+                    unique=True,
+                ),
+            ],
+        }
+        if (
+            not testing.requires.indexes_with_ascdesc.enabled
+            or not testing.requires.reflect_indexes_with_ascdesc.enabled
+        ):
+            tables[(schema, "noncol_idx_test_nopk")].clear()
+            tables[(schema, "noncol_idx_test_pk")].clear()
+        res = self._resolve_kind(kind, tables, views, materialized)
+        res = self._resolve_names(schema, scope, filter_names, res)
+        return res
+
+    def _check_list(self, result, exp, req_keys=None, msg=None):
+        if req_keys is None:
+            eq_(result, exp, msg)
+        else:
+            eq_(len(result), len(exp), msg)
+            for r, e in zip(result, exp):
+                for k in set(r) | set(e):
+                    if (k in req_keys and (k in r and k in e)) or (k in r and k in e):
+                        if isinstance(r[k], list):
+                            r[k].sort()
+                            e[k].sort()
+                        eq_(r[k], e[k], f"{msg} - {k} - {r}")
+
+    @pytest.mark.skipif(
+        bool(os.environ.get("SPANNER_EMULATOR_HOST")), reason="Skipped on emulator"
+    )
+    @testing.combinations(True, False, argnames="use_schema")
+    @testing.combinations((True, testing.requires.views), False, argnames="views")
+    def test_metadata(self, connection, use_schema, views):
+        m = MetaData()
+        schema = None
+        m.reflect(connection, schema=schema, views=views, resolve_fks=False)
+
+        insp = inspect(connection)
+        tables = insp.get_table_names(schema)
+        if views:
+            tables += insp.get_view_names(schema)
+            try:
+                tables += insp.get_materialized_view_names(schema)
+            except NotImplementedError:
+                pass
+        if schema is not None:
+            tables = [f"{schema}.{t}" for t in tables]
+        eq_(sorted(m.tables), sorted(tables))
 
 
 class CompositeKeyReflectionTest(_CompositeKeyReflectionTest):
     @testing.requires.foreign_key_constraint_reflection
-    def test_fk_column_order(self):
+    def test_fk_column_order(self, connection):
         """
         SPANNER OVERRIDE:
 
@@ -845,7 +1507,7 @@ class CompositeKeyReflectionTest(_CompositeKeyReflectionTest):
         reflected correctly, without considering their order.
         """
         # test for issue #5661
-        insp = inspect(self.bind)
+        insp = inspect(connection)
         foreign_keys = insp.get_foreign_keys(self.tables.tb2.name)
         eq_(len(foreign_keys), 1)
         fkey1 = foreign_keys[0]
@@ -1013,9 +1675,11 @@ class DateTimeMicrosecondsTest(_DateTimeMicrosecondsTest, DateTest):
         assert failures convert datetime input to the desire timestamp format.
         """
         date_table = self.tables.date_table
-        config.db.execute(date_table.insert(), {"date_data": self.data, "id": 250})
 
-        row = config.db.execute(select([date_table.c.date_data])).first()
+        with config.db.connect() as connection:
+            connection.execute(date_table.insert(), {"date_data": self.data, "id": 250})
+            row = connection.execute(select(date_table.c.date_data)).first()
+
         compare = self.compare or self.data
         compare = compare.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
         eq_(row[0].rfc3339(), compare)
@@ -1140,6 +1804,16 @@ class IdentityAutoincrementTest(_IdentityAutoincrementTest):
     pass
 
 
+@pytest.mark.skip("Spanner doesn't support returning")
+class ReturningGuardsTest(_ReturningGuardsTest):
+    pass
+
+
+@pytest.mark.skip("Spanner doesn't support user made schemas")
+class SameNamedSchemaTableTest(_SameNamedSchemaTableTest):
+    pass
+
+
 class EscapingTest(_EscapingTest):
     @provide_metadata
     def test_percent_sign_round_trip(self):
@@ -1160,9 +1834,7 @@ class EscapingTest(_EscapingTest):
 
             eq_(
                 conn.scalar(
-                    select([t.c.data]).where(
-                        t.c.data == literal_column("'some % value'")
-                    )
+                    select(t.c.data).where(t.c.data == literal_column("'some % value'"))
                 ),
                 "some % value",
             )
@@ -1171,7 +1843,7 @@ class EscapingTest(_EscapingTest):
             conn.execute(t.insert(), dict(data="some %% other value"))
             eq_(
                 conn.scalar(
-                    select([t.c.data]).where(
+                    select(t.c.data).where(
                         t.c.data == literal_column("'some %% other value'")
                     )
                 ),
@@ -1197,7 +1869,7 @@ class ExistsTest(_ExistsTest):
         stuff = self.tables.stuff
         eq_(
             connection.execute(
-                select((exists().where(stuff.c.data == "some data"),))
+                select(exists().where(stuff.c.data == "some data"))
             ).fetchall(),
             [(True,)],
         )
@@ -1219,7 +1891,7 @@ class ExistsTest(_ExistsTest):
         stuff = self.tables.stuff
         eq_(
             connection.execute(
-                select((exists().where(stuff.c.data == "no data"),))
+                select(exists().where(stuff.c.data == "no data"))
             ).fetchall(),
             [(False,)],
         )
@@ -1290,7 +1962,7 @@ class IntegerTest(_IntegerTest):
 
         config.db.execute(int_table.insert(), {"id": 1, "integer_data": data})
 
-        row = config.db.execute(select([int_table.c.integer_data])).first()
+        row = config.db.execute(select(int_table.c.integer_data)).first()
 
         eq_(row, (data,))
 
@@ -1298,6 +1970,33 @@ class IntegerTest(_IntegerTest):
             assert isinstance(row[0], int)
         else:
             assert isinstance(row[0], (long, int))  # noqa
+
+    def _huge_ints():
+
+        return testing.combinations(
+            2147483649,  # 32 bits
+            2147483648,  # 32 bits
+            2147483647,  # 31 bits
+            2147483646,  # 31 bits
+            -2147483649,  # 32 bits
+            -2147483648,  # 32 interestingly, asyncpg accepts this one as int32
+            -2147483647,  # 31
+            -2147483646,  # 31
+            0,
+            1376537018368127,
+            -1376537018368127,
+            argnames="intvalue",
+        )
+
+    @_huge_ints()
+    def test_huge_int_auto_accommodation(self, connection, intvalue):
+        """
+        Spanner does not allow query to have FROM clause without a WHERE clause
+        """
+        eq_(
+            connection.scalar(select(intvalue)),
+            intvalue,
+        )
 
 
 class _UnicodeFixture(__UnicodeFixture):
@@ -1318,7 +2017,7 @@ class _UnicodeFixture(__UnicodeFixture):
             Column("unicode_data", cls.datatype),
         )
 
-    def test_round_trip_executemany(self):
+    def test_round_trip_executemany(self, connection):
         """
         SPANNER OVERRIDE
 
@@ -1329,15 +2028,15 @@ class _UnicodeFixture(__UnicodeFixture):
         """
         unicode_table = self.tables.unicode_table
 
-        config.db.execute(
+        connection.execute(
             unicode_table.insert(),
-            [{"id": i, "unicode_data": self.data} for i in range(3)],
+            [{"id": i, "unicode_data": self.data} for i in range(1, 4)],
         )
 
-        rows = config.db.execute(select([unicode_table.c.unicode_data])).fetchall()
-        eq_(rows, [(self.data,) for i in range(3)])
+        rows = connection.execute(select(unicode_table.c.unicode_data)).fetchall()
+        eq_(rows, [(self.data,) for i in range(1, 4)])
         for row in rows:
-            assert isinstance(row[0], util.text_type)
+            assert isinstance(row[0], str)
 
     @pytest.mark.skip("Spanner doesn't support non-ascii characters")
     def test_literal(self):
@@ -1373,7 +2072,7 @@ class UnicodeTextTest(_UnicodeFixture, _UnicodeTextTest):
 
 
 class RowFetchTest(_RowFetchTest):
-    def test_row_w_scalar_select(self):
+    def test_row_w_scalar_select(self, connection):
         """
         SPANNER OVERRIDE:
 
@@ -1389,12 +2088,12 @@ class RowFetchTest(_RowFetchTest):
         backends that may have unusual behavior with scalar selects.)
         """
         datetable = self.tables.has_dates
-        s = select([datetable.alias("x").c.today]).scalar_subquery()
-        s2 = select([datetable.c.id, s.label("somelabel")])
-        row = config.db.execute(s2).first()
+        s = select(datetable.alias("x").c.today).scalar_subquery()
+        s2 = select(datetable.c.id, s.label("somelabel"))
+        row = connection.execute(s2).first()
 
         eq_(
-            row["somelabel"],
+            row.somelabel,
             DatetimeWithNanoseconds(2006, 5, 12, 12, 0, 0, tzinfo=timezone.utc),
         )
 
@@ -1423,7 +2122,10 @@ class InsertBehaviorTest(_InsertBehaviorTest):
         Overriding the tests and adding a manual primary key value to avoid the same
         failures.
         """
-        if config.requirements.returning.enabled:
+        if (
+            hasattr(config.requirements, "returning")
+            and config.requirements.returning.enabled
+        ):
             engine = engines.testing_engine(options={"implicit_returning": False})
         else:
             engine = config.db
@@ -1454,6 +2156,29 @@ class StringTest(_StringTest):
     @pytest.mark.skip("Spanner doesn't support non-ascii characters")
     def test_literal_non_ascii(self):
         pass
+
+    def test_dont_truncate_rightside(
+        self, metadata, connection, expr=None, expected=None
+    ):
+        t = Table(
+            "t",
+            metadata,
+            Column("x", String(2)),
+            Column("id", Integer, primary_key=True),
+        )
+        t.create(connection)
+        connection.connection.commit()
+        connection.execute(
+            t.insert(),
+            [{"x": "AB", "id": 1}, {"x": "BC", "id": 2}, {"x": "AC", "id": 3}],
+        )
+        combinations = [("%B%", ["AB", "BC"]), ("A%C", ["AC"]), ("A%C%Z", [])]
+
+        for args in combinations:
+            eq_(
+                connection.scalars(select(t.c.x).where(t.c.x.like(args[0]))).all(),
+                args[1],
+            )
 
 
 class TextTest(_TextTest):
@@ -1821,7 +2546,7 @@ class TestQueryHints(fixtures.TablesTest):
             __tablename__ = "users"
             id = Column(Integer, primary_key=True)
             name = Column(String(50))
-            addresses = relation("Address", backref="user")
+            addresses = relationship("Address", backref="user")
 
         class Address(Base):
             __tablename__ = "addresses"
@@ -1853,7 +2578,7 @@ class InterleavedTablesTest(fixtures.TestBase):
             "spanner:///projects/appdev-soda-spanner-staging/instances/"
             "sqlalchemy-dialect-test/databases/compliance-test"
         )
-        self._metadata = MetaData(bind=self._engine)
+        self._metadata = MetaData()
 
     def test_interleave(self):
         EXP_QUERY = (
@@ -1905,7 +2630,7 @@ class UserAgentTest(fixtures.TestBase):
             "spanner:///projects/appdev-soda-spanner-staging/instances/"
             "sqlalchemy-dialect-test/databases/compliance-test"
         )
-        self._metadata = MetaData(bind=self._engine)
+        self._metadata = MetaData()
 
     def test_user_agent(self):
         dist = pkg_resources.get_distribution("sqlalchemy-spanner")
@@ -1948,6 +2673,9 @@ class SimpleUpdateDeleteTest(_SimpleUpdateDeleteTest):
 
 
 class HasIndexTest(_HasIndexTest):
+    __backend__ = True
+    kind = testing.combinations("dialect", "inspector", argnames="kind")
+
     @classmethod
     def define_tables(cls, metadata):
         tt = Table(
@@ -1955,11 +2683,47 @@ class HasIndexTest(_HasIndexTest):
             metadata,
             Column("id", Integer, primary_key=True),
             Column("data", String(50)),
+            Column("data2", String(50)),
         )
         sqlalchemy.Index("my_idx", tt.c.data)
 
+    @kind
+    def test_has_index(self, kind, connection, metadata):
+        meth = self._has_index(kind, connection)
+        assert meth("test_table", "my_idx")
+        assert not meth("test_table", "my_idx_s")
+        assert not meth("nonexistent_table", "my_idx")
+        assert not meth("test_table", "nonexistent_idx")
+
+        assert not meth("test_table", "my_idx_2")
+        assert not meth("test_table_2", "my_idx_3")
+        idx = Index("my_idx_2", self.tables.test_table.c.data2)
+        tbl = Table(
+            "test_table_2",
+            metadata,
+            Column("foo", Integer, primary_key=True),
+            Index("my_idx_3", "foo"),
+        )
+        idx.create(connection)
+        tbl.create(connection)
+
+        try:
+            if kind == "inspector":
+                assert not meth("test_table", "my_idx_2")
+                assert not meth("test_table_2", "my_idx_3")
+                meth.__self__.clear_cache()
+            connection.connection.commit()
+            assert meth("test_table", "my_idx_2") is True
+            assert meth("test_table_2", "my_idx_3") is True
+        finally:
+            tbl.drop(connection)
+            idx.drop(connection)
+            connection.connection.commit()
+            self.tables["test_table"].indexes.remove(idx)
+
     @pytest.mark.skip("Not supported by Cloud Spanner")
-    def test_has_index_schema(self):
+    @kind
+    def test_has_index_schema(self, kind, connection):
         pass
 
 
@@ -1974,7 +2738,15 @@ class HasTableTest(_HasTableTest):
         )
 
     @pytest.mark.skip("Not supported by Cloud Spanner")
+    def test_has_table_nonexistent_schema(self):
+        pass
+
+    @pytest.mark.skip("Not supported by Cloud Spanner")
     def test_has_table_schema(self):
+        pass
+
+    @pytest.mark.skip("Not supported by Cloud Spanner")
+    def test_has_table_cache(self):
         pass
 
     @testing.requires.views
@@ -2075,129 +2847,6 @@ class PostCompileParamsTest(_PostCompileParamsTest):
         )
 
 
-class ComputedReflectionFixtureTest(_ComputedReflectionFixtureTest):
-    @classmethod
-    def define_tables(cls, metadata):
-        """SPANNER OVERRIDE:
-
-        Avoid using default values for computed columns.
-        """
-        Table(
-            "computed_default_table",
-            metadata,
-            Column("id", Integer, primary_key=True),
-            Column("normal", Integer),
-            Column("computed_col", Integer, Computed("normal + 42")),
-            Column("with_default", Integer),
-        )
-
-        t = Table(
-            "computed_column_table",
-            metadata,
-            Column("id", Integer, primary_key=True),
-            Column("normal", Integer),
-            Column("computed_no_flag", Integer, Computed("normal + 42")),
-        )
-
-        if testing.requires.computed_columns_virtual.enabled:
-            t.append_column(
-                Column(
-                    "computed_virtual",
-                    Integer,
-                    Computed("normal + 2", persisted=False),
-                )
-            )
-        if testing.requires.computed_columns_stored.enabled:
-            t.append_column(
-                Column(
-                    "computed_stored",
-                    Integer,
-                    Computed("normal - 42", persisted=True),
-                )
-            )
-
-
-class ComputedReflectionTest(_ComputedReflectionTest, ComputedReflectionFixtureTest):
-    @testing.requires.schemas
-    def test_get_column_returns_persisted_with_schema(self):
-        insp = inspect(config.db)
-
-        cols = insp.get_columns("computed_column_table", schema=config.test_schema)
-        data = {c["name"]: c for c in cols}
-
-        self.check_column(
-            data,
-            "computed_no_flag",
-            "normal+42",
-            testing.requires.computed_columns_default_persisted.enabled,
-        )
-        if testing.requires.computed_columns_virtual.enabled:
-            self.check_column(
-                data,
-                "computed_virtual",
-                "normal/2",
-                False,
-            )
-        if testing.requires.computed_columns_stored.enabled:
-            self.check_column(
-                data,
-                "computed_stored",
-                "normal-42",
-                True,
-            )
-
-    @pytest.mark.skip("Default values are not supported.")
-    def test_computed_col_default_not_set(self):
-        pass
-
-    def test_get_column_returns_computed(self):
-        """
-        SPANNER OVERRIDE:
-
-        In Spanner all the generated columns are STORED,
-        meaning there are no persisted and not persisted
-        (in the terms of the SQLAlchemy) columns. The
-        method override omits the persistence reflection checks.
-        """
-        insp = inspect(config.db)
-
-        cols = insp.get_columns("computed_default_table")
-        data = {c["name"]: c for c in cols}
-        for key in ("id", "normal", "with_default"):
-            is_true("computed" not in data[key])
-        compData = data["computed_col"]
-        is_true("computed" in compData)
-        is_true("sqltext" in compData["computed"])
-        eq_(self.normalize(compData["computed"]["sqltext"]), "normal+42")
-
-    def test_create_not_null_computed_column(self):
-        """
-        SPANNER TEST:
-
-        Check that on creating a computed column with a NOT NULL
-        clause the clause is set in front of the computed column
-        statement definition and doesn't cause failures.
-        """
-        engine = create_engine(get_db_url())
-        metadata = MetaData(bind=engine)
-
-        Table(
-            "Singers",
-            metadata,
-            Column("SingerId", String(36), primary_key=True, nullable=False),
-            Column("FirstName", String(200)),
-            Column("LastName", String(200), nullable=False),
-            Column(
-                "FullName",
-                String(400),
-                Computed("COALESCE(FirstName || ' ', '') || LastName"),
-                nullable=False,
-            ),
-        )
-
-        metadata.create_all(engine)
-
-
 @pytest.mark.skipif(
     bool(os.environ.get("SPANNER_EMULATOR_HOST")), reason="Skipped on emulator"
 )
@@ -2209,12 +2858,12 @@ class JSONTest(_JSONTest):
     def _test_round_trip(self, data_element, connection):
         data_table = self.tables.data_table
 
-        config.db.execute(
+        connection.execute(
             data_table.insert(),
             {"id": random.randint(1, 100000000), "name": "row1", "data": data_element},
         )
 
-        row = config.db.execute(select([data_table.c.data])).first()
+        row = connection.execute(select(data_table.c.data)).first()
 
         eq_(row, (data_element,))
 
@@ -2227,17 +2876,17 @@ class JSONTest(_JSONTest):
                     "id": random.randint(1, 100000000),
                     "name": "r1",
                     "data": {
-                        util.u("réve🐍 illé"): util.u("réve🐍 illé"),
-                        "data": {"k1": util.u("drôl🐍e")},
+                        "réve🐍 illé": "réve🐍 illé",
+                        "data": {"k1": "drôl🐍e"},
                     },
                 },
             )
 
             eq_(
-                conn.scalar(select([self.tables.data_table.c.data])),
+                conn.scalar(select(self.tables.data_table.c.data)),
                 {
-                    util.u("réve🐍 illé"): util.u("réve🐍 illé"),
-                    "data": {"k1": util.u("drôl🐍e")},
+                    "réve🐍 illé": "réve🐍 illé",
+                    "data": {"k1": "drôl🐍e"},
                 },
             )
 
@@ -2298,7 +2947,7 @@ class JSONTest(_JSONTest):
             expr = data_table.c.data["key1"]
             expr = getattr(expr, "as_%s" % datatype)()
 
-            roundtrip = conn.scalar(select([expr]))
+            roundtrip = conn.scalar(select(expr))
             if roundtrip in ("true", "false", None):
                 roundtrip = str(roundtrip).capitalize()
 
@@ -2326,7 +2975,7 @@ class JSONTest(_JSONTest):
 class ExecutionOptionsRequestPriorotyTest(fixtures.TestBase):
     def setUp(self):
         self._engine = create_engine(get_db_url(), pool_size=1)
-        metadata = MetaData(bind=self._engine)
+        metadata = MetaData()
 
         self._table = Table(
             "execution_options2",
@@ -2343,7 +2992,7 @@ class ExecutionOptionsRequestPriorotyTest(fixtures.TestBase):
         with self._engine.connect().execution_options(
             request_priority=PRIORITY
         ) as connection:
-            connection.execute(select(["*"], from_obj=self._table)).fetchall()
+            connection.execute(select(self._table)).fetchall()
 
         with self._engine.connect() as connection:
             assert connection.connection.request_priority is None
@@ -2351,30 +3000,3 @@ class ExecutionOptionsRequestPriorotyTest(fixtures.TestBase):
         engine = create_engine("sqlite:///database")
         with engine.connect() as connection:
             pass
-
-
-class CreateEngineWithClientObjectTest(fixtures.TestBase):
-    def test_create_engine_w_valid_client_object(self):
-        """
-        SPANNER TEST:
-
-        Check that we can connect to SqlAlchemy
-        by passing custom Client object.
-        """
-        client = Client(project=get_project())
-        engine = create_engine(get_db_url(), connect_args={"client": client})
-        with engine.connect() as connection:
-            assert connection.connection.instance._client == client
-
-    def test_create_engine_w_invalid_client_object(self):
-        """
-        SPANNER TEST:
-
-        Check that if project id in url and custom Client
-        Object passed to enginer mismatch, error is thrown.
-        """
-        client = Client(project="project_id")
-        engine = create_engine(get_db_url(), connect_args={"client": client})
-
-        with pytest.raises(ValueError):
-            engine.connect()
