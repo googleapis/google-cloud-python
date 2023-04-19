@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## [1.10.0](https://github.com/googleapis/python-resource-manager/compare/v1.9.1...v1.10.0) (2023-04-19)
+
+
+### Features
+
+* Add support for project parented tags ([bb78042](https://github.com/googleapis/python-resource-manager/commit/bb78042904e70094a702eb1be51bb6732d24865e))
+* Add TagHolds, GetNamespacedTagKey, and GetNamespacedTagValue APIs ([bb78042](https://github.com/googleapis/python-resource-manager/commit/bb78042904e70094a702eb1be51bb6732d24865e))
+
 ## [1.9.1](https://github.com/googleapis/python-resource-manager/compare/v1.9.0...v1.9.1) (2023-03-23)
 
 
