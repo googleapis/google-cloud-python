@@ -165,7 +165,7 @@ git push -u origin "${BRANCH}" --force
 # create pull request
 if gh --help > /dev/null
 then
-  gh pr create --title "migrate code from ${SOURCE_REPO}"  --title "feat: Migrate ${SOURCE_REPO} into ${TARGET_PATH} (#${ISSUE_NUMBER})"
+  gh pr create --title "feat: Migrate code from ${SOURCE_REPO} into ${TARGET_PATH} (#${ISSUE_NUMBER})" --body "See #${ISSUE_NUMBER}."
 else
   hub pull-request -m "migrate code from ${SOURCE_REPO}"
 fi
