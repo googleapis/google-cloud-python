@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+deep-preserve-regex:
+  - /owl-bot-staging/google-cloud-confidentialcomputing/v1alpha
+
 deep-copy-regex:
     - source: /google/cloud/confidentialcomputing/(.*)/.*-py
       dest: /owl-bot-staging/google-cloud-confidentialcomputing/$1
