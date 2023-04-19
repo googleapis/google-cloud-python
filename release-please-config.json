@@ -224,7 +224,6 @@
                 }
             ],
             "release-type": "python"
-            ]
         },
         "packages/google-cloud-confidentialcomputing": {
             "component": "google-cloud-confidentialcomputing",
