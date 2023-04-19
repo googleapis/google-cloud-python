@@ -212,6 +212,13 @@
                     "jsonpath": "$.clientLibrary.version"
                 }
             ]
+        },
+        "packages/google-cloud-confidentialcomputing": {
+            "component": "google-cloud-confidentialcomputing",
+            "release-type": "python",
+            "extra-files": [
+                "google/cloud/confidentialcomputing/gapic_version.py"
+            ]
         }
     }
 }
