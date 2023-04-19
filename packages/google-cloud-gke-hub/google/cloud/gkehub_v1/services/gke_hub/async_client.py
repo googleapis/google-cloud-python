@@ -66,7 +66,10 @@ class GkeHubAsyncClient:
     -  [Membership][google.cloud.gkehub.v1.Membership]
     -  [Feature][google.cloud.gkehub.v1.Feature]
 
-    GKE Hub is currently only available in the global region.
+    GKE Hub is currently available in the global region and all regions
+    in https://cloud.google.com/compute/docs/regions-zones. Feature is
+    only available in global region while membership is global region
+    and all the regions.
 
     **Membership management may be non-trivial:** it is recommended to
     use one of the Google-provided client libraries or tools where
@@ -270,7 +273,8 @@ class GkeHubAsyncClient:
             parent (:class:`str`):
                 Required. The parent (project and location) where the
                 Memberships will be listed. Specified in the format
-                ``projects/*/locations/*``.
+                ``projects/*/locations/*``. ``projects/*/locations/-``
+                list memberships in all the regions.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -42,7 +42,7 @@ class gkehubCallTransformer(cst.CSTTransformer):
         'create_feature': ('parent', 'feature_id', 'resource', 'request_id', ),
         'create_membership': ('parent', 'membership_id', 'resource', 'request_id', ),
         'delete_feature': ('name', 'force', 'request_id', ),
-        'delete_membership': ('name', 'request_id', ),
+        'delete_membership': ('name', 'request_id', 'force', ),
         'generate_connect_manifest': ('name', 'namespace', 'proxy', 'version', 'is_upgrade', 'registry', 'image_pull_secret_content', ),
         'get_feature': ('name', ),
         'get_membership': ('name', ),

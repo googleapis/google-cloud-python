@@ -54,7 +54,8 @@ class ListMembershipsRequest(proto.Message):
         parent (str):
             Required. The parent (project and location) where the
             Memberships will be listed. Specified in the format
-            ``projects/*/locations/*``.
+            ``projects/*/locations/*``. ``projects/*/locations/-`` list
+            memberships in all the regions.
         page_size (int):
             Optional. When requesting a 'page' of resources,
             ``page_size`` specifies number of resources to return. If
@@ -252,6 +253,11 @@ class DeleteMembershipRequest(proto.Message):
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
+        force (bool):
+            Optional. If set to true, any subresource
+            from this Membership will also be deleted.
+            Otherwise, the request will only work if the
+            Membership has no subresource.
     """
 
     name: str = proto.Field(
@@ -261,6 +267,10 @@ class DeleteMembershipRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 

@@ -30,6 +30,7 @@ from .membership import (
     Membership,
     MembershipEndpoint,
     MembershipState,
+    MonitoringConfig,
     ResourceManifest,
     ResourceOptions,
 )
@@ -68,6 +69,7 @@ __all__ = (
     "Membership",
     "MembershipEndpoint",
     "MembershipState",
+    "MonitoringConfig",
     "ResourceManifest",
     "ResourceOptions",
     "ConnectAgentResource",

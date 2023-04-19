@@ -4725,7 +4725,10 @@ def test_create_membership_rest(request_type):
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request_init["resource"] = {
         "endpoint": {
-            "gke_cluster": {"resource_link": "resource_link_value"},
+            "gke_cluster": {
+                "resource_link": "resource_link_value",
+                "cluster_missing": True,
+            },
             "kubernetes_metadata": {
                 "kubernetes_api_server_version": "kubernetes_api_server_version_value",
                 "node_provider_id": "node_provider_id_value",
@@ -4746,6 +4749,7 @@ def test_create_membership_rest(request_type):
                     "k8s_version": "k8s_version_value",
                 },
             },
+            "google_managed": True,
         },
         "name": "name_value",
         "labels": {},
@@ -4762,6 +4766,13 @@ def test_create_membership_rest(request_type):
             "workload_identity_pool": "workload_identity_pool_value",
             "identity_provider": "identity_provider_value",
             "oidc_jwks": b"oidc_jwks_blob",
+        },
+        "monitoring_config": {
+            "project_id": "project_id_value",
+            "location": "location_value",
+            "cluster": "cluster_value",
+            "kubernetes_metrics_prefix": "kubernetes_metrics_prefix_value",
+            "cluster_hash": "cluster_hash_value",
         },
     }
     request = request_type(**request_init)
@@ -4972,7 +4983,10 @@ def test_create_membership_rest_bad_request(
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request_init["resource"] = {
         "endpoint": {
-            "gke_cluster": {"resource_link": "resource_link_value"},
+            "gke_cluster": {
+                "resource_link": "resource_link_value",
+                "cluster_missing": True,
+            },
             "kubernetes_metadata": {
                 "kubernetes_api_server_version": "kubernetes_api_server_version_value",
                 "node_provider_id": "node_provider_id_value",
@@ -4993,6 +5007,7 @@ def test_create_membership_rest_bad_request(
                     "k8s_version": "k8s_version_value",
                 },
             },
+            "google_managed": True,
         },
         "name": "name_value",
         "labels": {},
@@ -5009,6 +5024,13 @@ def test_create_membership_rest_bad_request(
             "workload_identity_pool": "workload_identity_pool_value",
             "identity_provider": "identity_provider_value",
             "oidc_jwks": b"oidc_jwks_blob",
+        },
+        "monitoring_config": {
+            "project_id": "project_id_value",
+            "location": "location_value",
+            "cluster": "cluster_value",
+            "kubernetes_metrics_prefix": "kubernetes_metrics_prefix_value",
+            "cluster_hash": "cluster_hash_value",
         },
     }
     request = request_type(**request_init)
@@ -5387,7 +5409,12 @@ def test_delete_membership_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete_membership._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "force",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5438,7 +5465,15 @@ def test_delete_membership_rest_unset_required_fields():
     )
 
     unset_fields = transport.delete_membership._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+    assert set(unset_fields) == (
+        set(
+            (
+                "force",
+                "requestId",
+            )
+        )
+        & set(("name",))
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5776,7 +5811,10 @@ def test_update_membership_rest(request_type):
     request_init = {"name": "projects/sample1/locations/sample2/memberships/sample3"}
     request_init["resource"] = {
         "endpoint": {
-            "gke_cluster": {"resource_link": "resource_link_value"},
+            "gke_cluster": {
+                "resource_link": "resource_link_value",
+                "cluster_missing": True,
+            },
             "kubernetes_metadata": {
                 "kubernetes_api_server_version": "kubernetes_api_server_version_value",
                 "node_provider_id": "node_provider_id_value",
@@ -5797,6 +5835,7 @@ def test_update_membership_rest(request_type):
                     "k8s_version": "k8s_version_value",
                 },
             },
+            "google_managed": True,
         },
         "name": "name_value",
         "labels": {},
@@ -5813,6 +5852,13 @@ def test_update_membership_rest(request_type):
             "workload_identity_pool": "workload_identity_pool_value",
             "identity_provider": "identity_provider_value",
             "oidc_jwks": b"oidc_jwks_blob",
+        },
+        "monitoring_config": {
+            "project_id": "project_id_value",
+            "location": "location_value",
+            "cluster": "cluster_value",
+            "kubernetes_metrics_prefix": "kubernetes_metrics_prefix_value",
+            "cluster_hash": "cluster_hash_value",
         },
     }
     request = request_type(**request_init)
@@ -6010,7 +6056,10 @@ def test_update_membership_rest_bad_request(
     request_init = {"name": "projects/sample1/locations/sample2/memberships/sample3"}
     request_init["resource"] = {
         "endpoint": {
-            "gke_cluster": {"resource_link": "resource_link_value"},
+            "gke_cluster": {
+                "resource_link": "resource_link_value",
+                "cluster_missing": True,
+            },
             "kubernetes_metadata": {
                 "kubernetes_api_server_version": "kubernetes_api_server_version_value",
                 "node_provider_id": "node_provider_id_value",
@@ -6031,6 +6080,7 @@ def test_update_membership_rest_bad_request(
                     "k8s_version": "k8s_version_value",
                 },
             },
+            "google_managed": True,
         },
         "name": "name_value",
         "labels": {},
@@ -6047,6 +6097,13 @@ def test_update_membership_rest_bad_request(
             "workload_identity_pool": "workload_identity_pool_value",
             "identity_provider": "identity_provider_value",
             "oidc_jwks": b"oidc_jwks_blob",
+        },
+        "monitoring_config": {
+            "project_id": "project_id_value",
+            "location": "location_value",
+            "cluster": "cluster_value",
+            "kubernetes_metrics_prefix": "kubernetes_metrics_prefix_value",
+            "cluster_hash": "cluster_hash_value",
         },
     }
     request = request_type(**request_init)

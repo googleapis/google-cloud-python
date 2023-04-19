@@ -36,6 +36,7 @@ from .types.membership import (
     Membership,
     MembershipEndpoint,
     MembershipState,
+    MonitoringConfig,
     ResourceManifest,
     ResourceOptions,
 )
@@ -89,6 +90,7 @@ __all__ = (
     "MembershipFeatureSpec",
     "MembershipFeatureState",
     "MembershipState",
+    "MonitoringConfig",
     "OperationMetadata",
     "ResourceManifest",
     "ResourceOptions",
