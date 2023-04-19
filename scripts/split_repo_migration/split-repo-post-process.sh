@@ -190,9 +190,10 @@ $RM ${OWY_SPLIT_PATH}
 OWP_MONO_PATH="${MONOREPO_PATH_PACKAGE}/owlbot.py"
 echo "Migrating: ${OWP_MONO_PATH}"
 
-# the next two lines are only needed for dev runs
-OWP_SPLIT_PATH="${PATH_PACKAGE}/owlbot.py"
-[[ ! -f "${OWP_SPLIT_PATH}" ]] || cp -u ${OWP_SPLIT_PATH} ${OWP_MONO_PATH}
+[[ -z ${DEBUG} ]] || { \
+  OWP_SPLIT_PATH="${PATH_PACKAGE}/owlbot.py"
+  [[ ! -f "${OWP_SPLIT_PATH}" ]] || cp -u ${OWP_SPLIT_PATH} ${OWP_MONO_PATH}
+}
 
 [[ ! -f "${OWP_MONO_PATH}" ]] || {
   MESSAGE="${MESSAGE}\n\nWARNING: Deleted ${OWP_MONO_PATH}"
