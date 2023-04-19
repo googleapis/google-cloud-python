@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.10.0](https://github.com/googleapis/python-bigquery/compare/v3.9.0...v3.10.0) (2023-04-18)
+
+
+### Features
+
+* Add date, datetime, time, timestamp dtype to to_dataframe ([#1547](https://github.com/googleapis/python-bigquery/issues/1547)) ([64e913d](https://github.com/googleapis/python-bigquery/commit/64e913d73832f6363466cbea5ace2337c86fa58b))
+
 ## [3.9.0](https://github.com/googleapis/python-bigquery/compare/v3.8.0...v3.9.0) (2023-03-28)
 
 
