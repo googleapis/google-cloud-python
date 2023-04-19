@@ -31,7 +31,7 @@ set -ex
 
 if [ $# -lt 3 ]
 then
-  echo "Usage: $0 <source-repo> <target-repo> <source-path> [folders,to,skip] [files,to,keep] [branch-name]"
+  echo "Usage: $0 <source-repo> <target-repo> <source-path> [folders,to,skip] [files,to,keep] [branch-name] [issue-number]"
   $EXIT 1
 fi
 
@@ -53,6 +53,8 @@ KEEP_FILES=$5
 # override the HEAD branch name for the migration PR
 BRANCH=$6
 
+# GitHub issue number
+ISSUE_NUMBER=$7
 
 if [[ -z "${BRANCH}" ]]
 then
@@ -112,18 +114,16 @@ then
     --tree-filter "${FILTER}"
 fi
 
-TARGET_PATH="packages/$(jq -r '.distribution_name' .repo-metadata.json)"  # -r removes quotes around the name.
+DISTRIBUTION_NAME=$(jq -r '.distribution_name' .repo-metadata.json) # -r removes quotes around the name.
+TARGET_PATH="packages/${DISTRIBUTION_NAME}"
 
 # reorganize the filtered code into the desired target locations
-if [[ ! -z "${TARGET_PATH}" ]]
-then
-  echo "Moving files to destination path: ${TARGET_PATH}"
-  git filter-branch \
-    --force \
-    --prune-empty \
-    --tree-filter \
-      "shopt -s dotglob; mkdir -p ${WORKDIR}/migrated-source; mv * ${WORKDIR}/migrated-source; mkdir -p ${TARGET_PATH}; mv ${WORKDIR}/migrated-source/* ${TARGET_PATH}"
-fi
+echo "Moving files to destination path: ${TARGET_PATH}"
+git filter-branch \
+  --force \
+  --prune-empty \
+  --tree-filter \
+    "shopt -s dotglob; mkdir -p ${WORKDIR}/migrated-source; mv * ${WORKDIR}/migrated-source; mkdir -p ${TARGET_PATH}; mv ${WORKDIR}/migrated-source/* ${TARGET_PATH}"
 
 # back to workdir
 popd
@@ -154,12 +154,18 @@ fi
 
 pushd "${TARGET_REPO}"  # To target repo
 
+# For postprocessing of the batch migration script.
+mkdir -p owl-bot-staging/${DISTRIBUTION_NAME}/${DISTRIBUTION_NAME}
+touch owl-bot-staging/${DISTRIBUTION_NAME}/${DISTRIBUTION_NAME}/${DISTRIBUTION_NAME}.txt
+git add owl-bot-staging
+git commit -m "Trigger owlbot post-processor"
+
 git push -u origin "${BRANCH}" --force
 
 # create pull request
 if gh --help > /dev/null
 then
-  gh pr create --title "migrate code from ${SOURCE_REPO}"
+  gh pr create --title "migrate code from ${SOURCE_REPO}"  --body "feat: Migrate ${SOURCE_REPO} into ${TARGET_PATH} (#${ISSUE_NUMBER})."
 else
   hub pull-request -m "migrate code from ${SOURCE_REPO}"
 fi
