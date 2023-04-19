@@ -150,6 +150,7 @@ echo "Migrating: ${RPC_MONO_PATH}"
 RPC_SORT_KEYS="${SORT_JSON_KEYS}"
 
 RPC_SPLIT_PATH="${PATH_PACKAGE}/release-please-config.json"
+jq ".packages.\".\" += {component: \"${MONOREPO_PACKAGE_NAME}\"}" "${RPC_SPLIT_PATH}" | sponge "${RPC_SPLIT_PATH}"
 RPC_NEW_OBJECT="$(jq '.packages."."' "${RPC_SPLIT_PATH}")"
 
 jq ${RPC_SORT_KEYS} --argjson newObject "${RPC_NEW_OBJECT}" ". * {\"packages\": {\"${MONOREPO_PATH_PACKAGE}\": \$newObject}}" ${RPC_MONO_PATH} | sponge ${RPC_MONO_PATH}
