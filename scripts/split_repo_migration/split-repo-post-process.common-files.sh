@@ -203,6 +203,10 @@ PCC_SPLIT_PATH="${PATH_PACKAGE}/.pre-commit-config.yaml"
 $RM -f ${PCC_SPLIT_PATH}
 ## END .pre-commit-config migration
 
+### Delete file that was copied over from owlbot-staging/
+${RM} -f "${PATH_PACKAGE}/${MONOREPO_PACKAGE_NAME}.txt"
+
+
 
 ## START commit changes #############################################
 echo "Committing changes locally"
