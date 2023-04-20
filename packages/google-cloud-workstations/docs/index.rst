@@ -2,6 +2,17 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of Cloud Workstations API.
+By default, you will get version ``workstations_v1``.
+
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    workstations_v1/services
+    workstations_v1/types
 
 API Reference
 -------------

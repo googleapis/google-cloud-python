@@ -90,6 +90,11 @@
                 "list_tables"
               ]
             },
+            "RenameTable": {
+              "methods": [
+                "rename_table"
+              ]
+            },
             "UpdateDatabase": {
               "methods": [
                 "update_database"
@@ -185,6 +190,11 @@
                 "list_tables"
               ]
             },
+            "RenameTable": {
+              "methods": [
+                "rename_table"
+              ]
+            },
             "UpdateDatabase": {
               "methods": [
                 "update_database"
@@ -278,6 +288,11 @@
             "ListTables": {
               "methods": [
                 "list_tables"
+              ]
+            },
+            "RenameTable": {
+              "methods": [
+                "rename_table"
               ]
             },
             "UpdateDatabase": {

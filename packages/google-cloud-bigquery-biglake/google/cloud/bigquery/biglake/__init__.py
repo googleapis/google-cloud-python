@@ -18,23 +18,20 @@ from google.cloud.bigquery.biglake import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.bigquery.biglake_v1alpha1.services.metastore_service.async_client import (
+from google.cloud.bigquery.biglake_v1.services.metastore_service.async_client import (
     MetastoreServiceAsyncClient,
 )
-from google.cloud.bigquery.biglake_v1alpha1.services.metastore_service.client import (
+from google.cloud.bigquery.biglake_v1.services.metastore_service.client import (
     MetastoreServiceClient,
 )
-from google.cloud.bigquery.biglake_v1alpha1.types.metastore import (
+from google.cloud.bigquery.biglake_v1.types.metastore import (
     Catalog,
-    CheckLockRequest,
     CreateCatalogRequest,
     CreateDatabaseRequest,
-    CreateLockRequest,
     CreateTableRequest,
     Database,
     DeleteCatalogRequest,
     DeleteDatabaseRequest,
-    DeleteLockRequest,
     DeleteTableRequest,
     GetCatalogRequest,
     GetDatabaseRequest,
@@ -45,12 +42,11 @@ from google.cloud.bigquery.biglake_v1alpha1.types.metastore import (
     ListCatalogsResponse,
     ListDatabasesRequest,
     ListDatabasesResponse,
-    ListLocksRequest,
-    ListLocksResponse,
     ListTablesRequest,
     ListTablesResponse,
-    Lock,
+    RenameTableRequest,
     Table,
+    TableView,
     UpdateDatabaseRequest,
     UpdateTableRequest,
 )
@@ -59,15 +55,12 @@ __all__ = (
     "MetastoreServiceClient",
     "MetastoreServiceAsyncClient",
     "Catalog",
-    "CheckLockRequest",
     "CreateCatalogRequest",
     "CreateDatabaseRequest",
-    "CreateLockRequest",
     "CreateTableRequest",
     "Database",
     "DeleteCatalogRequest",
     "DeleteDatabaseRequest",
-    "DeleteLockRequest",
     "DeleteTableRequest",
     "GetCatalogRequest",
     "GetDatabaseRequest",
@@ -78,12 +71,11 @@ __all__ = (
     "ListCatalogsResponse",
     "ListDatabasesRequest",
     "ListDatabasesResponse",
-    "ListLocksRequest",
-    "ListLocksResponse",
     "ListTablesRequest",
     "ListTablesResponse",
-    "Lock",
+    "RenameTableRequest",
     "Table",
     "UpdateDatabaseRequest",
     "UpdateTableRequest",
+    "TableView",
 )

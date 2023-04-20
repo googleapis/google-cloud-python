@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.contentwarehouse_v1.types import common
@@ -53,6 +54,8 @@ class CreateDocumentResponse(proto.Message):
         metadata (google.cloud.contentwarehouse_v1.types.ResponseMetadata):
             Additional information for the API
             invocation, such as the request tracking id.
+        long_running_operations (MutableSequence[google.longrunning.operations_pb2.Operation]):
+            post-processing LROs
     """
 
     document: gcc_document.Document = proto.Field(
@@ -69,6 +72,13 @@ class CreateDocumentResponse(proto.Message):
         proto.MESSAGE,
         number=3,
         message=common.ResponseMetadata,
+    )
+    long_running_operations: MutableSequence[
+        operations_pb2.Operation
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=operations_pb2.Operation,
     )
 
 
@@ -167,11 +177,12 @@ class SearchDocumentsResponse(proto.Message):
             The total number of matched documents which is available
             only if the client set
             [SearchDocumentsRequest.require_total_size][google.cloud.contentwarehouse.v1.SearchDocumentsRequest.require_total_size]
-            to ``true``. Otherwise, the value will be ``-1``.
-            ``total_size`` will max at "100,000". If this is returned,
-            then it can be assumed that the count is equal to or greater
-            than 100,000. Typically a UI would handle this condition by
-            displaying "of many", for example: "Displaying 10 of many".
+            to ``true`` or set
+            [SearchDocumentsRequest.total_result_size][google.cloud.contentwarehouse.v1.SearchDocumentsRequest.total_result_size]
+            to ``ESTIMATED_SIZE`` or ``ACTUAL_SIZE``. Otherwise, the
+            value will be ``-1``. Typically a UI would handle this
+            condition by displaying "of many", for example: "Displaying
+            10 of many".
         metadata (google.cloud.contentwarehouse_v1.types.ResponseMetadata):
             Additional information for the API
             invocation, such as the request tracking id.

@@ -144,7 +144,22 @@
                 "google/cloud/alloydb/gapic_version.py",
                 "google/cloud/alloydb_v1/gapic_version.py",
                 "google/cloud/alloydb_v1alpha/gapic_version.py",
-                "google/cloud/alloydb_v1beta/gapic_version.py"
+                "google/cloud/alloydb_v1beta/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1beta.json",
+                    "jsonpath": "$.clientLibrary.version"
+                },
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                },
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1alpha.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
             ]
         },
         "packages/google-cloud-workstations": {
@@ -153,15 +168,15 @@
             "extra-files": [
                 "google/cloud/workstations/gapic_version.py",
                 "google/cloud/workstations_v1beta/gapic_version.py",
+                "google/cloud/workstations_v1/gapic_version.py",
                 {
                     "type": "json",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.workstations.v1beta.json",
                     "jsonpath": "$.clientLibrary.version"
                 },
-                "google/cloud/bigquery/biglake_v1alpha1/gapic_version.py",
                 {
                     "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.biglake.v1alpha1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.workstations.v1.json",
                     "jsonpath": "$.clientLibrary.version"
                 }
             ]
@@ -170,7 +185,45 @@
             "component": "google-cloud-bigquery-biglake",
             "release-type": "python",
             "extra-files": [
-                "google/cloud/bigquery/biglake/gapic_version.py"
+                "google/cloud/bigquery/biglake/gapic_version.py",
+                "google/cloud/bigquery/biglake_v1/gapic_version.py",
+                "google/cloud/bigquery/biglake_v1alpha1/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.biglake.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                },
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.biglake.v1alpha1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
+            ]
+        },
+        "packages/google-cloud-storageinsights": {
+            "component": "google-cloud-storageinsights",
+            "release-type": "python",
+            "extra-files": [
+                "google/cloud/storageinsights/gapic_version.py",
+                "google/cloud/storageinsights_v1/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.storageinsights.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
+            ]
+        },
+        "packages/google-cloud-confidentialcomputing": {
+            "component": "google-cloud-confidentialcomputing",
+            "release-type": "python",
+            "extra-files": [
+                "google/cloud/confidentialcomputing/gapic_version.py",
+                "google/cloud/confidentialcomputing_v1/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.confidentialcomputing.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
             ]
         }
     }

@@ -11,7 +11,7 @@
   "repo": "googleapis/google-cloud-python",
   "distribution_name": "google-cloud-workstations",
   "api_id": "workstations.googleapis.com",
-  "default_version": "v1beta",
+  "default_version": "v1",
   "codeowner_team": "",
   "api_shortname": "workstations"
 }

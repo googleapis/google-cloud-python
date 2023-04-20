@@ -48,7 +48,9 @@ from .types.metastore import (
     ListTablesRequest,
     ListTablesResponse,
     Lock,
+    RenameTableRequest,
     Table,
+    TableView,
     UpdateDatabaseRequest,
     UpdateTableRequest,
 )
@@ -81,7 +83,9 @@ __all__ = (
     "ListTablesResponse",
     "Lock",
     "MetastoreServiceClient",
+    "RenameTableRequest",
     "Table",
+    "TableView",
     "UpdateDatabaseRequest",
     "UpdateTableRequest",
 )

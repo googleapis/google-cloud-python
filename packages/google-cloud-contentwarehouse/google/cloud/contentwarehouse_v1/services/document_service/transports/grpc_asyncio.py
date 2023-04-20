@@ -387,6 +387,35 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
         return self._stubs["search_documents"]
 
     @property
+    def lock_document(
+        self,
+    ) -> Callable[
+        [document_service_request.LockDocumentRequest], Awaitable[gcc_document.Document]
+    ]:
+        r"""Return a callable for the lock document method over gRPC.
+
+        Lock the document so the document cannot be updated
+        by other users.
+
+        Returns:
+            Callable[[~.LockDocumentRequest],
+                    Awaitable[~.Document]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "lock_document" not in self._stubs:
+            self._stubs["lock_document"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contentwarehouse.v1.DocumentService/LockDocument",
+                request_serializer=document_service_request.LockDocumentRequest.serialize,
+                response_deserializer=gcc_document.Document.deserialize,
+            )
+        return self._stubs["lock_document"]
+
+    @property
     def fetch_acl(
         self,
     ) -> Callable[
@@ -449,6 +478,23 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
 
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the get_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_operation" not in self._stubs:
+            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/GetOperation",
+                request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["get_operation"]
 
 
 __all__ = ("DocumentServiceGrpcAsyncIOTransport",)

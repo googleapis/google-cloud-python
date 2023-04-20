@@ -186,6 +186,11 @@ class MetastoreServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.rename_table: gapic_v1.method.wrap_method(
+                self.rename_table,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_table: gapic_v1.method.wrap_method(
                 self.get_table,
                 default_timeout=None,
@@ -335,6 +340,15 @@ class MetastoreServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [metastore.UpdateTableRequest],
+        Union[metastore.Table, Awaitable[metastore.Table]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def rename_table(
+        self,
+    ) -> Callable[
+        [metastore.RenameTableRequest],
         Union[metastore.Table, Awaitable[metastore.Table]],
     ]:
         raise NotImplementedError()
