@@ -178,7 +178,7 @@ $RM ${OWY_SPLIT_PATH}
 ## END owlbot.yaml migration
 
 
-## START owlbot.py migration ########################################
+## START owlbot.py deletion ########################################
 # variable prefix: OWP_*
 OWP_MONO_PATH="${MONOREPO_PATH_PACKAGE}/owlbot.py"
 echo "Migrating: ${OWP_MONO_PATH}"
@@ -192,7 +192,7 @@ echo "Migrating: ${OWP_MONO_PATH}"
   MESSAGE="${MESSAGE}\n\nWARNING: Deleted ${OWP_MONO_PATH}"
   rm -rf "${OWP_MONO_PATH}"
 }
-## END owlbot.py migration
+## END owlbot.py deletion
 
 ## START delete doc/changelog.md ###################################
 rm -f "${MONOREPO_PATH_PACKAGE}/docs/changelog.md"
