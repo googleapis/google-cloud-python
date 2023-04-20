@@ -225,18 +225,6 @@
                     "jsonpath": "$.clientLibrary.version"
                 }
             ]
-        },
-        "packages/google-cloud-ids": {
-            "component": "google-cloud-ids",
-            "release-type": "python",
-            "extra-files": [
-                "google/cloud/ids/gapic_version.py",
-                {
-                    "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.ids.v1.json",
-                    "jsonpath": "$.clientLibrary.version"
-                }
-            ]
         }
     }
 }
