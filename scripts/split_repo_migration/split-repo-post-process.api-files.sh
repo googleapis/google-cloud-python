@@ -190,6 +190,11 @@ echo "Migrating: ${OWP_MONO_PATH}"
 }
 ## END owlbot.py migration
 
+## START delete doc/changelog.md ###################################
+rm -f "${MONOREPO_PATH_PACKAGE}/docs/changelog.md"
+## END delete doc/changelog.md #####################################
+
+
 ## START commit changes #############################################
 echo "Committing changes locally"
 ${GIT} add .
