@@ -31,17 +31,19 @@ __protobuf__ = proto.module(
 
 
 class Address(proto.Message):
-    r"""Details of the address parsed from the input.
+    r"""Details of the post-processed address. Post-processing
+    includes correcting misspelled parts of the address, replacing
+    incorrect parts, and inferring missing parts.
 
     Attributes:
         formatted_address (str):
-            The corrected address, formatted as a
+            The post-processed address, formatted as a
             single-line address following the address
             formatting rules of the region where the address
             is located.
         postal_address (google.type.postal_address_pb2.PostalAddress):
-            The validated address represented as a postal
-            address.
+            The post-processed address represented as a
+            postal address.
         address_components (MutableSequence[google.maps.addressvalidation_v1.types.AddressComponent]):
             Unordered list. The individual address
             components of the formatted and corrected
