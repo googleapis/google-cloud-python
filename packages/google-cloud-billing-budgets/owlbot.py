@@ -49,13 +49,6 @@ templated_files = gcp.CommonTemplates().py_library(
 )
 s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml"])
 
-# This replacement will no longer be required once this repo is migrated to google-cloud-python
-s.replace(
-    "setup.py",
-    "https://github.com/googleapis/python-billing-budgets",
-    "https://github.com/googleapis/python-billingbudgets",
-)
-
 python.py_samples(skip_readmes=True)
 
 # run format session for all directories which have a noxfile
