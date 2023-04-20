@@ -18,6 +18,27 @@
 # This script will delete all files in a split repository and
 # update the README to indicate that the repository is archived.
 
+# sourced vs execution detection obtained from https://stackoverflow.com/a/28776166
+local SOURCED=0
+if [ -n "$ZSH_VERSION" ]; then
+  case $ZSH_EVAL_CONTEXT in *:file) SOURCED=1;; esac
+elif [ -n "$KSH_VERSION" ]; then
+  [ "$(cd -- "$(dirname -- "$0")" && pwd -P)/$(basename -- "$0")" != "$(cd -- "$(dirname -- "${.sh.file}")" && pwd -P)/$(basename -- "${.sh.file}")" ] && SOURCED=1
+elif [ -n "$BASH_VERSION" ]; then
+  (return 0 2>/dev/null) && SOURCED=1
+else # All other shells: examine $0 for known shell binary filenames.
+     # Detects `sh` and `dash`; add additional shell filenames as needed.
+  case ${0##*/} in sh|-sh|dash|-dash) SOURCED=1;; esac
+fi
+
+(( SOURCED != 1 )) || { \
+  echo "Please do not source this script, but execute it directly."
+  return -10
+}
+
+# We require executing the script so that an early exit (explicitly or via -e)
+# does not kill the user's shell.
+
 # `-e` enables the script to automatically fail when a command fails
 set -e
 
