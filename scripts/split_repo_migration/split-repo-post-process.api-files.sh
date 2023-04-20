@@ -194,10 +194,14 @@ echo "Migrating: ${OWP_MONO_PATH}"
 }
 ## END owlbot.py deletion
 
-## START delete doc/changelog.md ###################################
-rm -f "${MONOREPO_PATH_PACKAGE}/docs/changelog.md"
-## END delete doc/changelog.md #####################################
+## START delete doc/changelog.md .github/ .kokoro/####################
+${RM} -f "${PATH_PACKAGE}/docs/changelog.md"
+${RM} -rf "${PATH_PACKAGE}/.github"
+${RM} -rf "${PATH_PACKAGE}/.kokoro"
+${RM} -f "${PATH_PACKAGE}/.trampolinerc"
+${RM} -f "${PATH_PACKAGE}/${MONOREPO_PACKAGE_NAME}.txt"
 
+## END delete doc/changelog.md .github/ .kokoro/
 
 ## START commit changes #############################################
 echo "Committing changes locally"
