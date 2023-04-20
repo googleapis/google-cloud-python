@@ -161,18 +161,8 @@ $RM ${RPC_SPLIT_PATH}
 ## END release-please config migration
 
 ## START release-please manifest migration ########################################
-# variable prefix: RPM_*
-RPM_MONO_PATH=".release-please-manifest.json"
-echo "Migrating: ${RPM_MONO_PATH}"
-
-# enable this if we want sorted keys. Keep it disabled to append new entries at
-# the end (useful for debugging):
-RPM_SORT_KEYS="${SORT_JSON_KEYS}"
-
-RPM_SPLIT_PATH="${PATH_PACKAGE}/.release-please-manifest.json"
-RPM_VERSION="$(jq '."."' "${RPM_SPLIT_PATH}")"
-jq ${RPM_SORT_KEYS}  ". * {\"${MONOREPO_PATH_PACKAGE}\": ${RPM_VERSION}}" ${RPM_MONO_PATH} | sponge ${RPM_MONO_PATH}
-$RM ${RPM_SPLIT_PATH}
+# We no longer do this here since the OwlBot post-processor automatically adds
+# APIs to the manifest as they get added/migrated in.
 ## END release-please manifest migration
 
 
