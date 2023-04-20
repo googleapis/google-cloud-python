@@ -160,10 +160,16 @@ jq ${RPC_SORT_KEYS} --argjson newObject "${RPC_NEW_OBJECT}" ". * {\"packages\": 
 $RM ${RPC_SPLIT_PATH}
 ## END release-please config migration
 
-## START release-please manifest migration ########################################
-# We no longer do this here since the OwlBot post-processor automatically adds
-# APIs to the manifest as they get added/migrated in.
-## END release-please manifest migration
+## START release-please manifest deletion ######################################
+# variable prefix: RPM_*
+# We no longer need to add the package to the central file, since OwlBot does
+# that for us. However, we still need to delete the per-package manifest copied
+# over from the split repo.
+RPM_SPLIT_PATH="${PATH_PACKAGE}/.release-please-manifest.json"
+echo "Deleting: ${RPM_SPLIT_PATH}"
+
+$RM ${RPM_SPLIT_PATH}
+## END release-please manifest deletion
 
 
 ## START .repo-metadata.json migration ########################################
