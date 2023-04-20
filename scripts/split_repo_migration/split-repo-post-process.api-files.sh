@@ -198,6 +198,9 @@ echo "Migrating: ${OWP_MONO_PATH}"
 ${RM} -f "${PATH_PACKAGE}/docs/changelog.md"
 ${RM} -rf "${PATH_PACKAGE}/.github"
 ${RM} -rf "${PATH_PACKAGE}/.kokoro"
+${RM} -rf "${PATH_PACKAGE}/.trampolinerc"
+${RM} -rf "${PATH_PACKAGE}/${MONOREPO_PACKAGE_NAME}.txt"
+
 ## END delete doc/changelog.md .github/ .kokoro/
 
 ## START commit changes #############################################
