@@ -19,7 +19,7 @@
 # update the README to indicate that the repository is archived.
 
 # sourced vs execution detection obtained from https://stackoverflow.com/a/28776166
-local SOURCED=0
+SOURCED=0
 if [ -n "$ZSH_VERSION" ]; then
   case $ZSH_EVAL_CONTEXT in *:file) SOURCED=1;; esac
 elif [ -n "$KSH_VERSION" ]; then
@@ -118,9 +118,13 @@ if [[ ! -f $README_RST ]]; then
   exit 1
 fi
 
-echo -e ':**NOTE**: **This github repository is archived. The repository contents and history have moved to** `google-cloud-python`_.
+cat > ${SPLIT_REPO_DIR}/README_CONTENT_PREFIX.rst << EOF
+:**NOTE**: **This github repository is archived. The repository contents and history have moved to** \`google-cloud-python\`_.
 
-.. _google-cloud-python: https://github.com/googleapis/google-cloud-python/tree/main/packages/'${ARTIFACT_NAME} > ${SPLIT_REPO_DIR}/README_CONTENT_PREFIX.rst
+.. _google-cloud-python: https://github.com/googleapis/google-cloud-python/tree/main/packages/${ARTIFACT_NAME}
+
+
+EOF
 
 # Create temp file for the prefix that we want to add to the README content.
 README_CONTENT_PREFIX_RST="${SPLIT_REPO_DIR}/README_CONTENT_PREFIX.rst"
