@@ -17,7 +17,10 @@
 # split repositories to the mono-repository google-cloud-python.
 #
 # This script will update the various metadata files migrated from the split
-# repo into formats and locations suitable for the mono-repo.
+# repo into formats and locations suitable for the mono-repo. This script deals
+# with common (shared) files, and thus CANNOT be called in parallel for
+# individual APIs, since each run touches shared files and would thus lead to
+# merge conflicts.
 #
 # Pre-condition: the split repo has been copied to the path indicated when
 # calling this function.
