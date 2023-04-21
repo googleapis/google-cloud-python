@@ -229,7 +229,10 @@ class LogEntry(_LogEntryTuple):
         if self.insert_id is not None:
             info["insertId"] = self.insert_id
         if self.severity is not None:
-            info["severity"] = self.severity
+            if isinstance(self.severity, str):
+                info["severity"] = self.severity.upper()
+            else:
+                info["severity"] = self.severity
         if self.http_request is not None:
             info["httpRequest"] = self.http_request
         if self.timestamp is not None:

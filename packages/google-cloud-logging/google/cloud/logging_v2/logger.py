@@ -141,7 +141,7 @@ class Logger(object):
         kw["resource"] = kw.pop("resource", self.default_resource)
 
         severity = kw.get("severity", None)
-        if isinstance(severity, str) and not severity.isupper():
+        if isinstance(severity, str):
             # convert severity to upper case, as expected by enum definition
             kw["severity"] = severity.upper()
 

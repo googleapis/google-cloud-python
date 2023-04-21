@@ -12,16 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from copy import deepcopy
-from datetime import datetime
-from datetime import timedelta
-from datetime import timezone
 import sys
-
 import unittest
-import pytest
+from copy import deepcopy
+from datetime import datetime, timedelta, timezone
 
 import mock
+import pytest
 
 
 def _make_credentials():
@@ -131,6 +128,7 @@ class TestLogger(unittest.TestCase):
 
     def test_log_empty_w_explicit(self):
         import datetime
+
         from google.cloud.logging import Resource
 
         ALT_LOG_NAME = "projects/foo/logs/alt.log.name"
@@ -237,6 +235,7 @@ class TestLogger(unittest.TestCase):
 
     def test_log_text_explicit(self):
         import datetime
+
         from google.cloud.logging import Resource
 
         ALT_LOG_NAME = "projects/foo/logs/alt.log.name"
@@ -370,6 +369,7 @@ class TestLogger(unittest.TestCase):
 
     def test_log_struct_w_explicit(self):
         import datetime
+
         from google.cloud.logging import Resource
 
         ALT_LOG_NAME = "projects/foo/logs/alt.log.name"
@@ -533,10 +533,11 @@ class TestLogger(unittest.TestCase):
             )
 
     def test_log_proto_defaults(self):
+        import json
+
         from google.cloud.logging_v2.handlers._monitored_resources import (
             detect_resource,
         )
-        import json
         from google.protobuf.json_format import MessageToJson
         from google.protobuf.struct_pb2 import Struct, Value
 
@@ -559,10 +560,11 @@ class TestLogger(unittest.TestCase):
         )
 
     def test_log_proto_w_default_labels(self):
+        import json
+
         from google.cloud.logging_v2.handlers._monitored_resources import (
             detect_resource,
         )
-        import json
         from google.protobuf.json_format import MessageToJson
         from google.protobuf.struct_pb2 import Struct, Value
 
@@ -587,12 +589,12 @@ class TestLogger(unittest.TestCase):
         )
 
     def test_log_proto_w_explicit(self):
-        import json
         import datetime
-        from google.protobuf.json_format import MessageToJson
-        from google.protobuf.struct_pb2 import Struct
-        from google.protobuf.struct_pb2 import Value
+        import json
+
         from google.cloud.logging import Resource
+        from google.protobuf.json_format import MessageToJson
+        from google.protobuf.struct_pb2 import Struct, Value
 
         message = Struct(fields={"foo": Value(bool_value=True)})
         ALT_LOG_NAME = "projects/foo/logs/alt.log.name"
@@ -720,11 +722,12 @@ class TestLogger(unittest.TestCase):
 
     def test_log_inference_proto(self):
         import json
-        from google.protobuf.json_format import MessageToJson
-        from google.protobuf.struct_pb2 import Struct, Value
+
         from google.cloud.logging_v2.handlers._monitored_resources import (
             detect_resource,
         )
+        from google.protobuf.json_format import MessageToJson
+        from google.protobuf.struct_pb2 import Struct, Value
 
         message = Struct(fields={"foo": Value(bool_value=True)})
         ENTRIES = [
@@ -809,8 +812,7 @@ class TestLogger(unittest.TestCase):
         self.assertLess(yesterday - timestamp, timedelta(minutes=1))
 
     def test_list_entries_explicit(self):
-        from google.cloud.logging import DESCENDING
-        from google.cloud.logging import Client
+        from google.cloud.logging import DESCENDING, Client
 
         PROJECT1 = "PROJECT1"
         PROJECT2 = "PROJECT2"
@@ -870,8 +872,7 @@ class TestLogger(unittest.TestCase):
         self.assertLess(yesterday - timestamp, timedelta(minutes=1))
 
     def test_list_entries_explicit_timestamp(self):
-        from google.cloud.logging import DESCENDING
-        from google.cloud.logging import Client
+        from google.cloud.logging import DESCENDING, Client
 
         PROJECT1 = "PROJECT1"
         PROJECT2 = "PROJECT2"
@@ -916,11 +917,13 @@ class TestLogger(unittest.TestCase):
         )
 
     def test_list_entries_limit(self):
-        from google.cloud.logging import DESCENDING
-        from google.cloud.logging import ProtobufEntry
-        from google.cloud.logging import StructEntry
-        from google.cloud.logging import Logger
-        from google.cloud.logging import Client
+        from google.cloud.logging import (
+            DESCENDING,
+            Client,
+            Logger,
+            ProtobufEntry,
+            StructEntry,
+        )
 
         PROJECT1 = "PROJECT1"
         PROJECT2 = "PROJECT2"
@@ -1010,8 +1013,7 @@ class TestLogger(unittest.TestCase):
         )
 
     def test_list_entries_folder(self):
-        from google.cloud.logging import TextEntry
-        from google.cloud.logging import Client
+        from google.cloud.logging import Client, TextEntry
 
         client = Client(
             project=self.PROJECT, credentials=_make_credentials(), _use_grpc=False
@@ -1042,11 +1044,11 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(entry.log_name, LOG_NAME)
 
     def test_first_log_emits_instrumentation(self):
+        import google.cloud.logging_v2
+        from google.cloud.logging_v2._instrumentation import _create_diagnostic_entry
         from google.cloud.logging_v2.handlers._monitored_resources import (
             detect_resource,
         )
-        from google.cloud.logging_v2._instrumentation import _create_diagnostic_entry
-        import google.cloud.logging_v2
 
         google.cloud.logging_v2._instrumentation_emitted = False
         DEFAULT_LABELS = {"foo": "spam"}
@@ -1116,8 +1118,8 @@ class TestBatch(unittest.TestCase):
 
     def test_log_empty_explicit(self):
         import datetime
-        from google.cloud.logging import Resource
-        from google.cloud.logging import LogEntry
+
+        from google.cloud.logging import LogEntry, Resource
 
         LABELS = {"foo": "bar", "baz": "qux"}
         IID = "IID"
@@ -1161,8 +1163,8 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(batch.entries, [ENTRY])
 
     def test_log_text_defaults(self):
-        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
         from google.cloud.logging import TextEntry
+        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
 
         TEXT = "This is the entry text"
         ENTRY = TextEntry(payload=TEXT, resource=_GLOBAL_RESOURCE)
@@ -1174,8 +1176,8 @@ class TestBatch(unittest.TestCase):
 
     def test_log_text_explicit(self):
         import datetime
-        from google.cloud.logging import Resource
-        from google.cloud.logging import TextEntry
+
+        from google.cloud.logging import Resource, TextEntry
 
         TEXT = "This is the entry text"
         LABELS = {"foo": "bar", "baz": "qux"}
@@ -1222,8 +1224,8 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(batch.entries, [ENTRY])
 
     def test_log_struct_defaults(self):
-        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
         from google.cloud.logging import StructEntry
+        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
 
         STRUCT = {"message": "Message text", "weather": "partly cloudy"}
         ENTRY = StructEntry(payload=STRUCT, resource=_GLOBAL_RESOURCE)
@@ -1235,8 +1237,8 @@ class TestBatch(unittest.TestCase):
 
     def test_log_struct_explicit(self):
         import datetime
-        from google.cloud.logging import Resource
-        from google.cloud.logging import StructEntry
+
+        from google.cloud.logging import Resource, StructEntry
 
         STRUCT = {"message": "Message text", "weather": "partly cloudy"}
         LABELS = {"foo": "bar", "baz": "qux"}
@@ -1283,10 +1285,9 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(batch.entries, [ENTRY])
 
     def test_log_proto_defaults(self):
-        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
         from google.cloud.logging import ProtobufEntry
-        from google.protobuf.struct_pb2 import Struct
-        from google.protobuf.struct_pb2 import Value
+        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
+        from google.protobuf.struct_pb2 import Struct, Value
 
         message = Struct(fields={"foo": Value(bool_value=True)})
         ENTRY = ProtobufEntry(payload=message, resource=_GLOBAL_RESOURCE)
@@ -1298,10 +1299,9 @@ class TestBatch(unittest.TestCase):
 
     def test_log_proto_explicit(self):
         import datetime
-        from google.cloud.logging import Resource
-        from google.cloud.logging import ProtobufEntry
-        from google.protobuf.struct_pb2 import Struct
-        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.logging import ProtobufEntry, Resource
+        from google.protobuf.struct_pb2 import Struct, Value
 
         message = Struct(fields={"foo": Value(bool_value=True)})
         LABELS = {"foo": "bar", "baz": "qux"}
@@ -1365,8 +1365,8 @@ class TestBatch(unittest.TestCase):
         When calling batch.log with text input, it should
         call batch.log_text
         """
-        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
         from google.cloud.logging import TextEntry
+        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
 
         TEXT = "This is the entry text"
         ENTRY = TextEntry(payload=TEXT, resource=_GLOBAL_RESOURCE)
@@ -1381,8 +1381,8 @@ class TestBatch(unittest.TestCase):
         When calling batch.struct with text input, it should
         call batch.log_struct
         """
-        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
         from google.cloud.logging import StructEntry
+        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
 
         STRUCT = {"message": "Message text", "weather": "partly cloudy"}
         ENTRY = StructEntry(payload=STRUCT, resource=_GLOBAL_RESOURCE)
@@ -1397,10 +1397,9 @@ class TestBatch(unittest.TestCase):
         When calling batch.log with proto input, it should
         call batch.log_proto
         """
-        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
         from google.cloud.logging import ProtobufEntry
-        from google.protobuf.struct_pb2 import Struct
-        from google.protobuf.struct_pb2 import Value
+        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
+        from google.protobuf.struct_pb2 import Struct, Value
 
         message = Struct(fields={"foo": Value(bool_value=True)})
         ENTRY = ProtobufEntry(payload=message, resource=_GLOBAL_RESOURCE)
@@ -1416,8 +1415,8 @@ class TestBatch(unittest.TestCase):
         call batch.log_struct, along with input arguments
         """
         import datetime
-        from google.cloud.logging import Resource
-        from google.cloud.logging import StructEntry
+
+        from google.cloud.logging import Resource, StructEntry
 
         STRUCT = {"message": "Message text", "weather": "partly cloudy"}
         LABELS = {"foo": "bar", "baz": "qux"}
@@ -1464,15 +1463,15 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(batch.entries, [ENTRY])
 
     def test_commit_w_unknown_entry_type(self):
-        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
         from google.cloud.logging import LogEntry
+        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
 
         logger = _Logger()
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         api = client.logging_api = _DummyLoggingAPI()
         batch = self._make_one(logger, client)
         batch.entries.append(LogEntry(severity="blah"))
-        ENTRY = {"severity": "blah", "resource": _GLOBAL_RESOURCE._to_dict()}
+        ENTRY = {"severity": "BLAH", "resource": _GLOBAL_RESOURCE._to_dict()}
 
         batch.commit()
 
@@ -1482,9 +1481,35 @@ class TestBatch(unittest.TestCase):
             ([ENTRY], logger.full_name, None, None, True),
         )
 
-    def test_commit_w_resource_specified(self):
+    def test_commit_w_lowercase_severity_type(self):
+        from google.cloud.logging import LogEntry
         from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
+
+        logger = _Logger()
+        client = _Client(project=self.PROJECT, connection=_make_credentials())
+        api = client.logging_api = _DummyLoggingAPI()
+        batch = self._make_one(logger, client)
+        batch.entries.append(LogEntry(severity="info"))
+        batch.entries.append(LogEntry(severity="warn"))
+        batch.entries.append(LogEntry(severity="error"))
+        batch.entries.append(LogEntry(severity="fatal"))
+        ENTRIES = [
+            {"severity": "INFO", "resource": _GLOBAL_RESOURCE._to_dict()},
+            {"severity": "WARN", "resource": _GLOBAL_RESOURCE._to_dict()},
+            {"severity": "ERROR", "resource": _GLOBAL_RESOURCE._to_dict()},
+            {"severity": "FATAL", "resource": _GLOBAL_RESOURCE._to_dict()},
+        ]
+
+        batch.commit()
+        self.assertEqual(list(batch.entries), [])
+        self.assertEqual(
+            api._write_entries_called_with,
+            (ENTRIES, logger.full_name, None, None, True),
+        )
+
+    def test_commit_w_resource_specified(self):
         from google.cloud.logging import Resource
+        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
 
         logger = _Logger()
         client = _Client(project=self.PROJECT, connection=_make_credentials())
@@ -1508,13 +1533,13 @@ class TestBatch(unittest.TestCase):
         )
 
     def test_commit_w_bound_client(self):
-        import json
         import datetime
-        from google.protobuf.json_format import MessageToJson
-        from google.protobuf.struct_pb2 import Struct
-        from google.protobuf.struct_pb2 import Value
+        import json
+
         from google.cloud._helpers import _datetime_to_rfc3339
         from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
+        from google.protobuf.json_format import MessageToJson
+        from google.protobuf.struct_pb2 import Struct, Value
 
         TEXT = "This is the entry text"
         STRUCT = {"message": TEXT, "weather": "partly cloudy"}
@@ -1599,11 +1624,11 @@ class TestBatch(unittest.TestCase):
 
     def test_commit_w_alternate_client(self):
         import json
-        from google.protobuf.json_format import MessageToJson
-        from google.protobuf.struct_pb2 import Struct
-        from google.protobuf.struct_pb2 import Value
+
         from google.cloud.logging import Logger
         from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
+        from google.protobuf.json_format import MessageToJson
+        from google.protobuf.struct_pb2 import Struct, Value
 
         TEXT = "This is the entry text"
         STRUCT = {"message": TEXT, "weather": "partly cloudy"}
@@ -1651,11 +1676,11 @@ class TestBatch(unittest.TestCase):
 
     def test_context_mgr_success(self):
         import json
-        from google.protobuf.json_format import MessageToJson
-        from google.protobuf.struct_pb2 import Struct
-        from google.protobuf.struct_pb2 import Value
+
         from google.cloud.logging import Logger
         from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
+        from google.protobuf.json_format import MessageToJson
+        from google.protobuf.struct_pb2 import Struct, Value
 
         TEXT = "This is the entry text"
         STRUCT = {"message": TEXT, "weather": "partly cloudy"}
@@ -1702,11 +1727,9 @@ class TestBatch(unittest.TestCase):
 
     def test_context_mgr_failure(self):
         import datetime
-        from google.protobuf.struct_pb2 import Struct
-        from google.protobuf.struct_pb2 import Value
-        from google.cloud.logging import TextEntry
-        from google.cloud.logging import StructEntry
-        from google.cloud.logging import ProtobufEntry
+
+        from google.cloud.logging import ProtobufEntry, StructEntry, TextEntry
+        from google.protobuf.struct_pb2 import Struct, Value
 
         TEXT = "This is the entry text"
         STRUCT = {"message": TEXT, "weather": "partly cloudy"}
@@ -1752,8 +1775,8 @@ class TestBatch(unittest.TestCase):
         exception should be unchanged
         """
         from google.api_core.exceptions import InvalidArgument
-        from google.rpc.error_details_pb2 import DebugInfo
         from google.cloud.logging import TextEntry
+        from google.rpc.error_details_pb2 import DebugInfo
 
         logger = _Logger()
         client = _Client(project=self.PROJECT)
@@ -1803,8 +1826,8 @@ class TestBatch(unittest.TestCase):
         _append_context_to_error is thrown
         """
         from google.api_core.exceptions import InvalidArgument
-        from google.rpc.error_details_pb2 import DebugInfo
         from google.cloud.logging import TextEntry
+        from google.rpc.error_details_pb2 import DebugInfo
 
         logger = _Logger()
         client = _Client(project=self.PROJECT)
