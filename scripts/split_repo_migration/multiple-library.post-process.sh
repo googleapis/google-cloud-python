@@ -61,26 +61,7 @@ fi
 # `-e` enables the script to automatically fail when a command fails
 set -e
 
-
-NOP="echo -n"
-DEBUG=""  # "yes"  # set to blank for a real run, or non-blank to prevent modifying the split-repo
 MESSAGE=""
-
-[[ -n ${DEBUG} ]] && {
-  # Comment out some commands for development/debugging
-  RM='echo "*** would run:" rm'
-  GIT='echo "*** would run:" git'
-
-  # It's easier to debug if keys don't get reordered
-  SORT_JSON_KEYS="" 
-} || {
-  # Real commands for actual runs
-  RM='rm'
-  GIT='git'
-
-  # Sort keys for easier look-up.
-  SORT_JSON_KEYS="--sort-keys"
-}
 
 if [ $# -lt 2 ]
 then
