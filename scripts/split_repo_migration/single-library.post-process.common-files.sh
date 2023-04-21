@@ -178,6 +178,23 @@ jq ${RPM_SORT_KEYS}  ". * {\"${MONOREPO_PATH_PACKAGE}\": ${RPM_VERSION}}" ${RPM_
 $RM ${RPM_SPLIT_PATH}
 ## END release-please manifest migration
 
+## START migrate release tags ########################################
+# We need to migrate the release tags since that is what release-please uses to
+# get the next release number.We use ${RPM_VERSION} from the previous section
+# variable prefix: LRT_*
+echo "Replicating latest release tag"
+
+LRT_VERSION="${RPM_VERSION}"
+
+# any of the gapic_version.py files will do: they all match
+LRT_VERSION_FILE="$(find ${MONOREPO_PATH_PACKAGE} -name "gapic_version.py" | head -n 1)"
+LRT_SHA=$(git log --format=oneline ${LRT_VERSION_FILE} | grep release | head -n 1 | awk '{ print $1 }')
+$GIT tag ${MONOREPO_PACKAGE_NAME}-v${LRT_VERSION} ${LRT_SHA}
+$GIT push --tags
+## END migrate release tags
+
+
+
 
 ## START .repo-metadata.json migration ########################################
 # variable prefix: RMJ_*
