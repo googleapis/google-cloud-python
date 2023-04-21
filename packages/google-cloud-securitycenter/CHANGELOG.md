@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.21.0](https://github.com/googleapis/python-securitycenter/compare/v1.20.0...v1.21.0) (2023-04-21)
+
+
+### Features
+
+* Add cloud_dlp_inspection and cloud_dlp_data_profile fields to finding's list of attributes ([#449](https://github.com/googleapis/python-securitycenter/issues/449)) ([f167dad](https://github.com/googleapis/python-securitycenter/commit/f167dad2fec23e7814e2c9e6725d4c8d0426635e))
+
 ## [1.20.0](https://github.com/googleapis/python-securitycenter/compare/v1.19.1...v1.20.0) (2023-04-12)
 
 
