@@ -38,7 +38,7 @@ class RecommendRequest(proto.Message):
     Attributes:
         serving_config (str):
             Required. Full resource name of the format:
-            projects/\ */locations/global/collections/*/dataStores/*/servingConfigs/*
+            ``projects/*/locations/global/collections/*/dataStores/*/servingConfigs/*``
 
             Before you can request recommendations from your model, you
             must create at least one serving config for it.
@@ -74,10 +74,8 @@ class RecommendRequest(proto.Message):
 
             Examples:
 
-            -  (filter_tags: ANY("Red", "Blue") OR filter_tags:
-               ANY("Hot", "Cold"))
-            -  (filter_tags: ANY("Red", "Blue")) AND NOT (filter_tags:
-               ANY("Green"))
+            -  ``(filter_tags: ANY("Red", "Blue") OR filter_tags: ANY("Hot", "Cold"))``
+            -  ``(filter_tags: ANY("Red", "Blue")) AND NOT (filter_tags: ANY("Green"))``
 
             If your filter blocks all results, the API will return
             generic (unfiltered) popular Documents. If you only want
@@ -86,9 +84,10 @@ class RecommendRequest(proto.Message):
             [RecommendRequest.params][google.cloud.discoveryengine.v1beta.RecommendRequest.params]
             to receive empty results instead.
 
-            Note that the API will never return Documents with
-            storageStatus of "EXPIRED" or "DELETED" regardless of filter
-            choices.
+            Note that the API will never return
+            [Document][google.cloud.discoveryengine.v1beta.Document]s
+            with ``storageStatus`` of ``EXPIRED`` or ``DELETED``
+            regardless of filter choices.
         validate_only (bool):
             Use validate only mode for this
             recommendation query. If set to true, a fake
@@ -104,11 +103,11 @@ class RecommendRequest(proto.Message):
 
             -  ``returnDocument``: Boolean. If set to true, the
                associated Document object will be returned in
-               [RecommendResponse.results.document][RecommendationResult.document].
+               [RecommendResponse.RecommendationResult.document][google.cloud.discoveryengine.v1beta.RecommendResponse.RecommendationResult.document].
             -  ``returnScore``: Boolean. If set to true, the
                recommendation 'score' corresponding to each returned
                Document will be set in
-               [RecommendResponse.results.metadata][RecommendationResult.metadata].
+               [RecommendResponse.RecommendationResult.metadata][google.cloud.discoveryengine.v1beta.RecommendResponse.RecommendationResult.metadata].
                The given 'score' indicates the probability of a Document
                conversion given the user's context and history.
             -  ``strictFiltering``: Boolean. True by default. If set to
@@ -118,12 +117,12 @@ class RecommendRequest(proto.Message):
             -  ``diversityLevel``: String. Default empty. If set to be
                non-empty, then it needs to be one of:
 
-               -  'no-diversity'
-               -  'low-diversity'
-               -  'medium-diversity'
-               -  'high-diversity'
-               -  'auto-diversity' This gives request-level control and
-                  adjusts recommendation results based on Document
+               -  ``no-diversity``
+               -  ``low-diversity``
+               -  ``medium-diversity``
+               -  ``high-diversity``
+               -  ``auto-diversity`` This gives request-level control
+                  and adjusts recommendation results based on Document
                   category.
         user_labels (MutableMapping[str, str]):
             The user labels applied to a resource must meet the

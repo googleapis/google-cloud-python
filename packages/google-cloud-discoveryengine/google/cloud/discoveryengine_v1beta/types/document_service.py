@@ -48,12 +48,12 @@ class GetDocumentRequest(proto.Message):
 
             If the caller does not have permission to access the
             [Document][google.cloud.discoveryengine.v1beta.Document],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            regardless of whether or not it exists, a
+            ``PERMISSION_DENIED`` error is returned.
 
             If the requested
             [Document][google.cloud.discoveryengine.v1beta.Document]
-            does not exist, a NOT_FOUND error is returned.
+            does not exist, a ``NOT_FOUND`` error is returned.
     """
 
     name: str = proto.Field(
@@ -76,7 +76,7 @@ class ListDocumentsRequest(proto.Message):
 
             If the caller does not have permission to list
             [Documents][]s under this branch, regardless of whether or
-            not this branch exists, a PERMISSION_DENIED error is
+            not this branch exists, a ``PERMISSION_DENIED`` error is
             returned.
         page_size (int):
             Maximum number of
@@ -84,7 +84,7 @@ class ListDocumentsRequest(proto.Message):
             return. If unspecified, defaults to 100. The maximum allowed
             value is 1000. Values above 1000 will be coerced to 1000.
 
-            If this field is negative, an INVALID_ARGUMENT error is
+            If this field is negative, an ``INVALID_ARGUMENT`` error is
             returned.
         page_token (str):
             A page token
@@ -96,7 +96,7 @@ class ListDocumentsRequest(proto.Message):
             When paginating, all other parameters provided to
             [DocumentService.ListDocuments][google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments]
             must match the call that provided the page token. Otherwise,
-            an INVALID_ARGUMENT error is returned.
+            an ``INVALID_ARGUMENT`` error is returned.
     """
 
     parent: str = proto.Field(
@@ -165,19 +165,19 @@ class CreateDocumentRequest(proto.Message):
 
             If the caller does not have permission to create the
             [Document][google.cloud.discoveryengine.v1beta.Document],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            regardless of whether or not it exists, a
+            ``PERMISSION_DENIED`` error is returned.
 
             This field must be unique among all
             [Document][google.cloud.discoveryengine.v1beta.Document]s
             with the same
             [parent][google.cloud.discoveryengine.v1beta.CreateDocumentRequest.parent].
-            Otherwise, an ALREADY_EXISTS error is returned.
+            Otherwise, an ``ALREADY_EXISTS`` error is returned.
 
             This field must conform to
             `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ standard
             with a length limit of 63 characters. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            ``INVALID_ARGUMENT`` error is returned.
     """
 
     parent: str = proto.Field(
@@ -206,14 +206,14 @@ class UpdateDocumentRequest(proto.Message):
 
             If the caller does not have permission to update the
             [Document][google.cloud.discoveryengine.v1beta.Document],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            regardless of whether or not it exists, a
+            ``PERMISSION_DENIED`` error is returned.
 
             If the
             [Document][google.cloud.discoveryengine.v1beta.Document] to
             update does not exist and
             [allow_missing][google.cloud.discoveryengine.v1beta.UpdateDocumentRequest.allow_missing]
-            is not set, a NOT_FOUND error is returned.
+            is not set, a ``NOT_FOUND`` error is returned.
         allow_missing (bool):
             If set to true, and the
             [Document][google.cloud.discoveryengine.v1beta.Document] is
@@ -247,12 +247,12 @@ class DeleteDocumentRequest(proto.Message):
 
             If the caller does not have permission to delete the
             [Document][google.cloud.discoveryengine.v1beta.Document],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            regardless of whether or not it exists, a
+            ``PERMISSION_DENIED`` error is returned.
 
             If the
             [Document][google.cloud.discoveryengine.v1beta.Document] to
-            delete does not exist, a NOT_FOUND error is returned.
+            delete does not exist, a ``NOT_FOUND`` error is returned.
     """
 
     name: str = proto.Field(

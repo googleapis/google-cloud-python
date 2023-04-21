@@ -40,14 +40,21 @@ class discoveryengineCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'collect_user_event': ('parent', 'user_event', 'uri', 'ets', ),
+        'complete_query': ('data_store', 'query', 'query_model', 'user_pseudo_id', ),
         'create_document': ('parent', 'document', 'document_id', ),
+        'create_schema': ('parent', 'schema', 'schema_id', ),
         'delete_document': ('name', ),
+        'delete_schema': ('name', ),
         'get_document': ('name', ),
+        'get_schema': ('name', ),
         'import_documents': ('parent', 'inline_source', 'gcs_source', 'bigquery_source', 'error_config', 'reconciliation_mode', ),
         'import_user_events': ('inline_source', 'gcs_source', 'bigquery_source', 'parent', 'error_config', ),
         'list_documents': ('parent', 'page_size', 'page_token', ),
+        'list_schemas': ('parent', 'page_size', 'page_token', ),
         'recommend': ('serving_config', 'user_event', 'page_size', 'filter', 'validate_only', 'params', 'user_labels', ),
+        'search': ('serving_config', 'branch', 'query', 'page_size', 'page_token', 'offset', 'filter', 'order_by', 'facet_specs', 'boost_spec', 'params', 'query_expansion_spec', 'spell_correction_spec', 'user_pseudo_id', 'content_search_spec', ),
         'update_document': ('document', 'allow_missing', ),
+        'update_schema': ('schema', 'allow_missing', ),
         'write_user_event': ('parent', 'user_event', ),
     }
 
