@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-gke-hub/compare/v1.9.0...v1.10.0) (2023-04-21)
+
+
+### Features
+
+* **v1beta1:** Add `force` on `DeleteMembershipRequest` ([a77403d](https://github.com/googleapis/python-gke-hub/commit/a77403dcb874b2421dc5775480d42b9cfd39a750))
+* **v1beta1:** Add `monitoring_config` field ([a77403d](https://github.com/googleapis/python-gke-hub/commit/a77403dcb874b2421dc5775480d42b9cfd39a750))
+
+
+### Documentation
+
+* **v1beta1:** Update API annotation ([a77403d](https://github.com/googleapis/python-gke-hub/commit/a77403dcb874b2421dc5775480d42b9cfd39a750))
+
 ## [1.9.0](https://github.com/googleapis/python-gke-hub/compare/v1.8.1...v1.9.0) (2023-04-19)
 
 
