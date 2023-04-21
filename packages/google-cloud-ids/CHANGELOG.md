@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ids-v1.5.0...google-cloud-ids-v1.5.1) (2023-04-21)
+
+
+### Documentation
+
+* Update api description for `google-cloud-ids` ([23aeafc](https://github.com/googleapis/google-cloud-python/commit/23aeafc42c35c54a52f84e1425cc1c8a73300ba4))
+
 ## [1.5.0](https://github.com/googleapis/python-ids/compare/v1.4.1...v1.5.0) (2023-02-17)
 
 

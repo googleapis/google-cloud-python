@@ -160,16 +160,20 @@ jq ${RPC_SORT_KEYS} --argjson newObject "${RPC_NEW_OBJECT}" ". * {\"packages\": 
 $RM ${RPC_SPLIT_PATH}
 ## END release-please config migration
 
-## START release-please manifest deletion ######################################
+## START release-please manifest migration ########################################
 # variable prefix: RPM_*
-# We no longer need to add the package to the central file, since OwlBot does
-# that for us. However, we still need to delete the per-package manifest copied
-# over from the split repo.
-RPM_SPLIT_PATH="${PATH_PACKAGE}/.release-please-manifest.json"
-echo "Deleting: ${RPM_SPLIT_PATH}"
+RPM_MONO_PATH=".release-please-manifest.json"
+echo "Migrating: ${RPM_MONO_PATH}"
 
+# enable this if we want sorted keys. Keep it disabled to append new entries at
+# the end (useful for debugging):
+RPM_SORT_KEYS="${SORT_JSON_KEYS}"
+
+RPM_SPLIT_PATH="${PATH_PACKAGE}/.release-please-manifest.json"
+RPM_VERSION="$(jq '."."' "${RPM_SPLIT_PATH}")"
+jq ${RPM_SORT_KEYS}  ". * {\"${MONOREPO_PATH_PACKAGE}\": ${RPM_VERSION}}" ${RPM_MONO_PATH} | sponge ${RPM_MONO_PATH}
 $RM ${RPM_SPLIT_PATH}
-## END release-please manifest deletion
+## END release-please manifest migration
 
 
 ## START .repo-metadata.json migration ########################################
