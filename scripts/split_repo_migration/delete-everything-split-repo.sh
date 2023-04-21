@@ -23,7 +23,7 @@ SOURCED=0
 if [ -n "$ZSH_VERSION" ]; then
   case $ZSH_EVAL_CONTEXT in *:file) SOURCED=1;; esac
 elif [ -n "$KSH_VERSION" ]; then
-  [ "$(cd -- "$(dirname -- "$0")" && pwd -P)/$(basename -- "$0")" != "$(cd -- "$(dirname -- "${.sh.file}")" && pwd -P)/$(basename -- "${.sh.file}")" ] && SOURCED=1
+  [ "$(cd -- "$(dirname -- "$0")" && pwd -P)/$(basename -- "$0")" -ne "$(cd -- "$(dirname -- "${.sh.file}")" && pwd -P)/$(basename -- "${.sh.file}")" ] && SOURCED=1
 elif [ -n "$BASH_VERSION" ]; then
   (return 0 2>/dev/null) && SOURCED=1
 else # All other shells: examine $0 for known shell binary filenames.
@@ -31,7 +31,7 @@ else # All other shells: examine $0 for known shell binary filenames.
   case ${0##*/} in sh|-sh|dash|-dash) SOURCED=1;; esac
 fi
 
-(( SOURCED != 1 )) || { \
+(( SOURCED -ne 1 )) || { \
   echo "Please do not source this script, but execute it directly."
   return -10
 }
