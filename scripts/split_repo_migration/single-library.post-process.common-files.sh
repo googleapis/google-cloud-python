@@ -18,27 +18,29 @@
 #
 # This script will update the various metadata files migrated from the split
 # repo into formats and locations suitable for the mono-repo. This script deals
-# with API-specific file, and can be invoked on many just-migrated APIs in any
-# order. There is a companion scripts. *.common-files.sh, which must be invoked
-# for all APIs to finish the migration to common, but which cannot be
-# parallelized, as it touches shared files.
+# with common (shared) files, and thus CANNOT be called in parallel for
+# individual APIs, since each run touches shared files and would thus lead to
+# merge conflicts.
 #
 # Pre-condition: the split repo has been copied to the path indicated when
 # calling this function.
 #
+# **** NOTE: You would typically not call this directly unless debugging. Use
+# multiple-library.post-process.common-files.sh instead. ****
+#
 # INVOCATION from the mono-repo root directory:
-#   split-repo-post-process.sh PACKAGE_PATH
+#   single-library.post-process.common-files.sh PACKAGE_PATH
 # where PACKAGE_PATH is the path (absolute or relative) from pwd to the
 # directory in google-cloud-python holding the copied split repo. Typically, if
 # running from the top level of google-cloud-python, this is something like
 # "packages/google-cloud-APINAME"
 # EXAMPLE from the root directory of the monorepo:
-#   ./scripts/split_repo_migration/split-repo-post-process.sh packages/google-cloud-speech
+#   ./scripts/split_repo_migration/single-library.post-process.common-files.sh packages/google-cloud-speech
 #
 # For debugging/developing this script, you can have additional parameters:
-#  ./split-repo-post-process.sh SPLIT_REPO_DIR MONOREPO_DIR MONOREPO_PACKAGE_NAME
+#  ./single-library.post-process.common-files.sh SPLIT_REPO_DIR MONOREPO_DIR MONOREPO_PACKAGE_NAME
 # Example from this script's directory:
-#  ./split-repo-post-process.sh ../../../python-speech ../../ google-cloud-speech
+#  ./single-library.post-process.common-files.sh ../../../python-speech ../../ google-cloud-speech
 
 # sourced vs execution detection obtained from https://stackoverflow.com/a/28776166
 local SOURCED=0
@@ -143,70 +145,79 @@ echo "Checking for system tests in ${TST_MONO_TESTDIR}"
   { echo "ERROR: ${TST_MONO_SYSTEM_DIR} exists. Need to manually deal with that." ; return -11 ; }
 ## END system tests check
 
-## START owlbot.yaml migration ########################################
-# variable prefix: OWY_*
-# FIXME: KEEP?
-OWY_MONO_PATH="${MONOREPO_PATH_PACKAGE}/.OwlBot.yaml"
-echo "Migrating: ${OWY_MONO_PATH}"
-mkdir -p $(dirname ${OWY_MONO_PATH})
+## START release-please config migration ########################################
+# variable prefix: RPC_*
 
-OWY_SPLIT_PATH="${PATH_PACKAGE}/.github/.OwlBot.yaml"
-cp ${OWY_SPLIT_PATH} ${OWY_MONO_PATH}
+RPC_MONO_PATH="release-please-config.json"
+echo "Migrating: ${RPC_MONO_PATH}"
 
-# remove `docker:` line
-sed -i "/docker:/d" "${OWY_MONO_PATH}"
-# remove `image:` line
-sed -i "/image:/d" "${OWY_MONO_PATH}"
+# enable this if we want sorted keys. Keep it disabled to append new entries at
+# the end (useful for debugging):
+RPC_SORT_KEYS="${SORT_JSON_KEYS}"
 
-# In the nodejs case, lines #1 and #2 below are treated as a disjoint case from
-# line #3. However, in Python we see cases (eg aiplatform) where there are
-# multiple entries in the same file that satisfy either of the criteria. As a
-# result, we search for both cases. In doing that, to prevent #3 from altering
-# lines already modified by #2, we temporarily insert ${TMP_MARKER} and remove
-# it in #4
-TMP_MARKER="<<__tmp__>>>"
-sed -i 's|\.\*-py/(.*)|.*-py|' "${OWY_MONO_PATH}"   #1
-sed -i "s|dest: /owl-bot-staging/\$1/\$2|dest: /owl-bot-${TMP_MARKER}staging/${MONOREPO_PACKAGE_NAME}/\$1|" "${OWY_MONO_PATH}" #2
-sed -i "s|dest: /owl-bot-staging|dest: \/owl-bot-staging\/${MONOREPO_PACKAGE_NAME}/|" "${OWY_MONO_PATH}" #3
-sed -i "s|${TMP_MARKER}||" "${OWY_MONO_PATH}"  #4
+RPC_SPLIT_PATH="${PATH_PACKAGE}/release-please-config.json"
+jq ".packages.\".\" += {component: \"${MONOREPO_PACKAGE_NAME}\"}" "${RPC_SPLIT_PATH}" | sponge "${RPC_SPLIT_PATH}"
+RPC_NEW_OBJECT="$(jq '.packages."."' "${RPC_SPLIT_PATH}")"
 
-# TODO: Review the following: For consistency with NodeJS migration script:
-# - we are not removing `begin-after-commit-hash`
-# - we are not removing `deep-remove-regex`, even though it refers to a non-API-specific directory.
+jq ${RPC_SORT_KEYS} --argjson newObject "${RPC_NEW_OBJECT}" ". * {\"packages\": {\"${MONOREPO_PATH_PACKAGE}\": \$newObject}}" ${RPC_MONO_PATH} | sponge ${RPC_MONO_PATH}
+$RM ${RPC_SPLIT_PATH}
+## END release-please config migration
 
-$RM ${OWY_SPLIT_PATH}
-## END owlbot.yaml migration
+## START release-please manifest migration ########################################
+# variable prefix: RPM_*
+RPM_MONO_PATH=".release-please-manifest.json"
+echo "Migrating: ${RPM_MONO_PATH}"
+
+# enable this if we want sorted keys. Keep it disabled to append new entries at
+# the end (useful for debugging):
+RPM_SORT_KEYS="${SORT_JSON_KEYS}"
+
+RPM_SPLIT_PATH="${PATH_PACKAGE}/.release-please-manifest.json"
+RPM_VERSION="$(jq '."."' "${RPM_SPLIT_PATH}")"
+jq ${RPM_SORT_KEYS}  ". * {\"${MONOREPO_PATH_PACKAGE}\": ${RPM_VERSION}}" ${RPM_MONO_PATH} | sponge ${RPM_MONO_PATH}
+$RM ${RPM_SPLIT_PATH}
+## END release-please manifest migration
 
 
-## START owlbot.py deletion ########################################
-# variable prefix: OWP_*
-OWP_MONO_PATH="${MONOREPO_PATH_PACKAGE}/owlbot.py"
-echo "Migrating: ${OWP_MONO_PATH}"
+## START .repo-metadata.json migration ########################################
+# variable prefix: RMJ_*
+RMJ_MONO_PATH="${MONOREPO_PATH_PACKAGE}/.repo-metadata.json"
+echo "Migrating: ${RMJ_MONO_PATH}"
 
 [[ -z ${DEBUG} ]] || { \
-  OWP_SPLIT_PATH="${PATH_PACKAGE}/owlbot.py"
-  [[ ! -f "${OWP_SPLIT_PATH}" ]] || cp -u ${OWP_SPLIT_PATH} ${OWP_MONO_PATH}
+RMJ_SPLIT_PATH="${PATH_PACKAGE}/.repo-metadata.json"
+cp ${RMJ_SPLIT_PATH} ${RMJ_MONO_PATH}
 }
 
-[[ ! -f "${OWP_MONO_PATH}" ]] || {
-  MESSAGE="${MESSAGE}\n\nWARNING: Deleted ${OWP_MONO_PATH}"
-  rm -rf "${OWP_MONO_PATH}"
-}
-## END owlbot.py deletion
+jq '.repo = "googleapis/google-cloud-python"' ${RMJ_MONO_PATH} | sponge ${RMJ_MONO_PATH}
+jq -r ".issue_tracker" "${RMJ_MONO_PATH}" | grep -q "github.com"  && {
+  jq '.issue_tracker = "https://github.com/googleapis/google-cloud-python/issues"' ${RMJ_MONO_PATH} | sponge ${RMJ_MONO_PATH}
+} || { $NOP ; }
+## END .repo-metadata.json migration
 
-## START delete doc/changelog.md .github/ .kokoro/####################
-${RM} -f "${PATH_PACKAGE}/docs/changelog.md"
-${RM} -rf "${PATH_PACKAGE}/.github"
-${RM} -rf "${PATH_PACKAGE}/.kokoro"
-${RM} -f "${PATH_PACKAGE}/.trampolinerc"
+
+## START .pre-commit-config migration ########################################
+# variable prefix: PCC_*
+PCC_MONO_PATH=".pre-commit-config.yaml"
+echo "Migrating: ${PCC_MONO_PATH}"
+
+PCC_SPLIT_PATH="${PATH_PACKAGE}/.pre-commit-config.yaml"
+
+# We only copy this if it doesn't already exist in the mono-repo.
+[[ ! -f "${PCC_MONO_PATH}" ]] && [[ -f "${PCC_SPLIT_PATH}" ]] && {
+  cp ${PCC_SPLIT_PATH} ${PCC_MONO_PATH}
+} || { $NOP ; }
+$RM -f ${PCC_SPLIT_PATH}
+## END .pre-commit-config migration
+
+### Delete file that was copied over from owlbot-staging/
 ${RM} -f "${PATH_PACKAGE}/${MONOREPO_PACKAGE_NAME}.txt"
 
-## END delete doc/changelog.md .github/ .kokoro/
 
 ## START commit changes #############################################
 echo "Committing changes locally"
 ${GIT} add .
-${GIT} commit -am "build: ${MONOREPO_PACKAGE_NAME} migration: adjust owlbot-related files"
+${GIT} commit -am "migration(${MONOREPO_PACKAGE_NAME}): adjust metadata and automation configs"
 ## END commit changes
 
 popd >& /dev/null # "${PATH_MONOREPO}"
