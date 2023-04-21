@@ -66,7 +66,8 @@ class GkeHubMembershipServiceAsyncClient:
     Kubernetes clusters to Google Cloud, represented with the
     [Membership][google.cloud.gkehub.v1beta1.Membership] resource.
 
-    GKE Hub is currently only available in the global region.
+    GKE Hub is currently available in the global region and all regions
+    in https://cloud.google.com/compute/docs/regions-zones.
 
     **Membership management may be non-trivial:** it is recommended to
     use one of the Google-provided client libraries or tools where
@@ -286,7 +287,8 @@ class GkeHubMembershipServiceAsyncClient:
             parent (:class:`str`):
                 Required. The parent (project and location) where the
                 Memberships will be listed. Specified in the format
-                ``projects/*/locations/*``.
+                ``projects/*/locations/*``. ``projects/*/locations/-``
+                list memberships in all the regions.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -929,7 +931,7 @@ class GkeHubMembershipServiceAsyncClient:
             request (Optional[Union[google.cloud.gkehub_v1beta1.types.GenerateConnectManifestRequest, dict]]):
                 The request object. Request message for
                 ``GkeHubMembershipService.GenerateConnectManifest``
-                method. .
+                method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
