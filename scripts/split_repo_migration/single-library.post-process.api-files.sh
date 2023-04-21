@@ -41,7 +41,7 @@
 #  ./single-library.post-process.api-files.sh ../../../python-speech ../../ google-cloud-speech
 
 # sourced vs execution detection obtained from https://stackoverflow.com/a/28776166
-local SOURCED=0
+SOURCED=0
 if [ -n "$ZSH_VERSION" ]; then 
   case $ZSH_EVAL_CONTEXT in *:file) SOURCED=1;; esac
 elif [ -n "$KSH_VERSION" ]; then
@@ -152,6 +152,8 @@ mkdir -p $(dirname ${OWY_MONO_PATH})
 
 OWY_SPLIT_PATH="${PATH_PACKAGE}/.github/.OwlBot.yaml"
 cp ${OWY_SPLIT_PATH} ${OWY_MONO_PATH}
+echo "Copied ${OWY_SPLIT_PATH}"
+ls -la ${OWY_MONO_PATH}
 
 # remove `docker:` line
 sed -i "/docker:/d" "${OWY_MONO_PATH}"
