@@ -118,22 +118,13 @@ if [[ ! -f $README_RST ]]; then
   exit 1
 fi
 
-cat > ${SPLIT_REPO_DIR}/README_CONTENT_PREFIX.rst << EOF
+{ cat - $README_RST | sponge $README_RST ; } << EOF
 :**NOTE**: **This github repository is archived. The repository contents and history have moved to** \`google-cloud-python\`_.
 
 .. _google-cloud-python: https://github.com/googleapis/google-cloud-python/tree/main/packages/${ARTIFACT_NAME}
 
 
 EOF
-
-# Create temp file for the prefix that we want to add to the README content.
-README_CONTENT_PREFIX_RST="${SPLIT_REPO_DIR}/README_CONTENT_PREFIX.rst"
-
-# Concatenate the README prefix and the README content into the existing README
-cat $README_CONTENT_PREFIX_RST $README_RST | sponge $README_RST
-
-# Remove temp file
-rm -rf $README_CONTENT_PREFIX_RST
 
 # Stage all files
 git add .
