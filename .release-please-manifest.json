@@ -1,6 +1,6 @@
 {
     "packages/google-cloud-contentwarehouse": "0.5.0",
-    "packages/google-cloud-discoveryengine": "0.4.1",
+    "packages/google-cloud-discoveryengine": "0.5.0",
     "packages/google-cloud-enterpriseknowledgegraph": "0.3.2",
     "packages/google-geo-type": "0.3.0",
     "packages/google-maps-addressvalidation": "0.3.3",
