@@ -118,14 +118,13 @@ PATH_MONOREPO="$(realpath "${PATH_MONOREPO}")"
 MONOREPO_PACKAGE_NAME="${3:-$(basename ${PATH_PACKAGE})}"
 
 MONOREPO_PATH_PACKAGE="packages/${MONOREPO_PACKAGE_NAME}"
-MONOREPO_PATH_GAPIC="${MONOREPO_PATH_PACKAGE}/${MONOREPO_PACKAGE_NAME//-//}"
+
 cat <<EOF
 Post-processing ${MONOREPO_PACKAGE_NAME}
   PATH_PACKAGE:          ${PATH_PACKAGE}
   PATH_MONOREPO:         ${PATH_MONOREPO}
   MONOREPO_PACKAGE_NAME: ${MONOREPO_PACKAGE_NAME}
   MONOREPO_PATH_PACKAGE: ${MONOREPO_PATH_PACKAGE}
-  MONOREPO_PATH_GAPIC:   ${MONOREPO_PATH_GAPIC}
 EOF
 
 pushd "${PATH_MONOREPO}" >& /dev/null
@@ -186,7 +185,9 @@ $RM ${RPM_SPLIT_PATH}
 echo "Replicating latest release tag"
 
 LRT_VERSION="${RPM_VERSION}"
-LRT_VERSION_FILE="${MONOREPO_PATH_GAPIC}/gapic_version.py"
+
+# any of the gapic_version.py files will do: they all match
+LRT_VERSION_FILE="$(find ${MONOREPO_PATH_PACKAGE} -name "gapic_version.py" | head -n 1)"
 LRT_SHA=$(git log --format=oneline ${LRT_VERSION_FILE} | grep release | head -n 1 | awk '{ print $1 }')
 $GIT tag ${MONOREPO_PACKAGE_NAME}-v${LRT_VERSION} ${LRT_SHA}
 $GIT push --tags
