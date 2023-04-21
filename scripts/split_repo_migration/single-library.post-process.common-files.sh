@@ -25,19 +25,22 @@
 # Pre-condition: the split repo has been copied to the path indicated when
 # calling this function.
 #
+# **** NOTE: You would typically not call this directly unless debugging. Use
+# multiple-library.post-process.common-files.sh instead. ****
+#
 # INVOCATION from the mono-repo root directory:
-#   split-repo-post-process.sh PACKAGE_PATH
+#   single-library.post-process.common-files.sh PACKAGE_PATH
 # where PACKAGE_PATH is the path (absolute or relative) from pwd to the
 # directory in google-cloud-python holding the copied split repo. Typically, if
 # running from the top level of google-cloud-python, this is something like
 # "packages/google-cloud-APINAME"
 # EXAMPLE from the root directory of the monorepo:
-#   ./scripts/split_repo_migration/split-repo-post-process.sh packages/google-cloud-speech
+#   ./scripts/split_repo_migration/single-library.post-process.common-files.sh packages/google-cloud-speech
 #
 # For debugging/developing this script, you can have additional parameters:
-#  ./split-repo-post-process.sh SPLIT_REPO_DIR MONOREPO_DIR MONOREPO_PACKAGE_NAME
+#  ./single-library.post-process.common-files.sh SPLIT_REPO_DIR MONOREPO_DIR MONOREPO_PACKAGE_NAME
 # Example from this script's directory:
-#  ./split-repo-post-process.sh ../../../python-speech ../../ google-cloud-speech
+#  ./single-library.post-process.common-files.sh ../../../python-speech ../../ google-cloud-speech
 
 # sourced vs execution detection obtained from https://stackoverflow.com/a/28776166
 local SOURCED=0
@@ -210,17 +213,11 @@ $RM -f ${PCC_SPLIT_PATH}
 ### Delete file that was copied over from owlbot-staging/
 ${RM} -f "${PATH_PACKAGE}/${MONOREPO_PACKAGE_NAME}.txt"
 
-## START invoke OwlBot post-processor ########################################
-echo -e "\nInvoking owl-bot post-processor locally. PLEASE WAIT...."
-docker run --user $(id -u):$(id -g) --rm -v ${PATH_MONOREPO}:/repo -w /repo gcr.io/cloud-devrel-public-resources/owlbot-python-mono-repo:latest
-## END invoke OwlBot post-processor
-
-
 
 ## START commit changes #############################################
 echo "Committing changes locally"
 ${GIT} add .
-${GIT} commit -am "build: ${MONOREPO_PACKAGE_NAME} migration: adjust metadata and automation configs"
+${GIT} commit -am "migration(${MONOREPO_PACKAGE_NAME}): adjust metadata and automation configs"
 ## END commit changes
 
 popd >& /dev/null # "${PATH_MONOREPO}"
