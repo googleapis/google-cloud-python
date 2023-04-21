@@ -210,6 +210,11 @@ $RM -f ${PCC_SPLIT_PATH}
 ### Delete file that was copied over from owlbot-staging/
 ${RM} -f "${PATH_PACKAGE}/${MONOREPO_PACKAGE_NAME}.txt"
 
+## START invoke OwlBot post-processor ########################################
+echo -e "\nInvoking owl-bot post-processor locally. PLEASE WAIT...."
+docker run --user $(id -u):$(id -g) --rm -v ${PATH_MONOREPO}:/repo -w /repo gcr.io/cloud-devrel-public-resources/owlbot-python-mono-repo:latest
+## END invoke OwlBot post-processor
+
 
 
 ## START commit changes #############################################
