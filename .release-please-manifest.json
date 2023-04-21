@@ -15,5 +15,5 @@
     "packages/google-cloud-bigquery-biglake": "0.3.0",
     "packages/google-cloud-storageinsights": "0.1.0",
     "packages/google-cloud-confidentialcomputing": "0.1.0",
-    "packages/google-cloud-ids": "0.0.0"
+    "packages/google-cloud-ids": "1.5.0"
 }
