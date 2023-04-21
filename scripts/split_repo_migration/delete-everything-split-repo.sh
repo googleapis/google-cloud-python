@@ -103,8 +103,8 @@ if [[ $NUM_STRING_REPLACEMENTS != "0" ]]; then
   exit 1
 fi
 
-# Delete everything except LICENCE, SECURITY.md, README.rst, .git and .repo-metadata.json
-ls -A | grep -v 'LICENCE\|SECURITY.md\|README.rst\|.git\|.repo-metadata.json' | xargs rm -rf
+# Delete everything except LICENSE, SECURITY.md, README.rst, .git and .repo-metadata.json
+ls -A | grep -v 'LICENSE\|SECURITY.md\|README.rst\|.git\|.repo-metadata.json' | xargs rm -rf
 
 # Additional cleanup for files/folders with .git prefix
 rm -rf .github
