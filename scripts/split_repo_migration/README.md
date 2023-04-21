@@ -8,7 +8,7 @@ migrated, but this process can be done for multiple repos at once. In other
 words, the order in which the PRs are created or merged does not matter:
   - [single-library.git-migrate-history.sh](single-library.git-migrate-history.sh)
     imports the files in the split repo into a package in this repo. In doing
-    so, it also import the associated git history. This script opens a PR, which
+    so, it also imports the associated git history. This script opens a PR, which
     must be merge-committed once approved, in order to preserve that history.
   - [single-library.post-process.api-files.sh](single-library.post-process.api-files.sh)
     applies needed package-specific migration changes that only touch files
@@ -16,7 +16,8 @@ words, the order in which the PRs are created or merged does not matter:
     repo but does not open a new PR. Typically this commit is included in the PR
     created by the previous script.
     
-The output of this script should be merged before this script is called again, as it modifies shared files:
+The output of this script should be merged before this script is called again,
+as it modifies shared files:
   - [multiple-library.post-process.sh](multiple-library.post-process.sh), for a
     given list of migrated packages, applies package-specific migration changes
     that touch files shared among all packages in this repo. It does this by
