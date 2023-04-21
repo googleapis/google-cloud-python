@@ -2299,8 +2299,8 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
                 Args:
                     request (~.securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest):
-                        The request object. Request message for creating security
-                    health analytics custom modules.
+                        The request object. Request message for creating Security
+                    Health Analytics custom modules.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2791,8 +2791,8 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
                 Args:
                     request (~.securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest):
-                        The request object. Request message for deleting security
-                    health analytics custom modules.
+                        The request object. Request message for deleting Security
+                    Health Analytics custom modules.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2982,7 +2982,7 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 Args:
                     request (~.securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest):
                         The request object. Request message for getting effective
-                    security health analytics custom
+                    Security Health Analytics custom
                     modules.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -3570,8 +3570,8 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
                 Args:
                     request (~.securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest):
-                        The request object. Request message for getting security
-                    health analytics custom modules.
+                        The request object. Request message for getting Security
+                    Health Analytics custom modules.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -4194,7 +4194,7 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 Args:
                     request (~.securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest):
                         The request object. Request message for listing
-                    descendant security health analytics
+                    descendant Security Health Analytics
                     custom modules.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -4205,7 +4205,7 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 Returns:
                     ~.securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse:
                         Response message for listing
-                    descendant security health analytics
+                    descendant Security Health Analytics
                     custom modules.
 
             """
@@ -4307,7 +4307,7 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 Args:
                     request (~.securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest):
                         The request object. Request message for listing effective
-                    security health analytics custom
+                    Security Health Analytics custom
                     modules.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -4318,7 +4318,7 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 Returns:
                     ~.securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse:
                         Response message for listing
-                    effective security health analytics
+                    effective Security Health Analytics
                     custom modules.
 
             """
@@ -4716,8 +4716,8 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
                 Args:
                     request (~.securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest):
-                        The request object. Request message for listing security
-                    health analytics custom modules.
+                        The request object. Request message for listing Security
+                    Health Analytics custom modules.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -4726,8 +4726,8 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
                 Returns:
                     ~.securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse:
-                        Response message for listing security
-                    health analytics custom modules.
+                        Response message for listing Security
+                    Health Analytics custom modules.
 
             """
 
@@ -6186,8 +6186,8 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
                 Args:
                     request (~.securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest):
-                        The request object. Request message for updating security
-                    health analytics custom modules.
+                        The request object. Request message for updating Security
+                    Health Analytics custom modules.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

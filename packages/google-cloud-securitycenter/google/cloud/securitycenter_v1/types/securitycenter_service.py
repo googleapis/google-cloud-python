@@ -272,7 +272,7 @@ class CreateNotificationConfigRequest(proto.Message):
 
 
 class CreateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
-    r"""Request message for creating security health analytics custom
+    r"""Request message for creating Security Health Analytics custom
     modules.
 
     Attributes:
@@ -361,7 +361,7 @@ class DeleteNotificationConfigRequest(proto.Message):
 
 
 class DeleteSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
-    r"""Request message for deleting security health analytics custom
+    r"""Request message for deleting Security Health Analytics custom
     modules.
 
     Attributes:
@@ -450,8 +450,8 @@ class GetOrganizationSettingsRequest(proto.Message):
 
 
 class GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
-    r"""Request message for getting effective security health
-    analytics custom modules.
+    r"""Request message for getting effective Security Health
+    Analytics custom modules.
 
     Attributes:
         name (str):
@@ -470,7 +470,7 @@ class GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
 
 
 class GetSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
-    r"""Request message for getting security health analytics custom
+    r"""Request message for getting Security Health Analytics custom
     modules.
 
     Attributes:
@@ -1003,8 +1003,8 @@ class GroupResult(proto.Message):
 
 
 class ListDescendantSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
-    r"""Request message for listing descendant security health
-    analytics custom modules.
+    r"""Request message for listing descendant Security Health
+    Analytics custom modules.
 
     Attributes:
         parent (str):
@@ -1038,8 +1038,8 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
 
 
 class ListDescendantSecurityHealthAnalyticsCustomModulesResponse(proto.Message):
-    r"""Response message for listing descendant security health
-    analytics custom modules.
+    r"""Response message for listing descendant Security Health
+    Analytics custom modules.
 
     Attributes:
         security_health_analytics_custom_modules (MutableSequence[google.cloud.securitycenter_v1.types.SecurityHealthAnalyticsCustomModule]):
@@ -1196,8 +1196,8 @@ class ListNotificationConfigsResponse(proto.Message):
 
 
 class ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
-    r"""Request message for listing effective security health
-    analytics custom modules.
+    r"""Request message for listing effective Security Health
+    Analytics custom modules.
 
     Attributes:
         parent (str):
@@ -1231,8 +1231,8 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
 
 
 class ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(proto.Message):
-    r"""Response message for listing effective security health
-    analytics custom modules.
+    r"""Response message for listing effective Security Health
+    Analytics custom modules.
 
     Attributes:
         effective_security_health_analytics_custom_modules (MutableSequence[google.cloud.securitycenter_v1.types.EffectiveSecurityHealthAnalyticsCustomModule]):
@@ -1261,7 +1261,7 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(proto.Message):
 
 
 class ListSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
-    r"""Request message for listing security health analytics custom
+    r"""Request message for listing Security Health Analytics custom
     modules.
 
     Attributes:
@@ -1296,7 +1296,7 @@ class ListSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
 
 
 class ListSecurityHealthAnalyticsCustomModulesResponse(proto.Message):
-    r"""Response message for listing security health analytics custom
+    r"""Response message for listing Security Health Analytics custom
     modules.
 
     Attributes:
@@ -2245,7 +2245,7 @@ class UpdateOrganizationSettingsRequest(proto.Message):
 
 
 class UpdateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
-    r"""Request message for updating security health analytics custom
+    r"""Request message for updating Security Health Analytics custom
     modules.
 
     Attributes:

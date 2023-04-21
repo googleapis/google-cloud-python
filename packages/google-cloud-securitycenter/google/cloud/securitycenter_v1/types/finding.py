@@ -28,6 +28,12 @@ from google.cloud.securitycenter_v1.types import (
     container,
 )
 from google.cloud.securitycenter_v1.types import external_system, file, iam_binding
+from google.cloud.securitycenter_v1.types import (
+    cloud_dlp_data_profile as gcs_cloud_dlp_data_profile,
+)
+from google.cloud.securitycenter_v1.types import (
+    cloud_dlp_inspection as gcs_cloud_dlp_inspection,
+)
 from google.cloud.securitycenter_v1.types import exfiltration as gcs_exfiltration
 from google.cloud.securitycenter_v1.types import kernel_rootkit as gcs_kernel_rootkit
 from google.cloud.securitycenter_v1.types import mitre_attack as gcs_mitre_attack
@@ -57,10 +63,12 @@ class Finding(proto.Message):
 
     Attributes:
         name (str):
-            The relative resource name of this finding. See:
-            https://cloud.google.com/apis/design/resource_names#relative_resource_name
-            Example:
-            "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}".
+            The `relative resource
+            name <https://cloud.google.com/apis/design/resource_names#relative_resource_name>`__
+            of the finding. Example:
+            "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
+            "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
+            "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
         parent (str):
             The relative resource name of the source the finding belongs
             to. See:
@@ -130,11 +138,12 @@ class Finding(proto.Message):
         finding_class (google.cloud.securitycenter_v1.types.Finding.FindingClass):
             The class of the finding.
         indicator (google.cloud.securitycenter_v1.types.Indicator):
-            Represents what's commonly known as an Indicator of
-            compromise (IoC) in computer forensics. This is an artifact
+            Represents what's commonly known as an *indicator of
+            compromise* (IoC) in computer forensics. This is an artifact
             observed on a network or in an operating system that, with
-            high confidence, indicates a computer intrusion. Reference:
-            https://en.wikipedia.org/wiki/Indicator_of_compromise
+            high confidence, indicates a computer intrusion. For more
+            information, see `Indicator of
+            compromise <https://en.wikipedia.org/wiki/Indicator_of_compromise>`__.
         vulnerability (google.cloud.securitycenter_v1.types.Vulnerability):
             Represents vulnerability-specific fields like
             CVE and CVSS scores. CVE stands for Common
@@ -151,18 +160,17 @@ class Finding(proto.Message):
             MITRE ATT&CK tactics and techniques related
             to this finding. See: https://attack.mitre.org
         access (google.cloud.securitycenter_v1.types.Access):
-            Access details associated to the Finding,
+            Access details associated with the finding,
             such as more information on the caller, which
-            method was accessed, from where, etc.
+            method was accessed, and from where.
         connections (MutableSequence[google.cloud.securitycenter_v1.types.Connection]):
             Contains information about the IP connection
             associated with the finding.
         mute_initiator (str):
-            First known as mute_annotation. Records additional
-            information about the mute operation e.g. mute config that
-            muted the finding, user who muted the finding, etc. Unlike
-            other attributes of a finding, a finding provider shouldn't
-            set the value of mute.
+            Records additional information about the mute operation, for
+            example, the `mute
+            configuration </security-command-center/docs/how-to-mute-findings>`__
+            that muted the finding and the user who muted the finding.
         processes (MutableSequence[google.cloud.securitycenter_v1.types.Process]):
             Represents operating system processes
             associated with the Finding.
@@ -195,23 +203,23 @@ class Finding(proto.Message):
             of the finding source such as "Event Threat
             Detection" or "Security Health Analytics".
         description (str):
-            Contains more detail about the finding.
+            Contains more details about the finding.
         exfiltration (google.cloud.securitycenter_v1.types.Exfiltration):
-            Represents exfiltration associated with the
-            Finding.
+            Represents exfiltrations associated with the
+            finding.
         iam_bindings (MutableSequence[google.cloud.securitycenter_v1.types.IamBinding]):
             Represents IAM bindings associated with the
-            Finding.
+            finding.
         next_steps (str):
-            Next steps associate to the finding.
+            Steps to address the finding.
         module_name (str):
             Unique identifier of the module which
             generated the finding. Example:
             folders/598186756061/securityHealthAnalyticsSettings/customModules/56799441161885
         containers (MutableSequence[google.cloud.securitycenter_v1.types.Container]):
-            Containers associated with the finding.
-            containers provides information for both
-            Kubernetes and non-Kubernetes containers.
+            Containers associated with the finding. This
+            field provides information for both Kubernetes
+            and non-Kubernetes containers.
         kubernetes (google.cloud.securitycenter_v1.types.Kubernetes):
             Kubernetes resources associated with the
             finding.
@@ -219,8 +227,15 @@ class Finding(proto.Message):
             Database associated with the finding.
         files (MutableSequence[google.cloud.securitycenter_v1.types.File]):
             File associated with the finding.
+        cloud_dlp_inspection (google.cloud.securitycenter_v1.types.CloudDlpInspection):
+            Cloud Data Loss Prevention (Cloud DLP)
+            inspection results that are associated with the
+            finding.
+        cloud_dlp_data_profile (google.cloud.securitycenter_v1.types.CloudDlpDataProfile):
+            Cloud DLP data profile that is associated
+            with the finding.
         kernel_rootkit (google.cloud.securitycenter_v1.types.KernelRootkit):
-            Kernel Rootkit signature.
+            Signature of the kernel rootkit.
     """
 
     class State(proto.Enum):
@@ -256,8 +271,9 @@ class Finding(proto.Message):
                 exfiltrate data, and otherwise gain additional
                 access and privileges to cloud resources and
                 workloads. Examples include publicly accessible
-                unprotected user data, public SSH access with
-                weak or no passwords, etc.
+                unprotected user data and public SSH access with
+                weak or no passwords.
+
                 Threat:
                 Indicates a threat that is able to access,
                 modify, or delete data or execute unauthorized
@@ -533,6 +549,18 @@ class Finding(proto.Message):
         proto.MESSAGE,
         number=46,
         message=file.File,
+    )
+    cloud_dlp_inspection: gcs_cloud_dlp_inspection.CloudDlpInspection = proto.Field(
+        proto.MESSAGE,
+        number=48,
+        message=gcs_cloud_dlp_inspection.CloudDlpInspection,
+    )
+    cloud_dlp_data_profile: gcs_cloud_dlp_data_profile.CloudDlpDataProfile = (
+        proto.Field(
+            proto.MESSAGE,
+            number=49,
+            message=gcs_cloud_dlp_data_profile.CloudDlpDataProfile,
+        )
     )
     kernel_rootkit: gcs_kernel_rootkit.KernelRootkit = proto.Field(
         proto.MESSAGE,

@@ -31,6 +31,10 @@ from google.cloud.securitycenter_v1.types.access import (
 )
 from google.cloud.securitycenter_v1.types.asset import Asset
 from google.cloud.securitycenter_v1.types.bigquery_export import BigQueryExport
+from google.cloud.securitycenter_v1.types.cloud_dlp_data_profile import (
+    CloudDlpDataProfile,
+)
+from google.cloud.securitycenter_v1.types.cloud_dlp_inspection import CloudDlpInspection
 from google.cloud.securitycenter_v1.types.compliance import Compliance
 from google.cloud.securitycenter_v1.types.connection import Connection
 from google.cloud.securitycenter_v1.types.contact_details import Contact, ContactDetails
@@ -145,6 +149,8 @@ __all__ = (
     "ServiceAccountDelegationInfo",
     "Asset",
     "BigQueryExport",
+    "CloudDlpDataProfile",
+    "CloudDlpInspection",
     "Compliance",
     "Connection",
     "Contact",

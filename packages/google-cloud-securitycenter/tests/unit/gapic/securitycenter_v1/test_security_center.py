@@ -70,6 +70,8 @@ from google.cloud.securitycenter_v1.services.security_center import (
 from google.cloud.securitycenter_v1.types import (
     access,
     bigquery_export,
+    cloud_dlp_data_profile,
+    cloud_dlp_inspection,
     compliance,
     connection,
     contact_details,
@@ -15511,6 +15513,13 @@ def test_create_finding_rest(request_type):
             "grantees": ["grantees_value1", "grantees_value2"],
         },
         "files": {},
+        "cloud_dlp_inspection": {
+            "inspect_job": "inspect_job_value",
+            "info_type": "info_type_value",
+            "info_type_count": 1621,
+            "full_scan": True,
+        },
+        "cloud_dlp_data_profile": {"data_profile": "data_profile_value"},
         "kernel_rootkit": {
             "name": "name_value",
             "unexpected_code_modification": True,
@@ -15926,6 +15935,13 @@ def test_create_finding_rest_bad_request(
             "grantees": ["grantees_value1", "grantees_value2"],
         },
         "files": {},
+        "cloud_dlp_inspection": {
+            "inspect_job": "inspect_job_value",
+            "info_type": "info_type_value",
+            "info_type_count": 1621,
+            "full_scan": True,
+        },
+        "cloud_dlp_data_profile": {"data_profile": "data_profile_value"},
         "kernel_rootkit": {
             "name": "name_value",
             "unexpected_code_modification": True,
@@ -25103,6 +25119,13 @@ def test_update_finding_rest(request_type):
             "grantees": ["grantees_value1", "grantees_value2"],
         },
         "files": {},
+        "cloud_dlp_inspection": {
+            "inspect_job": "inspect_job_value",
+            "info_type": "info_type_value",
+            "info_type_count": 1621,
+            "full_scan": True,
+        },
+        "cloud_dlp_data_profile": {"data_profile": "data_profile_value"},
         "kernel_rootkit": {
             "name": "name_value",
             "unexpected_code_modification": True,
@@ -25493,6 +25516,13 @@ def test_update_finding_rest_bad_request(
             "grantees": ["grantees_value1", "grantees_value2"],
         },
         "files": {},
+        "cloud_dlp_inspection": {
+            "inspect_job": "inspect_job_value",
+            "info_type": "info_type_value",
+            "info_type_count": 1621,
+            "full_scan": True,
+        },
+        "cloud_dlp_data_profile": {"data_profile": "data_profile_value"},
         "kernel_rootkit": {
             "name": "name_value",
             "unexpected_code_modification": True,
@@ -29515,9 +29545,32 @@ def test_parse_big_query_export_path():
     assert expected == actual
 
 
+def test_dlp_job_path():
+    project = "winkle"
+    dlp_job = "nautilus"
+    expected = "projects/{project}/dlpJobs/{dlp_job}".format(
+        project=project,
+        dlp_job=dlp_job,
+    )
+    actual = SecurityCenterClient.dlp_job_path(project, dlp_job)
+    assert expected == actual
+
+
+def test_parse_dlp_job_path():
+    expected = {
+        "project": "scallop",
+        "dlp_job": "abalone",
+    }
+    path = SecurityCenterClient.dlp_job_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SecurityCenterClient.parse_dlp_job_path(path)
+    assert expected == actual
+
+
 def test_effective_security_health_analytics_custom_module_path():
-    organization = "winkle"
-    effective_custom_module = "nautilus"
+    organization = "squid"
+    effective_custom_module = "clam"
     expected = "organizations/{organization}/securityHealthAnalyticsSettings/effectiveCustomModules/{effective_custom_module}".format(
         organization=organization,
         effective_custom_module=effective_custom_module,
@@ -29532,8 +29585,8 @@ def test_effective_security_health_analytics_custom_module_path():
 
 def test_parse_effective_security_health_analytics_custom_module_path():
     expected = {
-        "organization": "scallop",
-        "effective_custom_module": "abalone",
+        "organization": "whelk",
+        "effective_custom_module": "octopus",
     }
     path = SecurityCenterClient.effective_security_health_analytics_custom_module_path(
         **expected
@@ -29547,10 +29600,10 @@ def test_parse_effective_security_health_analytics_custom_module_path():
 
 
 def test_external_system_path():
-    organization = "squid"
-    source = "clam"
-    finding = "whelk"
-    externalsystem = "octopus"
+    organization = "oyster"
+    source = "nudibranch"
+    finding = "cuttlefish"
+    externalsystem = "mussel"
     expected = "organizations/{organization}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}".format(
         organization=organization,
         source=source,
@@ -29565,10 +29618,10 @@ def test_external_system_path():
 
 def test_parse_external_system_path():
     expected = {
-        "organization": "oyster",
-        "source": "nudibranch",
-        "finding": "cuttlefish",
-        "externalsystem": "mussel",
+        "organization": "winkle",
+        "source": "nautilus",
+        "finding": "scallop",
+        "externalsystem": "abalone",
     }
     path = SecurityCenterClient.external_system_path(**expected)
 
@@ -29578,9 +29631,9 @@ def test_parse_external_system_path():
 
 
 def test_finding_path():
-    organization = "winkle"
-    source = "nautilus"
-    finding = "scallop"
+    organization = "squid"
+    source = "clam"
+    finding = "whelk"
     expected = (
         "organizations/{organization}/sources/{source}/findings/{finding}".format(
             organization=organization,
@@ -29594,9 +29647,9 @@ def test_finding_path():
 
 def test_parse_finding_path():
     expected = {
-        "organization": "abalone",
-        "source": "squid",
-        "finding": "clam",
+        "organization": "octopus",
+        "source": "oyster",
+        "finding": "nudibranch",
     }
     path = SecurityCenterClient.finding_path(**expected)
 
@@ -29606,8 +29659,8 @@ def test_parse_finding_path():
 
 
 def test_mute_config_path():
-    organization = "whelk"
-    mute_config = "octopus"
+    organization = "cuttlefish"
+    mute_config = "mussel"
     expected = "organizations/{organization}/muteConfigs/{mute_config}".format(
         organization=organization,
         mute_config=mute_config,
@@ -29618,8 +29671,8 @@ def test_mute_config_path():
 
 def test_parse_mute_config_path():
     expected = {
-        "organization": "oyster",
-        "mute_config": "nudibranch",
+        "organization": "winkle",
+        "mute_config": "nautilus",
     }
     path = SecurityCenterClient.mute_config_path(**expected)
 
@@ -29629,8 +29682,8 @@ def test_parse_mute_config_path():
 
 
 def test_notification_config_path():
-    organization = "cuttlefish"
-    notification_config = "mussel"
+    organization = "scallop"
+    notification_config = "abalone"
     expected = (
         "organizations/{organization}/notificationConfigs/{notification_config}".format(
             organization=organization,
@@ -29645,8 +29698,8 @@ def test_notification_config_path():
 
 def test_parse_notification_config_path():
     expected = {
-        "organization": "winkle",
-        "notification_config": "nautilus",
+        "organization": "squid",
+        "notification_config": "clam",
     }
     path = SecurityCenterClient.notification_config_path(**expected)
 
@@ -29656,7 +29709,7 @@ def test_parse_notification_config_path():
 
 
 def test_organization_settings_path():
-    organization = "scallop"
+    organization = "whelk"
     expected = "organizations/{organization}/organizationSettings".format(
         organization=organization,
     )
@@ -29666,7 +29719,7 @@ def test_organization_settings_path():
 
 def test_parse_organization_settings_path():
     expected = {
-        "organization": "abalone",
+        "organization": "octopus",
     }
     path = SecurityCenterClient.organization_settings_path(**expected)
 
@@ -29676,8 +29729,8 @@ def test_parse_organization_settings_path():
 
 
 def test_security_health_analytics_custom_module_path():
-    organization = "squid"
-    custom_module = "clam"
+    organization = "oyster"
+    custom_module = "nudibranch"
     expected = "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{custom_module}".format(
         organization=organization,
         custom_module=custom_module,
@@ -29690,8 +29743,8 @@ def test_security_health_analytics_custom_module_path():
 
 def test_parse_security_health_analytics_custom_module_path():
     expected = {
-        "organization": "whelk",
-        "custom_module": "octopus",
+        "organization": "cuttlefish",
+        "custom_module": "mussel",
     }
     path = SecurityCenterClient.security_health_analytics_custom_module_path(**expected)
 
@@ -29703,8 +29756,8 @@ def test_parse_security_health_analytics_custom_module_path():
 
 
 def test_security_marks_path():
-    organization = "oyster"
-    asset = "nudibranch"
+    organization = "winkle"
+    asset = "nautilus"
     expected = "organizations/{organization}/assets/{asset}/securityMarks".format(
         organization=organization,
         asset=asset,
@@ -29715,8 +29768,8 @@ def test_security_marks_path():
 
 def test_parse_security_marks_path():
     expected = {
-        "organization": "cuttlefish",
-        "asset": "mussel",
+        "organization": "scallop",
+        "asset": "abalone",
     }
     path = SecurityCenterClient.security_marks_path(**expected)
 
@@ -29726,8 +29779,8 @@ def test_parse_security_marks_path():
 
 
 def test_source_path():
-    organization = "winkle"
-    source = "nautilus"
+    organization = "squid"
+    source = "clam"
     expected = "organizations/{organization}/sources/{source}".format(
         organization=organization,
         source=source,
@@ -29738,8 +29791,8 @@ def test_source_path():
 
 def test_parse_source_path():
     expected = {
-        "organization": "scallop",
-        "source": "abalone",
+        "organization": "whelk",
+        "source": "octopus",
     }
     path = SecurityCenterClient.source_path(**expected)
 
@@ -29748,9 +29801,32 @@ def test_parse_source_path():
     assert expected == actual
 
 
+def test_table_data_profile_path():
+    project = "oyster"
+    table_profile = "nudibranch"
+    expected = "projects/{project}/tableProfiles/{table_profile}".format(
+        project=project,
+        table_profile=table_profile,
+    )
+    actual = SecurityCenterClient.table_data_profile_path(project, table_profile)
+    assert expected == actual
+
+
+def test_parse_table_data_profile_path():
+    expected = {
+        "project": "cuttlefish",
+        "table_profile": "mussel",
+    }
+    path = SecurityCenterClient.table_data_profile_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SecurityCenterClient.parse_table_data_profile_path(path)
+    assert expected == actual
+
+
 def test_topic_path():
-    project = "squid"
-    topic = "clam"
+    project = "winkle"
+    topic = "nautilus"
     expected = "projects/{project}/topics/{topic}".format(
         project=project,
         topic=topic,
@@ -29761,8 +29837,8 @@ def test_topic_path():
 
 def test_parse_topic_path():
     expected = {
-        "project": "whelk",
-        "topic": "octopus",
+        "project": "scallop",
+        "topic": "abalone",
     }
     path = SecurityCenterClient.topic_path(**expected)
 
@@ -29772,7 +29848,7 @@ def test_parse_topic_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -29782,7 +29858,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "clam",
     }
     path = SecurityCenterClient.common_billing_account_path(**expected)
 
@@ -29792,7 +29868,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -29802,7 +29878,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "octopus",
     }
     path = SecurityCenterClient.common_folder_path(**expected)
 
@@ -29812,7 +29888,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -29822,7 +29898,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "nudibranch",
     }
     path = SecurityCenterClient.common_organization_path(**expected)
 
@@ -29832,7 +29908,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -29842,7 +29918,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "mussel",
     }
     path = SecurityCenterClient.common_project_path(**expected)
 
@@ -29852,8 +29928,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -29864,8 +29940,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = SecurityCenterClient.common_location_path(**expected)
 

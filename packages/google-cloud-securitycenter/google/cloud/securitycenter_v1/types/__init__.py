@@ -16,6 +16,8 @@
 from .access import Access, Geolocation, ServiceAccountDelegationInfo
 from .asset import Asset
 from .bigquery_export import BigQueryExport
+from .cloud_dlp_data_profile import CloudDlpDataProfile
+from .cloud_dlp_inspection import CloudDlpInspection
 from .compliance import Compliance
 from .connection import Connection
 from .contact_details import Contact, ContactDetails
@@ -110,6 +112,8 @@ __all__ = (
     "ServiceAccountDelegationInfo",
     "Asset",
     "BigQueryExport",
+    "CloudDlpDataProfile",
+    "CloudDlpInspection",
     "Compliance",
     "Connection",
     "Contact",

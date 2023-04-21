@@ -55,6 +55,8 @@ from google.cloud.securitycenter_v1.services.security_center import pagers
 from google.cloud.securitycenter_v1.types import (
     access,
     bigquery_export,
+    cloud_dlp_data_profile,
+    cloud_dlp_inspection,
     compliance,
     connection,
     container,
@@ -118,6 +120,8 @@ class SecurityCenterAsyncClient:
     parse_big_query_export_path = staticmethod(
         SecurityCenterClient.parse_big_query_export_path
     )
+    dlp_job_path = staticmethod(SecurityCenterClient.dlp_job_path)
+    parse_dlp_job_path = staticmethod(SecurityCenterClient.parse_dlp_job_path)
     effective_security_health_analytics_custom_module_path = staticmethod(
         SecurityCenterClient.effective_security_health_analytics_custom_module_path
     )
@@ -156,6 +160,10 @@ class SecurityCenterAsyncClient:
     )
     source_path = staticmethod(SecurityCenterClient.source_path)
     parse_source_path = staticmethod(SecurityCenterClient.parse_source_path)
+    table_data_profile_path = staticmethod(SecurityCenterClient.table_data_profile_path)
+    parse_table_data_profile_path = staticmethod(
+        SecurityCenterClient.parse_table_data_profile_path
+    )
     topic_path = staticmethod(SecurityCenterClient.topic_path)
     parse_topic_path = staticmethod(SecurityCenterClient.parse_topic_path)
     common_billing_account_path = staticmethod(
@@ -495,8 +503,8 @@ class SecurityCenterAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.securitycenter_v1.types.CreateSecurityHealthAnalyticsCustomModuleRequest, dict]]):
-                The request object. Request message for creating security
-                health analytics custom modules.
+                The request object. Request message for creating Security
+                Health Analytics custom modules.
             parent (:class:`str`):
                 Required. Resource name of the new
                 custom module's parent. Its format is
@@ -1352,8 +1360,8 @@ class SecurityCenterAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.securitycenter_v1.types.DeleteSecurityHealthAnalyticsCustomModuleRequest, dict]]):
-                The request object. Request message for deleting security
-                health analytics custom modules.
+                The request object. Request message for deleting Security
+                Health Analytics custom modules.
             name (:class:`str`):
                 Required. Name of the custom module
                 to delete. Its format is
@@ -2089,7 +2097,7 @@ class SecurityCenterAsyncClient:
         Args:
             request (Optional[Union[google.cloud.securitycenter_v1.types.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest, dict]]):
                 The request object. Request message for getting effective
-                security health analytics custom
+                Security Health Analytics custom
                 modules.
             name (:class:`str`):
                 Required. Name of the effective
@@ -2224,8 +2232,8 @@ class SecurityCenterAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.securitycenter_v1.types.GetSecurityHealthAnalyticsCustomModuleRequest, dict]]):
-                The request object. Request message for getting security
-                health analytics custom modules.
+                The request object. Request message for getting Security
+                Health Analytics custom modules.
             name (:class:`str`):
                 Required. Name of the custom module
                 to get. Its format is
@@ -2848,7 +2856,7 @@ class SecurityCenterAsyncClient:
         Args:
             request (Optional[Union[google.cloud.securitycenter_v1.types.ListDescendantSecurityHealthAnalyticsCustomModulesRequest, dict]]):
                 The request object. Request message for listing
-                descendant security health analytics
+                descendant Security Health Analytics
                 custom modules.
             parent (:class:`str`):
                 Required. Name of parent to list
@@ -2870,7 +2878,7 @@ class SecurityCenterAsyncClient:
         Returns:
             google.cloud.securitycenter_v1.services.security_center.pagers.ListDescendantSecurityHealthAnalyticsCustomModulesAsyncPager:
                 Response message for listing
-                descendant security health analytics
+                descendant Security Health Analytics
                 custom modules.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -3346,7 +3354,7 @@ class SecurityCenterAsyncClient:
         Args:
             request (Optional[Union[google.cloud.securitycenter_v1.types.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest, dict]]):
                 The request object. Request message for listing effective
-                security health analytics custom
+                Security Health Analytics custom
                 modules.
             parent (:class:`str`):
                 Required. Name of parent to list
@@ -3368,7 +3376,7 @@ class SecurityCenterAsyncClient:
         Returns:
             google.cloud.securitycenter_v1.services.security_center.pagers.ListEffectiveSecurityHealthAnalyticsCustomModulesAsyncPager:
                 Response message for listing
-                effective security health analytics
+                effective Security Health Analytics
                 custom modules.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -3487,8 +3495,8 @@ class SecurityCenterAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.securitycenter_v1.types.ListSecurityHealthAnalyticsCustomModulesRequest, dict]]):
-                The request object. Request message for listing security
-                health analytics custom modules.
+                The request object. Request message for listing Security
+                Health Analytics custom modules.
             parent (:class:`str`):
                 Required. Name of parent to list
                 custom modules. Its format is
@@ -3508,8 +3516,8 @@ class SecurityCenterAsyncClient:
 
         Returns:
             google.cloud.securitycenter_v1.services.security_center.pagers.ListSecurityHealthAnalyticsCustomModulesAsyncPager:
-                Response message for listing security
-                health analytics custom modules.
+                Response message for listing Security
+                Health Analytics custom modules.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -4994,7 +5002,7 @@ class SecurityCenterAsyncClient:
         the given name based on the given update mask. Updating
         the enablement state is supported on both resident and
         inherited modules (though resident modules cannot have
-        an enablement state of “inherited”). Updating the
+        an enablement state of "inherited"). Updating the
         display name and custom config of a module is supported
         on resident modules only.
 
@@ -5025,8 +5033,8 @@ class SecurityCenterAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.securitycenter_v1.types.UpdateSecurityHealthAnalyticsCustomModuleRequest, dict]]):
-                The request object. Request message for updating security
-                health analytics custom modules.
+                The request object. Request message for updating Security
+                Health Analytics custom modules.
             security_health_analytics_custom_module (:class:`google.cloud.securitycenter_v1.types.SecurityHealthAnalyticsCustomModule`):
                 Required. The SecurityHealthAnalytics
                 custom module to update.

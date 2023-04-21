@@ -59,6 +59,8 @@ from google.cloud.securitycenter_v1.services.security_center import pagers
 from google.cloud.securitycenter_v1.types import (
     access,
     bigquery_export,
+    cloud_dlp_data_profile,
+    cloud_dlp_inspection,
     compliance,
     connection,
     container,
@@ -271,6 +273,23 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def dlp_job_path(
+        project: str,
+        dlp_job: str,
+    ) -> str:
+        """Returns a fully-qualified dlp_job string."""
+        return "projects/{project}/dlpJobs/{dlp_job}".format(
+            project=project,
+            dlp_job=dlp_job,
+        )
+
+    @staticmethod
+    def parse_dlp_job_path(path: str) -> Dict[str, str]:
+        """Parses a dlp_job path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/dlpJobs/(?P<dlp_job>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def effective_security_health_analytics_custom_module_path(
         organization: str,
         effective_custom_module: str,
@@ -453,6 +472,25 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         """Parses a source path into its component segments."""
         m = re.match(
             r"^organizations/(?P<organization>.+?)/sources/(?P<source>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def table_data_profile_path(
+        project: str,
+        table_profile: str,
+    ) -> str:
+        """Returns a fully-qualified table_data_profile string."""
+        return "projects/{project}/tableProfiles/{table_profile}".format(
+            project=project,
+            table_profile=table_profile,
+        )
+
+    @staticmethod
+    def parse_table_data_profile_path(path: str) -> Dict[str, str]:
+        """Parses a table_data_profile path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/tableProfiles/(?P<table_profile>.+?)$", path
         )
         return m.groupdict() if m else {}
 
@@ -900,8 +938,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.CreateSecurityHealthAnalyticsCustomModuleRequest, dict]):
-                The request object. Request message for creating security
-                health analytics custom modules.
+                The request object. Request message for creating Security
+                Health Analytics custom modules.
             parent (str):
                 Required. Resource name of the new
                 custom module's parent. Its format is
@@ -1770,8 +1808,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.DeleteSecurityHealthAnalyticsCustomModuleRequest, dict]):
-                The request object. Request message for deleting security
-                health analytics custom modules.
+                The request object. Request message for deleting Security
+                Health Analytics custom modules.
             name (str):
                 Required. Name of the custom module
                 to delete. Its format is
@@ -2483,7 +2521,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         Args:
             request (Union[google.cloud.securitycenter_v1.types.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest, dict]):
                 The request object. Request message for getting effective
-                security health analytics custom
+                Security Health Analytics custom
                 modules.
             name (str):
                 Required. Name of the effective
@@ -2613,8 +2651,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.GetSecurityHealthAnalyticsCustomModuleRequest, dict]):
-                The request object. Request message for getting security
-                health analytics custom modules.
+                The request object. Request message for getting Security
+                Health Analytics custom modules.
             name (str):
                 Required. Name of the custom module
                 to get. Its format is
@@ -3196,7 +3234,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         Args:
             request (Union[google.cloud.securitycenter_v1.types.ListDescendantSecurityHealthAnalyticsCustomModulesRequest, dict]):
                 The request object. Request message for listing
-                descendant security health analytics
+                descendant Security Health Analytics
                 custom modules.
             parent (str):
                 Required. Name of parent to list
@@ -3218,7 +3256,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         Returns:
             google.cloud.securitycenter_v1.services.security_center.pagers.ListDescendantSecurityHealthAnalyticsCustomModulesPager:
                 Response message for listing
-                descendant security health analytics
+                descendant Security Health Analytics
                 custom modules.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -3674,7 +3712,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         Args:
             request (Union[google.cloud.securitycenter_v1.types.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest, dict]):
                 The request object. Request message for listing effective
-                security health analytics custom
+                Security Health Analytics custom
                 modules.
             parent (str):
                 Required. Name of parent to list
@@ -3696,7 +3734,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         Returns:
             google.cloud.securitycenter_v1.services.security_center.pagers.ListEffectiveSecurityHealthAnalyticsCustomModulesPager:
                 Response message for listing
-                effective security health analytics
+                effective Security Health Analytics
                 custom modules.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -3810,8 +3848,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.ListSecurityHealthAnalyticsCustomModulesRequest, dict]):
-                The request object. Request message for listing security
-                health analytics custom modules.
+                The request object. Request message for listing Security
+                Health Analytics custom modules.
             parent (str):
                 Required. Name of parent to list
                 custom modules. Its format is
@@ -3831,8 +3869,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         Returns:
             google.cloud.securitycenter_v1.services.security_center.pagers.ListSecurityHealthAnalyticsCustomModulesPager:
-                Response message for listing security
-                health analytics custom modules.
+                Response message for listing Security
+                Health Analytics custom modules.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -5295,7 +5333,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         the given name based on the given update mask. Updating
         the enablement state is supported on both resident and
         inherited modules (though resident modules cannot have
-        an enablement state of “inherited”). Updating the
+        an enablement state of "inherited"). Updating the
         display name and custom config of a module is supported
         on resident modules only.
 
@@ -5326,8 +5364,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.UpdateSecurityHealthAnalyticsCustomModuleRequest, dict]):
-                The request object. Request message for updating security
-                health analytics custom modules.
+                The request object. Request message for updating Security
+                Health Analytics custom modules.
             security_health_analytics_custom_module (google.cloud.securitycenter_v1.types.SecurityHealthAnalyticsCustomModule):
                 Required. The SecurityHealthAnalytics
                 custom module to update.
