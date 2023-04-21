@@ -17,6 +17,7 @@
 This utilities are explicitly catered to ``requests``-like transports.
 """
 
+import http.client
 import requests.exceptions
 import urllib3.exceptions  # type: ignore
 
@@ -35,10 +36,16 @@ _DEFAULT_CONNECT_TIMEOUT = 61
 _DEFAULT_READ_TIMEOUT = 60
 
 _CONNECTION_ERROR_CLASSES = (
+    http.client.BadStatusLine,
+    http.client.IncompleteRead,
+    http.client.ResponseNotReady,
     requests.exceptions.ConnectionError,
     requests.exceptions.ChunkedEncodingError,
     requests.exceptions.Timeout,
+    urllib3.exceptions.PoolError,
     urllib3.exceptions.ProtocolError,
+    urllib3.exceptions.SSLError,
+    urllib3.exceptions.TimeoutError,
     ConnectionError,  # Python 3.x only, superclass of ConnectionResetError.
 )
 
