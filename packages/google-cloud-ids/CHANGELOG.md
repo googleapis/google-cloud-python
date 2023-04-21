@@ -1,5 +1,39 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ids-v1.5.0...google-cloud-ids-v1.0.0) (2023-04-21)
+
+
+### Features
+
+* add api key support ([#15](https://github.com/googleapis/google-cloud-python/issues/15)) ([bc3f542](https://github.com/googleapis/google-cloud-python/commit/bc3f542bfd89577f6dbfde8b0a5701f567256dc3))
+* add audience parameter ([e3cf561](https://github.com/googleapis/google-cloud-python/commit/e3cf56154f4fb2d37ee78889de5b8b232de393a4))
+* Add support for python 3.11 ([#97](https://github.com/googleapis/google-cloud-python/issues/97)) ([1fd602a](https://github.com/googleapis/google-cloud-python/commit/1fd602ae9c2856712ae2021ec2fb9261a00a6a7a))
+* bump release level to production/stable ([#5](https://github.com/googleapis/google-cloud-python/issues/5)) ([3f3c497](https://github.com/googleapis/google-cloud-python/commit/3f3c49798e159978ac145281540f3a629b0cfae2))
+* enable "rest" transport in Python for services supporting numeric enums ([#105](https://github.com/googleapis/google-cloud-python/issues/105)) ([78900e5](https://github.com/googleapis/google-cloud-python/commit/78900e512fe831f61494e4dd1cd6c584e07c2af6))
+* generate v1 ([32e6e89](https://github.com/googleapis/google-cloud-python/commit/32e6e8957f9a9a151dd878a04c8831b999fe62f2))
+
+
+### Bug Fixes
+
+* Add service_yaml_parameters to py_gapic_library BUILD.bazel targets ([#107](https://github.com/googleapis/google-cloud-python/issues/107)) ([44290f5](https://github.com/googleapis/google-cloud-python/commit/44290f593b00ed409b545a6025bbaff7130cb950))
+* **deps:** allow protobuf &lt; 5.0.0 ([#70](https://github.com/googleapis/google-cloud-python/issues/70)) ([e3971e0](https://github.com/googleapis/google-cloud-python/commit/e3971e0a72d86645f9c23c702724c44524dfc897))
+* **deps:** allow protobuf 3.19.5 ([#87](https://github.com/googleapis/google-cloud-python/issues/87)) ([93c2a39](https://github.com/googleapis/google-cloud-python/commit/93c2a3923b4d82b91e0b0e204abe6baedd83106b))
+* **deps:** require google-api-core &gt;= 2.8.0 ([#59](https://github.com/googleapis/google-cloud-python/issues/59)) ([e3cf561](https://github.com/googleapis/google-cloud-python/commit/e3cf56154f4fb2d37ee78889de5b8b232de393a4))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([#94](https://github.com/googleapis/google-cloud-python/issues/94)) ([d69f4bc](https://github.com/googleapis/google-cloud-python/commit/d69f4bc4e74426511b217b71dbb0117aa9c4d58e))
+* **deps:** require google-api-core&gt;=1.31.5, >=2.3.2 ([#29](https://github.com/googleapis/google-cloud-python/issues/29)) ([e3b6486](https://github.com/googleapis/google-cloud-python/commit/e3b648654ad9e5cbb2bc4849cc1b21f4b3a6230b))
+* **deps:** require google-api-core&gt;=1.32.0,>=2.8.0 ([#63](https://github.com/googleapis/google-cloud-python/issues/63)) ([6ea352c](https://github.com/googleapis/google-cloud-python/commit/6ea352c18c5bcd75631395e970b80b1f4a2d9014))
+* **deps:** require proto-plus &gt;= 1.22.0 ([e3971e0](https://github.com/googleapis/google-cloud-python/commit/e3971e0a72d86645f9c23c702724c44524dfc897))
+* **deps:** require protobuf &gt;= 3.20.2 ([#85](https://github.com/googleapis/google-cloud-python/issues/85)) ([cd6486e](https://github.com/googleapis/google-cloud-python/commit/cd6486ed2f02aeb9cadff92bcad8eb75dbbbc069))
+* **deps:** require protobuf &lt;4.0.0dev ([#52](https://github.com/googleapis/google-cloud-python/issues/52)) ([a665c11](https://github.com/googleapis/google-cloud-python/commit/a665c112d5677ef092ef36baa6878f7a45921838))
+* require python 3.7+ ([#61](https://github.com/googleapis/google-cloud-python/issues/61)) ([08faab4](https://github.com/googleapis/google-cloud-python/commit/08faab48f40309b210e8d064c2cdaef29f0ae25a))
+* resolve DuplicateCredentialArgs error when using credentials_file ([c102fed](https://github.com/googleapis/google-cloud-python/commit/c102fed460ea8b39812d30ea5d55b777d28b4208))
+
+
+### Documentation
+
+* Add documentation for enums ([#99](https://github.com/googleapis/google-cloud-python/issues/99)) ([c3ca4ca](https://github.com/googleapis/google-cloud-python/commit/c3ca4ca8c1ab81d4c3ee8dae309119893ae8b61f))
+* fix changelog header to consistent size ([#51](https://github.com/googleapis/google-cloud-python/issues/51)) ([98a9f1c](https://github.com/googleapis/google-cloud-python/commit/98a9f1cecb11d57af00819e1cb986e22187b208a))
+
 ## [1.5.0](https://github.com/googleapis/python-ids/compare/v1.4.1...v1.5.0) (2023-02-17)
 
 
