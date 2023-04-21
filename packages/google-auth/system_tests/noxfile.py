@@ -24,11 +24,9 @@ See the `nox docs`_ for details on how this file works:
 
 import os
 import pathlib
-import subprocess
 import shutil
 import tempfile
 
-from nox.command import which
 import nox
 
 HERE = os.path.abspath(os.path.dirname(__file__))
@@ -41,9 +39,6 @@ EXPLICIT_PROJECT_ENV = "GOOGLE_CLOUD_PROJECT"
 EXPECT_PROJECT_ENV = "EXPECT_PROJECT_ID"
 ALLOW_PLUGGABLE_ENV = "GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES"
 
-SKIP_GAE_TEST_ENV = "SKIP_APP_ENGINE_SYSTEM_TEST"
-GAE_APP_URL_TMPL = "https://{}-dot-{}.appspot.com"
-GAE_TEST_APP_SERVICE = "google-auth-system-tests"
 
 # The download location for the Cloud SDK
 CLOUD_SDK_DIST_FILENAME = "google-cloud-sdk.tar.gz"
@@ -74,11 +69,6 @@ CLOUD_SDK_INSTALL_DIR = CLOUD_SDK_ROOT.joinpath("google-cloud-sdk")
 # The full path to the gcloud cli executable.
 GCLOUD = str(CLOUD_SDK_INSTALL_DIR.joinpath("bin", "gcloud"))
 
-# gcloud requires Python 2 and doesn't work on 3, so we need to tell it
-# where to find 2 when we're running in a 3 environment.
-CLOUD_SDK_PYTHON_ENV = "CLOUDSDK_PYTHON"
-CLOUD_SDK_PYTHON = which("python2", None)
-
 # Cloud SDK helpers
 
 
@@ -89,8 +79,6 @@ def install_cloud_sdk(session):
     # our tests from clobbering a developer's configuration when running
     # these tests locally.
     session.env[CLOUD_SDK_CONFIG_ENV] = str(CLOUD_SDK_ROOT)
-    # This tells gcloud which Python interpreter to use (always use 2.7)
-    session.env[CLOUD_SDK_PYTHON_ENV] = CLOUD_SDK_PYTHON
     # This set the $PATH for the subprocesses so they can find the gcloud
     # executable.
     session.env["PATH"] = (
@@ -176,7 +164,7 @@ def configure_cloud_sdk(session, application_default_credentials, project=False)
 TEST_DEPENDENCIES_ASYNC = ["aiohttp", "pytest-asyncio", "nest-asyncio", "mock"]
 TEST_DEPENDENCIES_SYNC = ["pytest", "requests", "mock"]
 PYTHON_VERSIONS_ASYNC = ["3.7"]
-PYTHON_VERSIONS_SYNC = ["2.7", "3.7"]
+PYTHON_VERSIONS_SYNC = ["3.7"]
 
 
 def default(session, *test_paths):
@@ -289,50 +277,6 @@ def compute_engine(session):
         session,
         "system_tests_sync/test_compute_engine.py",
         *session.posargs,
-    )
-
-
-@nox.session(python=["2.7"])
-def app_engine(session):
-    if SKIP_GAE_TEST_ENV in os.environ:
-        session.log("Skipping App Engine tests.")
-        return
-
-    session.install(LIBRARY_DIR)
-    # Unlike the default tests above, the App Engine system test require a
-    # 'real' gcloud sdk installation that is configured to deploy to an
-    # app engine project.
-    # Grab the project ID from the cloud sdk.
-    project_id = (
-        subprocess.check_output(
-            ["gcloud", "config", "list", "project", "--format", "value(core.project)"]
-        )
-        .decode("utf-8")
-        .strip()
-    )
-
-    if not project_id:
-        session.error(
-            "The Cloud SDK must be installed and configured to deploy to App " "Engine."
-        )
-
-    application_url = GAE_APP_URL_TMPL.format(GAE_TEST_APP_SERVICE, project_id)
-
-    # Vendor in the test application's dependencies
-    session.chdir(os.path.join(HERE, "system_tests_sync/app_engine_test_app"))
-    session.install(*TEST_DEPENDENCIES_SYNC)
-    session.run(
-        "pip", "install", "--target", "lib", "-r", "requirements.txt", silent=True
-    )
-
-    # Deploy the application.
-    session.run("gcloud", "app", "deploy", "-q", "app.yaml")
-
-    # Run the tests
-    session.env["TEST_APP_URL"] = application_url
-    session.chdir(HERE)
-    default(
-        session, "system_tests_sync/test_app_engine.py",
     )
 
 
