@@ -118,13 +118,14 @@ PATH_MONOREPO="$(realpath "${PATH_MONOREPO}")"
 MONOREPO_PACKAGE_NAME="${3:-$(basename ${PATH_PACKAGE})}"
 
 MONOREPO_PATH_PACKAGE="packages/${MONOREPO_PACKAGE_NAME}"
-
+MONOREPO_PATH_GAPIC="${MONOREPO_PATH_PACKAGE}/${MONOREPO_PACKAGE_NAME//-//}"
 cat <<EOF
 Post-processing ${MONOREPO_PACKAGE_NAME}
   PATH_PACKAGE:          ${PATH_PACKAGE}
   PATH_MONOREPO:         ${PATH_MONOREPO}
   MONOREPO_PACKAGE_NAME: ${MONOREPO_PACKAGE_NAME}
   MONOREPO_PATH_PACKAGE: ${MONOREPO_PATH_PACKAGE}
+  MONOREPO_PATH_GAPIC:   ${MONOREPO_PATH_GAPIC}
 EOF
 
 pushd "${PATH_MONOREPO}" >& /dev/null
@@ -177,6 +178,21 @@ RPM_VERSION="$(jq '."."' "${RPM_SPLIT_PATH}")"
 jq ${RPM_SORT_KEYS}  ". * {\"${MONOREPO_PATH_PACKAGE}\": ${RPM_VERSION}}" ${RPM_MONO_PATH} | sponge ${RPM_MONO_PATH}
 $RM ${RPM_SPLIT_PATH}
 ## END release-please manifest migration
+
+## START migrate release tags ########################################
+# We need to migrate the release tags since that is what release-please uses to
+# get the next release number.We use ${RPM_VERSION} from the previous section
+# variable prefix: LRT_*
+echo "Replicating latest release tag"
+
+LRT_VERSION="${RPM_VERSION}"
+LRT_VERSION_FILE="${MONOREPO_PATH_GAPIC}/gapic_version.py"
+LRT_SHA=$(git log --format=oneline ${LRT_VERSION_FILE} | grep release | head -n 1 | awk '{ print $1 }')
+$GIT tag ${MONOREPO_PACKAGE_NAME}-v${LRT_VERSION} ${LRT_SHA}
+$GIT push --tags
+## END migrate release tags
+
+
 
 
 ## START .repo-metadata.json migration ########################################
