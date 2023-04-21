@@ -18,6 +18,12 @@ from google.cloud.discoveryengine import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from google.cloud.discoveryengine_v1beta.services.completion_service.async_client import (
+    CompletionServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.completion_service.client import (
+    CompletionServiceClient,
+)
 from google.cloud.discoveryengine_v1beta.services.document_service.async_client import (
     DocumentServiceAsyncClient,
 )
@@ -30,13 +36,33 @@ from google.cloud.discoveryengine_v1beta.services.recommendation_service.async_c
 from google.cloud.discoveryengine_v1beta.services.recommendation_service.client import (
     RecommendationServiceClient,
 )
+from google.cloud.discoveryengine_v1beta.services.schema_service.async_client import (
+    SchemaServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.schema_service.client import (
+    SchemaServiceClient,
+)
+from google.cloud.discoveryengine_v1beta.services.search_service.async_client import (
+    SearchServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.search_service.client import (
+    SearchServiceClient,
+)
 from google.cloud.discoveryengine_v1beta.services.user_event_service.async_client import (
     UserEventServiceAsyncClient,
 )
 from google.cloud.discoveryengine_v1beta.services.user_event_service.client import (
     UserEventServiceClient,
 )
-from google.cloud.discoveryengine_v1beta.types.common import CustomAttribute, UserInfo
+from google.cloud.discoveryengine_v1beta.types.common import (
+    CustomAttribute,
+    Interval,
+    UserInfo,
+)
+from google.cloud.discoveryengine_v1beta.types.completion_service import (
+    CompleteQueryRequest,
+    CompleteQueryResponse,
+)
 from google.cloud.discoveryengine_v1beta.types.document import Document
 from google.cloud.discoveryengine_v1beta.types.document_service import (
     CreateDocumentRequest,
@@ -61,6 +87,22 @@ from google.cloud.discoveryengine_v1beta.types.recommendation_service import (
     RecommendRequest,
     RecommendResponse,
 )
+from google.cloud.discoveryengine_v1beta.types.schema import Schema
+from google.cloud.discoveryengine_v1beta.types.schema_service import (
+    CreateSchemaMetadata,
+    CreateSchemaRequest,
+    DeleteSchemaMetadata,
+    DeleteSchemaRequest,
+    GetSchemaRequest,
+    ListSchemasRequest,
+    ListSchemasResponse,
+    UpdateSchemaMetadata,
+    UpdateSchemaRequest,
+)
+from google.cloud.discoveryengine_v1beta.types.search_service import (
+    SearchRequest,
+    SearchResponse,
+)
 from google.cloud.discoveryengine_v1beta.types.user_event import (
     CompletionInfo,
     DocumentInfo,
@@ -77,14 +119,23 @@ from google.cloud.discoveryengine_v1beta.types.user_event_service import (
 )
 
 __all__ = (
+    "CompletionServiceClient",
+    "CompletionServiceAsyncClient",
     "DocumentServiceClient",
     "DocumentServiceAsyncClient",
     "RecommendationServiceClient",
     "RecommendationServiceAsyncClient",
+    "SchemaServiceClient",
+    "SchemaServiceAsyncClient",
+    "SearchServiceClient",
+    "SearchServiceAsyncClient",
     "UserEventServiceClient",
     "UserEventServiceAsyncClient",
     "CustomAttribute",
+    "Interval",
     "UserInfo",
+    "CompleteQueryRequest",
+    "CompleteQueryResponse",
     "Document",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",
@@ -103,6 +154,18 @@ __all__ = (
     "ImportUserEventsResponse",
     "RecommendRequest",
     "RecommendResponse",
+    "Schema",
+    "CreateSchemaMetadata",
+    "CreateSchemaRequest",
+    "DeleteSchemaMetadata",
+    "DeleteSchemaRequest",
+    "GetSchemaRequest",
+    "ListSchemasRequest",
+    "ListSchemasResponse",
+    "UpdateSchemaMetadata",
+    "UpdateSchemaRequest",
+    "SearchRequest",
+    "SearchResponse",
     "CompletionInfo",
     "DocumentInfo",
     "MediaInfo",

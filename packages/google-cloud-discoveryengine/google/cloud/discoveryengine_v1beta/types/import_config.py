@@ -49,8 +49,11 @@ class GcsSource(proto.Message):
             to 2000 characters long. URIs can match the full object path
             (for example, ``gs://bucket/directory/object.json``) or a
             pattern matching one or more files, such as
-            ``gs://bucket/directory/*.json``. A request can contain at
-            most 100 files, and each file can be up to 2 GB.
+            ``gs://bucket/directory/*.json``.
+
+            A request can contain at most 100 files (or 100,000 files if
+            ``data_schema`` is ``content``). Each file can be up to 2 GB
+            (or 100 MB if ``data_schema`` is ``content``).
         data_schema (str):
             The schema to use when parsing the data from the source.
 
@@ -60,6 +63,15 @@ class GcsSource(proto.Message):
                [Document][google.cloud.discoveryengine.v1beta.Document]
                per line. Each document must have a valid
                [Document.id][google.cloud.discoveryengine.v1beta.Document.id].
+            -  ``content``: Unstructured data (e.g. PDF, HTML). Each
+               file matched by ``input_uris`` will become a document,
+               with the ID set to the first 128 bits of SHA256(URI)
+               encoded as a hex string.
+            -  ``custom``: One custom data JSON per row in arbitrary
+               format that conforms the defined
+               [Schema][google.cloud.discoveryengine.v1beta.Schema] of
+               the data store. This can only be used by the GENERIC Data
+               Store vertical.
 
             Supported values for user even imports:
 
@@ -110,16 +122,27 @@ class BigQuerySource(proto.Message):
         data_schema (str):
             The schema to use when parsing the data from the source.
 
-            Supported values for imports:
+            Supported values for user event imports:
 
-            -  ``user_event`` (default): One JSON
+            -  ``user_event`` (default): One
                [UserEvent][google.cloud.discoveryengine.v1beta.UserEvent]
-               per line.
+               per row.
 
-            -  ``document`` (default): One JSON
+            Supported values for document imports:
+
+            -  ``document`` (default): One
                [Document][google.cloud.discoveryengine.v1beta.Document]
-               per line. Each document must have a valid
-               [document.id][].
+               format per row. Each document must have a valid
+               [Document.id][google.cloud.discoveryengine.v1beta.Document.id]
+               and one of
+               [Document.json_data][google.cloud.discoveryengine.v1beta.Document.json_data]
+               or
+               [Document.struct_data][google.cloud.discoveryengine.v1beta.Document.struct_data].
+            -  ``custom``: One custom data per row in arbitrary format
+               that conforms the defined
+               [Schema][google.cloud.discoveryengine.v1beta.Schema] of
+               the data store. This can only be used by the GENERIC Data
+               Store vertical.
     """
 
     partition_date: date_pb2.Date = proto.Field(
