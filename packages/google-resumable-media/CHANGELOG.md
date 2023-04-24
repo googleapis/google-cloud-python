@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [2.5.0](https://github.com/googleapis/google-resumable-media-python/compare/v2.4.1...v2.5.0) (2023-04-21)
+
+
+### Features
+
+* Add support to retry known connection errors ([#375](https://github.com/googleapis/google-resumable-media-python/issues/375)) ([147e845](https://github.com/googleapis/google-resumable-media-python/commit/147e8458578cc500dfe98d9ac7a447332fb9c52b))
+
 ## [2.4.1](https://github.com/googleapis/google-resumable-media-python/compare/v2.4.0...v2.4.1) (2023-01-06)
 
 
