@@ -163,6 +163,13 @@ class TestCursor(unittest.TestCase):
         with self.assertRaises(AttributeError):
             cursor.execute(sql="SELECT 1")
 
+    def test_execute_database_error(self):
+        connection = self._make_connection(self.INSTANCE)
+        cursor = self._make_one(connection)
+
+        with self.assertRaises(ValueError):
+            cursor.execute(sql="SELECT 1")
+
     def test_execute_autocommit_off(self):
         from google.cloud.spanner_dbapi.utils import PeekIterator
 
@@ -607,6 +614,16 @@ class TestCursor(unittest.TestCase):
         )
         self.assertIsInstance(connection._statements[0][1], ResultsChecksum)
 
+    @mock.patch("google.cloud.spanner_v1.Client")
+    def test_executemany_database_error(self, mock_client):
+        from google.cloud.spanner_dbapi import connect
+
+        connection = connect("test-instance")
+        cursor = connection.cursor()
+
+        with self.assertRaises(ValueError):
+            cursor.executemany("""SELECT * FROM table1 WHERE "col1" = @a1""", ())
+
     @unittest.skipIf(
         sys.version_info[0] < 3, "Python 2 has an outdated iterator definition"
     )
@@ -754,6 +771,13 @@ class TestCursor(unittest.TestCase):
             sql, None, None, request_options=RequestOptions(priority=1)
         )
 
+    def test_handle_dql_database_error(self):
+        connection = self._make_connection(self.INSTANCE)
+        cursor = self._make_one(connection)
+
+        with self.assertRaises(ValueError):
+            cursor._handle_DQL("sql", params=None)
+
     def test_context(self):
         connection = self._make_connection(self.INSTANCE, self.DATABASE)
         cursor = self._make_one(connection)
@@ -813,6 +837,13 @@ class TestCursor(unittest.TestCase):
         results = 1, 2, 3
         mock_snapshot.execute_sql.return_value = results
         self.assertEqual(cursor.run_sql_in_snapshot("sql"), list(results))
+
+    def test_run_sql_in_snapshot_database_error(self):
+        connection = self._make_connection(self.INSTANCE)
+        cursor = self._make_one(connection)
+
+        with self.assertRaises(ValueError):
+            cursor.run_sql_in_snapshot("sql")
 
     def test_get_table_column_schema(self):
         from google.cloud.spanner_dbapi.cursor import ColumnDetails

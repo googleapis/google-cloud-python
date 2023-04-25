@@ -228,6 +228,8 @@ class Cursor(object):
         :type args: list
         :param args: Additional parameters to supplement the SQL query.
         """
+        if self.connection.database is None:
+            raise ValueError("Database needs to be passed for this operation")
         self._itr = None
         self._result_set = None
         self._row_count = _UNSET_COUNT
@@ -301,6 +303,8 @@ class Cursor(object):
         :param seq_of_params: Sequence of additional parameters to run
                               the query with.
         """
+        if self.connection.database is None:
+            raise ValueError("Database needs to be passed for this operation")
         self._itr = None
         self._result_set = None
         self._row_count = _UNSET_COUNT
@@ -444,6 +448,8 @@ class Cursor(object):
         self._row_count = _UNSET_COUNT
 
     def _handle_DQL(self, sql, params):
+        if self.connection.database is None:
+            raise ValueError("Database needs to be passed for this operation")
         sql, params = parse_utils.sql_pyformat_args_to_spanner(sql, params)
         if self.connection.read_only and not self.connection.autocommit:
             # initiate or use the existing multi-use snapshot
@@ -484,6 +490,8 @@ class Cursor(object):
     def run_sql_in_snapshot(self, sql, params=None, param_types=None):
         # Some SQL e.g. for INFORMATION_SCHEMA cannot be run in read-write transactions
         # hence this method exists to circumvent that limit.
+        if self.connection.database is None:
+            raise ValueError("Database needs to be passed for this operation")
         self.connection.run_prior_DDL_statements()
 
         with self.connection.database.snapshot() as snapshot:
