@@ -23,12 +23,14 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 
+from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_group
 from google.analytics.admin_v1alpha.types import (
     expanded_data_set as gaa_expanded_data_set,
 )
 from google.analytics.admin_v1alpha.types import analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
+from google.analytics.admin_v1alpha.types import channel_group
 from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
 
@@ -3121,6 +3123,143 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["delete_expanded_data_set"]
 
     @property
+    def get_channel_group(
+        self,
+    ) -> Callable[[analytics_admin.GetChannelGroupRequest], channel_group.ChannelGroup]:
+        r"""Return a callable for the get channel group method over gRPC.
+
+        Lookup for a single ChannelGroup.
+
+        Returns:
+            Callable[[~.GetChannelGroupRequest],
+                    ~.ChannelGroup]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_channel_group" not in self._stubs:
+            self._stubs["get_channel_group"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetChannelGroup",
+                request_serializer=analytics_admin.GetChannelGroupRequest.serialize,
+                response_deserializer=channel_group.ChannelGroup.deserialize,
+            )
+        return self._stubs["get_channel_group"]
+
+    @property
+    def list_channel_groups(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListChannelGroupsRequest],
+        analytics_admin.ListChannelGroupsResponse,
+    ]:
+        r"""Return a callable for the list channel groups method over gRPC.
+
+        Lists ChannelGroups on a property.
+
+        Returns:
+            Callable[[~.ListChannelGroupsRequest],
+                    ~.ListChannelGroupsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_channel_groups" not in self._stubs:
+            self._stubs["list_channel_groups"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListChannelGroups",
+                request_serializer=analytics_admin.ListChannelGroupsRequest.serialize,
+                response_deserializer=analytics_admin.ListChannelGroupsResponse.deserialize,
+            )
+        return self._stubs["list_channel_groups"]
+
+    @property
+    def create_channel_group(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateChannelGroupRequest], gaa_channel_group.ChannelGroup
+    ]:
+        r"""Return a callable for the create channel group method over gRPC.
+
+        Creates a ChannelGroup.
+
+        Returns:
+            Callable[[~.CreateChannelGroupRequest],
+                    ~.ChannelGroup]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_channel_group" not in self._stubs:
+            self._stubs["create_channel_group"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateChannelGroup",
+                request_serializer=analytics_admin.CreateChannelGroupRequest.serialize,
+                response_deserializer=gaa_channel_group.ChannelGroup.deserialize,
+            )
+        return self._stubs["create_channel_group"]
+
+    @property
+    def update_channel_group(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateChannelGroupRequest], gaa_channel_group.ChannelGroup
+    ]:
+        r"""Return a callable for the update channel group method over gRPC.
+
+        Updates a ChannelGroup.
+
+        Returns:
+            Callable[[~.UpdateChannelGroupRequest],
+                    ~.ChannelGroup]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_channel_group" not in self._stubs:
+            self._stubs["update_channel_group"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateChannelGroup",
+                request_serializer=analytics_admin.UpdateChannelGroupRequest.serialize,
+                response_deserializer=gaa_channel_group.ChannelGroup.deserialize,
+            )
+        return self._stubs["update_channel_group"]
+
+    @property
+    def delete_channel_group(
+        self,
+    ) -> Callable[[analytics_admin.DeleteChannelGroupRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete channel group method over gRPC.
+
+        Deletes a ChannelGroup on a property.
+
+        Returns:
+            Callable[[~.DeleteChannelGroupRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_channel_group" not in self._stubs:
+            self._stubs["delete_channel_group"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteChannelGroup",
+                request_serializer=analytics_admin.DeleteChannelGroupRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_channel_group"]
+
+    @property
     def set_automated_ga4_configuration_opt_out(
         self,
     ) -> Callable[
@@ -3402,6 +3541,37 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
                 response_deserializer=analytics_admin.ListConnectedSiteTagsResponse.deserialize,
             )
         return self._stubs["list_connected_site_tags"]
+
+    @property
+    def fetch_connected_ga4_property(
+        self,
+    ) -> Callable[
+        [analytics_admin.FetchConnectedGa4PropertyRequest],
+        analytics_admin.FetchConnectedGa4PropertyResponse,
+    ]:
+        r"""Return a callable for the fetch connected ga4 property method over gRPC.
+
+        Given a specified UA property, looks up the GA4
+        property connected to it. Note: this cannot be used with
+        GA4 properties.
+
+        Returns:
+            Callable[[~.FetchConnectedGa4PropertyRequest],
+                    ~.FetchConnectedGa4PropertyResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_connected_ga4_property" not in self._stubs:
+            self._stubs["fetch_connected_ga4_property"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/FetchConnectedGa4Property",
+                request_serializer=analytics_admin.FetchConnectedGa4PropertyRequest.serialize,
+                response_deserializer=analytics_admin.FetchConnectedGa4PropertyResponse.deserialize,
+            )
+        return self._stubs["fetch_connected_ga4_property"]
 
     def close(self):
         self.grpc_channel.close()

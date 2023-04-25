@@ -42,7 +42,7 @@ def sample_create_custom_dimension():
     custom_dimension = admin_v1alpha.CustomDimension()
     custom_dimension.parameter_name = "parameter_name_value"
     custom_dimension.display_name = "display_name_value"
-    custom_dimension.scope = "USER"
+    custom_dimension.scope = "ITEM"
 
     request = admin_v1alpha.CreateCustomDimensionRequest(
         parent="parent_value",

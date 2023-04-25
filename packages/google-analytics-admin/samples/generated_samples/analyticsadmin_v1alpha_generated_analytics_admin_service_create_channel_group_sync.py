@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateCustomDimension
+# Snippet for CreateChannelGroup
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-analytics-admin
 
 
-# [START analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateCustomDimension_async]
+# [START analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateChannelGroup_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,25 +34,24 @@
 from google.analytics import admin_v1alpha
 
 
-async def sample_create_custom_dimension():
+def sample_create_channel_group():
     # Create a client
-    client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+    client = admin_v1alpha.AnalyticsAdminServiceClient()
 
     # Initialize request argument(s)
-    custom_dimension = admin_v1alpha.CustomDimension()
-    custom_dimension.parameter_name = "parameter_name_value"
-    custom_dimension.display_name = "display_name_value"
-    custom_dimension.scope = "ITEM"
+    channel_group = admin_v1alpha.ChannelGroup()
+    channel_group.display_name = "display_name_value"
+    channel_group.grouping_rule.display_name = "display_name_value"
 
-    request = admin_v1alpha.CreateCustomDimensionRequest(
+    request = admin_v1alpha.CreateChannelGroupRequest(
         parent="parent_value",
-        custom_dimension=custom_dimension,
+        channel_group=channel_group,
     )
 
     # Make the request
-    response = await client.create_custom_dimension(request=request)
+    response = client.create_channel_group(request=request)
 
     # Handle the response
     print(response)
 
-# [END analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateCustomDimension_async]
+# [END analyticsadmin_v1alpha_generated_AnalyticsAdminService_CreateChannelGroup_sync]

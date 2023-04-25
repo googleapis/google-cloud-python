@@ -26,12 +26,14 @@ from google.oauth2 import service_account  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.analytics.admin_v1alpha import gapic_version as package_version
+from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_group
 from google.analytics.admin_v1alpha.types import (
     expanded_data_set as gaa_expanded_data_set,
 )
 from google.analytics.admin_v1alpha.types import analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
+from google.analytics.admin_v1alpha.types import channel_group
 from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
 
@@ -625,6 +627,31 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_channel_group: gapic_v1.method.wrap_method(
+                self.get_channel_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_channel_groups: gapic_v1.method.wrap_method(
+                self.list_channel_groups,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_channel_group: gapic_v1.method.wrap_method(
+                self.create_channel_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_channel_group: gapic_v1.method.wrap_method(
+                self.update_channel_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_channel_group: gapic_v1.method.wrap_method(
+                self.delete_channel_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.set_automated_ga4_configuration_opt_out: gapic_v1.method.wrap_method(
                 self.set_automated_ga4_configuration_opt_out,
                 default_timeout=None,
@@ -667,6 +694,11 @@ class AnalyticsAdminServiceTransport(abc.ABC):
             ),
             self.list_connected_site_tags: gapic_v1.method.wrap_method(
                 self.list_connected_site_tags,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.fetch_connected_ga4_property: gapic_v1.method.wrap_method(
+                self.fetch_connected_ga4_property,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -1699,6 +1731,58 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def get_channel_group(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetChannelGroupRequest],
+        Union[channel_group.ChannelGroup, Awaitable[channel_group.ChannelGroup]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_channel_groups(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListChannelGroupsRequest],
+        Union[
+            analytics_admin.ListChannelGroupsResponse,
+            Awaitable[analytics_admin.ListChannelGroupsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_channel_group(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateChannelGroupRequest],
+        Union[
+            gaa_channel_group.ChannelGroup, Awaitable[gaa_channel_group.ChannelGroup]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_channel_group(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateChannelGroupRequest],
+        Union[
+            gaa_channel_group.ChannelGroup, Awaitable[gaa_channel_group.ChannelGroup]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_channel_group(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteChannelGroupRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def set_automated_ga4_configuration_opt_out(
         self,
     ) -> Callable[
@@ -1796,6 +1880,18 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         Union[
             analytics_admin.ListConnectedSiteTagsResponse,
             Awaitable[analytics_admin.ListConnectedSiteTagsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_connected_ga4_property(
+        self,
+    ) -> Callable[
+        [analytics_admin.FetchConnectedGa4PropertyRequest],
+        Union[
+            analytics_admin.FetchConnectedGa4PropertyResponse,
+            Awaitable[analytics_admin.FetchConnectedGa4PropertyResponse],
         ],
     ]:
         raise NotImplementedError()

@@ -162,7 +162,7 @@ class ExpandedDataSetFilterExpression(proto.Message):
 
             This field is a member of `oneof`_ ``expr``.
         not_expression (google.analytics.admin_v1alpha.types.ExpandedDataSetFilterExpression):
-            A filter expression to be NOT'ed (i.e., inverted,
+            A filter expression to be NOT'ed (that is, inverted,
             complemented). It must include a dimension_filter. This
             cannot be set on the top level
             ExpandedDataSetFilterExpression.
@@ -241,7 +241,7 @@ class ExpandedDataSet(proto.Message):
             Immutable. A logical expression of ExpandedDataSet filters
             applied to dimension included in the ExpandedDataSet. This
             filter is used to reduce the number of rows and thus the
-            change of encountering ``other row``.
+            chance of encountering ``other`` row.
         data_collection_start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when expanded data set
             began (or will begin) collecing data.

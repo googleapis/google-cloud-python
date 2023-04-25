@@ -21,6 +21,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_group
 from google.analytics.admin_v1alpha.types import (
     expanded_data_set as gaa_expanded_data_set,
 )
@@ -158,6 +159,12 @@ __protobuf__ = proto.module(
         "GetExpandedDataSetRequest",
         "ListExpandedDataSetsRequest",
         "ListExpandedDataSetsResponse",
+        "CreateChannelGroupRequest",
+        "UpdateChannelGroupRequest",
+        "DeleteChannelGroupRequest",
+        "GetChannelGroupRequest",
+        "ListChannelGroupsRequest",
+        "ListChannelGroupsResponse",
         "SetAutomatedGa4ConfigurationOptOutRequest",
         "SetAutomatedGa4ConfigurationOptOutResponse",
         "FetchAutomatedGa4ConfigurationOptOutRequest",
@@ -172,6 +179,8 @@ __protobuf__ = proto.module(
         "DeleteConnectedSiteTagRequest",
         "ListConnectedSiteTagsRequest",
         "ListConnectedSiteTagsResponse",
+        "FetchConnectedGa4PropertyRequest",
+        "FetchConnectedGa4PropertyResponse",
     },
 )
 
@@ -3316,8 +3325,8 @@ class GetExpandedDataSetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Audience to get.
-            Example format:
+            Required. The name of the ExpandedDataSet to
+            get. Example format:
             properties/1234/expandedDataSets/5678
     """
 
@@ -3385,6 +3394,152 @@ class ListExpandedDataSetsResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message=gaa_expanded_data_set.ExpandedDataSet,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateChannelGroupRequest(proto.Message):
+    r"""Request message for CreateChannelGroup RPC.
+
+    Attributes:
+        parent (str):
+            Required. The property for which to create a
+            ChannelGroup. Example format: properties/1234
+        channel_group (google.analytics.admin_v1alpha.types.ChannelGroup):
+            Required. The ChannelGroup to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    channel_group: gaa_channel_group.ChannelGroup = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gaa_channel_group.ChannelGroup,
+    )
+
+
+class UpdateChannelGroupRequest(proto.Message):
+    r"""Request message for UpdateChannelGroup RPC.
+
+    Attributes:
+        channel_group (google.analytics.admin_v1alpha.types.ChannelGroup):
+            Required. The ChannelGroup to update. The resource's
+            ``name`` field is used to identify the ChannelGroup to be
+            updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Field names must
+            be in snake case (e.g., "field_to_update"). Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
+    """
+
+    channel_group: gaa_channel_group.ChannelGroup = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gaa_channel_group.ChannelGroup,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteChannelGroupRequest(proto.Message):
+    r"""Request message for DeleteChannelGroup RPC.
+
+    Attributes:
+        name (str):
+            Required. The ChannelGroup to delete.
+            Example format:
+            properties/1234/channelGroups/5678
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetChannelGroupRequest(proto.Message):
+    r"""Request message for GetChannelGroup RPC.
+
+    Attributes:
+        name (str):
+            Required. The ChannelGroup to get.
+            Example format:
+            properties/1234/channelGroups/5678
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListChannelGroupsRequest(proto.Message):
+    r"""Request message for ListChannelGroups RPC.
+
+    Attributes:
+        parent (str):
+            Required. The property for which to list
+            ChannelGroups. Example format: properties/1234
+        page_size (int):
+            The maximum number of resources to return.
+            If unspecified, at most 50 resources will be
+            returned. The maximum value is 200 (higher
+            values will be coerced to the maximum).
+        page_token (str):
+            A page token, received from a previous ``ListChannelGroups``
+            call. Provide this to retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListChannelGroups`` must match the call that provided the
+            page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListChannelGroupsResponse(proto.Message):
+    r"""Response message for ListChannelGroups RPC.
+
+    Attributes:
+        channel_groups (MutableSequence[google.analytics.admin_v1alpha.types.ChannelGroup]):
+            List of ChannelGroup. These will be ordered
+            stably, but in an arbitrary order.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    channel_groups: MutableSequence[
+        gaa_channel_group.ChannelGroup
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gaa_channel_group.ChannelGroup,
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -3672,6 +3827,42 @@ class ListConnectedSiteTagsResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message=resources.ConnectedSiteTag,
+    )
+
+
+class FetchConnectedGa4PropertyRequest(proto.Message):
+    r"""Request for looking up GA4 property connected to a UA
+    property.
+
+    Attributes:
+        property (str):
+            Required. The UA property for which to look up the connected
+            GA4 property. Note this request uses the internal property
+            ID, not the tracking ID of the form UA-XXXXXX-YY. Format:
+            properties/{internal_web_property_id} Example:
+            properties/1234
+    """
+
+    property: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class FetchConnectedGa4PropertyResponse(proto.Message):
+    r"""Response for looking up GA4 property connected to a UA
+    property.
+
+    Attributes:
+        property (str):
+            The GA4 property connected to the UA property. An empty
+            string is returned when there is no connected GA4 property.
+            Format: properties/{property_id} Example: properties/1234
+    """
+
+    property: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

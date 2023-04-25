@@ -95,6 +95,11 @@
                 "create_audience"
               ]
             },
+            "CreateChannelGroup": {
+              "methods": [
+                "create_channel_group"
+              ]
+            },
             "CreateConnectedSiteTag": {
               "methods": [
                 "create_connected_site_tag"
@@ -175,6 +180,11 @@
                 "delete_account"
               ]
             },
+            "DeleteChannelGroup": {
+              "methods": [
+                "delete_channel_group"
+              ]
+            },
             "DeleteConnectedSiteTag": {
               "methods": [
                 "delete_connected_site_tag"
@@ -240,6 +250,11 @@
                 "fetch_automated_ga4_configuration_opt_out"
               ]
             },
+            "FetchConnectedGa4Property": {
+              "methods": [
+                "fetch_connected_ga4_property"
+              ]
+            },
             "GetAccessBinding": {
               "methods": [
                 "get_access_binding"
@@ -263,6 +278,11 @@
             "GetBigQueryLink": {
               "methods": [
                 "get_big_query_link"
+              ]
+            },
+            "GetChannelGroup": {
+              "methods": [
+                "get_channel_group"
               ]
             },
             "GetConversionEvent": {
@@ -368,6 +388,11 @@
             "ListBigQueryLinks": {
               "methods": [
                 "list_big_query_links"
+              ]
+            },
+            "ListChannelGroups": {
+              "methods": [
+                "list_channel_groups"
               ]
             },
             "ListConnectedSiteTags": {
@@ -478,6 +503,11 @@
             "UpdateAudience": {
               "methods": [
                 "update_audience"
+              ]
+            },
+            "UpdateChannelGroup": {
+              "methods": [
+                "update_channel_group"
               ]
             },
             "UpdateCustomDimension": {
@@ -635,6 +665,11 @@
                 "create_audience"
               ]
             },
+            "CreateChannelGroup": {
+              "methods": [
+                "create_channel_group"
+              ]
+            },
             "CreateConnectedSiteTag": {
               "methods": [
                 "create_connected_site_tag"
@@ -715,6 +750,11 @@
                 "delete_account"
               ]
             },
+            "DeleteChannelGroup": {
+              "methods": [
+                "delete_channel_group"
+              ]
+            },
             "DeleteConnectedSiteTag": {
               "methods": [
                 "delete_connected_site_tag"
@@ -780,6 +820,11 @@
                 "fetch_automated_ga4_configuration_opt_out"
               ]
             },
+            "FetchConnectedGa4Property": {
+              "methods": [
+                "fetch_connected_ga4_property"
+              ]
+            },
             "GetAccessBinding": {
               "methods": [
                 "get_access_binding"
@@ -803,6 +848,11 @@
             "GetBigQueryLink": {
               "methods": [
                 "get_big_query_link"
+              ]
+            },
+            "GetChannelGroup": {
+              "methods": [
+                "get_channel_group"
               ]
             },
             "GetConversionEvent": {
@@ -908,6 +958,11 @@
             "ListBigQueryLinks": {
               "methods": [
                 "list_big_query_links"
+              ]
+            },
+            "ListChannelGroups": {
+              "methods": [
+                "list_channel_groups"
               ]
             },
             "ListConnectedSiteTags": {
@@ -1018,6 +1073,11 @@
             "UpdateAudience": {
               "methods": [
                 "update_audience"
+              ]
+            },
+            "UpdateChannelGroup": {
+              "methods": [
+                "update_channel_group"
               ]
             },
             "UpdateCustomDimension": {
@@ -1175,6 +1235,11 @@
                 "create_audience"
               ]
             },
+            "CreateChannelGroup": {
+              "methods": [
+                "create_channel_group"
+              ]
+            },
             "CreateConnectedSiteTag": {
               "methods": [
                 "create_connected_site_tag"
@@ -1255,6 +1320,11 @@
                 "delete_account"
               ]
             },
+            "DeleteChannelGroup": {
+              "methods": [
+                "delete_channel_group"
+              ]
+            },
             "DeleteConnectedSiteTag": {
               "methods": [
                 "delete_connected_site_tag"
@@ -1320,6 +1390,11 @@
                 "fetch_automated_ga4_configuration_opt_out"
               ]
             },
+            "FetchConnectedGa4Property": {
+              "methods": [
+                "fetch_connected_ga4_property"
+              ]
+            },
             "GetAccessBinding": {
               "methods": [
                 "get_access_binding"
@@ -1343,6 +1418,11 @@
             "GetBigQueryLink": {
               "methods": [
                 "get_big_query_link"
+              ]
+            },
+            "GetChannelGroup": {
+              "methods": [
+                "get_channel_group"
               ]
             },
             "GetConversionEvent": {
@@ -1448,6 +1528,11 @@
             "ListBigQueryLinks": {
               "methods": [
                 "list_big_query_links"
+              ]
+            },
+            "ListChannelGroups": {
+              "methods": [
+                "list_channel_groups"
               ]
             },
             "ListConnectedSiteTags": {
@@ -1558,6 +1643,11 @@
             "UpdateAudience": {
               "methods": [
                 "update_audience"
+              ]
+            },
+            "UpdateChannelGroup": {
+              "methods": [
+                "update_channel_group"
               ]
             },
             "UpdateCustomDimension": {

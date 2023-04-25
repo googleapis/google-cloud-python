@@ -52,12 +52,14 @@ from google.analytics.admin_v1alpha.services.analytics_admin_service import (
     pagers,
     transports,
 )
+from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_group
 from google.analytics.admin_v1alpha.types import (
     expanded_data_set as gaa_expanded_data_set,
 )
 from google.analytics.admin_v1alpha.types import access_report, analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
+from google.analytics.admin_v1alpha.types import channel_group
 from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
 
@@ -27431,6 +27433,1480 @@ async def test_delete_expanded_data_set_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        analytics_admin.GetChannelGroupRequest,
+        dict,
+    ],
+)
+def test_get_channel_group(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = channel_group.ChannelGroup(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            system_defined=True,
+        )
+        response = client.get_channel_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetChannelGroupRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, channel_group.ChannelGroup)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.system_defined is True
+
+
+def test_get_channel_group_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_group), "__call__"
+    ) as call:
+        client.get_channel_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetChannelGroupRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_channel_group_async(
+    transport: str = "grpc_asyncio", request_type=analytics_admin.GetChannelGroupRequest
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            channel_group.ChannelGroup(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                system_defined=True,
+            )
+        )
+        response = await client.get_channel_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetChannelGroupRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, channel_group.ChannelGroup)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.system_defined is True
+
+
+@pytest.mark.asyncio
+async def test_get_channel_group_async_from_dict():
+    await test_get_channel_group_async(request_type=dict)
+
+
+def test_get_channel_group_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.GetChannelGroupRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_group), "__call__"
+    ) as call:
+        call.return_value = channel_group.ChannelGroup()
+        client.get_channel_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_channel_group_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.GetChannelGroupRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_group), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            channel_group.ChannelGroup()
+        )
+        await client.get_channel_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_channel_group_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = channel_group.ChannelGroup()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_channel_group(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_channel_group_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_channel_group(
+            analytics_admin.GetChannelGroupRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_channel_group_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = channel_group.ChannelGroup()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            channel_group.ChannelGroup()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_channel_group(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_channel_group_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_channel_group(
+            analytics_admin.GetChannelGroupRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListChannelGroupsRequest,
+        dict,
+    ],
+)
+def test_list_channel_groups(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_groups), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.ListChannelGroupsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_channel_groups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.ListChannelGroupsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListChannelGroupsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_channel_groups_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_groups), "__call__"
+    ) as call:
+        client.list_channel_groups()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.ListChannelGroupsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_channel_groups_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.ListChannelGroupsRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_groups), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.ListChannelGroupsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_channel_groups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.ListChannelGroupsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListChannelGroupsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_channel_groups_async_from_dict():
+    await test_list_channel_groups_async(request_type=dict)
+
+
+def test_list_channel_groups_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.ListChannelGroupsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_groups), "__call__"
+    ) as call:
+        call.return_value = analytics_admin.ListChannelGroupsResponse()
+        client.list_channel_groups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_channel_groups_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.ListChannelGroupsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_groups), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.ListChannelGroupsResponse()
+        )
+        await client.list_channel_groups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_channel_groups_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_groups), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.ListChannelGroupsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_channel_groups(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_channel_groups_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_channel_groups(
+            analytics_admin.ListChannelGroupsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_channel_groups_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_groups), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.ListChannelGroupsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.ListChannelGroupsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_channel_groups(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_channel_groups_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_channel_groups(
+            analytics_admin.ListChannelGroupsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_channel_groups_pager(transport_name: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_groups), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[
+                    channel_group.ChannelGroup(),
+                    channel_group.ChannelGroup(),
+                    channel_group.ChannelGroup(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[
+                    channel_group.ChannelGroup(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[
+                    channel_group.ChannelGroup(),
+                    channel_group.ChannelGroup(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_channel_groups(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, channel_group.ChannelGroup) for i in results)
+
+
+def test_list_channel_groups_pages(transport_name: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_groups), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[
+                    channel_group.ChannelGroup(),
+                    channel_group.ChannelGroup(),
+                    channel_group.ChannelGroup(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[
+                    channel_group.ChannelGroup(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[
+                    channel_group.ChannelGroup(),
+                    channel_group.ChannelGroup(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_channel_groups(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_channel_groups_async_pager():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_groups),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[
+                    channel_group.ChannelGroup(),
+                    channel_group.ChannelGroup(),
+                    channel_group.ChannelGroup(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[
+                    channel_group.ChannelGroup(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[
+                    channel_group.ChannelGroup(),
+                    channel_group.ChannelGroup(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_channel_groups(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, channel_group.ChannelGroup) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_channel_groups_async_pages():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_groups),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[
+                    channel_group.ChannelGroup(),
+                    channel_group.ChannelGroup(),
+                    channel_group.ChannelGroup(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[
+                    channel_group.ChannelGroup(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[
+                    channel_group.ChannelGroup(),
+                    channel_group.ChannelGroup(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_channel_groups(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateChannelGroupRequest,
+        dict,
+    ],
+)
+def test_create_channel_group(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gaa_channel_group.ChannelGroup(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            system_defined=True,
+        )
+        response = client.create_channel_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateChannelGroupRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gaa_channel_group.ChannelGroup)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.system_defined is True
+
+
+def test_create_channel_group_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_group), "__call__"
+    ) as call:
+        client.create_channel_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateChannelGroupRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_channel_group_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.CreateChannelGroupRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gaa_channel_group.ChannelGroup(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                system_defined=True,
+            )
+        )
+        response = await client.create_channel_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateChannelGroupRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gaa_channel_group.ChannelGroup)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.system_defined is True
+
+
+@pytest.mark.asyncio
+async def test_create_channel_group_async_from_dict():
+    await test_create_channel_group_async(request_type=dict)
+
+
+def test_create_channel_group_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.CreateChannelGroupRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_group), "__call__"
+    ) as call:
+        call.return_value = gaa_channel_group.ChannelGroup()
+        client.create_channel_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_channel_group_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.CreateChannelGroupRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_group), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gaa_channel_group.ChannelGroup()
+        )
+        await client.create_channel_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_channel_group_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gaa_channel_group.ChannelGroup()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_channel_group(
+            parent="parent_value",
+            channel_group=gaa_channel_group.ChannelGroup(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].channel_group
+        mock_val = gaa_channel_group.ChannelGroup(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_channel_group_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_channel_group(
+            analytics_admin.CreateChannelGroupRequest(),
+            parent="parent_value",
+            channel_group=gaa_channel_group.ChannelGroup(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_channel_group_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gaa_channel_group.ChannelGroup()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gaa_channel_group.ChannelGroup()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_channel_group(
+            parent="parent_value",
+            channel_group=gaa_channel_group.ChannelGroup(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].channel_group
+        mock_val = gaa_channel_group.ChannelGroup(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_channel_group_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_channel_group(
+            analytics_admin.CreateChannelGroupRequest(),
+            parent="parent_value",
+            channel_group=gaa_channel_group.ChannelGroup(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateChannelGroupRequest,
+        dict,
+    ],
+)
+def test_update_channel_group(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_channel_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gaa_channel_group.ChannelGroup(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            system_defined=True,
+        )
+        response = client.update_channel_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.UpdateChannelGroupRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gaa_channel_group.ChannelGroup)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.system_defined is True
+
+
+def test_update_channel_group_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_channel_group), "__call__"
+    ) as call:
+        client.update_channel_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.UpdateChannelGroupRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_channel_group_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.UpdateChannelGroupRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_channel_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gaa_channel_group.ChannelGroup(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                system_defined=True,
+            )
+        )
+        response = await client.update_channel_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.UpdateChannelGroupRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gaa_channel_group.ChannelGroup)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.system_defined is True
+
+
+@pytest.mark.asyncio
+async def test_update_channel_group_async_from_dict():
+    await test_update_channel_group_async(request_type=dict)
+
+
+def test_update_channel_group_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.UpdateChannelGroupRequest()
+
+    request.channel_group.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_channel_group), "__call__"
+    ) as call:
+        call.return_value = gaa_channel_group.ChannelGroup()
+        client.update_channel_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "channel_group.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_channel_group_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.UpdateChannelGroupRequest()
+
+    request.channel_group.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_channel_group), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gaa_channel_group.ChannelGroup()
+        )
+        await client.update_channel_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "channel_group.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_channel_group_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_channel_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gaa_channel_group.ChannelGroup()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_channel_group(
+            channel_group=gaa_channel_group.ChannelGroup(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].channel_group
+        mock_val = gaa_channel_group.ChannelGroup(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_channel_group_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_channel_group(
+            analytics_admin.UpdateChannelGroupRequest(),
+            channel_group=gaa_channel_group.ChannelGroup(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_channel_group_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_channel_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gaa_channel_group.ChannelGroup()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gaa_channel_group.ChannelGroup()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_channel_group(
+            channel_group=gaa_channel_group.ChannelGroup(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].channel_group
+        mock_val = gaa_channel_group.ChannelGroup(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_channel_group_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_channel_group(
+            analytics_admin.UpdateChannelGroupRequest(),
+            channel_group=gaa_channel_group.ChannelGroup(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteChannelGroupRequest,
+        dict,
+    ],
+)
+def test_delete_channel_group(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_channel_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.DeleteChannelGroupRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_channel_group_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_group), "__call__"
+    ) as call:
+        client.delete_channel_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.DeleteChannelGroupRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_group_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.DeleteChannelGroupRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_channel_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.DeleteChannelGroupRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_group_async_from_dict():
+    await test_delete_channel_group_async(request_type=dict)
+
+
+def test_delete_channel_group_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.DeleteChannelGroupRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_group), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_channel_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_group_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.DeleteChannelGroupRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_group), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_channel_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_channel_group_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_channel_group(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_channel_group_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_channel_group(
+            analytics_admin.DeleteChannelGroupRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_group_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_channel_group(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_group_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_channel_group(
+            analytics_admin.DeleteChannelGroupRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest,
         dict,
     ],
@@ -29201,6 +30677,102 @@ async def test_list_connected_site_tags_async(
 @pytest.mark.asyncio
 async def test_list_connected_site_tags_async_from_dict():
     await test_list_connected_site_tags_async(request_type=dict)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.FetchConnectedGa4PropertyRequest,
+        dict,
+    ],
+)
+def test_fetch_connected_ga4_property(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_connected_ga4_property), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.FetchConnectedGa4PropertyResponse(
+            property="property_value",
+        )
+        response = client.fetch_connected_ga4_property(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.FetchConnectedGa4PropertyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_admin.FetchConnectedGa4PropertyResponse)
+    assert response.property == "property_value"
+
+
+def test_fetch_connected_ga4_property_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_connected_ga4_property), "__call__"
+    ) as call:
+        client.fetch_connected_ga4_property()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.FetchConnectedGa4PropertyRequest()
+
+
+@pytest.mark.asyncio
+async def test_fetch_connected_ga4_property_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.FetchConnectedGa4PropertyRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_connected_ga4_property), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.FetchConnectedGa4PropertyResponse(
+                property="property_value",
+            )
+        )
+        response = await client.fetch_connected_ga4_property(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.FetchConnectedGa4PropertyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_admin.FetchConnectedGa4PropertyResponse)
+    assert response.property == "property_value"
+
+
+@pytest.mark.asyncio
+async def test_fetch_connected_ga4_property_async_from_dict():
+    await test_fetch_connected_ga4_property_async(request_type=dict)
 
 
 @pytest.mark.parametrize(
@@ -57104,6 +58676,1534 @@ def test_delete_expanded_data_set_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        analytics_admin.GetChannelGroupRequest,
+        dict,
+    ],
+)
+def test_get_channel_group_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/channelGroups/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = channel_group.ChannelGroup(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            system_defined=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = channel_group.ChannelGroup.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_channel_group(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, channel_group.ChannelGroup)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.system_defined is True
+
+
+def test_get_channel_group_rest_required_fields(
+    request_type=analytics_admin.GetChannelGroupRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_channel_group._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_channel_group._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = channel_group.ChannelGroup()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = channel_group.ChannelGroup.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_channel_group(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_channel_group_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_channel_group._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_channel_group_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_get_channel_group"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_channel_group"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetChannelGroupRequest.pb(
+            analytics_admin.GetChannelGroupRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = channel_group.ChannelGroup.to_json(
+            channel_group.ChannelGroup()
+        )
+
+        request = analytics_admin.GetChannelGroupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = channel_group.ChannelGroup()
+
+        client.get_channel_group(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_channel_group_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.GetChannelGroupRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/channelGroups/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_channel_group(request)
+
+
+def test_get_channel_group_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = channel_group.ChannelGroup()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/channelGroups/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = channel_group.ChannelGroup.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_channel_group(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/channelGroups/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_channel_group_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_channel_group(
+            analytics_admin.GetChannelGroupRequest(),
+            name="name_value",
+        )
+
+
+def test_get_channel_group_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListChannelGroupsRequest,
+        dict,
+    ],
+)
+def test_list_channel_groups_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListChannelGroupsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListChannelGroupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_channel_groups(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListChannelGroupsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_channel_groups_rest_required_fields(
+    request_type=analytics_admin.ListChannelGroupsRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_channel_groups._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_channel_groups._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.ListChannelGroupsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.ListChannelGroupsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_channel_groups(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_channel_groups_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_channel_groups._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_channel_groups_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_list_channel_groups"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_channel_groups"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListChannelGroupsRequest.pb(
+            analytics_admin.ListChannelGroupsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_admin.ListChannelGroupsResponse.to_json(
+            analytics_admin.ListChannelGroupsResponse()
+        )
+
+        request = analytics_admin.ListChannelGroupsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ListChannelGroupsResponse()
+
+        client.list_channel_groups(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_channel_groups_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.ListChannelGroupsRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_channel_groups(request)
+
+
+def test_list_channel_groups_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListChannelGroupsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListChannelGroupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_channel_groups(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/channelGroups" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_channel_groups_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_channel_groups(
+            analytics_admin.ListChannelGroupsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_channel_groups_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[
+                    channel_group.ChannelGroup(),
+                    channel_group.ChannelGroup(),
+                    channel_group.ChannelGroup(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[
+                    channel_group.ChannelGroup(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListChannelGroupsResponse(
+                channel_groups=[
+                    channel_group.ChannelGroup(),
+                    channel_group.ChannelGroup(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListChannelGroupsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "properties/sample1"}
+
+        pager = client.list_channel_groups(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, channel_group.ChannelGroup) for i in results)
+
+        pages = list(client.list_channel_groups(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateChannelGroupRequest,
+        dict,
+    ],
+)
+def test_create_channel_group_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["channel_group"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "grouping_rule": [
+            {
+                "display_name": "display_name_value",
+                "expression": {
+                    "and_group": {"filter_expressions": {}},
+                    "or_group": {},
+                    "not_expression": {},
+                    "filter": {
+                        "string_filter": {"match_type": 1, "value": "value_value"},
+                        "in_list_filter": {
+                            "values": ["values_value1", "values_value2"]
+                        },
+                        "field_name": "field_name_value",
+                    },
+                },
+            }
+        ],
+        "system_defined": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gaa_channel_group.ChannelGroup(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            system_defined=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gaa_channel_group.ChannelGroup.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_channel_group(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gaa_channel_group.ChannelGroup)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.system_defined is True
+
+
+def test_create_channel_group_rest_required_fields(
+    request_type=analytics_admin.CreateChannelGroupRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_channel_group._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_channel_group._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gaa_channel_group.ChannelGroup()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gaa_channel_group.ChannelGroup.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_channel_group(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_channel_group_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_channel_group._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "channelGroup",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_channel_group_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_create_channel_group"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_channel_group"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreateChannelGroupRequest.pb(
+            analytics_admin.CreateChannelGroupRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gaa_channel_group.ChannelGroup.to_json(
+            gaa_channel_group.ChannelGroup()
+        )
+
+        request = analytics_admin.CreateChannelGroupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gaa_channel_group.ChannelGroup()
+
+        client.create_channel_group(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_channel_group_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.CreateChannelGroupRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["channel_group"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "grouping_rule": [
+            {
+                "display_name": "display_name_value",
+                "expression": {
+                    "and_group": {"filter_expressions": {}},
+                    "or_group": {},
+                    "not_expression": {},
+                    "filter": {
+                        "string_filter": {"match_type": 1, "value": "value_value"},
+                        "in_list_filter": {
+                            "values": ["values_value1", "values_value2"]
+                        },
+                        "field_name": "field_name_value",
+                    },
+                },
+            }
+        ],
+        "system_defined": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_channel_group(request)
+
+
+def test_create_channel_group_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gaa_channel_group.ChannelGroup()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            channel_group=gaa_channel_group.ChannelGroup(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gaa_channel_group.ChannelGroup.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_channel_group(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/channelGroups" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_channel_group_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_channel_group(
+            analytics_admin.CreateChannelGroupRequest(),
+            parent="parent_value",
+            channel_group=gaa_channel_group.ChannelGroup(name="name_value"),
+        )
+
+
+def test_create_channel_group_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateChannelGroupRequest,
+        dict,
+    ],
+)
+def test_update_channel_group_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "channel_group": {"name": "properties/sample1/channelGroups/sample2"}
+    }
+    request_init["channel_group"] = {
+        "name": "properties/sample1/channelGroups/sample2",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "grouping_rule": [
+            {
+                "display_name": "display_name_value",
+                "expression": {
+                    "and_group": {"filter_expressions": {}},
+                    "or_group": {},
+                    "not_expression": {},
+                    "filter": {
+                        "string_filter": {"match_type": 1, "value": "value_value"},
+                        "in_list_filter": {
+                            "values": ["values_value1", "values_value2"]
+                        },
+                        "field_name": "field_name_value",
+                    },
+                },
+            }
+        ],
+        "system_defined": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gaa_channel_group.ChannelGroup(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            system_defined=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gaa_channel_group.ChannelGroup.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_channel_group(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gaa_channel_group.ChannelGroup)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.system_defined is True
+
+
+def test_update_channel_group_rest_required_fields(
+    request_type=analytics_admin.UpdateChannelGroupRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_channel_group._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_channel_group._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gaa_channel_group.ChannelGroup()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gaa_channel_group.ChannelGroup.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_channel_group(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_channel_group_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_channel_group._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "channelGroup",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_channel_group_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_update_channel_group"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_channel_group"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.UpdateChannelGroupRequest.pb(
+            analytics_admin.UpdateChannelGroupRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gaa_channel_group.ChannelGroup.to_json(
+            gaa_channel_group.ChannelGroup()
+        )
+
+        request = analytics_admin.UpdateChannelGroupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gaa_channel_group.ChannelGroup()
+
+        client.update_channel_group(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_channel_group_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.UpdateChannelGroupRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "channel_group": {"name": "properties/sample1/channelGroups/sample2"}
+    }
+    request_init["channel_group"] = {
+        "name": "properties/sample1/channelGroups/sample2",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "grouping_rule": [
+            {
+                "display_name": "display_name_value",
+                "expression": {
+                    "and_group": {"filter_expressions": {}},
+                    "or_group": {},
+                    "not_expression": {},
+                    "filter": {
+                        "string_filter": {"match_type": 1, "value": "value_value"},
+                        "in_list_filter": {
+                            "values": ["values_value1", "values_value2"]
+                        },
+                        "field_name": "field_name_value",
+                    },
+                },
+            }
+        ],
+        "system_defined": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_channel_group(request)
+
+
+def test_update_channel_group_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gaa_channel_group.ChannelGroup()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "channel_group": {"name": "properties/sample1/channelGroups/sample2"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            channel_group=gaa_channel_group.ChannelGroup(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gaa_channel_group.ChannelGroup.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_channel_group(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{channel_group.name=properties/*/channelGroups/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_channel_group_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_channel_group(
+            analytics_admin.UpdateChannelGroupRequest(),
+            channel_group=gaa_channel_group.ChannelGroup(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_channel_group_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteChannelGroupRequest,
+        dict,
+    ],
+)
+def test_delete_channel_group_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/channelGroups/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_channel_group(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_channel_group_rest_required_fields(
+    request_type=analytics_admin.DeleteChannelGroupRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_channel_group._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_channel_group._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_channel_group(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_channel_group_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_channel_group._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_channel_group_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_channel_group"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.DeleteChannelGroupRequest.pb(
+            analytics_admin.DeleteChannelGroupRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.DeleteChannelGroupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_channel_group(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_channel_group_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.DeleteChannelGroupRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/channelGroups/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_channel_group(request)
+
+
+def test_delete_channel_group_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/channelGroups/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_channel_group(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/channelGroups/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_channel_group_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_channel_group(
+            analytics_admin.DeleteChannelGroupRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_channel_group_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest,
         dict,
     ],
@@ -59285,6 +62385,238 @@ def test_list_connected_site_tags_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.FetchConnectedGa4PropertyRequest,
+        dict,
+    ],
+)
+def test_fetch_connected_ga4_property_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.FetchConnectedGa4PropertyResponse(
+            property="property_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.FetchConnectedGa4PropertyResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.fetch_connected_ga4_property(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analytics_admin.FetchConnectedGa4PropertyResponse)
+    assert response.property == "property_value"
+
+
+def test_fetch_connected_ga4_property_rest_required_fields(
+    request_type=analytics_admin.FetchConnectedGa4PropertyRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["property"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "property" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_connected_ga4_property._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "property" in jsonified_request
+    assert jsonified_request["property"] == request_init["property"]
+
+    jsonified_request["property"] = "property_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_connected_ga4_property._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("property",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "property" in jsonified_request
+    assert jsonified_request["property"] == "property_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.FetchConnectedGa4PropertyResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.FetchConnectedGa4PropertyResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.fetch_connected_ga4_property(request)
+
+            expected_params = [
+                (
+                    "property",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_fetch_connected_ga4_property_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.fetch_connected_ga4_property._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("property",)) & set(("property",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_fetch_connected_ga4_property_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_fetch_connected_ga4_property",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_fetch_connected_ga4_property",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.FetchConnectedGa4PropertyRequest.pb(
+            analytics_admin.FetchConnectedGa4PropertyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_admin.FetchConnectedGa4PropertyResponse.to_json(
+                analytics_admin.FetchConnectedGa4PropertyResponse()
+            )
+        )
+
+        request = analytics_admin.FetchConnectedGa4PropertyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.FetchConnectedGa4PropertyResponse()
+
+        client.fetch_connected_ga4_property(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_fetch_connected_ga4_property_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.FetchConnectedGa4PropertyRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.fetch_connected_ga4_property(request)
+
+
+def test_fetch_connected_ga4_property_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AnalyticsAdminServiceGrpcTransport(
@@ -59522,6 +62854,11 @@ def test_analytics_admin_service_base_transport():
         "create_expanded_data_set",
         "update_expanded_data_set",
         "delete_expanded_data_set",
+        "get_channel_group",
+        "list_channel_groups",
+        "create_channel_group",
+        "update_channel_group",
+        "delete_channel_group",
         "set_automated_ga4_configuration_opt_out",
         "fetch_automated_ga4_configuration_opt_out",
         "get_big_query_link",
@@ -59531,6 +62868,7 @@ def test_analytics_admin_service_base_transport():
         "create_connected_site_tag",
         "delete_connected_site_tag",
         "list_connected_site_tags",
+        "fetch_connected_ga4_property",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -60127,6 +63465,21 @@ def test_analytics_admin_service_client_transport_session_collision(transport_na
     session1 = client1.transport.delete_expanded_data_set._session
     session2 = client2.transport.delete_expanded_data_set._session
     assert session1 != session2
+    session1 = client1.transport.get_channel_group._session
+    session2 = client2.transport.get_channel_group._session
+    assert session1 != session2
+    session1 = client1.transport.list_channel_groups._session
+    session2 = client2.transport.list_channel_groups._session
+    assert session1 != session2
+    session1 = client1.transport.create_channel_group._session
+    session2 = client2.transport.create_channel_group._session
+    assert session1 != session2
+    session1 = client1.transport.update_channel_group._session
+    session2 = client2.transport.update_channel_group._session
+    assert session1 != session2
+    session1 = client1.transport.delete_channel_group._session
+    session2 = client2.transport.delete_channel_group._session
+    assert session1 != session2
     session1 = client1.transport.set_automated_ga4_configuration_opt_out._session
     session2 = client2.transport.set_automated_ga4_configuration_opt_out._session
     assert session1 != session2
@@ -60153,6 +63506,9 @@ def test_analytics_admin_service_client_transport_session_collision(transport_na
     assert session1 != session2
     session1 = client1.transport.list_connected_site_tags._session
     session2 = client2.transport.list_connected_site_tags._session
+    assert session1 != session2
+    session1 = client1.transport.fetch_connected_ga4_property._session
+    session2 = client2.transport.fetch_connected_ga4_property._session
     assert session1 != session2
 
 
@@ -60411,9 +63767,32 @@ def test_parse_big_query_link_path():
     assert expected == actual
 
 
-def test_conversion_event_path():
+def test_channel_group_path():
     property = "cuttlefish"
-    conversion_event = "mussel"
+    channel_group = "mussel"
+    expected = "properties/{property}/channelGroups/{channel_group}".format(
+        property=property,
+        channel_group=channel_group,
+    )
+    actual = AnalyticsAdminServiceClient.channel_group_path(property, channel_group)
+    assert expected == actual
+
+
+def test_parse_channel_group_path():
+    expected = {
+        "property": "winkle",
+        "channel_group": "nautilus",
+    }
+    path = AnalyticsAdminServiceClient.channel_group_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AnalyticsAdminServiceClient.parse_channel_group_path(path)
+    assert expected == actual
+
+
+def test_conversion_event_path():
+    property = "scallop"
+    conversion_event = "abalone"
     expected = "properties/{property}/conversionEvents/{conversion_event}".format(
         property=property,
         conversion_event=conversion_event,
@@ -60426,8 +63805,8 @@ def test_conversion_event_path():
 
 def test_parse_conversion_event_path():
     expected = {
-        "property": "winkle",
-        "conversion_event": "nautilus",
+        "property": "squid",
+        "conversion_event": "clam",
     }
     path = AnalyticsAdminServiceClient.conversion_event_path(**expected)
 
@@ -60437,8 +63816,8 @@ def test_parse_conversion_event_path():
 
 
 def test_custom_dimension_path():
-    property = "scallop"
-    custom_dimension = "abalone"
+    property = "whelk"
+    custom_dimension = "octopus"
     expected = "properties/{property}/customDimensions/{custom_dimension}".format(
         property=property,
         custom_dimension=custom_dimension,
@@ -60451,8 +63830,8 @@ def test_custom_dimension_path():
 
 def test_parse_custom_dimension_path():
     expected = {
-        "property": "squid",
-        "custom_dimension": "clam",
+        "property": "oyster",
+        "custom_dimension": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.custom_dimension_path(**expected)
 
@@ -60462,8 +63841,8 @@ def test_parse_custom_dimension_path():
 
 
 def test_custom_metric_path():
-    property = "whelk"
-    custom_metric = "octopus"
+    property = "cuttlefish"
+    custom_metric = "mussel"
     expected = "properties/{property}/customMetrics/{custom_metric}".format(
         property=property,
         custom_metric=custom_metric,
@@ -60474,8 +63853,8 @@ def test_custom_metric_path():
 
 def test_parse_custom_metric_path():
     expected = {
-        "property": "oyster",
-        "custom_metric": "nudibranch",
+        "property": "winkle",
+        "custom_metric": "nautilus",
     }
     path = AnalyticsAdminServiceClient.custom_metric_path(**expected)
 
@@ -60485,7 +63864,7 @@ def test_parse_custom_metric_path():
 
 
 def test_data_retention_settings_path():
-    property = "cuttlefish"
+    property = "scallop"
     expected = "properties/{property}/dataRetentionSettings".format(
         property=property,
     )
@@ -60495,7 +63874,7 @@ def test_data_retention_settings_path():
 
 def test_parse_data_retention_settings_path():
     expected = {
-        "property": "mussel",
+        "property": "abalone",
     }
     path = AnalyticsAdminServiceClient.data_retention_settings_path(**expected)
 
@@ -60505,7 +63884,7 @@ def test_parse_data_retention_settings_path():
 
 
 def test_data_sharing_settings_path():
-    account = "winkle"
+    account = "squid"
     expected = "accounts/{account}/dataSharingSettings".format(
         account=account,
     )
@@ -60515,7 +63894,7 @@ def test_data_sharing_settings_path():
 
 def test_parse_data_sharing_settings_path():
     expected = {
-        "account": "nautilus",
+        "account": "clam",
     }
     path = AnalyticsAdminServiceClient.data_sharing_settings_path(**expected)
 
@@ -60525,8 +63904,8 @@ def test_parse_data_sharing_settings_path():
 
 
 def test_data_stream_path():
-    property = "scallop"
-    data_stream = "abalone"
+    property = "whelk"
+    data_stream = "octopus"
     expected = "properties/{property}/dataStreams/{data_stream}".format(
         property=property,
         data_stream=data_stream,
@@ -60537,8 +63916,8 @@ def test_data_stream_path():
 
 def test_parse_data_stream_path():
     expected = {
-        "property": "squid",
-        "data_stream": "clam",
+        "property": "oyster",
+        "data_stream": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.data_stream_path(**expected)
 
@@ -60548,8 +63927,8 @@ def test_parse_data_stream_path():
 
 
 def test_display_video360_advertiser_link_path():
-    property = "whelk"
-    display_video_360_advertiser_link = "octopus"
+    property = "cuttlefish"
+    display_video_360_advertiser_link = "mussel"
     expected = "properties/{property}/displayVideo360AdvertiserLinks/{display_video_360_advertiser_link}".format(
         property=property,
         display_video_360_advertiser_link=display_video_360_advertiser_link,
@@ -60562,8 +63941,8 @@ def test_display_video360_advertiser_link_path():
 
 def test_parse_display_video360_advertiser_link_path():
     expected = {
-        "property": "oyster",
-        "display_video_360_advertiser_link": "nudibranch",
+        "property": "winkle",
+        "display_video_360_advertiser_link": "nautilus",
     }
     path = AnalyticsAdminServiceClient.display_video360_advertiser_link_path(**expected)
 
@@ -60575,8 +63954,8 @@ def test_parse_display_video360_advertiser_link_path():
 
 
 def test_display_video360_advertiser_link_proposal_path():
-    property = "cuttlefish"
-    display_video_360_advertiser_link_proposal = "mussel"
+    property = "scallop"
+    display_video_360_advertiser_link_proposal = "abalone"
     expected = "properties/{property}/displayVideo360AdvertiserLinkProposals/{display_video_360_advertiser_link_proposal}".format(
         property=property,
         display_video_360_advertiser_link_proposal=display_video_360_advertiser_link_proposal,
@@ -60589,8 +63968,8 @@ def test_display_video360_advertiser_link_proposal_path():
 
 def test_parse_display_video360_advertiser_link_proposal_path():
     expected = {
-        "property": "winkle",
-        "display_video_360_advertiser_link_proposal": "nautilus",
+        "property": "squid",
+        "display_video_360_advertiser_link_proposal": "clam",
     }
     path = AnalyticsAdminServiceClient.display_video360_advertiser_link_proposal_path(
         **expected
@@ -60604,8 +63983,8 @@ def test_parse_display_video360_advertiser_link_proposal_path():
 
 
 def test_enhanced_measurement_settings_path():
-    property = "scallop"
-    data_stream = "abalone"
+    property = "whelk"
+    data_stream = "octopus"
     expected = "properties/{property}/dataStreams/{data_stream}/enhancedMeasurementSettings".format(
         property=property,
         data_stream=data_stream,
@@ -60618,8 +63997,8 @@ def test_enhanced_measurement_settings_path():
 
 def test_parse_enhanced_measurement_settings_path():
     expected = {
-        "property": "squid",
-        "data_stream": "clam",
+        "property": "oyster",
+        "data_stream": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.enhanced_measurement_settings_path(**expected)
 
@@ -60629,8 +64008,8 @@ def test_parse_enhanced_measurement_settings_path():
 
 
 def test_expanded_data_set_path():
-    property = "whelk"
-    expanded_data_set = "octopus"
+    property = "cuttlefish"
+    expanded_data_set = "mussel"
     expected = "properties/{property}/expandedDataSets/{expanded_data_set}".format(
         property=property,
         expanded_data_set=expanded_data_set,
@@ -60643,8 +64022,8 @@ def test_expanded_data_set_path():
 
 def test_parse_expanded_data_set_path():
     expected = {
-        "property": "oyster",
-        "expanded_data_set": "nudibranch",
+        "property": "winkle",
+        "expanded_data_set": "nautilus",
     }
     path = AnalyticsAdminServiceClient.expanded_data_set_path(**expected)
 
@@ -60654,8 +64033,8 @@ def test_parse_expanded_data_set_path():
 
 
 def test_firebase_link_path():
-    property = "cuttlefish"
-    firebase_link = "mussel"
+    property = "scallop"
+    firebase_link = "abalone"
     expected = "properties/{property}/firebaseLinks/{firebase_link}".format(
         property=property,
         firebase_link=firebase_link,
@@ -60666,8 +64045,8 @@ def test_firebase_link_path():
 
 def test_parse_firebase_link_path():
     expected = {
-        "property": "winkle",
-        "firebase_link": "nautilus",
+        "property": "squid",
+        "firebase_link": "clam",
     }
     path = AnalyticsAdminServiceClient.firebase_link_path(**expected)
 
@@ -60677,8 +64056,8 @@ def test_parse_firebase_link_path():
 
 
 def test_global_site_tag_path():
-    property = "scallop"
-    data_stream = "abalone"
+    property = "whelk"
+    data_stream = "octopus"
     expected = "properties/{property}/dataStreams/{data_stream}/globalSiteTag".format(
         property=property,
         data_stream=data_stream,
@@ -60689,8 +64068,8 @@ def test_global_site_tag_path():
 
 def test_parse_global_site_tag_path():
     expected = {
-        "property": "squid",
-        "data_stream": "clam",
+        "property": "oyster",
+        "data_stream": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.global_site_tag_path(**expected)
 
@@ -60700,8 +64079,8 @@ def test_parse_global_site_tag_path():
 
 
 def test_google_ads_link_path():
-    property = "whelk"
-    google_ads_link = "octopus"
+    property = "cuttlefish"
+    google_ads_link = "mussel"
     expected = "properties/{property}/googleAdsLinks/{google_ads_link}".format(
         property=property,
         google_ads_link=google_ads_link,
@@ -60712,8 +64091,8 @@ def test_google_ads_link_path():
 
 def test_parse_google_ads_link_path():
     expected = {
-        "property": "oyster",
-        "google_ads_link": "nudibranch",
+        "property": "winkle",
+        "google_ads_link": "nautilus",
     }
     path = AnalyticsAdminServiceClient.google_ads_link_path(**expected)
 
@@ -60723,7 +64102,7 @@ def test_parse_google_ads_link_path():
 
 
 def test_google_signals_settings_path():
-    property = "cuttlefish"
+    property = "scallop"
     expected = "properties/{property}/googleSignalsSettings".format(
         property=property,
     )
@@ -60733,7 +64112,7 @@ def test_google_signals_settings_path():
 
 def test_parse_google_signals_settings_path():
     expected = {
-        "property": "mussel",
+        "property": "abalone",
     }
     path = AnalyticsAdminServiceClient.google_signals_settings_path(**expected)
 
@@ -60743,9 +64122,9 @@ def test_parse_google_signals_settings_path():
 
 
 def test_measurement_protocol_secret_path():
-    property = "winkle"
-    data_stream = "nautilus"
-    measurement_protocol_secret = "scallop"
+    property = "squid"
+    data_stream = "clam"
+    measurement_protocol_secret = "whelk"
     expected = "properties/{property}/dataStreams/{data_stream}/measurementProtocolSecrets/{measurement_protocol_secret}".format(
         property=property,
         data_stream=data_stream,
@@ -60759,9 +64138,9 @@ def test_measurement_protocol_secret_path():
 
 def test_parse_measurement_protocol_secret_path():
     expected = {
-        "property": "abalone",
-        "data_stream": "squid",
-        "measurement_protocol_secret": "clam",
+        "property": "octopus",
+        "data_stream": "oyster",
+        "measurement_protocol_secret": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.measurement_protocol_secret_path(**expected)
 
@@ -60771,7 +64150,7 @@ def test_parse_measurement_protocol_secret_path():
 
 
 def test_property_path():
-    property = "whelk"
+    property = "cuttlefish"
     expected = "properties/{property}".format(
         property=property,
     )
@@ -60781,7 +64160,7 @@ def test_property_path():
 
 def test_parse_property_path():
     expected = {
-        "property": "octopus",
+        "property": "mussel",
     }
     path = AnalyticsAdminServiceClient.property_path(**expected)
 
@@ -60791,8 +64170,8 @@ def test_parse_property_path():
 
 
 def test_search_ads360_link_path():
-    property = "oyster"
-    search_ads_360_link = "nudibranch"
+    property = "winkle"
+    search_ads_360_link = "nautilus"
     expected = "properties/{property}/searchAds360Links/{search_ads_360_link}".format(
         property=property,
         search_ads_360_link=search_ads_360_link,
@@ -60805,8 +64184,8 @@ def test_search_ads360_link_path():
 
 def test_parse_search_ads360_link_path():
     expected = {
-        "property": "cuttlefish",
-        "search_ads_360_link": "mussel",
+        "property": "scallop",
+        "search_ads_360_link": "abalone",
     }
     path = AnalyticsAdminServiceClient.search_ads360_link_path(**expected)
 
@@ -60816,8 +64195,8 @@ def test_parse_search_ads360_link_path():
 
 
 def test_user_link_path():
-    account = "winkle"
-    user_link = "nautilus"
+    account = "squid"
+    user_link = "clam"
     expected = "accounts/{account}/userLinks/{user_link}".format(
         account=account,
         user_link=user_link,
@@ -60828,8 +64207,8 @@ def test_user_link_path():
 
 def test_parse_user_link_path():
     expected = {
-        "account": "scallop",
-        "user_link": "abalone",
+        "account": "whelk",
+        "user_link": "octopus",
     }
     path = AnalyticsAdminServiceClient.user_link_path(**expected)
 
@@ -60839,7 +64218,7 @@ def test_parse_user_link_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -60849,7 +64228,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.common_billing_account_path(**expected)
 
@@ -60859,7 +64238,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -60869,7 +64248,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "mussel",
     }
     path = AnalyticsAdminServiceClient.common_folder_path(**expected)
 
@@ -60879,7 +64258,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -60889,7 +64268,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "nautilus",
     }
     path = AnalyticsAdminServiceClient.common_organization_path(**expected)
 
@@ -60899,7 +64278,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -60909,7 +64288,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "abalone",
     }
     path = AnalyticsAdminServiceClient.common_project_path(**expected)
 
@@ -60919,8 +64298,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -60931,8 +64310,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = AnalyticsAdminServiceClient.common_location_path(**expected)
 

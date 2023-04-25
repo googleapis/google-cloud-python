@@ -47,12 +47,14 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 
 from google.analytics.admin_v1alpha.services.analytics_admin_service import pagers
+from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_group
 from google.analytics.admin_v1alpha.types import (
     expanded_data_set as gaa_expanded_data_set,
 )
 from google.analytics.admin_v1alpha.types import access_report, analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
+from google.analytics.admin_v1alpha.types import channel_group
 from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
 
@@ -92,6 +94,10 @@ class AnalyticsAdminServiceAsyncClient:
     big_query_link_path = staticmethod(AnalyticsAdminServiceClient.big_query_link_path)
     parse_big_query_link_path = staticmethod(
         AnalyticsAdminServiceClient.parse_big_query_link_path
+    )
+    channel_group_path = staticmethod(AnalyticsAdminServiceClient.channel_group_path)
+    parse_channel_group_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_channel_group_path
     )
     conversion_event_path = staticmethod(
         AnalyticsAdminServiceClient.conversion_event_path
@@ -6077,7 +6083,7 @@ class AnalyticsAdminServiceAsyncClient:
                 custom_dimension = admin_v1alpha.CustomDimension()
                 custom_dimension.parameter_name = "parameter_name_value"
                 custom_dimension.display_name = "display_name_value"
-                custom_dimension.scope = "USER"
+                custom_dimension.scope = "ITEM"
 
                 request = admin_v1alpha.CreateCustomDimensionRequest(
                     parent="parent_value",
@@ -10227,8 +10233,8 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 GetExpandedDataSet RPC.
             name (:class:`str`):
-                Required. The name of the Audience to
-                get. Example format:
+                Required. The name of the
+                ExpandedDataSet to get. Example format:
                 properties/1234/expandedDataSets/5678
 
                 This corresponds to the ``name`` field
@@ -10720,6 +10726,560 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_expanded_data_set,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def get_channel_group(
+        self,
+        request: Optional[Union[analytics_admin.GetChannelGroupRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> channel_group.ChannelGroup:
+        r"""Lookup for a single ChannelGroup.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_get_channel_group():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetChannelGroupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_channel_group(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.GetChannelGroupRequest, dict]]):
+                The request object. Request message for GetChannelGroup
+                RPC.
+            name (:class:`str`):
+                Required. The ChannelGroup to get.
+                Example format:
+                properties/1234/channelGroups/5678
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.ChannelGroup:
+                A resource message representing a
+                Channel Group.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.GetChannelGroupRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_channel_group,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_channel_groups(
+        self,
+        request: Optional[Union[analytics_admin.ListChannelGroupsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListChannelGroupsAsyncPager:
+        r"""Lists ChannelGroups on a property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_list_channel_groups():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListChannelGroupsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_channel_groups(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.ListChannelGroupsRequest, dict]]):
+                The request object. Request message for ListChannelGroups
+                RPC.
+            parent (:class:`str`):
+                Required. The property for which to
+                list ChannelGroups. Example format:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListChannelGroupsAsyncPager:
+                Response message for
+                ListChannelGroups RPC.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.ListChannelGroupsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_channel_groups,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListChannelGroupsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_channel_group(
+        self,
+        request: Optional[
+            Union[analytics_admin.CreateChannelGroupRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        channel_group: Optional[gaa_channel_group.ChannelGroup] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gaa_channel_group.ChannelGroup:
+        r"""Creates a ChannelGroup.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_create_channel_group():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                channel_group = admin_v1alpha.ChannelGroup()
+                channel_group.display_name = "display_name_value"
+                channel_group.grouping_rule.display_name = "display_name_value"
+
+                request = admin_v1alpha.CreateChannelGroupRequest(
+                    parent="parent_value",
+                    channel_group=channel_group,
+                )
+
+                # Make the request
+                response = await client.create_channel_group(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.CreateChannelGroupRequest, dict]]):
+                The request object. Request message for
+                CreateChannelGroup RPC.
+            parent (:class:`str`):
+                Required. The property for which to
+                create a ChannelGroup. Example format:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            channel_group (:class:`google.analytics.admin_v1alpha.types.ChannelGroup`):
+                Required. The ChannelGroup to create.
+                This corresponds to the ``channel_group`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.ChannelGroup:
+                A resource message representing a
+                Channel Group.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, channel_group])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.CreateChannelGroupRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if channel_group is not None:
+            request.channel_group = channel_group
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_channel_group,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_channel_group(
+        self,
+        request: Optional[
+            Union[analytics_admin.UpdateChannelGroupRequest, dict]
+        ] = None,
+        *,
+        channel_group: Optional[gaa_channel_group.ChannelGroup] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gaa_channel_group.ChannelGroup:
+        r"""Updates a ChannelGroup.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_update_channel_group():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                channel_group = admin_v1alpha.ChannelGroup()
+                channel_group.display_name = "display_name_value"
+                channel_group.grouping_rule.display_name = "display_name_value"
+
+                request = admin_v1alpha.UpdateChannelGroupRequest(
+                    channel_group=channel_group,
+                )
+
+                # Make the request
+                response = await client.update_channel_group(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.UpdateChannelGroupRequest, dict]]):
+                The request object. Request message for
+                UpdateChannelGroup RPC.
+            channel_group (:class:`google.analytics.admin_v1alpha.types.ChannelGroup`):
+                Required. The ChannelGroup to update. The resource's
+                ``name`` field is used to identify the ChannelGroup to
+                be updated.
+
+                This corresponds to the ``channel_group`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
+                fields will not be updated. To replace the entire
+                entity, use one path with the string "*" to match all
+                fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.ChannelGroup:
+                A resource message representing a
+                Channel Group.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([channel_group, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.UpdateChannelGroupRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if channel_group is not None:
+            request.channel_group = channel_group
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_channel_group,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("channel_group.name", request.channel_group.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_channel_group(
+        self,
+        request: Optional[
+            Union[analytics_admin.DeleteChannelGroupRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a ChannelGroup on a property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_delete_channel_group():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteChannelGroupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_channel_group(request=request)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.DeleteChannelGroupRequest, dict]]):
+                The request object. Request message for
+                DeleteChannelGroup RPC.
+            name (:class:`str`):
+                Required. The ChannelGroup to delete.
+                Example format:
+                properties/1234/channelGroups/5678
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.DeleteChannelGroupRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_channel_group,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
@@ -11572,6 +12132,84 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_connected_site_tags,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def fetch_connected_ga4_property(
+        self,
+        request: Optional[
+            Union[analytics_admin.FetchConnectedGa4PropertyRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_admin.FetchConnectedGa4PropertyResponse:
+        r"""Given a specified UA property, looks up the GA4
+        property connected to it. Note: this cannot be used with
+        GA4 properties.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            async def sample_fetch_connected_ga4_property():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.FetchConnectedGa4PropertyRequest(
+                    property="property_value",
+                )
+
+                # Make the request
+                response = await client.fetch_connected_ga4_property(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.FetchConnectedGa4PropertyRequest, dict]]):
+                The request object. Request for looking up GA4 property
+                connected to a UA property.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.FetchConnectedGa4PropertyResponse:
+                Response for looking up GA4 property
+                connected to a UA property.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = analytics_admin.FetchConnectedGa4PropertyRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.fetch_connected_ga4_property,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )

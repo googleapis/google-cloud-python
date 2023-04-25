@@ -38,12 +38,14 @@ except AttributeError:  # pragma: NO COVER
 
 from google.protobuf import empty_pb2  # type: ignore
 
+from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_group
 from google.analytics.admin_v1alpha.types import (
     expanded_data_set as gaa_expanded_data_set,
 )
 from google.analytics.admin_v1alpha.types import analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
+from google.analytics.admin_v1alpha.types import channel_group
 from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
 
@@ -188,6 +190,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_channel_group(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_channel_group(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_connected_site_tag(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -308,6 +318,10 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_delete_channel_group(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_delete_connected_site_tag(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -368,6 +382,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_fetch_connected_ga4_property(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_connected_ga4_property(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_access_binding(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -405,6 +427,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_get_big_query_link(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_channel_group(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_channel_group(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -573,6 +603,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_list_big_query_links(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_channel_groups(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_channel_groups(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -749,6 +787,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_update_audience(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_channel_group(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_channel_group(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -1217,6 +1263,29 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_create_channel_group(
+        self,
+        request: analytics_admin.CreateChannelGroupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.CreateChannelGroupRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_channel_group
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_create_channel_group(
+        self, response: gaa_channel_group.ChannelGroup
+    ) -> gaa_channel_group.ChannelGroup:
+        """Post-rpc interceptor for create_channel_group
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_connected_site_tag(
         self,
         request: analytics_admin.CreateConnectedSiteTagRequest,
@@ -1572,6 +1641,18 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return request, metadata
 
+    def pre_delete_channel_group(
+        self,
+        request: analytics_admin.DeleteChannelGroupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.DeleteChannelGroupRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_channel_group
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
     def pre_delete_connected_site_tag(
         self,
         request: analytics_admin.DeleteConnectedSiteTagRequest,
@@ -1764,6 +1845,31 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_fetch_connected_ga4_property(
+        self,
+        request: analytics_admin.FetchConnectedGa4PropertyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.FetchConnectedGa4PropertyRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for fetch_connected_ga4_property
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_fetch_connected_ga4_property(
+        self, response: analytics_admin.FetchConnectedGa4PropertyResponse
+    ) -> analytics_admin.FetchConnectedGa4PropertyResponse:
+        """Post-rpc interceptor for fetch_connected_ga4_property
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_access_binding(
         self,
         request: analytics_admin.GetAccessBindingRequest,
@@ -1870,6 +1976,29 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: resources.BigQueryLink
     ) -> resources.BigQueryLink:
         """Post-rpc interceptor for get_big_query_link
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_channel_group(
+        self,
+        request: analytics_admin.GetChannelGroupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.GetChannelGroupRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_channel_group
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_get_channel_group(
+        self, response: channel_group.ChannelGroup
+    ) -> channel_group.ChannelGroup:
+        """Post-rpc interceptor for get_channel_group
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -2365,6 +2494,29 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: analytics_admin.ListBigQueryLinksResponse
     ) -> analytics_admin.ListBigQueryLinksResponse:
         """Post-rpc interceptor for list_big_query_links
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_channel_groups(
+        self,
+        request: analytics_admin.ListChannelGroupsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.ListChannelGroupsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_channel_groups
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_list_channel_groups(
+        self, response: analytics_admin.ListChannelGroupsResponse
+    ) -> analytics_admin.ListChannelGroupsResponse:
+        """Post-rpc interceptor for list_channel_groups
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -2887,6 +3039,29 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: gaa_audience.Audience
     ) -> gaa_audience.Audience:
         """Post-rpc interceptor for update_audience
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_channel_group(
+        self,
+        request: analytics_admin.UpdateChannelGroupRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.UpdateChannelGroupRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_channel_group
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_update_channel_group(
+        self, response: gaa_channel_group.ChannelGroup
+    ) -> gaa_channel_group.ChannelGroup:
+        """Post-rpc interceptor for update_channel_group
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -5007,6 +5182,106 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_audience(resp)
             return resp
 
+    class _CreateChannelGroup(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("CreateChannelGroup")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.CreateChannelGroupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gaa_channel_group.ChannelGroup:
+            r"""Call the create channel group method over HTTP.
+
+            Args:
+                request (~.analytics_admin.CreateChannelGroupRequest):
+                    The request object. Request message for
+                CreateChannelGroup RPC.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.gaa_channel_group.ChannelGroup:
+                    A resource message representing a
+                Channel Group.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=properties/*}/channelGroups",
+                    "body": "channel_group",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_channel_group(
+                request, metadata
+            )
+            pb_request = analytics_admin.CreateChannelGroupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gaa_channel_group.ChannelGroup()
+            pb_resp = gaa_channel_group.ChannelGroup.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_channel_group(resp)
+            return resp
+
     class _CreateConnectedSiteTag(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("CreateConnectedSiteTag")
@@ -6605,6 +6880,83 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _DeleteChannelGroup(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteChannelGroup")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.DeleteChannelGroupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete channel group method over HTTP.
+
+            Args:
+                request (~.analytics_admin.DeleteChannelGroupRequest):
+                    The request object. Request message for
+                DeleteChannelGroup RPC.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1alpha/{name=properties/*/channelGroups/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_channel_group(
+                request, metadata
+            )
+            pb_request = analytics_admin.DeleteChannelGroupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _DeleteConnectedSiteTag(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("DeleteConnectedSiteTag")
@@ -7676,6 +8028,100 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             return resp
 
+    class _FetchConnectedGa4Property(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("FetchConnectedGa4Property")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "property": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.FetchConnectedGa4PropertyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.FetchConnectedGa4PropertyResponse:
+            r"""Call the fetch connected ga4
+            property method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.FetchConnectedGa4PropertyRequest):
+                        The request object. Request for looking up GA4 property
+                    connected to a UA property.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.analytics_admin.FetchConnectedGa4PropertyResponse:
+                        Response for looking up GA4 property
+                    connected to a UA property.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/properties:fetchConnectedGa4Property",
+                },
+            ]
+            request, metadata = self._interceptor.pre_fetch_connected_ga4_property(
+                request, metadata
+            )
+            pb_request = analytics_admin.FetchConnectedGa4PropertyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.FetchConnectedGa4PropertyResponse()
+            pb_resp = analytics_admin.FetchConnectedGa4PropertyResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_fetch_connected_ga4_property(resp)
+            return resp
+
     class _GetAccessBinding(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("GetAccessBinding")
@@ -8128,6 +8574,97 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_big_query_link(resp)
+            return resp
+
+    class _GetChannelGroup(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("GetChannelGroup")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.GetChannelGroupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> channel_group.ChannelGroup:
+            r"""Call the get channel group method over HTTP.
+
+            Args:
+                request (~.analytics_admin.GetChannelGroupRequest):
+                    The request object. Request message for GetChannelGroup
+                RPC.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.channel_group.ChannelGroup:
+                    A resource message representing a
+                Channel Group.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=properties/*/channelGroups/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_channel_group(
+                request, metadata
+            )
+            pb_request = analytics_admin.GetChannelGroupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = channel_group.ChannelGroup()
+            pb_resp = channel_group.ChannelGroup.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_channel_group(resp)
             return resp
 
     class _GetConversionEvent(AnalyticsAdminServiceRestStub):
@@ -10042,6 +10579,97 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_big_query_links(resp)
+            return resp
+
+    class _ListChannelGroups(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("ListChannelGroups")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.ListChannelGroupsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.ListChannelGroupsResponse:
+            r"""Call the list channel groups method over HTTP.
+
+            Args:
+                request (~.analytics_admin.ListChannelGroupsRequest):
+                    The request object. Request message for ListChannelGroups
+                RPC.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.analytics_admin.ListChannelGroupsResponse:
+                    Response message for
+                ListChannelGroups RPC.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=properties/*}/channelGroups",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_channel_groups(
+                request, metadata
+            )
+            pb_request = analytics_admin.ListChannelGroupsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.ListChannelGroupsResponse()
+            pb_resp = analytics_admin.ListChannelGroupsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_channel_groups(resp)
             return resp
 
     class _ListConnectedSiteTags(AnalyticsAdminServiceRestStub):
@@ -12150,6 +12778,108 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_audience(resp)
             return resp
 
+    class _UpdateChannelGroup(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateChannelGroup")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.UpdateChannelGroupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gaa_channel_group.ChannelGroup:
+            r"""Call the update channel group method over HTTP.
+
+            Args:
+                request (~.analytics_admin.UpdateChannelGroupRequest):
+                    The request object. Request message for
+                UpdateChannelGroup RPC.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.gaa_channel_group.ChannelGroup:
+                    A resource message representing a
+                Channel Group.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1alpha/{channel_group.name=properties/*/channelGroups/*}",
+                    "body": "channel_group",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_channel_group(
+                request, metadata
+            )
+            pb_request = analytics_admin.UpdateChannelGroupRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gaa_channel_group.ChannelGroup()
+            pb_resp = gaa_channel_group.ChannelGroup.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_channel_group(resp)
+            return resp
+
     class _UpdateCustomDimension(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("UpdateCustomDimension")
@@ -13662,6 +14392,16 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._CreateAudience(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_channel_group(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateChannelGroupRequest], gaa_channel_group.ChannelGroup
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateChannelGroup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_connected_site_tag(
         self,
     ) -> Callable[
@@ -13813,6 +14553,14 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._DeleteAccount(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_channel_group(
+        self,
+    ) -> Callable[[analytics_admin.DeleteChannelGroupRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteChannelGroup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_connected_site_tag(
         self,
     ) -> Callable[[analytics_admin.DeleteConnectedSiteTagRequest], empty_pb2.Empty]:
@@ -13927,6 +14675,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._FetchAutomatedGa4ConfigurationOptOut(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def fetch_connected_ga4_property(
+        self,
+    ) -> Callable[
+        [analytics_admin.FetchConnectedGa4PropertyRequest],
+        analytics_admin.FetchConnectedGa4PropertyResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchConnectedGa4Property(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_access_binding(
         self,
     ) -> Callable[[analytics_admin.GetAccessBindingRequest], resources.AccessBinding]:
@@ -13967,6 +14726,14 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBigQueryLink(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_channel_group(
+        self,
+    ) -> Callable[[analytics_admin.GetChannelGroupRequest], channel_group.ChannelGroup]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetChannelGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_conversion_event(
@@ -14176,6 +14943,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBigQueryLinks(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_channel_groups(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListChannelGroupsRequest],
+        analytics_admin.ListChannelGroupsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListChannelGroups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_connected_site_tags(
@@ -14409,6 +15187,16 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAudience(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_channel_group(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateChannelGroupRequest], gaa_channel_group.ChannelGroup
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateChannelGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_custom_dimension(

@@ -21,6 +21,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_group
 from google.analytics.admin_v1alpha.types import (
     expanded_data_set as gaa_expanded_data_set,
 )
@@ -1324,6 +1325,11 @@ class ChangeHistoryChange(proto.Message):
                 change history.
 
                 This field is a member of `oneof`_ ``resource``.
+            channel_group (google.analytics.admin_v1alpha.types.ChannelGroup):
+                A snapshot of a ChannelGroup resource in
+                change history.
+
+                This field is a member of `oneof`_ ``resource``.
             bigquery_link (google.analytics.admin_v1alpha.types.BigQueryLink):
                 A snapshot of a BigQuery link resource in
                 change history.
@@ -1433,6 +1439,12 @@ class ChangeHistoryChange(proto.Message):
             number=21,
             oneof="resource",
             message=gaa_expanded_data_set.ExpandedDataSet,
+        )
+        channel_group: gaa_channel_group.ChannelGroup = proto.Field(
+            proto.MESSAGE,
+            number=22,
+            oneof="resource",
+            message=gaa_channel_group.ChannelGroup,
         )
         bigquery_link: "BigQueryLink" = proto.Field(
             proto.MESSAGE,
@@ -1827,6 +1839,10 @@ class CustomDimension(proto.Message):
             event-scoped dimension, then this is the event
             parameter name.
 
+            If this is an item-scoped dimension, then this
+            is the parameter name found in the eCommerce
+            items array.
+
             May only contain alphanumeric and underscore
             characters, starting with a letter. Max length
             of 24 characters for user-scoped dimensions, 40
@@ -1862,10 +1878,13 @@ class CustomDimension(proto.Message):
                 Dimension scoped to an event.
             USER (2):
                 Dimension scoped to a user.
+            ITEM (3):
+                Dimension scoped to eCommerce items
         """
         DIMENSION_SCOPE_UNSPECIFIED = 0
         EVENT = 1
         USER = 2
+        ITEM = 3
 
     name: str = proto.Field(
         proto.STRING,
