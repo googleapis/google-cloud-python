@@ -29,6 +29,10 @@ from google.cloud.firestore_v1._helpers import ExistsOption
 from google.cloud.firestore_v1._helpers import LastUpdateOption
 from google.cloud.firestore_v1._helpers import ReadAfterWriteError
 from google.cloud.firestore_v1._helpers import WriteOption
+from google.cloud.firestore_v1.base_aggregation import CountAggregation
+from google.cloud.firestore_v1.base_query import And
+from google.cloud.firestore_v1.base_query import FieldFilter
+from google.cloud.firestore_v1.base_query import Or
 from google.cloud.firestore_v1.async_batch import AsyncWriteBatch
 from google.cloud.firestore_v1.async_client import AsyncClient
 from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
@@ -107,6 +111,7 @@ from typing import List
 
 __all__: List[str] = [
     "__version__",
+    "And",
     "ArrayRemove",
     "ArrayUnion",
     "AsyncClient",
@@ -117,6 +122,7 @@ __all__: List[str] = [
     "AsyncTransaction",
     "AsyncWriteBatch",
     "Client",
+    "CountAggregation",
     "CollectionGroup",
     "CollectionReference",
     "DELETE_FIELD",
@@ -124,11 +130,13 @@ __all__: List[str] = [
     "DocumentSnapshot",
     "DocumentTransform",
     "ExistsOption",
+    "FieldFilter",
     "GeoPoint",
     "Increment",
     "LastUpdateOption",
     "Maximum",
     "Minimum",
+    "Or",
     "Query",
     "ReadAfterWriteError",
     "SERVER_TIMESTAMP",
