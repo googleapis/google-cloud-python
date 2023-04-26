@@ -2045,3 +2045,17 @@ class CreateEngineWithClientObjectTest(fixtures.TestBase):
 
         with pytest.raises(ValueError):
             engine.connect()
+
+
+class CreateEngineWithoutDatabaseTest(fixtures.TestBase):
+    def test_create_engine_wo_database(self):
+        """
+        SPANNER TEST:
+
+        Check that we can connect to SqlAlchemy
+        without passing database id in the
+        connection URL.
+        """
+        engine = create_engine(get_db_url().split("/database")[0])
+        with engine.connect() as connection:
+            assert connection.connection.database is None

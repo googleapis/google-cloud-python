@@ -24,7 +24,7 @@ import random
 import time
 from unittest import mock
 
-from google.cloud.spanner_v1 import RequestOptions
+from google.cloud.spanner_v1 import RequestOptions, Client
 import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Inspector
@@ -144,7 +144,7 @@ from sqlalchemy.testing.suite.test_types import (  # noqa: F401, F403
     UnicodeTextTest as _UnicodeTextTest,
     _UnicodeFixture as __UnicodeFixture,
 )  # noqa: F401, F403
-from test._helpers import get_db_url
+from test._helpers import get_db_url, get_project
 
 config.test_schema = ""
 
@@ -3000,3 +3000,44 @@ class ExecutionOptionsRequestPriorotyTest(fixtures.TestBase):
         engine = create_engine("sqlite:///database")
         with engine.connect() as connection:
             pass
+
+
+class CreateEngineWithClientObjectTest(fixtures.TestBase):
+    def test_create_engine_w_valid_client_object(self):
+        """
+        SPANNER TEST:
+
+        Check that we can connect to SqlAlchemy
+        by passing custom Client object.
+        """
+        client = Client(project=get_project())
+        engine = create_engine(get_db_url(), connect_args={"client": client})
+        with engine.connect() as connection:
+            assert connection.connection.instance._client == client
+
+    def test_create_engine_w_invalid_client_object(self):
+        """
+        SPANNER TEST:
+
+        Check that if project id in url and custom Client
+        Object passed to enginer mismatch, error is thrown.
+        """
+        client = Client(project="project_id")
+        engine = create_engine(get_db_url(), connect_args={"client": client})
+
+        with pytest.raises(ValueError):
+            engine.connect()
+
+
+class CreateEngineWithoutDatabaseTest(fixtures.TestBase):
+    def test_create_engine_wo_database(self):
+        """
+        SPANNER TEST:
+
+        Check that we can connect to SqlAlchemy
+        without passing database id in the
+        connection URL.
+        """
+        engine = create_engine(get_db_url().split("/database")[0])
+        with engine.connect() as connection:
+            assert connection.connection.database is None

@@ -645,11 +645,14 @@ class SpannerDialect(DefaultDialect):
 
         The given URL follows the style:
         `spanner:///projects/{project-id}/instances/{instance-id}/databases/{database-id}`
+        or `spanner:///projects/{project-id}/instances/{instance-id}`. For the latter,
+        database operations will be not be possible and if required a new engine with
+        database-id set will need to be created.
         """
         match = re.match(
             (
                 r"^projects/(?P<project>.+?)/instances/"
-                "(?P<instance>.+?)/databases/(?P<database>.+?)$"
+                "(?P<instance>.+?)(/databases/(?P<database>.+)|$)"
             ),
             url.database,
         )
@@ -1346,17 +1349,29 @@ LIMIT 1
         ):
             pass
         else:
-            trace_attributes = {"db.instance": dbapi_connection.database.name}
+            trace_attributes = {
+                "db.instance": dbapi_connection.database.name
+                if dbapi_connection.database
+                else ""
+            }
             with trace_call("SpannerSqlAlchemy.Rollback", trace_attributes):
                 dbapi_connection.rollback()
 
     def do_commit(self, dbapi_connection):
-        trace_attributes = {"db.instance": dbapi_connection.database.name}
+        trace_attributes = {
+            "db.instance": dbapi_connection.database.name
+            if dbapi_connection.database
+            else ""
+        }
         with trace_call("SpannerSqlAlchemy.Commit", trace_attributes):
             dbapi_connection.commit()
 
     def do_close(self, dbapi_connection):
-        trace_attributes = {"db.instance": dbapi_connection.database.name}
+        trace_attributes = {
+            "db.instance": dbapi_connection.database.name
+            if dbapi_connection.database
+            else ""
+        }
         with trace_call("SpannerSqlAlchemy.Close", trace_attributes):
             dbapi_connection.close()
 
