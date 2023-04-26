@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.32.0](https://github.com/googleapis/python-spanner/compare/v3.31.0...v3.32.0) (2023-04-25)
+
+
+### Features
+
+* Enable instance-level connection ([#931](https://github.com/googleapis/python-spanner/issues/931)) ([d6963e2](https://github.com/googleapis/python-spanner/commit/d6963e2142d880e94c6f3e9eb27ed1ac310bd1d0))
+
 ## [3.31.0](https://github.com/googleapis/python-spanner/compare/v3.30.0...v3.31.0) (2023-04-12)
 
 
