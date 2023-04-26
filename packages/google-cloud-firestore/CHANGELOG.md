@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.11.1](https://github.com/googleapis/python-firestore/compare/v2.11.0...v2.11.1) (2023-04-26)
+
+
+### Bug Fixes
+
+* Expose Count, FieldFilter, Or, and And to firestore module ([#706](https://github.com/googleapis/python-firestore/issues/706)) ([8eb2c88](https://github.com/googleapis/python-firestore/commit/8eb2c88d01eaa8a77c2f5fb242bd3e506870f8e1))
+
 ## [2.11.0](https://github.com/googleapis/python-firestore/compare/v2.10.1...v2.11.0) (2023-04-03)
 
 
