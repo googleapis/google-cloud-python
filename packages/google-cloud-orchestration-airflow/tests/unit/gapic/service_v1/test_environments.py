@@ -2516,6 +2516,7 @@ def test_create_environment_rest(request_type):
             },
             "environment_size": 1,
             "airflow_uri": "airflow_uri_value",
+            "airflow_byoid_uri": "airflow_byoid_uri_value",
             "master_authorized_networks_config": {
                 "enabled": True,
                 "cidr_blocks": [
@@ -2708,6 +2709,7 @@ def test_create_environment_rest_bad_request(
             },
             "environment_size": 1,
             "airflow_uri": "airflow_uri_value",
+            "airflow_byoid_uri": "airflow_byoid_uri_value",
             "master_authorized_networks_config": {
                 "enabled": True,
                 "cidr_blocks": [
@@ -3330,6 +3332,7 @@ def test_update_environment_rest(request_type):
             },
             "environment_size": 1,
             "airflow_uri": "airflow_uri_value",
+            "airflow_byoid_uri": "airflow_byoid_uri_value",
             "master_authorized_networks_config": {
                 "enabled": True,
                 "cidr_blocks": [
@@ -3522,6 +3525,7 @@ def test_update_environment_rest_bad_request(
             },
             "environment_size": 1,
             "airflow_uri": "airflow_uri_value",
+            "airflow_byoid_uri": "airflow_byoid_uri_value",
             "master_authorized_networks_config": {
                 "enabled": True,
                 "cidr_blocks": [

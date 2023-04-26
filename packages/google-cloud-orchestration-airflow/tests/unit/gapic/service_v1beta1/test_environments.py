@@ -2796,6 +2796,7 @@ def test_create_environment_rest(request_type):
             "database_config": {"machine_type": "machine_type_value"},
             "web_server_config": {"machine_type": "machine_type_value"},
             "airflow_uri": "airflow_uri_value",
+            "airflow_byoid_uri": "airflow_byoid_uri_value",
             "encryption_config": {"kms_key_name": "kms_key_name_value"},
             "maintenance_window": {
                 "start_time": {"seconds": 751, "nanos": 543},
@@ -2991,6 +2992,7 @@ def test_create_environment_rest_bad_request(
             "database_config": {"machine_type": "machine_type_value"},
             "web_server_config": {"machine_type": "machine_type_value"},
             "airflow_uri": "airflow_uri_value",
+            "airflow_byoid_uri": "airflow_byoid_uri_value",
             "encryption_config": {"kms_key_name": "kms_key_name_value"},
             "maintenance_window": {
                 "start_time": {"seconds": 751, "nanos": 543},
@@ -3616,6 +3618,7 @@ def test_update_environment_rest(request_type):
             "database_config": {"machine_type": "machine_type_value"},
             "web_server_config": {"machine_type": "machine_type_value"},
             "airflow_uri": "airflow_uri_value",
+            "airflow_byoid_uri": "airflow_byoid_uri_value",
             "encryption_config": {"kms_key_name": "kms_key_name_value"},
             "maintenance_window": {
                 "start_time": {"seconds": 751, "nanos": 543},
@@ -3893,6 +3896,7 @@ def test_update_environment_rest_bad_request(
             "database_config": {"machine_type": "machine_type_value"},
             "web_server_config": {"machine_type": "machine_type_value"},
             "airflow_uri": "airflow_uri_value",
+            "airflow_byoid_uri": "airflow_byoid_uri_value",
             "encryption_config": {"kms_key_name": "kms_key_name_value"},
             "maintenance_window": {
                 "start_time": {"seconds": 751, "nanos": 543},

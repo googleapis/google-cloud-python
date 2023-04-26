@@ -543,6 +543,13 @@ class EnvironmentConfig(proto.Message):
             Output only. The URI of the Apache Airflow Web UI hosted
             within this environment (see `Airflow web
             interface </composer/docs/how-to/accessing/airflow-web-interface>`__).
+        airflow_byoid_uri (str):
+            Output only. The 'bring your own identity' variant of the
+            URI of the Apache Airflow Web UI hosted within this
+            environment, to be accessed with external identities using
+            workforce identity federation (see `Access environments with
+            workforce identity
+            federation </composer/docs/composer-2/access-environments-with-workforce-identity-federation>`__).
         master_authorized_networks_config (google.cloud.orchestration.airflow.service_v1.types.MasterAuthorizedNetworksConfig):
             Optional. The configuration options for GKE
             cluster master authorized networks. By default
@@ -641,6 +648,10 @@ class EnvironmentConfig(proto.Message):
     airflow_uri: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    airflow_byoid_uri: str = proto.Field(
+        proto.STRING,
+        number=20,
     )
     master_authorized_networks_config: "MasterAuthorizedNetworksConfig" = proto.Field(
         proto.MESSAGE,
