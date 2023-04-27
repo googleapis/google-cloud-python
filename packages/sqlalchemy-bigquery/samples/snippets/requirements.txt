@@ -1,5 +1,5 @@
 alembic==1.8.1
-certifi==2022.6.15
+certifi==2022.12.7
 charset-normalizer==2.1.1
 future==0.18.2
 geoalchemy2==0.12.5
