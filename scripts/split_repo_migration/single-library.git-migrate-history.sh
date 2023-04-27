@@ -179,3 +179,8 @@ else
 fi
 
 popd
+
+# Some of the post-processing scripts require the ${DISTRIBUTION_NAME}. We
+# output it here so they can use the same value we derived, rather than risking
+# diverging computations of the value.
+echo "${DISTRIBUTION_NAME}"
