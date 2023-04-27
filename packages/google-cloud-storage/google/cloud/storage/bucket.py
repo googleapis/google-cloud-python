@@ -922,10 +922,7 @@ class Bucket(_PropertyMixin):
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
     ):
-        """DEPRECATED. Creates current bucket.
-
-        .. note::
-          Direct use of this method is deprecated. Use ``Client.create_bucket()`` instead.
+        """Creates current bucket.
 
         If the bucket already exists, will raise
         :class:`google.cloud.exceptions.Conflict`.
@@ -970,12 +967,6 @@ class Bucket(_PropertyMixin):
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
-        warnings.warn(
-            "Bucket.create() is deprecated and will be removed in future."
-            "Use Client.create_bucket() instead.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
 
         client = self._require_client(client)
         client.create_bucket(
@@ -1300,10 +1291,7 @@ class Bucket(_PropertyMixin):
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
     ):
-        """DEPRECATED. Return an iterator used to find blobs in the bucket.
-
-        .. note::
-          Direct use of this method is deprecated. Use ``Client.list_blobs`` instead.
+        """Return an iterator used to find blobs in the bucket.
 
         If :attr:`user_project` is set, bills the API request to that project.
 

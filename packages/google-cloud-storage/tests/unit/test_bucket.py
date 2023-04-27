@@ -2946,8 +2946,7 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._make_one(name=NAME, properties=before)
         self.assertEqual(bucket.versioning_enabled, True)
 
-    @mock.patch("warnings.warn")
-    def test_create_w_defaults_deprecated(self, mock_warn):
+    def test_create_w_defaults(self):
         bucket_name = "bucket-name"
         api_response = {"name": bucket_name}
         client = mock.Mock(spec=["create_bucket"])
@@ -2967,15 +2966,7 @@ class Test_Bucket(unittest.TestCase):
             retry=DEFAULT_RETRY,
         )
 
-        mock_warn.assert_called_with(
-            "Bucket.create() is deprecated and will be removed in future."
-            "Use Client.create_bucket() instead.",
-            PendingDeprecationWarning,
-            stacklevel=1,
-        )
-
-    @mock.patch("warnings.warn")
-    def test_create_w_explicit_deprecated(self, mock_warn):
+    def test_create_w_explicit(self):
         project = "PROJECT"
         location = "eu"
         user_project = "USER_PROJECT"
@@ -3009,13 +3000,6 @@ class Test_Bucket(unittest.TestCase):
             predefined_default_object_acl=predefined_default_object_acl,
             timeout=timeout,
             retry=retry,
-        )
-
-        mock_warn.assert_called_with(
-            "Bucket.create() is deprecated and will be removed in future."
-            "Use Client.create_bucket() instead.",
-            PendingDeprecationWarning,
-            stacklevel=1,
         )
 
     def test_versioning_enabled_setter(self):

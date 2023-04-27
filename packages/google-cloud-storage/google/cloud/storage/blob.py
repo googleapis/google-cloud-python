@@ -1024,7 +1024,7 @@ class Blob(_PropertyMixin):
         checksum="md5",
         retry=DEFAULT_RETRY,
     ):
-        """DEPRECATED. Download the contents of this blob into a file-like object.
+        """Download the contents of this blob into a file-like object.
 
         .. note::
 
