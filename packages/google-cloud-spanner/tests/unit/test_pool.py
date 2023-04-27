@@ -957,6 +957,7 @@ class _Database(object):
         self._sessions = []
         self._database_role = None
         self.database_id = name
+        self._route_to_leader_enabled = True
 
         def mock_batch_create_sessions(
             request=None,

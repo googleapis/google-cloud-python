@@ -56,6 +56,7 @@ class Test_connect(unittest.TestCase):
         instance.database.assert_called_once_with(DATABASE, pool=None)
         # Datbase constructs its own pool
         self.assertIsNotNone(connection.database._pool)
+        self.assertTrue(connection.instance._client.route_to_leader_enabled)
 
     def test_w_explicit(self, mock_client):
         from google.cloud.spanner_v1.pool import AbstractSessionPool
@@ -76,12 +77,16 @@ class Test_connect(unittest.TestCase):
             credentials,
             pool=pool,
             user_agent=USER_AGENT,
+            route_to_leader_enabled=False,
         )
 
         self.assertIsInstance(connection, Connection)
 
         mock_client.assert_called_once_with(
-            project=PROJECT, credentials=credentials, client_info=mock.ANY
+            project=PROJECT,
+            credentials=credentials,
+            client_info=mock.ANY,
+            route_to_leader_enabled=False,
         )
         client_info = mock_client.call_args_list[0][1]["client_info"]
         self.assertEqual(client_info.user_agent, USER_AGENT)
@@ -115,6 +120,7 @@ class Test_connect(unittest.TestCase):
             credentials_path,
             project=PROJECT,
             client_info=mock.ANY,
+            route_to_leader_enabled=False,
         )
         client_info = factory.call_args_list[0][1]["client_info"]
         self.assertEqual(client_info.user_agent, USER_AGENT)

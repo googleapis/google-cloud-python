@@ -669,3 +669,17 @@ class Test_metadata_with_prefix(unittest.TestCase):
         prefix = "prefix"
         metadata = self._call_fut(prefix)
         self.assertEqual(metadata, [("google-cloud-resource-prefix", prefix)])
+
+
+class Test_metadata_with_leader_aware_routing(unittest.TestCase):
+    def _call_fut(self, *args, **kw):
+        from google.cloud.spanner_v1._helpers import _metadata_with_leader_aware_routing
+
+        return _metadata_with_leader_aware_routing(*args, **kw)
+
+    def test(self):
+        value = True
+        metadata = self._call_fut(True)
+        self.assertEqual(
+            metadata, ("x-goog-spanner-route-to-leader", str(value).lower())
+        )

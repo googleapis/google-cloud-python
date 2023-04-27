@@ -508,6 +508,7 @@ def connect(
     pool=None,
     user_agent=None,
     client=None,
+    route_to_leader_enabled=False,
 ):
     """Creates a connection to a Google Cloud Spanner database.
 
@@ -544,6 +545,14 @@ def connect(
                   :class:`~google.cloud.spanner_v1.Client`.
     :param client: (Optional) Custom user provided Client Object
 
+    :type route_to_leader_enabled: boolean
+    :param route_to_leader_enabled:
+        (Optional) Default False. Set route_to_leader_enabled as True to
+                   Enable leader aware routing. Enabling leader aware routing
+                   would route all requests in RW/PDML transactions to the
+                   leader region.
+
+
     :rtype: :class:`google.cloud.spanner_dbapi.connection.Connection`
     :returns: Connection object associated with the given Google Cloud Spanner
               resource.
@@ -556,11 +565,17 @@ def connect(
         )
         if isinstance(credentials, str):
             client = spanner.Client.from_service_account_json(
-                credentials, project=project, client_info=client_info
+                credentials,
+                project=project,
+                client_info=client_info,
+                route_to_leader_enabled=False,
             )
         else:
             client = spanner.Client(
-                project=project, credentials=credentials, client_info=client_info
+                project=project,
+                credentials=credentials,
+                client_info=client_info,
+                route_to_leader_enabled=False,
             )
     else:
         if project is not None and client.project != project:

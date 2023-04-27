@@ -59,6 +59,7 @@ class TestClient(unittest.TestCase):
         client_options=None,
         query_options=None,
         expected_query_options=None,
+        route_to_leader_enabled=None,
     ):
         import google.api_core.client_options
         from google.cloud.spanner_v1 import client as MUT
@@ -77,6 +78,9 @@ class TestClient(unittest.TestCase):
             )
         else:
             expected_client_options = client_options
+
+        if route_to_leader_enabled is not None:
+            kwargs["route_to_leader_enabled"] = route_to_leader_enabled
 
         client = self._make_one(
             project=self.PROJECT,
@@ -106,6 +110,10 @@ class TestClient(unittest.TestCase):
             )
         if expected_query_options is not None:
             self.assertEqual(client._query_options, expected_query_options)
+        if route_to_leader_enabled is not None:
+            self.assertEqual(client.route_to_leader_enabled, route_to_leader_enabled)
+        else:
+            self.assertFalse(client.route_to_leader_enabled)
 
     @mock.patch("google.cloud.spanner_v1.client._get_spanner_emulator_host")
     @mock.patch("warnings.warn")
@@ -217,6 +225,15 @@ class TestClient(unittest.TestCase):
             creds,
             query_options=query_options,
             expected_query_options=expected_query_options,
+        )
+
+    def test_constructor_route_to_leader_disbled(self):
+        from google.cloud.spanner_v1 import client as MUT
+
+        expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
+        creds = _make_credentials()
+        self._constructor_test_helper(
+            expected_scopes, creds, route_to_leader_enabled=False
         )
 
     @mock.patch("google.cloud.spanner_v1.client._get_spanner_emulator_host")

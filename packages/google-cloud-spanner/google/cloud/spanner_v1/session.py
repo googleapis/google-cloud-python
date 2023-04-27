@@ -26,7 +26,10 @@ from google.rpc.error_details_pb2 import RetryInfo
 
 from google.cloud.spanner_v1 import ExecuteSqlRequest
 from google.cloud.spanner_v1 import CreateSessionRequest
-from google.cloud.spanner_v1._helpers import _metadata_with_prefix
+from google.cloud.spanner_v1._helpers import (
+    _metadata_with_prefix,
+    _metadata_with_leader_aware_routing,
+)
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
 from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.snapshot import Snapshot
@@ -125,6 +128,12 @@ class Session(object):
             raise ValueError("Session ID already set by back-end")
         api = self._database.spanner_api
         metadata = _metadata_with_prefix(self._database.name)
+        if self._database._route_to_leader_enabled:
+            metadata.append(
+                _metadata_with_leader_aware_routing(
+                    self._database._route_to_leader_enabled
+                )
+            )
 
         request = CreateSessionRequest(database=self._database.name)
         if self._database.database_role is not None:
@@ -153,6 +162,12 @@ class Session(object):
             return False
         api = self._database.spanner_api
         metadata = _metadata_with_prefix(self._database.name)
+        if self._database._route_to_leader_enabled:
+            metadata.append(
+                _metadata_with_leader_aware_routing(
+                    self._database._route_to_leader_enabled
+                )
+            )
 
         with trace_call("CloudSpanner.GetSession", self) as span:
             try:

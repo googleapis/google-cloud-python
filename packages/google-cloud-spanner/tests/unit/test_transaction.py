@@ -182,7 +182,13 @@ class TestTransaction(OpenTelemetryBase):
         session_id, txn_options, metadata = api._begun
         self.assertEqual(session_id, session.name)
         self.assertTrue(type(txn_options).pb(txn_options).HasField("read_write"))
-        self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
+        self.assertEqual(
+            metadata,
+            [
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
+        )
 
         self.assertSpanAttributes(
             "CloudSpanner.BeginTransaction", attributes=TestTransaction.BASE_ATTRIBUTES
@@ -261,7 +267,13 @@ class TestTransaction(OpenTelemetryBase):
         session_id, txn_id, metadata = api._rolled_back
         self.assertEqual(session_id, session.name)
         self.assertEqual(txn_id, self.TRANSACTION_ID)
-        self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
+        self.assertEqual(
+            metadata,
+            [
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
+        )
 
         self.assertSpanAttributes(
             "CloudSpanner.Rollback", attributes=TestTransaction.BASE_ATTRIBUTES
@@ -364,7 +376,13 @@ class TestTransaction(OpenTelemetryBase):
         self.assertEqual(session_id, session.name)
         self.assertEqual(txn_id, self.TRANSACTION_ID)
         self.assertEqual(mutations, transaction._mutations)
-        self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
+        self.assertEqual(
+            metadata,
+            [
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
+        )
         self.assertEqual(actual_request_options, expected_request_options)
 
         if return_commit_stats:
@@ -541,7 +559,10 @@ class TestTransaction(OpenTelemetryBase):
             request=expected_request,
             retry=retry,
             timeout=timeout,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
 
         self.assertEqual(transaction._execute_sql_count, count + 1)
@@ -714,7 +735,10 @@ class TestTransaction(OpenTelemetryBase):
         )
         api.execute_batch_dml.assert_called_once_with(
             request=expected_request,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
 
         self.assertEqual(transaction._execute_sql_count, count + 1)
@@ -813,7 +837,13 @@ class TestTransaction(OpenTelemetryBase):
         self.assertEqual(session_id, self.SESSION_NAME)
         self.assertEqual(txn_id, self.TRANSACTION_ID)
         self.assertEqual(mutations, transaction._mutations)
-        self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
+        self.assertEqual(
+            metadata,
+            [
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
+        )
 
     def test_context_mgr_failure(self):
         from google.protobuf.empty_pb2 import Empty
@@ -857,6 +887,7 @@ class _Database(object):
     def __init__(self):
         self.name = "testing"
         self._instance = _Instance()
+        self._route_to_leader_enabled = True
 
 
 class _Session(object):

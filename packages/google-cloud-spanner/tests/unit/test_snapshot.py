@@ -1108,7 +1108,10 @@ class Test_SnapshotBase(OpenTelemetryBase):
         )
         api.partition_read.assert_called_once_with(
             request=expected_request,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
             retry=retry,
             timeout=timeout,
         )
@@ -1245,7 +1248,10 @@ class Test_SnapshotBase(OpenTelemetryBase):
         )
         api.partition_query.assert_called_once_with(
             request=expected_request,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
             retry=retry,
             timeout=timeout,
         )
@@ -1691,6 +1697,7 @@ class _Database(object):
     def __init__(self):
         self.name = "testing"
         self._instance = _Instance()
+        self._route_to_leader_enabled = True
 
 
 class _Session(object):

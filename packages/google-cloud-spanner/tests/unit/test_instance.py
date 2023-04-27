@@ -1015,6 +1015,7 @@ class _Client(object):
         self.project = project
         self.project_name = "projects/" + self.project
         self.timeout_seconds = timeout_seconds
+        self.route_to_leader_enabled = True
 
     def copy(self):
         from copy import deepcopy

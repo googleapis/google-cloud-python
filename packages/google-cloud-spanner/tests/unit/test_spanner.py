@@ -261,7 +261,8 @@ class TestTransaction(OpenTelemetryBase):
             )
 
         expected_request_options = REQUEST_OPTIONS
-        expected_request_options.transaction_tag = None
+        expected_request_options.transaction_tag = self.TRANSACTION_TAG
+
         expected_request = ExecuteSqlRequest(
             session=self.SESSION_NAME,
             sql=SQL_QUERY_WITH_PARAM,
@@ -358,7 +359,7 @@ class TestTransaction(OpenTelemetryBase):
 
         # Transaction tag is ignored for read request.
         expected_request_options = REQUEST_OPTIONS
-        expected_request_options.transaction_tag = None
+        expected_request_options.transaction_tag = self.TRANSACTION_TAG
 
         expected_request = ReadRequest(
             session=self.SESSION_NAME,
@@ -465,7 +466,10 @@ class TestTransaction(OpenTelemetryBase):
             request=self._execute_update_expected_request(database=database),
             retry=RETRY,
             timeout=TIMEOUT,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
 
     def test_transaction_should_include_begin_with_first_query(self):
@@ -477,7 +481,10 @@ class TestTransaction(OpenTelemetryBase):
 
         api.execute_streaming_sql.assert_called_once_with(
             request=self._execute_sql_expected_request(database=database),
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
             timeout=TIMEOUT,
             retry=RETRY,
         )
@@ -491,7 +498,10 @@ class TestTransaction(OpenTelemetryBase):
 
         api.streaming_read.assert_called_once_with(
             request=self._read_helper_expected_request(),
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
             retry=RETRY,
             timeout=TIMEOUT,
         )
@@ -504,7 +514,10 @@ class TestTransaction(OpenTelemetryBase):
         self._batch_update_helper(transaction=transaction, database=database, api=api)
         api.execute_batch_dml.assert_called_once_with(
             request=self._batch_update_expected_request(),
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
 
     def test_transaction_should_use_transaction_id_if_error_with_first_batch_update(
@@ -519,7 +532,10 @@ class TestTransaction(OpenTelemetryBase):
         )
         api.execute_batch_dml.assert_called_once_with(
             request=self._batch_update_expected_request(begin=True),
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
         self._execute_update_helper(transaction=transaction, api=api)
         api.execute_sql.assert_called_once_with(
@@ -528,7 +544,10 @@ class TestTransaction(OpenTelemetryBase):
             ),
             retry=gapic_v1.method.DEFAULT,
             timeout=gapic_v1.method.DEFAULT,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
 
     def test_transaction_should_use_transaction_id_returned_by_first_query(self):
@@ -541,7 +560,10 @@ class TestTransaction(OpenTelemetryBase):
             request=self._execute_sql_expected_request(database=database),
             retry=gapic_v1.method.DEFAULT,
             timeout=gapic_v1.method.DEFAULT,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
 
         self._execute_update_helper(transaction=transaction, api=api)
@@ -551,7 +573,10 @@ class TestTransaction(OpenTelemetryBase):
             ),
             retry=gapic_v1.method.DEFAULT,
             timeout=gapic_v1.method.DEFAULT,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
 
     def test_transaction_should_use_transaction_id_returned_by_first_update(self):
@@ -564,7 +589,10 @@ class TestTransaction(OpenTelemetryBase):
             request=self._execute_update_expected_request(database=database),
             retry=gapic_v1.method.DEFAULT,
             timeout=gapic_v1.method.DEFAULT,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
 
         self._execute_sql_helper(transaction=transaction, api=api)
@@ -572,7 +600,10 @@ class TestTransaction(OpenTelemetryBase):
             request=self._execute_sql_expected_request(database=database, begin=False),
             retry=gapic_v1.method.DEFAULT,
             timeout=gapic_v1.method.DEFAULT,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
 
     def test_transaction_should_use_transaction_id_returned_by_first_read(self):
@@ -583,7 +614,10 @@ class TestTransaction(OpenTelemetryBase):
         self._read_helper(transaction=transaction, api=api)
         api.streaming_read.assert_called_once_with(
             request=self._read_helper_expected_request(),
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
             retry=RETRY,
             timeout=TIMEOUT,
         )
@@ -591,7 +625,10 @@ class TestTransaction(OpenTelemetryBase):
         self._batch_update_helper(transaction=transaction, database=database, api=api)
         api.execute_batch_dml.assert_called_once_with(
             request=self._batch_update_expected_request(begin=False),
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
 
     def test_transaction_should_use_transaction_id_returned_by_first_batch_update(self):
@@ -602,12 +639,18 @@ class TestTransaction(OpenTelemetryBase):
         self._batch_update_helper(transaction=transaction, database=database, api=api)
         api.execute_batch_dml.assert_called_once_with(
             request=self._batch_update_expected_request(),
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
         self._read_helper(transaction=transaction, api=api)
         api.streaming_read.assert_called_once_with(
             request=self._read_helper_expected_request(begin=False),
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
             retry=RETRY,
             timeout=TIMEOUT,
         )
@@ -644,19 +687,28 @@ class TestTransaction(OpenTelemetryBase):
             request=self._execute_update_expected_request(database),
             retry=RETRY,
             timeout=TIMEOUT,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
 
         api.execute_sql.assert_any_call(
             request=self._execute_update_expected_request(database, begin=False),
             retry=RETRY,
             timeout=TIMEOUT,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
 
         api.execute_batch_dml.assert_any_call(
             request=self._batch_update_expected_request(begin=False),
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
 
         self.assertEqual(api.execute_sql.call_count, 2)
@@ -694,17 +746,26 @@ class TestTransaction(OpenTelemetryBase):
             request=self._execute_update_expected_request(database, begin=False),
             retry=RETRY,
             timeout=TIMEOUT,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
 
         api.execute_batch_dml.assert_any_call(
             request=self._batch_update_expected_request(),
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
 
         api.execute_batch_dml.assert_any_call(
             request=self._batch_update_expected_request(begin=False),
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
 
         self.assertEqual(api.execute_sql.call_count, 1)
@@ -747,19 +808,28 @@ class TestTransaction(OpenTelemetryBase):
             request=self._execute_update_expected_request(database, begin=False),
             retry=RETRY,
             timeout=TIMEOUT,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
 
         api.streaming_read.assert_any_call(
             request=self._read_helper_expected_request(),
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
             retry=RETRY,
             timeout=TIMEOUT,
         )
 
         api.streaming_read.assert_any_call(
             request=self._read_helper_expected_request(begin=False),
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
             retry=RETRY,
             timeout=TIMEOUT,
         )
@@ -804,26 +874,49 @@ class TestTransaction(OpenTelemetryBase):
             request=self._execute_update_expected_request(database, begin=False),
             retry=RETRY,
             timeout=TIMEOUT,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
         )
-
         req = self._execute_sql_expected_request(database)
         api.execute_streaming_sql.assert_any_call(
             request=req,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
             retry=RETRY,
             timeout=TIMEOUT,
         )
 
         api.execute_streaming_sql.assert_any_call(
             request=self._execute_sql_expected_request(database, begin=False),
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                ("x-goog-spanner-route-to-leader", "true"),
+            ],
             retry=RETRY,
             timeout=TIMEOUT,
         )
 
         self.assertEqual(api.execute_sql.call_count, 1)
         self.assertEqual(api.execute_streaming_sql.call_count, 2)
+
+    def test_transaction_should_execute_sql_with_route_to_leader_disabled(self):
+        database = _Database()
+        database._route_to_leader_enabled = False
+        session = _Session(database)
+        api = database.spanner_api = self._make_spanner_api()
+        transaction = self._make_one(session)
+        self._execute_sql_helper(transaction=transaction, api=api)
+
+        api.execute_streaming_sql.assert_called_once_with(
+            request=self._execute_sql_expected_request(database=database),
+            metadata=[("google-cloud-resource-prefix", database.name)],
+            timeout=TIMEOUT,
+            retry=RETRY,
+        )
 
 
 class _Client(object):
@@ -842,6 +935,7 @@ class _Database(object):
     def __init__(self):
         self.name = "testing"
         self._instance = _Instance()
+        self._route_to_leader_enabled = True
 
 
 class _Session(object):
