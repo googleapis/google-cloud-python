@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.5.0...v1.6.0) (2023-04-26)
+
+
+### Features
+
+* Enable instance-level connection ([#316](https://github.com/googleapis/python-spanner-sqlalchemy/issues/316)) ([9af8e86](https://github.com/googleapis/python-spanner-sqlalchemy/commit/9af8e863f7fb0fa8bea050ca022bbe4e05315d6d))
+
 ## [1.5.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.4.0...v1.5.0) (2023-04-19)
 
 
