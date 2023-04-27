@@ -179,3 +179,4 @@ else
 fi
 
 popd
+echo "${DISTRIBUTION_NAME}"
