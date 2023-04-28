@@ -281,7 +281,7 @@ def _get_gce_credentials(request=None, quota_project_id=None):
     if request is None:
         request = google.auth.transport._http_client.Request()
 
-    if _metadata.ping(request=request):
+    if _metadata.is_on_gce(request=request):
         # Get the project ID.
         try:
             project_id = _metadata.get_project_id(request=request)

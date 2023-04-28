@@ -29,6 +29,15 @@ from google.auth.compute_engine import _metadata
 
 PATH = "instance/service-accounts/default"
 
+DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+SMBIOS_PRODUCT_NAME_FILE = os.path.join(DATA_DIR, "smbios_product_name")
+SMBIOS_PRODUCT_NAME_NONEXISTENT_FILE = os.path.join(
+    DATA_DIR, "smbios_product_name_nonexistent"
+)
+SMBIOS_PRODUCT_NAME_NON_GOOGLE = os.path.join(
+    DATA_DIR, "smbios_product_name_non_google"
+)
+
 
 def make_request(data, status=http_client.OK, headers=None, retry=False):
     response = mock.create_autospec(transport.Response, instance=True)
@@ -43,6 +52,39 @@ def make_request(data, status=http_client.OK, headers=None, retry=False):
         request.return_value = response
 
     return request
+
+
+def test_detect_gce_residency_linux_success():
+    _metadata._GCE_PRODUCT_NAME_FILE = SMBIOS_PRODUCT_NAME_FILE
+    assert _metadata.detect_gce_residency_linux()
+
+
+def test_detect_gce_residency_linux_non_google():
+    _metadata._GCE_PRODUCT_NAME_FILE = SMBIOS_PRODUCT_NAME_NON_GOOGLE
+    assert not _metadata.detect_gce_residency_linux()
+
+
+def test_detect_gce_residency_linux_nonexistent():
+    _metadata._GCE_PRODUCT_NAME_FILE = SMBIOS_PRODUCT_NAME_NONEXISTENT_FILE
+    assert not _metadata.detect_gce_residency_linux()
+
+
+def test_is_on_gce_ping_success():
+    request = make_request("", headers=_metadata._METADATA_HEADERS)
+    assert _metadata.is_on_gce(request)
+
+
+@mock.patch("os.name", new="nt")
+def test_is_on_gce_windows_success():
+    request = make_request("", headers={_metadata._METADATA_FLAVOR_HEADER: "meep"})
+    assert not _metadata.is_on_gce(request)
+
+
+@mock.patch("os.name", new="posix")
+def test_is_on_gce_linux_success():
+    request = make_request("", headers={_metadata._METADATA_FLAVOR_HEADER: "meep"})
+    _metadata._GCE_PRODUCT_NAME_FILE = SMBIOS_PRODUCT_NAME_FILE
+    assert _metadata.is_on_gce(request)
 
 
 def test_ping_success():

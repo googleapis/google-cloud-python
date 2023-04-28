@@ -59,6 +59,47 @@ try:
 except ValueError:  # pragma: NO COVER
     _METADATA_DEFAULT_TIMEOUT = 3
 
+# Detect GCE Residency
+_GOOGLE = "Google"
+_GCE_PRODUCT_NAME_FILE = "/sys/class/dmi/id/product_name"
+
+
+def is_on_gce(request):
+    """Checks to see if the code runs on Google Compute Engine
+
+    Args:
+        request (google.auth.transport.Request): A callable used to make
+            HTTP requests.
+
+    Returns:
+        bool: True if the code runs on Google Compute Engine, False otherwise.
+    """
+    if ping(request):
+        return True
+
+    if os.name == "nt":
+        # TODO: implement GCE residency detection on Windows
+        return False
+
+    # Detect GCE residency on Linux
+    return detect_gce_residency_linux()
+
+
+def detect_gce_residency_linux():
+    """Detect Google Compute Engine residency by smbios check on Linux
+
+    Returns:
+        bool: True if the GCE product name file is detected, False otherwise.
+    """
+    try:
+        with open(_GCE_PRODUCT_NAME_FILE, "r") as file_obj:
+            content = file_obj.read().strip()
+
+    except Exception:
+        return False
+
+    return content.startswith(_GOOGLE)
+
 
 def ping(request, timeout=_METADATA_DEFAULT_TIMEOUT, retry_count=3):
     """Checks to see if the metadata server is available.

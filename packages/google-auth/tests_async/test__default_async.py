@@ -366,7 +366,7 @@ def test__get_gae_credentials_no_apis():
 
 
 @mock.patch(
-    "google.auth.compute_engine._metadata.ping", return_value=True, autospec=True
+    "google.auth.compute_engine._metadata.is_on_gce", return_value=True, autospec=True
 )
 @mock.patch(
     "google.auth.compute_engine._metadata.get_project_id",
@@ -381,7 +381,7 @@ def test__get_gce_credentials(unused_get, unused_ping):
 
 
 @mock.patch(
-    "google.auth.compute_engine._metadata.ping", return_value=False, autospec=True
+    "google.auth.compute_engine._metadata.is_on_gce", return_value=False, autospec=True
 )
 def test__get_gce_credentials_no_ping(unused_ping):
     credentials, project_id = _default._get_gce_credentials()
@@ -391,7 +391,7 @@ def test__get_gce_credentials_no_ping(unused_ping):
 
 
 @mock.patch(
-    "google.auth.compute_engine._metadata.ping", return_value=True, autospec=True
+    "google.auth.compute_engine._metadata.is_on_gce", return_value=True, autospec=True
 )
 @mock.patch(
     "google.auth.compute_engine._metadata.get_project_id",
@@ -416,7 +416,7 @@ def test__get_gce_credentials_no_compute_engine():
 
 
 @mock.patch(
-    "google.auth.compute_engine._metadata.ping", return_value=False, autospec=True
+    "google.auth.compute_engine._metadata.is_on_gce", return_value=False, autospec=True
 )
 def test__get_gce_credentials_explicit_request(ping):
     _default._get_gce_credentials(mock.sentinel.request)
