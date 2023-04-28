@@ -119,7 +119,9 @@ def system(session):
         session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
     # Environment check: Only run tests if the environment variable is set.
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
-        session.skip("Credentials must be set via environment variable")
+        session.skip(
+            "Credentials must be set via environment variable GOOGLE_APPLICATION_CREDENTIALS"
+        )
     # mTLS tests requires pyopenssl.
     if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "") == "true":
         session.install("pyopenssl")
