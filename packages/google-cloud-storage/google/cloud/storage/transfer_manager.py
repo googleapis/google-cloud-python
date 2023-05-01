@@ -879,7 +879,7 @@ def _reduce_client(cl):
 
     client_object_id = id(cl)
     project = cl.project
-    credentials = cl._credentials
+    credentials = cl._initial_credentials
     _http = None  # Can't carry this over
     client_info = cl._initial_client_info
     client_options = cl._initial_client_options

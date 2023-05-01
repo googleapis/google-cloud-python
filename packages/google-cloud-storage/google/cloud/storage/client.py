@@ -130,10 +130,11 @@ class Client(ClientWithProject):
         if project is _marker:
             project = None
 
-        # Save the initial value of client_info and client_options before they
+        # Save the initial value of constructor arguments before they
         # are passed along, for use in __reduce__ defined elsewhere.
         self._initial_client_info = client_info
         self._initial_client_options = client_options
+        self._initial_credentials = credentials
 
         kw_args = {"client_info": client_info}
 
