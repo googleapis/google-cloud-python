@@ -38,7 +38,12 @@ class StructuredQuery(proto.Message):
 
     Attributes:
         select (google.cloud.firestore_v1.types.StructuredQuery.Projection):
-            The projection to return.
+            Optional sub-set of the fields to return.
+
+            This acts as a
+            [DocumentMask][google.firestore.v1.DocumentMask] over the
+            documents returned from a query. When not set, assumes that
+            the caller wants all fields returned.
         from_ (MutableSequence[google.cloud.firestore_v1.types.StructuredQuery.CollectionSelector]):
             The collections to query.
         where (google.cloud.firestore_v1.types.StructuredQuery.Filter):
@@ -328,18 +333,20 @@ class StructuredQuery(proto.Message):
 
                     Requires:
 
-                    -  That ``value`` is a non-empty ``ArrayValue`` with at most
-                       10 values.
-                    -  No other ``IN`` or ``ARRAY_CONTAINS_ANY`` or ``NOT_IN``.
+                    -  That ``value`` is a non-empty ``ArrayValue``, subject to
+                       disjunction limits.
+                    -  No ``NOT_IN`` filters in the same query.
                 ARRAY_CONTAINS_ANY (9):
                     The given ``field`` is an array that contains any of the
                     values in the given array.
 
                     Requires:
 
-                    -  That ``value`` is a non-empty ``ArrayValue`` with at most
-                       10 values.
-                    -  No other ``IN`` or ``ARRAY_CONTAINS_ANY`` or ``NOT_IN``.
+                    -  That ``value`` is a non-empty ``ArrayValue``, subject to
+                       disjunction limits.
+                    -  No other ``ARRAY_CONTAINS_ANY`` filters within the same
+                       disjunction.
+                    -  No ``NOT_IN`` filters in the same query.
                 NOT_IN (10):
                     The value of the ``field`` is not in the given array.
 
@@ -347,8 +354,9 @@ class StructuredQuery(proto.Message):
 
                     -  That ``value`` is a non-empty ``ArrayValue`` with at most
                        10 values.
-                    -  No other ``IN``, ``ARRAY_CONTAINS_ANY``, ``NOT_IN``,
-                       ``NOT_EQUAL``, ``IS_NOT_NULL``, or ``IS_NOT_NAN``.
+                    -  No other ``OR``, ``IN``, ``ARRAY_CONTAINS_ANY``,
+                       ``NOT_IN``, ``NOT_EQUAL``, ``IS_NOT_NULL``, or
+                       ``IS_NOT_NAN``.
                     -  That ``field`` comes first in the ``order_by``.
             """
             OPERATOR_UNSPECIFIED = 0
@@ -558,7 +566,7 @@ class StructuredAggregationQuery(proto.Message):
     """
 
     class Aggregation(proto.Message):
-        r"""Defines a aggregation that produces a single result.
+        r"""Defines an aggregation that produces a single result.
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -581,7 +589,7 @@ class StructuredAggregationQuery(proto.Message):
                      COUNT_UP_TO(1) AS count_up_to_1,
                      COUNT_UP_TO(2),
                      COUNT_UP_TO(3) AS count_up_to_3,
-                     COUNT_UP_TO(4)
+                     COUNT(*)
                    OVER (
                      ...
                    );
@@ -594,7 +602,7 @@ class StructuredAggregationQuery(proto.Message):
                      COUNT_UP_TO(1) AS count_up_to_1,
                      COUNT_UP_TO(2) AS field_1,
                      COUNT_UP_TO(3) AS count_up_to_3,
-                     COUNT_UP_TO(4) AS field_2
+                     COUNT(*) AS field_2
                    OVER (
                      ...
                    );
@@ -618,7 +626,7 @@ class StructuredAggregationQuery(proto.Message):
                     documents to count.
 
                     This provides a way to set an upper bound on the number of
-                    documents to scan, limiting latency and cost.
+                    documents to scan, limiting latency, and cost.
 
                     Unspecified is interpreted as no bound.
 

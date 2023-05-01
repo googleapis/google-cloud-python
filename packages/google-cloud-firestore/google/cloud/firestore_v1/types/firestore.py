@@ -886,8 +886,14 @@ class RunAggregationQueryResponse(proto.Message):
             Only present on the first response when the
             request requested to start a new transaction.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
-            The time at which the aggregate value is
-            valid for.
+            The time at which the aggregate result was computed. This is
+            always monotonically increasing; in this case, the previous
+            AggregationResult in the result stream are guaranteed not to
+            have changed between their ``read_time`` and this one.
+
+            If the query returns no results, a response with
+            ``read_time`` and no ``result`` will be sent, and this
+            represents the time at which the query was run.
     """
 
     result: aggregation_result.AggregationResult = proto.Field(

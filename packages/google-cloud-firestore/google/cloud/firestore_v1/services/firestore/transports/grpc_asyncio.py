@@ -571,8 +571,8 @@ class FirestoreGrpcAsyncIOTransport(FirestoreTransport):
         r"""Return a callable for the write method over gRPC.
 
         Streams batches of document updates and deletes, in
-        order. This method is only available via the gRPC API
-        (not REST).
+        order. This method is only available via gRPC or
+        WebChannel (not REST).
 
         Returns:
             Callable[[~.WriteRequest],
@@ -599,7 +599,7 @@ class FirestoreGrpcAsyncIOTransport(FirestoreTransport):
         r"""Return a callable for the listen method over gRPC.
 
         Listens to changes. This method is only available via
-        the gRPC API (not REST).
+        gRPC or WebChannel (not REST).
 
         Returns:
             Callable[[~.ListenRequest],

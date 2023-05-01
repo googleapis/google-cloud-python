@@ -1520,8 +1520,8 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[firestore.WriteResponse]:
         r"""Streams batches of document updates and deletes, in
-        order. This method is only available via the gRPC API
-        (not REST).
+        order. This method is only available via gRPC or
+        WebChannel (not REST).
 
         .. code-block:: python
 
@@ -1617,7 +1617,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[firestore.ListenResponse]:
         r"""Listens to changes. This method is only available via
-        the gRPC API (not REST).
+        gRPC or WebChannel (not REST).
 
         .. code-block:: python
 

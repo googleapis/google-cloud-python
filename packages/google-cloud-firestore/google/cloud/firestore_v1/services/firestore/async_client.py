@@ -1430,8 +1430,8 @@ class FirestoreAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[firestore.WriteResponse]]:
         r"""Streams batches of document updates and deletes, in
-        order. This method is only available via the gRPC API
-        (not REST).
+        order. This method is only available via gRPC or
+        WebChannel (not REST).
 
         .. code-block:: python
 
@@ -1531,7 +1531,7 @@ class FirestoreAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[firestore.ListenResponse]]:
         r"""Listens to changes. This method is only available via
-        the gRPC API (not REST).
+        gRPC or WebChannel (not REST).
 
         .. code-block:: python
 
