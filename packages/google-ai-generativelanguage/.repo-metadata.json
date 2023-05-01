@@ -1,0 +1,17 @@
+{
+    "name": "generativelanguage",
+    "name_pretty": "",
+    "api_description": "",
+    "product_documentation": "",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/generativelanguage/latest",
+    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/google-cloud-python",
+    "distribution_name": "google-ai-generativelanguage",
+    "api_id": "generativelanguage.googleapis.com",
+    "default_version": "v1beta2",
+    "codeowner_team": "",
+    "api_shortname": "generativelanguage"
+}
