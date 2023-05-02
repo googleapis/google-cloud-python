@@ -41,6 +41,69 @@ for more detailed instructions.
     pip install -r requirements.txt
     ```
 
+
+## Running tests locally
+
+Before running the tests, make sure you've followed the steps outlined in
+[Setup](#setup).
+
+### Install nox
+
+We use [nox](https://nox.readthedocs.io/en/latest/) to instrument our tests.
+
+```
+pip install nox
+```
+
+### Set environment variables
+
+You can run tests locally using your own gcs project or with a valid service account in project `python-docs-samples-tests`. This outlines the workflow of running tests locally using your own gcs project.
+
+Refer to [`noxfile_config.py`](https://github.com/googleapis/python-storage/blob/main/samples/snippets/noxfile_config.py) and [a list of environment variables](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/testing/test-env.tmpl.sh) that can be set manually. Not every test needs all of these variables.
+Below outlines some common environment variables used in the storage samples.
+See [Other Resources](#other-resources) on how to create credentials, keys, and secrets.
+
+    export GOOGLE_CLOUD_PROJECT=[your-project-name]
+    export MAIN_GOOGLE_CLOUD_PROJECT=[your-project-name]
+    export BUILD_SPECIFIC_GCLOUD_PROJECT=[your-project-name]
+    export HMAC_KEY_TEST_SERVICE_ACCOUNT=[your-service-account]
+    export CLOUD_KMS_KEY=[your-kms-key]
+    export GOOGLE_APPLICATION_CREDENTIALS=[your-credentials]
+
+If you are running a single test locally that does not use the environment variables, you can delete the `noxfile_config.py` file and simply set your `GOOGLE_CLOUD_PROJECT`
+
+```
+export GOOGLE_CLOUD_PROJECT=[your-project-name]
+```
+
+
+### Run tests with nox
+```
+nox -s lint
+nox -s py-3.9 -- snippets_test.py
+nox -s py-3.9 -- snippets_test.py::test_list_blobs
+```
+
+### Special test configurations
+There are restrictions on the testing projects used in Kokoro. For instance,
+we change the service account based on different test sessions to avoid
+hitting the maximum limit of HMAC keys on a single service account.
+Another example is `requester_pays_test.py` needs to use a different Storage bucket, and looks for an environment variable `REQUESTER_PAYS_TEST_BUCKET`.
+Please refer to [`noxfile_config.py`](https://github.com/googleapis/python-storage/blob/main/samples/snippets/noxfile_config.py) , [kokoro configs](https://github.com/googleapis/python-storage/tree/main/.kokoro/samples), and test files to see if there are special test configurations required.
+
+
+## Other Resources
+* [Create Cloud KMS Keys](https://cloud.google.com/kms/docs/creating-keys)
+* [Create HMAC Keys](https://cloud.google.com/storage/docs/authentication/managing-hmackeys)
+* [Create Service Accounts](https://cloud.google.com/docs/authentication/getting-started#creating_a_service_account)
+
+[shell_img]: https://gstatic.com/cloudssh/images/open-btn.png
+[shell_link]: https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/python-storage&page=editor&open_in_editor=samples/README.md
+[product-docs]: https://cloud.google.com/storage
+
+
+-----
+
 ## Samples
 <details>
     <summary><b>List of Samples</b></summary>
@@ -1110,54 +1173,3 @@ View the [source code](https://github.com/googleapis/python-storage/blob/main/sa
 
 `python storage_view_bucket_iam_members.py <BUCKET_NAME>`
 
------
-
-## Running tests locally
-
-Before running the tests, make sure you've followed the steps outlined in
-[Setup](#setup).
-
-### Install nox
-```
-pip install nox
-```
-
-### Set environment variables
-
-You can run tests locally using your own gcs project or with a valid service account in project `python-docs-samples-tests`. This outlines the workflow of running tests locally using your own gcs project. 
-
-Refer to [`noxfile_config.py`](https://github.com/googleapis/python-storage/blob/main/samples/snippets/noxfile_config.py) and [a list of environment variables](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/testing/test-env.tmpl.sh) that can be set manually. Not every test needs all of these variables. 
-The common environment variables used in the storage samples include:
-
-    export GOOGLE_CLOUD_PROJECT=[your-project-name]
-    export MAIN_GOOGLE_CLOUD_PROJECT=[your-project-name]
-    export BUILD_SPECIFIC_GCLOUD_PROJECT=[your-project-name]
-    export HMAC_KEY_TEST_SERVICE_ACCOUNT=[your-service-account]
-    export CLOUD_KMS_KEY=[your-kms-key]
-    export GOOGLE_APPLICATION_CREDENTIALS=[your-credentials]
-    
-See [Other Resources](#other-resources) on how to create credentials, keys, and secrets
-
-### Run tests with nox
-```
-nox -s lint
-nox -s py-3.7 -- snippets_test.py
-nox -s py-3.7 -- snippets_test.py::test_list_blobs
-```
-
-### Special test configurations
-There are restrictions on the testing projects used in Kokoro. For instance,
-we change the service account based on different test sessions to avoid 
-hitting the maximum limit of HMAC keys on a single service account.
-Another example is `requester_pays_test.py` needs to use a different Storage bucket, and looks for an environment variable `REQUESTER_PAYS_TEST_BUCKET`.
-Please refer to [`noxfile_config.py`](https://github.com/googleapis/python-storage/blob/main/samples/snippets/noxfile_config.py) , [kokoro configs](https://github.com/googleapis/python-storage/tree/main/.kokoro/samples), and test files to see if there are special test configurations required.
-
-
-### Other Resources
-* [Create Cloud KMS Keys](https://cloud.google.com/kms/docs/creating-keys)
-* [Create HMAC Keys](https://cloud.google.com/storage/docs/authentication/managing-hmackeys)
-* [Create Service Accounts](https://cloud.google.com/docs/authentication/getting-started#creating_a_service_account)
-
-[shell_img]: https://gstatic.com/cloudssh/images/open-btn.png
-[shell_link]: https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/python-storage&page=editor&open_in_editor=samples/README.md
-[product-docs]: https://cloud.google.com/storage
