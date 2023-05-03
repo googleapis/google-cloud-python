@@ -29,6 +29,7 @@ DEPENDENCIES = (
     # install enum34 to support 2.7. enum34 only works up to python version 3.3.
     'enum34>=1.1.10; python_version < "3.4"',
     "six>=1.9.0",
+    "urllib3<2.0",
 )
 
 extras = {
