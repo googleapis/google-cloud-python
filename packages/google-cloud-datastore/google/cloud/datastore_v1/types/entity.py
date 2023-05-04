@@ -356,10 +356,7 @@ class Value(proto.Message):
 
 class Entity(proto.Message):
     r"""A Datastore data object.
-
-    An entity is limited to 1 megabyte when stored. That *roughly*
-    corresponds to a limit of 1 megabyte for the serialized form of this
-    message.
+    Must not exceed 1 MiB - 4 bytes.
 
     Attributes:
         key (google.cloud.datastore_v1.types.Key):
