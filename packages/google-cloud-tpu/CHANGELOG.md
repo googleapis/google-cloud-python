@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/googleapis/python-tpu/compare/v1.10.0...v1.10.1) (2023-05-04)
+
+
+### Bug Fixes
+
+* **tpu_v2alpha1:** Restrict the visibility of API `ResetQueuedResource` ([#226](https://github.com/googleapis/python-tpu/issues/226)) ([06f1647](https://github.com/googleapis/python-tpu/commit/06f1647ff908d0d8689111cc2743b202f53f1e6d))
+
 ## [1.10.0](https://github.com/googleapis/python-tpu/compare/v1.9.0...v1.10.0) (2023-04-15)
 
 
