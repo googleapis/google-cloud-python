@@ -485,9 +485,10 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
                 The request object. The request message for listing all
                 TagKeys under a parent resource.
             parent (str):
-                Required. The resource name of the new TagKey's parent.
-                Must be of the form ``folders/{folder_id}`` or
-                ``organizations/{org_id}``.
+                Required. The resource name of the TagKey's parent. Must
+                be of the form ``organizations/{org_id}`` or
+                ``projects/{project_id}`` or
+                ``projects/{project_number}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
