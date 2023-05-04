@@ -31,6 +31,7 @@ from .types.bigtable import MutateRowsRequest
 from .types.bigtable import MutateRowsResponse
 from .types.bigtable import PingAndWarmRequest
 from .types.bigtable import PingAndWarmResponse
+from .types.bigtable import RateLimitInfo
 from .types.bigtable import ReadChangeStreamRequest
 from .types.bigtable import ReadChangeStreamResponse
 from .types.bigtable import ReadModifyWriteRowRequest
@@ -54,6 +55,7 @@ from .types.data import StreamContinuationTokens
 from .types.data import StreamPartition
 from .types.data import TimestampRange
 from .types.data import ValueRange
+from .types.feature_flags import FeatureFlags
 from .types.request_stats import FullReadStatsView
 from .types.request_stats import ReadIterationStats
 from .types.request_stats import RequestLatencyStats
@@ -69,6 +71,7 @@ __all__ = (
     "Column",
     "ColumnRange",
     "Family",
+    "FeatureFlags",
     "FullReadStatsView",
     "GenerateInitialChangeStreamPartitionsRequest",
     "GenerateInitialChangeStreamPartitionsResponse",
@@ -79,6 +82,7 @@ __all__ = (
     "Mutation",
     "PingAndWarmRequest",
     "PingAndWarmResponse",
+    "RateLimitInfo",
     "ReadChangeStreamRequest",
     "ReadChangeStreamResponse",
     "ReadIterationStats",

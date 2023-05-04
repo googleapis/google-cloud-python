@@ -38,6 +38,7 @@ __protobuf__ = proto.module(
         "MutateRowResponse",
         "MutateRowsRequest",
         "MutateRowsResponse",
+        "RateLimitInfo",
         "CheckAndMutateRowRequest",
         "CheckAndMutateRowResponse",
         "PingAndWarmRequest",
@@ -61,8 +62,9 @@ class ReadRowsRequest(proto.Message):
             Values are of the form
             ``projects/<project>/instances/<instance>/tables/<table>``.
         app_profile_id (str):
-            This value specifies routing for replication. This API only
-            accepts the empty value of app_profile_id.
+            This value specifies routing for replication.
+            If not specified, the "default" application
+            profile will be used.
         rows (google.cloud.bigtable_v2.types.RowSet):
             The row keys and/or ranges to read
             sequentially. If not specified, reads from all
@@ -469,10 +471,19 @@ class MutateRowsRequest(proto.Message):
 class MutateRowsResponse(proto.Message):
     r"""Response message for BigtableService.MutateRows.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         entries (MutableSequence[google.cloud.bigtable_v2.types.MutateRowsResponse.Entry]):
             One or more results for Entries from the
             batch request.
+        rate_limit_info (google.cloud.bigtable_v2.types.RateLimitInfo):
+            Information about how client should limit the
+            rate (QPS). Primirily used by supported official
+            Cloud Bigtable clients. If unset, the rate limit
+            info is not provided by the server.
+
+            This field is a member of `oneof`_ ``_rate_limit_info``.
     """
 
     class Entry(proto.Message):
@@ -505,6 +516,50 @@ class MutateRowsResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message=Entry,
+    )
+    rate_limit_info: "RateLimitInfo" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        optional=True,
+        message="RateLimitInfo",
+    )
+
+
+class RateLimitInfo(proto.Message):
+    r"""Information about how client should adjust the load to
+    Bigtable.
+
+    Attributes:
+        period (google.protobuf.duration_pb2.Duration):
+            Time that clients should wait before
+            adjusting the target rate again. If clients
+            adjust rate too frequently, the impact of the
+            previous adjustment may not have been taken into
+            account and may over-throttle or under-throttle.
+            If clients adjust rate too slowly, they will not
+            be responsive to load changes on server side,
+            and may over-throttle or under-throttle.
+        factor (float):
+            If it has been at least one ``period`` since the last load
+            adjustment, the client should multiply the current load by
+            this value to get the new target load. For example, if the
+            current load is 100 and ``factor`` is 0.8, the new target
+            load should be 80. After adjusting, the client should ignore
+            ``factor`` until another ``period`` has passed.
+
+            The client can measure its load using any unit that's
+            comparable over time For example, QPS can be used as long as
+            each request involves a similar amount of work.
+    """
+
+    period: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
+    factor: float = proto.Field(
+        proto.DOUBLE,
+        number=2,
     )
 
 

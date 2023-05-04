@@ -24,6 +24,7 @@ from .bigtable import (
     MutateRowsResponse,
     PingAndWarmRequest,
     PingAndWarmResponse,
+    RateLimitInfo,
     ReadChangeStreamRequest,
     ReadChangeStreamResponse,
     ReadModifyWriteRowRequest,
@@ -50,6 +51,9 @@ from .data import (
     TimestampRange,
     ValueRange,
 )
+from .feature_flags import (
+    FeatureFlags,
+)
 from .request_stats import (
     FullReadStatsView,
     ReadIterationStats,
@@ -71,6 +75,7 @@ __all__ = (
     "MutateRowsResponse",
     "PingAndWarmRequest",
     "PingAndWarmResponse",
+    "RateLimitInfo",
     "ReadChangeStreamRequest",
     "ReadChangeStreamResponse",
     "ReadModifyWriteRowRequest",
@@ -94,6 +99,7 @@ __all__ = (
     "StreamPartition",
     "TimestampRange",
     "ValueRange",
+    "FeatureFlags",
     "FullReadStatsView",
     "ReadIterationStats",
     "RequestLatencyStats",
