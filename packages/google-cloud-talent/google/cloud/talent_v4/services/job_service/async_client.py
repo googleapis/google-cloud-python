@@ -1431,7 +1431,7 @@ class JobServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.search_jobs_for_alert,
-            default_timeout=30.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 

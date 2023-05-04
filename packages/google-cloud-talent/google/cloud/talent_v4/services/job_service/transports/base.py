@@ -206,7 +206,7 @@ class JobServiceTransport(abc.ABC):
             ),
             self.search_jobs_for_alert: gapic_v1.method.wrap_method(
                 self.search_jobs_for_alert,
-                default_timeout=30.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }
