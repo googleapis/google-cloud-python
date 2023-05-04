@@ -28,6 +28,7 @@ from .types.service_controller import (
     ReportRequest,
     ReportResponse,
     ResourceInfo,
+    ResourceInfoList,
 )
 
 __all__ = (
@@ -37,5 +38,6 @@ __all__ = (
     "ReportRequest",
     "ReportResponse",
     "ResourceInfo",
+    "ResourceInfoList",
     "ServiceControllerClient",
 )

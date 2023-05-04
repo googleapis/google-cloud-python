@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
         "CheckResponse",
         "ReportRequest",
         "ReportResponse",
+        "ResourceInfoList",
     },
 )
 
@@ -211,6 +212,21 @@ class ReportResponse(proto.Message):
     RPC error.
 
     """
+
+
+class ResourceInfoList(proto.Message):
+    r"""Message containing resource details in a batch mode.
+
+    Attributes:
+        resources (MutableSequence[google.cloud.servicecontrol_v2.types.ResourceInfo]):
+            The resource details.
+    """
+
+    resources: MutableSequence["ResourceInfo"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ResourceInfo",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
