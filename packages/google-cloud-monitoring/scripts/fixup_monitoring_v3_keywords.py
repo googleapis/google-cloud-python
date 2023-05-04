@@ -78,7 +78,7 @@ class monitoringCallTransformer(cst.CSTTransformer):
         'list_services': ('parent', 'filter', 'page_size', 'page_token', ),
         'list_snoozes': ('parent', 'filter', 'page_size', 'page_token', ),
         'list_time_series': ('name', 'filter', 'interval', 'view', 'aggregation', 'secondary_aggregation', 'order_by', 'page_size', 'page_token', ),
-        'list_uptime_check_configs': ('parent', 'page_size', 'page_token', ),
+        'list_uptime_check_configs': ('parent', 'filter', 'page_size', 'page_token', ),
         'list_uptime_check_ips': ('page_size', 'page_token', ),
         'query_time_series': ('name', 'query', 'page_size', 'page_token', ),
         'send_notification_channel_verification_code': ('name', ),

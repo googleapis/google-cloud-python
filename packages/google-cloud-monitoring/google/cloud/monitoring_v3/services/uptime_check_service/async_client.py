@@ -54,13 +54,13 @@ from .client import UptimeCheckServiceClient
 
 class UptimeCheckServiceAsyncClient:
     """The UptimeCheckService API is used to manage (list, create, delete,
-    edit) Uptime check configurations in the Stackdriver Monitoring
-    product. An Uptime check is a piece of configuration that determines
-    which resources and services to monitor for availability. These
+    edit) Uptime check configurations in the Cloud Monitoring product.
+    An Uptime check is a piece of configuration that determines which
+    resources and services to monitor for availability. These
     configurations can also be configured interactively by navigating to
-    the [Cloud Console] (http://console.cloud.google.com), selecting the
-    appropriate project, clicking on "Monitoring" on the left-hand side
-    to navigate to Stackdriver, and then clicking on "Uptime".
+    the [Cloud console] (https://console.cloud.google.com), selecting
+    the appropriate project, clicking on "Monitoring" on the left-hand
+    side to navigate to Cloud Monitoring, and then clicking on "Uptime".
     """
 
     _client: UptimeCheckServiceClient
@@ -650,7 +650,7 @@ class UptimeCheckServiceAsyncClient:
                 in the ``updateMask``. If an ``updateMask`` has not been
                 given, this Uptime check configuration replaces the
                 current configuration. If a field is mentioned in
-                ``updateMask`` but the corresonding field is omitted in
+                ``updateMask`` but the corresponding field is omitted in
                 this partial Uptime check configuration, it has the
                 effect of deleting/clearing the field from the
                 configuration on the server.

@@ -55,12 +55,24 @@ class UptimeCheckRegion(proto.Enum):
         ASIA_PACIFIC (4):
             Allows checks to run from locations within
             the Asia Pacific area (ex: Singapore).
+        USA_OREGON (5):
+            Allows checks to run from locations within
+            the western United States of America
+        USA_IOWA (6):
+            Allows checks to run from locations within
+            the central United States of America
+        USA_VIRGINIA (7):
+            Allows checks to run from locations within
+            the eastern United States of America
     """
     REGION_UNSPECIFIED = 0
     USA = 1
     EUROPE = 2
     SOUTH_AMERICA = 3
     ASIA_PACIFIC = 4
+    USA_OREGON = 5
+    USA_IOWA = 6
+    USA_VIRGINIA = 7
 
 
 class GroupResourceType(proto.Enum):
@@ -97,14 +109,14 @@ class InternalChecker(proto.Message):
 
                 projects/[PROJECT_ID_OR_NUMBER]/internalCheckers/[INTERNAL_CHECKER_ID]
 
-            ``[PROJECT_ID_OR_NUMBER]`` is the Stackdriver Workspace
-            project for the Uptime check config associated with the
-            internal checker.
+            ``[PROJECT_ID_OR_NUMBER]`` is the Cloud Monitoring Metrics
+            Scope project for the Uptime check config associated with
+            the internal checker.
         display_name (str):
             The checker's human-readable name. The
-            display name should be unique within a
-            Stackdriver Workspace in order to make it easier
-            to identify; however, uniqueness is not
+            display name should be unique within a Cloud
+            Monitoring Metrics Scope in order to make it
+            easier to identify; however, uniqueness is not
             enforced.
         network (str):
             The `GCP VPC
@@ -116,8 +128,8 @@ class InternalChecker(proto.Message):
             is specified.
         peer_project_id (str):
             The GCP project ID where the internal checker
-            lives. Not necessary the same as the Workspace
-            project.
+            lives. Not necessary the same as the Metrics
+            Scope project.
         state (google.cloud.monitoring_v3.types.InternalChecker.State):
             The current operational state of the internal
             checker.
@@ -207,9 +219,9 @@ class UptimeCheckConfig(proto.Message):
         display_name (str):
             A human-friendly name for the Uptime check
             configuration. The display name should be unique
-            within a Stackdriver Workspace in order to make
-            it easier to identify; however, uniqueness is
-            not enforced. Required.
+            within a Cloud Monitoring Workspace in order to
+            make it easier to identify; however, uniqueness
+            is not enforced. Required.
         monitored_resource (google.api.monitored_resource_pb2.MonitoredResource):
             The `monitored
             resource <https://cloud.google.com/monitoring/api/resources>`__
@@ -217,6 +229,7 @@ class UptimeCheckConfig(proto.Message):
             resource types are valid for this field: ``uptime_url``,
             ``gce_instance``, ``gae_app``, ``aws_ec2_instance``,
             ``aws_elb_load_balancer`` ``k8s_service``
+            ``servicedirectory_service`` ``cloud_run_revision``
 
             This field is a member of `oneof`_ ``resource``.
         resource_group (google.cloud.monitoring_v3.types.UptimeCheckConfig.ResourceGroup):
@@ -250,6 +263,9 @@ class UptimeCheckConfig(proto.Message):
             list is supported, and additional entries will be ignored.
             This field is optional and should only be specified if a
             content match is required as part of the/ Uptime check.
+        checker_type (google.cloud.monitoring_v3.types.UptimeCheckConfig.CheckerType):
+            The type of checkers to use to execute the
+            Uptime check.
         selected_regions (MutableSequence[google.cloud.monitoring_v3.types.UptimeCheckRegion]):
             The list of regions from which the check will
             be run. Some regions contain one location, and
@@ -270,7 +286,39 @@ class UptimeCheckConfig(proto.Message):
             ``is_internal`` is ``true`` and this list is empty, the
             check will egress from all the InternalCheckers configured
             for the project that owns this ``UptimeCheckConfig``.
+        user_labels (MutableMapping[str, str]):
+            User-supplied key/value data to be used for organizing and
+            identifying the ``UptimeCheckConfig`` objects.
+
+            The field can contain up to 64 entries. Each key and value
+            is limited to 63 Unicode characters or 128 bytes, whichever
+            is smaller. Labels and values can contain only lowercase
+            letters, numerals, underscores, and dashes. Keys must begin
+            with a letter.
     """
+
+    class CheckerType(proto.Enum):
+        r"""What kind of checkers are available to be used by the check.
+
+        Values:
+            CHECKER_TYPE_UNSPECIFIED (0):
+                The default checker type. Currently converted to
+                ``STATIC_IP_CHECKERS`` on creation, the default conversion
+                behavior may change in the future.
+            STATIC_IP_CHECKERS (1):
+                ``STATIC_IP_CHECKERS`` are used for uptime checks that
+                perform egress across the public internet.
+                ``STATIC_IP_CHECKERS`` use the static IP addresses returned
+                by ``ListUptimeCheckIps``.
+            VPC_CHECKERS (3):
+                ``VPC_CHECKERS`` are used for uptime checks that perform
+                egress using Service Directory and private network access.
+                When using ``VPC_CHECKERS``, the monitored resource type
+                must be ``servicedirectory_service``.
+        """
+        CHECKER_TYPE_UNSPECIFIED = 0
+        STATIC_IP_CHECKERS = 1
+        VPC_CHECKERS = 3
 
     class ResourceGroup(proto.Message):
         r"""The resource submessage for group checks. It can be used
@@ -294,6 +342,22 @@ class UptimeCheckConfig(proto.Message):
             proto.ENUM,
             number=2,
             enum="GroupResourceType",
+        )
+
+    class PingConfig(proto.Message):
+        r"""Information involved in sending ICMP pings alongside public
+        HTTP/TCP checks. For HTTP, the pings are performed for each part
+        of the redirect chain.
+
+        Attributes:
+            pings_count (int):
+                Number of ICMP pings. A maximum of 3 ICMP
+                pings is currently supported.
+        """
+
+        pings_count: int = proto.Field(
+            proto.INT32,
+            number=1,
         )
 
     class HttpCheck(proto.Message):
@@ -354,6 +418,16 @@ class UptimeCheckConfig(proto.Message):
                 4. Request method is ``POST`` and a "Content-Type" header is
                    provided via ``headers`` field. The ``content_type``
                    field should be used instead.
+            custom_content_type (str):
+                A user provided content type header to use for the check.
+                The invalid configurations outlined in the ``content_type``
+                field apply to ``custom_content_type``, as well as the
+                following:
+
+                1. ``content_type`` is ``URL_ENCODED`` and
+                   ``custom_content_type`` is set.
+                2. ``content_type`` is ``USER_PROVIDED`` and
+                   ``custom_content_type`` is not set.
             validate_ssl (bool):
                 Boolean specifying whether to include SSL certificate
                 validation as a part of the Uptime check. Only applies to
@@ -367,10 +441,20 @@ class UptimeCheckConfig(proto.Message):
                 header via the ``headers`` field or the API will do so. If
                 the ``request_method`` is ``GET`` and ``body`` is not empty,
                 the API will return an error. The maximum byte size is 1
-                megabyte. Note: As with all ``bytes`` fields, JSON
-                representations are base64 encoded. e.g.: "foo=bar" in
-                URL-encoded form is "foo%3Dbar" and in base64 encoding is
-                "Zm9vJTI1M0RiYXI=".
+                megabyte.
+
+                Note: If client libraries aren't used (which performs the
+                conversion automatically) base64 encode your ``body`` data
+                since the field is of ``bytes`` type.
+            accepted_response_status_codes (MutableSequence[google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.ResponseStatusCode]):
+                If present, the check will only pass if the
+                HTTP response status code is in this set of
+                status codes. If empty, the HTTP status code
+                will only pass if the HTTP status code is
+                200-299.
+            ping_config (google.cloud.monitoring_v3.types.UptimeCheckConfig.PingConfig):
+                Contains information needed to add pings to
+                an HTTP check.
         """
 
         class RequestMethod(proto.Enum):
@@ -399,9 +483,14 @@ class UptimeCheckConfig(proto.Message):
                     ``body`` is in URL-encoded form. Equivalent to setting the
                     ``Content-Type`` to ``application/x-www-form-urlencoded`` in
                     the HTTP request.
+                USER_PROVIDED (2):
+                    ``body`` is in ``custom_content_type`` form. Equivalent to
+                    setting the ``Content-Type`` to the contents of
+                    ``custom_content_type`` in the HTTP request.
             """
             TYPE_UNSPECIFIED = 0
             URL_ENCODED = 1
+            USER_PROVIDED = 2
 
         class BasicAuthentication(proto.Message):
             r"""The authentication parameters to provide to the specified resource
@@ -425,6 +514,72 @@ class UptimeCheckConfig(proto.Message):
             password: str = proto.Field(
                 proto.STRING,
                 number=2,
+            )
+
+        class ResponseStatusCode(proto.Message):
+            r"""A status to accept. Either a status code class like "2xx", or
+            an integer status code like "200".
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                status_value (int):
+                    A status code to accept.
+
+                    This field is a member of `oneof`_ ``status_code``.
+                status_class (google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.ResponseStatusCode.StatusClass):
+                    A class of status codes to accept.
+
+                    This field is a member of `oneof`_ ``status_code``.
+            """
+
+            class StatusClass(proto.Enum):
+                r"""An HTTP status code class.
+
+                Values:
+                    STATUS_CLASS_UNSPECIFIED (0):
+                        Default value that matches no status codes.
+                    STATUS_CLASS_1XX (100):
+                        The class of status codes between 100 and
+                        199.
+                    STATUS_CLASS_2XX (200):
+                        The class of status codes between 200 and
+                        299.
+                    STATUS_CLASS_3XX (300):
+                        The class of status codes between 300 and
+                        399.
+                    STATUS_CLASS_4XX (400):
+                        The class of status codes between 400 and
+                        499.
+                    STATUS_CLASS_5XX (500):
+                        The class of status codes between 500 and
+                        599.
+                    STATUS_CLASS_ANY (1000):
+                        The class of all status codes.
+                """
+                STATUS_CLASS_UNSPECIFIED = 0
+                STATUS_CLASS_1XX = 100
+                STATUS_CLASS_2XX = 200
+                STATUS_CLASS_3XX = 300
+                STATUS_CLASS_4XX = 400
+                STATUS_CLASS_5XX = 500
+                STATUS_CLASS_ANY = 1000
+
+            status_value: int = proto.Field(
+                proto.INT32,
+                number=1,
+                oneof="status_code",
+            )
+            status_class: "UptimeCheckConfig.HttpCheck.ResponseStatusCode.StatusClass" = proto.Field(
+                proto.ENUM,
+                number=2,
+                oneof="status_code",
+                enum="UptimeCheckConfig.HttpCheck.ResponseStatusCode.StatusClass",
             )
 
         request_method: "UptimeCheckConfig.HttpCheck.RequestMethod" = proto.Field(
@@ -463,6 +618,10 @@ class UptimeCheckConfig(proto.Message):
             number=9,
             enum="UptimeCheckConfig.HttpCheck.ContentType",
         )
+        custom_content_type: str = proto.Field(
+            proto.STRING,
+            number=13,
+        )
         validate_ssl: bool = proto.Field(
             proto.BOOL,
             number=7,
@@ -470,6 +629,18 @@ class UptimeCheckConfig(proto.Message):
         body: bytes = proto.Field(
             proto.BYTES,
             number=10,
+        )
+        accepted_response_status_codes: MutableSequence[
+            "UptimeCheckConfig.HttpCheck.ResponseStatusCode"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=11,
+            message="UptimeCheckConfig.HttpCheck.ResponseStatusCode",
+        )
+        ping_config: "UptimeCheckConfig.PingConfig" = proto.Field(
+            proto.MESSAGE,
+            number=12,
+            message="UptimeCheckConfig.PingConfig",
         )
 
     class TcpCheck(proto.Message):
@@ -480,11 +651,19 @@ class UptimeCheckConfig(proto.Message):
                 The TCP port on the server against which to run the check.
                 Will be combined with host (specified within the
                 ``monitored_resource``) to construct the full URL. Required.
+            ping_config (google.cloud.monitoring_v3.types.UptimeCheckConfig.PingConfig):
+                Contains information needed to add pings to a
+                TCP check.
         """
 
         port: int = proto.Field(
             proto.INT32,
             number=1,
+        )
+        ping_config: "UptimeCheckConfig.PingConfig" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="UptimeCheckConfig.PingConfig",
         )
 
     class ContentMatcher(proto.Message):
@@ -494,15 +673,23 @@ class UptimeCheckConfig(proto.Message):
         HTTPS check's response (and the first 1&nbsp;MB of a TCP check's
         response) are examined for purposes of content matching.
 
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             content (str):
-                String or regex content to match. Maximum 1024 bytes. An
-                empty ``content`` string indicates no content matching is to
-                be performed.
+                String, regex or JSON content to match. Maximum 1024 bytes.
+                An empty ``content`` string indicates no content matching is
+                to be performed.
             matcher (google.cloud.monitoring_v3.types.UptimeCheckConfig.ContentMatcher.ContentMatcherOption):
                 The type of content matcher that will be applied to the
                 server output, compared to the ``content`` string when the
                 check is run.
+            json_path_matcher (google.cloud.monitoring_v3.types.UptimeCheckConfig.ContentMatcher.JsonPathMatcher):
+                Matcher information for ``MATCHES_JSON_PATH`` and
+                ``NOT_MATCHES_JSON_PATH``
+
+                This field is a member of `oneof`_ ``additional_matcher_info``.
         """
 
         class ContentMatcherOption(proto.Enum):
@@ -522,7 +709,7 @@ class UptimeCheckConfig(proto.Message):
                     Selects negation of substring matching. The match succeeds
                     if the output does *NOT* contain the ``content`` string.
                 MATCHES_REGEX (3):
-                    Selects regular-expression matching. The match succeeds of
+                    Selects regular-expression matching. The match succeeds if
                     the output matches the regular expression specified in the
                     ``content`` string. Regex matching is only supported for
                     HTTP/HTTPS checks.
@@ -531,12 +718,67 @@ class UptimeCheckConfig(proto.Message):
                     succeeds if the output does *NOT* match the regular
                     expression specified in the ``content`` string. Regex
                     matching is only supported for HTTP/HTTPS checks.
+                MATCHES_JSON_PATH (5):
+                    Selects JSONPath matching. See ``JsonPathMatcher`` for
+                    details on when the match succeeds. JSONPath matching is
+                    only supported for HTTP/HTTPS checks.
+                NOT_MATCHES_JSON_PATH (6):
+                    Selects JSONPath matching. See ``JsonPathMatcher`` for
+                    details on when the match succeeds. Succeeds when output
+                    does *NOT* match as specified. JSONPath is only supported
+                    for HTTP/HTTPS checks.
             """
             CONTENT_MATCHER_OPTION_UNSPECIFIED = 0
             CONTAINS_STRING = 1
             NOT_CONTAINS_STRING = 2
             MATCHES_REGEX = 3
             NOT_MATCHES_REGEX = 4
+            MATCHES_JSON_PATH = 5
+            NOT_MATCHES_JSON_PATH = 6
+
+        class JsonPathMatcher(proto.Message):
+            r"""Information needed to perform a JSONPath content match. Used for
+            ``ContentMatcherOption::MATCHES_JSON_PATH`` and
+            ``ContentMatcherOption::NOT_MATCHES_JSON_PATH``.
+
+            Attributes:
+                json_path (str):
+                    JSONPath within the response output pointing to the expected
+                    ``ContentMatcher::content`` to match against.
+                json_matcher (google.cloud.monitoring_v3.types.UptimeCheckConfig.ContentMatcher.JsonPathMatcher.JsonPathMatcherOption):
+                    The type of JSONPath match that will be applied to the JSON
+                    output (``ContentMatcher.content``)
+            """
+
+            class JsonPathMatcherOption(proto.Enum):
+                r"""Options to perform JSONPath content matching.
+
+                Values:
+                    JSON_PATH_MATCHER_OPTION_UNSPECIFIED (0):
+                        No JSONPath matcher type specified (not
+                        valid).
+                    EXACT_MATCH (1):
+                        Selects 'exact string' matching. The match succeeds if the
+                        content at the ``json_path`` within the output is exactly
+                        the same as the ``content`` string.
+                    REGEX_MATCH (2):
+                        Selects regular-expression matching. The match succeeds if
+                        the content at the ``json_path`` within the output matches
+                        the regular expression specified in the ``content`` string.
+                """
+                JSON_PATH_MATCHER_OPTION_UNSPECIFIED = 0
+                EXACT_MATCH = 1
+                REGEX_MATCH = 2
+
+            json_path: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            json_matcher: "UptimeCheckConfig.ContentMatcher.JsonPathMatcher.JsonPathMatcherOption" = proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="UptimeCheckConfig.ContentMatcher.JsonPathMatcher.JsonPathMatcherOption",
+            )
 
         content: str = proto.Field(
             proto.STRING,
@@ -546,6 +788,14 @@ class UptimeCheckConfig(proto.Message):
             proto.ENUM,
             number=2,
             enum="UptimeCheckConfig.ContentMatcher.ContentMatcherOption",
+        )
+        json_path_matcher: "UptimeCheckConfig.ContentMatcher.JsonPathMatcher" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=3,
+                oneof="additional_matcher_info",
+                message="UptimeCheckConfig.ContentMatcher.JsonPathMatcher",
+            )
         )
 
     name: str = proto.Field(
@@ -595,6 +845,11 @@ class UptimeCheckConfig(proto.Message):
         number=9,
         message=ContentMatcher,
     )
+    checker_type: CheckerType = proto.Field(
+        proto.ENUM,
+        number=17,
+        enum=CheckerType,
+    )
     selected_regions: MutableSequence["UptimeCheckRegion"] = proto.RepeatedField(
         proto.ENUM,
         number=10,
@@ -608,6 +863,11 @@ class UptimeCheckConfig(proto.Message):
         proto.MESSAGE,
         number=14,
         message="InternalChecker",
+    )
+    user_labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=20,
     )
 
 

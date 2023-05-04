@@ -1179,6 +1179,7 @@ def test_get_uptime_check_config(request_type, transport: str = "grpc"):
         call.return_value = uptime.UptimeCheckConfig(
             name="name_value",
             display_name="display_name_value",
+            checker_type=uptime.UptimeCheckConfig.CheckerType.STATIC_IP_CHECKERS,
             selected_regions=[uptime.UptimeCheckRegion.USA],
             is_internal=True,
             monitored_resource=monitored_resource_pb2.MonitoredResource(
@@ -1199,6 +1200,9 @@ def test_get_uptime_check_config(request_type, transport: str = "grpc"):
     assert isinstance(response, uptime.UptimeCheckConfig)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert (
+        response.checker_type == uptime.UptimeCheckConfig.CheckerType.STATIC_IP_CHECKERS
+    )
     assert response.selected_regions == [uptime.UptimeCheckRegion.USA]
     assert response.is_internal is True
 
@@ -1244,6 +1248,7 @@ async def test_get_uptime_check_config_async(
             uptime.UptimeCheckConfig(
                 name="name_value",
                 display_name="display_name_value",
+                checker_type=uptime.UptimeCheckConfig.CheckerType.STATIC_IP_CHECKERS,
                 selected_regions=[uptime.UptimeCheckRegion.USA],
                 is_internal=True,
             )
@@ -1259,6 +1264,9 @@ async def test_get_uptime_check_config_async(
     assert isinstance(response, uptime.UptimeCheckConfig)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert (
+        response.checker_type == uptime.UptimeCheckConfig.CheckerType.STATIC_IP_CHECKERS
+    )
     assert response.selected_regions == [uptime.UptimeCheckRegion.USA]
     assert response.is_internal is True
 
@@ -1444,6 +1452,7 @@ def test_create_uptime_check_config(request_type, transport: str = "grpc"):
         call.return_value = uptime.UptimeCheckConfig(
             name="name_value",
             display_name="display_name_value",
+            checker_type=uptime.UptimeCheckConfig.CheckerType.STATIC_IP_CHECKERS,
             selected_regions=[uptime.UptimeCheckRegion.USA],
             is_internal=True,
             monitored_resource=monitored_resource_pb2.MonitoredResource(
@@ -1464,6 +1473,9 @@ def test_create_uptime_check_config(request_type, transport: str = "grpc"):
     assert isinstance(response, uptime.UptimeCheckConfig)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert (
+        response.checker_type == uptime.UptimeCheckConfig.CheckerType.STATIC_IP_CHECKERS
+    )
     assert response.selected_regions == [uptime.UptimeCheckRegion.USA]
     assert response.is_internal is True
 
@@ -1509,6 +1521,7 @@ async def test_create_uptime_check_config_async(
             uptime.UptimeCheckConfig(
                 name="name_value",
                 display_name="display_name_value",
+                checker_type=uptime.UptimeCheckConfig.CheckerType.STATIC_IP_CHECKERS,
                 selected_regions=[uptime.UptimeCheckRegion.USA],
                 is_internal=True,
             )
@@ -1524,6 +1537,9 @@ async def test_create_uptime_check_config_async(
     assert isinstance(response, uptime.UptimeCheckConfig)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert (
+        response.checker_type == uptime.UptimeCheckConfig.CheckerType.STATIC_IP_CHECKERS
+    )
     assert response.selected_regions == [uptime.UptimeCheckRegion.USA]
     assert response.is_internal is True
 
@@ -1719,6 +1735,7 @@ def test_update_uptime_check_config(request_type, transport: str = "grpc"):
         call.return_value = uptime.UptimeCheckConfig(
             name="name_value",
             display_name="display_name_value",
+            checker_type=uptime.UptimeCheckConfig.CheckerType.STATIC_IP_CHECKERS,
             selected_regions=[uptime.UptimeCheckRegion.USA],
             is_internal=True,
             monitored_resource=monitored_resource_pb2.MonitoredResource(
@@ -1739,6 +1756,9 @@ def test_update_uptime_check_config(request_type, transport: str = "grpc"):
     assert isinstance(response, uptime.UptimeCheckConfig)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert (
+        response.checker_type == uptime.UptimeCheckConfig.CheckerType.STATIC_IP_CHECKERS
+    )
     assert response.selected_regions == [uptime.UptimeCheckRegion.USA]
     assert response.is_internal is True
 
@@ -1784,6 +1804,7 @@ async def test_update_uptime_check_config_async(
             uptime.UptimeCheckConfig(
                 name="name_value",
                 display_name="display_name_value",
+                checker_type=uptime.UptimeCheckConfig.CheckerType.STATIC_IP_CHECKERS,
                 selected_regions=[uptime.UptimeCheckRegion.USA],
                 is_internal=True,
             )
@@ -1799,6 +1820,9 @@ async def test_update_uptime_check_config_async(
     assert isinstance(response, uptime.UptimeCheckConfig)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert (
+        response.checker_type == uptime.UptimeCheckConfig.CheckerType.STATIC_IP_CHECKERS
+    )
     assert response.selected_regions == [uptime.UptimeCheckRegion.USA]
     assert response.is_internal is True
 

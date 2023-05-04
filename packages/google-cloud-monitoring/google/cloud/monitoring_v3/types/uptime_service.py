@@ -50,6 +50,12 @@ class ListUptimeCheckConfigsRequest(proto.Message):
             ::
 
                 projects/[PROJECT_ID_OR_NUMBER]
+        filter (str):
+            If provided, this field specifies the criteria that must be
+            met by uptime checks to be included in the response.
+
+            For more details, see `Filtering
+            syntax <https://cloud.google.com/monitoring/api/v3/sorting-and-filtering#filter_syntax>`__.
         page_size (int):
             The maximum number of results to return in a single
             response. The server may further constrain the maximum
@@ -66,6 +72,10 @@ class ListUptimeCheckConfigsRequest(proto.Message):
     parent: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
     page_size: int = proto.Field(
         proto.INT32,
@@ -180,7 +190,7 @@ class UpdateUptimeCheckConfigRequest(proto.Message):
             the ``updateMask``. If an ``updateMask`` has not been given,
             this Uptime check configuration replaces the current
             configuration. If a field is mentioned in ``updateMask`` but
-            the corresonding field is omitted in this partial Uptime
+            the corresponding field is omitted in this partial Uptime
             check configuration, it has the effect of deleting/clearing
             the field from the configuration on the server.
 
