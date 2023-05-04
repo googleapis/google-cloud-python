@@ -37,7 +37,7 @@ For example::
           return cls.query(cls.rank == rank).order(cls.age)
 
     for emp in Employee.seniors(42, 5):
-        print emp.name, emp.age, emp.rank
+        print(emp.name, emp.age, emp.rank)
 
 The 'in' operator cannot be overloaded, but is supported through the IN()
 method. For example::
@@ -133,7 +133,7 @@ tasklet, properly yielding when appropriate::
     it = query1.iter()
     while (yield it.has_next_async()):
         emp = it.next()
-        print emp.name, emp.age
+        print(emp.name, emp.age)
 """
 
 import functools
