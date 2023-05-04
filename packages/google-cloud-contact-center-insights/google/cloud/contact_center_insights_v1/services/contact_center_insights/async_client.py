@@ -79,6 +79,12 @@ class ContactCenterInsightsAsyncClient:
     parse_conversation_path = staticmethod(
         ContactCenterInsightsClient.parse_conversation_path
     )
+    conversation_profile_path = staticmethod(
+        ContactCenterInsightsClient.conversation_profile_path
+    )
+    parse_conversation_profile_path = staticmethod(
+        ContactCenterInsightsClient.parse_conversation_profile_path
+    )
     issue_path = staticmethod(ContactCenterInsightsClient.issue_path)
     parse_issue_path = staticmethod(ContactCenterInsightsClient.parse_issue_path)
     issue_model_path = staticmethod(ContactCenterInsightsClient.issue_model_path)

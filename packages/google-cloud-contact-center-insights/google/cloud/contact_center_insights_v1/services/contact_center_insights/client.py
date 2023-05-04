@@ -239,6 +239,28 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def conversation_profile_path(
+        project: str,
+        location: str,
+        conversation_profile: str,
+    ) -> str:
+        """Returns a fully-qualified conversation_profile string."""
+        return "projects/{project}/locations/{location}/conversationProfiles/{conversation_profile}".format(
+            project=project,
+            location=location,
+            conversation_profile=conversation_profile,
+        )
+
+    @staticmethod
+    def parse_conversation_profile_path(path: str) -> Dict[str, str]:
+        """Parses a conversation_profile path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/conversationProfiles/(?P<conversation_profile>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def issue_path(
         project: str,
         location: str,

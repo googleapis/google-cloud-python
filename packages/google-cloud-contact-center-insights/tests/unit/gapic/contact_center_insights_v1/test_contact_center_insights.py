@@ -10927,7 +10927,20 @@ def test_create_conversation_rest(request_type):
                 "run_intent_annotator": True,
                 "run_issue_model_annotator": True,
                 "issue_models": ["issue_models_value1", "issue_models_value2"],
+                "run_summarization_annotator": True,
+                "summarization_config": {
+                    "conversation_profile": "conversation_profile_value",
+                    "summarization_model": 1,
+                },
             },
+        },
+        "latest_summary": {
+            "text": "text_value",
+            "text_sections": {},
+            "confidence": 0.1038,
+            "metadata": {},
+            "answer_record": "answer_record_value",
+            "conversation_model": "conversation_model_value",
         },
         "runtime_annotations": [
             {
@@ -10963,6 +10976,7 @@ def test_create_conversation_rest(request_type):
                     "dialogflow_intent_id": "dialogflow_intent_id_value",
                     "confidence": 0.1038,
                 },
+                "conversation_summarization_suggestion": {},
                 "annotation_id": "annotation_id_value",
                 "create_time": {},
                 "start_boundary": {},
@@ -11292,7 +11306,20 @@ def test_create_conversation_rest_bad_request(
                 "run_intent_annotator": True,
                 "run_issue_model_annotator": True,
                 "issue_models": ["issue_models_value1", "issue_models_value2"],
+                "run_summarization_annotator": True,
+                "summarization_config": {
+                    "conversation_profile": "conversation_profile_value",
+                    "summarization_model": 1,
+                },
             },
+        },
+        "latest_summary": {
+            "text": "text_value",
+            "text_sections": {},
+            "confidence": 0.1038,
+            "metadata": {},
+            "answer_record": "answer_record_value",
+            "conversation_model": "conversation_model_value",
         },
         "runtime_annotations": [
             {
@@ -11328,6 +11355,7 @@ def test_create_conversation_rest_bad_request(
                     "dialogflow_intent_id": "dialogflow_intent_id_value",
                     "confidence": 0.1038,
                 },
+                "conversation_summarization_suggestion": {},
                 "annotation_id": "annotation_id_value",
                 "create_time": {},
                 "start_boundary": {},
@@ -11777,7 +11805,20 @@ def test_update_conversation_rest(request_type):
                 "run_intent_annotator": True,
                 "run_issue_model_annotator": True,
                 "issue_models": ["issue_models_value1", "issue_models_value2"],
+                "run_summarization_annotator": True,
+                "summarization_config": {
+                    "conversation_profile": "conversation_profile_value",
+                    "summarization_model": 1,
+                },
             },
+        },
+        "latest_summary": {
+            "text": "text_value",
+            "text_sections": {},
+            "confidence": 0.1038,
+            "metadata": {},
+            "answer_record": "answer_record_value",
+            "conversation_model": "conversation_model_value",
         },
         "runtime_annotations": [
             {
@@ -11813,6 +11854,7 @@ def test_update_conversation_rest(request_type):
                     "dialogflow_intent_id": "dialogflow_intent_id_value",
                     "confidence": 0.1038,
                 },
+                "conversation_summarization_suggestion": {},
                 "annotation_id": "annotation_id_value",
                 "create_time": {},
                 "start_boundary": {},
@@ -12133,7 +12175,20 @@ def test_update_conversation_rest_bad_request(
                 "run_intent_annotator": True,
                 "run_issue_model_annotator": True,
                 "issue_models": ["issue_models_value1", "issue_models_value2"],
+                "run_summarization_annotator": True,
+                "summarization_config": {
+                    "conversation_profile": "conversation_profile_value",
+                    "summarization_model": 1,
+                },
             },
+        },
+        "latest_summary": {
+            "text": "text_value",
+            "text_sections": {},
+            "confidence": 0.1038,
+            "metadata": {},
+            "answer_record": "answer_record_value",
+            "conversation_model": "conversation_model_value",
         },
         "runtime_annotations": [
             {
@@ -12169,6 +12224,7 @@ def test_update_conversation_rest_bad_request(
                     "dialogflow_intent_id": "dialogflow_intent_id_value",
                     "confidence": 0.1038,
                 },
+                "conversation_summarization_suggestion": {},
                 "annotation_id": "annotation_id_value",
                 "create_time": {},
                 "start_boundary": {},
@@ -13245,6 +13301,11 @@ def test_create_analysis_rest(request_type):
             "run_intent_annotator": True,
             "run_issue_model_annotator": True,
             "issue_models": ["issue_models_value1", "issue_models_value2"],
+            "run_summarization_annotator": True,
+            "summarization_config": {
+                "conversation_profile": "conversation_profile_value",
+                "summarization_model": 1,
+            },
         },
     }
     request = request_type(**request_init)
@@ -13494,6 +13555,11 @@ def test_create_analysis_rest_bad_request(
             "run_intent_annotator": True,
             "run_issue_model_annotator": True,
             "issue_models": ["issue_models_value1", "issue_models_value2"],
+            "run_summarization_annotator": True,
+            "summarization_config": {
+                "conversation_profile": "conversation_profile_value",
+                "summarization_model": 1,
+            },
         },
     }
     request = request_type(**request_init)
@@ -20797,6 +20863,11 @@ def test_update_settings_rest(request_type):
                 "run_intent_annotator": True,
                 "run_issue_model_annotator": True,
                 "issue_models": ["issue_models_value1", "issue_models_value2"],
+                "run_summarization_annotator": True,
+                "summarization_config": {
+                    "conversation_profile": "conversation_profile_value",
+                    "summarization_model": 1,
+                },
             },
         },
         "redaction_config": {
@@ -21007,6 +21078,11 @@ def test_update_settings_rest_bad_request(
                 "run_intent_annotator": True,
                 "run_issue_model_annotator": True,
                 "issue_models": ["issue_models_value1", "issue_models_value2"],
+                "run_summarization_annotator": True,
+                "summarization_config": {
+                    "conversation_profile": "conversation_profile_value",
+                    "summarization_model": 1,
+                },
             },
         },
         "redaction_config": {
@@ -23338,11 +23414,39 @@ def test_parse_conversation_path():
     assert expected == actual
 
 
-def test_issue_path():
+def test_conversation_profile_path():
     project = "whelk"
     location = "octopus"
-    issue_model = "oyster"
-    issue = "nudibranch"
+    conversation_profile = "oyster"
+    expected = "projects/{project}/locations/{location}/conversationProfiles/{conversation_profile}".format(
+        project=project,
+        location=location,
+        conversation_profile=conversation_profile,
+    )
+    actual = ContactCenterInsightsClient.conversation_profile_path(
+        project, location, conversation_profile
+    )
+    assert expected == actual
+
+
+def test_parse_conversation_profile_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "conversation_profile": "mussel",
+    }
+    path = ContactCenterInsightsClient.conversation_profile_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ContactCenterInsightsClient.parse_conversation_profile_path(path)
+    assert expected == actual
+
+
+def test_issue_path():
+    project = "winkle"
+    location = "nautilus"
+    issue_model = "scallop"
+    issue = "abalone"
     expected = "projects/{project}/locations/{location}/issueModels/{issue_model}/issues/{issue}".format(
         project=project,
         location=location,
@@ -23357,10 +23461,10 @@ def test_issue_path():
 
 def test_parse_issue_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
-        "issue_model": "winkle",
-        "issue": "nautilus",
+        "project": "squid",
+        "location": "clam",
+        "issue_model": "whelk",
+        "issue": "octopus",
     }
     path = ContactCenterInsightsClient.issue_path(**expected)
 
@@ -23370,9 +23474,9 @@ def test_parse_issue_path():
 
 
 def test_issue_model_path():
-    project = "scallop"
-    location = "abalone"
-    issue_model = "squid"
+    project = "oyster"
+    location = "nudibranch"
+    issue_model = "cuttlefish"
     expected = (
         "projects/{project}/locations/{location}/issueModels/{issue_model}".format(
             project=project,
@@ -23388,9 +23492,9 @@ def test_issue_model_path():
 
 def test_parse_issue_model_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "issue_model": "octopus",
+        "project": "mussel",
+        "location": "winkle",
+        "issue_model": "nautilus",
     }
     path = ContactCenterInsightsClient.issue_model_path(**expected)
 
@@ -23400,9 +23504,9 @@ def test_parse_issue_model_path():
 
 
 def test_participant_path():
-    project = "oyster"
-    conversation = "nudibranch"
-    participant = "cuttlefish"
+    project = "scallop"
+    conversation = "abalone"
+    participant = "squid"
     expected = "projects/{project}/conversations/{conversation}/participants/{participant}".format(
         project=project,
         conversation=conversation,
@@ -23416,9 +23520,9 @@ def test_participant_path():
 
 def test_parse_participant_path():
     expected = {
-        "project": "mussel",
-        "conversation": "winkle",
-        "participant": "nautilus",
+        "project": "clam",
+        "conversation": "whelk",
+        "participant": "octopus",
     }
     path = ContactCenterInsightsClient.participant_path(**expected)
 
@@ -23428,9 +23532,9 @@ def test_parse_participant_path():
 
 
 def test_phrase_matcher_path():
-    project = "scallop"
-    location = "abalone"
-    phrase_matcher = "squid"
+    project = "oyster"
+    location = "nudibranch"
+    phrase_matcher = "cuttlefish"
     expected = "projects/{project}/locations/{location}/phraseMatchers/{phrase_matcher}".format(
         project=project,
         location=location,
@@ -23444,9 +23548,9 @@ def test_phrase_matcher_path():
 
 def test_parse_phrase_matcher_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "phrase_matcher": "octopus",
+        "project": "mussel",
+        "location": "winkle",
+        "phrase_matcher": "nautilus",
     }
     path = ContactCenterInsightsClient.phrase_matcher_path(**expected)
 
@@ -23456,8 +23560,8 @@ def test_parse_phrase_matcher_path():
 
 
 def test_settings_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}/settings".format(
         project=project,
         location=location,
@@ -23468,8 +23572,8 @@ def test_settings_path():
 
 def test_parse_settings_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "squid",
+        "location": "clam",
     }
     path = ContactCenterInsightsClient.settings_path(**expected)
 
@@ -23479,9 +23583,9 @@ def test_parse_settings_path():
 
 
 def test_view_path():
-    project = "winkle"
-    location = "nautilus"
-    view = "scallop"
+    project = "whelk"
+    location = "octopus"
+    view = "oyster"
     expected = "projects/{project}/locations/{location}/views/{view}".format(
         project=project,
         location=location,
@@ -23493,9 +23597,9 @@ def test_view_path():
 
 def test_parse_view_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "view": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "view": "mussel",
     }
     path = ContactCenterInsightsClient.view_path(**expected)
 
@@ -23505,7 +23609,7 @@ def test_parse_view_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -23515,7 +23619,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = ContactCenterInsightsClient.common_billing_account_path(**expected)
 
@@ -23525,7 +23629,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -23535,7 +23639,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "abalone",
     }
     path = ContactCenterInsightsClient.common_folder_path(**expected)
 
@@ -23545,7 +23649,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -23555,7 +23659,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "clam",
     }
     path = ContactCenterInsightsClient.common_organization_path(**expected)
 
@@ -23565,7 +23669,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -23575,7 +23679,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = ContactCenterInsightsClient.common_project_path(**expected)
 
@@ -23585,8 +23689,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -23597,8 +23701,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = ContactCenterInsightsClient.common_location_path(**expected)
 

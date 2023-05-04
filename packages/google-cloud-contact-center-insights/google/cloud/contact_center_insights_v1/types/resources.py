@@ -63,6 +63,7 @@ __protobuf__ = proto.module(
         "SmartReplyData",
         "SmartComposeSuggestionData",
         "DialogflowInteractionData",
+        "ConversationSummarizationSuggestionData",
         "ConversationParticipant",
         "View",
         "AnnotatorSelector",
@@ -137,6 +138,9 @@ class Conversation(proto.Message):
         latest_analysis (google.cloud.contact_center_insights_v1.types.Analysis):
             Output only. The conversation's latest
             analysis, if one exists.
+        latest_summary (google.cloud.contact_center_insights_v1.types.ConversationSummarizationSuggestionData):
+            Output only. Latest summary of the
+            conversation.
         runtime_annotations (MutableSequence[google.cloud.contact_center_insights_v1.types.RuntimeAnnotation]):
             Output only. The annotations that were
             generated during the customer and agent
@@ -417,6 +421,11 @@ class Conversation(proto.Message):
         proto.MESSAGE,
         number=12,
         message="Analysis",
+    )
+    latest_summary: "ConversationSummarizationSuggestionData" = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        message="ConversationSummarizationSuggestionData",
     )
     runtime_annotations: MutableSequence["RuntimeAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1540,8 +1549,8 @@ class PhraseMatchRuleGroup(proto.Message):
             Required. The type of this phrase match rule
             group.
         phrase_match_rules (MutableSequence[google.cloud.contact_center_insights_v1.types.PhraseMatchRule]):
-            A list of phase match rules that are included
-            in this group.
+            A list of phrase match rules that are
+            included in this group.
     """
 
     class PhraseMatchRuleGroupType(proto.Enum):
@@ -1821,6 +1830,10 @@ class RuntimeAnnotation(proto.Message):
             Dialogflow interaction data.
 
             This field is a member of `oneof`_ ``data``.
+        conversation_summarization_suggestion (google.cloud.contact_center_insights_v1.types.ConversationSummarizationSuggestionData):
+            Conversation summarization suggestion data.
+
+            This field is a member of `oneof`_ ``data``.
         annotation_id (str):
             The unique identifier of the annotation. Format:
             projects/{project}/locations/{location}/conversationDatasets/{dataset}/conversationDataItems/{data_item}/conversationAnnotations/{annotation}
@@ -1867,6 +1880,14 @@ class RuntimeAnnotation(proto.Message):
         number=10,
         oneof="data",
         message="DialogflowInteractionData",
+    )
+    conversation_summarization_suggestion: "ConversationSummarizationSuggestionData" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=12,
+            oneof="data",
+            message="ConversationSummarizationSuggestionData",
+        )
     )
     annotation_id: str = proto.Field(
         proto.STRING,
@@ -2149,6 +2170,60 @@ class DialogflowInteractionData(proto.Message):
     )
 
 
+class ConversationSummarizationSuggestionData(proto.Message):
+    r"""Conversation summarization suggestion data.
+
+    Attributes:
+        text (str):
+            The summarization content that is
+            concatenated into one string.
+        text_sections (MutableMapping[str, str]):
+            The summarization content that is divided
+            into sections. The key is the section's name and
+            the value is the section's content. There is no
+            specific format for the key or value.
+        confidence (float):
+            The confidence score of the summarization.
+        metadata (MutableMapping[str, str]):
+            A map that contains metadata about the
+            summarization and the document from which it
+            originates.
+        answer_record (str):
+            The name of the answer record. Format:
+            projects/{project}/locations/{location}/answerRecords/{answer_record}
+        conversation_model (str):
+            The name of the model that generates this summary. Format:
+            projects/{project}/locations/{location}/conversationModels/{conversation_model}
+    """
+
+    text: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    text_sections: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
+    confidence: float = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    metadata: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
+    answer_record: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    conversation_model: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
 class ConversationParticipant(proto.Message):
     r"""The call participant speaking for a given utterance.
 
@@ -2310,7 +2385,59 @@ class AnnotatorSelector(proto.Message):
             deployed and if run_issue_model_annotator is set to true. If
             more than one issue model is provided, only the first
             provided issue model will be used for inference.
+        run_summarization_annotator (bool):
+            Whether to run the summarization annotator.
+        summarization_config (google.cloud.contact_center_insights_v1.types.AnnotatorSelector.SummarizationConfig):
+            Configuration for the summarization
+            annotator.
     """
+
+    class SummarizationConfig(proto.Message):
+        r"""Configuration for summarization.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            conversation_profile (str):
+                Resource name of the Dialogflow conversation profile.
+                Format:
+                projects/{project}/locations/{location}/conversationProfiles/{conversation_profile}
+
+                This field is a member of `oneof`_ ``model_source``.
+            summarization_model (google.cloud.contact_center_insights_v1.types.AnnotatorSelector.SummarizationConfig.SummarizationModel):
+                Default summarization model to be used.
+
+                This field is a member of `oneof`_ ``model_source``.
+        """
+
+        class SummarizationModel(proto.Enum):
+            r"""Summarization model to use, if ``conversation_profile`` is not used.
+
+            Values:
+                SUMMARIZATION_MODEL_UNSPECIFIED (0):
+                    Unspecified summarization model.
+                BASELINE_MODEL (1):
+                    The Insights baseline model.
+            """
+            SUMMARIZATION_MODEL_UNSPECIFIED = 0
+            BASELINE_MODEL = 1
+
+        conversation_profile: str = proto.Field(
+            proto.STRING,
+            number=1,
+            oneof="model_source",
+        )
+        summarization_model: "AnnotatorSelector.SummarizationConfig.SummarizationModel" = proto.Field(
+            proto.ENUM,
+            number=2,
+            oneof="model_source",
+            enum="AnnotatorSelector.SummarizationConfig.SummarizationModel",
+        )
 
     run_interruption_annotator: bool = proto.Field(
         proto.BOOL,
@@ -2347,6 +2474,15 @@ class AnnotatorSelector(proto.Message):
     issue_models: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=10,
+    )
+    run_summarization_annotator: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
+    summarization_config: SummarizationConfig = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=SummarizationConfig,
     )
 
 
