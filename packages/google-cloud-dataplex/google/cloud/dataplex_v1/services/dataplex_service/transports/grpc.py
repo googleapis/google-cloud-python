@@ -874,6 +874,30 @@ class DataplexServiceGrpcTransport(DataplexServiceTransport):
         return self._stubs["list_jobs"]
 
     @property
+    def run_task(self) -> Callable[[service.RunTaskRequest], service.RunTaskResponse]:
+        r"""Return a callable for the run task method over gRPC.
+
+        Run an on demand execution of a Task.
+
+        Returns:
+            Callable[[~.RunTaskRequest],
+                    ~.RunTaskResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "run_task" not in self._stubs:
+            self._stubs["run_task"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataplex.v1.DataplexService/RunTask",
+                request_serializer=service.RunTaskRequest.serialize,
+                response_deserializer=service.RunTaskResponse.deserialize,
+            )
+        return self._stubs["run_task"]
+
+    @property
     def get_job(self) -> Callable[[service.GetJobRequest], tasks.Job]:
         r"""Return a callable for the get job method over gRPC.
 

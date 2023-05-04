@@ -411,8 +411,13 @@ class Zone(proto.Message):
                 the cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or
                 TZ=${IANA_TIME_ZONE}". The ${IANA_TIME_ZONE} may only be a
                 valid string from IANA time zone database. For example,
-                ``CRON_TZ=America/New_York 1 * * * *``, or
-                ``TZ=America/New_York 1 * * * *``.
+                \`CRON_TZ=America/New_York 1
+
+                -
+
+                   -
+
+                      -  \*\ ``, or``\ TZ=America/New_York 1 \* \* \* \*`.
 
                 This field is a member of `oneof`_ ``trigger``.
         """
@@ -1056,8 +1061,13 @@ class Asset(proto.Message):
                 the cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or
                 TZ=${IANA_TIME_ZONE}". The ${IANA_TIME_ZONE} may only be a
                 valid string from IANA time zone database. For example,
-                ``CRON_TZ=America/New_York 1 * * * *``, or
-                ``TZ=America/New_York 1 * * * *``.
+                \`CRON_TZ=America/New_York 1
+
+                -
+
+                   -
+
+                      -  \*\ ``, or``\ TZ=America/New_York 1 \* \* \* \*`.
 
                 This field is a member of `oneof`_ ``trigger``.
         """
@@ -1162,6 +1172,11 @@ class Asset(proto.Message):
                 ``projects/{project_number}/datasets/{dataset_id}``
             type_ (google.cloud.dataplex_v1.types.Asset.ResourceSpec.Type):
                 Required. Immutable. Type of resource.
+            read_access_mode (google.cloud.dataplex_v1.types.Asset.ResourceSpec.AccessMode):
+                Optional. Determines how read permissions are
+                handled for each asset and their associated
+                tables. Only available to storage buckets
+                assets.
         """
 
         class Type(proto.Enum):
@@ -1179,6 +1194,24 @@ class Asset(proto.Message):
             STORAGE_BUCKET = 1
             BIGQUERY_DATASET = 2
 
+        class AccessMode(proto.Enum):
+            r"""Access Mode determines how data stored within the resource is
+            read. This is only applicable to storage bucket assets.
+
+            Values:
+                ACCESS_MODE_UNSPECIFIED (0):
+                    Access mode unspecified.
+                DIRECT (1):
+                    Default. Data is accessed directly using
+                    storage APIs.
+                MANAGED (2):
+                    Data is accessed through a managed interface
+                    using BigQuery APIs.
+            """
+            ACCESS_MODE_UNSPECIFIED = 0
+            DIRECT = 1
+            MANAGED = 2
+
         name: str = proto.Field(
             proto.STRING,
             number=1,
@@ -1187,6 +1220,11 @@ class Asset(proto.Message):
             proto.ENUM,
             number=2,
             enum="Asset.ResourceSpec.Type",
+        )
+        read_access_mode: "Asset.ResourceSpec.AccessMode" = proto.Field(
+            proto.ENUM,
+            number=5,
+            enum="Asset.ResourceSpec.AccessMode",
         )
 
     class ResourceStatus(proto.Message):
@@ -1200,6 +1238,9 @@ class Asset(proto.Message):
                 state.
             update_time (google.protobuf.timestamp_pb2.Timestamp):
                 Last update time of the status.
+            managed_access_identity (str):
+                Output only. Service account associated with
+                the BigQuery Connection.
         """
 
         class State(proto.Enum):
@@ -1230,6 +1271,10 @@ class Asset(proto.Message):
             proto.MESSAGE,
             number=3,
             message=timestamp_pb2.Timestamp,
+        )
+        managed_access_identity: str = proto.Field(
+            proto.STRING,
+            number=4,
         )
 
     class DiscoveryStatus(proto.Message):

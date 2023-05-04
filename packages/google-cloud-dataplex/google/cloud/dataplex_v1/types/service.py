@@ -57,6 +57,8 @@ __protobuf__ = proto.module(
         "ListTasksResponse",
         "GetTaskRequest",
         "GetJobRequest",
+        "RunTaskRequest",
+        "RunTaskResponse",
         "ListJobsRequest",
         "ListJobsResponse",
         "CancelJobRequest",
@@ -992,6 +994,36 @@ class GetJobRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class RunTaskRequest(proto.Message):
+    r"""
+
+    Attributes:
+        name (str):
+            Required. The resource name of the task:
+            ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class RunTaskResponse(proto.Message):
+    r"""
+
+    Attributes:
+        job (google.cloud.dataplex_v1.types.Job):
+            Jobs created by RunTask API.
+    """
+
+    job: gcd_tasks.Job = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_tasks.Job,
     )
 
 

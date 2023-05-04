@@ -180,7 +180,7 @@ class Environment(proto.Message):
         )
 
     class SessionSpec(proto.Message):
-        r"""
+        r"""Configuration for sessions created for this environment.
 
         Attributes:
             max_idle_duration (google.protobuf.duration_pb2.Duration):
@@ -208,7 +208,7 @@ class Environment(proto.Message):
         )
 
     class SessionStatus(proto.Message):
-        r"""
+        r"""Status of sessions created for this environment.
 
         Attributes:
             active (bool):
@@ -223,7 +223,8 @@ class Environment(proto.Message):
         )
 
     class Endpoints(proto.Message):
-        r"""
+        r"""URI Endpoints to access sessions associated with the
+        Environment.
 
         Attributes:
             notebooks (str):
@@ -465,7 +466,7 @@ class Session(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Session start time.
         state (google.cloud.dataplex_v1.types.State):
-
+            Output only. State of Session
     """
 
     name: str = proto.Field(

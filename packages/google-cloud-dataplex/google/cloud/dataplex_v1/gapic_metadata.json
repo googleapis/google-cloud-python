@@ -333,6 +333,11 @@
                 "list_zones"
               ]
             },
+            "RunTask": {
+              "methods": [
+                "run_task"
+              ]
+            },
             "UpdateAsset": {
               "methods": [
                 "update_asset"
@@ -496,6 +501,11 @@
             "ListZones": {
               "methods": [
                 "list_zones"
+              ]
+            },
+            "RunTask": {
+              "methods": [
+                "run_task"
               ]
             },
             "UpdateAsset": {

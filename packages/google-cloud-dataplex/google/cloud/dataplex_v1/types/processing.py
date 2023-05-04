@@ -41,8 +41,7 @@ class Trigger(proto.Message):
 
     Attributes:
         on_demand (google.cloud.dataplex_v1.types.Trigger.OnDemand):
-            The scan runs one-time shortly after DataScan
-            Creation.
+            The scan runs once via ``RunDataScan`` API.
 
             This field is a member of `oneof`_ ``mode``.
         schedule (google.cloud.dataplex_v1.types.Trigger.Schedule):
@@ -52,21 +51,25 @@ class Trigger(proto.Message):
     """
 
     class OnDemand(proto.Message):
-        r"""The scan runs one-time via RunDataScan API."""
+        r"""The scan runs once via ``RunDataScan`` API."""
 
     class Schedule(proto.Message):
         r"""The scan is scheduled to run periodically.
 
         Attributes:
             cron (str):
-                Required. Cron schedule (https://en.wikipedia.org/wiki/Cron)
-                for running scans periodically. To explicitly set a timezone
-                to the cron tab, apply a prefix in the cron tab:
-                "CRON_TZ=${IANA_TIME_ZONE}" or "TZ=${IANA_TIME_ZONE}". The
-                ${IANA_TIME_ZONE} may only be a valid string from IANA time
-                zone database. For example, "CRON_TZ=America/New_York 1 \*
-                \* \* \*", or "TZ=America/New_York 1 \* \* \* \*". This
-                field is required for Schedule scans.
+                Required. `Cron <https://en.wikipedia.org/wiki/Cron>`__
+                schedule for running scans periodically.
+
+                To explicitly set a timezone in the cron tab, apply a prefix
+                in the cron tab: **"CRON_TZ=${IANA_TIME_ZONE}"** or
+                **"TZ=${IANA_TIME_ZONE}"**. The **${IANA_TIME_ZONE}** may
+                only be a valid string from IANA time zone database
+                (`wikipedia <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List>`__).
+                For example, ``CRON_TZ=America/New_York 1 * * * *``, or
+                ``TZ=America/New_York 1 * * * *``.
+
+                This field is required for Schedule scans.
         """
 
         cron: str = proto.Field(
@@ -91,13 +94,26 @@ class Trigger(proto.Message):
 class DataSource(proto.Message):
     r"""The data source for DataScan.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         entity (str):
-            Immutable. The dataplex entity that contains the data for
-            DataScan, of the form:
+            Immutable. The Dataplex entity that represents the data
+            source (e.g. BigQuery table) for DataScan, of the form:
             ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}``.
+
+            This field is a member of `oneof`_ ``source``.
+        resource (str):
+            Immutable. The service-qualified full resource name of the
+            cloud resource for a DataScan job to scan against. The field
+            could be: BigQuery table of type "TABLE" for
+            DataProfileScan/DataQualityScan Format:
+            //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
 
             This field is a member of `oneof`_ ``source``.
     """
@@ -105,6 +121,11 @@ class DataSource(proto.Message):
     entity: str = proto.Field(
         proto.STRING,
         number=100,
+        oneof="source",
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=101,
         oneof="source",
     )
 
@@ -131,12 +152,12 @@ class ScannedData(proto.Message):
         Attributes:
             field (str):
                 The field that contains values which
-                monotonically increases over time (e.g.
-                timestamp).
+                monotonically increases over time (e.g. a
+                timestamp column).
             start (str):
-                Value that marks the start of the range
+                Value that marks the start of the range.
             end (str):
-                Value that marks the end of the range
+                Value that marks the end of the range.
         """
 
         field: str = proto.Field(

@@ -7968,6 +7968,232 @@ async def test_list_jobs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
+        service.RunTaskRequest,
+        dict,
+    ],
+)
+def test_run_task(request_type, transport: str = "grpc"):
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.RunTaskResponse()
+        response = client.run_task(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.RunTaskRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.RunTaskResponse)
+
+
+def test_run_task_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_task), "__call__") as call:
+        client.run_task()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.RunTaskRequest()
+
+
+@pytest.mark.asyncio
+async def test_run_task_async(
+    transport: str = "grpc_asyncio", request_type=service.RunTaskRequest
+):
+    client = DataplexServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.RunTaskResponse()
+        )
+        response = await client.run_task(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.RunTaskRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.RunTaskResponse)
+
+
+@pytest.mark.asyncio
+async def test_run_task_async_from_dict():
+    await test_run_task_async(request_type=dict)
+
+
+def test_run_task_field_headers():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.RunTaskRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_task), "__call__") as call:
+        call.return_value = service.RunTaskResponse()
+        client.run_task(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_run_task_field_headers_async():
+    client = DataplexServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.RunTaskRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_task), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.RunTaskResponse()
+        )
+        await client.run_task(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_run_task_flattened():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.RunTaskResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.run_task(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_run_task_flattened_error():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.run_task(
+            service.RunTaskRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_run_task_flattened_async():
+    client = DataplexServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.RunTaskResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.RunTaskResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.run_task(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_run_task_flattened_error_async():
+    client = DataplexServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.run_task(
+            service.RunTaskRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         service.GetJobRequest,
         dict,
     ],
@@ -10454,6 +10680,7 @@ def test_dataplex_service_base_transport():
         "list_tasks",
         "get_task",
         "list_jobs",
+        "run_task",
         "get_job",
         "cancel_job",
         "create_environment",

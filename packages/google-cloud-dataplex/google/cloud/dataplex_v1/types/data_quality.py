@@ -56,7 +56,7 @@ class DataQualityResult(proto.Message):
         passed (bool):
             Overall data quality result -- ``true`` if all rules passed.
         dimensions (MutableSequence[google.cloud.dataplex_v1.types.DataQualityDimensionResult]):
-            A list of results at the dimension-level.
+            A list of results at the dimension level.
         rules (MutableSequence[google.cloud.dataplex_v1.types.DataQualityRuleResult]):
             A list of all the rules in a job, and their
             results.
@@ -92,8 +92,8 @@ class DataQualityResult(proto.Message):
 
 
 class DataQualityRuleResult(proto.Message):
-    r"""DataQualityRuleResult provides a more detailed, per-rule
-    level view of the results.
+    r"""DataQualityRuleResult provides a more detailed, per-rule view
+    of the results.
 
     Attributes:
         rule (google.cloud.dataplex_v1.types.DataQualityRule):
@@ -103,11 +103,14 @@ class DataQualityRuleResult(proto.Message):
             Whether the rule passed or failed.
         evaluated_count (int):
             The number of rows a rule was evaluated against. This field
-            is only valid for ColumnMap type rules. Evaluated count can
-            be configured to either (1) include all rows (default) -
-            with null rows automatically failing rule evaluation OR (2)
-            exclude null rows from the evaluated_count, by setting
-            ignore_nulls = true
+            is only valid for ColumnMap type rules.
+
+            Evaluated count can be configured to either
+
+            -  include all rows (default) - with ``null`` rows
+               automatically failing rule evaluation, or
+            -  exclude ``null`` rows from the ``evaluated_count``, by
+               setting ``ignore_nulls = true``.
         passed_count (int):
             The number of rows which passed a rule
             evaluation. This field is only valid for
@@ -116,8 +119,8 @@ class DataQualityRuleResult(proto.Message):
             The number of rows with null values in the
             specified column.
         pass_ratio (float):
-            The ratio of passed_count / evaluated_count. This field is
-            only valid for ColumnMap type rules.
+            The ratio of **passed_count / evaluated_count**. This field
+            is only valid for ColumnMap type rules.
         failing_rows_query (str):
             The query to find rows that did not pass this
             rule. Only applies to ColumnMap and RowCondition
@@ -157,7 +160,7 @@ class DataQualityRuleResult(proto.Message):
 
 class DataQualityDimensionResult(proto.Message):
     r"""DataQualityDimensionResult provides a more detailed,
-    per-dimension level view of the results.
+    per-dimension view of the results.
 
     Attributes:
         passed (bool):
@@ -226,20 +229,21 @@ class DataQualityRule(proto.Message):
             Optional. The unnested column which this rule
             is evaluated against.
         ignore_null (bool):
-            Optional. Rows with null values will automatically fail a
-            rule, unless ignore_null is true. In that case, such null
-            rows are trivially considered passing. Only applicable to
-            ColumnMap rules.
+            Optional. Rows with ``null`` values will automatically fail
+            a rule, unless ``ignore_null`` is ``true``. In that case,
+            such ``null`` rows are trivially considered passing.
+
+            Only applicable to ColumnMap rules.
         dimension (str):
             Required. The dimension a rule belongs to. Results are also
-            aggregated at the dimension-level. Supported dimensions are
-            ["COMPLETENESS", "ACCURACY", "CONSISTENCY", "VALIDITY",
-            "UNIQUENESS", "INTEGRITY"]
+            aggregated at the dimension level. Supported dimensions are
+            **["COMPLETENESS", "ACCURACY", "CONSISTENCY", "VALIDITY",
+            "UNIQUENESS", "INTEGRITY"]**
         threshold (float):
-            Optional. The minimum ratio of passing_rows / total_rows
-            required to pass this rule, with a range of [0.0, 1.0]
+            Optional. The minimum ratio of **passing_rows / total_rows**
+            required to pass this rule, with a range of [0.0, 1.0].
 
-            0 indicates default value (i.e. 1.0)
+            0 indicates default value (i.e. 1.0).
     """
 
     class RangeExpectation(proto.Message):
@@ -249,20 +253,24 @@ class DataQualityRule(proto.Message):
         Attributes:
             min_value (str):
                 Optional. The minimum column value allowed for a row to pass
-                this validation. At least one of min_value and max_value
-                need to be provided.
+                this validation. At least one of ``min_value`` and
+                ``max_value`` need to be provided.
             max_value (str):
                 Optional. The maximum column value allowed for a row to pass
-                this validation. At least one of min_value and max_value
-                need to be provided.
+                this validation. At least one of ``min_value`` and
+                ``max_value`` need to be provided.
             strict_min_enabled (bool):
                 Optional. Whether each value needs to be strictly greater
-                than ('>') the minimum, or if equality is allowed. Only
-                relevant if a min_value has been defined. Default = false.
+                than ('>') the minimum, or if equality is allowed.
+
+                Only relevant if a ``min_value`` has been defined. Default =
+                false.
             strict_max_enabled (bool):
                 Optional. Whether each value needs to be strictly lesser
-                than ('<') the maximum, or if equality is allowed. Only
-                relevant if a max_value has been defined. Default = false.
+                than ('<') the maximum, or if equality is allowed.
+
+                Only relevant if a ``max_value`` has been defined. Default =
+                false.
         """
 
         min_value: str = proto.Field(
@@ -291,7 +299,7 @@ class DataQualityRule(proto.Message):
 
         Attributes:
             values (MutableSequence[str]):
-
+                Expected values for the column value.
         """
 
         values: MutableSequence[str] = proto.RepeatedField(
@@ -305,7 +313,8 @@ class DataQualityRule(proto.Message):
 
         Attributes:
             regex (str):
-
+                A regular expression the column value is
+                expected to match.
         """
 
         regex: str = proto.Field(
@@ -322,27 +331,36 @@ class DataQualityRule(proto.Message):
 
         Attributes:
             statistic (google.cloud.dataplex_v1.types.DataQualityRule.StatisticRangeExpectation.ColumnStatistic):
-
+                The aggregate metric to evaluate.
             min_value (str):
                 The minimum column statistic value allowed for a row to pass
-                this validation. At least one of min_value and max_value
-                need to be provided.
+                this validation.
+
+                At least one of ``min_value`` and ``max_value`` need to be
+                provided.
             max_value (str):
                 The maximum column statistic value allowed for a row to pass
-                this validation. At least one of min_value and max_value
-                need to be provided.
+                this validation.
+
+                At least one of ``min_value`` and ``max_value`` need to be
+                provided.
             strict_min_enabled (bool):
                 Whether column statistic needs to be strictly greater than
-                ('>') the minimum, or if equality is allowed. Only relevant
-                if a min_value has been defined. Default = false.
+                ('>') the minimum, or if equality is allowed.
+
+                Only relevant if a ``min_value`` has been defined. Default =
+                false.
             strict_max_enabled (bool):
                 Whether column statistic needs to be strictly lesser than
-                ('<') the maximum, or if equality is allowed. Only relevant
-                if a max_value has been defined. Default = false.
+                ('<') the maximum, or if equality is allowed.
+
+                Only relevant if a ``max_value`` has been defined. Default =
+                false.
         """
 
         class ColumnStatistic(proto.Enum):
-            r"""
+            r"""The list of aggregate metrics a rule can be evaluated
+            against.
 
             Values:
                 STATISTIC_UNDEFINED (0):
@@ -386,12 +404,13 @@ class DataQualityRule(proto.Message):
     class RowConditionExpectation(proto.Message):
         r"""Evaluates whether each row passes the specified condition.
         The SQL expression needs to use BigQuery standard SQL syntax and
-        should produce a boolean per row as the result.
+        should produce a boolean value per row as the result.
+
         Example: col1 >= 0 AND col2 < 10
 
         Attributes:
             sql_expression (str):
-
+                The SQL expression.
         """
 
         sql_expression: str = proto.Field(
@@ -403,11 +422,12 @@ class DataQualityRule(proto.Message):
         r"""Evaluates whether the provided expression is true.
         The SQL expression needs to use BigQuery standard SQL syntax and
         should produce a scalar boolean result.
+
         Example: MIN(col1) >= 0
 
         Attributes:
             sql_expression (str):
-
+                The SQL expression.
         """
 
         sql_expression: str = proto.Field(

@@ -355,6 +355,11 @@ class DataplexServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.run_task: gapic_v1.method.wrap_method(
+                self.run_task,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_job: gapic_v1.method.wrap_method(
                 self.get_job,
                 default_retry=retries.Retry(
@@ -645,6 +650,15 @@ class DataplexServiceTransport(abc.ABC):
     ) -> Callable[
         [service.ListJobsRequest],
         Union[service.ListJobsResponse, Awaitable[service.ListJobsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def run_task(
+        self,
+    ) -> Callable[
+        [service.RunTaskRequest],
+        Union[service.RunTaskResponse, Awaitable[service.RunTaskResponse]],
     ]:
         raise NotImplementedError()
 

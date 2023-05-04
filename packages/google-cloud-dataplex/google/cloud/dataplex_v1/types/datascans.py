@@ -84,6 +84,9 @@ class CreateDataScanRequest(proto.Message):
             -  Must end with a number or a letter.
             -  Must be between 1-63 characters.
             -  Must be unique within the customer project / location.
+        validate_only (bool):
+            Optional. Only validate the request, but do not perform
+            mutations. The default is ``false``.
     """
 
     parent: str = proto.Field(
@@ -99,6 +102,10 @@ class CreateDataScanRequest(proto.Message):
         proto.STRING,
         number=3,
     )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class UpdateDataScanRequest(proto.Message):
@@ -111,6 +118,9 @@ class UpdateDataScanRequest(proto.Message):
             Only fields specified in ``update_mask`` are updated.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Mask of fields to update.
+        validate_only (bool):
+            Optional. Only validate the request, but do not perform
+            mutations. The default is ``false``.
     """
 
     data_scan: "DataScan" = proto.Field(
@@ -122,6 +132,10 @@ class UpdateDataScanRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 
@@ -194,7 +208,7 @@ class ListDataScansRequest(proto.Message):
         page_size (int):
             Optional. Maximum number of dataScans to
             return. The service may return fewer than this
-            value. If unspecified, at most 10 scans will be
+            value. If unspecified, at most 500 scans will be
             returned. The maximum value is 1000; values
             above 1000 will be coerced to 1000.
         page_token (str):
@@ -306,7 +320,7 @@ class GetDataScanJobRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the DataScanJob:
-            ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}/dataScanJobs/{data_scan_job_id}``
+            ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}/jobs/{data_scan_job_id}``
             where ``project`` refers to a *project_id* or
             *project_number* and ``location_id`` refers to a GCP region.
         view (google.cloud.dataplex_v1.types.GetDataScanJobRequest.DataScanJobView):

@@ -35,68 +35,54 @@ class DataProfileSpec(proto.Message):
 
 
 class DataProfileResult(proto.Message):
-    r"""DataProfileResult defines the output of DataProfileScan.
-    Each field of the table will have field type specific profile
-    result.
+    r"""DataProfileResult defines the output of DataProfileScan. Each
+    field of the table will have field type specific profile result.
 
     Attributes:
         row_count (int):
-            The count of all rows in the sampled data.
-            Return 0, if zero rows.
+            The count of rows scanned.
         profile (google.cloud.dataplex_v1.types.DataProfileResult.Profile):
-            This represents the profile information per
-            field.
+            The profile information per field.
         scanned_data (google.cloud.dataplex_v1.types.ScannedData):
-            The data scanned for this profile.
+            The data scanned for this result.
     """
 
     class Profile(proto.Message):
-        r"""Profile information describing the structure and layout of
-        the data and contains the profile info.
+        r"""Contains name, type, mode and field type specific profile
+        information.
 
         Attributes:
             fields (MutableSequence[google.cloud.dataplex_v1.types.DataProfileResult.Profile.Field]):
-                The sequence of fields describing data in
-                table entities.
+                List of fields with structural and profile
+                information for each field.
         """
 
         class Field(proto.Message):
-            r"""Represents a column field within a table schema.
+            r"""A field within a table.
 
             Attributes:
                 name (str):
                     The name of the field.
                 type_ (str):
-                    The field data type. Possible values include:
-
-                    -  STRING
-                    -  BYTE
-                    -  INT64
-                    -  INT32
-                    -  INT16
-                    -  DOUBLE
-                    -  FLOAT
-                    -  DECIMAL
-                    -  BOOLEAN
-                    -  BINARY
-                    -  TIMESTAMP
-                    -  DATE
-                    -  TIME
-                    -  NULL
-                    -  RECORD
+                    The data type retrieved from the schema of the data source.
+                    For instance, for a BigQuery native table, it is the
+                    `BigQuery Table
+                    Schema <https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#tablefieldschema>`__.
+                    For a Dataplex Entity, it is the `Entity
+                    Schema <https://cloud.google.com/dataplex/docs/reference/rpc/google.cloud.dataplex.v1#type_3>`__.
                 mode (str):
-                    The mode of the field. Its value will be:
-                    REQUIRED, if it is a required field.
-                    NULLABLE, if it is an optional field.
-                    REPEATED, if it is a repeated field.
+                    The mode of the field. Possible values include:
+
+                    -  REQUIRED, if it is a required field.
+                    -  NULLABLE, if it is an optional field.
+                    -  REPEATED, if it is a repeated field.
                 profile (google.cloud.dataplex_v1.types.DataProfileResult.Profile.Field.ProfileInfo):
-                    The profile information for the corresponding
+                    Profile information for the corresponding
                     field.
             """
 
             class ProfileInfo(proto.Message):
-                r"""ProfileInfo defines the profile information for each schema
-                field type.
+                r"""The profile information for each field type.
 
                 This message has `oneof`_ fields (mutually exclusive fields).
                 For each oneof, at most one member field can be set at the same time.
@@ -107,46 +93,47 @@ class DataProfileResult(proto.Message):
 
                 Attributes:
                     null_ratio (float):
-                        The ratio of null rows against the rows in
-                        the sampled data.
+                        Ratio of rows with null value against total
+                        scanned rows.
                     distinct_ratio (float):
-                        The ratio of rows that are distinct against
-                        the rows in the sampled data.
+                        Ratio of rows with distinct values against
+                        total scanned rows. Not available for complex
+                        non-groupable field type RECORD and fields with
+                        REPEATABLE mode.
                     top_n_values (MutableSequence[google.cloud.dataplex_v1.types.DataProfileResult.Profile.Field.ProfileInfo.TopNValue]):
-                        The array of top N values of the field in the
-                        sampled data. Currently N is set as 10 or equal
-                        to distinct values in the field, whichever is
-                        smaller. This will be optional for complex
-                        non-groupable data-types such as JSON, ARRAY,
-                        JSON, STRUCT.
+                        The list of top N non-null values and number
+                        of times they occur in the scanned data. N is 10
+                        or equal to the number of distinct values in the
+                        field, whichever is smaller. Not available for
+                        complex non-groupable field type RECORD and
+                        fields with REPEATABLE mode.
                     string_profile (google.cloud.dataplex_v1.types.DataProfileResult.Profile.Field.ProfileInfo.StringFieldInfo):
-                        The corresponding string field profile.
+                        String type field information.
 
                         This field is a member of `oneof`_ ``field_info``.
                     integer_profile (google.cloud.dataplex_v1.types.DataProfileResult.Profile.Field.ProfileInfo.IntegerFieldInfo):
-                        The corresponding integer field profile.
+                        Integer type field information.
 
                         This field is a member of `oneof`_ ``field_info``.
                     double_profile (google.cloud.dataplex_v1.types.DataProfileResult.Profile.Field.ProfileInfo.DoubleFieldInfo):
-                        The corresponding double field profile.
+                        Double type field information.
 
                         This field is a member of `oneof`_ ``field_info``.
                 """
 
                 class StringFieldInfo(proto.Message):
-                    r"""StringFieldInfo defines output info for any string type
-                    field.
+                    r"""The profile information for a string type field.
 
                     Attributes:
                         min_length (int):
-                            The minimum length of the string field in the
-                            sampled data. Optional if zero non-null rows.
+                            Minimum length of non-null values in the
+                            scanned data.
                         max_length (int):
-                            The maximum length of a string field in the
-                            sampled data. Optional if zero non-null rows.
+                            Maximum length of non-null values in the
+                            scanned data.
                         average_length (float):
-                            The average length of a string field in the
-                            sampled data. Optional if zero non-null rows.
+                            Average length of non-null values in the
+                            scanned data.
                     """
 
                     min_length: int = proto.Field(
@@ -163,23 +150,20 @@ class DataProfileResult(proto.Message):
                     )
 
                 class IntegerFieldInfo(proto.Message):
-                    r"""IntegerFieldInfo defines output for any integer type field.
+                    r"""The profile information for an integer type field.
 
                     Attributes:
                         average (float):
-                            The average of non-null values of integer
-                            field in the sampled data. Return NaN, if the
-                            field has a NaN. Optional if zero non-null rows.
+                            Average of non-null values in the scanned
+                            data. NaN, if the field has a NaN.
                         standard_deviation (float):
-                            The standard deviation of non-null of integer
-                            field in the sampled data. Return NaN, if the
-                            field has a NaN. Optional if zero non-null rows.
+                            Standard deviation of non-null values in the
+                            scanned data. NaN, if the field has a NaN.
                         min_ (int):
-                            The minimum value of an integer field in the
-                            sampled data. Return NaN, if the field has a
-                            NaN. Optional if zero non-null rows.
+                            Minimum of non-null values in the scanned
+                            data. NaN, if the field has a NaN.
                         quartiles (MutableSequence[int]):
-                            A quartile divide the number of data points
+                            A quartile divides the number of data points
                             into four parts, or quarters, of more-or-less
                             equal size. Three main quartiles used are: The
                             first quartile (Q1) splits off the lowest 25% of
@@ -191,13 +175,13 @@ class DataProfileResult(proto.Message):
                             quartile (Q3) splits off the highest 25% of data
                             from the lowest 75%. It is known as the upper or
                             75th empirical quartile, as 75% of the data lies
-                            below this point. So, here the quartiles is
-                            provided as an ordered list of quartile values,
-                            occurring in order Q1, median, Q3.
+                            below this point. Here, the quartiles is
+                            provided as an ordered list of quartile values
+                            for the scanned data, occurring in order Q1,
+                            median, Q3.
                         max_ (int):
-                            The maximum value of an integer field in the
-                            sampled data. Return NaN, if the field has a
-                            NaN. Optional if zero non-null rows.
+                            Maximum of non-null values in the scanned
+                            data. NaN, if the field has a NaN.
                     """
 
                     average: float = proto.Field(
@@ -222,23 +206,20 @@ class DataProfileResult(proto.Message):
                     )
 
                 class DoubleFieldInfo(proto.Message):
-                    r"""DoubleFieldInfo defines output for any double type field.
+                    r"""The profile information for a double type field.
 
                     Attributes:
                         average (float):
-                            The average of non-null values of double
-                            field in the sampled data. Return NaN, if the
-                            field has a NaN. Optional if zero non-null rows.
+                            Average of non-null values in the scanned
+                            data. NaN, if the field has a NaN.
                         standard_deviation (float):
-                            The standard deviation of non-null of double
-                            field in the sampled data. Return NaN, if the
-                            field has a NaN. Optional if zero non-null rows.
+                            Standard deviation of non-null values in the
+                            scanned data. NaN, if the field has a NaN.
                         min_ (float):
-                            The minimum value of a double field in the
-                            sampled data. Return NaN, if the field has a
-                            NaN. Optional if zero non-null rows.
+                            Minimum of non-null values in the scanned
+                            data. NaN, if the field has a NaN.
                         quartiles (MutableSequence[float]):
-                            A quartile divide the numebr of data points
+                            A quartile divides the number of data points
                             into four parts, or quarters, of more-or-less
                             equal size. Three main quartiles used are: The
                             first quartile (Q1) splits off the lowest 25% of
@@ -250,13 +231,13 @@ class DataProfileResult(proto.Message):
                             quartile (Q3) splits off the highest 25% of data
                             from the lowest 75%. It is known as the upper or
                             75th empirical quartile, as 75% of the data lies
-                            below this point. So, here the quartiles is
-                            provided as an ordered list of quartile values,
-                            occurring in order Q1, median, Q3.
+                            below this point. Here, the quartiles is
+                            provided as an ordered list of quartile values
+                            for the scanned data, occurring in order Q1,
+                            median, Q3.
                         max_ (float):
-                            The maximum value of a double field in the
-                            sampled data. Return NaN, if the field has a
-                            NaN. Optional if zero non-null rows.
+                            Maximum of non-null values in the scanned
+                            data. NaN, if the field has a NaN.
                     """
 
                     average: float = proto.Field(
@@ -281,16 +262,14 @@ class DataProfileResult(proto.Message):
                     )
 
                 class TopNValue(proto.Message):
-                    r"""The TopNValue defines the structure of output of top N values
-                    of a field.
+                    r"""Top N non-null values in the scanned data.
 
                     Attributes:
                         value (str):
-                            The value is the string value of the actual
-                            value from the field.
+                            String value of a top N non-null value.
                         count (int):
-                            The frequency count of the corresponding
-                            value in the field.
+                            Count of the corresponding value in the
+                            scanned data.
                     """
 
                     value: str = proto.Field(

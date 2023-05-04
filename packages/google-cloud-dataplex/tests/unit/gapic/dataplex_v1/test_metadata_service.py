@@ -732,6 +732,7 @@ def test_create_entity(request_type, transport: str = "grpc"):
             data_path_pattern="data_path_pattern_value",
             catalog_entry="catalog_entry_value",
             system=metadata_.StorageSystem.CLOUD_STORAGE,
+            uid="uid_value",
         )
         response = client.create_entity(request)
 
@@ -753,6 +754,7 @@ def test_create_entity(request_type, transport: str = "grpc"):
     assert response.data_path_pattern == "data_path_pattern_value"
     assert response.catalog_entry == "catalog_entry_value"
     assert response.system == metadata_.StorageSystem.CLOUD_STORAGE
+    assert response.uid == "uid_value"
 
 
 def test_create_entity_empty_call():
@@ -800,6 +802,7 @@ async def test_create_entity_async(
                 data_path_pattern="data_path_pattern_value",
                 catalog_entry="catalog_entry_value",
                 system=metadata_.StorageSystem.CLOUD_STORAGE,
+                uid="uid_value",
             )
         )
         response = await client.create_entity(request)
@@ -822,6 +825,7 @@ async def test_create_entity_async(
     assert response.data_path_pattern == "data_path_pattern_value"
     assert response.catalog_entry == "catalog_entry_value"
     assert response.system == metadata_.StorageSystem.CLOUD_STORAGE
+    assert response.uid == "uid_value"
 
 
 @pytest.mark.asyncio
@@ -1010,6 +1014,7 @@ def test_update_entity(request_type, transport: str = "grpc"):
             data_path_pattern="data_path_pattern_value",
             catalog_entry="catalog_entry_value",
             system=metadata_.StorageSystem.CLOUD_STORAGE,
+            uid="uid_value",
         )
         response = client.update_entity(request)
 
@@ -1031,6 +1036,7 @@ def test_update_entity(request_type, transport: str = "grpc"):
     assert response.data_path_pattern == "data_path_pattern_value"
     assert response.catalog_entry == "catalog_entry_value"
     assert response.system == metadata_.StorageSystem.CLOUD_STORAGE
+    assert response.uid == "uid_value"
 
 
 def test_update_entity_empty_call():
@@ -1078,6 +1084,7 @@ async def test_update_entity_async(
                 data_path_pattern="data_path_pattern_value",
                 catalog_entry="catalog_entry_value",
                 system=metadata_.StorageSystem.CLOUD_STORAGE,
+                uid="uid_value",
             )
         )
         response = await client.update_entity(request)
@@ -1100,6 +1107,7 @@ async def test_update_entity_async(
     assert response.data_path_pattern == "data_path_pattern_value"
     assert response.catalog_entry == "catalog_entry_value"
     assert response.system == metadata_.StorageSystem.CLOUD_STORAGE
+    assert response.uid == "uid_value"
 
 
 @pytest.mark.asyncio
@@ -1418,6 +1426,7 @@ def test_get_entity(request_type, transport: str = "grpc"):
             data_path_pattern="data_path_pattern_value",
             catalog_entry="catalog_entry_value",
             system=metadata_.StorageSystem.CLOUD_STORAGE,
+            uid="uid_value",
         )
         response = client.get_entity(request)
 
@@ -1439,6 +1448,7 @@ def test_get_entity(request_type, transport: str = "grpc"):
     assert response.data_path_pattern == "data_path_pattern_value"
     assert response.catalog_entry == "catalog_entry_value"
     assert response.system == metadata_.StorageSystem.CLOUD_STORAGE
+    assert response.uid == "uid_value"
 
 
 def test_get_entity_empty_call():
@@ -1486,6 +1496,7 @@ async def test_get_entity_async(
                 data_path_pattern="data_path_pattern_value",
                 catalog_entry="catalog_entry_value",
                 system=metadata_.StorageSystem.CLOUD_STORAGE,
+                uid="uid_value",
             )
         )
         response = await client.get_entity(request)
@@ -1508,6 +1519,7 @@ async def test_get_entity_async(
     assert response.data_path_pattern == "data_path_pattern_value"
     assert response.catalog_entry == "catalog_entry_value"
     assert response.system == metadata_.StorageSystem.CLOUD_STORAGE
+    assert response.uid == "uid_value"
 
 
 @pytest.mark.asyncio

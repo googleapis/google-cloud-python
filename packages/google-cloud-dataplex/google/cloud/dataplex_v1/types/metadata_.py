@@ -39,6 +39,7 @@ __protobuf__ = proto.module(
         "Partition",
         "Schema",
         "StorageFormat",
+        "StorageAccess",
     },
 )
 
@@ -472,8 +473,8 @@ class Entity(proto.Message):
             name. Specifying a new ID in an update entity
             request will override the existing value.
             The ID must contain only letters (a-z, A-Z),
-            numbers (0-9), and underscores. Must begin with
-            a letter and consist of 256 or fewer characters.
+            numbers (0-9), and underscores, and consist of
+            256 or fewer characters.
         etag (str):
             Optional. The etag associated with the entity, which can be
             retrieved with a [GetEntity][] request. Required for update
@@ -509,6 +510,14 @@ class Entity(proto.Message):
         compatibility (google.cloud.dataplex_v1.types.Entity.CompatibilityStatus):
             Output only. Metadata stores that the entity
             is compatible with.
+        access (google.cloud.dataplex_v1.types.StorageAccess):
+            Output only. Identifies the access mechanism
+            to the entity. Not user settable.
+        uid (str):
+            Output only. System generated unique ID for
+            the Entity. This ID will be different if the
+            Entity is deleted and re-created with the same
+            name.
         schema (google.cloud.dataplex_v1.types.Schema):
             Required. The description of the data structure and layout.
             The schema is not included in list responses. It is only
@@ -643,6 +652,15 @@ class Entity(proto.Message):
         proto.MESSAGE,
         number=19,
         message=CompatibilityStatus,
+    )
+    access: "StorageAccess" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message="StorageAccess",
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=22,
     )
     schema: "Schema" = proto.Field(
         proto.MESSAGE,
@@ -1126,6 +1144,41 @@ class StorageFormat(proto.Message):
         number=12,
         oneof="options",
         message=IcebergOptions,
+    )
+
+
+class StorageAccess(proto.Message):
+    r"""Describes the access mechanism of the data within its storage
+    location.
+
+    Attributes:
+        read (google.cloud.dataplex_v1.types.StorageAccess.AccessMode):
+            Output only. Describes the read access
+            mechanism of the data. Not user settable.
+    """
+
+    class AccessMode(proto.Enum):
+        r"""Access Mode determines how data stored within the Entity is
+        read.
+
+        Values:
+            ACCESS_MODE_UNSPECIFIED (0):
+                Access mode unspecified.
+            DIRECT (1):
+                Default. Data is accessed directly using
+                storage APIs.
+            MANAGED (2):
+                Data is accessed through a managed interface
+                using BigQuery APIs.
+        """
+        ACCESS_MODE_UNSPECIFIED = 0
+        DIRECT = 1
+        MANAGED = 2
+
+    read: AccessMode = proto.Field(
+        proto.ENUM,
+        number=21,
+        enum=AccessMode,
     )
 
 
