@@ -52,7 +52,6 @@ __protobuf__ = proto.module(
         "GetQueuedResourceRequest",
         "CreateQueuedResourceRequest",
         "DeleteQueuedResourceRequest",
-        "ResetQueuedResourceRequest",
         "ServiceIdentity",
         "GenerateServiceIdentityRequest",
         "GenerateServiceIdentityResponse",
@@ -1327,21 +1326,6 @@ class DeleteQueuedResourceRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=2,
-    )
-
-
-class ResetQueuedResourceRequest(proto.Message):
-    r"""Request for
-    [ResetQueuedResource][google.cloud.tpu.v2alpha1.Tpu.ResetQueuedResource].
-
-    Attributes:
-        name (str):
-            Required. The name of the queued resource.
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
     )
 
 
