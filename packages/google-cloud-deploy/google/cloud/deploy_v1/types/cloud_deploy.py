@@ -65,6 +65,7 @@ __protobuf__ = proto.module(
         "Release",
         "BuildArtifact",
         "TargetArtifact",
+        "DeployArtifact",
         "CloudRunRenderMetadata",
         "RenderMetadata",
         "ListReleasesRequest",
@@ -2162,6 +2163,10 @@ class TargetArtifact(proto.Message):
             manifest_path (str):
                 Output only. File path of the rendered
                 manifest relative to the URI.
+            job_manifests_path (str):
+                Output only. File path of the directory of
+                rendered job manifests relative to the URI. This
+                is only set if it is applicable.
         """
 
         skaffold_config_path: str = proto.Field(
@@ -2171,6 +2176,10 @@ class TargetArtifact(proto.Message):
         manifest_path: str = proto.Field(
             proto.STRING,
             number=3,
+        )
+        job_manifests_path: str = proto.Field(
+            proto.STRING,
+            number=4,
         )
 
     artifact_uri: str = proto.Field(
@@ -2191,6 +2200,30 @@ class TargetArtifact(proto.Message):
         proto.MESSAGE,
         number=5,
         message=PhaseArtifact,
+    )
+
+
+class DeployArtifact(proto.Message):
+    r"""The artifacts produced by a deploy operation.
+
+    Attributes:
+        artifact_uri (str):
+            Output only. URI of a directory containing
+            the artifacts. All paths are relative to this
+            location.
+        manifest_paths (MutableSequence[str]):
+            Output only. File paths of the manifests
+            applied during the deploy operation relative to
+            the URI.
+    """
+
+    artifact_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    manifest_paths: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -2818,7 +2851,7 @@ class DeploymentJobs(proto.Message):
     Attributes:
         deploy_job (google.cloud.deploy_v1.types.Job):
             Output only. The deploy Job. This is the
-            first job run in the phase.
+            deploy job in the phase.
         verify_job (google.cloud.deploy_v1.types.Job):
             Output only. The verify Job. Runs after a
             deploy if the deploy succeeds.
@@ -3546,6 +3579,9 @@ class DeployJobRun(proto.Message):
         metadata (google.cloud.deploy_v1.types.DeployJobRunMetadata):
             Output only. Metadata containing information
             about the deploy job run.
+        artifact (google.cloud.deploy_v1.types.DeployArtifact):
+            Output only. The artifact of a deploy job
+            run, if available.
     """
 
     class FailureCause(proto.Enum):
@@ -3597,6 +3633,11 @@ class DeployJobRun(proto.Message):
         proto.MESSAGE,
         number=4,
         message="DeployJobRunMetadata",
+    )
+    artifact: "DeployArtifact" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="DeployArtifact",
     )
 
 
