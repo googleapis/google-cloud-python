@@ -98,9 +98,9 @@ class UpdateServiceRequest(proto.Message):
             resources.
         allow_missing (bool):
             If set to true, and if the Service does not
-            exist, it will create a new one. Caller must
-            have both create and update permissions for this
-            call if this is set to true.
+            exist, it will create a new one. The caller must
+            have 'run.services.create' permissions if this
+            is set to true and the Service does not exist.
     """
 
     service: "Service" = proto.Field(
@@ -265,13 +265,13 @@ class Service(proto.Message):
             its JSON representation will be a ``string`` instead of an
             ``integer``.
         labels (MutableMapping[str, str]):
-            Map of string keys and values that can be used to organize
-            and categorize objects. User-provided labels are shared with
+            Unstructured key value map that can be used to organize and
+            categorize objects. User-provided labels are shared with
             Google's billing system, so they can be used to filter, or
             break down billing charges by team, component, environment,
             state, etc. For more information, visit
             https://cloud.google.com/resource-manager/docs/creating-managing-labels
-            or https://cloud.google.com/run/docs/configuring/labels
+            or https://cloud.google.com/run/docs/configuring/labels.
 
             .. raw:: html
 
@@ -288,14 +288,13 @@ class Service(proto.Message):
 
                 <p>Cloud Run API v2 does not support annotations with `run.googleapis.com`,
                 `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
-                namespaces, and they will be rejected. All system annotations in v1 now
-                have a corresponding field in v2 Service.
+                namespaces, and they will be rejected in new resources. All system
+                annotations in v1 now have a corresponding field in v2 Service.
 
             .. raw:: html
 
                 <p>This field follows Kubernetes
-                annotations' namespacing, limits, and rules. More info:
-                https://kubernetes.io/docs/user-guide/annotations
+                annotations' namespacing, limits, and rules.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -324,7 +323,16 @@ class Service(proto.Message):
             The launch stage as defined by `Google Cloud Platform Launch
             Stages <https://cloud.google.com/terms/launch-stages>`__.
             Cloud Run supports ``ALPHA``, ``BETA``, and ``GA``. If no
-            value is specified, GA is assumed.
+            value is specified, GA is assumed. Set the launch stage to a
+            preview stage on input to allow use of preview features in
+            that stage. On read (or output), describes whether the
+            resource uses preview features.
+
+            .. raw:: html
+
+                <p>
+                For example, if ALPHA is provided as input, but only BETA and GA-level
+                features are used, this field will be BETA on output.
         binary_authorization (google.cloud.run_v2.types.BinaryAuthorization):
             Settings for the Binary Authorization
             feature.
@@ -371,6 +379,8 @@ class Service(proto.Message):
         uri (str):
             Output only. The main URI in which this
             Service is serving traffic.
+        satisfies_pzs (bool):
+            Output only. Reserved for future use.
         reconciling (bool):
             Output only. Returns true if the Service is currently being
             acted upon by the system to bring it into the desired state.
@@ -524,6 +534,10 @@ class Service(proto.Message):
     uri: str = proto.Field(
         proto.STRING,
         number=36,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=38,
     )
     reconciling: bool = proto.Field(
         proto.BOOL,

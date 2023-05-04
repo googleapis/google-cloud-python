@@ -278,12 +278,13 @@ class Job(proto.Message):
             increases every time the user modifies the
             desired state.
         labels (MutableMapping[str, str]):
-            KRM-style labels for the resource. User-provided labels are
-            shared with Google's billing system, so they can be used to
-            filter, or break down billing charges by team, component,
-            environment, state, etc. For more information, visit
+            Unstructured key value map that can be used to organize and
+            categorize objects. User-provided labels are shared with
+            Google's billing system, so they can be used to filter, or
+            break down billing charges by team, component, environment,
+            state, etc. For more information, visit
             https://cloud.google.com/resource-manager/docs/creating-managing-labels
-            or https://cloud.google.com/run/docs/configuring/labels
+            or https://cloud.google.com/run/docs/configuring/labels.
 
             .. raw:: html
 
@@ -292,22 +293,21 @@ class Job(proto.Message):
                 namespaces, and they will be rejected. All system labels in v1 now have a
                 corresponding field in v2 Job.
         annotations (MutableMapping[str, str]):
-            KRM-style annotations for the resource. Unstructured key
-            value map that may be set by external tools to store and
-            arbitrary metadata. They are not queryable and should be
-            preserved when modifying objects.
+            Unstructured key value map that may be set by external tools
+            to store and arbitrary metadata. They are not queryable and
+            should be preserved when modifying objects.
 
             .. raw:: html
 
                 <p>Cloud Run API v2 does not support annotations with `run.googleapis.com`,
                 `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
-                namespaces, and they will be rejected. All system annotations in v1 now
-                have a corresponding field in v2 Job.
+                namespaces, and they will be rejected on new resources. All system
+                annotations in v1 now have a corresponding field in v2 Job.
 
             .. raw:: html
 
                 <p>This field follows Kubernetes annotations' namespacing, limits, and
-                rules. More info: https://kubernetes.io/docs/user-guide/annotations
+                rules.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -332,7 +332,16 @@ class Job(proto.Message):
             The launch stage as defined by `Google Cloud Platform Launch
             Stages <https://cloud.google.com/terms/launch-stages>`__.
             Cloud Run supports ``ALPHA``, ``BETA``, and ``GA``. If no
-            value is specified, GA is assumed.
+            value is specified, GA is assumed. Set the launch stage to a
+            preview stage on input to allow use of preview features in
+            that stage. On read (or output), describes whether the
+            resource uses preview features.
+
+            .. raw:: html
+
+                <p>
+                For example, if ALPHA is provided as input, but only BETA and GA-level
+                features are used, this field will be BETA on output.
         binary_authorization (google.cloud.run_v2.types.BinaryAuthorization):
             Settings for the Binary Authorization
             feature.
@@ -386,6 +395,8 @@ class Job(proto.Message):
             last succeeded execution or empty for newly created Job.
             Additional information on the failure can be found in
             ``terminal_condition`` and ``conditions``.
+        satisfies_pzs (bool):
+            Output only. Reserved for future use.
         etag (str):
             Output only. A system-generated fingerprint
             for this version of the resource. May be used to
@@ -491,6 +502,10 @@ class Job(proto.Message):
     reconciling: bool = proto.Field(
         proto.BOOL,
         number=23,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=25,
     )
     etag: str = proto.Field(
         proto.STRING,

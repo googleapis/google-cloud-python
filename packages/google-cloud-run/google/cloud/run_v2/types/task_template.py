@@ -46,7 +46,7 @@ class TaskTemplate(proto.Message):
             containers.
         max_retries (int):
             Number of retries allowed per Task, before
-            marking this Task failed.
+            marking this Task failed. Defaults to 3.
 
             This field is a member of `oneof`_ ``retries``.
         timeout (google.protobuf.duration_pb2.Duration):
@@ -54,7 +54,8 @@ class TaskTemplate(proto.Message):
             active before the system will actively try to
             mark it failed and kill associated containers.
             This applies per attempt of a task, meaning each
-            retry can run for the full timeout.
+            retry can run for the full timeout. Defaults to
+            600 seconds.
         service_account (str):
             Email address of the IAM service account
             associated with the Task of a Job. The service

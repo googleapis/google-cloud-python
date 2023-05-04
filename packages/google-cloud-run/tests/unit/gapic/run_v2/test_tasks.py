@@ -697,6 +697,7 @@ def test_get_task(request_type, transport: str = "grpc"):
             retried=751,
             encryption_key="encryption_key_value",
             log_uri="log_uri_value",
+            satisfies_pzs=True,
             etag="etag_value",
         )
         response = client.get_task(request)
@@ -725,6 +726,7 @@ def test_get_task(request_type, transport: str = "grpc"):
     assert response.retried == 751
     assert response.encryption_key == "encryption_key_value"
     assert response.log_uri == "log_uri_value"
+    assert response.satisfies_pzs is True
     assert response.etag == "etag_value"
 
 
@@ -776,6 +778,7 @@ async def test_get_task_async(
                 retried=751,
                 encryption_key="encryption_key_value",
                 log_uri="log_uri_value",
+                satisfies_pzs=True,
                 etag="etag_value",
             )
         )
@@ -805,6 +808,7 @@ async def test_get_task_async(
     assert response.retried == 751
     assert response.encryption_key == "encryption_key_value"
     assert response.log_uri == "log_uri_value"
+    assert response.satisfies_pzs is True
     assert response.etag == "etag_value"
 
 
@@ -1409,6 +1413,7 @@ def test_get_task_rest(request_type):
             retried=751,
             encryption_key="encryption_key_value",
             log_uri="log_uri_value",
+            satisfies_pzs=True,
             etag="etag_value",
         )
 
@@ -1441,6 +1446,7 @@ def test_get_task_rest(request_type):
     assert response.retried == 751
     assert response.encryption_key == "encryption_key_value"
     assert response.log_uri == "log_uri_value"
+    assert response.satisfies_pzs is True
     assert response.etag == "etag_value"
 
 

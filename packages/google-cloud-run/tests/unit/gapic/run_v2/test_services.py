@@ -935,6 +935,7 @@ def test_get_service(request_type, transport: str = "grpc"):
             latest_ready_revision="latest_ready_revision_value",
             latest_created_revision="latest_created_revision_value",
             uri="uri_value",
+            satisfies_pzs=True,
             reconciling=True,
             etag="etag_value",
         )
@@ -961,6 +962,7 @@ def test_get_service(request_type, transport: str = "grpc"):
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
     assert response.uri == "uri_value"
+    assert response.satisfies_pzs is True
     assert response.reconciling is True
     assert response.etag == "etag_value"
 
@@ -1013,6 +1015,7 @@ async def test_get_service_async(
                 latest_ready_revision="latest_ready_revision_value",
                 latest_created_revision="latest_created_revision_value",
                 uri="uri_value",
+                satisfies_pzs=True,
                 reconciling=True,
                 etag="etag_value",
             )
@@ -1040,6 +1043,7 @@ async def test_get_service_async(
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
     assert response.uri == "uri_value"
+    assert response.satisfies_pzs is True
     assert response.reconciling is True
     assert response.etag == "etag_value"
 
@@ -2500,7 +2504,11 @@ def test_create_service_rest(request_type):
                             },
                         }
                     ],
-                    "resources": {"limits": {}, "cpu_idle": True},
+                    "resources": {
+                        "limits": {},
+                        "cpu_idle": True,
+                        "startup_cpu_boost": True,
+                    },
                     "ports": [{"name": "name_value", "container_port": 1511}],
                     "volume_mounts": [
                         {"name": "name_value", "mount_path": "mount_path_value"}
@@ -2516,6 +2524,7 @@ def test_create_service_rest(request_type):
                             "http_headers": [
                                 {"name": "name_value", "value": "value_value"}
                             ],
+                            "port": 453,
                         },
                         "tcp_socket": {"port": 453},
                         "grpc": {"port": 453, "service": "service_value"},
@@ -2545,6 +2554,7 @@ def test_create_service_rest(request_type):
             "execution_environment": 1,
             "encryption_key": "encryption_key_value",
             "max_instance_request_concurrency": 3436,
+            "session_affinity": True,
         },
         "traffic": [
             {
@@ -2578,6 +2588,7 @@ def test_create_service_rest(request_type):
             }
         ],
         "uri": "uri_value",
+        "satisfies_pzs": True,
         "reconciling": True,
         "etag": "etag_value",
     }
@@ -2834,7 +2845,11 @@ def test_create_service_rest_bad_request(
                             },
                         }
                     ],
-                    "resources": {"limits": {}, "cpu_idle": True},
+                    "resources": {
+                        "limits": {},
+                        "cpu_idle": True,
+                        "startup_cpu_boost": True,
+                    },
                     "ports": [{"name": "name_value", "container_port": 1511}],
                     "volume_mounts": [
                         {"name": "name_value", "mount_path": "mount_path_value"}
@@ -2850,6 +2865,7 @@ def test_create_service_rest_bad_request(
                             "http_headers": [
                                 {"name": "name_value", "value": "value_value"}
                             ],
+                            "port": 453,
                         },
                         "tcp_socket": {"port": 453},
                         "grpc": {"port": 453, "service": "service_value"},
@@ -2879,6 +2895,7 @@ def test_create_service_rest_bad_request(
             "execution_environment": 1,
             "encryption_key": "encryption_key_value",
             "max_instance_request_concurrency": 3436,
+            "session_affinity": True,
         },
         "traffic": [
             {
@@ -2912,6 +2929,7 @@ def test_create_service_rest_bad_request(
             }
         ],
         "uri": "uri_value",
+        "satisfies_pzs": True,
         "reconciling": True,
         "etag": "etag_value",
     }
@@ -3028,6 +3046,7 @@ def test_get_service_rest(request_type):
             latest_ready_revision="latest_ready_revision_value",
             latest_created_revision="latest_created_revision_value",
             uri="uri_value",
+            satisfies_pzs=True,
             reconciling=True,
             etag="etag_value",
         )
@@ -3058,6 +3077,7 @@ def test_get_service_rest(request_type):
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
     assert response.uri == "uri_value"
+    assert response.satisfies_pzs is True
     assert response.reconciling is True
     assert response.etag == "etag_value"
 
@@ -3679,7 +3699,11 @@ def test_update_service_rest(request_type):
                             },
                         }
                     ],
-                    "resources": {"limits": {}, "cpu_idle": True},
+                    "resources": {
+                        "limits": {},
+                        "cpu_idle": True,
+                        "startup_cpu_boost": True,
+                    },
                     "ports": [{"name": "name_value", "container_port": 1511}],
                     "volume_mounts": [
                         {"name": "name_value", "mount_path": "mount_path_value"}
@@ -3695,6 +3719,7 @@ def test_update_service_rest(request_type):
                             "http_headers": [
                                 {"name": "name_value", "value": "value_value"}
                             ],
+                            "port": 453,
                         },
                         "tcp_socket": {"port": 453},
                         "grpc": {"port": 453, "service": "service_value"},
@@ -3724,6 +3749,7 @@ def test_update_service_rest(request_type):
             "execution_environment": 1,
             "encryption_key": "encryption_key_value",
             "max_instance_request_concurrency": 3436,
+            "session_affinity": True,
         },
         "traffic": [
             {
@@ -3757,6 +3783,7 @@ def test_update_service_rest(request_type):
             }
         ],
         "uri": "uri_value",
+        "satisfies_pzs": True,
         "reconciling": True,
         "etag": "etag_value",
     }
@@ -3991,7 +4018,11 @@ def test_update_service_rest_bad_request(
                             },
                         }
                     ],
-                    "resources": {"limits": {}, "cpu_idle": True},
+                    "resources": {
+                        "limits": {},
+                        "cpu_idle": True,
+                        "startup_cpu_boost": True,
+                    },
                     "ports": [{"name": "name_value", "container_port": 1511}],
                     "volume_mounts": [
                         {"name": "name_value", "mount_path": "mount_path_value"}
@@ -4007,6 +4038,7 @@ def test_update_service_rest_bad_request(
                             "http_headers": [
                                 {"name": "name_value", "value": "value_value"}
                             ],
+                            "port": 453,
                         },
                         "tcp_socket": {"port": 453},
                         "grpc": {"port": 453, "service": "service_value"},
@@ -4036,6 +4068,7 @@ def test_update_service_rest_bad_request(
             "execution_environment": 1,
             "encryption_key": "encryption_key_value",
             "max_instance_request_concurrency": 3436,
+            "session_affinity": True,
         },
         "traffic": [
             {
@@ -4069,6 +4102,7 @@ def test_update_service_rest_bad_request(
             }
         ],
         "uri": "uri_value",
+        "satisfies_pzs": True,
         "reconciling": True,
         "etag": "etag_value",
     }

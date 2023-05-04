@@ -728,6 +728,7 @@ def test_get_execution(request_type, transport: str = "grpc"):
             cancelled_count=1571,
             retried_count=1399,
             log_uri="log_uri_value",
+            satisfies_pzs=True,
             etag="etag_value",
         )
         response = client.get_execution(request)
@@ -754,6 +755,7 @@ def test_get_execution(request_type, transport: str = "grpc"):
     assert response.cancelled_count == 1571
     assert response.retried_count == 1399
     assert response.log_uri == "log_uri_value"
+    assert response.satisfies_pzs is True
     assert response.etag == "etag_value"
 
 
@@ -806,6 +808,7 @@ async def test_get_execution_async(
                 cancelled_count=1571,
                 retried_count=1399,
                 log_uri="log_uri_value",
+                satisfies_pzs=True,
                 etag="etag_value",
             )
         )
@@ -833,6 +836,7 @@ async def test_get_execution_async(
     assert response.cancelled_count == 1571
     assert response.retried_count == 1399
     assert response.log_uri == "log_uri_value"
+    assert response.satisfies_pzs is True
     assert response.etag == "etag_value"
 
 
@@ -1664,6 +1668,7 @@ def test_get_execution_rest(request_type):
             cancelled_count=1571,
             retried_count=1399,
             log_uri="log_uri_value",
+            satisfies_pzs=True,
             etag="etag_value",
         )
 
@@ -1694,6 +1699,7 @@ def test_get_execution_rest(request_type):
     assert response.cancelled_count == 1571
     assert response.retried_count == 1399
     assert response.log_uri == "log_uri_value"
+    assert response.satisfies_pzs is True
     assert response.etag == "etag_value"
 
 

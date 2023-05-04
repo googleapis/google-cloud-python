@@ -723,6 +723,8 @@ def test_get_revision(request_type, transport: str = "grpc"):
             reconciling=True,
             observed_generation=2021,
             log_uri="log_uri_value",
+            satisfies_pzs=True,
+            session_affinity=True,
             etag="etag_value",
         )
         response = client.get_revision(request)
@@ -753,6 +755,8 @@ def test_get_revision(request_type, transport: str = "grpc"):
     assert response.reconciling is True
     assert response.observed_generation == 2021
     assert response.log_uri == "log_uri_value"
+    assert response.satisfies_pzs is True
+    assert response.session_affinity is True
     assert response.etag == "etag_value"
 
 
@@ -803,6 +807,8 @@ async def test_get_revision_async(
                 reconciling=True,
                 observed_generation=2021,
                 log_uri="log_uri_value",
+                satisfies_pzs=True,
+                session_affinity=True,
                 etag="etag_value",
             )
         )
@@ -834,6 +840,8 @@ async def test_get_revision_async(
     assert response.reconciling is True
     assert response.observed_generation == 2021
     assert response.log_uri == "log_uri_value"
+    assert response.satisfies_pzs is True
+    assert response.session_affinity is True
     assert response.etag == "etag_value"
 
 
@@ -1557,6 +1565,8 @@ def test_get_revision_rest(request_type):
             reconciling=True,
             observed_generation=2021,
             log_uri="log_uri_value",
+            satisfies_pzs=True,
+            session_affinity=True,
             etag="etag_value",
         )
 
@@ -1591,6 +1601,8 @@ def test_get_revision_rest(request_type):
     assert response.reconciling is True
     assert response.observed_generation == 2021
     assert response.log_uri == "log_uri_value"
+    assert response.satisfies_pzs is True
+    assert response.session_affinity is True
     assert response.etag == "etag_value"
 
 

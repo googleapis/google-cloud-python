@@ -134,7 +134,8 @@ class Task(proto.Message):
             increases every time the user modifies the
             desired state.
         labels (MutableMapping[str, str]):
-            KRM-style labels for the resource.
+            Output only. Unstructured key value map that
+            can be used to organize and categorize objects.
             User-provided labels are shared with Google's
             billing system, so they can be used to filter,
             or break down billing charges by team,
@@ -144,7 +145,10 @@ class Task(proto.Message):
             or
             https://cloud.google.com/run/docs/configuring/labels
         annotations (MutableMapping[str, str]):
-            KRM-style annotations for the resource.
+            Output only. Unstructured key value map that
+            may be set by external tools to store and
+            arbitrary metadata. They are not queryable and
+            should be preserved when modifying objects.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Represents time when the task
             was created by the job controller. It is not
@@ -237,6 +241,8 @@ class Task(proto.Message):
         log_uri (str):
             Output only. URI where logs for this
             execution can be found in Cloud Console.
+        satisfies_pzs (bool):
+            Output only. Reserved for future use.
         etag (str):
             Output only. A system-generated fingerprint
             for this version of the resource. May be used to
@@ -369,6 +375,10 @@ class Task(proto.Message):
     log_uri: str = proto.Field(
         proto.STRING,
         number=32,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=33,
     )
     etag: str = proto.Field(
         proto.STRING,

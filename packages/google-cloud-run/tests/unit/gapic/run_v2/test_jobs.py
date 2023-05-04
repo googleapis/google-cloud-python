@@ -939,6 +939,7 @@ def test_get_job(request_type, transport: str = "grpc"):
             observed_generation=2021,
             execution_count=1628,
             reconciling=True,
+            satisfies_pzs=True,
             etag="etag_value",
         )
         response = client.get_job(request)
@@ -961,6 +962,7 @@ def test_get_job(request_type, transport: str = "grpc"):
     assert response.observed_generation == 2021
     assert response.execution_count == 1628
     assert response.reconciling is True
+    assert response.satisfies_pzs is True
     assert response.etag == "etag_value"
 
 
@@ -1009,6 +1011,7 @@ async def test_get_job_async(
                 observed_generation=2021,
                 execution_count=1628,
                 reconciling=True,
+                satisfies_pzs=True,
                 etag="etag_value",
             )
         )
@@ -1032,6 +1035,7 @@ async def test_get_job_async(
     assert response.observed_generation == 2021
     assert response.execution_count == 1628
     assert response.reconciling is True
+    assert response.satisfies_pzs is True
     assert response.etag == "etag_value"
 
 
@@ -2854,7 +2858,11 @@ def test_create_job_rest(request_type):
                                 },
                             }
                         ],
-                        "resources": {"limits": {}, "cpu_idle": True},
+                        "resources": {
+                            "limits": {},
+                            "cpu_idle": True,
+                            "startup_cpu_boost": True,
+                        },
                         "ports": [{"name": "name_value", "container_port": 1511}],
                         "volume_mounts": [
                             {"name": "name_value", "mount_path": "mount_path_value"}
@@ -2870,6 +2878,7 @@ def test_create_job_rest(request_type):
                                 "http_headers": [
                                     {"name": "name_value", "value": "value_value"}
                                 ],
+                                "port": 453,
                             },
                             "tcp_socket": {"port": 453},
                             "grpc": {"port": 453, "service": "service_value"},
@@ -2923,6 +2932,7 @@ def test_create_job_rest(request_type):
             "completion_time": {},
         },
         "reconciling": True,
+        "satisfies_pzs": True,
         "etag": "etag_value",
     }
     request = request_type(**request_init)
@@ -3170,7 +3180,11 @@ def test_create_job_rest_bad_request(
                                 },
                             }
                         ],
-                        "resources": {"limits": {}, "cpu_idle": True},
+                        "resources": {
+                            "limits": {},
+                            "cpu_idle": True,
+                            "startup_cpu_boost": True,
+                        },
                         "ports": [{"name": "name_value", "container_port": 1511}],
                         "volume_mounts": [
                             {"name": "name_value", "mount_path": "mount_path_value"}
@@ -3186,6 +3200,7 @@ def test_create_job_rest_bad_request(
                                 "http_headers": [
                                     {"name": "name_value", "value": "value_value"}
                                 ],
+                                "port": 453,
                             },
                             "tcp_socket": {"port": 453},
                             "grpc": {"port": 453, "service": "service_value"},
@@ -3239,6 +3254,7 @@ def test_create_job_rest_bad_request(
             "completion_time": {},
         },
         "reconciling": True,
+        "satisfies_pzs": True,
         "etag": "etag_value",
     }
     request = request_type(**request_init)
@@ -3351,6 +3367,7 @@ def test_get_job_rest(request_type):
             observed_generation=2021,
             execution_count=1628,
             reconciling=True,
+            satisfies_pzs=True,
             etag="etag_value",
         )
 
@@ -3377,6 +3394,7 @@ def test_get_job_rest(request_type):
     assert response.observed_generation == 2021
     assert response.execution_count == 1628
     assert response.reconciling is True
+    assert response.satisfies_pzs is True
     assert response.etag == "etag_value"
 
 
@@ -3989,7 +4007,11 @@ def test_update_job_rest(request_type):
                                 },
                             }
                         ],
-                        "resources": {"limits": {}, "cpu_idle": True},
+                        "resources": {
+                            "limits": {},
+                            "cpu_idle": True,
+                            "startup_cpu_boost": True,
+                        },
                         "ports": [{"name": "name_value", "container_port": 1511}],
                         "volume_mounts": [
                             {"name": "name_value", "mount_path": "mount_path_value"}
@@ -4005,6 +4027,7 @@ def test_update_job_rest(request_type):
                                 "http_headers": [
                                     {"name": "name_value", "value": "value_value"}
                                 ],
+                                "port": 453,
                             },
                             "tcp_socket": {"port": 453},
                             "grpc": {"port": 453, "service": "service_value"},
@@ -4058,6 +4081,7 @@ def test_update_job_rest(request_type):
             "completion_time": {},
         },
         "reconciling": True,
+        "satisfies_pzs": True,
         "etag": "etag_value",
     }
     request = request_type(**request_init)
@@ -4281,7 +4305,11 @@ def test_update_job_rest_bad_request(
                                 },
                             }
                         ],
-                        "resources": {"limits": {}, "cpu_idle": True},
+                        "resources": {
+                            "limits": {},
+                            "cpu_idle": True,
+                            "startup_cpu_boost": True,
+                        },
                         "ports": [{"name": "name_value", "container_port": 1511}],
                         "volume_mounts": [
                             {"name": "name_value", "mount_path": "mount_path_value"}
@@ -4297,6 +4325,7 @@ def test_update_job_rest_bad_request(
                                 "http_headers": [
                                     {"name": "name_value", "value": "value_value"}
                                 ],
+                                "port": 453,
                             },
                             "tcp_socket": {"port": 453},
                             "grpc": {"port": 453, "service": "service_value"},
@@ -4350,6 +4379,7 @@ def test_update_job_rest_bad_request(
             "completion_time": {},
         },
         "reconciling": True,
+        "satisfies_pzs": True,
         "etag": "etag_value",
     }
     request = request_type(**request_init)

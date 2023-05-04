@@ -244,11 +244,15 @@ class Condition(proto.Message):
                 with a non-zero exit code.
             CANCELLED (3):
                 The execution was cancelled by users.
+            CANCELLING (4):
+                The execution is in the process of being
+                cancelled.
         """
         EXECUTION_REASON_UNDEFINED = 0
         JOB_STATUS_SERVICE_POLLING_ERROR = 1
         NON_ZERO_EXIT_CODE = 2
         CANCELLED = 3
+        CANCELLING = 4
 
     type_: str = proto.Field(
         proto.STRING,

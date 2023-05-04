@@ -56,35 +56,21 @@ class Container(proto.Message):
             Required. Name of the container image in
             Dockerhub, Google Artifact Registry, or Google
             Container Registry. If the host is not provided,
-            Dockerhub is assumed. More info:
-            https://kubernetes.io/docs/concepts/containers/images
+            Dockerhub is assumed.
         command (MutableSequence[str]):
-            Entrypoint array. Not executed within a shell. The docker
-            image's ENTRYPOINT is used if this is not provided. Variable
-            references $(VAR_NAME) are expanded using the container's
-            environment. If a variable cannot be resolved, the reference
-            in the input string will be unchanged. The $(VAR_NAME)
-            syntax can be escaped with a double $$, ie: $$(VAR_NAME).
-            Escaped references will never be expanded, regardless of
-            whether the variable exists or not. More info:
-            https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
+            Entrypoint array. Not executed within a
+            shell. The docker image's ENTRYPOINT is used if
+            this is not provided.
         args (MutableSequence[str]):
-            Arguments to the entrypoint. The docker image's CMD is used
-            if this is not provided. Variable references $(VAR_NAME) are
-            expanded using the container's environment. If a variable
-            cannot be resolved, the reference in the input string will
-            be unchanged. The $(VAR_NAME) syntax can be escaped with a
-            double $$, ie: $$(VAR_NAME). Escaped references will never
-            be expanded, regardless of whether the variable exists or
-            not. More info:
-            https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
+            Arguments to the entrypoint.
+            The docker image's CMD is used if this is not
+            provided.
         env (MutableSequence[google.cloud.run_v2.types.EnvVar]):
             List of environment variables to set in the
             container.
         resources (google.cloud.run_v2.types.ResourceRequirements):
             Compute Resource requirements by this
-            container. More info:
-            https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources
+            container.
         ports (MutableSequence[google.cloud.run_v2.types.ContainerPort]):
             List of ports to expose from the container.
             Only a single port can be specified. The
@@ -106,16 +92,12 @@ class Container(proto.Message):
         liveness_probe (google.cloud.run_v2.types.Probe):
             Periodic probe of container liveness.
             Container will be restarted if the probe fails.
-            More info:
-            https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
         startup_probe (google.cloud.run_v2.types.Probe):
             Startup probe of application within the
             container. All other probes are disabled if a
             startup probe is provided, until it succeeds.
             Container will not be added to service endpoints
             if the probe fails.
-            More info:
-            https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
     """
 
     name: str = proto.Field(
@@ -176,15 +158,24 @@ class ResourceRequirements(proto.Message):
 
     Attributes:
         limits (MutableMapping[str, str]):
-            Only memory and CPU are supported. Note: The
-            only supported values for CPU are '1', '2',
-            '4', and '8'. Setting 4 CPU requires at least
-            2Gi of memory. The values of the map is string
-            form of the 'quantity' k8s type:
-            https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachinery/pkg/api/resource/quantity.go
+            Only ´memory´ and 'cpu' are supported.
+
+            .. raw:: html
+
+                <p>Notes:
+                 * The only supported values for CPU are '1', '2', '4', and '8'. Setting 4
+                CPU requires at least 2Gi of memory. For more information, go to
+                https://cloud.google.com/run/docs/configuring/cpu.
+                  * For supported 'memory' values and syntax, go to
+                 https://cloud.google.com/run/docs/configuring/memory-limits
         cpu_idle (bool):
             Determines whether CPU should be throttled or
             not outside of requests.
+        startup_cpu_boost (bool):
+            Determines whether CPU should be boosted on
+            startup of a new container instance above the
+            requested CPU threshold, this can help reduce
+            cold-start latency.
     """
 
     limits: MutableMapping[str, str] = proto.MapField(
@@ -195,6 +186,10 @@ class ResourceRequirements(proto.Message):
     cpu_idle: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+    startup_cpu_boost: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 
@@ -356,8 +351,7 @@ class Volume(proto.Message):
             Required. Volume's name.
         secret (google.cloud.run_v2.types.SecretVolumeSource):
             Secret represents a secret that should
-            populate this volume. More info:
-            https://kubernetes.io/docs/concepts/storage/volumes#secret
+            populate this volume.
 
             This field is a member of `oneof`_ ``volume_type``.
         cloud_sql_instance (google.cloud.run_v2.types.CloudSqlInstance):
@@ -538,14 +532,11 @@ class Probe(proto.Message):
             started before the probe is initiated.
             Defaults to 0 seconds. Minimum value is 0.
             Maximum value for liveness probe is 3600.
-            Maximum value for startup probe is 240. More
-            info:
-            https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+            Maximum value for startup probe is 240.
         timeout_seconds (int):
             Number of seconds after which the probe times out. Defaults
             to 1 second. Minimum value is 1. Maximum value is 3600. Must
-            be smaller than period_seconds. More info:
-            https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+            be smaller than period_seconds.
         period_seconds (int):
             How often (in seconds) to perform the probe. Default to 10
             seconds. Minimum value is 1. Maximum value for liveness
@@ -621,6 +612,11 @@ class HTTPGetAction(proto.Message):
         http_headers (MutableSequence[google.cloud.run_v2.types.HTTPHeader]):
             Custom headers to set in the request. HTTP
             allows repeated headers.
+        port (int):
+            Port number to access on the container. Must be in the range
+            1 to 65535. If not specified, defaults to the exposed port
+            of the container, which is the value of
+            container.ports[0].containerPort.
     """
 
     path: str = proto.Field(
@@ -631,6 +627,10 @@ class HTTPGetAction(proto.Message):
         proto.MESSAGE,
         number=4,
         message="HTTPHeader",
+    )
+    port: int = proto.Field(
+        proto.INT32,
+        number=5,
     )
 
 
@@ -660,9 +660,10 @@ class TCPSocketAction(proto.Message):
 
     Attributes:
         port (int):
-            Port number to access on the container. Must
-            be in the range 1 to 65535. If not specified,
-            defaults to 8080.
+            Port number to access on the container. Must be in the range
+            1 to 65535. If not specified, defaults to the exposed port
+            of the container, which is the value of
+            container.ports[0].containerPort.
     """
 
     port: int = proto.Field(
@@ -676,9 +677,10 @@ class GRPCAction(proto.Message):
 
     Attributes:
         port (int):
-            Port number of the gRPC service. Number must
-            be in the range 1 to 65535. If not specified,
-            defaults to 8080.
+            Port number of the gRPC service. Number must be in the range
+            1 to 65535. If not specified, defaults to the exposed port
+            of the container, which is the value of
+            container.ports[0].containerPort.
         service (str):
             Service is the name of the service to place
             in the gRPC HealthCheckRequest (see

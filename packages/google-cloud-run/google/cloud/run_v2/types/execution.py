@@ -170,7 +170,8 @@ class Execution(proto.Message):
             increases every time the user modifies the
             desired state.
         labels (MutableMapping[str, str]):
-            KRM-style labels for the resource.
+            Output only. Unstructured key value map that
+            can be used to organize and categorize objects.
             User-provided labels are shared with Google's
             billing system, so they can be used to filter,
             or break down billing charges by team,
@@ -180,7 +181,10 @@ class Execution(proto.Message):
             or
             https://cloud.google.com/run/docs/configuring/labels
         annotations (MutableMapping[str, str]):
-            KRM-style annotations for the resource.
+            Output only. Unstructured key value map that
+            may be set by external tools to store and
+            arbitrary metadata. They are not queryable and
+            should be preserved when modifying objects.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Represents time when the
             execution was acknowledged by the execution
@@ -208,11 +212,17 @@ class Execution(proto.Message):
             is only populated as a response to a Delete
             request.
         launch_stage (google.api.launch_stage_pb2.LaunchStage):
-            Set the launch stage to a preview stage on write to allow
-            use of preview features in that stage. On read, describes
-            whether the resource uses preview features. Launch Stages
-            are defined at `Google Cloud Platform Launch
+            The least stable launch stage needed to create this
+            resource, as defined by `Google Cloud Platform Launch
             Stages <https://cloud.google.com/terms/launch-stages>`__.
+            Cloud Run supports ``ALPHA``, ``BETA``, and ``GA``.
+
+            .. raw:: html
+
+                <p>Note that this value might not be what was used
+                as input. For example, if ALPHA was provided as input in the parent
+                resource, but only BETA and GA-level features are were, this field will be
+                BETA.
         job (str):
             Output only. The name of the parent Job.
         parallelism (int):
@@ -221,15 +231,13 @@ class Execution(proto.Message):
             task_count. The actual number of tasks running in steady
             state will be less than this number when ((.spec.task_count
             - .status.successful) < .spec.parallelism), i.e. when the
-            work left to do is less than max parallelism. More info:
-            https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/
+            work left to do is less than max parallelism.
         task_count (int):
             Output only. Specifies the desired number of
             tasks the execution should run. Setting to 1
             means that parallelism is limited to 1 and the
             success of that task signals the success of the
-            execution. More info:
-            https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/
+            execution.
         template (google.cloud.run_v2.types.TaskTemplate):
             Output only. The template used to create
             tasks for this execution.
@@ -265,6 +273,8 @@ class Execution(proto.Message):
         log_uri (str):
             Output only. URI where logs for this
             execution can be found in Cloud Console.
+        satisfies_pzs (bool):
+            Output only. Reserved for future use.
         etag (str):
             Output only. A system-generated fingerprint
             for this version of the resource. May be used to
@@ -381,6 +391,10 @@ class Execution(proto.Message):
     log_uri: str = proto.Field(
         proto.STRING,
         number=26,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=27,
     )
     etag: str = proto.Field(
         proto.STRING,

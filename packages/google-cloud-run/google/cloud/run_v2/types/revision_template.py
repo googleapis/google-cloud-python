@@ -40,7 +40,13 @@ class RevisionTemplate(proto.Message):
             field is omitted, it will be automatically
             generated based on the Service name.
         labels (MutableMapping[str, str]):
-            KRM-style labels for the resource.
+            Unstructured key value map that can be used to organize and
+            categorize objects. User-provided labels are shared with
+            Google's billing system, so they can be used to filter, or
+            break down billing charges by team, component, environment,
+            state, etc. For more information, visit
+            https://cloud.google.com/resource-manager/docs/creating-managing-labels
+            or https://cloud.google.com/run/docs/configuring/labels.
 
             .. raw:: html
 
@@ -49,7 +55,9 @@ class RevisionTemplate(proto.Message):
                 namespaces, and they will be rejected. All system labels in v1 now have a
                 corresponding field in v2 RevisionTemplate.
         annotations (MutableMapping[str, str]):
-            KRM-style annotations for the resource.
+            Unstructured key value map that may be set by external tools
+            to store and arbitrary metadata. They are not queryable and
+            should be preserved when modifying objects.
 
             .. raw:: html
 
@@ -57,6 +65,11 @@ class RevisionTemplate(proto.Message):
                 `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
                 namespaces, and they will be rejected. All system annotations in v1 now
                 have a corresponding field in v2 RevisionTemplate.
+
+            .. raw:: html
+
+                <p>This field follows Kubernetes annotations' namespacing, limits, and
+                rules.
         scaling (google.cloud.run_v2.types.RevisionScaling):
             Scaling settings for this Revision.
         vpc_access (google.cloud.run_v2.types.VpcAccess):
@@ -91,6 +104,8 @@ class RevisionTemplate(proto.Message):
         max_instance_request_concurrency (int):
             Sets the maximum number of requests that each
             serving instance can receive.
+        session_affinity (bool):
+            Enable session affinity.
     """
 
     revision: str = proto.Field(
@@ -148,6 +163,10 @@ class RevisionTemplate(proto.Message):
     max_instance_request_concurrency: int = proto.Field(
         proto.INT32,
         number=15,
+    )
+    session_affinity: bool = proto.Field(
+        proto.BOOL,
+        number=19,
     )
 
 

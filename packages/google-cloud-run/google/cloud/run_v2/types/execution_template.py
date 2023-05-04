@@ -35,7 +35,13 @@ class ExecutionTemplate(proto.Message):
 
     Attributes:
         labels (MutableMapping[str, str]):
-            KRM-style labels for the resource.
+            Unstructured key value map that can be used to organize and
+            categorize objects. User-provided labels are shared with
+            Google's billing system, so they can be used to filter, or
+            break down billing charges by team, component, environment,
+            state, etc. For more information, visit
+            https://cloud.google.com/resource-manager/docs/creating-managing-labels
+            or https://cloud.google.com/run/docs/configuring/labels.
 
             .. raw:: html
 
@@ -44,7 +50,9 @@ class ExecutionTemplate(proto.Message):
                 namespaces, and they will be rejected. All system labels in v1 now have a
                 corresponding field in v2 ExecutionTemplate.
         annotations (MutableMapping[str, str]):
-            KRM-style annotations for the resource.
+            Unstructured key value map that may be set by external tools
+            to store and arbitrary metadata. They are not queryable and
+            should be preserved when modifying objects.
 
             .. raw:: html
 
@@ -52,6 +60,11 @@ class ExecutionTemplate(proto.Message):
                 `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
                 namespaces, and they will be rejected. All system annotations in v1 now
                 have a corresponding field in v2 ExecutionTemplate.
+
+            .. raw:: html
+
+                <p>This field follows Kubernetes annotations' namespacing, limits, and
+                rules.
         parallelism (int):
             Specifies the maximum desired number of tasks the execution
             should run at given time. Must be <= task_count. When the
@@ -66,8 +79,7 @@ class ExecutionTemplate(proto.Message):
             execution should run. Setting to 1 means that
             parallelism is limited to 1 and the success of
             that task signals the success of the execution.
-            More info:
-            https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/
+            Defaults to 1.
         template (google.cloud.run_v2.types.TaskTemplate):
             Required. Describes the task(s) that will be
             created when executing an execution.
