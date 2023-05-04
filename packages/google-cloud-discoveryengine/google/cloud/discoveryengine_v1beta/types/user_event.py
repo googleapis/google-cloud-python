@@ -130,18 +130,21 @@ class UserEvent(proto.Message):
             trigger the event.
 
             Highly recommended for user events that are the result of
-            [PredictionService.Predict][]. This field enables accurate
-            attribution of recommendation model performance.
+            [RecommendationService.Recommend][google.cloud.discoveryengine.v1beta.RecommendationService.Recommend].
+            This field enables accurate attribution of recommendation
+            model performance.
 
             The value must be one of:
 
             -  [PredictResponse.attribution_token][] for events that are
-               the result of [PredictionService.Predict][].
+               the result of
+               [RecommendationService.Recommend][google.cloud.discoveryengine.v1beta.RecommendationService.Recommend].
             -  [SearchResponse.attribution_token][google.cloud.discoveryengine.v1beta.SearchResponse.attribution_token]
                for events that are the result of
                [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search].
             -  [CompleteQueryResponse.attribution_token][] for events
-               that are the result of [SearchService.CompleteQuery][].
+               that are the result of
+               [CompletionService.CompleteQuery][google.cloud.discoveryengine.v1beta.CompletionService.CompleteQuery].
 
             This token enables us to accurately attribute page view or
             conversion completion back to the event and the particular
@@ -157,15 +160,16 @@ class UserEvent(proto.Message):
             documents being filtered.
 
             One example is for ``search`` events, the associated
-            [SearchService.SearchRequest][] may contain a filter
-            expression in [SearchService.SearchRequest.filter][]
+            [SearchRequest][google.cloud.discoveryengine.v1beta.SearchRequest]
+            may contain a filter expression in
+            [SearchRequest.filter][google.cloud.discoveryengine.v1beta.SearchRequest.filter]
             conforming to https://google.aip.dev/160#filtering.
 
             Similarly, for ``view-item-list`` events that are generated
-            from a [PredictionService.PredictRequest][], this field may
-            be populated directly from
-            [PredictionService.PredictRequest.filter][] conforming to
-            https://google.aip.dev/160#filtering.
+            from a [RecommendationService.RecommendRequest][], this
+            field may be populated directly from
+            [RecommendationService.RecommendRequest.filter][] conforming
+            to https://google.aip.dev/160#filtering.
 
             The value must be a UTF-8 encoded string with a length limit
             of 1,000 characters. Otherwise, an INVALID_ARGUMENT error is
@@ -418,9 +422,11 @@ class SearchInfo(proto.Message):
 
             At least one of
             [search_query][google.cloud.discoveryengine.v1beta.SearchInfo.search_query]
-            or [page_categories][] is required for ``search`` events.
-            Other event types should not set this field. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            or
+            [PageInfo.page_category][google.cloud.discoveryengine.v1beta.PageInfo.page_category]
+            is required for ``search`` events. Other event types should
+            not set this field. Otherwise, an INVALID_ARGUMENT error is
+            returned.
         order_by (str):
             The order in which products are returned, if applicable.
 

@@ -55,6 +55,11 @@ from .types.import_config import (
     ImportUserEventsRequest,
     ImportUserEventsResponse,
 )
+from .types.purge_config import (
+    PurgeDocumentsMetadata,
+    PurgeDocumentsRequest,
+    PurgeDocumentsResponse,
+)
 from .types.recommendation_service import RecommendRequest, RecommendResponse
 from .types.schema import Schema
 from .types.schema_service import (
@@ -122,6 +127,9 @@ __all__ = (
     "MediaInfo",
     "PageInfo",
     "PanelInfo",
+    "PurgeDocumentsMetadata",
+    "PurgeDocumentsRequest",
+    "PurgeDocumentsResponse",
     "RecommendRequest",
     "RecommendResponse",
     "RecommendationServiceClient",

@@ -69,6 +69,11 @@
                 "list_documents"
               ]
             },
+            "PurgeDocuments": {
+              "methods": [
+                "purge_documents"
+              ]
+            },
             "UpdateDocument": {
               "methods": [
                 "update_document"
@@ -104,6 +109,11 @@
                 "list_documents"
               ]
             },
+            "PurgeDocuments": {
+              "methods": [
+                "purge_documents"
+              ]
+            },
             "UpdateDocument": {
               "methods": [
                 "update_document"
@@ -137,6 +147,11 @@
             "ListDocuments": {
               "methods": [
                 "list_documents"
+              ]
+            },
+            "PurgeDocuments": {
+              "methods": [
+                "purge_documents"
               ]
             },
             "UpdateDocument": {

@@ -51,6 +51,7 @@ class discoveryengineCallTransformer(cst.CSTTransformer):
         'import_user_events': ('inline_source', 'gcs_source', 'bigquery_source', 'parent', 'error_config', ),
         'list_documents': ('parent', 'page_size', 'page_token', ),
         'list_schemas': ('parent', 'page_size', 'page_token', ),
+        'purge_documents': ('parent', 'filter', 'force', ),
         'recommend': ('serving_config', 'user_event', 'page_size', 'filter', 'validate_only', 'params', 'user_labels', ),
         'search': ('serving_config', 'branch', 'query', 'page_size', 'page_token', 'offset', 'filter', 'order_by', 'facet_specs', 'boost_spec', 'params', 'query_expansion_spec', 'spell_correction_spec', 'user_pseudo_id', 'content_search_spec', ),
         'update_document': ('document', 'allow_missing', ),
