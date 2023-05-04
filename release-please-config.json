@@ -238,6 +238,19 @@
                 }
             ],
             "release-type": "python"
+        },
+        "packages/google-ai-generativelanguage": {
+            "component": "google-ai-generativelanguage",
+            "release-type": "python",
+            "extra-files": [
+                "google/ai/generativelanguage/gapic_version.py",
+                "google/ai/generativelanguage_v1beta2/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.ai.generativelanguage.v1beta2.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
+            ]
         }
     }
 }
