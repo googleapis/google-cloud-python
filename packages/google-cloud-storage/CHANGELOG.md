@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [2.9.0](https://github.com/googleapis/python-storage/compare/v2.8.0...v2.9.0) (2023-05-04)
+
+
+### Features
+
+* Un-deprecate blob.download_to_file(), bucket.create(), and bucket.list_blobs() ([#1013](https://github.com/googleapis/python-storage/issues/1013)) ([aa4f282](https://github.com/googleapis/python-storage/commit/aa4f282514ebdaf58ced0743859a4ab1458f967c))
+
+
+### Bug Fixes
+
+* Avoid pickling processed credentials ([#1016](https://github.com/googleapis/python-storage/issues/1016)) ([7935824](https://github.com/googleapis/python-storage/commit/7935824049e2e6e430d2e601156730d6366c78f7))
+* Improve test error message for missing credentials ([#1024](https://github.com/googleapis/python-storage/issues/1024)) ([892481a](https://github.com/googleapis/python-storage/commit/892481a2c76fe5747ada3392345c087fb7f8bd8a))
+
+
+### Documentation
+
+* Add sample and sample test for transfer manager ([#1027](https://github.com/googleapis/python-storage/issues/1027)) ([4698799](https://github.com/googleapis/python-storage/commit/4698799101b5847d55edc8267db85257a74c3119))
+* Remove threads in transfer manager samples ([#1029](https://github.com/googleapis/python-storage/issues/1029)) ([30c5146](https://github.com/googleapis/python-storage/commit/30c51469af2efd4f5becaab7e7b02b207a074267))
+
 ## [2.8.0](https://github.com/googleapis/python-storage/compare/v2.7.0...v2.8.0) (2023-03-29)
 
 
