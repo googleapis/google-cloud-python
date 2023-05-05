@@ -47,7 +47,7 @@ from google.ai.generativelanguage_v1beta2.services.discuss_service import (
     DiscussServiceClient,
     transports,
 )
-from google.ai.generativelanguage_v1beta2.types import citation, discuss_service
+from google.ai.generativelanguage_v1beta2.types import citation, discuss_service, safety
 
 
 def client_cert_source_callback():

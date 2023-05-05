@@ -19,15 +19,14 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.ai.generativelanguage.v1beta2',
+    package="google.ai.generativelanguage.v1beta2",
     manifest={
-        'HarmCategory',
-        'ContentFilter',
-        'SafetyFeedback',
-        'SafetyRating',
-        'SafetySetting',
+        "HarmCategory",
+        "ContentFilter",
+        "SafetyFeedback",
+        "SafetyRating",
+        "SafetySetting",
     },
 )
 
@@ -87,6 +86,7 @@ class ContentFilter(proto.Message):
 
             This field is a member of `oneof`_ ``_message``.
     """
+
     class BlockedReason(proto.Enum):
         r"""A list of reasons why content may have been blocked.
 
@@ -131,15 +131,15 @@ class SafetyFeedback(proto.Message):
             Safety settings applied to the request.
     """
 
-    rating: 'SafetyRating' = proto.Field(
+    rating: "SafetyRating" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='SafetyRating',
+        message="SafetyRating",
     )
-    setting: 'SafetySetting' = proto.Field(
+    setting: "SafetySetting" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='SafetySetting',
+        message="SafetySetting",
     )
 
 
@@ -158,6 +158,7 @@ class SafetyRating(proto.Message):
             Required. The probability of harm for this
             content.
     """
+
     class HarmProbability(proto.Enum):
         r"""The probability that a piece of content is harmful.
         The classification system gives the probability of the content
@@ -183,10 +184,10 @@ class SafetyRating(proto.Message):
         MEDIUM = 3
         HIGH = 4
 
-    category: 'HarmCategory' = proto.Field(
+    category: "HarmCategory" = proto.Field(
         proto.ENUM,
         number=3,
-        enum='HarmCategory',
+        enum="HarmCategory",
     )
     probability: HarmProbability = proto.Field(
         proto.ENUM,
@@ -207,6 +208,7 @@ class SafetySetting(proto.Message):
             Required. Controls the probability threshold
             at which harm is blocked.
     """
+
     class HarmBlockThreshold(proto.Enum):
         r"""Block at and beyond a specified harm probability.
 
@@ -230,10 +232,10 @@ class SafetySetting(proto.Message):
         BLOCK_ONLY_HIGH = 3
         BLOCK_NONE = 4
 
-    category: 'HarmCategory' = proto.Field(
+    category: "HarmCategory" = proto.Field(
         proto.ENUM,
         number=3,
-        enum='HarmCategory',
+        enum="HarmCategory",
     )
     threshold: HarmBlockThreshold = proto.Field(
         proto.ENUM,

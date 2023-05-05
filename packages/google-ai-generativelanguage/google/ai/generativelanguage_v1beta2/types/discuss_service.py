@@ -19,7 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.ai.generativelanguage_v1beta2.types import citation
+from google.ai.generativelanguage_v1beta2.types import citation, safety
 
 __protobuf__ = proto.module(
     package="google.ai.generativelanguage.v1beta2",
@@ -132,6 +132,19 @@ class GenerateMessageResponse(proto.Message):
             Candidate response messages from the model.
         messages (MutableSequence[google.ai.generativelanguage_v1beta2.types.Message]):
             The conversation history used by the model.
+        filters (MutableSequence[google.ai.generativelanguage_v1beta2.types.ContentFilter]):
+            A set of content filtering metadata for the prompt and
+            response text.
+
+            This indicates which ``SafetyCategory``\ (s) blocked a
+            candidate from this response, the lowest ``HarmProbability``
+            that triggered a block, and the HarmThreshold setting for
+            that category. This indicates the smallest change to the
+            ``SafetySettings`` that would be necessary to unblock at
+            least 1 response.
+
+            The blocking is configured by the ``SafetySettings`` in the
+            request (or the default ``SafetySettings`` of the API).
     """
 
     candidates: MutableSequence["Message"] = proto.RepeatedField(
@@ -143,6 +156,11 @@ class GenerateMessageResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message="Message",
+    )
+    filters: MutableSequence[safety.ContentFilter] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=safety.ContentFilter,
     )
 
 

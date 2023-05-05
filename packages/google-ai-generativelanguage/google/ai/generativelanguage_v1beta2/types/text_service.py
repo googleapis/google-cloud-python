@@ -19,6 +19,8 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+from google.ai.generativelanguage_v1beta2.types import citation, safety
+
 __protobuf__ = proto.module(
     package="google.ai.generativelanguage.v1beta2",
     manifest={
@@ -105,6 +107,19 @@ class GenerateTextRequest(proto.Message):
             ``getModel`` function.
 
             This field is a member of `oneof`_ ``_top_k``.
+        safety_settings (MutableSequence[google.ai.generativelanguage_v1beta2.types.SafetySetting]):
+            A list of unique ``SafetySetting`` instances for blocking
+            unsafe content.
+
+            that will be enforced on the ``GenerateTextRequest.prompt``
+            and ``GenerateTextResponse.candidates``. There should not be
+            more than one setting for each ``SafetyCategory`` type. The
+            API will block any prompts and responses that fail to meet
+            the thresholds set by these settings. This list overrides
+            the default settings for each ``SafetyCategory`` specified
+            in the safety_settings. If there is no ``SafetySetting`` for
+            a given ``SafetyCategory`` provided in the list, the API
+            will use the default safety setting for that category.
         stop_sequences (MutableSequence[str]):
             The set of character sequences (up to 5) that
             will stop output generation. If specified, the
@@ -147,6 +162,11 @@ class GenerateTextRequest(proto.Message):
         number=7,
         optional=True,
     )
+    safety_settings: MutableSequence[safety.SafetySetting] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message=safety.SafetySetting,
+    )
     stop_sequences: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=9,
@@ -159,12 +179,38 @@ class GenerateTextResponse(proto.Message):
     Attributes:
         candidates (MutableSequence[google.ai.generativelanguage_v1beta2.types.TextCompletion]):
             Candidate responses from the model.
+        filters (MutableSequence[google.ai.generativelanguage_v1beta2.types.ContentFilter]):
+            A set of content filtering metadata for the prompt and
+            response text.
+
+            This indicates which ``SafetyCategory``\ (s) blocked a
+            candidate from this response, the lowest ``HarmProbability``
+            that triggered a block, and the HarmThreshold setting for
+            that category. This indicates the smallest change to the
+            ``SafetySettings`` that would be necessary to unblock at
+            least 1 response.
+
+            The blocking is configured by the ``SafetySettings`` in the
+            request (or the default ``SafetySettings`` of the API).
+        safety_feedback (MutableSequence[google.ai.generativelanguage_v1beta2.types.SafetyFeedback]):
+            Returns any safety feedback related to
+            content filtering.
     """
 
     candidates: MutableSequence["TextCompletion"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="TextCompletion",
+    )
+    filters: MutableSequence[safety.ContentFilter] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=safety.ContentFilter,
+    )
+    safety_feedback: MutableSequence[safety.SafetyFeedback] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=safety.SafetyFeedback,
     )
 
 
@@ -187,15 +233,39 @@ class TextPrompt(proto.Message):
 class TextCompletion(proto.Message):
     r"""Output text returned from a model.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         output (str):
             Output only. The generated text returned from
             the model.
+        safety_ratings (MutableSequence[google.ai.generativelanguage_v1beta2.types.SafetyRating]):
+            Ratings for the safety of a response.
+            There is at most one rating per category.
+        citation_metadata (google.ai.generativelanguage_v1beta2.types.CitationMetadata):
+            Output only. Citation information for model-generated
+            ``output`` in this ``TextCompletion``.
+
+            This field may be populated with attribution information for
+            any text included in the ``output``.
+
+            This field is a member of `oneof`_ ``_citation_metadata``.
     """
 
     output: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    safety_ratings: MutableSequence[safety.SafetyRating] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=safety.SafetyRating,
+    )
+    citation_metadata: citation.CitationMetadata = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        optional=True,
+        message=citation.CitationMetadata,
     )
 
 

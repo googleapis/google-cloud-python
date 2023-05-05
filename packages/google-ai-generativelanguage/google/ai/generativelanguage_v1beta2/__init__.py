@@ -33,6 +33,13 @@ from .types.discuss_service import (
 )
 from .types.model import Model
 from .types.model_service import GetModelRequest, ListModelsRequest, ListModelsResponse
+from .types.safety import (
+    ContentFilter,
+    HarmCategory,
+    SafetyFeedback,
+    SafetyRating,
+    SafetySetting,
+)
 from .types.text_service import (
     Embedding,
     EmbedTextRequest,
@@ -49,6 +56,7 @@ __all__ = (
     "TextServiceAsyncClient",
     "CitationMetadata",
     "CitationSource",
+    "ContentFilter",
     "CountMessageTokensRequest",
     "CountMessageTokensResponse",
     "DiscussServiceClient",
@@ -61,12 +69,16 @@ __all__ = (
     "GenerateTextRequest",
     "GenerateTextResponse",
     "GetModelRequest",
+    "HarmCategory",
     "ListModelsRequest",
     "ListModelsResponse",
     "Message",
     "MessagePrompt",
     "Model",
     "ModelServiceClient",
+    "SafetyFeedback",
+    "SafetyRating",
+    "SafetySetting",
     "TextCompletion",
     "TextPrompt",
     "TextServiceClient",

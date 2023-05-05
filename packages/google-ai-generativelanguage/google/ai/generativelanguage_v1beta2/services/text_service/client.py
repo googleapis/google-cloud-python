@@ -46,7 +46,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.ai.generativelanguage_v1beta2.types import text_service
+from google.ai.generativelanguage_v1beta2.types import safety, text_service
 
 from .transports.base import DEFAULT_CLIENT_INFO, TextServiceTransport
 from .transports.grpc import TextServiceGrpcTransport
