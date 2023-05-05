@@ -108,6 +108,9 @@ class Entitlement(proto.Message):
             accepted as input:
 
             -  display_name: The display name of the billing subaccount.
+        billing_account (str):
+            Optional. The billing account resource name
+            that is used to pay for this entitlement.
     """
 
     class ProvisioningState(proto.Enum):
@@ -210,6 +213,10 @@ class Entitlement(proto.Message):
         proto.MESSAGE,
         number=26,
         message="Parameter",
+    )
+    billing_account: str = proto.Field(
+        proto.STRING,
+        number=28,
     )
 
 

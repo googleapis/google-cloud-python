@@ -3478,6 +3478,7 @@ def test_get_entitlement(request_type, transport: str = "grpc"):
                 entitlements.Entitlement.SuspensionReason.RESELLER_INITIATED
             ],
             purchase_order_id="purchase_order_id_value",
+            billing_account="billing_account_value",
         )
         response = client.get_entitlement(request)
 
@@ -3497,6 +3498,7 @@ def test_get_entitlement(request_type, transport: str = "grpc"):
         entitlements.Entitlement.SuspensionReason.RESELLER_INITIATED
     ]
     assert response.purchase_order_id == "purchase_order_id_value"
+    assert response.billing_account == "billing_account_value"
 
 
 def test_get_entitlement_empty_call():
@@ -3540,6 +3542,7 @@ async def test_get_entitlement_async(
                     entitlements.Entitlement.SuspensionReason.RESELLER_INITIATED
                 ],
                 purchase_order_id="purchase_order_id_value",
+                billing_account="billing_account_value",
             )
         )
         response = await client.get_entitlement(request)
@@ -3560,6 +3563,7 @@ async def test_get_entitlement_async(
         entitlements.Entitlement.SuspensionReason.RESELLER_INITIATED
     ]
     assert response.purchase_order_id == "purchase_order_id_value"
+    assert response.billing_account == "billing_account_value"
 
 
 @pytest.mark.asyncio

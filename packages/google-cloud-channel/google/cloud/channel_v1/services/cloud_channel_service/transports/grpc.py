@@ -1604,7 +1604,7 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
         resources. The data for each resource is displayed in the
         ascending order of:
 
-        -  customer ID
+        -  Customer ID
         -  [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement]
         -  [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
         -  [CustomerRepricingConfig.update_time][google.cloud.channel.v1.CustomerRepricingConfig.update_time]
@@ -1895,7 +1895,7 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
         resources. The data for each resource is displayed in the
         ascending order of:
 
-        -  channel partner ID
+        -  Channel Partner ID
         -  [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
         -  [ChannelPartnerRepricingConfig.update_time][google.cloud.channel.v1.ChannelPartnerRepricingConfig.update_time]
 
