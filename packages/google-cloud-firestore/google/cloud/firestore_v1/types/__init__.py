@@ -16,6 +16,10 @@
 from .aggregation_result import (
     AggregationResult,
 )
+from .bloom_filter import (
+    BitSequence,
+    BloomFilter,
+)
 from .common import (
     DocumentMask,
     Precondition,
@@ -75,6 +79,8 @@ from .write import (
 
 __all__ = (
     "AggregationResult",
+    "BitSequence",
+    "BloomFilter",
     "DocumentMask",
     "Precondition",
     "TransactionOptions",

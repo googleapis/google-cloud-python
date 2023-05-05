@@ -25,6 +25,7 @@ from google.cloud.firestore_v1.types import document as gf_document
 from google.cloud.firestore_v1.types import query as gf_query
 from google.cloud.firestore_v1.types import write
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 
 
@@ -1338,6 +1339,15 @@ class Target(proto.Message):
         once (bool):
             If the target should be removed once it is
             current and consistent.
+        expected_count (google.protobuf.wrappers_pb2.Int32Value):
+            The number of documents that last matched the query at the
+            resume token or read time.
+
+            This value is only relevant when a ``resume_type`` is
+            provided. This value being present and greater than zero
+            signals that the client wants
+            ``ExistenceFilter.unchanged_names`` to be included in the
+            response.
     """
 
     class DocumentsTarget(proto.Message):
@@ -1418,6 +1428,11 @@ class Target(proto.Message):
     once: bool = proto.Field(
         proto.BOOL,
         number=6,
+    )
+    expected_count: wrappers_pb2.Int32Value = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=wrappers_pb2.Int32Value,
     )
 
 
