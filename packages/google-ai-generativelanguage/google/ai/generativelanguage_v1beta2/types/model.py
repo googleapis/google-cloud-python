@@ -43,7 +43,7 @@ class Model(proto.Message):
 
             Examples:
 
-            -  ``models/chat-pison-001``
+            -  ``models/chat-bison-001``
         base_model_id (str):
             Required. The name of the base model, pass this to the
             generation request.

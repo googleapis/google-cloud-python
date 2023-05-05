@@ -42,7 +42,7 @@ class generativelanguageCallTransformer(cst.CSTTransformer):
         'count_message_tokens': ('model', 'prompt', ),
         'embed_text': ('model', 'text', ),
         'generate_message': ('model', 'prompt', 'temperature', 'candidate_count', 'top_p', 'top_k', ),
-        'generate_text': ('model', 'prompt', 'temperature', 'candidate_count', 'max_output_tokens', 'top_p', 'top_k', 'stop_sequences', ),
+        'generate_text': ('model', 'prompt', 'temperature', 'candidate_count', 'max_output_tokens', 'top_p', 'top_k', 'safety_settings', 'stop_sequences', ),
         'get_model': ('name', ),
         'list_models': ('page_size', 'page_token', ),
     }

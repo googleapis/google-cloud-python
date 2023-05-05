@@ -47,7 +47,7 @@ from google.ai.generativelanguage_v1beta2.services.text_service import (
     TextServiceClient,
     transports,
 )
-from google.ai.generativelanguage_v1beta2.types import text_service
+from google.ai.generativelanguage_v1beta2.types import safety, text_service
 
 
 def client_cert_source_callback():

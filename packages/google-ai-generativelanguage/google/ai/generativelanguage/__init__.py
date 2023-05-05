@@ -55,6 +55,13 @@ from google.ai.generativelanguage_v1beta2.types.model_service import (
     ListModelsRequest,
     ListModelsResponse,
 )
+from google.ai.generativelanguage_v1beta2.types.safety import (
+    ContentFilter,
+    HarmCategory,
+    SafetyFeedback,
+    SafetyRating,
+    SafetySetting,
+)
 from google.ai.generativelanguage_v1beta2.types.text_service import (
     Embedding,
     EmbedTextRequest,
@@ -85,6 +92,11 @@ __all__ = (
     "GetModelRequest",
     "ListModelsRequest",
     "ListModelsResponse",
+    "ContentFilter",
+    "SafetyFeedback",
+    "SafetyRating",
+    "SafetySetting",
+    "HarmCategory",
     "Embedding",
     "EmbedTextRequest",
     "EmbedTextResponse",
