@@ -109,6 +109,72 @@ def test_ordered_messages_one_key():
     assert moh.size == 0
 
 
+def test_ordered_messages_drop_duplicate_keys(caplog):
+    moh = messages_on_hold.MessagesOnHold()
+
+    msg1 = make_message(ack_id="ack1", ordering_key="key1")
+    moh.put(msg1)
+    assert moh.size == 1
+
+    msg2 = make_message(ack_id="ack2", ordering_key="key1")
+    moh.put(msg2)
+    assert moh.size == 2
+
+    # Get first message for "key1"
+    assert moh.get() == msg1
+    assert moh.size == 1
+
+    # Still waiting on the previously-sent message for "key1", and there are no
+    # other messages, so return None.
+    assert moh.get() is None
+    assert moh.size == 1
+
+    # Activate "key1".
+    callback_tracker = ScheduleMessageCallbackTracker()
+    moh.activate_ordering_keys(["key1", "key1"], callback_tracker)
+    assert callback_tracker.called
+    assert callback_tracker.message == msg2
+    assert moh.size == 0
+    assert len(moh._pending_ordered_messages) == 0
+
+    # Activate "key1" again
+    callback_tracker = ScheduleMessageCallbackTracker()
+    moh.activate_ordering_keys(["key1"], callback_tracker)
+    assert not callback_tracker.called
+
+    # Activate "key1" again. There are no other messages for that key, so clean
+    # up state for that key.
+    callback_tracker = ScheduleMessageCallbackTracker()
+    moh.activate_ordering_keys(["key1"], callback_tracker)
+    assert not callback_tracker.called
+
+    msg3 = make_message(ack_id="ack3", ordering_key="key1")
+    moh.put(msg3)
+    assert moh.size == 1
+
+    # Get next message for "key1"
+    assert moh.get() == msg3
+    assert moh.size == 0
+
+    # Activate "key1".
+    callback_tracker = ScheduleMessageCallbackTracker()
+    moh.activate_ordering_keys(["key1"], callback_tracker)
+    assert not callback_tracker.called
+
+    # Activate "key1" again. There are no other messages for that key, so clean
+    # up state for that key.
+    callback_tracker = ScheduleMessageCallbackTracker()
+    moh.activate_ordering_keys(["key1"], callback_tracker)
+    assert not callback_tracker.called
+
+    # Activate "key1" again after being cleaned up. There are no other messages for that key, so clean
+    # up state for that key.
+    callback_tracker = ScheduleMessageCallbackTracker()
+    moh.activate_ordering_keys(["key1"], callback_tracker)
+    assert not callback_tracker.called
+    assert "No message queue exists for message ordering key: key1" in caplog.text
+
+
 def test_ordered_messages_two_keys():
     moh = messages_on_hold.MessagesOnHold()
 
@@ -278,3 +344,39 @@ def test_ordered_and_unordered_messages_interleaved():
     # No messages left.
     assert moh.get() is None
     assert moh.size == 0
+
+
+def test_cleanup_nonexistent_key(caplog):
+    moh = messages_on_hold.MessagesOnHold()
+    moh._clean_up_ordering_key("non-existent-key")
+    assert (
+        "Tried to clean up ordering key that does not exist: non-existent-key"
+        in caplog.text
+    )
+
+
+def test_cleanup_key_with_messages(caplog):
+    moh = messages_on_hold.MessagesOnHold()
+
+    # Put message with "key1".
+    msg1 = make_message(ack_id="ack1", ordering_key="key1")
+    moh.put(msg1)
+    assert moh.size == 1
+
+    # Put another message "key1"
+    msg2 = make_message(ack_id="ack2", ordering_key="key1")
+    moh.put(msg2)
+    assert moh.size == 2
+
+    # Get first message for "key1"
+    assert moh.get() == msg1
+    assert moh.size == 1
+
+    # Get first message for "key1"
+    assert moh.get() is None
+    assert moh.size == 1
+
+    moh._clean_up_ordering_key("key1")
+    assert (
+        "Tried to clean up ordering key: key1 with 1 messages remaining." in caplog.text
+    )
