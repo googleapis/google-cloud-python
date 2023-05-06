@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.16.1](https://github.com/googleapis/python-pubsub/compare/v2.16.0...v2.16.1) (2023-05-05)
+
+
+### Bug Fixes
+
+* Allow dropping cleaned-up keys ([#911](https://github.com/googleapis/python-pubsub/issues/911)) ([4b3157c](https://github.com/googleapis/python-pubsub/commit/4b3157ccb83771a2e613fc3475035f24d358ccf6))
+
+
+### Documentation
+
+* Add comment to setup.py ([#905](https://github.com/googleapis/python-pubsub/issues/905)) ([9825109](https://github.com/googleapis/python-pubsub/commit/9825109a826e63cd076c21367157be7a3c01c45b))
+
 ## [2.16.0](https://github.com/googleapis/python-pubsub/compare/v2.15.2...v2.16.0) (2023-04-06)
 
 
