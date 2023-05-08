@@ -153,12 +153,6 @@ class Generator:
             autogen_specs = list(
                 samplegen.generate_sample_specs(api_schema, opts=opts))
 
-        # TODO: Support the generation of REST snippets.
-        autogen_specs = [
-            spec for spec in autogen_specs
-            if spec["transport"] != api.TRANSPORT_REST
-        ]
-
         # Also process any handwritten sample specs
         handwritten_specs = samplegen.parse_handwritten_specs(
             self._sample_configs)

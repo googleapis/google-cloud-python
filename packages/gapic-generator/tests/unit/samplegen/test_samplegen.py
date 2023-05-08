@@ -16,8 +16,8 @@ import yaml
 import pytest
 
 from textwrap import dedent
-from typing import (TypeVar, Sequence)
-from collections import (OrderedDict, namedtuple)
+from typing import TypeVar, Sequence
+from collections import OrderedDict, namedtuple
 from google.api import client_pb2
 from google.api import resource_pb2
 from google.protobuf import descriptor_pb2
@@ -27,12 +27,22 @@ from google.protobuf import json_format
 import gapic.samplegen.samplegen as samplegen
 import gapic.samplegen_utils.types as types
 import gapic.samplegen_utils.yaml as gapic_yaml
-from gapic.schema import (api, metadata, naming)
+from gapic.schema import api, metadata, naming
 import gapic.schema.wrappers as wrappers
 from gapic.utils import Options
 
-from ..common_types import (DummyApiSchema, DummyField, DummyIdent, DummyNaming, DummyMessage, DummyMessageTypePB,
-                          DummyService, DummyMethod, message_factory, enum_factory)
+from ..common_types import (
+    DummyApiSchema,
+    DummyField,
+    DummyIdent,
+    DummyNaming,
+    DummyMessage,
+    DummyMessageTypePB,
+    DummyService,
+    DummyMethod,
+    message_factory,
+    enum_factory,
+)
 from gapic.samplegen_utils import utils
 
 
@@ -42,7 +52,7 @@ def api_naming():
         warehouse_package_name="mollusc-cephalopod-teuthida-",
         versioned_module_name="teuthida_v1",
         module_namespace=("mollusc", "cephalopod"),
-        proto_package="mollusc.cephalopod"
+        proto_package="mollusc.cephalopod",
     )
 
 
@@ -50,10 +60,12 @@ def api_naming():
 def request_message():
     return DummyMessage(
         fields={
-            "parent": DummyField(is_primitive=True, type=str, required=True, name="parent"),
-            },
+            "parent": DummyField(
+                is_primitive=True, type=str, required=True, name="parent"
+            ),
+        },
         type=DummyMessageTypePB(name="ClassifyRequest"),
-        ident=DummyIdent(name="ClassifyRequest")
+        ident=DummyIdent(name="ClassifyRequest"),
     )
 
 
@@ -61,27 +73,33 @@ def request_message():
 def request_message_from_another_package(api_naming):
     return DummyMessage(
         fields={
-            "parent": DummyField(is_primitive=True, type=str, required=True, name="parent"),
-            },
+            "parent": DummyField(
+                is_primitive=True, type=str, required=True, name="parent"
+            ),
+        },
         type=DummyMessageTypePB(name="ClassifyRequest"),
         ident=DummyIdent(name="ClassifyRequest"),
         meta=metadata.Metadata(
             address=metadata.Address(
                 api_naming=api_naming,
-                package=('a', 'b',),
-                module='c'
+                package=(
+                    "a",
+                    "b",
+                ),
+                module="c",
             )
-        )
+        ),
     )
 
 
 @pytest.fixture(scope="module")
 def dummy_api_schema(request_message, api_naming):
     return DummyApiSchema(
-        services={"Mollusc": DummyService(
-            methods={}, client_name="MolluscClient",
-            resource_messages_dict={}
-            )},
+        services={
+            "Mollusc": DummyService(
+                methods={}, client_name="MolluscClient", resource_messages_dict={}
+            )
+        },
         naming=api_naming,
         messages=request_message,
     )
@@ -89,12 +107,14 @@ def dummy_api_schema(request_message, api_naming):
 
 @pytest.fixture(scope="module")
 def dummy_api_schema_with_request_from_another_package(
-        request_message_from_another_package, api_naming):
+    request_message_from_another_package, api_naming
+):
     return DummyApiSchema(
-        services={"Mollusc": DummyService(
-            methods={}, client_name="MolluscClient",
-            resource_messages_dict={}
-            )},
+        services={
+            "Mollusc": DummyService(
+                methods={}, client_name="MolluscClient", resource_messages_dict={}
+            )
+        },
         naming=api_naming,
         messages=request_message_from_another_package,
     )
@@ -102,39 +122,43 @@ def dummy_api_schema_with_request_from_another_package(
 
 def test_define(dummy_api_schema):
     define = {"define": "squid=$resp"}
-    v = samplegen.Validator(DummyMethod(
-        output=message_factory("mollusc")), api_schema=dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(output=message_factory("mollusc")), api_schema=dummy_api_schema
+    )
     v.validate_response([define])
 
 
 def test_define_undefined_var(dummy_api_schema):
     define = {"define": "squid=humboldt"}
-    v = samplegen.Validator(DummyMethod(
-        output=message_factory("mollusc")), api_schema=dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(output=message_factory("mollusc")), api_schema=dummy_api_schema
+    )
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response([define])
 
 
 def test_define_reserved_varname(dummy_api_schema):
     define = {"define": "class=$resp"}
-    v = samplegen.Validator(DummyMethod(
-        output=message_factory("mollusc")), api_schema=dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(output=message_factory("mollusc")), api_schema=dummy_api_schema
+    )
     with pytest.raises(types.ReservedVariableName):
         v.validate_response([define])
 
 
 def test_define_add_var(dummy_api_schema):
-    v = samplegen.Validator(DummyMethod(
-        output=message_factory("mollusc.name")),
-        api_schema=dummy_api_schema)
-    v.validate_response([{"define": "squid=$resp"},
-                         {"define": "name=squid.name"}])
+    v = samplegen.Validator(
+        DummyMethod(output=message_factory("mollusc.name")), api_schema=dummy_api_schema
+    )
+    v.validate_response([{"define": "squid=$resp"}, {
+                        "define": "name=squid.name"}])
 
 
 def test_define_bad_form(dummy_api_schema):
     define = {"define": "mollusc=$resp.squid=$resp.clam"}
-    v = samplegen.Validator(DummyMethod(
-        output=message_factory("mollusc")), api_schema=dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(output=message_factory("mollusc")), api_schema=dummy_api_schema
+    )
     with pytest.raises(types.BadAssignment):
         v.validate_response([define])
 
@@ -144,9 +168,11 @@ def test_define_redefinition(dummy_api_schema):
         {"define": "molluscs=$resp.molluscs"},
         {"define": "molluscs=$resp.molluscs"},
     ]
-    v = samplegen.Validator(DummyMethod(output=message_factory("$resp.molluscs",
-                                                               repeated_iter=[True])),
-                            api_schema=dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(output=message_factory(
+            "$resp.molluscs", repeated_iter=[True])),
+        api_schema=dummy_api_schema,
+    )
     with pytest.raises(types.RedefinedVariable):
         v.validate_response(statements)
 
@@ -157,19 +183,26 @@ def test_preprocess_sample():
 
     classify_request_message = DummyMessage(
         fields={
-            "parent": DummyField(is_primitive=True, type=str, required=True, name="parent"),
-            },
+            "parent": DummyField(
+                is_primitive=True, type=str, required=True, name="parent"
+            ),
+        },
         type=DummyMessageTypePB(name="ClassifyRequest"),
-        ident=DummyIdent(name="ClassifyRequest")
-        )
+        ident=DummyIdent(name="ClassifyRequest"),
+    )
 
     api_schema = DummyApiSchema(
-        services={"Mollusc": DummyService(
-            methods={}, client_name="MolluscClient",
-            resource_messages_dict={})},
-        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
-                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
-        messages=classify_request_message
+        services={
+            "Mollusc": DummyService(
+                methods={}, client_name="MolluscClient", resource_messages_dict={}
+            )
+        },
+        naming=DummyNaming(
+            warehouse_package_name="mollusc-cephalopod-teuthida-",
+            versioned_module_name="teuthida_v1",
+            module_namespace="mollusc.cephalopod",
+        ),
+        messages=classify_request_message,
     )
 
     rpc = DummyMethod(input=classify_request_message)
@@ -195,16 +228,12 @@ def test_preprocess_sample():
     assert request_type.ident.name == "ClassifyRequest"
 
     # assert mock request is created
-    assert sample["request"] == [
-        {
-            "field": "parent",
-            "value": "mock_value"
-        }
-    ]
+    assert sample["request"] == [{"field": "parent", "value": "mock_value"}]
 
 
 @pytest.mark.parametrize(
-    'repeated_enum,expected', [(False, "TYPE_2"), (True, ["TYPE_2"])])
+    "repeated_enum,expected", [(False, "TYPE_2"), (True, ["TYPE_2"])]
+)
 def test_preprocess_sample_with_enum_field(repeated_enum, expected):
     # Verify that the default response is added.
     sample = {"service": "Mollusc", "rpc": "Classify"}
@@ -216,20 +245,25 @@ def test_preprocess_sample_with_enum_field(repeated_enum, expected):
                 required=True,
                 repeated=repeated_enum,
                 type=enum_factory("type", ["TYPE_1", "TYPE_2"]),
-                enum=enum_factory("type", ["TYPE_1", "TYPE_2"])
-                )
-            },
+                enum=enum_factory("type", ["TYPE_1", "TYPE_2"]),
+            )
+        },
         type=DummyMessageTypePB(name="ClassifyRequest"),
-        ident=DummyIdent(name="ClassifyRequest")
-        )
+        ident=DummyIdent(name="ClassifyRequest"),
+    )
 
     api_schema = DummyApiSchema(
-        services={"Mollusc": DummyService(
-            methods={}, client_name="MolluscClient",
-            resource_messages_dict={})},
-        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
-                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
-        messages=classify_request_message
+        services={
+            "Mollusc": DummyService(
+                methods={}, client_name="MolluscClient", resource_messages_dict={}
+            )
+        },
+        naming=DummyNaming(
+            warehouse_package_name="mollusc-cephalopod-teuthida-",
+            versioned_module_name="teuthida_v1",
+            module_namespace="mollusc.cephalopod",
+        ),
+        messages=classify_request_message,
     )
 
     rpc = DummyMethod(input=classify_request_message)
@@ -255,12 +289,7 @@ def test_preprocess_sample_with_enum_field(repeated_enum, expected):
     assert request_type.ident.name == "ClassifyRequest"
 
     # assert mock request is created
-    assert sample["request"] == [
-        {
-            "field": "type",
-            "value": expected
-        }
-    ]
+    assert sample["request"] == [{"field": "type", "value": expected}]
 
 
 def test_preprocess_sample_nested_message_field():
@@ -269,24 +298,40 @@ def test_preprocess_sample_nested_message_field():
 
     classify_request_message = DummyMessage(
         fields={
-            "config": DummyField(name="config", is_primitive=False, required=True, oneof=False, type=DummyMessage(
-                fields={"name": DummyField(
-                        is_primitive=True, type=str, name="name", required=True, oneof=False)},
-                ))
-            },
+            "config": DummyField(
+                name="config",
+                is_primitive=False,
+                required=True,
+                oneof=False,
+                type=DummyMessage(
+                    fields={
+                        "name": DummyField(
+                            is_primitive=True,
+                            type=str,
+                            name="name",
+                            required=True,
+                            oneof=False,
+                        )
+                    },
+                ),
+            )
+        },
         type=DummyMessageTypePB(name="ClassifyRequest"),
-        ident=DummyIdent(name="ClassifyRequest")
+        ident=DummyIdent(name="ClassifyRequest"),
     )
 
     api_schema = DummyApiSchema(
-        services={"Mollusc": DummyService(
-            methods={}, client_name="MolluscClient",
-            resource_messages_dict={}
-            )},
-        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
-                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
+        services={
+            "Mollusc": DummyService(
+                methods={}, client_name="MolluscClient", resource_messages_dict={}
+            )
+        },
+        naming=DummyNaming(
+            warehouse_package_name="mollusc-cephalopod-teuthida-",
+            versioned_module_name="teuthida_v1",
+            module_namespace="mollusc.cephalopod",
+        ),
         messages=classify_request_message,
-
     )
 
     rpc = DummyMethod(input=classify_request_message)
@@ -295,11 +340,7 @@ def test_preprocess_sample_nested_message_field():
 
     # assert mock request is created
     assert sample["request"] == [
-        {
-            "field": "config.name",
-            "value": "mock_value"
-        },
-
+        {"field": "config.name", "value": "mock_value"},
     ]
 
 
@@ -308,12 +349,16 @@ def test_preprocess_sample_void_method():
     api_schema = DummyApiSchema(
         services={"Mollusc": DummyService(
             methods={}, client_name="MolluscClient")},
-        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
-                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
+        naming=DummyNaming(
+            warehouse_package_name="mollusc-cephalopod-teuthida-",
+            versioned_module_name="teuthida_v1",
+            module_namespace="mollusc.cephalopod",
+        ),
     )
 
-    rpc = DummyMethod(void=True, input=DummyMessage(
-        ident=DummyIdent(name="ClassifyRequest")))
+    rpc = DummyMethod(
+        void=True, input=DummyMessage(ident=DummyIdent(name="ClassifyRequest"))
+    )
 
     samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
 
@@ -321,7 +366,8 @@ def test_preprocess_sample_void_method():
 
 
 def test_preprocess_sample_with_request_module_name(
-        dummy_api_schema_with_request_from_another_package):
+    dummy_api_schema_with_request_from_another_package,
+):
     sample = {"service": "Mollusc", "rpc": "Classify"}
     api_schema = dummy_api_schema_with_request_from_another_package
     rpc = DummyMethod(input=api_schema.messages)
@@ -329,7 +375,7 @@ def test_preprocess_sample_with_request_module_name(
     samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
 
     request_module_name = sample.get("request_module_name")
-    assert request_module_name == 'c_pb2'
+    assert request_module_name == "c_pb2"
 
 
 def test_get_sample_imports(dummy_api_schema):
@@ -344,7 +390,8 @@ def test_get_sample_imports(dummy_api_schema):
 
 
 def test_get_sample_imports_with_request_from_another_package(
-        dummy_api_schema_with_request_from_another_package):
+    dummy_api_schema_with_request_from_another_package,
+):
     sample = {"service": "Mollusc", "rpc": "Classify"}
     api_schema = dummy_api_schema_with_request_from_another_package
     rpc = DummyMethod(input=api_schema.messages)
@@ -354,14 +401,15 @@ def test_get_sample_imports_with_request_from_another_package(
 
     assert imports == [
         "from a.b import c_pb2  # type: ignore",
-        "from mollusc.cephalopod import teuthida_v1"
+        "from mollusc.cephalopod import teuthida_v1",
     ]
 
 
 def test_define_input_param(dummy_api_schema):
     v = samplegen.Validator(
         DummyMethod(input=message_factory("mollusc.squid.mantle_length")),
-        dummy_api_schema)
+        dummy_api_schema,
+    )
     v.validate_and_transform_request(
         types.CallingForm.Request,
         [
@@ -376,9 +424,10 @@ def test_define_input_param(dummy_api_schema):
 
 
 def test_define_input_param_redefinition(dummy_api_schema):
-    v = samplegen.Validator(DummyMethod(
-        input=message_factory("mollusc.squid.mantle_length")),
-        dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(input=message_factory("mollusc.squid.mantle_length")),
+        dummy_api_schema,
+    )
     v.validate_and_transform_request(
         types.CallingForm.Request,
         [
@@ -390,43 +439,47 @@ def test_define_input_param_redefinition(dummy_api_schema):
         ],
     )
     with pytest.raises(types.RedefinedVariable):
-        v.validate_response(
-            [{"define": "mantle_length=mantle_length"}])
+        v.validate_response([{"define": "mantle_length=mantle_length"}])
 
 
 def test_print_basic(dummy_api_schema):
     print_statement = {"print": ["This is a squid"]}
     samplegen.Validator(DummyMethod(), dummy_api_schema).validate_response(
-        [print_statement])
+        [print_statement]
+    )
 
 
 def test_print_fmt_str(dummy_api_schema):
     print_statement = {"print": ["This is a squid named %s", "$resp.name"]}
-    v = samplegen.Validator(DummyMethod(
-        output=message_factory("$resp.name")), dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(output=message_factory("$resp.name")), dummy_api_schema
+    )
     v.validate_response([print_statement])
 
 
 def test_print_fmt_mismatch(dummy_api_schema):
     print_statement = {"print": ["This is a squid named %s"]}
-    v = samplegen.Validator(DummyMethod(
-        output=message_factory("$resp.name")), dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(output=message_factory("$resp.name")), dummy_api_schema
+    )
     with pytest.raises(types.MismatchedFormatSpecifier):
         v.validate_response([print_statement])
 
 
 def test_print_fmt_mismatch2(dummy_api_schema):
     print_statement = {"print": ["This is a squid", "$resp.name"]}
-    v = samplegen.Validator(DummyMethod(
-        output=message_factory("$resp.name")), dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(output=message_factory("$resp.name")), dummy_api_schema
+    )
     with pytest.raises(types.MismatchedFormatSpecifier):
         v.validate_response([print_statement])
 
 
 def test_print_undefined_var(dummy_api_schema):
     print_statement = {"print": ["This mollusc is a %s", "mollusc.type"]}
-    v = samplegen.Validator(DummyMethod(
-        output=message_factory("$resp.type")), dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(output=message_factory("$resp.type")), dummy_api_schema
+    )
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response([print_statement])
 
@@ -439,8 +492,9 @@ def test_comment(dummy_api_schema):
 
 def test_comment_fmt_str(dummy_api_schema):
     comment = {"comment": ["This is a mollusc of class %s", "$resp.klass"]}
-    v = samplegen.Validator(DummyMethod(
-        output=message_factory("$resp.klass")), dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(output=message_factory("$resp.klass")), dummy_api_schema
+    )
     v.validate_response([comment])
 
 
@@ -491,7 +545,10 @@ def test_loop_collection_redefinition(dummy_api_schema):
         },
     ]
     v = samplegen.Validator(
-        DummyMethod(output=message_factory("$resp.molluscs", repeated_iter=[True])), dummy_api_schema)
+        DummyMethod(output=message_factory(
+            "$resp.molluscs", repeated_iter=[True])),
+        dummy_api_schema,
+    )
     with pytest.raises(types.RedefinedVariable):
         v.validate_response(statements)
 
@@ -543,8 +600,11 @@ def test_loop_collection_reserved_loop_var(dummy_api_schema):
             "body": [{"print": ["Mollusc: %s", "class.name"]}],
         }
     }
-    v = samplegen.Validator(DummyMethod(
-        output=message_factory("$resp.molluscs", repeated_iter=[True])), dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(output=message_factory(
+            "$resp.molluscs", repeated_iter=[True])),
+        dummy_api_schema,
+    )
     with pytest.raises(types.ReservedVariableName):
         v.validate_response([loop])
 
@@ -566,18 +626,16 @@ def test_loop_map(dummy_api_schema):
                         "key": DummyField(),
                         "value": DummyField(
                             message=DummyMessage(
-                                fields={},
-                                type="MOLLUSC_TYPE"
-                            )
-                        )
+                                fields={}, type="MOLLUSC_TYPE")
+                        ),
                     },
                     type="MOLLUSCS_TYPE",
-                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                    options=namedtuple("MessageOptions", ["map_field"])(True),
                 ),
-                repeated=True
+                repeated=True,
             ),
         },
-        type="RESPONSE_TYPE"
+        type="RESPONSE_TYPE",
     )
     v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
     v.validate_response([loop])
@@ -594,9 +652,11 @@ def test_collection_loop_lexical_scope_variable(dummy_api_schema):
         },
         {"define": "cephalopod=m"},
     ]
-    v = samplegen.Validator(DummyMethod(
-        output=message_factory("$resp.molluscs", repeated_iter=[True])),
-        dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(output=message_factory(
+            "$resp.molluscs", repeated_iter=[True])),
+        dummy_api_schema,
+    )
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response(statements)
 
@@ -612,9 +672,11 @@ def test_collection_loop_lexical_scope_inline(dummy_api_schema):
         },
         {"define": "cephalopod=squid"},
     ]
-    v = samplegen.Validator(DummyMethod(
-        output=message_factory("$resp.molluscs", repeated_iter=[True])),
-        dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(output=message_factory(
+            "$resp.molluscs", repeated_iter=[True])),
+        dummy_api_schema,
+    )
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response(statements)
 
@@ -641,18 +703,16 @@ def test_map_loop_lexical_scope_key(dummy_api_schema):
                         "key": DummyField(),
                         "value": DummyField(
                             message=DummyMessage(
-                                fields={},
-                                type="MOLLUSC_TYPE"
-                            )
-                        )
+                                fields={}, type="MOLLUSC_TYPE")
+                        ),
                     },
                     type="MOLLUSCS_TYPE",
-                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                    options=namedtuple("MessageOptions", ["map_field"])(True),
                 ),
-                repeated=True
+                repeated=True,
             ),
         },
-        type="RESPONSE_TYPE"
+        type="RESPONSE_TYPE",
     )
 
     v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
@@ -682,18 +742,16 @@ def test_map_loop_lexical_scope_value(dummy_api_schema):
                         "key": DummyField(),
                         "value": DummyField(
                             message=DummyMessage(
-                                fields={},
-                                type="MOLLUSC_TYPE"
-                            )
-                        )
+                                fields={}, type="MOLLUSC_TYPE")
+                        ),
                     },
                     type="MOLLUSCS_TYPE",
-                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                    options=namedtuple("MessageOptions", ["map_field"])(True),
                 ),
-                repeated=True
+                repeated=True,
             ),
         },
-        type="RESPONSE_TYPE"
+        type="RESPONSE_TYPE",
     )
 
     v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
@@ -723,18 +781,16 @@ def test_map_loop_lexical_scope_inline(dummy_api_schema):
                         "key": DummyField(),
                         "value": DummyField(
                             message=DummyMessage(
-                                fields={},
-                                type="MOLLUSC_TYPE"
-                            )
-                        )
+                                fields={}, type="MOLLUSC_TYPE")
+                        ),
                     },
                     type="MOLLUSCS_TYPE",
-                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                    options=namedtuple("MessageOptions", ["map_field"])(True),
                 ),
-                repeated=True
+                repeated=True,
             ),
         },
-        type="RESPONSE_TYPE"
+        type="RESPONSE_TYPE",
     )
     v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
     with pytest.raises(types.UndefinedVariableReference):
@@ -759,18 +815,16 @@ def test_loop_map_reserved_key(dummy_api_schema):
                         "key": DummyField(),
                         "value": DummyField(
                             message=DummyMessage(
-                                fields={},
-                                type="MOLLUSC_TYPE"
-                            )
-                        )
+                                fields={}, type="MOLLUSC_TYPE")
+                        ),
                     },
                     type="MOLLUSCS_TYPE",
-                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                    options=namedtuple("MessageOptions", ["map_field"])(True),
                 ),
-                repeated=True
+                repeated=True,
             ),
         },
-        type="RESPONSE_TYPE"
+        type="RESPONSE_TYPE",
     )
 
     v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
@@ -795,19 +849,16 @@ def test_loop_map_reserved_val(dummy_api_schema):
                     fields={
                         "key": DummyField(),
                         "value": DummyField(
-                            message=DummyMessage(
-                                fields={},
-                                type="CLASS_TYPE"
-                            )
-                        )
+                            message=DummyMessage(fields={}, type="CLASS_TYPE")
+                        ),
                     },
                     type="MOLLUSCS_TYPE",
-                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                    options=namedtuple("MessageOptions", ["map_field"])(True),
                 ),
-                repeated=True
+                repeated=True,
             ),
         },
-        type="RESPONSE_TYPE"
+        type="RESPONSE_TYPE",
     )
 
     v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
@@ -844,19 +895,16 @@ def test_loop_map_no_key(dummy_api_schema):
                     fields={
                         "key": DummyField(),
                         "value": DummyField(
-                            message=DummyMessage(
-                                fields={},
-                                type="CLASS_TYPE"
-                            )
-                        )
+                            message=DummyMessage(fields={}, type="CLASS_TYPE")
+                        ),
                     },
                     type="MOLLUSCS_TYPE",
-                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                    options=namedtuple("MessageOptions", ["map_field"])(True),
                 ),
-                repeated=True
+                repeated=True,
             ),
         },
-        type="RESPONSE_TYPE"
+        type="RESPONSE_TYPE",
     )
 
     v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
@@ -878,19 +926,16 @@ def test_loop_map_no_value(dummy_api_schema):
                     fields={
                         "key": DummyField(),
                         "value": DummyField(
-                            message=DummyMessage(
-                                fields={},
-                                type="CLASS_TYPE"
-                            )
-                        )
+                            message=DummyMessage(fields={}, type="CLASS_TYPE")
+                        ),
                     },
                     type="MOLLUSCS_TYPE",
-                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                    options=namedtuple("MessageOptions", ["map_field"])(True),
                 ),
-                repeated=True
+                repeated=True,
             ),
         },
-        type="RESPONSE_TYPE"
+        type="RESPONSE_TYPE",
     )
 
     v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
@@ -898,9 +943,13 @@ def test_loop_map_no_value(dummy_api_schema):
 
 
 def test_loop_map_no_key_or_value(dummy_api_schema):
-    loop = {"loop": {"map": "$resp.molluscs",
-                     # Need at least one of 'key' or 'value'
-                     "body": [{"print": ["Dead loop"]}]}}
+    loop = {
+        "loop": {
+            "map": "$resp.molluscs",
+            # Need at least one of 'key' or 'value'
+            "body": [{"print": ["Dead loop"]}],
+        }
+    }
     OutputType = DummyMessage(
         fields={
             "molluscs": DummyField(
@@ -908,19 +957,16 @@ def test_loop_map_no_key_or_value(dummy_api_schema):
                     fields={
                         "key": DummyField(),
                         "value": DummyField(
-                            message=DummyMessage(
-                                fields={},
-                                type="CLASS_TYPE"
-                            )
-                        )
+                            message=DummyMessage(fields={}, type="CLASS_TYPE")
+                        ),
                     },
                     type="MOLLUSCS_TYPE",
-                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                    options=namedtuple("MessageOptions", ["map_field"])(True),
                 ),
-                repeated=True
+                repeated=True,
             ),
         },
-        type="RESPONSE_TYPE"
+        type="RESPONSE_TYPE",
     )
 
     v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
@@ -982,19 +1028,16 @@ def test_loop_map_redefined_key(dummy_api_schema):
                     fields={
                         "key": DummyField(),
                         "value": DummyField(
-                            message=DummyMessage(
-                                fields={},
-                                type="CLASS_TYPE"
-                            )
-                        )
+                            message=DummyMessage(fields={}, type="CLASS_TYPE")
+                        ),
                     },
                     type="MOLLUSCS_TYPE",
-                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                    options=namedtuple("MessageOptions", ["map_field"])(True),
                 ),
-                repeated=True
+                repeated=True,
             ),
         },
-        type="RESPONSE_TYPE"
+        type="RESPONSE_TYPE",
     )
 
     v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
@@ -1021,19 +1064,16 @@ def test_loop_map_redefined_value(dummy_api_schema):
                     fields={
                         "key": DummyField(),
                         "value": DummyField(
-                            message=DummyMessage(
-                                fields={},
-                                type="CLASS_TYPE"
-                            )
-                        )
+                            message=DummyMessage(fields={}, type="CLASS_TYPE")
+                        ),
                     },
                     type="MOLLUSCS_TYPE",
-                    options=namedtuple("MessageOptions", ["map_field"])(True)
+                    options=namedtuple("MessageOptions", ["map_field"])(True),
                 ),
-                repeated=True
+                repeated=True,
             ),
         },
-        type="RESPONSE_TYPE"
+        type="RESPONSE_TYPE",
     )
 
     v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
@@ -1053,7 +1093,7 @@ def test_validate_write_file(dummy_api_schema):
     OutputType = DummyMessage(
         fields={
             "species": DummyField(message=DummyMessage(fields={})),
-            "photo": DummyField(message=DummyMessage(fields={}))
+            "photo": DummyField(message=DummyMessage(fields={})),
         }
     )
     v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
@@ -1061,20 +1101,24 @@ def test_validate_write_file(dummy_api_schema):
 
 
 def test_validate_write_file_fname_fmt(dummy_api_schema):
-    statements = [{"write_file":
-                   {"filename": ["specimen-%s"], "contents": "$resp.photo"}}]
+    statements = [
+        {"write_file": {"filename": [
+            "specimen-%s"], "contents": "$resp.photo"}}
+    ]
     v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.MismatchedFormatSpecifier):
         v.validate_response(statements)
 
 
 def test_validate_write_file_fname_bad_var(dummy_api_schema):
-    statements = [{
-        "write_file": {
-            "filename": ["specimen-%s", "squid.species"],
-            "contents": "$resp.photo",
+    statements = [
+        {
+            "write_file": {
+                "filename": ["specimen-%s", "squid.species"],
+                "contents": "$resp.photo",
+            }
         }
-    }]
+    ]
     v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response(statements)
@@ -1085,7 +1129,7 @@ def test_validate_write_file_missing_fname(dummy_api_schema):
     OutputType = DummyMessage(
         fields={
             "filename": DummyField(message=DummyMessage(fields={})),
-            "photo": DummyField(message=DummyMessage(fields={}))
+            "photo": DummyField(message=DummyMessage(fields={})),
         }
     )
     v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
@@ -1094,12 +1138,12 @@ def test_validate_write_file_missing_fname(dummy_api_schema):
 
 
 def test_validate_write_file_missing_contents(dummy_api_schema):
-    statements = [{"write_file": {"filename": ["specimen-%s",
-                                               "$resp.species"]}}]
+    statements = [
+        {"write_file": {"filename": ["specimen-%s", "$resp.species"]}}]
     OutputType = DummyMessage(
         fields={
             "species": DummyField(message=DummyMessage(fields={})),
-            "photo": DummyField(message=DummyMessage(fields={}))
+            "photo": DummyField(message=DummyMessage(fields={})),
         }
     )
 
@@ -1109,16 +1153,18 @@ def test_validate_write_file_missing_contents(dummy_api_schema):
 
 
 def test_validate_write_file_bad_contents_var(dummy_api_schema):
-    statements = [{
-        "write_file": {
-            "filename": ["specimen-%s", "$resp.species"],
-            "contents": "squid.photo",
+    statements = [
+        {
+            "write_file": {
+                "filename": ["specimen-%s", "$resp.species"],
+                "contents": "squid.photo",
+            }
         }
-    }]
+    ]
     OutputType = DummyMessage(
         fields={
             "species": DummyField(message=DummyMessage(fields={})),
-            "photo": DummyField(message=DummyMessage(fields={}))
+            "photo": DummyField(message=DummyMessage(fields={})),
         }
     )
     v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
@@ -1148,17 +1194,20 @@ def test_validate_request_basic(dummy_api_schema):
                 message=DummyMessage(
                     fields={
                         "mantle_length": DummyField(
-                            message=DummyMessage(type="LENGTH_TYPE")),
+                            message=DummyMessage(type="LENGTH_TYPE")
+                        ),
                         "mantle_mass": DummyField(
-                            message=DummyMessage(type="MASS_TYPE")),
+                            message=DummyMessage(type="MASS_TYPE")
+                        ),
                         "num_tentacles": DummyField(
-                            message=DummyMessage(type="MASS_TYPE"))
+                            message=DummyMessage(type="MASS_TYPE")
+                        ),
                     },
-                    type="SQUID_TYPE"
+                    type="SQUID_TYPE",
                 )
             )
         },
-        type="REQUEST_TYPE"
+        type="REQUEST_TYPE",
     )
 
     v = samplegen.Validator(DummyMethod(input=input_type), dummy_api_schema)
@@ -1175,14 +1224,16 @@ def test_validate_request_basic(dummy_api_schema):
             samplegen.TransformedRequest(
                 base="squid",
                 body=[
-                    samplegen.AttributeRequestSetup(field="mantle_length",
-                                                    value='"100 \\"cm"'),
-                    samplegen.AttributeRequestSetup(field="mantle_mass",
-                                                    value='"10 kg"'),
-                    samplegen.AttributeRequestSetup(field="num_tentacles",
-                                                    value=10)
+                    samplegen.AttributeRequestSetup(
+                        field="mantle_length", value='"100 \\"cm"'
+                    ),
+                    samplegen.AttributeRequestSetup(
+                        field="mantle_mass", value='"10 kg"'
+                    ),
+                    samplegen.AttributeRequestSetup(
+                        field="num_tentacles", value=10),
                 ],
-                single=None
+                single=None,
             )
         ]
     )
@@ -1195,38 +1246,37 @@ def test_validate_request_no_field_parameter(dummy_api_schema):
     v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.InvalidRequestSetup):
         v.validate_and_transform_request(
-            types.CallingForm.Request, [{"squid": "humboldt",
-                                         "value": "teuthida"}]
+            types.CallingForm.Request, [
+                {"squid": "humboldt", "value": "teuthida"}]
         )
 
 
 def test_validate_request_no_such_attribute(dummy_api_schema):
-    v = samplegen.Validator(DummyMethod(
-        input=message_factory("mollusc.squid.mantle")),
-        dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(input=message_factory(
+            "mollusc.squid.mantle")), dummy_api_schema
+    )
     with pytest.raises(types.BadAttributeLookup):
         v.validate_and_transform_request(
-            types.CallingForm.Request,
-            [{"field": "clam.shell", "value": "20"}]
+            types.CallingForm.Request, [{"field": "clam.shell", "value": "20"}]
         )
 
 
 def test_validate_request_top_level_field(dummy_api_schema):
-    v = samplegen.Validator(DummyMethod(
-        input=message_factory("mollusc.squid")),
-        dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(input=message_factory("mollusc.squid")), dummy_api_schema
+    )
     actual = v.validate_and_transform_request(
-        types.CallingForm.Request,
-        [{"field": "squid", "value": "humboldt"}]
+        types.CallingForm.Request, [{"field": "squid", "value": "humboldt"}]
     )
 
     expected = samplegen.FullRequest(
         request_list=[
-            samplegen.TransformedRequest(base="squid",
-                                         body=None,
-                                         single=samplegen.AttributeRequestSetup(
-                                             value='"humboldt"'
-                                         ))
+            samplegen.TransformedRequest(
+                base="squid",
+                body=None,
+                single=samplegen.AttributeRequestSetup(value='"humboldt"'),
+            )
         ]
     )
 
@@ -1234,14 +1284,12 @@ def test_validate_request_top_level_field(dummy_api_schema):
 
 
 def test_validate_request_missing_keyword(dummy_api_schema, kword="field"):
-    v = samplegen.Validator(DummyMethod(
-        input=message_factory("mollusc.squid")),
-        dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(input=message_factory("mollusc.squid")), dummy_api_schema
+    )
     with pytest.raises(types.InvalidRequestSetup):
         v.validate_and_transform_request(
-            types.CallingForm.Request,
-            [{kword: "squid"}]
-        )
+            types.CallingForm.Request, [{kword: "squid"}])
 
 
 def test_validate_request_missing_value(dummy_api_schema):
@@ -1250,33 +1298,38 @@ def test_validate_request_missing_value(dummy_api_schema):
 
 def test_validate_request_spurious_kword(dummy_api_schema):
     v = samplegen.Validator(
-        DummyMethod(input=message_factory("mollusc.squid")),
-        dummy_api_schema)
+        DummyMethod(input=message_factory("mollusc.squid")), dummy_api_schema
+    )
     with pytest.raises(types.InvalidRequestSetup):
         v.validate_and_transform_request(
             types.CallingForm.Request,
-            [{"field": "mollusc.squid", "value": "humboldt", "order": "teuthida"}]
+            [{"field": "mollusc.squid", "value": "humboldt", "order": "teuthida"}],
         )
 
 
 def test_validate_request_unknown_field_type(dummy_api_schema):
-    v = samplegen.Validator(DummyMethod(
-        input=DummyMessage(fields={"squid": DummyField()})), dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(input=DummyMessage(fields={"squid": DummyField()})),
+        dummy_api_schema,
+    )
     with pytest.raises(TypeError):
         v.validate_and_transform_request(
-            types.CallingForm.Request,
-            [{"field": "squid", "value": "humboldt"}]
+            types.CallingForm.Request, [
+                {"field": "squid", "value": "humboldt"}]
         )
 
 
 def test_validate_request_duplicate_top_level_fields(dummy_api_schema):
-    v = samplegen.Validator(DummyMethod(
-        input=message_factory("mollusc.squid")), dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(input=message_factory("mollusc.squid")), dummy_api_schema
+    )
     with pytest.raises(types.InvalidRequestSetup):
         v.validate_and_transform_request(
             types.CallingForm.Request,
-            [{"field": "squid", "value": "humboldt"},
-             {"field": "squid", "value": "bobtail"}]
+            [
+                {"field": "squid", "value": "humboldt"},
+                {"field": "squid", "value": "bobtail"},
+            ],
         )
 
 
@@ -1285,30 +1338,32 @@ def test_validate_request_multiple_arguments(dummy_api_schema):
         fields={
             "squid": DummyField(
                 message=DummyMessage(
-                    fields={"mantle_length": DummyField(
-                        message=DummyMessage(type="LENGTH_TYPE"))},
-                    type="SQUID_TYPE"
+                    fields={
+                        "mantle_length": DummyField(
+                            message=DummyMessage(type="LENGTH_TYPE")
+                        )
+                    },
+                    type="SQUID_TYPE",
                 )
             ),
             "clam": DummyField(
                 message=DummyMessage(
-                    fields={"shell_mass": DummyField(
-                        message=DummyMessage(type="MASS_TYPE"))},
-                    type="CLAM_TYPE"
+                    fields={
+                        "shell_mass": DummyField(message=DummyMessage(type="MASS_TYPE"))
+                    },
+                    type="CLAM_TYPE",
                 )
             ),
         },
-        type="REQUEST_TYPE"
+        type="REQUEST_TYPE",
     )
 
     v = samplegen.Validator(DummyMethod(input=input_type), dummy_api_schema)
     actual = v.validate_and_transform_request(
         types.CallingForm.Request,
         [
-            {
-                "field": "squid.mantle_length",
-                "value": "100 cm", "value_is_file": True
-            },
+            {"field": "squid.mantle_length",
+                "value": "100 cm", "value_is_file": True},
             {
                 "field": "clam.shell_mass",
                 "value": "100 kg",
@@ -1320,19 +1375,23 @@ def test_validate_request_multiple_arguments(dummy_api_schema):
         request_list=[
             samplegen.TransformedRequest(
                 base="squid",
-                body=[samplegen.AttributeRequestSetup(
-                    field="mantle_length",
-                    value='"100 cm"',
-                    value_is_file=True)],
-                single=None
+                body=[
+                    samplegen.AttributeRequestSetup(
+                        field="mantle_length", value='"100 cm"', value_is_file=True
+                    )
+                ],
+                single=None,
             ),
             samplegen.TransformedRequest(
                 base="clam",
-                body=[samplegen.AttributeRequestSetup(
-                    field="shell_mass",
-                    value='"100 kg"',
-                    comment="Clams can be large")],
-                single=None
+                body=[
+                    samplegen.AttributeRequestSetup(
+                        field="shell_mass",
+                        value='"100 kg"',
+                        comment="Clams can be large",
+                    )
+                ],
+                single=None,
             ),
         ]
     )
@@ -1345,20 +1404,26 @@ def test_validate_request_duplicate_input_param(dummy_api_schema):
         fields={
             "squid": DummyField(
                 message=DummyMessage(
-                    fields={"mantle_mass": DummyField(
-                        message=DummyMessage(type="MASS_TYPE"))},
-                    type="SQUID_TYPE"
+                    fields={
+                        "mantle_mass": DummyField(
+                            message=DummyMessage(type="MASS_TYPE")
+                        )
+                    },
+                    type="SQUID_TYPE",
                 )
             ),
             "clam": DummyField(
                 message=DummyMessage(
-                    fields={"mantle_mass": DummyField(
-                        message=DummyMessage(type="MASS_TYPE"))},
-                    type="CLAM_TYPE"
+                    fields={
+                        "mantle_mass": DummyField(
+                            message=DummyMessage(type="MASS_TYPE")
+                        )
+                    },
+                    type="CLAM_TYPE",
                 )
             ),
         },
-        type="REQUEST_TYPE"
+        type="REQUEST_TYPE",
     )
 
     v = samplegen.Validator(DummyMethod(input=input_type), dummy_api_schema)
@@ -1592,20 +1657,22 @@ def test_validate_expression_map_lookup(dummy_api_schema):
                             message=DummyMessage(
                                 fields={
                                     "mantle": DummyField(
-                                        message=DummyMessage(type="MANTLE_TYPE",
-                                                             fields={}),
+                                        message=DummyMessage(
+                                            type="MANTLE_TYPE", fields={}
+                                        ),
                                     )
                                 },
-                                type="CEPHALOPOD_TYPE"
+                                type="CEPHALOPOD_TYPE",
                             )
                         ),
                     },
                     type="CEPHALOPODS_TYPE",
-                    options=namedtuple("MessageOptions", ["map_field"])(True)),
+                    options=namedtuple("MessageOptions", ["map_field"])(True),
+                ),
                 repeated=True,
             )
         },
-        type="MOLLUSC_TYPE"
+        type="MOLLUSC_TYPE",
     )
     method = DummyMethod(output=OutputType)
     v = samplegen.Validator(method, dummy_api_schema)
@@ -1623,20 +1690,22 @@ def test_validate_expression_map_lookup_terminal_lookup(dummy_api_schema):
                             message=DummyMessage(
                                 fields={
                                     "mantle": DummyField(
-                                        message=DummyMessage(type="MANTLE_TYPE",
-                                                             fields={}),
+                                        message=DummyMessage(
+                                            type="MANTLE_TYPE", fields={}
+                                        ),
                                     )
                                 },
-                                type="CEPHALOPOD_TYPE"
+                                type="CEPHALOPOD_TYPE",
                             )
                         ),
                     },
                     type="CEPHALOPODS_TYPE",
-                    options=namedtuple("MessageOptions", ["map_field"])(True)),
+                    options=namedtuple("MessageOptions", ["map_field"])(True),
+                ),
                 repeated=True,
             )
         },
-        type="MOLLUSC_TYPE"
+        type="MOLLUSC_TYPE",
     )
     method = DummyMethod(output=OutputType)
     v = samplegen.Validator(method, dummy_api_schema)
@@ -1654,21 +1723,24 @@ def test_validate_expression_mapped_no_map_field(dummy_api_schema):
                             message=DummyMessage(
                                 fields={
                                     "mantle": DummyField(
-                                        message=DummyMessage(type="MANTLE_TYPE",
-                                                             fields={}),
+                                        message=DummyMessage(
+                                            type="MANTLE_TYPE", fields={}
+                                        ),
                                     )
                                 },
-                                type="CEPHALOPOD_TYPE"
+                                type="CEPHALOPOD_TYPE",
                             )
-                        )},
+                        ),
+                    },
                     type="CEPHALOPODS_TYPE",
                     # The map_field attribute in the options indicates whether
                     # a message type is 'really' a map or just looks like one.
-                    options=namedtuple("MessageOptions", ["map_field"])(False)),
+                    options=namedtuple("MessageOptions", ["map_field"])(False),
+                ),
                 repeated=True,
             )
         },
-        type="MOLLUSC_TYPE"
+        type="MOLLUSC_TYPE",
     )
     method = DummyMethod(output=OutputType)
     v = samplegen.Validator(method, dummy_api_schema)
@@ -1684,11 +1756,12 @@ def test_validate_expression_mapped_no_value(dummy_api_schema):
                     # Maps need 'key' AND 'value' attributes.
                     fields={"key": DummyField()},
                     type="CEPHALOPODS_TYPE",
-                    options=namedtuple("MessageOptions", ["map_field"])(True)),
+                    options=namedtuple("MessageOptions", ["map_field"])(True),
+                ),
                 repeated=True,
             )
         },
-        type="MOLLUSC_TYPE"
+        type="MOLLUSC_TYPE",
     )
     method = DummyMethod(output=OutputType)
     v = samplegen.Validator(method, dummy_api_schema)
@@ -1707,11 +1780,12 @@ def test_validate_expression_mapped_no_message(dummy_api_schema):
                         "value": DummyField(),
                     },
                     type="CEPHALOPODS_TYPE",
-                    options=namedtuple("MessageOptions", ["map_field"])(True)),
+                    options=namedtuple("MessageOptions", ["map_field"])(True),
+                ),
                 repeated=True,
             )
         },
-        type="MOLLUSC_TYPE"
+        type="MOLLUSC_TYPE",
     )
     method = DummyMethod(output=OutputType)
     v = samplegen.Validator(method, dummy_api_schema)
@@ -1755,15 +1829,18 @@ def test_validate_request_enum(dummy_api_schema):
     v = samplegen.Validator(DummyMethod(input=request_type), dummy_api_schema)
     actual = v.validate_and_transform_request(
         types.CallingForm.Request,
-        [{"field": "cephalopod.subclass", "value": "COLEOIDEA"}]
+        [{"field": "cephalopod.subclass", "value": "COLEOIDEA"}],
     )
     expected = samplegen.FullRequest(
         request_list=[
             samplegen.TransformedRequest(
                 "cephalopod",
-                body=[samplegen.AttributeRequestSetup(field="subclass",
-                                                      value='"COLEOIDEA"')],
-                single=None
+                body=[
+                    samplegen.AttributeRequestSetup(
+                        field="subclass", value='"COLEOIDEA"'
+                    )
+                ],
+                single=None,
             )
         ]
     )
@@ -1776,26 +1853,34 @@ def test_validate_request_enum_top_level(dummy_api_schema):
 
     v = samplegen.Validator(DummyMethod(input=request_type), dummy_api_schema)
     actual = v.validate_and_transform_request(
-        types.CallingForm.Request,
-        [{"field": "subclass", "value": "COLEOIDEA"}]
+        types.CallingForm.Request, [
+            {"field": "subclass", "value": "COLEOIDEA"}]
     )
-    expected = samplegen.FullRequest(request_list=[samplegen.TransformedRequest(
-        "subclass",
-        single=samplegen.AttributeRequestSetup(value='"COLEOIDEA"'),
-        body=None)])
+    expected = samplegen.FullRequest(
+        request_list=[
+            samplegen.TransformedRequest(
+                "subclass",
+                single=samplegen.AttributeRequestSetup(value='"COLEOIDEA"'),
+                body=None,
+            )
+        ]
+    )
     assert actual == expected
 
 
 def test_validate_request_enum_invalid_value(dummy_api_schema):
     enum = enum_factory("subclass", ["AMMONOIDEA", "COLEOIDEA", "NAUTILOIDEA"])
     request_type = message_factory("mollusc.cephalopod.subclass", enum=enum)
-    v = samplegen.Validator(DummyMethod(output=message_factory("mollusc_result"),
-                                        input=request_type), dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(output=message_factory(
+            "mollusc_result"), input=request_type),
+        dummy_api_schema,
+    )
     with pytest.raises(types.InvalidEnumVariant):
         v.validate_and_transform_request(
             types.CallingForm.Request,
             # Heterodonta are bivalves, not cephalopods
-            [{"field": "cephalopod.subclass", "value": "HETERODONTA"}]
+            [{"field": "cephalopod.subclass", "value": "HETERODONTA"}],
         )
 
 
@@ -1809,25 +1894,28 @@ def test_validate_request_enum_not_last_attr(dummy_api_schema):
                 name="subclass",
                 enum=enum_factory(
                     "subclass", ["AMMONOIDEA", "COLEOIDEA", "NAUTILOIDEA"]
-                )
+                ),
             )
-        ]
+        ],
     )
 
     # request_type = message_factory("mollusc.subclass", enum=enum)
-    v = samplegen.Validator(DummyMethod(output=message_factory("mollusc_result"),
-                                        input=request_type), dummy_api_schema)
+    v = samplegen.Validator(
+        DummyMethod(output=message_factory(
+            "mollusc_result"), input=request_type),
+        dummy_api_schema,
+    )
     with pytest.raises(types.NonTerminalPrimitiveOrEnum):
         v.validate_and_transform_request(
             types.CallingForm.Request,
-            [{"field": "subclass.order", "value": "COLEOIDEA"}]
+            [{"field": "subclass.order", "value": "COLEOIDEA"}],
         )
 
 
 def test_validate_request_resource_name():
     request = [
         {"field": "taxon%kingdom", "value": "animalia"},
-        {"field": "taxon%phylum", "value": "mollusca", "input_parameter": "phylum"}
+        {"field": "taxon%phylum", "value": "mollusca", "input_parameter": "phylum"},
     ]
 
     resource_type = "taxonomy.google.com/Linnaean"
@@ -1851,18 +1939,18 @@ def test_validate_request_resource_name():
     api_schema = DummyApiSchema(
         messages={
             k: v
-            for k, v in enumerate([
-                request_descriptor,
-                phylum_descriptor,
-            ])
+            for k, v in enumerate(
+                [
+                    request_descriptor,
+                    phylum_descriptor,
+                ]
+            )
         },
         services={
             "Mollusc": DummyService(
                 methods={},
                 client_name="MolluscClient",
-                resource_messages_dict={
-                    resource_type: phylum_descriptor
-                }
+                resource_messages_dict={resource_type: phylum_descriptor},
             )
         },
     )
@@ -1870,9 +1958,7 @@ def test_validate_request_resource_name():
     v = samplegen.Validator(method=method, api_schema=api_schema)
 
     actual = v.validate_and_transform_request(
-        types.CallingForm.Request,
-        request
-    )
+        types.CallingForm.Request, request)
 
     expected = samplegen.FullRequest(
         request_list=[
@@ -1890,7 +1976,7 @@ def test_validate_request_resource_name():
                         value="mollusca",
                         input_parameter="phylum",
                     ),
-                ]
+                ],
             )
         ]
     )
@@ -1904,23 +1990,20 @@ def test_validate_request_primitive_field(dummy_api_schema):
 
     request = [{"field": "species", "value": "Architeuthis dux"}]
     v = samplegen.Validator(
-        DummyMethod(
-            output=message_factory("mollusc_result"),
-            input=request_type
-        ),
-        dummy_api_schema
+        DummyMethod(output=message_factory(
+            "mollusc_result"), input=request_type),
+        dummy_api_schema,
     )
 
-    actual = v.validate_and_transform_request(types.CallingForm.Request,
-                                              request)
+    actual = v.validate_and_transform_request(
+        types.CallingForm.Request, request)
     expected = samplegen.FullRequest(
         request_list=[
             samplegen.TransformedRequest(
                 base="species",
                 body=None,
                 single=samplegen.AttributeRequestSetup(
-                    value='"Architeuthis dux"'
-                )
+                    value='"Architeuthis dux"'),
             )
         ]
     )
@@ -1945,23 +2028,19 @@ def test_validate_request_resource_name_mixed(request=None):
                             name="Taxon",
                             fields=[
                                 make_field(
-                                    name="domain",
-                                    message=make_message(name="Domain")
+                                    name="domain", message=make_message(name="Domain")
                                 )
-                            ]
-                        )
+                            ],
+                        ),
                     )
-                ]
+                ],
             ),
         ),
-        api_schema=None
+        api_schema=None,
     )
 
     with pytest.raises(types.ResourceRequestMismatch):
-        v.validate_and_transform_request(
-            types.CallingForm.Request,
-            request
-        )
+        v.validate_and_transform_request(types.CallingForm.Request, request)
 
 
 def test_validate_request_resource_name_mixed_reversed():
@@ -1974,9 +2053,7 @@ def test_validate_request_resource_name_mixed_reversed():
 
 
 def test_validate_request_no_such_attr(dummy_api_schema):
-    request = [
-        {"field": "taxon%kingdom", "value": "animalia"}
-    ]
+    request = [{"field": "taxon%kingdom", "value": "animalia"}]
     method = DummyMethod(input=make_message(name="Request"))
     v = samplegen.Validator(method, dummy_api_schema)
 
@@ -1985,9 +2062,7 @@ def test_validate_request_no_such_attr(dummy_api_schema):
 
 
 def test_validate_request_no_such_resource():
-    request = [
-        {"field": "taxon%kingdom", "value": "animalia"}
-    ]
+    request = [{"field": "taxon%kingdom", "value": "animalia"}]
     resource_type = "taxonomy.google.com/Linnaean"
     taxon_field = make_field(name="taxon")
     rr = taxon_field.options.Extensions[resource_pb2.resource_reference]
@@ -1999,9 +2074,7 @@ def test_validate_request_no_such_resource():
         messages={k: v for k, v in enumerate([request_descriptor])},
         services={
             "Mollusc": DummyService(
-                methods={},
-                client_name="MolluscClient",
-                resource_messages_dict={}
+                methods={}, client_name="MolluscClient", resource_messages_dict={}
             )
         },
     )
@@ -2034,18 +2107,18 @@ def test_validate_request_no_such_pattern():
     api_schema = DummyApiSchema(
         messages={
             k: v
-            for k, v in enumerate([
-                request_descriptor,
-                phylum_descriptor,
-            ])
+            for k, v in enumerate(
+                [
+                    request_descriptor,
+                    phylum_descriptor,
+                ]
+            )
         },
         services={
             "Mollusc": DummyService(
                 methods={},
                 client_name="MolluscClient",
-                resource_messages_dict={
-                    resource_type: phylum_descriptor
-                }
+                resource_messages_dict={resource_type: phylum_descriptor},
             )
         },
     )
@@ -2061,16 +2134,13 @@ def test_validate_request_non_terminal_primitive_field(dummy_api_schema):
 
     request = [{"field": "species.nomenclature", "value": "Architeuthis dux"}]
     v = samplegen.Validator(
-        DummyMethod(
-            output=message_factory("mollusc_result"),
-            input=request_type
-        ),
-        dummy_api_schema
+        DummyMethod(output=message_factory(
+            "mollusc_result"), input=request_type),
+        dummy_api_schema,
     )
 
     with pytest.raises(types.NonTerminalPrimitiveOrEnum):
-        v.validate_and_transform_request(types.CallingForm.Request,
-                                         request)
+        v.validate_and_transform_request(types.CallingForm.Request, request)
 
 
 def test_parse_invalid_handwritten_spec(fs):
@@ -2092,7 +2162,43 @@ def test_parse_invalid_handwritten_spec(fs):
         list(samplegen.parse_handwritten_specs(sample_configs=[fpath]))
 
 
-def test_generate_sample_spec_basic():
+@pytest.mark.parametrize(
+    "opts_transport,expected",
+    [
+        (
+            "transport=grpc+rest",
+            [
+                {
+                    "rpc": "Ramshorn",
+                    "transport": "grpc",
+                    "service": "animalia.mollusca.v1.Squid",
+                    "region_tag": "example_v1_generated_Squid_Ramshorn_sync",
+                    "description": "Snippet for ramshorn",
+                },
+                {
+                    "rpc": "Ramshorn",
+                    "transport": "grpc-async",
+                    "service": "animalia.mollusca.v1.Squid",
+                    "region_tag": "example_v1_generated_Squid_Ramshorn_async",
+                    "description": "Snippet for ramshorn",
+                },
+            ],
+        ),
+        (
+            "transport=rest",
+            [
+                {
+                    "rpc": "Ramshorn",
+                    "transport": "rest",
+                    "service": "animalia.mollusca.v1.Squid",
+                    "region_tag": "example_v1_generated_Squid_Ramshorn_sync",
+                    "description": "Snippet for ramshorn",
+                }
+            ],
+        ),
+    ],
+)
+def test_generate_sample_spec_basic(opts_transport, expected):
     service_options = descriptor_pb2.ServiceOptions()
     service_options.Extensions[client_pb2.default_host] = "example.googleapis.com"
 
@@ -2125,35 +2231,13 @@ def test_generate_sample_spec_basic():
             )
         ]
     )
-    opts = Options.build("transport=grpc+rest")
-    specs = sorted(samplegen.generate_sample_specs(
-        api_schema, opts=opts), key=lambda x: x["transport"])
+    opts = Options.build(opts_transport)
+    specs = sorted(
+        samplegen.generate_sample_specs(api_schema, opts=opts),
+        key=lambda x: x["transport"],
+    )
     specs.sort(key=lambda x: x["transport"])
-    assert len(specs) == 3
-
-    assert specs[0] == {
-        "rpc": "Ramshorn",
-        "transport": "grpc",
-        "service": "animalia.mollusca.v1.Squid",
-        "region_tag": "example_v1_generated_Squid_Ramshorn_sync",
-        "description": "Snippet for ramshorn"
-    }
-
-    assert specs[1] == {
-        "rpc": "Ramshorn",
-        "transport": "grpc-async",
-        "service": "animalia.mollusca.v1.Squid",
-        "region_tag": "example_v1_generated_Squid_Ramshorn_async",
-        "description": "Snippet for ramshorn"
-    }
-
-    assert specs[2] == {
-        "rpc": "Ramshorn",
-        "transport": "rest",
-        "service": "animalia.mollusca.v1.Squid",
-        "region_tag": "example_v1_generated_Squid_Ramshorn_rest",
-        "description": "Snippet for ramshorn"
-    }
+    assert specs == expected
 
 
 def test__set_sample_metadata_server_streaming():
@@ -2164,7 +2248,7 @@ def test__set_sample_metadata_server_streaming():
         "region_tag": "example_v1_generated_Squid_Ramshorn_sync",
         "description": "Snippet for ramshorn",
         "module_namespace": ["animalia"],
-        "module_name": "mollusca_v1"
+        "module_name": "mollusca_v1",
     }
 
     service_options = descriptor_pb2.ServiceOptions()
@@ -2204,31 +2288,37 @@ def test__set_sample_metadata_server_streaming():
     snippet_metadata = samplegen._fill_sample_metadata(sample, api_schema)
 
     assert json_format.MessageToDict(snippet_metadata) == {
-        'regionTag': 'example_v1_generated_Squid_Ramshorn_sync',
-        'description': 'Sample for Ramshorn',
-        'language': 'PYTHON',
-        'clientMethod': {
-            'shortName': 'ramshorn',
-            'fullName': 'animalia.mollusca_v1.SquidClient.ramshorn',
-            'parameters': [
-                {'type': 'animalia.mollusca_v1.types.MolluscRequest', 'name': 'request'},
-                {'type': 'google.api_core.retry.Retry', 'name': 'retry'},
-                {'type': 'float', 'name': 'timeout'},
-                {'type': 'Sequence[Tuple[str, str]', 'name': 'metadata'}
+        "regionTag": "example_v1_generated_Squid_Ramshorn_sync",
+        "description": "Sample for Ramshorn",
+        "language": "PYTHON",
+        "clientMethod": {
+            "shortName": "ramshorn",
+            "fullName": "animalia.mollusca_v1.SquidClient.ramshorn",
+            "parameters": [
+                {
+                    "type": "animalia.mollusca_v1.types.MolluscRequest",
+                    "name": "request",
+                },
+                {"type": "google.api_core.retry.Retry", "name": "retry"},
+                {"type": "float", "name": "timeout"},
+                {"type": "Sequence[Tuple[str, str]", "name": "metadata"},
             ],
-            'resultType': 'Iterable[animalia.mollusca_v1.types.Mollusc]',
-            'client': {
-                'shortName': 'SquidClient',
-                'fullName': 'animalia.mollusca_v1.SquidClient'  # FIX THE FULL NAME
+            "resultType": "Iterable[animalia.mollusca_v1.types.Mollusc]",
+            "client": {
+                "shortName": "SquidClient",
+                "fullName": "animalia.mollusca_v1.SquidClient",  # FIX THE FULL NAME
             },
-            'method': {
-                'shortName': 'Ramshorn',
-                'fullName': 'animalia.mollusca.v1.Squid.Ramshorn',
-                'service': {'shortName': 'Squid', 'fullName': 'animalia.mollusca.v1.Squid'}
-            }
+            "method": {
+                "shortName": "Ramshorn",
+                "fullName": "animalia.mollusca.v1.Squid.Ramshorn",
+                "service": {
+                    "shortName": "Squid",
+                    "fullName": "animalia.mollusca.v1.Squid",
+                },
+            },
         },
-        'canonical': True,
-        'origin': 'API_DEFINITION'
+        "canonical": True,
+        "origin": "API_DEFINITION",
     }
 
 
@@ -2240,7 +2330,7 @@ def test__set_sample_metadata_client_streaming():
         "region_tag": "example_v1_generated_Squid_Ramshorn_sync",
         "description": "Snippet for ramshorn",
         "module_namespace": ["animalia"],
-        "module_name": "mollusca_v1"
+        "module_name": "mollusca_v1",
     }
 
     service_options = descriptor_pb2.ServiceOptions()
@@ -2282,39 +2372,48 @@ def test__set_sample_metadata_client_streaming():
     print(json_format.MessageToDict(snippet_metadata))
 
     assert json_format.MessageToDict(snippet_metadata) == {
-        'regionTag': 'example_v1_generated_Squid_Ramshorn_sync',
-        'description': 'Sample for Ramshorn',
-        'language': 'PYTHON',
-        'clientMethod': {
-            'shortName': 'ramshorn',
-            'fullName': 'animalia.mollusca_v1.SquidClient.ramshorn',
-            'parameters': [
-                {'type': 'Iterator[animalia.mollusca_v1.types.MolluscRequest]',
-                    'name': 'requests'},
-                {'type': 'google.api_core.retry.Retry', 'name': 'retry'},
-                {'type': 'float', 'name': 'timeout'},
-                {'type': 'Sequence[Tuple[str, str]', 'name': 'metadata'}
+        "regionTag": "example_v1_generated_Squid_Ramshorn_sync",
+        "description": "Sample for Ramshorn",
+        "language": "PYTHON",
+        "clientMethod": {
+            "shortName": "ramshorn",
+            "fullName": "animalia.mollusca_v1.SquidClient.ramshorn",
+            "parameters": [
+                {
+                    "type": "Iterator[animalia.mollusca_v1.types.MolluscRequest]",
+                    "name": "requests",
+                },
+                {"type": "google.api_core.retry.Retry", "name": "retry"},
+                {"type": "float", "name": "timeout"},
+                {"type": "Sequence[Tuple[str, str]", "name": "metadata"},
             ],
-            'resultType': 'animalia.mollusca_v1.types.Mollusc',
-            'client': {
-                'shortName': 'SquidClient',
-                'fullName': 'animalia.mollusca_v1.SquidClient'
+            "resultType": "animalia.mollusca_v1.types.Mollusc",
+            "client": {
+                "shortName": "SquidClient",
+                "fullName": "animalia.mollusca_v1.SquidClient",
             },
-            'method': {
-                'shortName': 'Ramshorn',
-                'fullName': 'animalia.mollusca.v1.Squid.Ramshorn',
-                'service': {'shortName': 'Squid', 'fullName': 'animalia.mollusca.v1.Squid'}
-            }
+            "method": {
+                "shortName": "Ramshorn",
+                "fullName": "animalia.mollusca.v1.Squid.Ramshorn",
+                "service": {
+                    "shortName": "Squid",
+                    "fullName": "animalia.mollusca.v1.Squid",
+                },
+            },
         },
-        'canonical': True,
-        'origin': 'API_DEFINITION'
+        "canonical": True,
+        "origin": "API_DEFINITION",
     }
 
 
-def make_message(name: str, package: str = 'animalia.mollusca.v1', module: str = 'cephalopoda',
-                 fields: Sequence[wrappers.Field] = (), meta: metadata.Metadata = None,
-                 options: descriptor_pb2.MethodOptions = None,
-                 ) -> wrappers.MessageType:
+def make_message(
+    name: str,
+    package: str = "animalia.mollusca.v1",
+    module: str = "cephalopoda",
+    fields: Sequence[wrappers.Field] = (),
+    meta: metadata.Metadata = None,
+    options: descriptor_pb2.MethodOptions = None,
+) -> wrappers.MessageType:
     message_pb = descriptor_pb2.DescriptorProto(
         name=name,
         field=[i.field_pb for i in fields],
@@ -2325,21 +2424,24 @@ def make_message(name: str, package: str = 'animalia.mollusca.v1', module: str =
         fields=OrderedDict((i.name, i) for i in fields),
         nested_messages={},
         nested_enums={},
-        meta=meta or metadata.Metadata(address=metadata.Address(
-            name=name,
-            package=tuple(package.split('.')),
-            module=module,
-        )),
+        meta=meta
+        or metadata.Metadata(
+            address=metadata.Address(
+                name=name,
+                package=tuple(package.split(".")),
+                module=module,
+            )
+        ),
     )
 
 
 # Borrowed from test_field.py
 def make_field(*, message=None, enum=None, **kwargs) -> wrappers.Field:
     T = descriptor_pb2.FieldDescriptorProto.Type
-    kwargs.setdefault('name', 'my_field')
-    kwargs.setdefault('number', 1)
-    kwargs.setdefault('type', T.Value('TYPE_BOOL'))
-    if isinstance(kwargs['type'], str):
-        kwargs['type'] = T.Value(kwargs['type'])
+    kwargs.setdefault("name", "my_field")
+    kwargs.setdefault("number", 1)
+    kwargs.setdefault("type", T.Value("TYPE_BOOL"))
+    if isinstance(kwargs["type"], str):
+        kwargs["type"] = T.Value(kwargs["type"])
     field_pb = descriptor_pb2.FieldDescriptorProto(**kwargs)
     return wrappers.Field(field_pb=field_pb, message=message, enum=enum)

@@ -997,17 +997,23 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
     return request
 
 
-def _transport_type_from_transport(transport: str) -> str:
-    if transport == api.TRANSPORT_GRPC:
+def _sync_or_async_from_transport(transport: str) -> str:
+    if transport in (api.TRANSPORT_GRPC, api.TRANSPORT_REST):
         return "sync"
-    elif transport == api.TRANSPORT_GRPC_ASYNC:
+    else:  # transport is api.TRANSPORT_GRPC_ASYNC
+        # Currently the REST transport does not support async.
         return "async"
-    else:  # api.TRANSPORT_REST
-        return "rest"
+
+
+def _supports_grpc(service) -> bool:
+    return api.TRANSPORT_GRPC in service.clients.keys()
 
 
 def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, Any], None, None]:
     """Given an API, generate basic sample specs for each method.
+
+    If a service supports gRPC transport, we do not generate
+    spec for REST even if it also supports REST transport.
 
     Args:
         api_schema (api.API): The schema that defines the API.
@@ -1021,12 +1027,15 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
     for service_name, service in gapic_metadata.services.items():
         api_short_name = api_schema.services[f"{api_schema.naming.proto_package}.{service_name}"].shortname
         api_version = api_schema.naming.version
+        supports_grpc = _supports_grpc(service)
         for transport, client in service.clients.items():
-            transport_type = _transport_type_from_transport(transport)
+            if supports_grpc and transport == api.TRANSPORT_REST:
+                continue
+            sync_or_async = _sync_or_async_from_transport(transport)
             for rpc_name, method_list in client.rpcs.items():
                 # Region Tag Format:
                 # [{START|END} ${apishortname}_${apiVersion}_generated_${serviceName}_${rpcName}_{sync|async|rest}]
-                region_tag = f"{api_short_name}_{api_version}_generated_{service_name}_{rpc_name}_{transport_type}"
+                region_tag = f"{api_short_name}_{api_version}_generated_{service_name}_{rpc_name}_{sync_or_async}"
                 spec = {
                     "rpc": rpc_name,
                     "transport": transport,
