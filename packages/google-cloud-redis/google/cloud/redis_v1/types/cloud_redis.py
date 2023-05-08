@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
     manifest={
         "NodeInfo",
         "Instance",
+        "PersistenceConfig",
         "RescheduleMaintenanceRequest",
         "MaintenancePolicy",
         "WeeklyMaintenanceWindow",
@@ -246,6 +247,22 @@ class Instance(proto.Message):
         read_replicas_mode (google.cloud.redis_v1.types.Instance.ReadReplicasMode):
             Optional. Read replicas mode for the instance. Defaults to
             READ_REPLICAS_DISABLED.
+        customer_managed_key (str):
+            Optional. The KMS key reference that the
+            customer provides when trying to create the
+            instance.
+        persistence_config (google.cloud.redis_v1.types.PersistenceConfig):
+            Optional. Persistence configuration
+            parameters
+        suspension_reasons (MutableSequence[google.cloud.redis_v1.types.Instance.SuspensionReason]):
+            Optional. reasons that causes instance in
+            "SUSPENDED" state.
+        maintenance_version (str):
+            Optional. The self service update maintenance version. The
+            version is date based such as "20210712_00_00".
+        available_maintenance_versions (MutableSequence[str]):
+            Optional. The available maintenance versions
+            that an instance could update to.
     """
 
     class State(proto.Enum):
@@ -358,6 +375,20 @@ class Instance(proto.Message):
         READ_REPLICAS_MODE_UNSPECIFIED = 0
         READ_REPLICAS_DISABLED = 1
         READ_REPLICAS_ENABLED = 2
+
+    class SuspensionReason(proto.Enum):
+        r"""Possible reasons for the instance to be in a "SUSPENDED"
+        state.
+
+        Values:
+            SUSPENSION_REASON_UNSPECIFIED (0):
+                Not set.
+            CUSTOMER_MANAGED_KEY_ISSUE (1):
+                Something wrong with the CMEK key provided by
+                customer.
+        """
+        SUSPENSION_REASON_UNSPECIFIED = 0
+        CUSTOMER_MANAGED_KEY_ISSUE = 1
 
     name: str = proto.Field(
         proto.STRING,
@@ -490,6 +521,113 @@ class Instance(proto.Message):
         proto.ENUM,
         number=35,
         enum=ReadReplicasMode,
+    )
+    customer_managed_key: str = proto.Field(
+        proto.STRING,
+        number=36,
+    )
+    persistence_config: "PersistenceConfig" = proto.Field(
+        proto.MESSAGE,
+        number=37,
+        message="PersistenceConfig",
+    )
+    suspension_reasons: MutableSequence[SuspensionReason] = proto.RepeatedField(
+        proto.ENUM,
+        number=38,
+        enum=SuspensionReason,
+    )
+    maintenance_version: str = proto.Field(
+        proto.STRING,
+        number=39,
+    )
+    available_maintenance_versions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=40,
+    )
+
+
+class PersistenceConfig(proto.Message):
+    r"""Configuration of the persistence functionality.
+
+    Attributes:
+        persistence_mode (google.cloud.redis_v1.types.PersistenceConfig.PersistenceMode):
+            Optional. Controls whether Persistence
+            features are enabled. If not provided, the
+            existing value will be used.
+        rdb_snapshot_period (google.cloud.redis_v1.types.PersistenceConfig.SnapshotPeriod):
+            Optional. Period between RDB snapshots. Snapshots will be
+            attempted every period starting from the provided snapshot
+            start time. For example, a start time of 01/01/2033 06:45
+            and SIX_HOURS snapshot period will do nothing until
+            01/01/2033, and then trigger snapshots every day at 06:45,
+            12:45, 18:45, and 00:45 the next day, and so on. If not
+            provided, TWENTY_FOUR_HOURS will be used as default.
+        rdb_next_snapshot_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The next time that a snapshot
+            attempt is scheduled to occur.
+        rdb_snapshot_start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Date and time that the first
+            snapshot was/will be attempted, and to which
+            future snapshots will be aligned. If not
+            provided, the current time will be used.
+    """
+
+    class PersistenceMode(proto.Enum):
+        r"""Available Persistence modes.
+
+        Values:
+            PERSISTENCE_MODE_UNSPECIFIED (0):
+                Not set.
+            DISABLED (1):
+                Persistence is disabled for the instance,
+                and any existing snapshots are deleted.
+            RDB (2):
+                RDB based Persistence is enabled.
+        """
+        PERSISTENCE_MODE_UNSPECIFIED = 0
+        DISABLED = 1
+        RDB = 2
+
+    class SnapshotPeriod(proto.Enum):
+        r"""Available snapshot periods for scheduling.
+
+        Values:
+            SNAPSHOT_PERIOD_UNSPECIFIED (0):
+                Not set.
+            ONE_HOUR (3):
+                Snapshot every 1 hour.
+            SIX_HOURS (4):
+                Snapshot every 6 hours.
+            TWELVE_HOURS (5):
+                Snapshot every 12 hours.
+            TWENTY_FOUR_HOURS (6):
+                Snapshot every 24 hours.
+        """
+        SNAPSHOT_PERIOD_UNSPECIFIED = 0
+        ONE_HOUR = 3
+        SIX_HOURS = 4
+        TWELVE_HOURS = 5
+        TWENTY_FOUR_HOURS = 6
+
+    persistence_mode: PersistenceMode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=PersistenceMode,
+    )
+    rdb_snapshot_period: SnapshotPeriod = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=SnapshotPeriod,
+    )
+    rdb_next_snapshot_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    rdb_snapshot_start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
 
 
