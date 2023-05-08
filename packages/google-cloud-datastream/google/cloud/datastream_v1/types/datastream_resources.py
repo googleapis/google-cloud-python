@@ -226,7 +226,12 @@ class BigQueryProfile(proto.Message):
 
 
 class StaticServiceIpConnectivity(proto.Message):
-    r"""Static IP address connectivity."""
+    r"""Static IP address connectivity. Used when the source database
+    is configured to allow incoming connections from the Datastream
+    public IP addresses for the region specified in the connection
+    profile.
+
+    """
 
 
 class ForwardSshTunnelConnectivity(proto.Message):
@@ -792,15 +797,20 @@ class OracleSourceConfig(proto.Message):
             Oracle objects to exclude from the stream.
         max_concurrent_cdc_tasks (int):
             Maximum number of concurrent CDC tasks. The
-            number should be non negative. If not set (or
-            set to 0), the system's default value will be
+            number should be non-negative. If not set (or
+            set to 0), the system's default value is used.
+        max_concurrent_backfill_tasks (int):
+            Maximum number of concurrent backfill tasks.
+            The number should be non-negative. If not set
+            (or set to 0), the system's default value is
             used.
         drop_large_objects (google.cloud.datastream_v1.types.OracleSourceConfig.DropLargeObjects):
             Drop large object values.
 
             This field is a member of `oneof`_ ``large_objects_handling``.
         stream_large_objects (google.cloud.datastream_v1.types.OracleSourceConfig.StreamLargeObjects):
-            Stream large object values.
+            Stream large object values. NOTE: This
+            feature is currently experimental.
 
             This field is a member of `oneof`_ ``large_objects_handling``.
     """
@@ -824,6 +834,10 @@ class OracleSourceConfig(proto.Message):
     max_concurrent_cdc_tasks: int = proto.Field(
         proto.INT32,
         number=3,
+    )
+    max_concurrent_backfill_tasks: int = proto.Field(
+        proto.INT32,
+        number=4,
     )
     drop_large_objects: DropLargeObjects = proto.Field(
         proto.MESSAGE,
@@ -967,12 +981,18 @@ class PostgresqlSourceConfig(proto.Message):
             PostgreSQL objects to exclude from the
             stream.
         replication_slot (str):
-            Required. The name of the logical replication
-            slot that's configured with the pgoutput plugin.
+            Required. Immutable. The name of the logical
+            replication slot that's configured with the
+            pgoutput plugin.
         publication (str):
             Required. The name of the publication that includes the set
             of all tables that are defined in the stream's
             include_objects.
+        max_concurrent_backfill_tasks (int):
+            Maximum number of concurrent backfill tasks.
+            The number should be non negative. If not set
+            (or set to 0), the system's default value will
+            be used.
     """
 
     include_objects: "PostgresqlRdbms" = proto.Field(
@@ -992,6 +1012,10 @@ class PostgresqlSourceConfig(proto.Message):
     publication: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    max_concurrent_backfill_tasks: int = proto.Field(
+        proto.INT32,
+        number=5,
     )
 
 
@@ -1122,6 +1146,11 @@ class MysqlSourceConfig(proto.Message):
             number should be non negative. If not set (or
             set to 0), the system's default value will be
             used.
+        max_concurrent_backfill_tasks (int):
+            Maximum number of concurrent backfill tasks.
+            The number should be non negative. If not set
+            (or set to 0), the system's default value will
+            be used.
     """
 
     include_objects: "MysqlRdbms" = proto.Field(
@@ -1137,6 +1166,10 @@ class MysqlSourceConfig(proto.Message):
     max_concurrent_cdc_tasks: int = proto.Field(
         proto.INT32,
         number=3,
+    )
+    max_concurrent_backfill_tasks: int = proto.Field(
+        proto.INT32,
+        number=4,
     )
 
 
@@ -1268,7 +1301,8 @@ class GcsDestinationConfig(proto.Message):
         file_rotation_interval (google.protobuf.duration_pb2.Duration):
             The maximum duration for which new events are
             added before a file is closed and a new file is
-            created.
+            created. Values within the range of 15-60
+            seconds are allowed.
         avro_file_format (google.cloud.datastream_v1.types.AvroFileFormat):
             AVRO file format configuration.
 
@@ -1307,7 +1341,7 @@ class GcsDestinationConfig(proto.Message):
 
 
 class BigQueryDestinationConfig(proto.Message):
-    r"""
+    r"""BigQuery destination configuration
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -1340,7 +1374,7 @@ class BigQueryDestinationConfig(proto.Message):
 
         Attributes:
             dataset_id (str):
-
+                The dataset ID of the target dataset.
         """
 
         dataset_id: str = proto.Field(
@@ -1354,7 +1388,8 @@ class BigQueryDestinationConfig(proto.Message):
 
         Attributes:
             dataset_template (google.cloud.datastream_v1.types.BigQueryDestinationConfig.SourceHierarchyDatasets.DatasetTemplate):
-
+                The dataset template to use for dynamic
+                dataset creation.
         """
 
         class DatasetTemplate(proto.Message):

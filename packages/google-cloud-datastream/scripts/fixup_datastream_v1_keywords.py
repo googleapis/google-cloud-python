@@ -40,7 +40,7 @@ class datastreamCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_connection_profile': ('parent', 'connection_profile_id', 'connection_profile', 'request_id', 'validate_only', 'force', ),
-        'create_private_connection': ('parent', 'private_connection_id', 'private_connection', 'request_id', ),
+        'create_private_connection': ('parent', 'private_connection_id', 'private_connection', 'request_id', 'force', ),
         'create_route': ('parent', 'route_id', 'route', 'request_id', ),
         'create_stream': ('parent', 'stream_id', 'stream', 'request_id', 'validate_only', 'force', ),
         'delete_connection_profile': ('name', 'request_id', ),

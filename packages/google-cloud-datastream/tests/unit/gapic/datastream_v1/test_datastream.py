@@ -10421,6 +10421,7 @@ def test_create_stream_rest(request_type):
                 },
                 "exclude_objects": {},
                 "max_concurrent_cdc_tasks": 2550,
+                "max_concurrent_backfill_tasks": 3076,
                 "drop_large_objects": {},
                 "stream_large_objects": {},
             },
@@ -10450,6 +10451,7 @@ def test_create_stream_rest(request_type):
                 },
                 "exclude_objects": {},
                 "max_concurrent_cdc_tasks": 2550,
+                "max_concurrent_backfill_tasks": 3076,
             },
             "postgresql_source_config": {
                 "include_objects": {
@@ -10479,6 +10481,7 @@ def test_create_stream_rest(request_type):
                 "exclude_objects": {},
                 "replication_slot": "replication_slot_value",
                 "publication": "publication_value",
+                "max_concurrent_backfill_tasks": 3076,
             },
         },
         "destination_config": {
@@ -10766,6 +10769,7 @@ def test_create_stream_rest_bad_request(
                 },
                 "exclude_objects": {},
                 "max_concurrent_cdc_tasks": 2550,
+                "max_concurrent_backfill_tasks": 3076,
                 "drop_large_objects": {},
                 "stream_large_objects": {},
             },
@@ -10795,6 +10799,7 @@ def test_create_stream_rest_bad_request(
                 },
                 "exclude_objects": {},
                 "max_concurrent_cdc_tasks": 2550,
+                "max_concurrent_backfill_tasks": 3076,
             },
             "postgresql_source_config": {
                 "include_objects": {
@@ -10824,6 +10829,7 @@ def test_create_stream_rest_bad_request(
                 "exclude_objects": {},
                 "replication_slot": "replication_slot_value",
                 "publication": "publication_value",
+                "max_concurrent_backfill_tasks": 3076,
             },
         },
         "destination_config": {
@@ -10996,6 +11002,7 @@ def test_update_stream_rest(request_type):
                 },
                 "exclude_objects": {},
                 "max_concurrent_cdc_tasks": 2550,
+                "max_concurrent_backfill_tasks": 3076,
                 "drop_large_objects": {},
                 "stream_large_objects": {},
             },
@@ -11025,6 +11032,7 @@ def test_update_stream_rest(request_type):
                 },
                 "exclude_objects": {},
                 "max_concurrent_cdc_tasks": 2550,
+                "max_concurrent_backfill_tasks": 3076,
             },
             "postgresql_source_config": {
                 "include_objects": {
@@ -11054,6 +11062,7 @@ def test_update_stream_rest(request_type):
                 "exclude_objects": {},
                 "replication_slot": "replication_slot_value",
                 "publication": "publication_value",
+                "max_concurrent_backfill_tasks": 3076,
             },
         },
         "destination_config": {
@@ -11319,6 +11328,7 @@ def test_update_stream_rest_bad_request(
                 },
                 "exclude_objects": {},
                 "max_concurrent_cdc_tasks": 2550,
+                "max_concurrent_backfill_tasks": 3076,
                 "drop_large_objects": {},
                 "stream_large_objects": {},
             },
@@ -11348,6 +11358,7 @@ def test_update_stream_rest_bad_request(
                 },
                 "exclude_objects": {},
                 "max_concurrent_cdc_tasks": 2550,
+                "max_concurrent_backfill_tasks": 3076,
             },
             "postgresql_source_config": {
                 "include_objects": {
@@ -11377,6 +11388,7 @@ def test_update_stream_rest_bad_request(
                 "exclude_objects": {},
                 "replication_slot": "replication_slot_value",
                 "publication": "publication_value",
+                "max_concurrent_backfill_tasks": 3076,
             },
         },
         "destination_config": {
@@ -13579,6 +13591,7 @@ def test_create_private_connection_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "force",
             "private_connection_id",
             "request_id",
         )
@@ -13645,6 +13658,7 @@ def test_create_private_connection_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "force",
                 "privateConnectionId",
                 "requestId",
             )

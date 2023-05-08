@@ -1056,6 +1056,9 @@ class CreatePrivateConnectionRequest(proto.Message):
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
+        force (bool):
+            Optional. If set to true, will skip
+            validations.
     """
 
     parent: str = proto.Field(
@@ -1074,6 +1077,10 @@ class CreatePrivateConnectionRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=6,
     )
 
 
