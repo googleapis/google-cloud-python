@@ -149,7 +149,9 @@ class UserInfo(proto.Message):
             This should not be set when using the client side event
             reporting with GTM or JavaScript tag in
             [UserEventService.CollectUserEvent][google.cloud.discoveryengine.v1beta.UserEventService.CollectUserEvent]
-            or if [direct_user_request][] is set.
+            or if
+            [UserEvent.direct_user_request][google.cloud.discoveryengine.v1beta.UserEvent.direct_user_request]
+            is set.
     """
 
     user_id: str = proto.Field(

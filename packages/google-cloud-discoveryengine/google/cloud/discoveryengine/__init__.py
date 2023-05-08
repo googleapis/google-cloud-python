@@ -83,6 +83,11 @@ from google.cloud.discoveryengine_v1beta.types.import_config import (
     ImportUserEventsRequest,
     ImportUserEventsResponse,
 )
+from google.cloud.discoveryengine_v1beta.types.purge_config import (
+    PurgeDocumentsMetadata,
+    PurgeDocumentsRequest,
+    PurgeDocumentsResponse,
+)
 from google.cloud.discoveryengine_v1beta.types.recommendation_service import (
     RecommendRequest,
     RecommendResponse,
@@ -152,6 +157,9 @@ __all__ = (
     "ImportUserEventsMetadata",
     "ImportUserEventsRequest",
     "ImportUserEventsResponse",
+    "PurgeDocumentsMetadata",
+    "PurgeDocumentsRequest",
+    "PurgeDocumentsResponse",
     "RecommendRequest",
     "RecommendResponse",
     "Schema",

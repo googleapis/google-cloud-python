@@ -73,6 +73,17 @@ echo "Cloning source repository: ${SOURCE_REPO}"
 git clone "git@github.com:${SOURCE_REPO}.git" source-repo
 
 pushd source-repo
+
+DISTRIBUTION_NAME=$(jq -r '.distribution_name' .repo-metadata.json) # -r removes quotes around the name.
+TARGET_PATH="packages/${DISTRIBUTION_NAME}"
+
+# TODO: Remove this safeguard once https://github.com/googleapis/google-cloud-python/issues/11137 is fixed.
+[[ -d  "${DISTRIBUTION_NAME//-//}" ]] || { \
+  echo "*** ERROR: Can't migrate ${DISTRIBUTION_NAME}"
+  echo "    see https://github.com/googleapis/google-cloud-python/issues/11137"
+  $EXIT -20
+}
+
 git remote remove origin
 
 # prune only files within the specified directory
@@ -113,9 +124,6 @@ then
     --prune-empty \
     --tree-filter "${FILTER}"
 fi
-
-DISTRIBUTION_NAME=$(jq -r '.distribution_name' .repo-metadata.json) # -r removes quotes around the name.
-TARGET_PATH="packages/${DISTRIBUTION_NAME}"
 
 # reorganize the filtered code into the desired target locations
 echo "Moving files to destination path: ${TARGET_PATH}"
@@ -171,3 +179,8 @@ else
 fi
 
 popd
+
+# Some of the post-processing scripts require the ${DISTRIBUTION_NAME}. We
+# output it here so they can use the same value we derived, rather than risking
+# diverging computations of the value.
+echo "${DISTRIBUTION_NAME}"

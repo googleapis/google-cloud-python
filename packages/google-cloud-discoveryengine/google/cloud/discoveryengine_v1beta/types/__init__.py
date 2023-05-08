@@ -35,6 +35,11 @@ from .import_config import (
     ImportUserEventsRequest,
     ImportUserEventsResponse,
 )
+from .purge_config import (
+    PurgeDocumentsMetadata,
+    PurgeDocumentsRequest,
+    PurgeDocumentsResponse,
+)
 from .recommendation_service import RecommendRequest, RecommendResponse
 from .schema import Schema
 from .schema_service import (
@@ -83,6 +88,9 @@ __all__ = (
     "ImportUserEventsMetadata",
     "ImportUserEventsRequest",
     "ImportUserEventsResponse",
+    "PurgeDocumentsMetadata",
+    "PurgeDocumentsRequest",
+    "PurgeDocumentsResponse",
     "RecommendRequest",
     "RecommendResponse",
     "Schema",
