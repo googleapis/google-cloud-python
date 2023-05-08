@@ -72,6 +72,8 @@ from .conversation import (
     ConversationPhoneNumber,
     CreateConversationRequest,
     CreateMessageRequest,
+    GenerateStatelessSummaryRequest,
+    GenerateStatelessSummaryResponse,
     GetConversationRequest,
     ListConversationsRequest,
     ListConversationsResponse,
@@ -207,6 +209,7 @@ from .participant import (
     UpdateParticipantRequest,
 )
 from .session import (
+    CloudConversationDebuggingInfo,
     DetectIntentRequest,
     DetectIntentResponse,
     EventInput,
@@ -294,6 +297,8 @@ __all__ = (
     "ConversationPhoneNumber",
     "CreateConversationRequest",
     "CreateMessageRequest",
+    "GenerateStatelessSummaryRequest",
+    "GenerateStatelessSummaryResponse",
     "GetConversationRequest",
     "ListConversationsRequest",
     "ListConversationsResponse",
@@ -417,6 +422,7 @@ __all__ = (
     "SuggestSmartRepliesRequest",
     "SuggestSmartRepliesResponse",
     "UpdateParticipantRequest",
+    "CloudConversationDebuggingInfo",
     "DetectIntentRequest",
     "DetectIntentResponse",
     "EventInput",

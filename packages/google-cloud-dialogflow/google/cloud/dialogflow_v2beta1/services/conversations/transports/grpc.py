@@ -459,6 +459,36 @@ class ConversationsGrpcTransport(ConversationsTransport):
             )
         return self._stubs["suggest_conversation_summary"]
 
+    @property
+    def generate_stateless_summary(
+        self,
+    ) -> Callable[
+        [conversation.GenerateStatelessSummaryRequest],
+        conversation.GenerateStatelessSummaryResponse,
+    ]:
+        r"""Return a callable for the generate stateless summary method over gRPC.
+
+        Generates and returns a summary for a conversation
+        that does not have a resource created for it.
+
+        Returns:
+            Callable[[~.GenerateStatelessSummaryRequest],
+                    ~.GenerateStatelessSummaryResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "generate_stateless_summary" not in self._stubs:
+            self._stubs["generate_stateless_summary"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Conversations/GenerateStatelessSummary",
+                request_serializer=conversation.GenerateStatelessSummaryRequest.serialize,
+                response_deserializer=conversation.GenerateStatelessSummaryResponse.deserialize,
+            )
+        return self._stubs["generate_stateless_summary"]
+
     def close(self):
         self.grpc_channel.close()
 

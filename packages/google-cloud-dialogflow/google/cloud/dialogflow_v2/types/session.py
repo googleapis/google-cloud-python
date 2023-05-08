@@ -38,6 +38,7 @@ __protobuf__ = proto.module(
         "QueryInput",
         "QueryResult",
         "StreamingDetectIntentRequest",
+        "CloudConversationDebuggingInfo",
         "StreamingDetectIntentResponse",
         "StreamingRecognitionResult",
         "TextInput",
@@ -638,6 +639,9 @@ class StreamingDetectIntentRequest(proto.Message):
             ``query_input`` was set to a streaming input audio config.
             The complete audio over all streaming messages must not
             exceed 1 minute.
+        enable_debugging_info (bool):
+            if true, ``StreamingDetectIntentResponse.debugging_info``
+            will get populated.
     """
 
     session: str = proto.Field(
@@ -671,6 +675,157 @@ class StreamingDetectIntentRequest(proto.Message):
     input_audio: bytes = proto.Field(
         proto.BYTES,
         number=6,
+    )
+    enable_debugging_info: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+
+
+class CloudConversationDebuggingInfo(proto.Message):
+    r"""Cloud conversation info for easier debugging. It will get populated
+    in ``StreamingDetectIntentResponse`` or
+    ``StreamingAnalyzeContentResponse`` when the flag
+    ``enable_debugging_info`` is set to true in corresponding requests.
+
+    Attributes:
+        audio_data_chunks (int):
+            Number of input audio data chunks in
+            streaming requests.
+        result_end_time_offset (google.protobuf.duration_pb2.Duration):
+            Time offset of the end of speech utterance
+            relative to the beginning of the first audio
+            chunk.
+        first_audio_duration (google.protobuf.duration_pb2.Duration):
+            Duration of first audio chunk.
+        single_utterance (bool):
+            Whether client used single utterance mode.
+        speech_partial_results_end_times (MutableSequence[google.protobuf.duration_pb2.Duration]):
+            Time offsets of the speech partial results
+            relative to the beginning of the stream.
+        speech_final_results_end_times (MutableSequence[google.protobuf.duration_pb2.Duration]):
+            Time offsets of the speech final results (is_final=true)
+            relative to the beginning of the stream.
+        partial_responses (int):
+            Total number of partial responses.
+        speaker_id_passive_latency_ms_offset (int):
+            Time offset of Speaker ID stream close time
+            relative to the Speech stream close time in
+            milliseconds. Only meaningful for conversations
+            involving passive verification.
+        bargein_event_triggered (bool):
+            Whether a barge-in event is triggered in this
+            request.
+        speech_single_utterance (bool):
+            Whether speech uses single utterance mode.
+        dtmf_partial_results_times (MutableSequence[google.protobuf.duration_pb2.Duration]):
+            Time offsets of the DTMF partial results
+            relative to the beginning of the stream.
+        dtmf_final_results_times (MutableSequence[google.protobuf.duration_pb2.Duration]):
+            Time offsets of the DTMF final results
+            relative to the beginning of the stream.
+        single_utterance_end_time_offset (google.protobuf.duration_pb2.Duration):
+            Time offset of the end-of-single-utterance
+            signal relative to the beginning of the stream.
+        no_speech_timeout (google.protobuf.duration_pb2.Duration):
+            No speech timeout settings observed at
+            runtime.
+        is_input_text (bool):
+            Whether the streaming terminates with an
+            injected text query.
+        client_half_close_time_offset (google.protobuf.duration_pb2.Duration):
+            Client half close time in terms of input
+            audio duration.
+        client_half_close_streaming_time_offset (google.protobuf.duration_pb2.Duration):
+            Client half close time in terms of API
+            streaming duration.
+    """
+
+    audio_data_chunks: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    result_end_time_offset: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+    first_audio_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=duration_pb2.Duration,
+    )
+    single_utterance: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    speech_partial_results_end_times: MutableSequence[
+        duration_pb2.Duration
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message=duration_pb2.Duration,
+    )
+    speech_final_results_end_times: MutableSequence[
+        duration_pb2.Duration
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message=duration_pb2.Duration,
+    )
+    partial_responses: int = proto.Field(
+        proto.INT32,
+        number=8,
+    )
+    speaker_id_passive_latency_ms_offset: int = proto.Field(
+        proto.INT32,
+        number=9,
+    )
+    bargein_event_triggered: bool = proto.Field(
+        proto.BOOL,
+        number=10,
+    )
+    speech_single_utterance: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+    )
+    dtmf_partial_results_times: MutableSequence[
+        duration_pb2.Duration
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=12,
+        message=duration_pb2.Duration,
+    )
+    dtmf_final_results_times: MutableSequence[
+        duration_pb2.Duration
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=13,
+        message=duration_pb2.Duration,
+    )
+    single_utterance_end_time_offset: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=duration_pb2.Duration,
+    )
+    no_speech_timeout: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message=duration_pb2.Duration,
+    )
+    is_input_text: bool = proto.Field(
+        proto.BOOL,
+        number=16,
+    )
+    client_half_close_time_offset: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message=duration_pb2.Duration,
+    )
+    client_half_close_streaming_time_offset: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=duration_pb2.Duration,
     )
 
 
@@ -716,6 +871,10 @@ class StreamingDetectIntentResponse(proto.Message):
         output_audio_config (google.cloud.dialogflow_v2.types.OutputAudioConfig):
             The config used by the speech synthesizer to
             generate the output audio.
+        debugging_info (google.cloud.dialogflow_v2.types.CloudConversationDebuggingInfo):
+            Debugging info that would get populated when
+            ``StreamingDetectIntentRequest.enable_debugging_info`` is
+            set to true.
     """
 
     response_id: str = proto.Field(
@@ -745,6 +904,11 @@ class StreamingDetectIntentResponse(proto.Message):
         proto.MESSAGE,
         number=6,
         message=gcd_audio_config.OutputAudioConfig,
+    )
+    debugging_info: "CloudConversationDebuggingInfo" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="CloudConversationDebuggingInfo",
     )
 
 

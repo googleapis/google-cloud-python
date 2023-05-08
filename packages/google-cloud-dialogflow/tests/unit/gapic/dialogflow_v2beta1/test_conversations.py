@@ -52,9 +52,14 @@ from google.cloud.dialogflow_v2beta1.services.conversations import (
     pagers,
     transports,
 )
+from google.cloud.dialogflow_v2beta1.types import (
+    conversation_profile,
+    participant,
+    session,
+)
 from google.cloud.dialogflow_v2beta1.types import conversation as gcd_conversation
+from google.cloud.dialogflow_v2beta1.types import audio_config
 from google.cloud.dialogflow_v2beta1.types import conversation
-from google.cloud.dialogflow_v2beta1.types import participant, session
 
 
 def client_cert_source_callback():
@@ -2872,6 +2877,171 @@ async def test_suggest_conversation_summary_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        conversation.GenerateStatelessSummaryRequest,
+        dict,
+    ],
+)
+def test_generate_stateless_summary(request_type, transport: str = "grpc"):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_stateless_summary), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = conversation.GenerateStatelessSummaryResponse(
+            latest_message="latest_message_value",
+            context_size=1311,
+        )
+        response = client.generate_stateless_summary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversation.GenerateStatelessSummaryRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, conversation.GenerateStatelessSummaryResponse)
+    assert response.latest_message == "latest_message_value"
+    assert response.context_size == 1311
+
+
+def test_generate_stateless_summary_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_stateless_summary), "__call__"
+    ) as call:
+        client.generate_stateless_summary()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversation.GenerateStatelessSummaryRequest()
+
+
+@pytest.mark.asyncio
+async def test_generate_stateless_summary_async(
+    transport: str = "grpc_asyncio",
+    request_type=conversation.GenerateStatelessSummaryRequest,
+):
+    client = ConversationsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_stateless_summary), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversation.GenerateStatelessSummaryResponse(
+                latest_message="latest_message_value",
+                context_size=1311,
+            )
+        )
+        response = await client.generate_stateless_summary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == conversation.GenerateStatelessSummaryRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, conversation.GenerateStatelessSummaryResponse)
+    assert response.latest_message == "latest_message_value"
+    assert response.context_size == 1311
+
+
+@pytest.mark.asyncio
+async def test_generate_stateless_summary_async_from_dict():
+    await test_generate_stateless_summary_async(request_type=dict)
+
+
+def test_generate_stateless_summary_field_headers():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = conversation.GenerateStatelessSummaryRequest()
+
+    request.stateless_conversation.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_stateless_summary), "__call__"
+    ) as call:
+        call.return_value = conversation.GenerateStatelessSummaryResponse()
+        client.generate_stateless_summary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "stateless_conversation.parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_generate_stateless_summary_field_headers_async():
+    client = ConversationsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = conversation.GenerateStatelessSummaryRequest()
+
+    request.stateless_conversation.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_stateless_summary), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversation.GenerateStatelessSummaryResponse()
+        )
+        await client.generate_stateless_summary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "stateless_conversation.parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         gcd_conversation.CreateConversationRequest,
         dict,
     ],
@@ -4972,6 +5142,228 @@ def test_suggest_conversation_summary_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.GenerateStatelessSummaryRequest,
+        dict,
+    ],
+)
+def test_generate_stateless_summary_rest(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"stateless_conversation": {"parent": "projects/sample1"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversation.GenerateStatelessSummaryResponse(
+            latest_message="latest_message_value",
+            context_size=1311,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = conversation.GenerateStatelessSummaryResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.generate_stateless_summary(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, conversation.GenerateStatelessSummaryResponse)
+    assert response.latest_message == "latest_message_value"
+    assert response.context_size == 1311
+
+
+def test_generate_stateless_summary_rest_required_fields(
+    request_type=conversation.GenerateStatelessSummaryRequest,
+):
+    transport_class = transports.ConversationsRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_stateless_summary._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_stateless_summary._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = conversation.GenerateStatelessSummaryResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = conversation.GenerateStatelessSummaryResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.generate_stateless_summary(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_generate_stateless_summary_rest_unset_required_fields():
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.generate_stateless_summary._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "statelessConversation",
+                "conversationProfile",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_stateless_summary_rest_interceptors(null_interceptor):
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationsRestInterceptor(),
+    )
+    client = ConversationsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationsRestInterceptor, "post_generate_stateless_summary"
+    ) as post, mock.patch.object(
+        transports.ConversationsRestInterceptor, "pre_generate_stateless_summary"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversation.GenerateStatelessSummaryRequest.pb(
+            conversation.GenerateStatelessSummaryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            conversation.GenerateStatelessSummaryResponse.to_json(
+                conversation.GenerateStatelessSummaryResponse()
+            )
+        )
+
+        request = conversation.GenerateStatelessSummaryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = conversation.GenerateStatelessSummaryResponse()
+
+        client.generate_stateless_summary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_generate_stateless_summary_rest_bad_request(
+    transport: str = "rest", request_type=conversation.GenerateStatelessSummaryRequest
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"stateless_conversation": {"parent": "projects/sample1"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.generate_stateless_summary(request)
+
+
+def test_generate_stateless_summary_rest_error():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ConversationsGrpcTransport(
@@ -5118,6 +5510,7 @@ def test_conversations_base_transport():
         "batch_create_messages",
         "list_messages",
         "suggest_conversation_summary",
+        "generate_stateless_summary",
         "get_location",
         "list_locations",
         "get_operation",
@@ -5414,6 +5807,9 @@ def test_conversations_client_transport_session_collision(transport_name):
     session1 = client1.transport.suggest_conversation_summary._session
     session2 = client2.transport.suggest_conversation_summary._session
     assert session1 != session2
+    session1 = client1.transport.generate_stateless_summary._session
+    session2 = client2.transport.generate_stateless_summary._session
+    assert session1 != session2
 
 
 def test_conversations_grpc_transport_channel():
@@ -5540,9 +5936,29 @@ def test_conversations_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_answer_record_path():
+def test_agent_path():
     project = "squid"
-    answer_record = "clam"
+    expected = "projects/{project}/agent".format(
+        project=project,
+    )
+    actual = ConversationsClient.agent_path(project)
+    assert expected == actual
+
+
+def test_parse_agent_path():
+    expected = {
+        "project": "clam",
+    }
+    path = ConversationsClient.agent_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConversationsClient.parse_agent_path(path)
+    assert expected == actual
+
+
+def test_answer_record_path():
+    project = "whelk"
+    answer_record = "octopus"
     expected = "projects/{project}/answerRecords/{answer_record}".format(
         project=project,
         answer_record=answer_record,
@@ -5553,8 +5969,8 @@ def test_answer_record_path():
 
 def test_parse_answer_record_path():
     expected = {
-        "project": "whelk",
-        "answer_record": "octopus",
+        "project": "oyster",
+        "answer_record": "nudibranch",
     }
     path = ConversationsClient.answer_record_path(**expected)
 
@@ -5564,8 +5980,8 @@ def test_parse_answer_record_path():
 
 
 def test_conversation_path():
-    project = "oyster"
-    conversation = "nudibranch"
+    project = "cuttlefish"
+    conversation = "mussel"
     expected = "projects/{project}/conversations/{conversation}".format(
         project=project,
         conversation=conversation,
@@ -5576,8 +5992,8 @@ def test_conversation_path():
 
 def test_parse_conversation_path():
     expected = {
-        "project": "cuttlefish",
-        "conversation": "mussel",
+        "project": "winkle",
+        "conversation": "nautilus",
     }
     path = ConversationsClient.conversation_path(**expected)
 
@@ -5586,9 +6002,37 @@ def test_parse_conversation_path():
     assert expected == actual
 
 
+def test_conversation_model_path():
+    project = "scallop"
+    location = "abalone"
+    conversation_model = "squid"
+    expected = "projects/{project}/locations/{location}/conversationModels/{conversation_model}".format(
+        project=project,
+        location=location,
+        conversation_model=conversation_model,
+    )
+    actual = ConversationsClient.conversation_model_path(
+        project, location, conversation_model
+    )
+    assert expected == actual
+
+
+def test_parse_conversation_model_path():
+    expected = {
+        "project": "clam",
+        "location": "whelk",
+        "conversation_model": "octopus",
+    }
+    path = ConversationsClient.conversation_model_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConversationsClient.parse_conversation_model_path(path)
+    assert expected == actual
+
+
 def test_conversation_profile_path():
-    project = "winkle"
-    conversation_profile = "nautilus"
+    project = "oyster"
+    conversation_profile = "nudibranch"
     expected = "projects/{project}/conversationProfiles/{conversation_profile}".format(
         project=project,
         conversation_profile=conversation_profile,
@@ -5601,13 +6045,90 @@ def test_conversation_profile_path():
 
 def test_parse_conversation_profile_path():
     expected = {
-        "project": "scallop",
-        "conversation_profile": "abalone",
+        "project": "cuttlefish",
+        "conversation_profile": "mussel",
     }
     path = ConversationsClient.conversation_profile_path(**expected)
 
     # Check that the path construction is reversible.
     actual = ConversationsClient.parse_conversation_profile_path(path)
+    assert expected == actual
+
+
+def test_cx_security_settings_path():
+    project = "winkle"
+    location = "nautilus"
+    security_settings = "scallop"
+    expected = "projects/{project}/locations/{location}/securitySettings/{security_settings}".format(
+        project=project,
+        location=location,
+        security_settings=security_settings,
+    )
+    actual = ConversationsClient.cx_security_settings_path(
+        project, location, security_settings
+    )
+    assert expected == actual
+
+
+def test_parse_cx_security_settings_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
+        "security_settings": "clam",
+    }
+    path = ConversationsClient.cx_security_settings_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConversationsClient.parse_cx_security_settings_path(path)
+    assert expected == actual
+
+
+def test_document_path():
+    project = "whelk"
+    knowledge_base = "octopus"
+    document = "oyster"
+    expected = "projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}".format(
+        project=project,
+        knowledge_base=knowledge_base,
+        document=document,
+    )
+    actual = ConversationsClient.document_path(project, knowledge_base, document)
+    assert expected == actual
+
+
+def test_parse_document_path():
+    expected = {
+        "project": "nudibranch",
+        "knowledge_base": "cuttlefish",
+        "document": "mussel",
+    }
+    path = ConversationsClient.document_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConversationsClient.parse_document_path(path)
+    assert expected == actual
+
+
+def test_knowledge_base_path():
+    project = "winkle"
+    knowledge_base = "nautilus"
+    expected = "projects/{project}/knowledgeBases/{knowledge_base}".format(
+        project=project,
+        knowledge_base=knowledge_base,
+    )
+    actual = ConversationsClient.knowledge_base_path(project, knowledge_base)
+    assert expected == actual
+
+
+def test_parse_knowledge_base_path():
+    expected = {
+        "project": "scallop",
+        "knowledge_base": "abalone",
+    }
+    path = ConversationsClient.knowledge_base_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConversationsClient.parse_knowledge_base_path(path)
     assert expected == actual
 
 

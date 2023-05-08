@@ -476,6 +476,11 @@
                 "create_conversation"
               ]
             },
+            "GenerateStatelessSummary": {
+              "methods": [
+                "generate_stateless_summary"
+              ]
+            },
             "GetConversation": {
               "methods": [
                 "get_conversation"
@@ -516,6 +521,11 @@
                 "create_conversation"
               ]
             },
+            "GenerateStatelessSummary": {
+              "methods": [
+                "generate_stateless_summary"
+              ]
+            },
             "GetConversation": {
               "methods": [
                 "get_conversation"
@@ -554,6 +564,11 @@
             "CreateConversation": {
               "methods": [
                 "create_conversation"
+              ]
+            },
+            "GenerateStatelessSummary": {
+              "methods": [
+                "generate_stateless_summary"
               ]
             },
             "GetConversation": {

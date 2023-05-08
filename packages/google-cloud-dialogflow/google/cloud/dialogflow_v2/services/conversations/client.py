@@ -184,6 +184,21 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         return self._transport
 
     @staticmethod
+    def agent_path(
+        project: str,
+    ) -> str:
+        """Returns a fully-qualified agent string."""
+        return "projects/{project}/agent".format(
+            project=project,
+        )
+
+    @staticmethod
+    def parse_agent_path(path: str) -> Dict[str, str]:
+        """Parses a agent path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/agent$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def answer_record_path(
         project: str,
         answer_record: str,
@@ -222,6 +237,28 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def conversation_model_path(
+        project: str,
+        location: str,
+        conversation_model: str,
+    ) -> str:
+        """Returns a fully-qualified conversation_model string."""
+        return "projects/{project}/locations/{location}/conversationModels/{conversation_model}".format(
+            project=project,
+            location=location,
+            conversation_model=conversation_model,
+        )
+
+    @staticmethod
+    def parse_conversation_model_path(path: str) -> Dict[str, str]:
+        """Parses a conversation_model path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/conversationModels/(?P<conversation_model>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def conversation_profile_path(
         project: str,
         conversation_profile: str,
@@ -238,6 +275,69 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         m = re.match(
             r"^projects/(?P<project>.+?)/conversationProfiles/(?P<conversation_profile>.+?)$",
             path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def cx_security_settings_path(
+        project: str,
+        location: str,
+        security_settings: str,
+    ) -> str:
+        """Returns a fully-qualified cx_security_settings string."""
+        return "projects/{project}/locations/{location}/securitySettings/{security_settings}".format(
+            project=project,
+            location=location,
+            security_settings=security_settings,
+        )
+
+    @staticmethod
+    def parse_cx_security_settings_path(path: str) -> Dict[str, str]:
+        """Parses a cx_security_settings path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/securitySettings/(?P<security_settings>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def document_path(
+        project: str,
+        knowledge_base: str,
+        document: str,
+    ) -> str:
+        """Returns a fully-qualified document string."""
+        return "projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}".format(
+            project=project,
+            knowledge_base=knowledge_base,
+            document=document,
+        )
+
+    @staticmethod
+    def parse_document_path(path: str) -> Dict[str, str]:
+        """Parses a document path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/knowledgeBases/(?P<knowledge_base>.+?)/documents/(?P<document>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def knowledge_base_path(
+        project: str,
+        knowledge_base: str,
+    ) -> str:
+        """Returns a fully-qualified knowledge_base string."""
+        return "projects/{project}/knowledgeBases/{knowledge_base}".format(
+            project=project,
+            knowledge_base=knowledge_base,
+        )
+
+    @staticmethod
+    def parse_knowledge_base_path(path: str) -> Dict[str, str]:
+        """Parses a knowledge_base path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/knowledgeBases/(?P<knowledge_base>.+?)$", path
         )
         return m.groupdict() if m else {}
 
@@ -1202,6 +1302,107 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
                 (("conversation", request.conversation),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def generate_stateless_summary(
+        self,
+        request: Optional[
+            Union[conversation.GenerateStatelessSummaryRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> conversation.GenerateStatelessSummaryResponse:
+        r"""Generates and returns a summary for a conversation
+        that does not have a resource created for it.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflow_v2
+
+            def sample_generate_stateless_summary():
+                # Create a client
+                client = dialogflow_v2.ConversationsClient()
+
+                # Initialize request argument(s)
+                stateless_conversation = dialogflow_v2.MinimalConversation()
+                stateless_conversation.messages.content = "content_value"
+                stateless_conversation.parent = "parent_value"
+
+                conversation_profile = dialogflow_v2.ConversationProfile()
+                conversation_profile.display_name = "display_name_value"
+
+                request = dialogflow_v2.GenerateStatelessSummaryRequest(
+                    stateless_conversation=stateless_conversation,
+                    conversation_profile=conversation_profile,
+                )
+
+                # Make the request
+                response = client.generate_stateless_summary(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dialogflow_v2.types.GenerateStatelessSummaryRequest, dict]):
+                The request object. The request message for
+                [Conversations.GenerateStatelessSummary][google.cloud.dialogflow.v2.Conversations.GenerateStatelessSummary].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflow_v2.types.GenerateStatelessSummaryResponse:
+                The response message for
+                   [Conversations.GenerateStatelessSummary][google.cloud.dialogflow.v2.Conversations.GenerateStatelessSummary].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a conversation.GenerateStatelessSummaryRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, conversation.GenerateStatelessSummaryRequest):
+            request = conversation.GenerateStatelessSummaryRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.generate_stateless_summary
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    (
+                        "stateless_conversation.parent",
+                        request.stateless_conversation.parent,
+                    ),
+                )
             ),
         )
 

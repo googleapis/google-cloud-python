@@ -1033,6 +1033,9 @@ class StreamingAnalyzeContentRequest(proto.Message):
             response even if some ``Fulfillment``\ s in Dialogflow
             virtual agent have been configured to return partial
             responses.
+        enable_debugging_info (bool):
+            if true, ``StreamingAnalyzeContentResponse.debugging_info``
+            will get populated.
     """
 
     participant: str = proto.Field(
@@ -1094,6 +1097,10 @@ class StreamingAnalyzeContentRequest(proto.Message):
     enable_partial_automated_agent_reply: bool = proto.Field(
         proto.BOOL,
         number=12,
+    )
+    enable_debugging_info: bool = proto.Field(
+        proto.BOOL,
+        number=19,
     )
 
 
@@ -1169,6 +1176,10 @@ class StreamingAnalyzeContentResponse(proto.Message):
             [HumanAgentAssistantConfig.end_user_suggestion_config][google.cloud.dialogflow.v2beta1.HumanAgentAssistantConfig.end_user_suggestion_config].
         dtmf_parameters (google.cloud.dialogflow_v2beta1.types.DtmfParameters):
             Indicates the parameters of DTMF.
+        debugging_info (google.cloud.dialogflow_v2beta1.types.CloudConversationDebuggingInfo):
+            Debugging info that would get populated when
+            ``StreamingAnalyzeContentRequest.enable_debugging_info`` is
+            set to true.
     """
 
     recognition_result: session.StreamingRecognitionResult = proto.Field(
@@ -1213,6 +1224,11 @@ class StreamingAnalyzeContentResponse(proto.Message):
         proto.MESSAGE,
         number=10,
         message="DtmfParameters",
+    )
+    debugging_info: session.CloudConversationDebuggingInfo = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=session.CloudConversationDebuggingInfo,
     )
 
 

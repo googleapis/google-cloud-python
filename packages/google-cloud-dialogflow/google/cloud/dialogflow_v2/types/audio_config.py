@@ -419,7 +419,13 @@ class InputAudioConfig(proto.Message):
             standard version of the specified model. Refer to `Cloud
             Speech API
             documentation <https://cloud.google.com/speech-to-text/docs/basics#select-model>`__
-            for more details.
+            for more details. If you specify a model, the following
+            models typically have the best performance:
+
+            -  phone_call (best for Agent Assist and telephony)
+            -  latest_short (best for Dialogflow non-telephony)
+            -  command_and_search (best for very short utterances and
+               commands)
         model_variant (google.cloud.dialogflow_v2.types.SpeechModelVariant):
             Which variant of the [Speech
             model][google.cloud.dialogflow.v2.InputAudioConfig.model] to
@@ -442,6 +448,9 @@ class InputAudioConfig(proto.Message):
             [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2.Participants.StreamingAnalyzeContent].
             If ``false`` and recognition doesn't return any result,
             trigger ``NO_SPEECH_RECOGNIZED`` event to Dialogflow agent.
+        enable_automatic_punctuation (bool):
+            Enable automatic punctuation option at the
+            speech backend.
     """
 
     audio_encoding: "AudioEncoding" = proto.Field(
@@ -486,6 +495,10 @@ class InputAudioConfig(proto.Message):
     disable_no_speech_recognized_event: bool = proto.Field(
         proto.BOOL,
         number=14,
+    )
+    enable_automatic_punctuation: bool = proto.Field(
+        proto.BOOL,
+        number=17,
     )
 
 

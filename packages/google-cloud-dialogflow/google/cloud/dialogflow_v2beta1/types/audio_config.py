@@ -387,6 +387,15 @@ class BargeInConfig(proto.Message):
     those two phases. The durations are measured in terms of the audio
     length fromt the the start of the input audio.
 
+    The flow goes like below:
+
+    --> Time
+
+    without speech detection \| utterance only \| utterance or no-speech
+    event \| \| +-------------+ \| +------------+ \| +---------------+
+    ----------+ no barge-in +-|-+ barge-in +-|-+ normal period
+    +----------- +-------------+ \| +------------+ \| +---------------+
+
     No-speech event is a response with END_OF_UTTERANCE without any
     transcript following up.
 
@@ -469,7 +478,13 @@ class InputAudioConfig(proto.Message):
             standard version of the specified model. Refer to `Cloud
             Speech API
             documentation <https://cloud.google.com/speech-to-text/docs/basics#select-model>`__
-            for more details.
+            for more details. If you specify a model, the following
+            models typically have the best performance:
+
+            -  phone_call (best for Agent Assist and telephony)
+            -  latest_short (best for Dialogflow non-telephony)
+            -  command_and_search (best for very short utterances and
+               commands)
         model_variant (google.cloud.dialogflow_v2beta1.types.SpeechModelVariant):
             Which variant of the [Speech
             model][google.cloud.dialogflow.v2beta1.InputAudioConfig.model]
@@ -495,6 +510,9 @@ class InputAudioConfig(proto.Message):
         barge_in_config (google.cloud.dialogflow_v2beta1.types.BargeInConfig):
             Configuration of barge-in behavior during the
             streaming of input audio.
+        enable_automatic_punctuation (bool):
+            Enable automatic punctuation option at the
+            speech backend.
     """
 
     audio_encoding: "AudioEncoding" = proto.Field(
@@ -544,6 +562,10 @@ class InputAudioConfig(proto.Message):
         proto.MESSAGE,
         number=15,
         message="BargeInConfig",
+    )
+    enable_automatic_punctuation: bool = proto.Field(
+        proto.BOOL,
+        number=17,
     )
 
 

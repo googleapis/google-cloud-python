@@ -163,6 +163,11 @@ class ConversationsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.generate_stateless_summary: gapic_v1.method.wrap_method(
+                self.generate_stateless_summary,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -245,6 +250,18 @@ class ConversationsTransport(abc.ABC):
         Union[
             gcd_conversation.SuggestConversationSummaryResponse,
             Awaitable[gcd_conversation.SuggestConversationSummaryResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def generate_stateless_summary(
+        self,
+    ) -> Callable[
+        [conversation.GenerateStatelessSummaryRequest],
+        Union[
+            conversation.GenerateStatelessSummaryResponse,
+            Awaitable[conversation.GenerateStatelessSummaryResponse],
         ],
     ]:
         raise NotImplementedError()

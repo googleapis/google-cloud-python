@@ -147,6 +147,8 @@ from google.cloud.dialogflow_v2.types.conversation import (
     Conversation,
     ConversationPhoneNumber,
     CreateConversationRequest,
+    GenerateStatelessSummaryRequest,
+    GenerateStatelessSummaryResponse,
     GetConversationRequest,
     ListConversationsRequest,
     ListConversationsResponse,
@@ -322,6 +324,7 @@ from google.cloud.dialogflow_v2.types.participant import (
     UpdateParticipantRequest,
 )
 from google.cloud.dialogflow_v2.types.session import (
+    CloudConversationDebuggingInfo,
     DetectIntentRequest,
     DetectIntentResponse,
     EventInput,
@@ -443,6 +446,8 @@ __all__ = (
     "Conversation",
     "ConversationPhoneNumber",
     "CreateConversationRequest",
+    "GenerateStatelessSummaryRequest",
+    "GenerateStatelessSummaryResponse",
     "GetConversationRequest",
     "ListConversationsRequest",
     "ListConversationsResponse",
@@ -595,6 +600,7 @@ __all__ = (
     "SuggestSmartRepliesRequest",
     "SuggestSmartRepliesResponse",
     "UpdateParticipantRequest",
+    "CloudConversationDebuggingInfo",
     "DetectIntentRequest",
     "DetectIntentResponse",
     "EventInput",

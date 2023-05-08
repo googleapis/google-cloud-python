@@ -222,6 +222,9 @@ class AnswerFeedback(proto.Message):
         clicked (bool):
             Indicates whether the answer/item was clicked
             by the human agent or not. Default to false.
+            For knowledge search, the answer record is
+            considered to be clicked if the answer was
+            copied or any URI was clicked.
         click_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the answer/item was clicked.
         displayed (bool):

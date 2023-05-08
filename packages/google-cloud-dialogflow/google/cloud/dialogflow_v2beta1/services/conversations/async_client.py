@@ -66,17 +66,35 @@ class ConversationsAsyncClient:
     DEFAULT_ENDPOINT = ConversationsClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ConversationsClient.DEFAULT_MTLS_ENDPOINT
 
+    agent_path = staticmethod(ConversationsClient.agent_path)
+    parse_agent_path = staticmethod(ConversationsClient.parse_agent_path)
     answer_record_path = staticmethod(ConversationsClient.answer_record_path)
     parse_answer_record_path = staticmethod(
         ConversationsClient.parse_answer_record_path
     )
     conversation_path = staticmethod(ConversationsClient.conversation_path)
     parse_conversation_path = staticmethod(ConversationsClient.parse_conversation_path)
+    conversation_model_path = staticmethod(ConversationsClient.conversation_model_path)
+    parse_conversation_model_path = staticmethod(
+        ConversationsClient.parse_conversation_model_path
+    )
     conversation_profile_path = staticmethod(
         ConversationsClient.conversation_profile_path
     )
     parse_conversation_profile_path = staticmethod(
         ConversationsClient.parse_conversation_profile_path
+    )
+    cx_security_settings_path = staticmethod(
+        ConversationsClient.cx_security_settings_path
+    )
+    parse_cx_security_settings_path = staticmethod(
+        ConversationsClient.parse_cx_security_settings_path
+    )
+    document_path = staticmethod(ConversationsClient.document_path)
+    parse_document_path = staticmethod(ConversationsClient.parse_document_path)
+    knowledge_base_path = staticmethod(ConversationsClient.knowledge_base_path)
+    parse_knowledge_base_path = staticmethod(
+        ConversationsClient.parse_knowledge_base_path
     )
     message_path = staticmethod(ConversationsClient.message_path)
     parse_message_path = staticmethod(ConversationsClient.parse_message_path)
@@ -1035,6 +1053,104 @@ class ConversationsAsyncClient:
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
                 (("conversation", request.conversation),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def generate_stateless_summary(
+        self,
+        request: Optional[
+            Union[conversation.GenerateStatelessSummaryRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> conversation.GenerateStatelessSummaryResponse:
+        r"""Generates and returns a summary for a conversation
+        that does not have a resource created for it.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflow_v2beta1
+
+            async def sample_generate_stateless_summary():
+                # Create a client
+                client = dialogflow_v2beta1.ConversationsAsyncClient()
+
+                # Initialize request argument(s)
+                stateless_conversation = dialogflow_v2beta1.MinimalConversation()
+                stateless_conversation.messages.content = "content_value"
+                stateless_conversation.parent = "parent_value"
+
+                conversation_profile = dialogflow_v2beta1.ConversationProfile()
+                conversation_profile.display_name = "display_name_value"
+
+                request = dialogflow_v2beta1.GenerateStatelessSummaryRequest(
+                    stateless_conversation=stateless_conversation,
+                    conversation_profile=conversation_profile,
+                )
+
+                # Make the request
+                response = await client.generate_stateless_summary(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.GenerateStatelessSummaryRequest, dict]]):
+                The request object. The request message for
+                [Conversations.GenerateStatelessSummary][google.cloud.dialogflow.v2beta1.Conversations.GenerateStatelessSummary].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflow_v2beta1.types.GenerateStatelessSummaryResponse:
+                The response message for
+                   [Conversations.GenerateStatelessSummary][google.cloud.dialogflow.v2beta1.Conversations.GenerateStatelessSummary].
+
+        """
+        # Create or coerce a protobuf request object.
+        request = conversation.GenerateStatelessSummaryRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.generate_stateless_summary,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    (
+                        "stateless_conversation.parent",
+                        request.stateless_conversation.parent,
+                    ),
+                )
             ),
         )
 

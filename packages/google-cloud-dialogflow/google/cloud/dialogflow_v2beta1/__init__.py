@@ -98,6 +98,8 @@ from .types.conversation import (
     ConversationPhoneNumber,
     CreateConversationRequest,
     CreateMessageRequest,
+    GenerateStatelessSummaryRequest,
+    GenerateStatelessSummaryResponse,
     GetConversationRequest,
     ListConversationsRequest,
     ListConversationsResponse,
@@ -237,6 +239,7 @@ from .types.participant import (
     UpdateParticipantRequest,
 )
 from .types.session import (
+    CloudConversationDebuggingInfo,
     DetectIntentRequest,
     DetectIntentResponse,
     EventInput,
@@ -319,6 +322,7 @@ __all__ = (
     "BatchUpdateIntentsResponse",
     "ClearSuggestionFeatureConfigOperationMetadata",
     "ClearSuggestionFeatureConfigRequest",
+    "CloudConversationDebuggingInfo",
     "CompileSuggestionRequest",
     "CompileSuggestionResponse",
     "CompleteConversationRequest",
@@ -374,6 +378,8 @@ __all__ = (
     "GcsDestination",
     "GcsSource",
     "GcsSources",
+    "GenerateStatelessSummaryRequest",
+    "GenerateStatelessSummaryResponse",
     "GetAgentRequest",
     "GetAnswerRecordRequest",
     "GetContextRequest",
