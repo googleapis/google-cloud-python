@@ -415,12 +415,15 @@ class TestRunDifference(proto.Message):
                 The parameters.
             UTTERANCE (4):
                 The message utterance.
+            FLOW (5):
+                The flow.
         """
         DIFF_TYPE_UNSPECIFIED = 0
         INTENT = 1
         PAGE = 2
         PARAMETERS = 3
         UTTERANCE = 4
+        FLOW = 5
 
     type_: DiffType = proto.Field(
         proto.ENUM,
@@ -504,8 +507,8 @@ class TransitionCoverage(proto.Message):
             target (google.cloud.dialogflowcx_v3beta1.types.TransitionCoverage.TransitionNode):
                 The end node of a transition.
             covered (bool):
-                Whether or not the transition is covered by
-                at least one of the agent's test cases.
+                Whether the transition is covered by at least
+                one of the agent's test cases.
             transition_route (google.cloud.dialogflowcx_v3beta1.types.TransitionRoute):
                 Intent route or condition route.
 
@@ -594,9 +597,8 @@ class TransitionRouteGroupCoverage(proto.Message):
                 transition_route (google.cloud.dialogflowcx_v3beta1.types.TransitionRoute):
                     Intent route or condition route.
                 covered (bool):
-                    Whether or not the transition route is
-                    covered by at least one of the agent's test
-                    cases.
+                    Whether the transition route is covered by at
+                    least one of the agent's test cases.
             """
 
             transition_route: gcdc_page.TransitionRoute = proto.Field(
@@ -657,8 +659,8 @@ class IntentCoverage(proto.Message):
             intent (str):
                 The intent full resource name
             covered (bool):
-                Whether or not the intent is covered by at
-                least one of the agent's test cases.
+                Whether the intent is covered by at least one
+                of the agent's test cases.
         """
 
         intent: str = proto.Field(

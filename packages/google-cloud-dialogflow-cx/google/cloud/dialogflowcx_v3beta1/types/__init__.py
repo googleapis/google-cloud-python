@@ -160,6 +160,7 @@ from .security_settings import (
 )
 from .session import (
     AudioInput,
+    CloudConversationDebuggingInfo,
     DetectIntentRequest,
     DetectIntentResponse,
     DtmfInput,
@@ -381,6 +382,7 @@ __all__ = (
     "SecuritySettings",
     "UpdateSecuritySettingsRequest",
     "AudioInput",
+    "CloudConversationDebuggingInfo",
     "DetectIntentRequest",
     "DetectIntentResponse",
     "DtmfInput",

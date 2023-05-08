@@ -167,6 +167,7 @@ from .types.security_settings import ListSecuritySettingsResponse
 from .types.security_settings import SecuritySettings
 from .types.security_settings import UpdateSecuritySettingsRequest
 from .types.session import AudioInput
+from .types.session import CloudConversationDebuggingInfo
 from .types.session import DetectIntentRequest
 from .types.session import DetectIntentResponse
 from .types.session import DtmfInput
@@ -289,6 +290,7 @@ __all__ = (
     "CalculateCoverageResponse",
     "Changelog",
     "ChangelogsClient",
+    "CloudConversationDebuggingInfo",
     "CompareVersionsRequest",
     "CompareVersionsResponse",
     "ContinuousTestResult",

@@ -402,6 +402,11 @@ class WebhookRequest(proto.Message):
             the event.
 
             This field is a member of `oneof`_ ``query``.
+        dtmf_digits (str):
+            If [DTMF][google.cloud.dialogflow.cx.v3beta1.DtmfInput] was
+            provided as input, this field will contain the DTMF digits.
+
+            This field is a member of `oneof`_ ``query``.
         language_code (str):
             The language code specified in the [original
             request][QueryInput.language_code].
@@ -558,6 +563,11 @@ class WebhookRequest(proto.Message):
     trigger_event: str = proto.Field(
         proto.STRING,
         number=14,
+        oneof="query",
+    )
+    dtmf_digits: str = proto.Field(
+        proto.STRING,
+        number=17,
         oneof="query",
     )
     language_code: str = proto.Field(

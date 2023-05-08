@@ -294,7 +294,13 @@ class InputAudioConfig(proto.Message):
             using the standard version of the specified model. Refer to
             `Cloud Speech API
             documentation <https://cloud.google.com/speech-to-text/docs/basics#select-model>`__
-            for more details.
+            for more details. If you specify a model, the following
+            models typically have the best performance:
+
+            -  phone_call (best for Agent Assist and telephony)
+            -  latest_short (best for Dialogflow non-telephony)
+            -  command_and_search (best for very short utterances and
+               commands)
         model_variant (google.cloud.dialogflowcx_v3.types.SpeechModelVariant):
             Optional. Which variant of the [Speech
             model][google.cloud.dialogflow.cx.v3.InputAudioConfig.model]
@@ -475,14 +481,24 @@ class OutputAudioConfig(proto.Message):
 
 
 class TextToSpeechSettings(proto.Message):
-    r"""Settings related to speech generating.
+    r"""Settings related to speech synthesizing.
 
     Attributes:
         synthesize_speech_configs (MutableMapping[str, google.cloud.dialogflowcx_v3.types.SynthesizeSpeechConfig]):
-            Configuration of how speech should be
-            synthesized, mapping from language
-            (https://dialogflow.com/docs/reference/language)
+            Configuration of how speech should be synthesized, mapping
+            from language
+            (https://cloud.google.com/dialogflow/cx/docs/reference/language)
             to SynthesizeSpeechConfig.
+
+            These settings affect:
+
+            -  The synthesize configuration used in `phone
+               gateway <https://cloud.google.com/dialogflow/cx/docs/concept/integration/phone-gateway>`__.
+
+            -  You no longer need to specify
+               [OutputAudioConfig.synthesize_speech_config][google.cloud.dialogflow.cx.v3.OutputAudioConfig.synthesize_speech_config]
+               when invoking API calls. Your agent will use the
+               pre-configured options for speech synthesizing.
     """
 
     synthesize_speech_configs: MutableMapping[

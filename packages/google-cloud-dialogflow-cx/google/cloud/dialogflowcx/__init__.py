@@ -219,6 +219,7 @@ from google.cloud.dialogflowcx_v3.types.security_settings import (
     UpdateSecuritySettingsRequest,
 )
 from google.cloud.dialogflowcx_v3.types.session import AudioInput
+from google.cloud.dialogflowcx_v3.types.session import CloudConversationDebuggingInfo
 from google.cloud.dialogflowcx_v3.types.session import DetectIntentRequest
 from google.cloud.dialogflowcx_v3.types.session import DetectIntentResponse
 from google.cloud.dialogflowcx_v3.types.session import DtmfInput
@@ -485,6 +486,7 @@ __all__ = (
     "SecuritySettings",
     "UpdateSecuritySettingsRequest",
     "AudioInput",
+    "CloudConversationDebuggingInfo",
     "DetectIntentRequest",
     "DetectIntentResponse",
     "DtmfInput",
