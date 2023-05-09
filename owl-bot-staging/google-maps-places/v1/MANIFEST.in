@@ -1,0 +1,2 @@
+recursive-include google/maps/places *.py
+recursive-include google/maps/places_v1 *.py

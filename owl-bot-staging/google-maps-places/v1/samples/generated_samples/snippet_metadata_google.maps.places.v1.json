@@ -1,0 +1,168 @@
+{
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.maps.places.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-maps-places",
+    "version": "0.1.0"
+  },
+  "snippets": [
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.maps.places_v1.PlacesAsyncClient",
+          "shortName": "PlacesAsyncClient"
+        },
+        "fullName": "google.maps.places_v1.PlacesAsyncClient.search_text",
+        "method": {
+          "fullName": "google.maps.places.v1.Places.SearchText",
+          "service": {
+            "fullName": "google.maps.places.v1.Places",
+            "shortName": "Places"
+          },
+          "shortName": "SearchText"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.maps.places_v1.types.SearchTextRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.maps.places_v1.types.SearchTextResponse",
+        "shortName": "search_text"
+      },
+      "description": "Sample for SearchText",
+      "file": "places_v1_generated_places_search_text_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "places_v1_generated_Places_SearchText_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "places_v1_generated_places_search_text_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.maps.places_v1.PlacesClient",
+          "shortName": "PlacesClient"
+        },
+        "fullName": "google.maps.places_v1.PlacesClient.search_text",
+        "method": {
+          "fullName": "google.maps.places.v1.Places.SearchText",
+          "service": {
+            "fullName": "google.maps.places.v1.Places",
+            "shortName": "Places"
+          },
+          "shortName": "SearchText"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.maps.places_v1.types.SearchTextRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.maps.places_v1.types.SearchTextResponse",
+        "shortName": "search_text"
+      },
+      "description": "Sample for SearchText",
+      "file": "places_v1_generated_places_search_text_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "places_v1_generated_Places_SearchText_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "places_v1_generated_places_search_text_sync.py"
+    }
+  ]
+}

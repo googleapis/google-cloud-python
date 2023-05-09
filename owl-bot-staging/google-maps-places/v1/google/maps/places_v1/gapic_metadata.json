@@ -1,0 +1,43 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.maps.places_v1",
+  "protoPackage": "google.maps.places.v1",
+  "schema": "1.0",
+  "services": {
+    "Places": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "PlacesClient",
+          "rpcs": {
+            "SearchText": {
+              "methods": [
+                "search_text"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "PlacesAsyncClient",
+          "rpcs": {
+            "SearchText": {
+              "methods": [
+                "search_text"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "PlacesClient",
+          "rpcs": {
+            "SearchText": {
+              "methods": [
+                "search_text"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
