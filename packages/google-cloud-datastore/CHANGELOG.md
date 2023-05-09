@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.15.2](https://github.com/googleapis/python-datastore/compare/v2.15.1...v2.15.2) (2023-05-04)
+
+
+### Documentation
+
+* Minor comment update for Entity message ([#434](https://github.com/googleapis/python-datastore/issues/434)) ([b31a944](https://github.com/googleapis/python-datastore/commit/b31a94455365445f5abc4eefc5edbef275ecc750))
+
 ## [2.15.1](https://github.com/googleapis/python-datastore/compare/v2.15.0...v2.15.1) (2023-03-24)
 
 
