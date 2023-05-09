@@ -1,8 +1,8 @@
 {
     "name": "places",
-    "name_pretty": "",
-    "api_description": "",
-    "product_documentation": "",
+    "name_pretty": "Places API",
+    "api_description": "The Places API allows developers to access a variety of search and retrieval endpoints for a Place.",
+    "product_documentation": "https://developers.google.com/maps/documentation/places/web-service/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/places/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",
