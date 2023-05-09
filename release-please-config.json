@@ -251,6 +251,13 @@
                     "jsonpath": "$.clientLibrary.version"
                 }
             ]
+        },
+        "packages/google-maps-places": {
+            "component": "google-maps-places",
+            "release-type": "python",
+            "extra-files": [
+                "google/maps/places/gapic_version.py"
+            ]
         }
     }
 }
