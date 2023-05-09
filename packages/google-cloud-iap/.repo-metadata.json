@@ -1,0 +1,17 @@
+{
+    "name": "iap",
+    "name_pretty": "Identity-Aware Proxy",
+    "product_documentation": "https://cloud.google.com/iap",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/iap/latest",
+    "issue_tracker": "",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-iap",
+    "distribution_name": "google-cloud-iap",
+    "api_id": "iap.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "iap",
+    "api_description": "Identity-Aware Proxy includes a number of features that can be used to protect access to Google Cloud hosted resources and applications hosted on Google Cloud."
+}
