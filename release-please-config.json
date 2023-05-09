@@ -226,6 +226,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-maps-places": {
+            "component": "google-maps-places",
+            "extra-files": [
+                "google/maps/places/gapic_version.py",
+                "google/maps/places_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.maps.places.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-maps-routing": {
             "component": "google-maps-routing",
             "extra-files": [
