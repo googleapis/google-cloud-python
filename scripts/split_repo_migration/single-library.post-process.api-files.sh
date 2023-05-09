@@ -148,33 +148,35 @@ echo "Checking for system tests in ${TST_MONO_TESTDIR}"
 # FIXME: KEEP?
 OWY_MONO_PATH="${MONOREPO_PATH_PACKAGE}/.OwlBot.yaml"
 echo "Migrating: ${OWY_MONO_PATH}"
-mkdir -p $(dirname ${OWY_MONO_PATH})
 
 OWY_SPLIT_PATH="${PATH_PACKAGE}/.github/.OwlBot.yaml"
-cp ${OWY_SPLIT_PATH} ${OWY_MONO_PATH}
+[[ ! -f ${OWY_SPLIT_PATH} ]] || {
+  mkdir -p $(dirname ${OWY_MONO_PATH})
+  cp ${OWY_SPLIT_PATH} ${OWY_MONO_PATH}
 
-# remove `docker:` line
-sed -i "/docker:/d" "${OWY_MONO_PATH}"
-# remove `image:` line
-sed -i "/image:/d" "${OWY_MONO_PATH}"
+  # remove `docker:` line
+  sed -i "/docker:/d" "${OWY_MONO_PATH}"
+  # remove `image:` line
+  sed -i "/image:/d" "${OWY_MONO_PATH}"
 
-# In the nodejs case, lines #1 and #2 below are treated as a disjoint case from
-# line #3. However, in Python we see cases (eg aiplatform) where there are
-# multiple entries in the same file that satisfy either of the criteria. As a
-# result, we search for both cases. In doing that, to prevent #3 from altering
-# lines already modified by #2, we temporarily insert ${TMP_MARKER} and remove
-# it in #4
-TMP_MARKER="<<__tmp__>>>"
-sed -i 's|\.\*-py/(.*)|.*-py|' "${OWY_MONO_PATH}"   #1
-sed -i "s|dest: /owl-bot-staging/\$1/\$2|dest: /owl-bot-${TMP_MARKER}staging/${MONOREPO_PACKAGE_NAME}/\$1|" "${OWY_MONO_PATH}" #2
-sed -i "s|dest: /owl-bot-staging|dest: \/owl-bot-staging\/${MONOREPO_PACKAGE_NAME}/|" "${OWY_MONO_PATH}" #3
-sed -i "s|${TMP_MARKER}||" "${OWY_MONO_PATH}"  #4
+  # In the nodejs case, lines #1 and #2 below are treated as a disjoint case from
+  # line #3. However, in Python we see cases (eg aiplatform) where there are
+  # multiple entries in the same file that satisfy either of the criteria. As a
+  # result, we search for both cases. In doing that, to prevent #3 from altering
+  # lines already modified by #2, we temporarily insert ${TMP_MARKER} and remove
+  # it in #4
+  TMP_MARKER="<<__tmp__>>>"
+  sed -i 's|\.\*-py/(.*)|.*-py|' "${OWY_MONO_PATH}"   #1
+  sed -i "s|dest: /owl-bot-staging/\$1/\$2|dest: /owl-bot-${TMP_MARKER}staging/${MONOREPO_PACKAGE_NAME}/\$1|" "${OWY_MONO_PATH}" #2
+  sed -i "s|dest: /owl-bot-staging|dest: \/owl-bot-staging\/${MONOREPO_PACKAGE_NAME}/|" "${OWY_MONO_PATH}" #3
+  sed -i "s|${TMP_MARKER}||" "${OWY_MONO_PATH}"  #4
 
-# TODO: Review the following: For consistency with NodeJS migration script:
-# - we are not removing `begin-after-commit-hash`
-# - we are not removing `deep-remove-regex`, even though it refers to a non-API-specific directory.
+  # TODO: Review the following: For consistency with NodeJS migration script:
+  # - we are not removing `begin-after-commit-hash`
+  # - we are not removing `deep-remove-regex`, even though it refers to a non-API-specific directory.
 
-$RM ${OWY_SPLIT_PATH}
+  $RM ${OWY_SPLIT_PATH}
+}
 ## END owlbot.yaml migration
 
 
