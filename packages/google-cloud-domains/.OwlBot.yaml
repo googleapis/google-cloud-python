@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-docker:
-  image: gcr.io/cloud-devrel-public-resources/owlbot-python:latest
 
 deep-remove-regex:
   - /owl-bot-staging
@@ -22,8 +20,8 @@ deep-preserve-regex:
   - /owl-bot-staging/v1alpha2
 
 deep-copy-regex:
-  - source: /google/cloud/domains/(v.*)/.*-py/(.*)
-    dest: /owl-bot-staging/$1/$2
+  - source: /google/cloud/domains/(v.*)/.*-py
+    dest: /owl-bot-staging/google-cloud-domains/$1
 
 begin-after-commit-hash: 6a5da3f1274b088752f074da5bc9e30bd1beb27e
 
