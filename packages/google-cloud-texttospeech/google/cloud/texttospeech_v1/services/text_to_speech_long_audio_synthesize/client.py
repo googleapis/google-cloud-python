@@ -490,9 +490,14 @@ class TextToSpeechLongAudioSynthesizeClient(
                 audio_config = texttospeech_v1.AudioConfig()
                 audio_config.audio_encoding = "ALAW"
 
+                voice = texttospeech_v1.VoiceSelectionParams()
+                voice.language_code = "language_code_value"
+
                 request = texttospeech_v1.SynthesizeLongAudioRequest(
                     input=input,
                     audio_config=audio_config,
+                    output_gcs_uri="output_gcs_uri_value",
+                    voice=voice,
                 )
 
                 # Make the request

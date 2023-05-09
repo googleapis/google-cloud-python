@@ -39,20 +39,22 @@ class SynthesizeLongAudioRequest(proto.Message):
     Attributes:
         parent (str):
             The resource states of the request in the form of
-            ``projects/*/locations/*/voices/*``.
+            ``projects/*/locations/*``.
         input (google.cloud.texttospeech_v1.types.SynthesisInput):
             Required. The Synthesizer requires either
-            plain text or SSML as input.
+            plain text or SSML as input. While Long Audio is
+            in preview, SSML is temporarily unsupported.
         audio_config (google.cloud.texttospeech_v1.types.AudioConfig):
             Required. The configuration of the
             synthesized audio.
         output_gcs_uri (str):
-            Specifies a Cloud Storage URI for the synthesis results.
-            Must be specified in the format:
+            Required. Specifies a Cloud Storage URI for the synthesis
+            results. Must be specified in the format:
             ``gs://bucket_name/object_name``, and the bucket must
             already exist.
         voice (google.cloud.texttospeech_v1.types.VoiceSelectionParams):
-            The desired voice of the synthesized audio.
+            Required. The desired voice of the
+            synthesized audio.
     """
 
     parent: str = proto.Field(

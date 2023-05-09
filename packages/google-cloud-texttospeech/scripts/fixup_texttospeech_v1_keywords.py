@@ -40,7 +40,7 @@ class texttospeechCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'list_voices': ('language_code', ),
-        'synthesize_long_audio': ('input', 'audio_config', 'parent', 'output_gcs_uri', 'voice', ),
+        'synthesize_long_audio': ('input', 'audio_config', 'output_gcs_uri', 'voice', 'parent', ),
         'synthesize_speech': ('input', 'voice', 'audio_config', ),
     }
 

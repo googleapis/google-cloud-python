@@ -971,6 +971,7 @@ def test_synthesize_long_audio_rest_required_fields(
     transport_class = transports.TextToSpeechLongAudioSynthesizeRestTransport
 
     request_init = {}
+    request_init["output_gcs_uri"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -990,12 +991,16 @@ def test_synthesize_long_audio_rest_required_fields(
 
     # verify required fields with default values are now present
 
+    jsonified_request["outputGcsUri"] = "output_gcs_uri_value"
+
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).synthesize_long_audio._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
+    assert "outputGcsUri" in jsonified_request
+    assert jsonified_request["outputGcsUri"] == "output_gcs_uri_value"
 
     client = TextToSpeechLongAudioSynthesizeClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1048,6 +1053,8 @@ def test_synthesize_long_audio_rest_unset_required_fields():
             (
                 "input",
                 "audioConfig",
+                "outputGcsUri",
+                "voice",
             )
         )
     )

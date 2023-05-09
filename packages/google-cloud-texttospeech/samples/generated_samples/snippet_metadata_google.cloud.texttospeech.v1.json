@@ -56,12 +56,12 @@
       "regionTag": "texttospeech_v1_generated_TextToSpeechLongAudioSynthesize_SynthesizeLongAudio_async",
       "segments": [
         {
-          "end": 62,
+          "end": 67,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 62,
+          "end": 67,
           "start": 27,
           "type": "SHORT"
         },
@@ -71,18 +71,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 52,
+          "end": 57,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 59,
-          "start": 53,
+          "end": 64,
+          "start": 58,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 63,
-          "start": 60,
+          "end": 68,
+          "start": 65,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -132,12 +132,12 @@
       "regionTag": "texttospeech_v1_generated_TextToSpeechLongAudioSynthesize_SynthesizeLongAudio_sync",
       "segments": [
         {
-          "end": 62,
+          "end": 67,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 62,
+          "end": 67,
           "start": 27,
           "type": "SHORT"
         },
@@ -147,18 +147,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 52,
+          "end": 57,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 59,
-          "start": 53,
+          "end": 64,
+          "start": 58,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 63,
-          "start": 60,
+          "end": 68,
+          "start": 65,
           "type": "RESPONSE_HANDLING"
         }
       ],
