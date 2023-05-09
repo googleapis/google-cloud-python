@@ -53,7 +53,7 @@ else # All other shells: examine $0 for known shell binary filenames.
   case ${0##*/} in sh|-sh|dash|-dash) SOURCED=1;; esac
 fi
 
-(( SOURCED != 1 )) || { \
+(( ${SOURCED} != 1 )) || { \
   echo "Please do not source this script, but execute it directly."
   return -10
 }
