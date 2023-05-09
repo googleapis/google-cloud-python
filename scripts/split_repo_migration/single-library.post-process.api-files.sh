@@ -208,7 +208,8 @@ ${RM} -f "${PATH_PACKAGE}/${MONOREPO_PACKAGE_NAME}.txt"
 ## START commit changes #############################################
 echo "Committing changes locally"
 ${GIT} add .
-${GIT} commit -am "build: ${MONOREPO_PACKAGE_NAME} migration: adjust owlbot-related files"
+${GIT} commit -am "build: ${MONOREPO_PACKAGE_NAME} migration: adjust owlbot-related files" || \
+  echo "No changes to commit"
 ## END commit changes
 
 popd >& /dev/null # "${PATH_MONOREPO}"
