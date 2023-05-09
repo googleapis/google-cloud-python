@@ -38,7 +38,20 @@ authentication methods:
        # The credentials and project_id arguments can be omitted.
        df = pandas_gbq.read_gbq("SELECT my_col FROM `my_dataset.my_table`")
 
-2. Application Default Credentials via the :func:`google.auth.default`
+2. If running on `Google Colab <https://colab.research.google.com/>`_,
+   pandas-gbq attempts to authenticate with the
+   ``google.colab.auth.authenticate_user()`` method. See the `Getting started
+   with BigQuery on Colab notebook
+   <https://colab.research.google.com/notebooks/bigquery.ipynb>`_ for an
+   example of using this authentication method with other libraries that use
+   Google BigQuery.
+
+   .. note::
+
+      To use Colab authentication, install version 1.8.0 or later of the
+      ``pydata-google-auth`` package.
+
+3. Application Default Credentials via the :func:`google.auth.default`
    function.
 
    .. note::
@@ -48,10 +61,11 @@ authentication methods:
        user account credentials.
 
        A common problem with default credentials when running on Google
-       Compute Engine is that the VM does not have sufficient scopes to query
-       BigQuery.
+       Compute Engine is that the VM does not have sufficient `access scopes
+       <https://cloud.google.com/compute/docs/access/service-accounts#accesscopesiam>`_
+       to query BigQuery.
 
-3. User account credentials.
+4. User account credentials.
 
    pandas-gbq loads cached credentials from a hidden user folder on the
    operating system.
@@ -214,5 +228,5 @@ more of the following circumstances:
   (or similar) notebook.
 
 If the conditions above apply to you, your needs may be better served
-by the content in the `Authentication (Highly Constrained Development Environment) 
+by the content in the `Authentication (Highly Constrained Development Environment)
 <authentication_highly_constrained_environments.html>`_ section.
