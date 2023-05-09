@@ -59,7 +59,7 @@ SPLIT_REPO=$1
 # The name of the artifact on PyPI. (e.g. google-cloud-access-approval)
 ARTIFACT_NAME=$2
 
-SPLIT_REPO_DIR="/tmp/delete-library.${SPLIT_REPO}.$(date +"%Y-%m-%d.%H:%M:%S")"
+SPLIT_REPO_DIR="${SPLIT_REPO_DIR:-/tmp/delete-library.${SPLIT_REPO}.$(date +"%Y-%m-%d.%H:%M:%S")}"
 
 git clone "git@github.com:googleapis/${SPLIT_REPO}.git" $SPLIT_REPO_DIR
 
