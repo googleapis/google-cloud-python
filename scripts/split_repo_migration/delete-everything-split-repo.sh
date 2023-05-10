@@ -66,7 +66,8 @@ git clone "git@github.com:googleapis/${SPLIT_REPO}.git" $SPLIT_REPO_DIR
 cd $SPLIT_REPO_DIR
 
 # Create a git branch
-git checkout -b 'migrate-library'
+BRANCH_NAME="migrate-library.$(date +'%Y-%m-%d.%H-%M-%S')"
+git checkout -b ${BRANCH_NAME}
 
 # Quick check to make sure there are no handwritten samples. 
 # Handwritten samples should be migrated to python-docs-samples before repository code is deleted.
@@ -133,4 +134,4 @@ git add .
 git commit -m 'build: update README to indicate that source has moved and delete all files'
 
 # Push the branch. Note force push option is used to allow this script to be called multiple times.
-git push origin -f migrate-library
+git push origin -f ${BRANCH_NAME}
