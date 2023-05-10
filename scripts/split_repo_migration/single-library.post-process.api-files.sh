@@ -163,7 +163,7 @@ OWY_SPLIT_PATH="${PATH_PACKAGE}/.github/.OwlBot.yaml"
   # A to be further affected by B.
   sed -i 's|\.\*-py/(.*)|.*-py|' "${OWY_MONO_PATH}"
   sed -i "s|dest: /owl-bot-staging/\$1/\$2|dest: /owl-bot-staging/\$1|" "${OWY_MONO_PATH}" # A
-  sed -i "s| /owl-bot-staging/| /owl-bot-staging/${MONOREPO_PACKAGE_NAME}/|" "${OWY_MONO_PATH}" # B
+  sed -i "s| /owl-bot-staging/| /owl-bot-staging/${MONOREPO_PACKAGE_NAME}/|g" "${OWY_MONO_PATH}" # B
 
   # TODO: Review the following: For consistency with NodeJS migration script:
   # - we are not removing `begin-after-commit-hash`
