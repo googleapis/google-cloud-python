@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.18.0](https://github.com/googleapis/python-bigtable/compare/v2.17.0...v2.18.0) (2023-05-10)
+
+
+### Features
+
+* Publish RateLimitInfo and FeatureFlag protos ([#768](https://github.com/googleapis/python-bigtable/issues/768)) ([171fea6](https://github.com/googleapis/python-bigtable/commit/171fea6de57a47f92a2a56050f8bfe7518144df7))
+* Threaded MutationsBatcher ([#722](https://github.com/googleapis/python-bigtable/issues/722)) ([7521a61](https://github.com/googleapis/python-bigtable/commit/7521a617c121ead96a21ca47959a53b2db2da090))
+
+
+### Bug Fixes
+
+* Pass the "retry" when calling read_rows. ([#759](https://github.com/googleapis/python-bigtable/issues/759)) ([505273b](https://github.com/googleapis/python-bigtable/commit/505273b72bf83d8f92d0e0a92d62f22bce96cc3d))
+
+
+### Documentation
+
+* Fix delete from column family example ([#764](https://github.com/googleapis/python-bigtable/issues/764)) ([128b4e1](https://github.com/googleapis/python-bigtable/commit/128b4e1f3eea2dad903d84c8f2933b17a5f0d226))
+* Fix formatting of request arg in docstring ([#756](https://github.com/googleapis/python-bigtable/issues/756)) ([45d3e43](https://github.com/googleapis/python-bigtable/commit/45d3e4308c4f494228c2e6e18a36285c557cb0c3))
+
 ## [2.17.0](https://github.com/googleapis/python-bigtable/compare/v2.16.0...v2.17.0) (2023-03-01)
 
 
