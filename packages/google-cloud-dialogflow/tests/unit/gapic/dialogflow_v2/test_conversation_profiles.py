@@ -3501,7 +3501,10 @@ def test_create_conversation_profile_rest(request_type):
                                 "drop_ivr_messages": True,
                             },
                         },
-                        "conversation_model_config": {"model": "model_value"},
+                        "conversation_model_config": {
+                            "model": "model_value",
+                            "baseline_model_version": "baseline_model_version_value",
+                        },
                         "conversation_process_config": {"recent_sentences_count": 2352},
                     }
                 ],
@@ -3777,7 +3780,10 @@ def test_create_conversation_profile_rest_bad_request(
                                 "drop_ivr_messages": True,
                             },
                         },
-                        "conversation_model_config": {"model": "model_value"},
+                        "conversation_model_config": {
+                            "model": "model_value",
+                            "baseline_model_version": "baseline_model_version_value",
+                        },
                         "conversation_process_config": {"recent_sentences_count": 2352},
                     }
                 ],
@@ -3952,7 +3958,10 @@ def test_update_conversation_profile_rest(request_type):
                                 "drop_ivr_messages": True,
                             },
                         },
-                        "conversation_model_config": {"model": "model_value"},
+                        "conversation_model_config": {
+                            "model": "model_value",
+                            "baseline_model_version": "baseline_model_version_value",
+                        },
                         "conversation_process_config": {"recent_sentences_count": 2352},
                     }
                 ],
@@ -4229,7 +4238,10 @@ def test_update_conversation_profile_rest_bad_request(
                                 "drop_ivr_messages": True,
                             },
                         },
-                        "conversation_model_config": {"model": "model_value"},
+                        "conversation_model_config": {
+                            "model": "model_value",
+                            "baseline_model_version": "baseline_model_version_value",
+                        },
                         "conversation_process_config": {"recent_sentences_count": 2352},
                     }
                 ],

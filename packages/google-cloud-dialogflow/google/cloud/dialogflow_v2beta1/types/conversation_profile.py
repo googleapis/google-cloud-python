@@ -526,11 +526,21 @@ class HumanAgentAssistantConfig(proto.Message):
             model (str):
                 Conversation model resource name. Format:
                 ``projects/<Project ID>/conversationModels/<Model ID>``.
+            baseline_model_version (str):
+                Version of current baseline model. It will be ignored if
+                [model][google.cloud.dialogflow.v2beta1.HumanAgentAssistantConfig.ConversationModelConfig.model]
+                is set. Valid versions are: Article Suggestion baseline
+                model: - 0.9 - 1.0 (default) Summarization baseline model: -
+                1.0
         """
 
         model: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        baseline_model_version: str = proto.Field(
+            proto.STRING,
+            number=8,
         )
 
     class ConversationProcessConfig(proto.Message):
