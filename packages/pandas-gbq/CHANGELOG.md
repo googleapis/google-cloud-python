@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.19.2](https://github.com/googleapis/python-bigquery-pandas/compare/v0.19.1...v0.19.2) (2023-05-10)
+
+
+### Bug Fixes
+
+* Add exception context to GenericGBQExceptions ([#629](https://github.com/googleapis/python-bigquery-pandas/issues/629)) ([d17ae24](https://github.com/googleapis/python-bigquery-pandas/commit/d17ae244b8e249b1d5f3b6db667db5e84abaf85c))
+
+
+### Documentation
+
+* Correct the documented dtypes for `read_gbq` ([#598](https://github.com/googleapis/python-bigquery-pandas/issues/598)) ([b45651d](https://github.com/googleapis/python-bigquery-pandas/commit/b45651d5688034418cdf57244c39592ee5dea2b2))
+* Google Colab auth is used with pydata-google-auth 1.8.0+ ([#631](https://github.com/googleapis/python-bigquery-pandas/issues/631)) ([257aa62](https://github.com/googleapis/python-bigquery-pandas/commit/257aa6209345836e291ebd4f6feec0176c8b22e1))
+* Updates with a link to the canonical source of documentation ([#620](https://github.com/googleapis/python-bigquery-pandas/issues/620)) ([1dca732](https://github.com/googleapis/python-bigquery-pandas/commit/1dca732c71e022f1897d946e2ae914e9b51bc386))
+
 ## [0.19.1](https://github.com/googleapis/python-bigquery-pandas/compare/v0.19.0...v0.19.1) (2023-01-25)
 
 
