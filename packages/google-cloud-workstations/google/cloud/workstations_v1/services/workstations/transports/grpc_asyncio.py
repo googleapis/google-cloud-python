@@ -436,8 +436,8 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
     ]:
         r"""Return a callable for the list workstation configs method over gRPC.
 
-        Returns all WorkstationConfigs in the specified
-        cluster.
+        Returns all workstation configurations in the
+        specified cluster.
 
         Returns:
             Callable[[~.ListWorkstationConfigsRequest],
@@ -615,7 +615,8 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
     ]:
         r"""Return a callable for the list workstations method over gRPC.
 
-        Returns all Workstations using the specified config.
+        Returns all Workstations using the specified
+        workstation configuration.
 
         Returns:
             Callable[[~.ListWorkstationsRequest],
@@ -644,8 +645,8 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
     ]:
         r"""Return a callable for the list usable workstations method over gRPC.
 
-        Returns all Workstations using the specified config
-        on which the caller has the
+        Returns all workstations using the specified
+        workstation configuration on which the caller has the
         "workstations.workstations.use" permission.
 
         Returns:
