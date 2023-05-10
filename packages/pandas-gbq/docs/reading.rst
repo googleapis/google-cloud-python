@@ -59,14 +59,20 @@ column, based on the BigQuery table schema.
 ================== =========================
 BigQuery Data Type dtype
 ================== =========================
-DATE               datetime64[ns]
-DATETIME           datetime64[ns]
 BOOL               boolean
-FLOAT              float
 INT64              Int64
-TIME               datetime64[ns]
-TIMESTAMP          :class:`~pandas.DatetimeTZDtype` with ``unit='ns'`` and ``tz='UTC'``
+FLOAT64            float64
+TIME               dbtime
+DATE               dbdate or object
+DATETIME           datetime64[ns] or object
+TIMESTAMP          datetime64[ns, UTC] or object
 ================== =========================
+
+If any DATE/DATETIME/TIMESTAMP value is outside of the range of `pandas.Timestamp.min
+<https://pandas.pydata.org/docs/reference/api/pandas.Timestamp.min.html>`__
+(1677-09-22) and `pandas.Timestamp.max
+<https://pandas.pydata.org/docs/reference/api/pandas.Timestamp.max.html>`__
+(2262-04-11), the data type maps to the pandas `object` dtype.
 
 .. _reading-bqstorage-api:
 
