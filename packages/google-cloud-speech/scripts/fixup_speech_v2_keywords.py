@@ -39,7 +39,7 @@ def partition(
 class speechCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'batch_recognize': ('recognizer', 'config', 'config_mask', 'files', 'recognition_output_config', ),
+        'batch_recognize': ('recognizer', 'config', 'config_mask', 'files', 'recognition_output_config', 'processing_strategy', ),
         'create_custom_class': ('custom_class', 'parent', 'validate_only', 'custom_class_id', ),
         'create_phrase_set': ('phrase_set', 'parent', 'validate_only', 'phrase_set_id', ),
         'create_recognizer': ('recognizer', 'parent', 'validate_only', 'recognizer_id', ),
