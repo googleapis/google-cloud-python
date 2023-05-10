@@ -393,7 +393,7 @@ class GbqConnector(object):
             error_message = ex.errors[0]["message"]
             raise TableCreationError(f"Reason: {error_message}")
         else:
-            raise GenericGBQException("Reason: {0}".format(ex))
+            raise GenericGBQException("Reason: {0}".format(ex)) from ex
 
     def download_table(
         self,
