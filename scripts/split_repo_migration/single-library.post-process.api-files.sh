@@ -159,17 +159,11 @@ OWY_SPLIT_PATH="${PATH_PACKAGE}/.github/.OwlBot.yaml"
   # remove `image:` line
   sed -i "/image:/d" "${OWY_MONO_PATH}"
 
-  # In the nodejs case, lines #1 and #2 below are treated as a disjoint case from
-  # line #3. However, in Python we see cases (eg aiplatform) where there are
-  # multiple entries in the same file that satisfy either of the criteria. As a
-  # result, we search for both cases. In doing that, to prevent #3 from altering
-  # lines already modified by #2, we temporarily insert ${TMP_MARKER} and remove
-  # it in #4
-  TMP_MARKER="<<__tmp__>>>"
-  sed -i 's|\.\*-py/(.*)|.*-py|' "${OWY_MONO_PATH}"   #1
-  sed -i "s|dest: /owl-bot-staging/\$1/\$2|dest: /owl-bot-${TMP_MARKER}staging/${MONOREPO_PACKAGE_NAME}/\$1|" "${OWY_MONO_PATH}" #2
-  sed -i "s|dest: /owl-bot-staging|dest: \/owl-bot-staging\/${MONOREPO_PACKAGE_NAME}/|" "${OWY_MONO_PATH}" #3
-  sed -i "s|${TMP_MARKER}||" "${OWY_MONO_PATH}"  #4
+  # The order of lines A and B below matters, since we DO want lines affected by
+  # A to be further affected by B.
+  sed -i 's|\.\*-py/(.*)|.*-py|' "${OWY_MONO_PATH}"
+  sed -i "s|dest: /owl-bot-staging/\$1/\$2|dest: /owl-bot-staging/\$1|" "${OWY_MONO_PATH}" # A
+  sed -i "s| /owl-bot-staging/| /owl-bot-staging/${MONOREPO_PACKAGE_NAME}/|" "${OWY_MONO_PATH}" # B
 
   # TODO: Review the following: For consistency with NodeJS migration script:
   # - we are not removing `begin-after-commit-hash`
