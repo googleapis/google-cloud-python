@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.18.0](https://github.com/googleapis/google-auth-library-python/compare/v2.17.3...v2.18.0) (2023-05-10)
+
+
+### Features
+
+* Add smbios check to detect GCE residency ([#1276](https://github.com/googleapis/google-auth-library-python/issues/1276)) ([22d241b](https://github.com/googleapis/google-auth-library-python/commit/22d241b2060cc8fcc8c5005ccc8fbc932a7f66f6))
+* Universe domain support for service account ([#1286](https://github.com/googleapis/google-auth-library-python/issues/1286)) ([821c1b6](https://github.com/googleapis/google-auth-library-python/commit/821c1b65289a23855855f16b9c7a651fdbc1e4a9))
+
 ## [2.17.3](https://github.com/googleapis/google-auth-library-python/compare/v2.17.2...v2.17.3) (2023-04-12)
 
 
