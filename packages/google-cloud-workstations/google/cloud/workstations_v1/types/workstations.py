@@ -93,8 +93,8 @@ class WorkstationCluster(proto.Message):
             soft-deleted.
         etag (str):
             Checksum computed by the server. May be sent
-            on update and delete requests to ensure that the
-            client has an up-to-date value before
+            on update and delete requests to make sure that
+            the client has an up-to-date value before
             proceeding.
         network (str):
             Immutable. Name of the Compute Engine network
@@ -105,6 +105,13 @@ class WorkstationCluster(proto.Message):
             subnetwork in which instances associated with
             this cluster will be created. Must be part of
             the subnetwork specified for this cluster.
+        control_plane_ip (str):
+            Output only. The private IP address of the
+            control plane for this cluster. Workstation VMs
+            need access to this IP address to work with the
+            service, so make sure that your firewall rules
+            allow egress from the workstation VMs to this
+            address.
         private_cluster_config (google.cloud.workstations_v1.types.WorkstationCluster.PrivateClusterConfig):
             Configuration for private cluster.
         degraded (bool):
@@ -217,6 +224,10 @@ class WorkstationCluster(proto.Message):
         proto.STRING,
         number=11,
     )
+    control_plane_ip: str = proto.Field(
+        proto.STRING,
+        number=16,
+    )
     private_cluster_config: PrivateClusterConfig = proto.Field(
         proto.MESSAGE,
         number=12,
@@ -267,8 +278,8 @@ class WorkstationConfig(proto.Message):
             soft-deleted.
         etag (str):
             Checksum computed by the server. May be sent
-            on update and delete requests to ensure that the
-            client has an up-to-date value before
+            on update and delete requests to make sure that
+            the client has an up-to-date value before
             proceeding.
         idle_timeout (google.protobuf.duration_pb2.Duration):
             How long to wait before automatically
@@ -292,9 +303,9 @@ class WorkstationConfig(proto.Message):
             workstation using this configuration when that
             workstation is started.
         encryption_key (google.cloud.workstations_v1.types.WorkstationConfig.CustomerEncryptionKey):
-            Encrypts resources of this workstation
-            configuration using a customer-managed
-            encryption key.
+            Immutable. Encrypts resources of this
+            workstation configuration using a
+            customer-managed encryption key.
             If specified, the boot disk of the Compute
             Engine instance and the persistent disk are
             encrypted using this encryption key. If this
@@ -311,6 +322,9 @@ class WorkstationConfig(proto.Message):
             If the encryption key is revoked, the
             workstation session will automatically be
             stopped within 7 hours.
+
+            Immutable after the workstation configuration is
+            created.
         degraded (bool):
             Output only. Whether this resource is degraded, in which
             case it may require user action to restore full
@@ -340,19 +354,23 @@ class WorkstationConfig(proto.Message):
                 machine_type (str):
                     The name of a Compute Engine machine type.
                 service_account (str):
-                    Email address of the service account that
-                    will be used on VM instances used to support
-                    this config. If not set, VMs will run with a
-                    Google-managed service account. This service
-                    account must have permission to pull the
-                    specified container image, otherwise the image
-                    must be publicly accessible.
+                    Email address of the service account used on
+                    VM instances used to support this configuration.
+                    If not set, VMs run with a Google-managed
+                    service account. This service account must have
+                    permission to pull the specified container
+                    image; otherwise, the image must be publicly
+                    accessible.
                 tags (MutableSequence[str]):
                     Network tags to add to the Compute Engine
                     machines backing the Workstations.
                 pool_size (int):
                     Number of instances to pool for faster
-                    workstation starup.
+                    workstation startup.
+                pooled_instances (int):
+                    Output only. Number of instances currently
+                    available in the pool for faster workstation
+                    startup.
                 disable_public_ip_addresses (bool):
                     Whether instances have no public IP address.
                 enable_nested_virtualization (bool):
@@ -423,6 +441,10 @@ class WorkstationConfig(proto.Message):
             pool_size: int = proto.Field(
                 proto.INT32,
                 number=5,
+            )
+            pooled_instances: int = proto.Field(
+                proto.INT32,
+                number=12,
             )
             disable_public_ip_addresses: bool = proto.Field(
                 proto.BOOL,
@@ -551,8 +573,8 @@ class WorkstationConfig(proto.Message):
         Attributes:
             image (str):
                 Docker image defining the container. This
-                image must be accessible by the config's service
-                account.
+                image must be accessible by the service account
+                specified in the workstation configuration.
             command (MutableSequence[str]):
                 If set, overrides the default ENTRYPOINT
                 specified by the image.
@@ -560,7 +582,7 @@ class WorkstationConfig(proto.Message):
                 Arguments passed to the entrypoint.
             env (MutableMapping[str, str]):
                 Environment variables passed to the
-                container.
+                container's entrypoint.
             working_dir (str):
                 If set, overrides the default DIR specified
                 by the image.
@@ -601,13 +623,14 @@ class WorkstationConfig(proto.Message):
 
         Attributes:
             kms_key (str):
-                The name of the Google Cloud KMS encryption key. For
-                example,
+                Immutable. The name of the Google Cloud KMS encryption key.
+                For example,
                 ``projects/PROJECT_ID/locations/REGION/keyRings/KEY_RING/cryptoKeys/KEY_NAME``.
             kms_key_service_account (str):
-                The service account to use with the specified KMS key. We
-                recommend that you use a separate service account and follow
-                KMS best practices. For more information, see `Separation of
+                Immutable. The service account to use with the specified KMS
+                key. We recommend that you use a separate service account
+                and follow KMS best practices. For more information, see
+                `Separation of
                 duties <https://cloud.google.com/kms/docs/separation-of-duties>`__
                 and ``gcloud kms keys add-iam-policy-binding``
                 ```--member`` <https://cloud.google.com/sdk/gcloud/reference/kms/keys/add-iam-policy-binding#--member>`__.
@@ -741,8 +764,8 @@ class Workstation(proto.Message):
             soft-deleted.
         etag (str):
             Checksum computed by the server. May be sent
-            on update and delete requests to ensure that the
-            client has an up-to-date value before
+            on update and delete requests to make sure that
+            the client has an up-to-date value before
             proceeding.
         state (google.cloud.workstations_v1.types.Workstation.State):
             Output only. Current state of the
@@ -997,7 +1020,7 @@ class DeleteWorkstationClusterRequest(proto.Message):
         etag (str):
             If set, the request will be rejected if the
             latest version of the workstation cluster on the
-            server does not have this etag.
+            server does not have this ETag.
         force (bool):
             If set, any workstation configurations and
             workstations in the workstation cluster are also
@@ -1165,7 +1188,8 @@ class CreateWorkstationConfigRequest(proto.Message):
         parent (str):
             Required. Parent resource name.
         workstation_config_id (str):
-            Required. ID to use for the config.
+            Required. ID to use for the workstation
+            configuration.
         workstation_config (google.cloud.workstations_v1.types.WorkstationConfig):
             Required. Config to create.
         validate_only (bool):
@@ -1200,13 +1224,14 @@ class UpdateWorkstationConfigRequest(proto.Message):
             Required. Config to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Mask specifying which fields in the
-            config should be updated.
+            workstation configuration should be updated.
         validate_only (bool):
             If set, validate the request and preview the
             review, but do not actually apply it.
         allow_missing (bool):
-            If set, and the config is not found, a new config will be
-            created. In this situation, update_mask is ignored.
+            If set and the workstation configuration is not found, a new
+            workstation configuration will be created. In this
+            situation, update_mask is ignored.
     """
 
     workstation_config: "WorkstationConfig" = proto.Field(
@@ -1234,18 +1259,20 @@ class DeleteWorkstationConfigRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the config to delete.
+            Required. Name of the workstation
+            configuration to delete.
         validate_only (bool):
             If set, validate the request and preview the
             review, but do not actually apply it.
         etag (str):
-            If set, the request will be rejected if the
-            latest version of the config on the server does
-            not have this etag.
+            If set, the request is rejected if the latest
+            version of the workstation configuration on the
+            server does not have this ETag.
         force (bool):
-            If set, any Workstations in the config will
-            also be deleted. Otherwise, the request will
-            work only if the config has no workstations.
+            If set, any workstations in the workstation
+            configuration are also deleted. Otherwise, the
+            request works only if the workstation
+            configuration has no workstations.
     """
 
     name: str = proto.Field(
@@ -1442,13 +1469,14 @@ class UpdateWorkstationRequest(proto.Message):
             Required. Workstation to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Mask specifying which fields in the
-            config should be updated.
+            workstation configuration should be updated.
         validate_only (bool):
             If set, validate the request and preview the
             review, but do not actually apply it.
         allow_missing (bool):
-            If set, and the config is not found, a new config will be
-            created. In this situation, update_mask is ignored.
+            If set and the workstation configuration is not found, a new
+            workstation configuration is created. In this situation,
+            update_mask is ignored.
     """
 
     workstation: "Workstation" = proto.Field(
@@ -1483,7 +1511,7 @@ class DeleteWorkstationRequest(proto.Message):
         etag (str):
             If set, the request will be rejected if the
             latest version of the workstation on the server
-            does not have this etag.
+            does not have this ETag.
     """
 
     name: str = proto.Field(
@@ -1512,7 +1540,7 @@ class StartWorkstationRequest(proto.Message):
         etag (str):
             If set, the request will be rejected if the
             latest version of the workstation on the server
-            does not have this etag.
+            does not have this ETag.
     """
 
     name: str = proto.Field(
@@ -1541,7 +1569,7 @@ class StopWorkstationRequest(proto.Message):
         etag (str):
             If set, the request will be rejected if the
             latest version of the workstation on the server
-            does not have this etag.
+            does not have this ETag.
     """
 
     name: str = proto.Field(
@@ -1614,7 +1642,7 @@ class GenerateAccessTokenResponse(proto.Message):
         access_token (str):
             The generated bearer access token. To use this token,
             include it in an Authorization header of an HTTP request
-            sent to the associated workstation's hostname, for example,
+            sent to the associated workstation's hostname—for example,
             ``Authorization: Bearer <access_token>``.
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
             Time at which the generated token will
