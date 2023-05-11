@@ -265,18 +265,6 @@
                 }
             ]
         },
-        "packages/google-cloud-iap": {
-            "component": "google-cloud-iap",
-            "release-type": "python",
-            "extra-files": [
-                "google/cloud/iap/gapic_version.py",
-                {
-                    "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.iap.v1.json",
-                    "jsonpath": "$.clientLibrary.version"
-                }
-            ]
-        },
         "packages/google-cloud-domains": {
             "component": "google-cloud-domains",
             "release-type": "python",
