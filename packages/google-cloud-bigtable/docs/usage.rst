@@ -17,7 +17,6 @@ Using the API
   row-data
   row-filters
   row-set
-  batcher
 
 
 In the hierarchy of API concepts

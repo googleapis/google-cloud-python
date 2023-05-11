@@ -32,7 +32,7 @@ from google.cloud.bigtable.backup import Backup
 from google.cloud.bigtable.column_family import _gc_rule_from_pb
 from google.cloud.bigtable.column_family import ColumnFamily
 from google.cloud.bigtable.batcher import MutationsBatcher
-from google.cloud.bigtable.batcher import FLUSH_COUNT, MAX_MUTATION_SIZE
+from google.cloud.bigtable.batcher import FLUSH_COUNT, MAX_ROW_BYTES
 from google.cloud.bigtable.encryption_info import EncryptionInfo
 from google.cloud.bigtable.policy import Policy
 from google.cloud.bigtable.row import AppendRow
@@ -844,9 +844,7 @@ class Table(object):
                 request={"name": self.name, "row_key_prefix": _to_bytes(row_key_prefix)}
             )
 
-    def mutations_batcher(
-        self, flush_count=FLUSH_COUNT, max_row_bytes=MAX_MUTATION_SIZE
-    ):
+    def mutations_batcher(self, flush_count=FLUSH_COUNT, max_row_bytes=MAX_ROW_BYTES):
         """Factory to create a mutation batcher associated with this instance.
 
         For example:
