@@ -98,6 +98,10 @@ class SearchRequest(proto.Message):
 
             If this field is unrecognizable, an ``INVALID_ARGUMENT`` is
             returned.
+        user_info (google.cloud.discoveryengine_v1beta.types.UserInfo):
+            Information about the end user. Highly recommended for
+            analytics. The user_agent string in UserInfo will be used to
+            deduce device_type for analytics.
         facet_specs (MutableSequence[google.cloud.discoveryengine_v1beta.types.SearchRequest.FacetSpec]):
             Facet specifications for faceted search. If empty, no facets
             are returned.
@@ -120,7 +124,7 @@ class SearchRequest(proto.Message):
             -  ``search_type``: double. Default empty. Enables
                non-webpage searching depending on the value. The only
                valid non-default value is 1, which enables image
-               searching. This field is ignored for other verticals.
+               searching.
         query_expansion_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.QueryExpansionSpec):
             The query expansion specification that
             specifies the conditions under which query
@@ -150,6 +154,31 @@ class SearchRequest(proto.Message):
         content_search_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.ContentSearchSpec):
             The content search spec that configs the
             desired behavior of content search.
+        safe_search (bool):
+            Whether to turn on safe search. This is only supported for
+            [ContentConfig.PUBLIC_WEBSITE][].
+        user_label (MutableMapping[str, str]):
+            The user labels applied to a resource must meet the
+            following requirements:
+
+            -  Each resource can have multiple labels, up to a maximum
+               of 64.
+            -  Each label must be a key-value pair.
+            -  Keys have a minimum length of 1 character and a maximum
+               length of 63 characters and cannot be empty. Values can
+               be empty and have a maximum length of 63 characters.
+            -  Keys and values can contain only lowercase letters,
+               numeric characters, underscores, and dashes. All
+               characters must use UTF-8 encoding, and international
+               characters are allowed.
+            -  The key portion of a label must be unique. However, you
+               can use the same key with multiple resources.
+            -  Keys must start with a lowercase letter or international
+               character.
+
+            See `Google Cloud
+            Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
+            for more details.
     """
 
     class FacetSpec(proto.Message):
@@ -589,6 +618,11 @@ class SearchRequest(proto.Message):
         proto.STRING,
         number=8,
     )
+    user_info: common.UserInfo = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message=common.UserInfo,
+    )
     facet_specs: MutableSequence[FacetSpec] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
@@ -623,6 +657,15 @@ class SearchRequest(proto.Message):
         proto.MESSAGE,
         number=24,
         message=ContentSearchSpec,
+    )
+    safe_search: bool = proto.Field(
+        proto.BOOL,
+        number=20,
+    )
+    user_label: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=22,
     )
 
 
