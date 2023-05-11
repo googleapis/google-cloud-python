@@ -19,6 +19,7 @@ import warnings
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
@@ -318,7 +319,7 @@ class CloudFunctionsServiceGrpcAsyncIOTransport(CloudFunctionsServiceTransport):
 
         Creates a new function. If a function with the given name
         already exists in the specified project, the long running
-        operation will return ``ALREADY_EXISTS`` error.
+        operation returns an ``ALREADY_EXISTS`` error.
 
         Returns:
             Callable[[~.CreateFunctionRequest],
@@ -376,8 +377,7 @@ class CloudFunctionsServiceGrpcAsyncIOTransport(CloudFunctionsServiceTransport):
 
         Deletes a function with the given name from the
         specified project. If the given function is used by some
-        trigger, the trigger will be updated to remove this
-        function.
+        trigger, the trigger is updated to remove this function.
 
         Returns:
             Callable[[~.DeleteFunctionRequest],
@@ -456,13 +456,13 @@ class CloudFunctionsServiceGrpcAsyncIOTransport(CloudFunctionsServiceTransport):
            credentials would be used, but that identity does not have
            permissions to upload files to the URL.
 
-        When making a HTTP PUT request, these two headers need to be
+        When making an HTTP PUT request, these two headers must be
         specified:
 
         -  ``content-type: application/zip``
         -  ``x-goog-content-length-range: 0,104857600``
 
-        And this header SHOULD NOT be specified:
+        And this header must NOT be specified:
 
         -  ``Authorization: Bearer YOUR_TOKEN``
 
@@ -495,9 +495,9 @@ class CloudFunctionsServiceGrpcAsyncIOTransport(CloudFunctionsServiceTransport):
 
         Returns a signed URL for downloading deployed
         function source code. The URL is only valid for a
-        limited period and should be used within minutes after
+        limited period and must be used within minutes after
         generation.
-        For more information about the signed URL usage see:
+        For more information about the signed URL usage, see:
         https://cloud.google.com/storage/docs/access-control/signed-urls
 
         Returns:
@@ -583,8 +583,8 @@ class CloudFunctionsServiceGrpcAsyncIOTransport(CloudFunctionsServiceTransport):
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Tests the specified permissions against the IAM access control
-        policy for a function. If the function does not exist, this will
-        return an empty set of permissions, not a NOT_FOUND error.
+        policy for a function. If the function does not exist, this
+        returns an empty set of permissions, not a NOT_FOUND error.
 
         Returns:
             Callable[[~.TestIamPermissionsRequest],
@@ -606,6 +606,61 @@ class CloudFunctionsServiceGrpcAsyncIOTransport(CloudFunctionsServiceTransport):
 
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the get_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_operation" not in self._stubs:
+            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/GetOperation",
+                request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["get_operation"]
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
+    ]:
+        r"""Return a callable for the list_operations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_operations" not in self._stubs:
+            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+                "/google.longrunning.Operations/ListOperations",
+                request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
+                response_deserializer=operations_pb2.ListOperationsResponse.FromString,
+            )
+        return self._stubs["list_operations"]
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
+    ]:
+        r"""Return a callable for the list locations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_locations" not in self._stubs:
+            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+                "/google.cloud.location.Locations/ListLocations",
+                request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
+                response_deserializer=locations_pb2.ListLocationsResponse.FromString,
+            )
+        return self._stubs["list_locations"]
 
 
 __all__ = ("CloudFunctionsServiceGrpcAsyncIOTransport",)
