@@ -160,7 +160,7 @@ else
   $EXIT 1
 fi
 
-pushd "${TARGET_REPO}"  # To target repo
+pushd "${TARGET_REPO}" >& /dev/null  # To target repo
 
 # For postprocessing of the batch migration script.
 mkdir -p owl-bot-staging/${DISTRIBUTION_NAME}/${DISTRIBUTION_NAME}
@@ -171,14 +171,14 @@ git commit -m "Trigger owlbot post-processor"
 git push -u origin "${BRANCH}" --force
 
 # create pull request
-if gh --help > /dev/null
+if which gh > /dev/null
 then
-  gh pr create --title "chore(migration): Migrate code from ${SOURCE_REPO} into ${TARGET_PATH}" --body "See #${ISSUE_NUMBER}."
+  gh pr create --title "chore(migration): Migrate code from ${SOURCE_REPO} into ${TARGET_PATH}" --body "See #${ISSUE_NUMBER}. $(echo '\n\nThis PR should be merged with a merge-commit, not a squash-commit, in order to preserve the git history.')"
 else
   hub pull-request -m "migrate code from ${SOURCE_REPO}"
 fi
 
-popd
+popd >& /dev/null
 
 # Some of the post-processing scripts require the ${DISTRIBUTION_NAME}. We
 # output it here so they can use the same value we derived, rather than risking
