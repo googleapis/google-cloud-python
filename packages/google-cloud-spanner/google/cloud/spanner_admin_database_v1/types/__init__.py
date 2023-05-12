@@ -58,6 +58,8 @@ from .spanner_database_admin import (
     RestoreInfo,
     UpdateDatabaseDdlMetadata,
     UpdateDatabaseDdlRequest,
+    UpdateDatabaseMetadata,
+    UpdateDatabaseRequest,
     RestoreSourceType,
 )
 
@@ -102,5 +104,7 @@ __all__ = (
     "RestoreInfo",
     "UpdateDatabaseDdlMetadata",
     "UpdateDatabaseDdlRequest",
+    "UpdateDatabaseMetadata",
+    "UpdateDatabaseRequest",
     "RestoreSourceType",
 )

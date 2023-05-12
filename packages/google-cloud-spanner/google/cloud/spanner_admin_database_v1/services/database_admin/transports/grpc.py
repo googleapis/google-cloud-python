@@ -354,6 +354,71 @@ class DatabaseAdminGrpcTransport(DatabaseAdminTransport):
         return self._stubs["get_database"]
 
     @property
+    def update_database(
+        self,
+    ) -> Callable[
+        [spanner_database_admin.UpdateDatabaseRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update database method over gRPC.
+
+        Updates a Cloud Spanner database. The returned [long-running
+        operation][google.longrunning.Operation] can be used to track
+        the progress of updating the database. If the named database
+        does not exist, returns ``NOT_FOUND``.
+
+        While the operation is pending:
+
+        -  The database's
+           [reconciling][google.spanner.admin.database.v1.Database.reconciling]
+           field is set to true.
+        -  Cancelling the operation is best-effort. If the cancellation
+           succeeds, the operation metadata's
+           [cancel_time][google.spanner.admin.database.v1.UpdateDatabaseMetadata.cancel_time]
+           is set, the updates are reverted, and the operation
+           terminates with a ``CANCELLED`` status.
+        -  New UpdateDatabase requests will return a
+           ``FAILED_PRECONDITION`` error until the pending operation is
+           done (returns successfully or with error).
+        -  Reading the database via the API continues to give the
+           pre-request values.
+
+        Upon completion of the returned operation:
+
+        -  The new values are in effect and readable via the API.
+        -  The database's
+           [reconciling][google.spanner.admin.database.v1.Database.reconciling]
+           field becomes false.
+
+        The returned [long-running
+        operation][google.longrunning.Operation] will have a name of the
+        format
+        ``projects/<project>/instances/<instance>/databases/<database>/operations/<operation_id>``
+        and can be used to track the database modification. The
+        [metadata][google.longrunning.Operation.metadata] field type is
+        [UpdateDatabaseMetadata][google.spanner.admin.database.v1.UpdateDatabaseMetadata].
+        The [response][google.longrunning.Operation.response] field type
+        is [Database][google.spanner.admin.database.v1.Database], if
+        successful.
+
+        Returns:
+            Callable[[~.UpdateDatabaseRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_database" not in self._stubs:
+            self._stubs["update_database"] = self.grpc_channel.unary_unary(
+                "/google.spanner.admin.database.v1.DatabaseAdmin/UpdateDatabase",
+                request_serializer=spanner_database_admin.UpdateDatabaseRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_database"]
+
+    @property
     def update_database_ddl(
         self,
     ) -> Callable[

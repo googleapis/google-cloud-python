@@ -61,6 +61,8 @@ from .types.spanner_database_admin import RestoreDatabaseRequest
 from .types.spanner_database_admin import RestoreInfo
 from .types.spanner_database_admin import UpdateDatabaseDdlMetadata
 from .types.spanner_database_admin import UpdateDatabaseDdlRequest
+from .types.spanner_database_admin import UpdateDatabaseMetadata
+from .types.spanner_database_admin import UpdateDatabaseRequest
 from .types.spanner_database_admin import RestoreSourceType
 
 __all__ = (
@@ -107,4 +109,6 @@ __all__ = (
     "UpdateBackupRequest",
     "UpdateDatabaseDdlMetadata",
     "UpdateDatabaseDdlRequest",
+    "UpdateDatabaseMetadata",
+    "UpdateDatabaseRequest",
 )

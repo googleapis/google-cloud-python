@@ -100,6 +100,11 @@
                 "update_backup"
               ]
             },
+            "UpdateDatabase": {
+              "methods": [
+                "update_database"
+              ]
+            },
             "UpdateDatabaseDdl": {
               "methods": [
                 "update_database_ddl"
@@ -200,6 +205,11 @@
                 "update_backup"
               ]
             },
+            "UpdateDatabase": {
+              "methods": [
+                "update_database"
+              ]
+            },
             "UpdateDatabaseDdl": {
               "methods": [
                 "update_database_ddl"
@@ -298,6 +308,11 @@
             "UpdateBackup": {
               "methods": [
                 "update_backup"
+              ]
+            },
+            "UpdateDatabase": {
+              "methods": [
+                "update_database"
               ]
             },
             "UpdateDatabaseDdl": {

@@ -57,6 +57,7 @@ class spanner_admin_databaseCallTransformer(cst.CSTTransformer):
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_backup': ('backup', 'update_mask', ),
+        'update_database': ('database', 'update_mask', ),
         'update_database_ddl': ('database', 'statements', 'operation_id', ),
     }
 
