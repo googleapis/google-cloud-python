@@ -17,5 +17,6 @@
     "packages/google-cloud-confidentialcomputing": "0.1.0",
     "packages/google-cloud-ids": "1.5.1",
     "packages/google-ai-generativelanguage": "0.2.0",
-    "packages/google-maps-places": "0.1.0"
+    "packages/google-maps-places": "0.1.0",
+    "packages/google-cloud-support": "0.0.0"
 }
