@@ -264,6 +264,13 @@
                     "jsonpath": "$.clientLibrary.version"
                 }
             ]
+        },
+        "packages/google-cloud-support": {
+            "component": "google-cloud-support",
+            "release-type": "python",
+            "extra-files": [
+                "google/cloud/support/gapic_version.py"
+            ]
         }
     }
 }
