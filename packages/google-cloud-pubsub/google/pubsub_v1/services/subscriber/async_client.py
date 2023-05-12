@@ -279,10 +279,10 @@ class SubscriberAsyncClient:
 
         Args:
             request (Optional[Union[google.pubsub_v1.types.Subscription, dict]]):
-                The request object. A subscription resource. If none of ``push_config`` or
-                ``bigquery_config`` is set, then the subscriber will
-                pull and ack messages using API methods. At most one of
-                these fields may be set.
+                The request object. A subscription resource. If none of ``push_config``,
+                ``bigquery_config``, or ``cloud_storage_config`` is set,
+                then the subscriber will pull and ack messages using API
+                methods. At most one of these fields may be set.
             name (:class:`str`):
                 Required. The name of the subscription. It must have the
                 format
@@ -352,10 +352,10 @@ class SubscriberAsyncClient:
 
         Returns:
             google.pubsub_v1.types.Subscription:
-                A subscription resource. If none of push_config or bigquery_config is
-                   set, then the subscriber will pull and ack messages
-                   using API methods. At most one of these fields may be
-                   set.
+                A subscription resource. If none of push_config, bigquery_config, or
+                   cloud_storage_config is set, then the subscriber will
+                   pull and ack messages using API methods. At most one
+                   of these fields may be set.
 
         """
         # Create or coerce a protobuf request object.
@@ -473,10 +473,10 @@ class SubscriberAsyncClient:
 
         Returns:
             google.pubsub_v1.types.Subscription:
-                A subscription resource. If none of push_config or bigquery_config is
-                   set, then the subscriber will pull and ack messages
-                   using API methods. At most one of these fields may be
-                   set.
+                A subscription resource. If none of push_config, bigquery_config, or
+                   cloud_storage_config is set, then the subscriber will
+                   pull and ack messages using API methods. At most one
+                   of these fields may be set.
 
         """
         # Create or coerce a protobuf request object.
@@ -605,10 +605,10 @@ class SubscriberAsyncClient:
 
         Returns:
             google.pubsub_v1.types.Subscription:
-                A subscription resource. If none of push_config or bigquery_config is
-                   set, then the subscriber will pull and ack messages
-                   using API methods. At most one of these fields may be
-                   set.
+                A subscription resource. If none of push_config, bigquery_config, or
+                   cloud_storage_config is set, then the subscriber will
+                   pull and ack messages using API methods. At most one
+                   of these fields may be set.
 
         """
         # Create or coerce a protobuf request object.

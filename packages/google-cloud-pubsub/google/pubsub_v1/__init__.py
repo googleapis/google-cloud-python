@@ -27,6 +27,7 @@ from .services.subscriber import SubscriberAsyncClient
 
 from .types.pubsub import AcknowledgeRequest
 from .types.pubsub import BigQueryConfig
+from .types.pubsub import CloudStorageConfig
 from .types.pubsub import CreateSnapshotRequest
 from .types.pubsub import DeadLetterPolicy
 from .types.pubsub import DeleteSnapshotRequest
@@ -94,6 +95,7 @@ __all__ = (
     "SubscriberAsyncClient",
     "AcknowledgeRequest",
     "BigQueryConfig",
+    "CloudStorageConfig",
     "CommitSchemaRequest",
     "CreateSchemaRequest",
     "CreateSnapshotRequest",

@@ -51,6 +51,7 @@ __protobuf__ = proto.module(
         "ExpirationPolicy",
         "PushConfig",
         "BigQueryConfig",
+        "CloudStorageConfig",
         "ReceivedMessage",
         "GetSubscriptionRequest",
         "UpdateSubscriptionRequest",
@@ -585,9 +586,10 @@ class DetachSubscriptionResponse(proto.Message):
 
 
 class Subscription(proto.Message):
-    r"""A subscription resource. If none of ``push_config`` or
-    ``bigquery_config`` is set, then the subscriber will pull and ack
-    messages using API methods. At most one of these fields may be set.
+    r"""A subscription resource. If none of ``push_config``,
+    ``bigquery_config``, or ``cloud_storage_config`` is set, then the
+    subscriber will pull and ack messages using API methods. At most one
+    of these fields may be set.
 
     Attributes:
         name (str):
@@ -614,6 +616,10 @@ class Subscription(proto.Message):
             If delivery to BigQuery is used with this
             subscription, this field is used to configure
             it.
+        cloud_storage_config (google.pubsub_v1.types.CloudStorageConfig):
+            If delivery to Google Cloud Storage is used
+            with this subscription, this field is used to
+            configure it.
         ack_deadline_seconds (int):
             The approximate amount of time (on a best-effort basis)
             Pub/Sub waits for the subscriber to acknowledge receipt
@@ -773,6 +779,11 @@ class Subscription(proto.Message):
         proto.MESSAGE,
         number=18,
         message="BigQueryConfig",
+    )
+    cloud_storage_config: "CloudStorageConfig" = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        message="CloudStorageConfig",
     )
     ack_deadline_seconds: int = proto.Field(
         proto.INT32,
@@ -997,10 +1008,9 @@ class PushConfig(proto.Message):
             service_account_email (str):
                 `Service account
                 email <https://cloud.google.com/iam/docs/service-accounts>`__
-                to be used for generating the OIDC token. The caller (for
-                CreateSubscription, UpdateSubscription, and ModifyPushConfig
-                RPCs) must have the iam.serviceAccounts.actAs permission for
-                the service account.
+                used for generating the OIDC token. For more information on
+                setting up authentication, see `Push
+                subscriptions <https://cloud.google.com/pubsub/docs/push>`__.
             audience (str):
                 Audience to be used when generating OIDC
                 token. The audience claim identifies the
@@ -1121,6 +1131,143 @@ class BigQueryConfig(proto.Message):
     state: State = proto.Field(
         proto.ENUM,
         number=5,
+        enum=State,
+    )
+
+
+class CloudStorageConfig(proto.Message):
+    r"""Configuration for a Cloud Storage subscription.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        bucket (str):
+            Required. User-provided name for the Cloud Storage bucket.
+            The bucket must be created by the user. The bucket name must
+            be without any prefix like "gs://". See the [bucket naming
+            requirements]
+            (https://cloud.google.com/storage/docs/buckets#naming).
+        filename_prefix (str):
+            User-provided prefix for Cloud Storage filename. See the
+            `object naming
+            requirements <https://cloud.google.com/storage/docs/objects#naming>`__.
+        filename_suffix (str):
+            User-provided suffix for Cloud Storage filename. See the
+            `object naming
+            requirements <https://cloud.google.com/storage/docs/objects#naming>`__.
+        text_config (google.pubsub_v1.types.CloudStorageConfig.TextConfig):
+            If set, message data will be written to Cloud
+            Storage in text format.
+
+            This field is a member of `oneof`_ ``output_format``.
+        avro_config (google.pubsub_v1.types.CloudStorageConfig.AvroConfig):
+            If set, message data will be written to Cloud
+            Storage in Avro format.
+
+            This field is a member of `oneof`_ ``output_format``.
+        max_duration (google.protobuf.duration_pb2.Duration):
+            The maximum duration that can elapse before a
+            new Cloud Storage file is created. Min 1 minute,
+            max 10 minutes, default 5 minutes. May not
+            exceed the subscription's acknowledgement
+            deadline.
+        max_bytes (int):
+            The maximum bytes that can be written to a Cloud Storage
+            file before a new file is created. Min 1 KB, max 10 GiB. The
+            max_bytes limit may be exceeded in cases where messages are
+            larger than the limit.
+        state (google.pubsub_v1.types.CloudStorageConfig.State):
+            Output only. An output-only field that
+            indicates whether or not the subscription can
+            receive messages.
+    """
+
+    class State(proto.Enum):
+        r"""Possible states for a Cloud Storage subscription.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            ACTIVE (1):
+                The subscription can actively send messages
+                to Cloud Storage.
+            PERMISSION_DENIED (2):
+                Cannot write to the Cloud Storage bucket
+                because of permission denied errors.
+            NOT_FOUND (3):
+                Cannot write to the Cloud Storage bucket
+                because it does not exist.
+        """
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        PERMISSION_DENIED = 2
+        NOT_FOUND = 3
+
+    class TextConfig(proto.Message):
+        r"""Configuration for writing message data in text format.
+        Message payloads will be written to files as raw text, separated
+        by a newline.
+
+        """
+
+    class AvroConfig(proto.Message):
+        r"""Configuration for writing message data in Avro format.
+        Message payloads and metadata will be written to files as an
+        Avro binary.
+
+        Attributes:
+            write_metadata (bool):
+                When true, write the subscription name, message_id,
+                publish_time, attributes, and ordering_key as additional
+                fields in the output.
+        """
+
+        write_metadata: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+
+    bucket: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filename_prefix: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    filename_suffix: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    text_config: TextConfig = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="output_format",
+        message=TextConfig,
+    )
+    avro_config: AvroConfig = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="output_format",
+        message=AvroConfig,
+    )
+    max_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=duration_pb2.Duration,
+    )
+    max_bytes: int = proto.Field(
+        proto.INT64,
+        number=7,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=9,
         enum=State,
     )
 

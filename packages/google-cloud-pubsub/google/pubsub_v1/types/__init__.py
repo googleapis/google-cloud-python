@@ -18,6 +18,7 @@ from typing import Union
 from .pubsub import (
     AcknowledgeRequest,
     BigQueryConfig,
+    CloudStorageConfig,
     CreateSnapshotRequest,
     DeadLetterPolicy,
     DeleteSnapshotRequest,
@@ -94,6 +95,7 @@ __all__ = (
     "TimeoutType",
     "AcknowledgeRequest",
     "BigQueryConfig",
+    "CloudStorageConfig",
     "CreateSnapshotRequest",
     "DeadLetterPolicy",
     "DeleteSnapshotRequest",
