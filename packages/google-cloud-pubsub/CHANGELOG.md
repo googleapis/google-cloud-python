@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.17.0](https://github.com/googleapis/python-pubsub/compare/v2.16.1...v2.17.0) (2023-05-12)
+
+
+### Features
+
+* Add cloud storage subscription fields ([#918](https://github.com/googleapis/python-pubsub/issues/918)) ([6e262da](https://github.com/googleapis/python-pubsub/commit/6e262da9810f58f3f34b352e4771e084381ed0aa))
+
 ## [2.16.1](https://github.com/googleapis/python-pubsub/compare/v2.16.0...v2.16.1) (2023-05-05)
 
 
