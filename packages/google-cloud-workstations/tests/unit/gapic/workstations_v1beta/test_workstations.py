@@ -738,6 +738,7 @@ def test_get_workstation_cluster(request_type, transport: str = "grpc"):
             etag="etag_value",
             network="network_value",
             subnetwork="subnetwork_value",
+            control_plane_ip="control_plane_ip_value",
             degraded=True,
         )
         response = client.get_workstation_cluster(request)
@@ -756,6 +757,7 @@ def test_get_workstation_cluster(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
     assert response.network == "network_value"
     assert response.subnetwork == "subnetwork_value"
+    assert response.control_plane_ip == "control_plane_ip_value"
     assert response.degraded is True
 
 
@@ -805,6 +807,7 @@ async def test_get_workstation_cluster_async(
                 etag="etag_value",
                 network="network_value",
                 subnetwork="subnetwork_value",
+                control_plane_ip="control_plane_ip_value",
                 degraded=True,
             )
         )
@@ -824,6 +827,7 @@ async def test_get_workstation_cluster_async(
     assert response.etag == "etag_value"
     assert response.network == "network_value"
     assert response.subnetwork == "subnetwork_value"
+    assert response.control_plane_ip == "control_plane_ip_value"
     assert response.degraded is True
 
 
@@ -2212,6 +2216,7 @@ def test_get_workstation_config(request_type, transport: str = "grpc"):
             reconciling=True,
             etag="etag_value",
             degraded=True,
+            enable_audit_agent=True,
         )
         response = client.get_workstation_config(request)
 
@@ -2228,6 +2233,7 @@ def test_get_workstation_config(request_type, transport: str = "grpc"):
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.degraded is True
+    assert response.enable_audit_agent is True
 
 
 def test_get_workstation_config_empty_call():
@@ -2275,6 +2281,7 @@ async def test_get_workstation_config_async(
                 reconciling=True,
                 etag="etag_value",
                 degraded=True,
+                enable_audit_agent=True,
             )
         )
         response = await client.get_workstation_config(request)
@@ -2292,6 +2299,7 @@ async def test_get_workstation_config_async(
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.degraded is True
+    assert response.enable_audit_agent is True
 
 
 @pytest.mark.asyncio
@@ -6739,6 +6747,7 @@ def test_get_workstation_cluster_rest(request_type):
             etag="etag_value",
             network="network_value",
             subnetwork="subnetwork_value",
+            control_plane_ip="control_plane_ip_value",
             degraded=True,
         )
 
@@ -6761,6 +6770,7 @@ def test_get_workstation_cluster_rest(request_type):
     assert response.etag == "etag_value"
     assert response.network == "network_value"
     assert response.subnetwork == "subnetwork_value"
+    assert response.control_plane_ip == "control_plane_ip_value"
     assert response.degraded is True
 
 
@@ -7371,6 +7381,7 @@ def test_create_workstation_cluster_rest(request_type):
         "etag": "etag_value",
         "network": "network_value",
         "subnetwork": "subnetwork_value",
+        "control_plane_ip": "control_plane_ip_value",
         "private_cluster_config": {
             "enable_private_endpoint": True,
             "cluster_hostname": "cluster_hostname_value",
@@ -7615,6 +7626,7 @@ def test_create_workstation_cluster_rest_bad_request(
         "etag": "etag_value",
         "network": "network_value",
         "subnetwork": "subnetwork_value",
+        "control_plane_ip": "control_plane_ip_value",
         "private_cluster_config": {
             "enable_private_endpoint": True,
             "cluster_hostname": "cluster_hostname_value",
@@ -7746,6 +7758,7 @@ def test_update_workstation_cluster_rest(request_type):
         "etag": "etag_value",
         "network": "network_value",
         "subnetwork": "subnetwork_value",
+        "control_plane_ip": "control_plane_ip_value",
         "private_cluster_config": {
             "enable_private_endpoint": True,
             "cluster_hostname": "cluster_hostname_value",
@@ -7974,6 +7987,7 @@ def test_update_workstation_cluster_rest_bad_request(
         "etag": "etag_value",
         "network": "network_value",
         "subnetwork": "subnetwork_value",
+        "control_plane_ip": "control_plane_ip_value",
         "private_cluster_config": {
             "enable_private_endpoint": True,
             "cluster_hostname": "cluster_hostname_value",
@@ -8390,6 +8404,7 @@ def test_get_workstation_config_rest(request_type):
             reconciling=True,
             etag="etag_value",
             degraded=True,
+            enable_audit_agent=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -8410,6 +8425,7 @@ def test_get_workstation_config_rest(request_type):
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.degraded is True
+    assert response.enable_audit_agent is True
 
 
 def test_get_workstation_config_rest_required_fields(
@@ -9397,6 +9413,7 @@ def test_create_workstation_config_rest(request_type):
                 "service_account": "service_account_value",
                 "tags": ["tags_value1", "tags_value2"],
                 "pool_size": 980,
+                "pooled_instances": 1706,
                 "disable_public_ip_addresses": True,
                 "shielded_instance_config": {
                     "enable_secure_boot": True,
@@ -9405,6 +9422,7 @@ def test_create_workstation_config_rest(request_type):
                 },
                 "confidential_instance_config": {"enable_confidential_compute": True},
                 "boot_disk_size_gb": 1792,
+                "accelerators": [{"type_": "type__value", "count": 553}],
             }
         },
         "persistent_directories": [
@@ -9431,6 +9449,7 @@ def test_create_workstation_config_rest(request_type):
             "kms_key": "kms_key_value",
             "kms_key_service_account": "kms_key_service_account_value",
         },
+        "readiness_checks": [{"path": "path_value", "port": 453}],
         "degraded": True,
         "conditions": [
             {
@@ -9444,6 +9463,7 @@ def test_create_workstation_config_rest(request_type):
                 ],
             }
         ],
+        "enable_audit_agent": True,
     }
     request = request_type(**request_init)
 
@@ -9677,6 +9697,7 @@ def test_create_workstation_config_rest_bad_request(
                 "service_account": "service_account_value",
                 "tags": ["tags_value1", "tags_value2"],
                 "pool_size": 980,
+                "pooled_instances": 1706,
                 "disable_public_ip_addresses": True,
                 "shielded_instance_config": {
                     "enable_secure_boot": True,
@@ -9685,6 +9706,7 @@ def test_create_workstation_config_rest_bad_request(
                 },
                 "confidential_instance_config": {"enable_confidential_compute": True},
                 "boot_disk_size_gb": 1792,
+                "accelerators": [{"type_": "type__value", "count": 553}],
             }
         },
         "persistent_directories": [
@@ -9711,6 +9733,7 @@ def test_create_workstation_config_rest_bad_request(
             "kms_key": "kms_key_value",
             "kms_key_service_account": "kms_key_service_account_value",
         },
+        "readiness_checks": [{"path": "path_value", "port": 453}],
         "degraded": True,
         "conditions": [
             {
@@ -9724,6 +9747,7 @@ def test_create_workstation_config_rest_bad_request(
                 ],
             }
         ],
+        "enable_audit_agent": True,
     }
     request = request_type(**request_init)
 
@@ -9844,6 +9868,7 @@ def test_update_workstation_config_rest(request_type):
                 "service_account": "service_account_value",
                 "tags": ["tags_value1", "tags_value2"],
                 "pool_size": 980,
+                "pooled_instances": 1706,
                 "disable_public_ip_addresses": True,
                 "shielded_instance_config": {
                     "enable_secure_boot": True,
@@ -9852,6 +9877,7 @@ def test_update_workstation_config_rest(request_type):
                 },
                 "confidential_instance_config": {"enable_confidential_compute": True},
                 "boot_disk_size_gb": 1792,
+                "accelerators": [{"type_": "type__value", "count": 553}],
             }
         },
         "persistent_directories": [
@@ -9878,6 +9904,7 @@ def test_update_workstation_config_rest(request_type):
             "kms_key": "kms_key_value",
             "kms_key_service_account": "kms_key_service_account_value",
         },
+        "readiness_checks": [{"path": "path_value", "port": 453}],
         "degraded": True,
         "conditions": [
             {
@@ -9891,6 +9918,7 @@ def test_update_workstation_config_rest(request_type):
                 ],
             }
         ],
+        "enable_audit_agent": True,
     }
     request = request_type(**request_init)
 
@@ -10106,6 +10134,7 @@ def test_update_workstation_config_rest_bad_request(
                 "service_account": "service_account_value",
                 "tags": ["tags_value1", "tags_value2"],
                 "pool_size": 980,
+                "pooled_instances": 1706,
                 "disable_public_ip_addresses": True,
                 "shielded_instance_config": {
                     "enable_secure_boot": True,
@@ -10114,6 +10143,7 @@ def test_update_workstation_config_rest_bad_request(
                 },
                 "confidential_instance_config": {"enable_confidential_compute": True},
                 "boot_disk_size_gb": 1792,
+                "accelerators": [{"type_": "type__value", "count": 553}],
             }
         },
         "persistent_directories": [
@@ -10140,6 +10170,7 @@ def test_update_workstation_config_rest_bad_request(
             "kms_key": "kms_key_value",
             "kms_key_service_account": "kms_key_service_account_value",
         },
+        "readiness_checks": [{"path": "path_value", "port": 453}],
         "degraded": True,
         "conditions": [
             {
@@ -10153,6 +10184,7 @@ def test_update_workstation_config_rest_bad_request(
                 ],
             }
         ],
+        "enable_audit_agent": True,
     }
     request = request_type(**request_init)
 
@@ -11539,6 +11571,7 @@ def test_create_workstation_rest(request_type):
         "etag": "etag_value",
         "state": 1,
         "host": "host_value",
+        "env": {},
     }
     request = request_type(**request_init)
 
@@ -11763,6 +11796,7 @@ def test_create_workstation_rest_bad_request(
         "etag": "etag_value",
         "state": 1,
         "host": "host_value",
+        "env": {},
     }
     request = request_type(**request_init)
 
@@ -11877,6 +11911,7 @@ def test_update_workstation_rest(request_type):
         "etag": "etag_value",
         "state": 1,
         "host": "host_value",
+        "env": {},
     }
     request = request_type(**request_init)
 
@@ -12086,6 +12121,7 @@ def test_update_workstation_rest_bad_request(
         "etag": "etag_value",
         "state": 1,
         "host": "host_value",
+        "env": {},
     }
     request = request_type(**request_init)
 

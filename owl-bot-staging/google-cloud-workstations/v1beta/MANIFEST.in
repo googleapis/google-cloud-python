@@ -1,2 +1,0 @@
-recursive-include google/cloud/workstations *.py
-recursive-include google/cloud/workstations_v1beta *.py
