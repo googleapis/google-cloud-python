@@ -400,6 +400,40 @@ class EkmServiceGrpcTransport(EkmServiceTransport):
         return self._stubs["update_ekm_config"]
 
     @property
+    def verify_connectivity(
+        self,
+    ) -> Callable[
+        [ekm_service.VerifyConnectivityRequest], ekm_service.VerifyConnectivityResponse
+    ]:
+        r"""Return a callable for the verify connectivity method over gRPC.
+
+        Verifies that Cloud KMS can successfully connect to the external
+        key manager specified by an
+        [EkmConnection][google.cloud.kms.v1.EkmConnection]. If there is
+        an error connecting to the EKM, this method returns a
+        FAILED_PRECONDITION status containing structured information as
+        described at
+        https://cloud.google.com/kms/docs/reference/ekm_errors.
+
+        Returns:
+            Callable[[~.VerifyConnectivityRequest],
+                    ~.VerifyConnectivityResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "verify_connectivity" not in self._stubs:
+            self._stubs["verify_connectivity"] = self.grpc_channel.unary_unary(
+                "/google.cloud.kms.v1.EkmService/VerifyConnectivity",
+                request_serializer=ekm_service.VerifyConnectivityRequest.serialize,
+                response_deserializer=ekm_service.VerifyConnectivityResponse.deserialize,
+            )
+        return self._stubs["verify_connectivity"]
+
+    @property
     def set_iam_policy(
         self,
     ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:

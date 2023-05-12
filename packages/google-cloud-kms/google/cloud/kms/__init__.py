@@ -37,6 +37,8 @@ from google.cloud.kms_v1.types.ekm_service import (
     ListEkmConnectionsResponse,
     UpdateEkmConfigRequest,
     UpdateEkmConnectionRequest,
+    VerifyConnectivityRequest,
+    VerifyConnectivityResponse,
 )
 from google.cloud.kms_v1.types.resources import (
     CryptoKey,
@@ -106,6 +108,8 @@ __all__ = (
     "ListEkmConnectionsResponse",
     "UpdateEkmConfigRequest",
     "UpdateEkmConnectionRequest",
+    "VerifyConnectivityRequest",
+    "VerifyConnectivityResponse",
     "CryptoKey",
     "CryptoKeyVersion",
     "CryptoKeyVersionTemplate",

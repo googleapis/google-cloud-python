@@ -24,6 +24,8 @@ from .ekm_service import (
     ListEkmConnectionsResponse,
     UpdateEkmConfigRequest,
     UpdateEkmConnectionRequest,
+    VerifyConnectivityRequest,
+    VerifyConnectivityResponse,
 )
 from .resources import (
     CryptoKey,
@@ -89,6 +91,8 @@ __all__ = (
     "ListEkmConnectionsResponse",
     "UpdateEkmConfigRequest",
     "UpdateEkmConnectionRequest",
+    "VerifyConnectivityRequest",
+    "VerifyConnectivityResponse",
     "CryptoKey",
     "CryptoKeyVersion",
     "CryptoKeyVersionTemplate",

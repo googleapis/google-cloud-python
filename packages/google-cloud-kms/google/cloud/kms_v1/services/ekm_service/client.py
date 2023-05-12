@@ -1222,6 +1222,116 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
         # Done; return the response.
         return response
 
+    def verify_connectivity(
+        self,
+        request: Optional[Union[ekm_service.VerifyConnectivityRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> ekm_service.VerifyConnectivityResponse:
+        r"""Verifies that Cloud KMS can successfully connect to the external
+        key manager specified by an
+        [EkmConnection][google.cloud.kms.v1.EkmConnection]. If there is
+        an error connecting to the EKM, this method returns a
+        FAILED_PRECONDITION status containing structured information as
+        described at
+        https://cloud.google.com/kms/docs/reference/ekm_errors.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import kms_v1
+
+            def sample_verify_connectivity():
+                # Create a client
+                client = kms_v1.EkmServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.VerifyConnectivityRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.verify_connectivity(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.kms_v1.types.VerifyConnectivityRequest, dict]):
+                The request object. Request message for
+                [EkmService.VerifyConnectivity][google.cloud.kms.v1.EkmService.VerifyConnectivity].
+            name (str):
+                Required. The
+                [name][google.cloud.kms.v1.EkmConnection.name] of the
+                [EkmConnection][google.cloud.kms.v1.EkmConnection] to
+                verify.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.kms_v1.types.VerifyConnectivityResponse:
+                Response message for
+                   [EkmService.VerifyConnectivity][google.cloud.kms.v1.EkmService.VerifyConnectivity].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a ekm_service.VerifyConnectivityRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, ekm_service.VerifyConnectivityRequest):
+            request = ekm_service.VerifyConnectivityRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.verify_connectivity]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def __enter__(self) -> "EkmServiceClient":
         return self
 

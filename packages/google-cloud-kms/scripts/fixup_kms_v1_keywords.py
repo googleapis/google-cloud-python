@@ -71,6 +71,7 @@ class kmsCallTransformer(cst.CSTTransformer):
         'update_crypto_key_version': ('crypto_key_version', 'update_mask', ),
         'update_ekm_config': ('ekm_config', 'update_mask', ),
         'update_ekm_connection': ('ekm_connection', 'update_mask', ),
+        'verify_connectivity': ('name', ),
     'get_iam_policy': ('resource', 'options', ),
     'set_iam_policy': ('resource', 'policy', ),
     'test_iam_permissions': ('resource', 'permissions', ),

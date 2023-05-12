@@ -198,6 +198,11 @@ class EkmServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.verify_connectivity: gapic_v1.method.wrap_method(
+                self.verify_connectivity,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -263,6 +268,18 @@ class EkmServiceTransport(abc.ABC):
     ) -> Callable[
         [ekm_service.UpdateEkmConfigRequest],
         Union[ekm_service.EkmConfig, Awaitable[ekm_service.EkmConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def verify_connectivity(
+        self,
+    ) -> Callable[
+        [ekm_service.VerifyConnectivityRequest],
+        Union[
+            ekm_service.VerifyConnectivityResponse,
+            Awaitable[ekm_service.VerifyConnectivityResponse],
+        ],
     ]:
         raise NotImplementedError()
 

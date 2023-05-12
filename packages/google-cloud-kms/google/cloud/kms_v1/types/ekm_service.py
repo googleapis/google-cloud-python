@@ -34,6 +34,8 @@ __protobuf__ = proto.module(
         "Certificate",
         "EkmConnection",
         "EkmConfig",
+        "VerifyConnectivityRequest",
+        "VerifyConnectivityResponse",
     },
 )
 
@@ -521,6 +523,30 @@ class EkmConfig(proto.Message):
         proto.STRING,
         number=2,
     )
+
+
+class VerifyConnectivityRequest(proto.Message):
+    r"""Request message for
+    [EkmService.VerifyConnectivity][google.cloud.kms.v1.EkmService.VerifyConnectivity].
+
+    Attributes:
+        name (str):
+            Required. The [name][google.cloud.kms.v1.EkmConnection.name]
+            of the [EkmConnection][google.cloud.kms.v1.EkmConnection] to
+            verify.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class VerifyConnectivityResponse(proto.Message):
+    r"""Response message for
+    [EkmService.VerifyConnectivity][google.cloud.kms.v1.EkmService.VerifyConnectivity].
+
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
