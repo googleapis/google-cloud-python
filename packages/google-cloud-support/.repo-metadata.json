@@ -1,8 +1,8 @@
 {
     "name": "support",
-    "name_pretty": "",
-    "api_description": "",
-    "product_documentation": "",
+    "name_pretty": "Google Cloud Support API",
+    "api_description": "Manages Google Cloud technical support cases for Customer Care support offerings.",
+    "product_documentation": "https://cloud.google.com/support/docs/reference/support-api",
     "client_documentation": "https://cloud.google.com/python/docs/reference/support/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",
