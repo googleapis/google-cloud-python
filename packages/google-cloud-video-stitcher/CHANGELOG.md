@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.1](https://github.com/googleapis/python-video-stitcher/compare/v0.7.0...v0.7.1) (2023-05-15)
+
+
+### Bug Fixes
+
+* Remove default_ad_break_duration from LiveConfig  ([08c1a06](https://github.com/googleapis/python-video-stitcher/commit/08c1a068ff4127f2ff929700e5254c61d8ca8f83))
+* Remove GamVodConfig ([08c1a06](https://github.com/googleapis/python-video-stitcher/commit/08c1a068ff4127f2ff929700e5254c61d8ca8f83))
+
 ## [0.7.0](https://github.com/googleapis/python-video-stitcher/compare/v0.6.1...v0.7.0) (2023-03-27)
 
 
