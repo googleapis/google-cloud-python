@@ -32,13 +32,13 @@ __protobuf__ = proto.module(
 
 
 class AdTracking(proto.Enum):
-    r"""Determines the Ad tracking policy.
+    r"""Determines the ad tracking policy.
 
     Values:
         AD_TRACKING_UNSPECIFIED (0):
             The ad tracking policy is not specified.
         CLIENT (1):
-            Client side ad tracking is specified. The
+            Client-side ad tracking is specified. The
             client player is expected to trigger playback
             and activity events itself.
         SERVER (2):
@@ -70,15 +70,14 @@ class LiveConfig(proto.Message):
         state (google.cloud.video.stitcher_v1.types.LiveConfig.State):
             Output only. State of the live config.
         ad_tracking (google.cloud.video.stitcher_v1.types.AdTracking):
-            Required. Determines how the ads should be tracked. If
+            Required. Determines how the ads are tracked. If
             [gam_live_config][google.cloud.video.stitcher.v1.LiveConfig.gam_live_config]
             is set, the value must be ``CLIENT`` because the IMA SDK
             handles ad tracking.
         default_slate (str):
-            This must refer to a slate in the same
-            project. In case Google Ad Manager (GAM) is
-            being used for ads this will be used to set the
-            appropriate value of slateCreativeId in
+            This must refer to a slate in the same project. If Google Ad
+            Manager (GAM) is used for ads, this string sets the value of
+            ``slateCreativeId`` in
             https://developers.google.com/ad-manager/api/reference/v202211/LiveStreamEventService.LiveStreamEvent#slateCreativeId
         stitching_policy (google.cloud.video.stitcher_v1.types.LiveConfig.StitchingPolicy):
             Defines the stitcher behavior in case an ad does not align
@@ -86,11 +85,6 @@ class LiveConfig(proto.Message):
             default is ``CUT_CURRENT``.
         prefetch_config (google.cloud.video.stitcher_v1.types.PrefetchConfig):
             The configuration for prefetching ads.
-        default_ad_break_duration (google.protobuf.duration_pb2.Duration):
-            The default ad pod duration in seconds that
-            will be requested when a cue-out does not
-            specify a duration. The default value of this
-            field is 30s.
     """
 
     class State(proto.Enum):
@@ -114,7 +108,7 @@ class LiveConfig(proto.Message):
     class StitchingPolicy(proto.Enum):
         r"""Defines the ad stitching behavior in case the ad duration does not
         align exactly with the ad break boundaries. If not specified, the
-        default is CUT_CURRENT.
+        default is ``CUT_CURRENT``.
 
         Values:
             STITCHING_POLICY_UNSPECIFIED (0):
@@ -170,11 +164,6 @@ class LiveConfig(proto.Message):
         proto.MESSAGE,
         number=10,
         message="PrefetchConfig",
-    )
-    default_ad_break_duration: duration_pb2.Duration = proto.Field(
-        proto.MESSAGE,
-        number=11,
-        message=duration_pb2.Duration,
     )
 
 

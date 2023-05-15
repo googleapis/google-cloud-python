@@ -39,7 +39,7 @@ class Slate(proto.Message):
             slate. This URI must return an MP4 video with at
             least one audio track.
         gam_slate (google.cloud.video.stitcher_v1.types.Slate.GamSlate):
-            gam_slate has all the GAM related attributes of slates.
+            gam_slate has all the GAM-related attributes of slates.
     """
 
     class GamSlate(proto.Message):

@@ -52,7 +52,6 @@ from google.cloud.video.stitcher_v1.types.live_configs import (
     PrefetchConfig,
 )
 from google.cloud.video.stitcher_v1.types.sessions import (
-    GamVodConfig,
     Interstitials,
     LiveSession,
     ManifestOptions,
@@ -124,7 +123,6 @@ __all__ = (
     "LiveConfig",
     "PrefetchConfig",
     "AdTracking",
-    "GamVodConfig",
     "Interstitials",
     "LiveSession",
     "ManifestOptions",

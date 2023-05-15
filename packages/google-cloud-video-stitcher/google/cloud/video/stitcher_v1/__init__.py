@@ -40,7 +40,6 @@ from .types.companions import (
 from .types.events import Event, ProgressEvent
 from .types.live_configs import AdTracking, GamLiveConfig, LiveConfig, PrefetchConfig
 from .types.sessions import (
-    GamVodConfig,
     Interstitials,
     LiveSession,
     ManifestOptions,
@@ -105,7 +104,6 @@ __all__ = (
     "DeleteSlateRequest",
     "Event",
     "GamLiveConfig",
-    "GamVodConfig",
     "GetCdnKeyRequest",
     "GetLiveAdTagDetailRequest",
     "GetLiveConfigRequest",

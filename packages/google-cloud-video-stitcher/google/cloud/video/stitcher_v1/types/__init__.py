@@ -31,7 +31,6 @@ from .companions import (
 from .events import Event, ProgressEvent
 from .live_configs import AdTracking, GamLiveConfig, LiveConfig, PrefetchConfig
 from .sessions import (
-    GamVodConfig,
     Interstitials,
     LiveSession,
     ManifestOptions,
@@ -98,7 +97,6 @@ __all__ = (
     "LiveConfig",
     "PrefetchConfig",
     "AdTracking",
-    "GamVodConfig",
     "Interstitials",
     "LiveSession",
     "ManifestOptions",
