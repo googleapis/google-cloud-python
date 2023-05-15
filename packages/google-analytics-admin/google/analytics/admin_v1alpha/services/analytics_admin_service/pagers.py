@@ -28,6 +28,7 @@ from google.analytics.admin_v1alpha.types import (
     analytics_admin,
     audience,
     channel_group,
+    event_create_and_edit,
     expanded_data_set,
     resources,
 )
@@ -2762,6 +2763,264 @@ class ListBigQueryLinksAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.bigquery_links:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAdSenseLinksPager:
+    """A pager for iterating through ``list_ad_sense_links`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListAdSenseLinksResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``adsense_links`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListAdSenseLinks`` requests and continue to iterate
+    through the ``adsense_links`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListAdSenseLinksResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., analytics_admin.ListAdSenseLinksResponse],
+        request: analytics_admin.ListAdSenseLinksRequest,
+        response: analytics_admin.ListAdSenseLinksResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListAdSenseLinksRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListAdSenseLinksResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListAdSenseLinksRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[analytics_admin.ListAdSenseLinksResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[resources.AdSenseLink]:
+        for page in self.pages:
+            yield from page.adsense_links
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAdSenseLinksAsyncPager:
+    """A pager for iterating through ``list_ad_sense_links`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListAdSenseLinksResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``adsense_links`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListAdSenseLinks`` requests and continue to iterate
+    through the ``adsense_links`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListAdSenseLinksResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[analytics_admin.ListAdSenseLinksResponse]],
+        request: analytics_admin.ListAdSenseLinksRequest,
+        response: analytics_admin.ListAdSenseLinksResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListAdSenseLinksRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListAdSenseLinksResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListAdSenseLinksRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[analytics_admin.ListAdSenseLinksResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[resources.AdSenseLink]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.adsense_links:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListEventCreateRulesPager:
+    """A pager for iterating through ``list_event_create_rules`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListEventCreateRulesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``event_create_rules`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListEventCreateRules`` requests and continue to iterate
+    through the ``event_create_rules`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListEventCreateRulesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., analytics_admin.ListEventCreateRulesResponse],
+        request: analytics_admin.ListEventCreateRulesRequest,
+        response: analytics_admin.ListEventCreateRulesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListEventCreateRulesRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListEventCreateRulesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListEventCreateRulesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[analytics_admin.ListEventCreateRulesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[event_create_and_edit.EventCreateRule]:
+        for page in self.pages:
+            yield from page.event_create_rules
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListEventCreateRulesAsyncPager:
+    """A pager for iterating through ``list_event_create_rules`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListEventCreateRulesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``event_create_rules`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListEventCreateRules`` requests and continue to iterate
+    through the ``event_create_rules`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListEventCreateRulesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[analytics_admin.ListEventCreateRulesResponse]],
+        request: analytics_admin.ListEventCreateRulesRequest,
+        response: analytics_admin.ListEventCreateRulesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListEventCreateRulesRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListEventCreateRulesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListEventCreateRulesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[analytics_admin.ListEventCreateRulesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[event_create_and_edit.EventCreateRule]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.event_create_rules:
                     yield response
 
         return async_generator()

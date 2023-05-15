@@ -27,6 +27,7 @@ from google.analytics.admin_v1alpha.types import (
 )
 from google.analytics.admin_v1alpha.types import access_report
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
+from google.analytics.admin_v1alpha.types import event_create_and_edit
 from google.analytics.admin_v1alpha.types import resources
 
 __protobuf__ = proto.module(
@@ -179,8 +180,19 @@ __protobuf__ = proto.module(
         "DeleteConnectedSiteTagRequest",
         "ListConnectedSiteTagsRequest",
         "ListConnectedSiteTagsResponse",
+        "CreateAdSenseLinkRequest",
+        "GetAdSenseLinkRequest",
+        "DeleteAdSenseLinkRequest",
+        "ListAdSenseLinksRequest",
+        "ListAdSenseLinksResponse",
         "FetchConnectedGa4PropertyRequest",
         "FetchConnectedGa4PropertyResponse",
+        "CreateEventCreateRuleRequest",
+        "UpdateEventCreateRuleRequest",
+        "DeleteEventCreateRuleRequest",
+        "GetEventCreateRuleRequest",
+        "ListEventCreateRulesRequest",
+        "ListEventCreateRulesResponse",
     },
 )
 
@@ -3830,6 +3842,126 @@ class ListConnectedSiteTagsResponse(proto.Message):
     )
 
 
+class CreateAdSenseLinkRequest(proto.Message):
+    r"""Request message to be passed to CreateAdSenseLink method.
+
+    Attributes:
+        parent (str):
+            Required. The property for which to create an
+            AdSense Link. Format: properties/{propertyId}
+            Example: properties/1234
+        adsense_link (google.analytics.admin_v1alpha.types.AdSenseLink):
+            Required. The AdSense Link to create
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    adsense_link: resources.AdSenseLink = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.AdSenseLink,
+    )
+
+
+class GetAdSenseLinkRequest(proto.Message):
+    r"""Request message to be passed to GetAdSenseLink method.
+
+    Attributes:
+        name (str):
+            Required. Unique identifier for the AdSense
+            Link requested. Format:
+            properties/{propertyId}/adSenseLinks/{linkId}
+            Example: properties/1234/adSenseLinks/5678
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DeleteAdSenseLinkRequest(proto.Message):
+    r"""Request message to be passed to DeleteAdSenseLink method.
+
+    Attributes:
+        name (str):
+            Required. Unique identifier for the AdSense
+            Link to be deleted. Format:
+            properties/{propertyId}/adSenseLinks/{linkId}
+            Example: properties/1234/adSenseLinks/5678
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListAdSenseLinksRequest(proto.Message):
+    r"""Request message to be passed to ListAdSenseLinks method.
+
+    Attributes:
+        parent (str):
+            Required. Resource name of the parent
+            property. Format: properties/{propertyId}
+            Example: properties/1234
+        page_size (int):
+            The maximum number of resources to return.
+            If unspecified, at most 50 resources will be
+            returned. The maximum value is 200 (higher
+            values will be coerced to the maximum).
+        page_token (str):
+            A page token received from a previous ``ListAdSenseLinks``
+            call. Provide this to retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListAdSenseLinks`` must match the call that provided the
+            page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListAdSenseLinksResponse(proto.Message):
+    r"""Response message for ListAdSenseLinks method.
+
+    Attributes:
+        adsense_links (MutableSequence[google.analytics.admin_v1alpha.types.AdSenseLink]):
+            List of AdSenseLinks.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    adsense_links: MutableSequence[resources.AdSenseLink] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.AdSenseLink,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class FetchConnectedGa4PropertyRequest(proto.Message):
     r"""Request for looking up GA4 property connected to a UA
     property.
@@ -3863,6 +3995,152 @@ class FetchConnectedGa4PropertyResponse(proto.Message):
     property: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class CreateEventCreateRuleRequest(proto.Message):
+    r"""Request message for CreateEventCreateRule RPC.
+
+    Attributes:
+        parent (str):
+            Required. Example format:
+            properties/123/dataStreams/456
+        event_create_rule (google.analytics.admin_v1alpha.types.EventCreateRule):
+            Required. The EventCreateRule to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    event_create_rule: event_create_and_edit.EventCreateRule = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=event_create_and_edit.EventCreateRule,
+    )
+
+
+class UpdateEventCreateRuleRequest(proto.Message):
+    r"""Request message for UpdateEventCreateRule RPC.
+
+    Attributes:
+        event_create_rule (google.analytics.admin_v1alpha.types.EventCreateRule):
+            Required. The EventCreateRule to update. The resource's
+            ``name`` field is used to identify the EventCreateRule to be
+            updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Field names must
+            be in snake case (e.g., "field_to_update"). Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
+    """
+
+    event_create_rule: event_create_and_edit.EventCreateRule = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=event_create_and_edit.EventCreateRule,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteEventCreateRuleRequest(proto.Message):
+    r"""Request message for DeleteEventCreateRule RPC.
+
+    Attributes:
+        name (str):
+            Required. Example format:
+            properties/123/dataStreams/456/eventCreateRules/789
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetEventCreateRuleRequest(proto.Message):
+    r"""Request message for GetEventCreateRule RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the EventCreateRule to
+            get. Example format:
+            properties/123/dataStreams/456/eventCreateRules/789
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListEventCreateRulesRequest(proto.Message):
+    r"""Request message for ListEventCreateRules RPC.
+
+    Attributes:
+        parent (str):
+            Required. Example format:
+            properties/123/dataStreams/456
+        page_size (int):
+            The maximum number of resources to return.
+            If unspecified, at most 50 resources will be
+            returned. The maximum value is 200 (higher
+            values will be coerced to the maximum).
+        page_token (str):
+            A page token, received from a previous
+            ``ListEventCreateRules`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListEventCreateRules`` must match the call that provided
+            the page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListEventCreateRulesResponse(proto.Message):
+    r"""Response message for ListEventCreateRules RPC.
+
+    Attributes:
+        event_create_rules (MutableSequence[google.analytics.admin_v1alpha.types.EventCreateRule]):
+            List of EventCreateRules. These will be
+            ordered stably, but in an arbitrary order.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    event_create_rules: MutableSequence[
+        event_create_and_edit.EventCreateRule
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=event_create_and_edit.EventCreateRule,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

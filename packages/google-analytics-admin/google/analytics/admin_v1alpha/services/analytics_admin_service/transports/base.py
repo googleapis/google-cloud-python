@@ -34,6 +34,7 @@ from google.analytics.admin_v1alpha.types import analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
 from google.analytics.admin_v1alpha.types import channel_group
+from google.analytics.admin_v1alpha.types import event_create_and_edit
 from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
 
@@ -699,6 +700,51 @@ class AnalyticsAdminServiceTransport(abc.ABC):
             ),
             self.fetch_connected_ga4_property: gapic_v1.method.wrap_method(
                 self.fetch_connected_ga4_property,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_ad_sense_link: gapic_v1.method.wrap_method(
+                self.get_ad_sense_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_ad_sense_link: gapic_v1.method.wrap_method(
+                self.create_ad_sense_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_ad_sense_link: gapic_v1.method.wrap_method(
+                self.delete_ad_sense_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_ad_sense_links: gapic_v1.method.wrap_method(
+                self.list_ad_sense_links,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_event_create_rule: gapic_v1.method.wrap_method(
+                self.get_event_create_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_event_create_rules: gapic_v1.method.wrap_method(
+                self.list_event_create_rules,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_event_create_rule: gapic_v1.method.wrap_method(
+                self.create_event_create_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_event_create_rule: gapic_v1.method.wrap_method(
+                self.update_event_create_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_event_create_rule: gapic_v1.method.wrap_method(
+                self.delete_event_create_rule,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -1893,6 +1939,102 @@ class AnalyticsAdminServiceTransport(abc.ABC):
             analytics_admin.FetchConnectedGa4PropertyResponse,
             Awaitable[analytics_admin.FetchConnectedGa4PropertyResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_ad_sense_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetAdSenseLinkRequest],
+        Union[resources.AdSenseLink, Awaitable[resources.AdSenseLink]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_ad_sense_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateAdSenseLinkRequest],
+        Union[resources.AdSenseLink, Awaitable[resources.AdSenseLink]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_ad_sense_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteAdSenseLinkRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_ad_sense_links(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListAdSenseLinksRequest],
+        Union[
+            analytics_admin.ListAdSenseLinksResponse,
+            Awaitable[analytics_admin.ListAdSenseLinksResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_event_create_rule(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetEventCreateRuleRequest],
+        Union[
+            event_create_and_edit.EventCreateRule,
+            Awaitable[event_create_and_edit.EventCreateRule],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_event_create_rules(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListEventCreateRulesRequest],
+        Union[
+            analytics_admin.ListEventCreateRulesResponse,
+            Awaitable[analytics_admin.ListEventCreateRulesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_event_create_rule(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateEventCreateRuleRequest],
+        Union[
+            event_create_and_edit.EventCreateRule,
+            Awaitable[event_create_and_edit.EventCreateRule],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_event_create_rule(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateEventCreateRuleRequest],
+        Union[
+            event_create_and_edit.EventCreateRule,
+            Awaitable[event_create_and_edit.EventCreateRule],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_event_create_rule(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteEventCreateRuleRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

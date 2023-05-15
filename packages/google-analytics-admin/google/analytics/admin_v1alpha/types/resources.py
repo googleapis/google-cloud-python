@@ -25,6 +25,8 @@ from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_gr
 from google.analytics.admin_v1alpha.types import (
     expanded_data_set as gaa_expanded_data_set,
 )
+from google.analytics.admin_v1alpha.types import audience as gaa_audience
+from google.analytics.admin_v1alpha.types import event_create_and_edit
 
 __protobuf__ = proto.module(
     package="google.analytics.admin.v1alpha",
@@ -67,6 +69,7 @@ __protobuf__ = proto.module(
         "BigQueryLink",
         "EnhancedMeasurementSettings",
         "ConnectedSiteTag",
+        "AdSenseLink",
     },
 )
 
@@ -261,6 +264,12 @@ class ChangeHistoryResourceType(proto.Enum):
             ChannelGroup resource
         ENHANCED_MEASUREMENT_SETTINGS (24):
             EnhancedMeasurementSettings resource
+        ADSENSE_LINK (27):
+            AdSenseLink resource
+        AUDIENCE (28):
+            Audience resource
+        EVENT_CREATE_RULE (29):
+            EventCreateRule resource
     """
     CHANGE_HISTORY_RESOURCE_TYPE_UNSPECIFIED = 0
     ACCOUNT = 1
@@ -281,6 +290,9 @@ class ChangeHistoryResourceType(proto.Enum):
     EXPANDED_DATA_SET = 21
     CHANNEL_GROUP = 22
     ENHANCED_MEASUREMENT_SETTINGS = 24
+    ADSENSE_LINK = 27
+    AUDIENCE = 28
+    EVENT_CREATE_RULE = 29
 
 
 class GoogleSignalsState(proto.Enum):
@@ -1340,6 +1352,21 @@ class ChangeHistoryChange(proto.Message):
                 resource in change history.
 
                 This field is a member of `oneof`_ ``resource``.
+            adsense_link (google.analytics.admin_v1alpha.types.AdSenseLink):
+                A snapshot of an AdSenseLink resource in
+                change history.
+
+                This field is a member of `oneof`_ ``resource``.
+            audience (google.analytics.admin_v1alpha.types.Audience):
+                A snapshot of an Audience resource in change
+                history.
+
+                This field is a member of `oneof`_ ``resource``.
+            event_create_rule (google.analytics.admin_v1alpha.types.EventCreateRule):
+                A snapshot of an EventCreateRule resource in
+                change history.
+
+                This field is a member of `oneof`_ ``resource``.
         """
 
         account: "Account" = proto.Field(
@@ -1457,6 +1484,24 @@ class ChangeHistoryChange(proto.Message):
             number=24,
             oneof="resource",
             message="EnhancedMeasurementSettings",
+        )
+        adsense_link: "AdSenseLink" = proto.Field(
+            proto.MESSAGE,
+            number=27,
+            oneof="resource",
+            message="AdSenseLink",
+        )
+        audience: gaa_audience.Audience = proto.Field(
+            proto.MESSAGE,
+            number=28,
+            oneof="resource",
+            message=gaa_audience.Audience,
+        )
+        event_create_rule: event_create_and_edit.EventCreateRule = proto.Field(
+            proto.MESSAGE,
+            number=29,
+            oneof="resource",
+            message=event_create_and_edit.EventCreateRule,
         )
 
     resource: str = proto.Field(
@@ -2503,6 +2548,32 @@ class ConnectedSiteTag(proto.Message):
         number=1,
     )
     tag_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class AdSenseLink(proto.Message):
+    r"""A link between a GA4 Property and an AdSense for Content ad
+    client.
+
+    Attributes:
+        name (str):
+            Output only. The resource name for this
+            AdSense Link resource. Format:
+            properties/{propertyId}/adSenseLinks/{linkId}
+            Example: properties/1234/adSenseLinks/6789
+        ad_client_code (str):
+            Immutable. The AdSense ad client code that
+            the GA4 property is linked to. Example format:
+            "ca-pub-1234567890".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ad_client_code: str = proto.Field(
         proto.STRING,
         number=2,
     )

@@ -60,6 +60,7 @@ from google.analytics.admin_v1alpha.types import access_report, analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
 from google.analytics.admin_v1alpha.types import channel_group
+from google.analytics.admin_v1alpha.types import event_create_and_edit
 from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
 
@@ -30773,6 +30774,2662 @@ async def test_fetch_connected_ga4_property_async(
 @pytest.mark.asyncio
 async def test_fetch_connected_ga4_property_async_from_dict():
     await test_fetch_connected_ga4_property_async(request_type=dict)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetAdSenseLinkRequest,
+        dict,
+    ],
+)
+def test_get_ad_sense_link(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_ad_sense_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.AdSenseLink(
+            name="name_value",
+            ad_client_code="ad_client_code_value",
+        )
+        response = client.get_ad_sense_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetAdSenseLinkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.AdSenseLink)
+    assert response.name == "name_value"
+    assert response.ad_client_code == "ad_client_code_value"
+
+
+def test_get_ad_sense_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_ad_sense_link), "__call__"
+    ) as call:
+        client.get_ad_sense_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetAdSenseLinkRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_ad_sense_link_async(
+    transport: str = "grpc_asyncio", request_type=analytics_admin.GetAdSenseLinkRequest
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_ad_sense_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.AdSenseLink(
+                name="name_value",
+                ad_client_code="ad_client_code_value",
+            )
+        )
+        response = await client.get_ad_sense_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetAdSenseLinkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.AdSenseLink)
+    assert response.name == "name_value"
+    assert response.ad_client_code == "ad_client_code_value"
+
+
+@pytest.mark.asyncio
+async def test_get_ad_sense_link_async_from_dict():
+    await test_get_ad_sense_link_async(request_type=dict)
+
+
+def test_get_ad_sense_link_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.GetAdSenseLinkRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_ad_sense_link), "__call__"
+    ) as call:
+        call.return_value = resources.AdSenseLink()
+        client.get_ad_sense_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_ad_sense_link_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.GetAdSenseLinkRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_ad_sense_link), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.AdSenseLink()
+        )
+        await client.get_ad_sense_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_ad_sense_link_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_ad_sense_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.AdSenseLink()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_ad_sense_link(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_ad_sense_link_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_ad_sense_link(
+            analytics_admin.GetAdSenseLinkRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_ad_sense_link_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_ad_sense_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.AdSenseLink()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.AdSenseLink()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_ad_sense_link(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_ad_sense_link_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_ad_sense_link(
+            analytics_admin.GetAdSenseLinkRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateAdSenseLinkRequest,
+        dict,
+    ],
+)
+def test_create_ad_sense_link(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ad_sense_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.AdSenseLink(
+            name="name_value",
+            ad_client_code="ad_client_code_value",
+        )
+        response = client.create_ad_sense_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateAdSenseLinkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.AdSenseLink)
+    assert response.name == "name_value"
+    assert response.ad_client_code == "ad_client_code_value"
+
+
+def test_create_ad_sense_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ad_sense_link), "__call__"
+    ) as call:
+        client.create_ad_sense_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateAdSenseLinkRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_ad_sense_link_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.CreateAdSenseLinkRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ad_sense_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.AdSenseLink(
+                name="name_value",
+                ad_client_code="ad_client_code_value",
+            )
+        )
+        response = await client.create_ad_sense_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateAdSenseLinkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.AdSenseLink)
+    assert response.name == "name_value"
+    assert response.ad_client_code == "ad_client_code_value"
+
+
+@pytest.mark.asyncio
+async def test_create_ad_sense_link_async_from_dict():
+    await test_create_ad_sense_link_async(request_type=dict)
+
+
+def test_create_ad_sense_link_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.CreateAdSenseLinkRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ad_sense_link), "__call__"
+    ) as call:
+        call.return_value = resources.AdSenseLink()
+        client.create_ad_sense_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_ad_sense_link_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.CreateAdSenseLinkRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ad_sense_link), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.AdSenseLink()
+        )
+        await client.create_ad_sense_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_ad_sense_link_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ad_sense_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.AdSenseLink()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_ad_sense_link(
+            parent="parent_value",
+            adsense_link=resources.AdSenseLink(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].adsense_link
+        mock_val = resources.AdSenseLink(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_ad_sense_link_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_ad_sense_link(
+            analytics_admin.CreateAdSenseLinkRequest(),
+            parent="parent_value",
+            adsense_link=resources.AdSenseLink(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_ad_sense_link_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ad_sense_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.AdSenseLink()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.AdSenseLink()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_ad_sense_link(
+            parent="parent_value",
+            adsense_link=resources.AdSenseLink(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].adsense_link
+        mock_val = resources.AdSenseLink(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_ad_sense_link_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_ad_sense_link(
+            analytics_admin.CreateAdSenseLinkRequest(),
+            parent="parent_value",
+            adsense_link=resources.AdSenseLink(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteAdSenseLinkRequest,
+        dict,
+    ],
+)
+def test_delete_ad_sense_link(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_ad_sense_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_ad_sense_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.DeleteAdSenseLinkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_ad_sense_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_ad_sense_link), "__call__"
+    ) as call:
+        client.delete_ad_sense_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.DeleteAdSenseLinkRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_ad_sense_link_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.DeleteAdSenseLinkRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_ad_sense_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_ad_sense_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.DeleteAdSenseLinkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_ad_sense_link_async_from_dict():
+    await test_delete_ad_sense_link_async(request_type=dict)
+
+
+def test_delete_ad_sense_link_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.DeleteAdSenseLinkRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_ad_sense_link), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_ad_sense_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_ad_sense_link_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.DeleteAdSenseLinkRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_ad_sense_link), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_ad_sense_link(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_ad_sense_link_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_ad_sense_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_ad_sense_link(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_ad_sense_link_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_ad_sense_link(
+            analytics_admin.DeleteAdSenseLinkRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_ad_sense_link_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_ad_sense_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_ad_sense_link(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_ad_sense_link_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_ad_sense_link(
+            analytics_admin.DeleteAdSenseLinkRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListAdSenseLinksRequest,
+        dict,
+    ],
+)
+def test_list_ad_sense_links(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ad_sense_links), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.ListAdSenseLinksResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_ad_sense_links(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.ListAdSenseLinksRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAdSenseLinksPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_ad_sense_links_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ad_sense_links), "__call__"
+    ) as call:
+        client.list_ad_sense_links()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.ListAdSenseLinksRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_ad_sense_links_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.ListAdSenseLinksRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ad_sense_links), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.ListAdSenseLinksResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_ad_sense_links(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.ListAdSenseLinksRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAdSenseLinksAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_ad_sense_links_async_from_dict():
+    await test_list_ad_sense_links_async(request_type=dict)
+
+
+def test_list_ad_sense_links_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.ListAdSenseLinksRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ad_sense_links), "__call__"
+    ) as call:
+        call.return_value = analytics_admin.ListAdSenseLinksResponse()
+        client.list_ad_sense_links(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_ad_sense_links_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.ListAdSenseLinksRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ad_sense_links), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.ListAdSenseLinksResponse()
+        )
+        await client.list_ad_sense_links(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_ad_sense_links_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ad_sense_links), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.ListAdSenseLinksResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_ad_sense_links(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_ad_sense_links_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_ad_sense_links(
+            analytics_admin.ListAdSenseLinksRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_ad_sense_links_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ad_sense_links), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.ListAdSenseLinksResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.ListAdSenseLinksResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_ad_sense_links(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_ad_sense_links_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_ad_sense_links(
+            analytics_admin.ListAdSenseLinksRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_ad_sense_links_pager(transport_name: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ad_sense_links), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[
+                    resources.AdSenseLink(),
+                    resources.AdSenseLink(),
+                    resources.AdSenseLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[
+                    resources.AdSenseLink(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[
+                    resources.AdSenseLink(),
+                    resources.AdSenseLink(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_ad_sense_links(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.AdSenseLink) for i in results)
+
+
+def test_list_ad_sense_links_pages(transport_name: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ad_sense_links), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[
+                    resources.AdSenseLink(),
+                    resources.AdSenseLink(),
+                    resources.AdSenseLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[
+                    resources.AdSenseLink(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[
+                    resources.AdSenseLink(),
+                    resources.AdSenseLink(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_ad_sense_links(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_ad_sense_links_async_pager():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ad_sense_links),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[
+                    resources.AdSenseLink(),
+                    resources.AdSenseLink(),
+                    resources.AdSenseLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[
+                    resources.AdSenseLink(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[
+                    resources.AdSenseLink(),
+                    resources.AdSenseLink(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_ad_sense_links(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, resources.AdSenseLink) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_ad_sense_links_async_pages():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ad_sense_links),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[
+                    resources.AdSenseLink(),
+                    resources.AdSenseLink(),
+                    resources.AdSenseLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[
+                    resources.AdSenseLink(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[
+                    resources.AdSenseLink(),
+                    resources.AdSenseLink(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_ad_sense_links(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetEventCreateRuleRequest,
+        dict,
+    ],
+)
+def test_get_event_create_rule(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_event_create_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = event_create_and_edit.EventCreateRule(
+            name="name_value",
+            destination_event="destination_event_value",
+            source_copy_parameters=True,
+        )
+        response = client.get_event_create_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetEventCreateRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, event_create_and_edit.EventCreateRule)
+    assert response.name == "name_value"
+    assert response.destination_event == "destination_event_value"
+    assert response.source_copy_parameters is True
+
+
+def test_get_event_create_rule_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_event_create_rule), "__call__"
+    ) as call:
+        client.get_event_create_rule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetEventCreateRuleRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_event_create_rule_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.GetEventCreateRuleRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_event_create_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_create_and_edit.EventCreateRule(
+                name="name_value",
+                destination_event="destination_event_value",
+                source_copy_parameters=True,
+            )
+        )
+        response = await client.get_event_create_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetEventCreateRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, event_create_and_edit.EventCreateRule)
+    assert response.name == "name_value"
+    assert response.destination_event == "destination_event_value"
+    assert response.source_copy_parameters is True
+
+
+@pytest.mark.asyncio
+async def test_get_event_create_rule_async_from_dict():
+    await test_get_event_create_rule_async(request_type=dict)
+
+
+def test_get_event_create_rule_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.GetEventCreateRuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_event_create_rule), "__call__"
+    ) as call:
+        call.return_value = event_create_and_edit.EventCreateRule()
+        client.get_event_create_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_event_create_rule_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.GetEventCreateRuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_event_create_rule), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_create_and_edit.EventCreateRule()
+        )
+        await client.get_event_create_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_event_create_rule_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_event_create_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = event_create_and_edit.EventCreateRule()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_event_create_rule(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_event_create_rule_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_event_create_rule(
+            analytics_admin.GetEventCreateRuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_event_create_rule_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_event_create_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = event_create_and_edit.EventCreateRule()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_create_and_edit.EventCreateRule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_event_create_rule(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_event_create_rule_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_event_create_rule(
+            analytics_admin.GetEventCreateRuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListEventCreateRulesRequest,
+        dict,
+    ],
+)
+def test_list_event_create_rules(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_create_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.ListEventCreateRulesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_event_create_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.ListEventCreateRulesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListEventCreateRulesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_event_create_rules_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_create_rules), "__call__"
+    ) as call:
+        client.list_event_create_rules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.ListEventCreateRulesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_event_create_rules_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.ListEventCreateRulesRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_create_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.ListEventCreateRulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_event_create_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.ListEventCreateRulesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListEventCreateRulesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_event_create_rules_async_from_dict():
+    await test_list_event_create_rules_async(request_type=dict)
+
+
+def test_list_event_create_rules_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.ListEventCreateRulesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_create_rules), "__call__"
+    ) as call:
+        call.return_value = analytics_admin.ListEventCreateRulesResponse()
+        client.list_event_create_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_event_create_rules_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.ListEventCreateRulesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_create_rules), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.ListEventCreateRulesResponse()
+        )
+        await client.list_event_create_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_event_create_rules_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_create_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.ListEventCreateRulesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_event_create_rules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_event_create_rules_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_event_create_rules(
+            analytics_admin.ListEventCreateRulesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_event_create_rules_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_create_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analytics_admin.ListEventCreateRulesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.ListEventCreateRulesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_event_create_rules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_event_create_rules_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_event_create_rules(
+            analytics_admin.ListEventCreateRulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_event_create_rules_pager(transport_name: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_create_rules), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[
+                    event_create_and_edit.EventCreateRule(),
+                    event_create_and_edit.EventCreateRule(),
+                    event_create_and_edit.EventCreateRule(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[
+                    event_create_and_edit.EventCreateRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[
+                    event_create_and_edit.EventCreateRule(),
+                    event_create_and_edit.EventCreateRule(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_event_create_rules(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, event_create_and_edit.EventCreateRule) for i in results
+        )
+
+
+def test_list_event_create_rules_pages(transport_name: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_create_rules), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[
+                    event_create_and_edit.EventCreateRule(),
+                    event_create_and_edit.EventCreateRule(),
+                    event_create_and_edit.EventCreateRule(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[
+                    event_create_and_edit.EventCreateRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[
+                    event_create_and_edit.EventCreateRule(),
+                    event_create_and_edit.EventCreateRule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_event_create_rules(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_event_create_rules_async_pager():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_create_rules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[
+                    event_create_and_edit.EventCreateRule(),
+                    event_create_and_edit.EventCreateRule(),
+                    event_create_and_edit.EventCreateRule(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[
+                    event_create_and_edit.EventCreateRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[
+                    event_create_and_edit.EventCreateRule(),
+                    event_create_and_edit.EventCreateRule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_event_create_rules(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, event_create_and_edit.EventCreateRule) for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_event_create_rules_async_pages():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_event_create_rules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[
+                    event_create_and_edit.EventCreateRule(),
+                    event_create_and_edit.EventCreateRule(),
+                    event_create_and_edit.EventCreateRule(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[
+                    event_create_and_edit.EventCreateRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[
+                    event_create_and_edit.EventCreateRule(),
+                    event_create_and_edit.EventCreateRule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_event_create_rules(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateEventCreateRuleRequest,
+        dict,
+    ],
+)
+def test_create_event_create_rule(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_event_create_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = event_create_and_edit.EventCreateRule(
+            name="name_value",
+            destination_event="destination_event_value",
+            source_copy_parameters=True,
+        )
+        response = client.create_event_create_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateEventCreateRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, event_create_and_edit.EventCreateRule)
+    assert response.name == "name_value"
+    assert response.destination_event == "destination_event_value"
+    assert response.source_copy_parameters is True
+
+
+def test_create_event_create_rule_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_event_create_rule), "__call__"
+    ) as call:
+        client.create_event_create_rule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateEventCreateRuleRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_event_create_rule_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.CreateEventCreateRuleRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_event_create_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_create_and_edit.EventCreateRule(
+                name="name_value",
+                destination_event="destination_event_value",
+                source_copy_parameters=True,
+            )
+        )
+        response = await client.create_event_create_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.CreateEventCreateRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, event_create_and_edit.EventCreateRule)
+    assert response.name == "name_value"
+    assert response.destination_event == "destination_event_value"
+    assert response.source_copy_parameters is True
+
+
+@pytest.mark.asyncio
+async def test_create_event_create_rule_async_from_dict():
+    await test_create_event_create_rule_async(request_type=dict)
+
+
+def test_create_event_create_rule_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.CreateEventCreateRuleRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_event_create_rule), "__call__"
+    ) as call:
+        call.return_value = event_create_and_edit.EventCreateRule()
+        client.create_event_create_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_event_create_rule_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.CreateEventCreateRuleRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_event_create_rule), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_create_and_edit.EventCreateRule()
+        )
+        await client.create_event_create_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_event_create_rule_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_event_create_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = event_create_and_edit.EventCreateRule()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_event_create_rule(
+            parent="parent_value",
+            event_create_rule=event_create_and_edit.EventCreateRule(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].event_create_rule
+        mock_val = event_create_and_edit.EventCreateRule(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_event_create_rule_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_event_create_rule(
+            analytics_admin.CreateEventCreateRuleRequest(),
+            parent="parent_value",
+            event_create_rule=event_create_and_edit.EventCreateRule(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_event_create_rule_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_event_create_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = event_create_and_edit.EventCreateRule()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_create_and_edit.EventCreateRule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_event_create_rule(
+            parent="parent_value",
+            event_create_rule=event_create_and_edit.EventCreateRule(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].event_create_rule
+        mock_val = event_create_and_edit.EventCreateRule(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_event_create_rule_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_event_create_rule(
+            analytics_admin.CreateEventCreateRuleRequest(),
+            parent="parent_value",
+            event_create_rule=event_create_and_edit.EventCreateRule(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateEventCreateRuleRequest,
+        dict,
+    ],
+)
+def test_update_event_create_rule(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_event_create_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = event_create_and_edit.EventCreateRule(
+            name="name_value",
+            destination_event="destination_event_value",
+            source_copy_parameters=True,
+        )
+        response = client.update_event_create_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.UpdateEventCreateRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, event_create_and_edit.EventCreateRule)
+    assert response.name == "name_value"
+    assert response.destination_event == "destination_event_value"
+    assert response.source_copy_parameters is True
+
+
+def test_update_event_create_rule_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_event_create_rule), "__call__"
+    ) as call:
+        client.update_event_create_rule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.UpdateEventCreateRuleRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_event_create_rule_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.UpdateEventCreateRuleRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_event_create_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_create_and_edit.EventCreateRule(
+                name="name_value",
+                destination_event="destination_event_value",
+                source_copy_parameters=True,
+            )
+        )
+        response = await client.update_event_create_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.UpdateEventCreateRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, event_create_and_edit.EventCreateRule)
+    assert response.name == "name_value"
+    assert response.destination_event == "destination_event_value"
+    assert response.source_copy_parameters is True
+
+
+@pytest.mark.asyncio
+async def test_update_event_create_rule_async_from_dict():
+    await test_update_event_create_rule_async(request_type=dict)
+
+
+def test_update_event_create_rule_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.UpdateEventCreateRuleRequest()
+
+    request.event_create_rule.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_event_create_rule), "__call__"
+    ) as call:
+        call.return_value = event_create_and_edit.EventCreateRule()
+        client.update_event_create_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "event_create_rule.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_event_create_rule_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.UpdateEventCreateRuleRequest()
+
+    request.event_create_rule.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_event_create_rule), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_create_and_edit.EventCreateRule()
+        )
+        await client.update_event_create_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "event_create_rule.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_event_create_rule_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_event_create_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = event_create_and_edit.EventCreateRule()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_event_create_rule(
+            event_create_rule=event_create_and_edit.EventCreateRule(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].event_create_rule
+        mock_val = event_create_and_edit.EventCreateRule(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_event_create_rule_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_event_create_rule(
+            analytics_admin.UpdateEventCreateRuleRequest(),
+            event_create_rule=event_create_and_edit.EventCreateRule(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_event_create_rule_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_event_create_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = event_create_and_edit.EventCreateRule()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_create_and_edit.EventCreateRule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_event_create_rule(
+            event_create_rule=event_create_and_edit.EventCreateRule(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].event_create_rule
+        mock_val = event_create_and_edit.EventCreateRule(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_event_create_rule_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_event_create_rule(
+            analytics_admin.UpdateEventCreateRuleRequest(),
+            event_create_rule=event_create_and_edit.EventCreateRule(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteEventCreateRuleRequest,
+        dict,
+    ],
+)
+def test_delete_event_create_rule(request_type, transport: str = "grpc"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_event_create_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_event_create_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.DeleteEventCreateRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_event_create_rule_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_event_create_rule), "__call__"
+    ) as call:
+        client.delete_event_create_rule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.DeleteEventCreateRuleRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_event_create_rule_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.DeleteEventCreateRuleRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_event_create_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_event_create_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.DeleteEventCreateRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_event_create_rule_async_from_dict():
+    await test_delete_event_create_rule_async(request_type=dict)
+
+
+def test_delete_event_create_rule_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.DeleteEventCreateRuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_event_create_rule), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_event_create_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_event_create_rule_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.DeleteEventCreateRuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_event_create_rule), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_event_create_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_event_create_rule_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_event_create_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_event_create_rule(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_event_create_rule_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_event_create_rule(
+            analytics_admin.DeleteEventCreateRuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_event_create_rule_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_event_create_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_event_create_rule(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_event_create_rule_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_event_create_rule(
+            analytics_admin.DeleteEventCreateRuleRequest(),
+            name="name_value",
+        )
 
 
 @pytest.mark.parametrize(
@@ -62617,6 +65274,2676 @@ def test_fetch_connected_ga4_property_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetAdSenseLinkRequest,
+        dict,
+    ],
+)
+def test_get_ad_sense_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/adSenseLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.AdSenseLink(
+            name="name_value",
+            ad_client_code="ad_client_code_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.AdSenseLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_ad_sense_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.AdSenseLink)
+    assert response.name == "name_value"
+    assert response.ad_client_code == "ad_client_code_value"
+
+
+def test_get_ad_sense_link_rest_required_fields(
+    request_type=analytics_admin.GetAdSenseLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_ad_sense_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_ad_sense_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.AdSenseLink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.AdSenseLink.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_ad_sense_link(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_ad_sense_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_ad_sense_link._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_ad_sense_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_get_ad_sense_link"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_ad_sense_link"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetAdSenseLinkRequest.pb(
+            analytics_admin.GetAdSenseLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.AdSenseLink.to_json(
+            resources.AdSenseLink()
+        )
+
+        request = analytics_admin.GetAdSenseLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.AdSenseLink()
+
+        client.get_ad_sense_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_ad_sense_link_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.GetAdSenseLinkRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/adSenseLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_ad_sense_link(request)
+
+
+def test_get_ad_sense_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.AdSenseLink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/adSenseLinks/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.AdSenseLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_ad_sense_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/adSenseLinks/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_ad_sense_link_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_ad_sense_link(
+            analytics_admin.GetAdSenseLinkRequest(),
+            name="name_value",
+        )
+
+
+def test_get_ad_sense_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateAdSenseLinkRequest,
+        dict,
+    ],
+)
+def test_create_ad_sense_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["adsense_link"] = {
+        "name": "name_value",
+        "ad_client_code": "ad_client_code_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.AdSenseLink(
+            name="name_value",
+            ad_client_code="ad_client_code_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.AdSenseLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_ad_sense_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.AdSenseLink)
+    assert response.name == "name_value"
+    assert response.ad_client_code == "ad_client_code_value"
+
+
+def test_create_ad_sense_link_rest_required_fields(
+    request_type=analytics_admin.CreateAdSenseLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_ad_sense_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_ad_sense_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.AdSenseLink()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.AdSenseLink.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_ad_sense_link(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_ad_sense_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_ad_sense_link._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "adsenseLink",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_ad_sense_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_create_ad_sense_link"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_ad_sense_link"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreateAdSenseLinkRequest.pb(
+            analytics_admin.CreateAdSenseLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.AdSenseLink.to_json(
+            resources.AdSenseLink()
+        )
+
+        request = analytics_admin.CreateAdSenseLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.AdSenseLink()
+
+        client.create_ad_sense_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_ad_sense_link_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.CreateAdSenseLinkRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request_init["adsense_link"] = {
+        "name": "name_value",
+        "ad_client_code": "ad_client_code_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_ad_sense_link(request)
+
+
+def test_create_ad_sense_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.AdSenseLink()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            adsense_link=resources.AdSenseLink(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.AdSenseLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_ad_sense_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/adSenseLinks" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_ad_sense_link_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_ad_sense_link(
+            analytics_admin.CreateAdSenseLinkRequest(),
+            parent="parent_value",
+            adsense_link=resources.AdSenseLink(name="name_value"),
+        )
+
+
+def test_create_ad_sense_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteAdSenseLinkRequest,
+        dict,
+    ],
+)
+def test_delete_ad_sense_link_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/adSenseLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_ad_sense_link(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_ad_sense_link_rest_required_fields(
+    request_type=analytics_admin.DeleteAdSenseLinkRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_ad_sense_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_ad_sense_link._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_ad_sense_link(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_ad_sense_link_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_ad_sense_link._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_ad_sense_link_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_ad_sense_link"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.DeleteAdSenseLinkRequest.pb(
+            analytics_admin.DeleteAdSenseLinkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.DeleteAdSenseLinkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_ad_sense_link(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_ad_sense_link_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.DeleteAdSenseLinkRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "properties/sample1/adSenseLinks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_ad_sense_link(request)
+
+
+def test_delete_ad_sense_link_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "properties/sample1/adSenseLinks/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_ad_sense_link(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/adSenseLinks/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_ad_sense_link_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_ad_sense_link(
+            analytics_admin.DeleteAdSenseLinkRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_ad_sense_link_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListAdSenseLinksRequest,
+        dict,
+    ],
+)
+def test_list_ad_sense_links_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListAdSenseLinksResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListAdSenseLinksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_ad_sense_links(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAdSenseLinksPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_ad_sense_links_rest_required_fields(
+    request_type=analytics_admin.ListAdSenseLinksRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_ad_sense_links._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_ad_sense_links._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.ListAdSenseLinksResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.ListAdSenseLinksResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_ad_sense_links(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_ad_sense_links_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_ad_sense_links._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_ad_sense_links_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_list_ad_sense_links"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_ad_sense_links"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListAdSenseLinksRequest.pb(
+            analytics_admin.ListAdSenseLinksRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = analytics_admin.ListAdSenseLinksResponse.to_json(
+            analytics_admin.ListAdSenseLinksResponse()
+        )
+
+        request = analytics_admin.ListAdSenseLinksRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ListAdSenseLinksResponse()
+
+        client.list_ad_sense_links(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_ad_sense_links_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.ListAdSenseLinksRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_ad_sense_links(request)
+
+
+def test_list_ad_sense_links_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListAdSenseLinksResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListAdSenseLinksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_ad_sense_links(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*}/adSenseLinks" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_ad_sense_links_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_ad_sense_links(
+            analytics_admin.ListAdSenseLinksRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_ad_sense_links_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[
+                    resources.AdSenseLink(),
+                    resources.AdSenseLink(),
+                    resources.AdSenseLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[
+                    resources.AdSenseLink(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListAdSenseLinksResponse(
+                adsense_links=[
+                    resources.AdSenseLink(),
+                    resources.AdSenseLink(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListAdSenseLinksResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "properties/sample1"}
+
+        pager = client.list_ad_sense_links(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.AdSenseLink) for i in results)
+
+        pages = list(client.list_ad_sense_links(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetEventCreateRuleRequest,
+        dict,
+    ],
+)
+def test_get_event_create_rule_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/dataStreams/sample2/eventCreateRules/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = event_create_and_edit.EventCreateRule(
+            name="name_value",
+            destination_event="destination_event_value",
+            source_copy_parameters=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = event_create_and_edit.EventCreateRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_event_create_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, event_create_and_edit.EventCreateRule)
+    assert response.name == "name_value"
+    assert response.destination_event == "destination_event_value"
+    assert response.source_copy_parameters is True
+
+
+def test_get_event_create_rule_rest_required_fields(
+    request_type=analytics_admin.GetEventCreateRuleRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_event_create_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_event_create_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = event_create_and_edit.EventCreateRule()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = event_create_and_edit.EventCreateRule.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_event_create_rule(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_event_create_rule_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_event_create_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_event_create_rule_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_get_event_create_rule"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_event_create_rule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetEventCreateRuleRequest.pb(
+            analytics_admin.GetEventCreateRuleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = event_create_and_edit.EventCreateRule.to_json(
+            event_create_and_edit.EventCreateRule()
+        )
+
+        request = analytics_admin.GetEventCreateRuleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = event_create_and_edit.EventCreateRule()
+
+        client.get_event_create_rule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_event_create_rule_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.GetEventCreateRuleRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/dataStreams/sample2/eventCreateRules/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_event_create_rule(request)
+
+
+def test_get_event_create_rule_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = event_create_and_edit.EventCreateRule()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "properties/sample1/dataStreams/sample2/eventCreateRules/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = event_create_and_edit.EventCreateRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_event_create_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/dataStreams/*/eventCreateRules/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_event_create_rule_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_event_create_rule(
+            analytics_admin.GetEventCreateRuleRequest(),
+            name="name_value",
+        )
+
+
+def test_get_event_create_rule_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListEventCreateRulesRequest,
+        dict,
+    ],
+)
+def test_list_event_create_rules_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1/dataStreams/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListEventCreateRulesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListEventCreateRulesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_event_create_rules(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListEventCreateRulesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_event_create_rules_rest_required_fields(
+    request_type=analytics_admin.ListEventCreateRulesRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_event_create_rules._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_event_create_rules._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.ListEventCreateRulesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = analytics_admin.ListEventCreateRulesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_event_create_rules(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_event_create_rules_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_event_create_rules._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_event_create_rules_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_list_event_create_rules"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_event_create_rules"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListEventCreateRulesRequest.pb(
+            analytics_admin.ListEventCreateRulesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_admin.ListEventCreateRulesResponse.to_json(
+                analytics_admin.ListEventCreateRulesResponse()
+            )
+        )
+
+        request = analytics_admin.ListEventCreateRulesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = analytics_admin.ListEventCreateRulesResponse()
+
+        client.list_event_create_rules(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_event_create_rules_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.ListEventCreateRulesRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1/dataStreams/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_event_create_rules(request)
+
+
+def test_list_event_create_rules_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListEventCreateRulesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1/dataStreams/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = analytics_admin.ListEventCreateRulesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_event_create_rules(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*/dataStreams/*}/eventCreateRules"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_event_create_rules_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_event_create_rules(
+            analytics_admin.ListEventCreateRulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_event_create_rules_rest_pager(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[
+                    event_create_and_edit.EventCreateRule(),
+                    event_create_and_edit.EventCreateRule(),
+                    event_create_and_edit.EventCreateRule(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[
+                    event_create_and_edit.EventCreateRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListEventCreateRulesResponse(
+                event_create_rules=[
+                    event_create_and_edit.EventCreateRule(),
+                    event_create_and_edit.EventCreateRule(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListEventCreateRulesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "properties/sample1/dataStreams/sample2"}
+
+        pager = client.list_event_create_rules(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, event_create_and_edit.EventCreateRule) for i in results
+        )
+
+        pages = list(client.list_event_create_rules(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateEventCreateRuleRequest,
+        dict,
+    ],
+)
+def test_create_event_create_rule_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1/dataStreams/sample2"}
+    request_init["event_create_rule"] = {
+        "name": "name_value",
+        "destination_event": "destination_event_value",
+        "event_conditions": [
+            {
+                "field": "field_value",
+                "comparison_type": 1,
+                "value": "value_value",
+                "negated": True,
+            }
+        ],
+        "source_copy_parameters": True,
+        "parameter_mutations": [
+            {"parameter": "parameter_value", "parameter_value": "parameter_value_value"}
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = event_create_and_edit.EventCreateRule(
+            name="name_value",
+            destination_event="destination_event_value",
+            source_copy_parameters=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = event_create_and_edit.EventCreateRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_event_create_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, event_create_and_edit.EventCreateRule)
+    assert response.name == "name_value"
+    assert response.destination_event == "destination_event_value"
+    assert response.source_copy_parameters is True
+
+
+def test_create_event_create_rule_rest_required_fields(
+    request_type=analytics_admin.CreateEventCreateRuleRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_event_create_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_event_create_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = event_create_and_edit.EventCreateRule()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = event_create_and_edit.EventCreateRule.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_event_create_rule(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_event_create_rule_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_event_create_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "eventCreateRule",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_event_create_rule_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_create_event_create_rule"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_event_create_rule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreateEventCreateRuleRequest.pb(
+            analytics_admin.CreateEventCreateRuleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = event_create_and_edit.EventCreateRule.to_json(
+            event_create_and_edit.EventCreateRule()
+        )
+
+        request = analytics_admin.CreateEventCreateRuleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = event_create_and_edit.EventCreateRule()
+
+        client.create_event_create_rule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_event_create_rule_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.CreateEventCreateRuleRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1/dataStreams/sample2"}
+    request_init["event_create_rule"] = {
+        "name": "name_value",
+        "destination_event": "destination_event_value",
+        "event_conditions": [
+            {
+                "field": "field_value",
+                "comparison_type": 1,
+                "value": "value_value",
+                "negated": True,
+            }
+        ],
+        "source_copy_parameters": True,
+        "parameter_mutations": [
+            {"parameter": "parameter_value", "parameter_value": "parameter_value_value"}
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_event_create_rule(request)
+
+
+def test_create_event_create_rule_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = event_create_and_edit.EventCreateRule()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1/dataStreams/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            event_create_rule=event_create_and_edit.EventCreateRule(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = event_create_and_edit.EventCreateRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_event_create_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*/dataStreams/*}/eventCreateRules"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_event_create_rule_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_event_create_rule(
+            analytics_admin.CreateEventCreateRuleRequest(),
+            parent="parent_value",
+            event_create_rule=event_create_and_edit.EventCreateRule(name="name_value"),
+        )
+
+
+def test_create_event_create_rule_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateEventCreateRuleRequest,
+        dict,
+    ],
+)
+def test_update_event_create_rule_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "event_create_rule": {
+            "name": "properties/sample1/dataStreams/sample2/eventCreateRules/sample3"
+        }
+    }
+    request_init["event_create_rule"] = {
+        "name": "properties/sample1/dataStreams/sample2/eventCreateRules/sample3",
+        "destination_event": "destination_event_value",
+        "event_conditions": [
+            {
+                "field": "field_value",
+                "comparison_type": 1,
+                "value": "value_value",
+                "negated": True,
+            }
+        ],
+        "source_copy_parameters": True,
+        "parameter_mutations": [
+            {"parameter": "parameter_value", "parameter_value": "parameter_value_value"}
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = event_create_and_edit.EventCreateRule(
+            name="name_value",
+            destination_event="destination_event_value",
+            source_copy_parameters=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = event_create_and_edit.EventCreateRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_event_create_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, event_create_and_edit.EventCreateRule)
+    assert response.name == "name_value"
+    assert response.destination_event == "destination_event_value"
+    assert response.source_copy_parameters is True
+
+
+def test_update_event_create_rule_rest_required_fields(
+    request_type=analytics_admin.UpdateEventCreateRuleRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_event_create_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_event_create_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = event_create_and_edit.EventCreateRule()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = event_create_and_edit.EventCreateRule.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_event_create_rule(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_event_create_rule_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_event_create_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "eventCreateRule",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_event_create_rule_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "post_update_event_create_rule"
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_event_create_rule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.UpdateEventCreateRuleRequest.pb(
+            analytics_admin.UpdateEventCreateRuleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = event_create_and_edit.EventCreateRule.to_json(
+            event_create_and_edit.EventCreateRule()
+        )
+
+        request = analytics_admin.UpdateEventCreateRuleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = event_create_and_edit.EventCreateRule()
+
+        client.update_event_create_rule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_event_create_rule_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.UpdateEventCreateRuleRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "event_create_rule": {
+            "name": "properties/sample1/dataStreams/sample2/eventCreateRules/sample3"
+        }
+    }
+    request_init["event_create_rule"] = {
+        "name": "properties/sample1/dataStreams/sample2/eventCreateRules/sample3",
+        "destination_event": "destination_event_value",
+        "event_conditions": [
+            {
+                "field": "field_value",
+                "comparison_type": 1,
+                "value": "value_value",
+                "negated": True,
+            }
+        ],
+        "source_copy_parameters": True,
+        "parameter_mutations": [
+            {"parameter": "parameter_value", "parameter_value": "parameter_value_value"}
+        ],
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_event_create_rule(request)
+
+
+def test_update_event_create_rule_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = event_create_and_edit.EventCreateRule()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "event_create_rule": {
+                "name": "properties/sample1/dataStreams/sample2/eventCreateRules/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            event_create_rule=event_create_and_edit.EventCreateRule(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = event_create_and_edit.EventCreateRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_event_create_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{event_create_rule.name=properties/*/dataStreams/*/eventCreateRules/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_event_create_rule_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_event_create_rule(
+            analytics_admin.UpdateEventCreateRuleRequest(),
+            event_create_rule=event_create_and_edit.EventCreateRule(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_event_create_rule_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteEventCreateRuleRequest,
+        dict,
+    ],
+)
+def test_delete_event_create_rule_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/dataStreams/sample2/eventCreateRules/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_event_create_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_event_create_rule_rest_required_fields(
+    request_type=analytics_admin.DeleteEventCreateRuleRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_event_create_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_event_create_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_event_create_rule(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_event_create_rule_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_event_create_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_event_create_rule_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_event_create_rule"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.DeleteEventCreateRuleRequest.pb(
+            analytics_admin.DeleteEventCreateRuleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.DeleteEventCreateRuleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_event_create_rule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_event_create_rule_rest_bad_request(
+    transport: str = "rest", request_type=analytics_admin.DeleteEventCreateRuleRequest
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/dataStreams/sample2/eventCreateRules/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_event_create_rule(request)
+
+
+def test_delete_event_create_rule_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "properties/sample1/dataStreams/sample2/eventCreateRules/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_event_create_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/dataStreams/*/eventCreateRules/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_event_create_rule_rest_flattened_error(transport: str = "rest"):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_event_create_rule(
+            analytics_admin.DeleteEventCreateRuleRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_event_create_rule_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AnalyticsAdminServiceGrpcTransport(
@@ -62869,6 +68196,15 @@ def test_analytics_admin_service_base_transport():
         "delete_connected_site_tag",
         "list_connected_site_tags",
         "fetch_connected_ga4_property",
+        "get_ad_sense_link",
+        "create_ad_sense_link",
+        "delete_ad_sense_link",
+        "list_ad_sense_links",
+        "get_event_create_rule",
+        "list_event_create_rules",
+        "create_event_create_rule",
+        "update_event_create_rule",
+        "delete_event_create_rule",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -63510,6 +68846,33 @@ def test_analytics_admin_service_client_transport_session_collision(transport_na
     session1 = client1.transport.fetch_connected_ga4_property._session
     session2 = client2.transport.fetch_connected_ga4_property._session
     assert session1 != session2
+    session1 = client1.transport.get_ad_sense_link._session
+    session2 = client2.transport.get_ad_sense_link._session
+    assert session1 != session2
+    session1 = client1.transport.create_ad_sense_link._session
+    session2 = client2.transport.create_ad_sense_link._session
+    assert session1 != session2
+    session1 = client1.transport.delete_ad_sense_link._session
+    session2 = client2.transport.delete_ad_sense_link._session
+    assert session1 != session2
+    session1 = client1.transport.list_ad_sense_links._session
+    session2 = client2.transport.list_ad_sense_links._session
+    assert session1 != session2
+    session1 = client1.transport.get_event_create_rule._session
+    session2 = client2.transport.get_event_create_rule._session
+    assert session1 != session2
+    session1 = client1.transport.list_event_create_rules._session
+    session2 = client2.transport.list_event_create_rules._session
+    assert session1 != session2
+    session1 = client1.transport.create_event_create_rule._session
+    session2 = client2.transport.create_event_create_rule._session
+    assert session1 != session2
+    session1 = client1.transport.update_event_create_rule._session
+    session2 = client2.transport.update_event_create_rule._session
+    assert session1 != session2
+    session1 = client1.transport.delete_event_create_rule._session
+    session2 = client2.transport.delete_event_create_rule._session
+    assert session1 != session2
 
 
 def test_analytics_admin_service_grpc_transport_channel():
@@ -63701,8 +69064,31 @@ def test_parse_account_summary_path():
     assert expected == actual
 
 
-def test_attribution_settings_path():
+def test_ad_sense_link_path():
     property = "winkle"
+    adsense_link = "nautilus"
+    expected = "properties/{property}/adSenseLinks/{adsense_link}".format(
+        property=property,
+        adsense_link=adsense_link,
+    )
+    actual = AnalyticsAdminServiceClient.ad_sense_link_path(property, adsense_link)
+    assert expected == actual
+
+
+def test_parse_ad_sense_link_path():
+    expected = {
+        "property": "scallop",
+        "adsense_link": "abalone",
+    }
+    path = AnalyticsAdminServiceClient.ad_sense_link_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AnalyticsAdminServiceClient.parse_ad_sense_link_path(path)
+    assert expected == actual
+
+
+def test_attribution_settings_path():
+    property = "squid"
     expected = "properties/{property}/attributionSettings".format(
         property=property,
     )
@@ -63712,7 +69098,7 @@ def test_attribution_settings_path():
 
 def test_parse_attribution_settings_path():
     expected = {
-        "property": "nautilus",
+        "property": "clam",
     }
     path = AnalyticsAdminServiceClient.attribution_settings_path(**expected)
 
@@ -63722,8 +69108,8 @@ def test_parse_attribution_settings_path():
 
 
 def test_audience_path():
-    property = "scallop"
-    audience = "abalone"
+    property = "whelk"
+    audience = "octopus"
     expected = "properties/{property}/audiences/{audience}".format(
         property=property,
         audience=audience,
@@ -63734,8 +69120,8 @@ def test_audience_path():
 
 def test_parse_audience_path():
     expected = {
-        "property": "squid",
-        "audience": "clam",
+        "property": "oyster",
+        "audience": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.audience_path(**expected)
 
@@ -63745,8 +69131,8 @@ def test_parse_audience_path():
 
 
 def test_big_query_link_path():
-    property = "whelk"
-    bigquery_link = "octopus"
+    property = "cuttlefish"
+    bigquery_link = "mussel"
     expected = "properties/{property}/bigQueryLinks/{bigquery_link}".format(
         property=property,
         bigquery_link=bigquery_link,
@@ -63757,8 +69143,8 @@ def test_big_query_link_path():
 
 def test_parse_big_query_link_path():
     expected = {
-        "property": "oyster",
-        "bigquery_link": "nudibranch",
+        "property": "winkle",
+        "bigquery_link": "nautilus",
     }
     path = AnalyticsAdminServiceClient.big_query_link_path(**expected)
 
@@ -63768,8 +69154,8 @@ def test_parse_big_query_link_path():
 
 
 def test_channel_group_path():
-    property = "cuttlefish"
-    channel_group = "mussel"
+    property = "scallop"
+    channel_group = "abalone"
     expected = "properties/{property}/channelGroups/{channel_group}".format(
         property=property,
         channel_group=channel_group,
@@ -63780,8 +69166,8 @@ def test_channel_group_path():
 
 def test_parse_channel_group_path():
     expected = {
-        "property": "winkle",
-        "channel_group": "nautilus",
+        "property": "squid",
+        "channel_group": "clam",
     }
     path = AnalyticsAdminServiceClient.channel_group_path(**expected)
 
@@ -63791,8 +69177,8 @@ def test_parse_channel_group_path():
 
 
 def test_conversion_event_path():
-    property = "scallop"
-    conversion_event = "abalone"
+    property = "whelk"
+    conversion_event = "octopus"
     expected = "properties/{property}/conversionEvents/{conversion_event}".format(
         property=property,
         conversion_event=conversion_event,
@@ -63805,8 +69191,8 @@ def test_conversion_event_path():
 
 def test_parse_conversion_event_path():
     expected = {
-        "property": "squid",
-        "conversion_event": "clam",
+        "property": "oyster",
+        "conversion_event": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.conversion_event_path(**expected)
 
@@ -63816,8 +69202,8 @@ def test_parse_conversion_event_path():
 
 
 def test_custom_dimension_path():
-    property = "whelk"
-    custom_dimension = "octopus"
+    property = "cuttlefish"
+    custom_dimension = "mussel"
     expected = "properties/{property}/customDimensions/{custom_dimension}".format(
         property=property,
         custom_dimension=custom_dimension,
@@ -63830,8 +69216,8 @@ def test_custom_dimension_path():
 
 def test_parse_custom_dimension_path():
     expected = {
-        "property": "oyster",
-        "custom_dimension": "nudibranch",
+        "property": "winkle",
+        "custom_dimension": "nautilus",
     }
     path = AnalyticsAdminServiceClient.custom_dimension_path(**expected)
 
@@ -63841,8 +69227,8 @@ def test_parse_custom_dimension_path():
 
 
 def test_custom_metric_path():
-    property = "cuttlefish"
-    custom_metric = "mussel"
+    property = "scallop"
+    custom_metric = "abalone"
     expected = "properties/{property}/customMetrics/{custom_metric}".format(
         property=property,
         custom_metric=custom_metric,
@@ -63853,8 +69239,8 @@ def test_custom_metric_path():
 
 def test_parse_custom_metric_path():
     expected = {
-        "property": "winkle",
-        "custom_metric": "nautilus",
+        "property": "squid",
+        "custom_metric": "clam",
     }
     path = AnalyticsAdminServiceClient.custom_metric_path(**expected)
 
@@ -63864,7 +69250,7 @@ def test_parse_custom_metric_path():
 
 
 def test_data_retention_settings_path():
-    property = "scallop"
+    property = "whelk"
     expected = "properties/{property}/dataRetentionSettings".format(
         property=property,
     )
@@ -63874,7 +69260,7 @@ def test_data_retention_settings_path():
 
 def test_parse_data_retention_settings_path():
     expected = {
-        "property": "abalone",
+        "property": "octopus",
     }
     path = AnalyticsAdminServiceClient.data_retention_settings_path(**expected)
 
@@ -63884,7 +69270,7 @@ def test_parse_data_retention_settings_path():
 
 
 def test_data_sharing_settings_path():
-    account = "squid"
+    account = "oyster"
     expected = "accounts/{account}/dataSharingSettings".format(
         account=account,
     )
@@ -63894,7 +69280,7 @@ def test_data_sharing_settings_path():
 
 def test_parse_data_sharing_settings_path():
     expected = {
-        "account": "clam",
+        "account": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.data_sharing_settings_path(**expected)
 
@@ -63904,8 +69290,8 @@ def test_parse_data_sharing_settings_path():
 
 
 def test_data_stream_path():
-    property = "whelk"
-    data_stream = "octopus"
+    property = "cuttlefish"
+    data_stream = "mussel"
     expected = "properties/{property}/dataStreams/{data_stream}".format(
         property=property,
         data_stream=data_stream,
@@ -63916,8 +69302,8 @@ def test_data_stream_path():
 
 def test_parse_data_stream_path():
     expected = {
-        "property": "oyster",
-        "data_stream": "nudibranch",
+        "property": "winkle",
+        "data_stream": "nautilus",
     }
     path = AnalyticsAdminServiceClient.data_stream_path(**expected)
 
@@ -63927,8 +69313,8 @@ def test_parse_data_stream_path():
 
 
 def test_display_video360_advertiser_link_path():
-    property = "cuttlefish"
-    display_video_360_advertiser_link = "mussel"
+    property = "scallop"
+    display_video_360_advertiser_link = "abalone"
     expected = "properties/{property}/displayVideo360AdvertiserLinks/{display_video_360_advertiser_link}".format(
         property=property,
         display_video_360_advertiser_link=display_video_360_advertiser_link,
@@ -63941,8 +69327,8 @@ def test_display_video360_advertiser_link_path():
 
 def test_parse_display_video360_advertiser_link_path():
     expected = {
-        "property": "winkle",
-        "display_video_360_advertiser_link": "nautilus",
+        "property": "squid",
+        "display_video_360_advertiser_link": "clam",
     }
     path = AnalyticsAdminServiceClient.display_video360_advertiser_link_path(**expected)
 
@@ -63954,8 +69340,8 @@ def test_parse_display_video360_advertiser_link_path():
 
 
 def test_display_video360_advertiser_link_proposal_path():
-    property = "scallop"
-    display_video_360_advertiser_link_proposal = "abalone"
+    property = "whelk"
+    display_video_360_advertiser_link_proposal = "octopus"
     expected = "properties/{property}/displayVideo360AdvertiserLinkProposals/{display_video_360_advertiser_link_proposal}".format(
         property=property,
         display_video_360_advertiser_link_proposal=display_video_360_advertiser_link_proposal,
@@ -63968,8 +69354,8 @@ def test_display_video360_advertiser_link_proposal_path():
 
 def test_parse_display_video360_advertiser_link_proposal_path():
     expected = {
-        "property": "squid",
-        "display_video_360_advertiser_link_proposal": "clam",
+        "property": "oyster",
+        "display_video_360_advertiser_link_proposal": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.display_video360_advertiser_link_proposal_path(
         **expected
@@ -63983,8 +69369,8 @@ def test_parse_display_video360_advertiser_link_proposal_path():
 
 
 def test_enhanced_measurement_settings_path():
-    property = "whelk"
-    data_stream = "octopus"
+    property = "cuttlefish"
+    data_stream = "mussel"
     expected = "properties/{property}/dataStreams/{data_stream}/enhancedMeasurementSettings".format(
         property=property,
         data_stream=data_stream,
@@ -63997,8 +69383,8 @@ def test_enhanced_measurement_settings_path():
 
 def test_parse_enhanced_measurement_settings_path():
     expected = {
-        "property": "oyster",
-        "data_stream": "nudibranch",
+        "property": "winkle",
+        "data_stream": "nautilus",
     }
     path = AnalyticsAdminServiceClient.enhanced_measurement_settings_path(**expected)
 
@@ -64007,9 +69393,37 @@ def test_parse_enhanced_measurement_settings_path():
     assert expected == actual
 
 
+def test_event_create_rule_path():
+    property = "scallop"
+    data_stream = "abalone"
+    event_create_rule = "squid"
+    expected = "properties/{property}/dataStreams/{data_stream}/eventCreateRules/{event_create_rule}".format(
+        property=property,
+        data_stream=data_stream,
+        event_create_rule=event_create_rule,
+    )
+    actual = AnalyticsAdminServiceClient.event_create_rule_path(
+        property, data_stream, event_create_rule
+    )
+    assert expected == actual
+
+
+def test_parse_event_create_rule_path():
+    expected = {
+        "property": "clam",
+        "data_stream": "whelk",
+        "event_create_rule": "octopus",
+    }
+    path = AnalyticsAdminServiceClient.event_create_rule_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AnalyticsAdminServiceClient.parse_event_create_rule_path(path)
+    assert expected == actual
+
+
 def test_expanded_data_set_path():
-    property = "cuttlefish"
-    expanded_data_set = "mussel"
+    property = "oyster"
+    expanded_data_set = "nudibranch"
     expected = "properties/{property}/expandedDataSets/{expanded_data_set}".format(
         property=property,
         expanded_data_set=expanded_data_set,
@@ -64022,8 +69436,8 @@ def test_expanded_data_set_path():
 
 def test_parse_expanded_data_set_path():
     expected = {
-        "property": "winkle",
-        "expanded_data_set": "nautilus",
+        "property": "cuttlefish",
+        "expanded_data_set": "mussel",
     }
     path = AnalyticsAdminServiceClient.expanded_data_set_path(**expected)
 
@@ -64033,8 +69447,8 @@ def test_parse_expanded_data_set_path():
 
 
 def test_firebase_link_path():
-    property = "scallop"
-    firebase_link = "abalone"
+    property = "winkle"
+    firebase_link = "nautilus"
     expected = "properties/{property}/firebaseLinks/{firebase_link}".format(
         property=property,
         firebase_link=firebase_link,
@@ -64045,8 +69459,8 @@ def test_firebase_link_path():
 
 def test_parse_firebase_link_path():
     expected = {
-        "property": "squid",
-        "firebase_link": "clam",
+        "property": "scallop",
+        "firebase_link": "abalone",
     }
     path = AnalyticsAdminServiceClient.firebase_link_path(**expected)
 
@@ -64056,8 +69470,8 @@ def test_parse_firebase_link_path():
 
 
 def test_global_site_tag_path():
-    property = "whelk"
-    data_stream = "octopus"
+    property = "squid"
+    data_stream = "clam"
     expected = "properties/{property}/dataStreams/{data_stream}/globalSiteTag".format(
         property=property,
         data_stream=data_stream,
@@ -64068,8 +69482,8 @@ def test_global_site_tag_path():
 
 def test_parse_global_site_tag_path():
     expected = {
-        "property": "oyster",
-        "data_stream": "nudibranch",
+        "property": "whelk",
+        "data_stream": "octopus",
     }
     path = AnalyticsAdminServiceClient.global_site_tag_path(**expected)
 
@@ -64079,8 +69493,8 @@ def test_parse_global_site_tag_path():
 
 
 def test_google_ads_link_path():
-    property = "cuttlefish"
-    google_ads_link = "mussel"
+    property = "oyster"
+    google_ads_link = "nudibranch"
     expected = "properties/{property}/googleAdsLinks/{google_ads_link}".format(
         property=property,
         google_ads_link=google_ads_link,
@@ -64091,8 +69505,8 @@ def test_google_ads_link_path():
 
 def test_parse_google_ads_link_path():
     expected = {
-        "property": "winkle",
-        "google_ads_link": "nautilus",
+        "property": "cuttlefish",
+        "google_ads_link": "mussel",
     }
     path = AnalyticsAdminServiceClient.google_ads_link_path(**expected)
 
@@ -64102,7 +69516,7 @@ def test_parse_google_ads_link_path():
 
 
 def test_google_signals_settings_path():
-    property = "scallop"
+    property = "winkle"
     expected = "properties/{property}/googleSignalsSettings".format(
         property=property,
     )
@@ -64112,7 +69526,7 @@ def test_google_signals_settings_path():
 
 def test_parse_google_signals_settings_path():
     expected = {
-        "property": "abalone",
+        "property": "nautilus",
     }
     path = AnalyticsAdminServiceClient.google_signals_settings_path(**expected)
 
@@ -64122,9 +69536,9 @@ def test_parse_google_signals_settings_path():
 
 
 def test_measurement_protocol_secret_path():
-    property = "squid"
-    data_stream = "clam"
-    measurement_protocol_secret = "whelk"
+    property = "scallop"
+    data_stream = "abalone"
+    measurement_protocol_secret = "squid"
     expected = "properties/{property}/dataStreams/{data_stream}/measurementProtocolSecrets/{measurement_protocol_secret}".format(
         property=property,
         data_stream=data_stream,
@@ -64138,9 +69552,9 @@ def test_measurement_protocol_secret_path():
 
 def test_parse_measurement_protocol_secret_path():
     expected = {
-        "property": "octopus",
-        "data_stream": "oyster",
-        "measurement_protocol_secret": "nudibranch",
+        "property": "clam",
+        "data_stream": "whelk",
+        "measurement_protocol_secret": "octopus",
     }
     path = AnalyticsAdminServiceClient.measurement_protocol_secret_path(**expected)
 
@@ -64150,7 +69564,7 @@ def test_parse_measurement_protocol_secret_path():
 
 
 def test_property_path():
-    property = "cuttlefish"
+    property = "oyster"
     expected = "properties/{property}".format(
         property=property,
     )
@@ -64160,7 +69574,7 @@ def test_property_path():
 
 def test_parse_property_path():
     expected = {
-        "property": "mussel",
+        "property": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.property_path(**expected)
 
@@ -64170,8 +69584,8 @@ def test_parse_property_path():
 
 
 def test_search_ads360_link_path():
-    property = "winkle"
-    search_ads_360_link = "nautilus"
+    property = "cuttlefish"
+    search_ads_360_link = "mussel"
     expected = "properties/{property}/searchAds360Links/{search_ads_360_link}".format(
         property=property,
         search_ads_360_link=search_ads_360_link,
@@ -64184,8 +69598,8 @@ def test_search_ads360_link_path():
 
 def test_parse_search_ads360_link_path():
     expected = {
-        "property": "scallop",
-        "search_ads_360_link": "abalone",
+        "property": "winkle",
+        "search_ads_360_link": "nautilus",
     }
     path = AnalyticsAdminServiceClient.search_ads360_link_path(**expected)
 
@@ -64195,8 +69609,8 @@ def test_parse_search_ads360_link_path():
 
 
 def test_user_link_path():
-    account = "squid"
-    user_link = "clam"
+    account = "scallop"
+    user_link = "abalone"
     expected = "accounts/{account}/userLinks/{user_link}".format(
         account=account,
         user_link=user_link,
@@ -64207,8 +69621,8 @@ def test_user_link_path():
 
 def test_parse_user_link_path():
     expected = {
-        "account": "whelk",
-        "user_link": "octopus",
+        "account": "squid",
+        "user_link": "clam",
     }
     path = AnalyticsAdminServiceClient.user_link_path(**expected)
 
@@ -64218,7 +69632,7 @@ def test_parse_user_link_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -64228,7 +69642,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "octopus",
     }
     path = AnalyticsAdminServiceClient.common_billing_account_path(**expected)
 
@@ -64238,7 +69652,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -64248,7 +69662,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "nudibranch",
     }
     path = AnalyticsAdminServiceClient.common_folder_path(**expected)
 
@@ -64258,7 +69672,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -64268,7 +69682,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "mussel",
     }
     path = AnalyticsAdminServiceClient.common_organization_path(**expected)
 
@@ -64278,7 +69692,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -64288,7 +69702,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "nautilus",
     }
     path = AnalyticsAdminServiceClient.common_project_path(**expected)
 
@@ -64298,8 +69712,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -64310,8 +69724,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "squid",
+        "location": "clam",
     }
     path = AnalyticsAdminServiceClient.common_location_path(**expected)
 

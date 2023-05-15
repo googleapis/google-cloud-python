@@ -59,6 +59,7 @@ from google.analytics.admin_v1alpha.types import access_report, analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
 from google.analytics.admin_v1alpha.types import channel_group
+from google.analytics.admin_v1alpha.types import event_create_and_edit
 from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
 
@@ -237,6 +238,25 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     def parse_account_summary_path(path: str) -> Dict[str, str]:
         """Parses a account_summary path into its component segments."""
         m = re.match(r"^accountSummaries/(?P<account_summary>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def ad_sense_link_path(
+        property: str,
+        adsense_link: str,
+    ) -> str:
+        """Returns a fully-qualified ad_sense_link string."""
+        return "properties/{property}/adSenseLinks/{adsense_link}".format(
+            property=property,
+            adsense_link=adsense_link,
+        )
+
+    @staticmethod
+    def parse_ad_sense_link_path(path: str) -> Dict[str, str]:
+        """Parses a ad_sense_link path into its component segments."""
+        m = re.match(
+            r"^properties/(?P<property>.+?)/adSenseLinks/(?P<adsense_link>.+?)$", path
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -477,6 +497,28 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         """Parses a enhanced_measurement_settings path into its component segments."""
         m = re.match(
             r"^properties/(?P<property>.+?)/dataStreams/(?P<data_stream>.+?)/enhancedMeasurementSettings$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def event_create_rule_path(
+        property: str,
+        data_stream: str,
+        event_create_rule: str,
+    ) -> str:
+        """Returns a fully-qualified event_create_rule string."""
+        return "properties/{property}/dataStreams/{data_stream}/eventCreateRules/{event_create_rule}".format(
+            property=property,
+            data_stream=data_stream,
+            event_create_rule=event_create_rule,
+        )
+
+    @staticmethod
+    def parse_event_create_rule_path(path: str) -> Dict[str, str]:
+        """Parses a event_create_rule path into its component segments."""
+        m = re.match(
+            r"^properties/(?P<property>.+?)/dataStreams/(?P<data_stream>.+?)/eventCreateRules/(?P<event_create_rule>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -12922,6 +12964,1027 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         # Done; return the response.
         return response
+
+    def get_ad_sense_link(
+        self,
+        request: Optional[Union[analytics_admin.GetAdSenseLinkRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.AdSenseLink:
+        r"""Looks up a single AdSenseLink.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_get_ad_sense_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetAdSenseLinkRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_ad_sense_link(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.GetAdSenseLinkRequest, dict]):
+                The request object. Request message to be passed to
+                GetAdSenseLink method.
+            name (str):
+                Required. Unique identifier for the
+                AdSense Link requested. Format:
+                properties/{propertyId}/adSenseLinks/{linkId}
+                Example:
+                properties/1234/adSenseLinks/5678
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.AdSenseLink:
+                A link between a GA4 Property and an
+                AdSense for Content ad client.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.GetAdSenseLinkRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.GetAdSenseLinkRequest):
+            request = analytics_admin.GetAdSenseLinkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_ad_sense_link]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_ad_sense_link(
+        self,
+        request: Optional[Union[analytics_admin.CreateAdSenseLinkRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        adsense_link: Optional[resources.AdSenseLink] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.AdSenseLink:
+        r"""Creates an AdSenseLink.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_create_ad_sense_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.CreateAdSenseLinkRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_ad_sense_link(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.CreateAdSenseLinkRequest, dict]):
+                The request object. Request message to be passed to
+                CreateAdSenseLink method.
+            parent (str):
+                Required. The property for which to
+                create an AdSense Link. Format:
+                properties/{propertyId} Example:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            adsense_link (google.analytics.admin_v1alpha.types.AdSenseLink):
+                Required. The AdSense Link to create
+                This corresponds to the ``adsense_link`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.AdSenseLink:
+                A link between a GA4 Property and an
+                AdSense for Content ad client.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, adsense_link])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.CreateAdSenseLinkRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.CreateAdSenseLinkRequest):
+            request = analytics_admin.CreateAdSenseLinkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if adsense_link is not None:
+                request.adsense_link = adsense_link
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_ad_sense_link]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_ad_sense_link(
+        self,
+        request: Optional[Union[analytics_admin.DeleteAdSenseLinkRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes an AdSenseLink.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_delete_ad_sense_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteAdSenseLinkRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_ad_sense_link(request=request)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.DeleteAdSenseLinkRequest, dict]):
+                The request object. Request message to be passed to
+                DeleteAdSenseLink method.
+            name (str):
+                Required. Unique identifier for the
+                AdSense Link to be deleted. Format:
+                properties/{propertyId}/adSenseLinks/{linkId}
+                Example:
+                properties/1234/adSenseLinks/5678
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.DeleteAdSenseLinkRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.DeleteAdSenseLinkRequest):
+            request = analytics_admin.DeleteAdSenseLinkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_ad_sense_link]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def list_ad_sense_links(
+        self,
+        request: Optional[Union[analytics_admin.ListAdSenseLinksRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListAdSenseLinksPager:
+        r"""Lists AdSenseLinks on a property.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_list_ad_sense_links():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListAdSenseLinksRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_ad_sense_links(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.ListAdSenseLinksRequest, dict]):
+                The request object. Request message to be passed to
+                ListAdSenseLinks method.
+            parent (str):
+                Required. Resource name of the parent
+                property. Format:
+                properties/{propertyId}
+                Example: properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListAdSenseLinksPager:
+                Response message for ListAdSenseLinks
+                method.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.ListAdSenseLinksRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.ListAdSenseLinksRequest):
+            request = analytics_admin.ListAdSenseLinksRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_ad_sense_links]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListAdSenseLinksPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_event_create_rule(
+        self,
+        request: Optional[
+            Union[analytics_admin.GetEventCreateRuleRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> event_create_and_edit.EventCreateRule:
+        r"""Lookup for a single EventCreateRule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_get_event_create_rule():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetEventCreateRuleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_event_create_rule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.GetEventCreateRuleRequest, dict]):
+                The request object. Request message for
+                GetEventCreateRule RPC.
+            name (str):
+                Required. The name of the
+                EventCreateRule to get. Example format:
+                properties/123/dataStreams/456/eventCreateRules/789
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.EventCreateRule:
+                An Event Create Rule defines
+                conditions that will trigger the
+                creation of an entirely new event based
+                upon matched criteria of a source event.
+                Additional mutations of the parameters
+                from the source event can be defined.
+                Unlike Event Edit rules, Event Creation
+                Rules have no defined order.  They will
+                all be run independently.
+
+                Event Edit and Event Create rules can't
+                be used to modify an event created from
+                an Event Create rule.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.GetEventCreateRuleRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.GetEventCreateRuleRequest):
+            request = analytics_admin.GetEventCreateRuleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_event_create_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_event_create_rules(
+        self,
+        request: Optional[
+            Union[analytics_admin.ListEventCreateRulesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListEventCreateRulesPager:
+        r"""Lists EventCreateRules on a web data stream.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_list_event_create_rules():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListEventCreateRulesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_event_create_rules(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.ListEventCreateRulesRequest, dict]):
+                The request object. Request message for
+                ListEventCreateRules RPC.
+            parent (str):
+                Required. Example format:
+                properties/123/dataStreams/456
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListEventCreateRulesPager:
+                Response message for
+                ListEventCreateRules RPC.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.ListEventCreateRulesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.ListEventCreateRulesRequest):
+            request = analytics_admin.ListEventCreateRulesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_event_create_rules]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListEventCreateRulesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_event_create_rule(
+        self,
+        request: Optional[
+            Union[analytics_admin.CreateEventCreateRuleRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        event_create_rule: Optional[event_create_and_edit.EventCreateRule] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> event_create_and_edit.EventCreateRule:
+        r"""Creates an EventCreateRule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_create_event_create_rule():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                event_create_rule = admin_v1alpha.EventCreateRule()
+                event_create_rule.destination_event = "destination_event_value"
+                event_create_rule.event_conditions.field = "field_value"
+                event_create_rule.event_conditions.comparison_type = "REGULAR_EXPRESSION_CASE_INSENSITIVE"
+                event_create_rule.event_conditions.value = "value_value"
+
+                request = admin_v1alpha.CreateEventCreateRuleRequest(
+                    parent="parent_value",
+                    event_create_rule=event_create_rule,
+                )
+
+                # Make the request
+                response = client.create_event_create_rule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.CreateEventCreateRuleRequest, dict]):
+                The request object. Request message for
+                CreateEventCreateRule RPC.
+            parent (str):
+                Required. Example format:
+                properties/123/dataStreams/456
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            event_create_rule (google.analytics.admin_v1alpha.types.EventCreateRule):
+                Required. The EventCreateRule to
+                create.
+
+                This corresponds to the ``event_create_rule`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.EventCreateRule:
+                An Event Create Rule defines
+                conditions that will trigger the
+                creation of an entirely new event based
+                upon matched criteria of a source event.
+                Additional mutations of the parameters
+                from the source event can be defined.
+                Unlike Event Edit rules, Event Creation
+                Rules have no defined order.  They will
+                all be run independently.
+
+                Event Edit and Event Create rules can't
+                be used to modify an event created from
+                an Event Create rule.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, event_create_rule])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.CreateEventCreateRuleRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.CreateEventCreateRuleRequest):
+            request = analytics_admin.CreateEventCreateRuleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if event_create_rule is not None:
+                request.event_create_rule = event_create_rule
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_event_create_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_event_create_rule(
+        self,
+        request: Optional[
+            Union[analytics_admin.UpdateEventCreateRuleRequest, dict]
+        ] = None,
+        *,
+        event_create_rule: Optional[event_create_and_edit.EventCreateRule] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> event_create_and_edit.EventCreateRule:
+        r"""Updates an EventCreateRule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_update_event_create_rule():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                event_create_rule = admin_v1alpha.EventCreateRule()
+                event_create_rule.destination_event = "destination_event_value"
+                event_create_rule.event_conditions.field = "field_value"
+                event_create_rule.event_conditions.comparison_type = "REGULAR_EXPRESSION_CASE_INSENSITIVE"
+                event_create_rule.event_conditions.value = "value_value"
+
+                request = admin_v1alpha.UpdateEventCreateRuleRequest(
+                    event_create_rule=event_create_rule,
+                )
+
+                # Make the request
+                response = client.update_event_create_rule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.UpdateEventCreateRuleRequest, dict]):
+                The request object. Request message for
+                UpdateEventCreateRule RPC.
+            event_create_rule (google.analytics.admin_v1alpha.types.EventCreateRule):
+                Required. The EventCreateRule to update. The resource's
+                ``name`` field is used to identify the EventCreateRule
+                to be updated.
+
+                This corresponds to the ``event_create_rule`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
+                fields will not be updated. To replace the entire
+                entity, use one path with the string "*" to match all
+                fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.EventCreateRule:
+                An Event Create Rule defines
+                conditions that will trigger the
+                creation of an entirely new event based
+                upon matched criteria of a source event.
+                Additional mutations of the parameters
+                from the source event can be defined.
+                Unlike Event Edit rules, Event Creation
+                Rules have no defined order.  They will
+                all be run independently.
+
+                Event Edit and Event Create rules can't
+                be used to modify an event created from
+                an Event Create rule.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([event_create_rule, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.UpdateEventCreateRuleRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.UpdateEventCreateRuleRequest):
+            request = analytics_admin.UpdateEventCreateRuleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if event_create_rule is not None:
+                request.event_create_rule = event_create_rule
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_event_create_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("event_create_rule.name", request.event_create_rule.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_event_create_rule(
+        self,
+        request: Optional[
+            Union[analytics_admin.DeleteEventCreateRuleRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes an EventCreateRule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import admin_v1alpha
+
+            def sample_delete_event_create_rule():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteEventCreateRuleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_event_create_rule(request=request)
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.DeleteEventCreateRuleRequest, dict]):
+                The request object. Request message for
+                DeleteEventCreateRule RPC.
+            name (str):
+                Required. Example format:
+                properties/123/dataStreams/456/eventCreateRules/789
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.DeleteEventCreateRuleRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.DeleteEventCreateRuleRequest):
+            request = analytics_admin.DeleteEventCreateRuleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_event_create_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     def __enter__(self) -> "AnalyticsAdminServiceClient":
         return self

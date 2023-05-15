@@ -90,6 +90,11 @@
                 "create_access_binding"
               ]
             },
+            "CreateAdSenseLink": {
+              "methods": [
+                "create_ad_sense_link"
+              ]
+            },
             "CreateAudience": {
               "methods": [
                 "create_audience"
@@ -133,6 +138,11 @@
             "CreateDisplayVideo360AdvertiserLinkProposal": {
               "methods": [
                 "create_display_video360_advertiser_link_proposal"
+              ]
+            },
+            "CreateEventCreateRule": {
+              "methods": [
+                "create_event_create_rule"
               ]
             },
             "CreateExpandedDataSet": {
@@ -180,6 +190,11 @@
                 "delete_account"
               ]
             },
+            "DeleteAdSenseLink": {
+              "methods": [
+                "delete_ad_sense_link"
+              ]
+            },
             "DeleteChannelGroup": {
               "methods": [
                 "delete_channel_group"
@@ -208,6 +223,11 @@
             "DeleteDisplayVideo360AdvertiserLinkProposal": {
               "methods": [
                 "delete_display_video360_advertiser_link_proposal"
+              ]
+            },
+            "DeleteEventCreateRule": {
+              "methods": [
+                "delete_event_create_rule"
               ]
             },
             "DeleteExpandedDataSet": {
@@ -263,6 +283,11 @@
             "GetAccount": {
               "methods": [
                 "get_account"
+              ]
+            },
+            "GetAdSenseLink": {
+              "methods": [
+                "get_ad_sense_link"
               ]
             },
             "GetAttributionSettings": {
@@ -330,6 +355,11 @@
                 "get_enhanced_measurement_settings"
               ]
             },
+            "GetEventCreateRule": {
+              "methods": [
+                "get_event_create_rule"
+              ]
+            },
             "GetExpandedDataSet": {
               "methods": [
                 "get_expanded_data_set"
@@ -380,6 +410,11 @@
                 "list_accounts"
               ]
             },
+            "ListAdSenseLinks": {
+              "methods": [
+                "list_ad_sense_links"
+              ]
+            },
             "ListAudiences": {
               "methods": [
                 "list_audiences"
@@ -428,6 +463,11 @@
             "ListDisplayVideo360AdvertiserLinks": {
               "methods": [
                 "list_display_video360_advertiser_links"
+              ]
+            },
+            "ListEventCreateRules": {
+              "methods": [
+                "list_event_create_rules"
               ]
             },
             "ListExpandedDataSets": {
@@ -538,6 +578,11 @@
             "UpdateEnhancedMeasurementSettings": {
               "methods": [
                 "update_enhanced_measurement_settings"
+              ]
+            },
+            "UpdateEventCreateRule": {
+              "methods": [
+                "update_event_create_rule"
               ]
             },
             "UpdateExpandedDataSet": {
@@ -660,6 +705,11 @@
                 "create_access_binding"
               ]
             },
+            "CreateAdSenseLink": {
+              "methods": [
+                "create_ad_sense_link"
+              ]
+            },
             "CreateAudience": {
               "methods": [
                 "create_audience"
@@ -703,6 +753,11 @@
             "CreateDisplayVideo360AdvertiserLinkProposal": {
               "methods": [
                 "create_display_video360_advertiser_link_proposal"
+              ]
+            },
+            "CreateEventCreateRule": {
+              "methods": [
+                "create_event_create_rule"
               ]
             },
             "CreateExpandedDataSet": {
@@ -750,6 +805,11 @@
                 "delete_account"
               ]
             },
+            "DeleteAdSenseLink": {
+              "methods": [
+                "delete_ad_sense_link"
+              ]
+            },
             "DeleteChannelGroup": {
               "methods": [
                 "delete_channel_group"
@@ -778,6 +838,11 @@
             "DeleteDisplayVideo360AdvertiserLinkProposal": {
               "methods": [
                 "delete_display_video360_advertiser_link_proposal"
+              ]
+            },
+            "DeleteEventCreateRule": {
+              "methods": [
+                "delete_event_create_rule"
               ]
             },
             "DeleteExpandedDataSet": {
@@ -833,6 +898,11 @@
             "GetAccount": {
               "methods": [
                 "get_account"
+              ]
+            },
+            "GetAdSenseLink": {
+              "methods": [
+                "get_ad_sense_link"
               ]
             },
             "GetAttributionSettings": {
@@ -900,6 +970,11 @@
                 "get_enhanced_measurement_settings"
               ]
             },
+            "GetEventCreateRule": {
+              "methods": [
+                "get_event_create_rule"
+              ]
+            },
             "GetExpandedDataSet": {
               "methods": [
                 "get_expanded_data_set"
@@ -950,6 +1025,11 @@
                 "list_accounts"
               ]
             },
+            "ListAdSenseLinks": {
+              "methods": [
+                "list_ad_sense_links"
+              ]
+            },
             "ListAudiences": {
               "methods": [
                 "list_audiences"
@@ -998,6 +1078,11 @@
             "ListDisplayVideo360AdvertiserLinks": {
               "methods": [
                 "list_display_video360_advertiser_links"
+              ]
+            },
+            "ListEventCreateRules": {
+              "methods": [
+                "list_event_create_rules"
               ]
             },
             "ListExpandedDataSets": {
@@ -1108,6 +1193,11 @@
             "UpdateEnhancedMeasurementSettings": {
               "methods": [
                 "update_enhanced_measurement_settings"
+              ]
+            },
+            "UpdateEventCreateRule": {
+              "methods": [
+                "update_event_create_rule"
               ]
             },
             "UpdateExpandedDataSet": {
@@ -1230,6 +1320,11 @@
                 "create_access_binding"
               ]
             },
+            "CreateAdSenseLink": {
+              "methods": [
+                "create_ad_sense_link"
+              ]
+            },
             "CreateAudience": {
               "methods": [
                 "create_audience"
@@ -1273,6 +1368,11 @@
             "CreateDisplayVideo360AdvertiserLinkProposal": {
               "methods": [
                 "create_display_video360_advertiser_link_proposal"
+              ]
+            },
+            "CreateEventCreateRule": {
+              "methods": [
+                "create_event_create_rule"
               ]
             },
             "CreateExpandedDataSet": {
@@ -1320,6 +1420,11 @@
                 "delete_account"
               ]
             },
+            "DeleteAdSenseLink": {
+              "methods": [
+                "delete_ad_sense_link"
+              ]
+            },
             "DeleteChannelGroup": {
               "methods": [
                 "delete_channel_group"
@@ -1348,6 +1453,11 @@
             "DeleteDisplayVideo360AdvertiserLinkProposal": {
               "methods": [
                 "delete_display_video360_advertiser_link_proposal"
+              ]
+            },
+            "DeleteEventCreateRule": {
+              "methods": [
+                "delete_event_create_rule"
               ]
             },
             "DeleteExpandedDataSet": {
@@ -1403,6 +1513,11 @@
             "GetAccount": {
               "methods": [
                 "get_account"
+              ]
+            },
+            "GetAdSenseLink": {
+              "methods": [
+                "get_ad_sense_link"
               ]
             },
             "GetAttributionSettings": {
@@ -1470,6 +1585,11 @@
                 "get_enhanced_measurement_settings"
               ]
             },
+            "GetEventCreateRule": {
+              "methods": [
+                "get_event_create_rule"
+              ]
+            },
             "GetExpandedDataSet": {
               "methods": [
                 "get_expanded_data_set"
@@ -1520,6 +1640,11 @@
                 "list_accounts"
               ]
             },
+            "ListAdSenseLinks": {
+              "methods": [
+                "list_ad_sense_links"
+              ]
+            },
             "ListAudiences": {
               "methods": [
                 "list_audiences"
@@ -1568,6 +1693,11 @@
             "ListDisplayVideo360AdvertiserLinks": {
               "methods": [
                 "list_display_video360_advertiser_links"
+              ]
+            },
+            "ListEventCreateRules": {
+              "methods": [
+                "list_event_create_rules"
               ]
             },
             "ListExpandedDataSets": {
@@ -1678,6 +1808,11 @@
             "UpdateEnhancedMeasurementSettings": {
               "methods": [
                 "update_enhanced_measurement_settings"
+              ]
+            },
+            "UpdateEventCreateRule": {
+              "methods": [
+                "update_event_create_rule"
               ]
             },
             "UpdateExpandedDataSet": {

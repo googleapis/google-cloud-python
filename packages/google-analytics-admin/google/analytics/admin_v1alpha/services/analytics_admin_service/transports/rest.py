@@ -46,6 +46,7 @@ from google.analytics.admin_v1alpha.types import analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
 from google.analytics.admin_v1alpha.types import channel_group
+from google.analytics.admin_v1alpha.types import event_create_and_edit
 from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
 
@@ -182,6 +183,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_ad_sense_link(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_ad_sense_link(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_audience(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -254,6 +263,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_event_create_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_event_create_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_expanded_data_set(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -318,6 +335,10 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_delete_ad_sense_link(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_delete_channel_group(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -339,6 +360,10 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def pre_delete_display_video360_advertiser_link_proposal(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_event_create_rule(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
@@ -403,6 +428,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_get_account(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_ad_sense_link(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_ad_sense_link(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -510,6 +543,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_event_create_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_event_create_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_expanded_data_set(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -590,6 +631,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_ad_sense_links(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_ad_sense_links(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_audiences(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -667,6 +716,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_list_display_video360_advertiser_links(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_event_create_rules(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_event_create_rules(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -843,6 +900,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_update_enhanced_measurement_settings(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_event_create_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_event_create_rule(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -1240,6 +1305,29 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_create_ad_sense_link(
+        self,
+        request: analytics_admin.CreateAdSenseLinkRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.CreateAdSenseLinkRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_ad_sense_link
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_create_ad_sense_link(
+        self, response: resources.AdSenseLink
+    ) -> resources.AdSenseLink:
+        """Post-rpc interceptor for create_ad_sense_link
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_audience(
         self,
         request: analytics_admin.CreateAudienceRequest,
@@ -1455,6 +1543,29 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_create_event_create_rule(
+        self,
+        request: analytics_admin.CreateEventCreateRuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.CreateEventCreateRuleRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_event_create_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_create_event_create_rule(
+        self, response: event_create_and_edit.EventCreateRule
+    ) -> event_create_and_edit.EventCreateRule:
+        """Post-rpc interceptor for create_event_create_rule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_expanded_data_set(
         self,
         request: analytics_admin.CreateExpandedDataSetRequest,
@@ -1641,6 +1752,18 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return request, metadata
 
+    def pre_delete_ad_sense_link(
+        self,
+        request: analytics_admin.DeleteAdSenseLinkRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.DeleteAdSenseLinkRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_ad_sense_link
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
     def pre_delete_channel_group(
         self,
         request: analytics_admin.DeleteChannelGroupRequest,
@@ -1715,6 +1838,18 @@ class AnalyticsAdminServiceRestInterceptor:
         Sequence[Tuple[str, str]],
     ]:
         """Pre-rpc interceptor for delete_display_video360_advertiser_link_proposal
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def pre_delete_event_create_rule(
+        self,
+        request: analytics_admin.DeleteEventCreateRuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.DeleteEventCreateRuleRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_event_create_rule
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the AnalyticsAdminService server.
@@ -1907,6 +2042,29 @@ class AnalyticsAdminServiceRestInterceptor:
 
     def post_get_account(self, response: resources.Account) -> resources.Account:
         """Post-rpc interceptor for get_account
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_ad_sense_link(
+        self,
+        request: analytics_admin.GetAdSenseLinkRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.GetAdSenseLinkRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_ad_sense_link
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_get_ad_sense_link(
+        self, response: resources.AdSenseLink
+    ) -> resources.AdSenseLink:
+        """Post-rpc interceptor for get_ad_sense_link
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -2225,6 +2383,29 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_get_event_create_rule(
+        self,
+        request: analytics_admin.GetEventCreateRuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.GetEventCreateRuleRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_event_create_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_get_event_create_rule(
+        self, response: event_create_and_edit.EventCreateRule
+    ) -> event_create_and_edit.EventCreateRule:
+        """Post-rpc interceptor for get_event_create_rule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_expanded_data_set(
         self,
         request: analytics_admin.GetExpandedDataSetRequest,
@@ -2448,6 +2629,29 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: analytics_admin.ListAccountSummariesResponse
     ) -> analytics_admin.ListAccountSummariesResponse:
         """Post-rpc interceptor for list_account_summaries
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_ad_sense_links(
+        self,
+        request: analytics_admin.ListAdSenseLinksRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.ListAdSenseLinksRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_ad_sense_links
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_list_ad_sense_links(
+        self, response: analytics_admin.ListAdSenseLinksResponse
+    ) -> analytics_admin.ListAdSenseLinksResponse:
+        """Post-rpc interceptor for list_ad_sense_links
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -2685,6 +2889,29 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: analytics_admin.ListDisplayVideo360AdvertiserLinksResponse
     ) -> analytics_admin.ListDisplayVideo360AdvertiserLinksResponse:
         """Post-rpc interceptor for list_display_video360_advertiser_links
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_event_create_rules(
+        self,
+        request: analytics_admin.ListEventCreateRulesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.ListEventCreateRulesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_event_create_rules
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_list_event_create_rules(
+        self, response: analytics_admin.ListEventCreateRulesResponse
+    ) -> analytics_admin.ListEventCreateRulesResponse:
+        """Post-rpc interceptor for list_event_create_rules
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -3208,6 +3435,29 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: resources.EnhancedMeasurementSettings
     ) -> resources.EnhancedMeasurementSettings:
         """Post-rpc interceptor for update_enhanced_measurement_settings
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_event_create_rule(
+        self,
+        request: analytics_admin.UpdateEventCreateRuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.UpdateEventCreateRuleRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_event_create_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_update_event_create_rule(
+        self, response: event_create_and_edit.EventCreateRule
+    ) -> event_create_and_edit.EventCreateRule:
+        """Post-rpc interceptor for update_event_create_rule
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -5084,6 +5334,106 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_access_binding(resp)
             return resp
 
+    class _CreateAdSenseLink(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("CreateAdSenseLink")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.CreateAdSenseLinkRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.AdSenseLink:
+            r"""Call the create ad sense link method over HTTP.
+
+            Args:
+                request (~.analytics_admin.CreateAdSenseLinkRequest):
+                    The request object. Request message to be passed to
+                CreateAdSenseLink method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.AdSenseLink:
+                    A link between a GA4 Property and an
+                AdSense for Content ad client.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=properties/*}/adSenseLinks",
+                    "body": "adsense_link",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_ad_sense_link(
+                request, metadata
+            )
+            pb_request = analytics_admin.CreateAdSenseLinkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.AdSenseLink()
+            pb_resp = resources.AdSenseLink.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_ad_sense_link(resp)
+            return resp
+
     class _CreateAudience(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("CreateAudience")
@@ -6004,6 +6354,117 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             return resp
 
+    class _CreateEventCreateRule(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("CreateEventCreateRule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.CreateEventCreateRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> event_create_and_edit.EventCreateRule:
+            r"""Call the create event create rule method over HTTP.
+
+            Args:
+                request (~.analytics_admin.CreateEventCreateRuleRequest):
+                    The request object. Request message for
+                CreateEventCreateRule RPC.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.event_create_and_edit.EventCreateRule:
+                    An Event Create Rule defines
+                conditions that will trigger the
+                creation of an entirely new event based
+                upon matched criteria of a source event.
+                Additional mutations of the parameters
+                from the source event can be defined.
+                Unlike Event Edit rules, Event Creation
+                Rules have no defined order.  They will
+                all be run independently.
+
+                Event Edit and Event Create rules can't
+                be used to modify an event created from
+                an Event Create rule.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=properties/*/dataStreams/*}/eventCreateRules",
+                    "body": "event_create_rule",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_event_create_rule(
+                request, metadata
+            )
+            pb_request = analytics_admin.CreateEventCreateRuleRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = event_create_and_edit.EventCreateRule()
+            pb_resp = event_create_and_edit.EventCreateRule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_event_create_rule(resp)
+            return resp
+
     class _CreateExpandedDataSet(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("CreateExpandedDataSet")
@@ -6880,6 +7341,83 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _DeleteAdSenseLink(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteAdSenseLink")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.DeleteAdSenseLinkRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete ad sense link method over HTTP.
+
+            Args:
+                request (~.analytics_admin.DeleteAdSenseLinkRequest):
+                    The request object. Request message to be passed to
+                DeleteAdSenseLink method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1alpha/{name=properties/*/adSenseLinks/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_ad_sense_link(
+                request, metadata
+            )
+            pb_request = analytics_admin.DeleteAdSenseLinkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _DeleteChannelGroup(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("DeleteChannelGroup")
@@ -7323,6 +7861,83 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     request
                 )
             )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteEventCreateRule(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteEventCreateRule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.DeleteEventCreateRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete event create rule method over HTTP.
+
+            Args:
+                request (~.analytics_admin.DeleteEventCreateRuleRequest):
+                    The request object. Request message for
+                DeleteEventCreateRule RPC.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1alpha/{name=properties/*/dataStreams/*/eventCreateRules/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_event_create_rule(
+                request, metadata
+            )
+            pb_request = analytics_admin.DeleteEventCreateRuleRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
@@ -8303,6 +8918,97 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_account(resp)
+            return resp
+
+    class _GetAdSenseLink(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("GetAdSenseLink")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.GetAdSenseLinkRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.AdSenseLink:
+            r"""Call the get ad sense link method over HTTP.
+
+            Args:
+                request (~.analytics_admin.GetAdSenseLinkRequest):
+                    The request object. Request message to be passed to
+                GetAdSenseLink method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.AdSenseLink:
+                    A link between a GA4 Property and an
+                AdSense for Content ad client.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=properties/*/adSenseLinks/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_ad_sense_link(
+                request, metadata
+            )
+            pb_request = analytics_admin.GetAdSenseLinkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.AdSenseLink()
+            pb_resp = resources.AdSenseLink.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_ad_sense_link(resp)
             return resp
 
     class _GetAttributionSettings(AnalyticsAdminServiceRestStub):
@@ -9511,6 +10217,108 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_enhanced_measurement_settings(resp)
             return resp
 
+    class _GetEventCreateRule(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("GetEventCreateRule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.GetEventCreateRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> event_create_and_edit.EventCreateRule:
+            r"""Call the get event create rule method over HTTP.
+
+            Args:
+                request (~.analytics_admin.GetEventCreateRuleRequest):
+                    The request object. Request message for
+                GetEventCreateRule RPC.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.event_create_and_edit.EventCreateRule:
+                    An Event Create Rule defines
+                conditions that will trigger the
+                creation of an entirely new event based
+                upon matched criteria of a source event.
+                Additional mutations of the parameters
+                from the source event can be defined.
+                Unlike Event Edit rules, Event Creation
+                Rules have no defined order.  They will
+                all be run independently.
+
+                Event Edit and Event Create rules can't
+                be used to modify an event created from
+                an Event Create rule.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=properties/*/dataStreams/*/eventCreateRules/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_event_create_rule(
+                request, metadata
+            )
+            pb_request = analytics_admin.GetEventCreateRuleRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = event_create_and_edit.EventCreateRule()
+            pb_resp = event_create_and_edit.EventCreateRule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_event_create_rule(resp)
+            return resp
+
     class _GetExpandedDataSet(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("GetExpandedDataSet")
@@ -10399,6 +11207,97 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_account_summaries(resp)
+            return resp
+
+    class _ListAdSenseLinks(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("ListAdSenseLinks")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.ListAdSenseLinksRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.ListAdSenseLinksResponse:
+            r"""Call the list ad sense links method over HTTP.
+
+            Args:
+                request (~.analytics_admin.ListAdSenseLinksRequest):
+                    The request object. Request message to be passed to
+                ListAdSenseLinks method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.analytics_admin.ListAdSenseLinksResponse:
+                    Response message for ListAdSenseLinks
+                method.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=properties/*}/adSenseLinks",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_ad_sense_links(
+                request, metadata
+            )
+            pb_request = analytics_admin.ListAdSenseLinksRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.ListAdSenseLinksResponse()
+            pb_resp = analytics_admin.ListAdSenseLinksResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_ad_sense_links(resp)
             return resp
 
     class _ListAudiences(AnalyticsAdminServiceRestStub):
@@ -11331,6 +12230,97 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_display_video360_advertiser_links(resp)
+            return resp
+
+    class _ListEventCreateRules(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("ListEventCreateRules")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.ListEventCreateRulesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.ListEventCreateRulesResponse:
+            r"""Call the list event create rules method over HTTP.
+
+            Args:
+                request (~.analytics_admin.ListEventCreateRulesRequest):
+                    The request object. Request message for
+                ListEventCreateRules RPC.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.analytics_admin.ListEventCreateRulesResponse:
+                    Response message for
+                ListEventCreateRules RPC.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=properties/*/dataStreams/*}/eventCreateRules",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_event_create_rules(
+                request, metadata
+            )
+            pb_request = analytics_admin.ListEventCreateRulesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.ListEventCreateRulesResponse()
+            pb_resp = analytics_admin.ListEventCreateRulesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_event_create_rules(resp)
             return resp
 
     class _ListExpandedDataSets(AnalyticsAdminServiceRestStub):
@@ -13503,6 +14493,119 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_enhanced_measurement_settings(resp)
             return resp
 
+    class _UpdateEventCreateRule(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateEventCreateRule")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.UpdateEventCreateRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> event_create_and_edit.EventCreateRule:
+            r"""Call the update event create rule method over HTTP.
+
+            Args:
+                request (~.analytics_admin.UpdateEventCreateRuleRequest):
+                    The request object. Request message for
+                UpdateEventCreateRule RPC.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.event_create_and_edit.EventCreateRule:
+                    An Event Create Rule defines
+                conditions that will trigger the
+                creation of an entirely new event based
+                upon matched criteria of a source event.
+                Additional mutations of the parameters
+                from the source event can be defined.
+                Unlike Event Edit rules, Event Creation
+                Rules have no defined order.  They will
+                all be run independently.
+
+                Event Edit and Event Create rules can't
+                be used to modify an event created from
+                an Event Create rule.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1alpha/{event_create_rule.name=properties/*/dataStreams/*/eventCreateRules/*}",
+                    "body": "event_create_rule",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_event_create_rule(
+                request, metadata
+            )
+            pb_request = analytics_admin.UpdateEventCreateRuleRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = event_create_and_edit.EventCreateRule()
+            pb_resp = event_create_and_edit.EventCreateRule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_event_create_rule(resp)
+            return resp
+
     class _UpdateExpandedDataSet(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("UpdateExpandedDataSet")
@@ -14384,6 +15487,14 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._CreateAccessBinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_ad_sense_link(
+        self,
+    ) -> Callable[[analytics_admin.CreateAdSenseLinkRequest], resources.AdSenseLink]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateAdSenseLink(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_audience(
         self,
     ) -> Callable[[analytics_admin.CreateAudienceRequest], gaa_audience.Audience]:
@@ -14471,6 +15582,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._CreateDisplayVideo360AdvertiserLinkProposal(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_event_create_rule(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateEventCreateRuleRequest],
+        event_create_and_edit.EventCreateRule,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateEventCreateRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_expanded_data_set(
         self,
     ) -> Callable[
@@ -14553,6 +15675,14 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._DeleteAccount(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_ad_sense_link(
+        self,
+    ) -> Callable[[analytics_admin.DeleteAdSenseLinkRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteAdSenseLink(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_channel_group(
         self,
     ) -> Callable[[analytics_admin.DeleteChannelGroupRequest], empty_pb2.Empty]:
@@ -14604,6 +15734,14 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDisplayVideo360AdvertiserLinkProposal(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_event_create_rule(
+        self,
+    ) -> Callable[[analytics_admin.DeleteEventCreateRuleRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteEventCreateRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_expanded_data_set(
@@ -14700,6 +15838,14 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAccount(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_ad_sense_link(
+        self,
+    ) -> Callable[[analytics_admin.GetAdSenseLinkRequest], resources.AdSenseLink]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAdSenseLink(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_attribution_settings(
@@ -14826,6 +15972,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._GetEnhancedMeasurementSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_event_create_rule(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetEventCreateRuleRequest],
+        event_create_and_edit.EventCreateRule,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetEventCreateRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_expanded_data_set(
         self,
     ) -> Callable[
@@ -14922,6 +16079,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAccountSummaries(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_ad_sense_links(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListAdSenseLinksRequest],
+        analytics_admin.ListAdSenseLinksResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAdSenseLinks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_audiences(
@@ -15031,6 +16199,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDisplayVideo360AdvertiserLinks(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_event_create_rules(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListEventCreateRulesRequest],
+        analytics_admin.ListEventCreateRulesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListEventCreateRules(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_expanded_data_sets(
@@ -15256,6 +16435,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEnhancedMeasurementSettings(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_event_create_rule(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateEventCreateRuleRequest],
+        event_create_and_edit.EventCreateRule,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateEventCreateRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_expanded_data_set(

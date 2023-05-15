@@ -31,6 +31,7 @@ from google.analytics.admin_v1alpha.types import analytics_admin
 from google.analytics.admin_v1alpha.types import audience
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
 from google.analytics.admin_v1alpha.types import channel_group
+from google.analytics.admin_v1alpha.types import event_create_and_edit
 from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
 
@@ -3657,6 +3658,263 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
                 response_deserializer=analytics_admin.FetchConnectedGa4PropertyResponse.deserialize,
             )
         return self._stubs["fetch_connected_ga4_property"]
+
+    @property
+    def get_ad_sense_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetAdSenseLinkRequest], Awaitable[resources.AdSenseLink]
+    ]:
+        r"""Return a callable for the get ad sense link method over gRPC.
+
+        Looks up a single AdSenseLink.
+
+        Returns:
+            Callable[[~.GetAdSenseLinkRequest],
+                    Awaitable[~.AdSenseLink]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_ad_sense_link" not in self._stubs:
+            self._stubs["get_ad_sense_link"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetAdSenseLink",
+                request_serializer=analytics_admin.GetAdSenseLinkRequest.serialize,
+                response_deserializer=resources.AdSenseLink.deserialize,
+            )
+        return self._stubs["get_ad_sense_link"]
+
+    @property
+    def create_ad_sense_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateAdSenseLinkRequest], Awaitable[resources.AdSenseLink]
+    ]:
+        r"""Return a callable for the create ad sense link method over gRPC.
+
+        Creates an AdSenseLink.
+
+        Returns:
+            Callable[[~.CreateAdSenseLinkRequest],
+                    Awaitable[~.AdSenseLink]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_ad_sense_link" not in self._stubs:
+            self._stubs["create_ad_sense_link"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateAdSenseLink",
+                request_serializer=analytics_admin.CreateAdSenseLinkRequest.serialize,
+                response_deserializer=resources.AdSenseLink.deserialize,
+            )
+        return self._stubs["create_ad_sense_link"]
+
+    @property
+    def delete_ad_sense_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteAdSenseLinkRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the delete ad sense link method over gRPC.
+
+        Deletes an AdSenseLink.
+
+        Returns:
+            Callable[[~.DeleteAdSenseLinkRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_ad_sense_link" not in self._stubs:
+            self._stubs["delete_ad_sense_link"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteAdSenseLink",
+                request_serializer=analytics_admin.DeleteAdSenseLinkRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_ad_sense_link"]
+
+    @property
+    def list_ad_sense_links(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListAdSenseLinksRequest],
+        Awaitable[analytics_admin.ListAdSenseLinksResponse],
+    ]:
+        r"""Return a callable for the list ad sense links method over gRPC.
+
+        Lists AdSenseLinks on a property.
+
+        Returns:
+            Callable[[~.ListAdSenseLinksRequest],
+                    Awaitable[~.ListAdSenseLinksResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_ad_sense_links" not in self._stubs:
+            self._stubs["list_ad_sense_links"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListAdSenseLinks",
+                request_serializer=analytics_admin.ListAdSenseLinksRequest.serialize,
+                response_deserializer=analytics_admin.ListAdSenseLinksResponse.deserialize,
+            )
+        return self._stubs["list_ad_sense_links"]
+
+    @property
+    def get_event_create_rule(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetEventCreateRuleRequest],
+        Awaitable[event_create_and_edit.EventCreateRule],
+    ]:
+        r"""Return a callable for the get event create rule method over gRPC.
+
+        Lookup for a single EventCreateRule.
+
+        Returns:
+            Callable[[~.GetEventCreateRuleRequest],
+                    Awaitable[~.EventCreateRule]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_event_create_rule" not in self._stubs:
+            self._stubs["get_event_create_rule"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetEventCreateRule",
+                request_serializer=analytics_admin.GetEventCreateRuleRequest.serialize,
+                response_deserializer=event_create_and_edit.EventCreateRule.deserialize,
+            )
+        return self._stubs["get_event_create_rule"]
+
+    @property
+    def list_event_create_rules(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListEventCreateRulesRequest],
+        Awaitable[analytics_admin.ListEventCreateRulesResponse],
+    ]:
+        r"""Return a callable for the list event create rules method over gRPC.
+
+        Lists EventCreateRules on a web data stream.
+
+        Returns:
+            Callable[[~.ListEventCreateRulesRequest],
+                    Awaitable[~.ListEventCreateRulesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_event_create_rules" not in self._stubs:
+            self._stubs["list_event_create_rules"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListEventCreateRules",
+                request_serializer=analytics_admin.ListEventCreateRulesRequest.serialize,
+                response_deserializer=analytics_admin.ListEventCreateRulesResponse.deserialize,
+            )
+        return self._stubs["list_event_create_rules"]
+
+    @property
+    def create_event_create_rule(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateEventCreateRuleRequest],
+        Awaitable[event_create_and_edit.EventCreateRule],
+    ]:
+        r"""Return a callable for the create event create rule method over gRPC.
+
+        Creates an EventCreateRule.
+
+        Returns:
+            Callable[[~.CreateEventCreateRuleRequest],
+                    Awaitable[~.EventCreateRule]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_event_create_rule" not in self._stubs:
+            self._stubs["create_event_create_rule"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateEventCreateRule",
+                request_serializer=analytics_admin.CreateEventCreateRuleRequest.serialize,
+                response_deserializer=event_create_and_edit.EventCreateRule.deserialize,
+            )
+        return self._stubs["create_event_create_rule"]
+
+    @property
+    def update_event_create_rule(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateEventCreateRuleRequest],
+        Awaitable[event_create_and_edit.EventCreateRule],
+    ]:
+        r"""Return a callable for the update event create rule method over gRPC.
+
+        Updates an EventCreateRule.
+
+        Returns:
+            Callable[[~.UpdateEventCreateRuleRequest],
+                    Awaitable[~.EventCreateRule]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_event_create_rule" not in self._stubs:
+            self._stubs["update_event_create_rule"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateEventCreateRule",
+                request_serializer=analytics_admin.UpdateEventCreateRuleRequest.serialize,
+                response_deserializer=event_create_and_edit.EventCreateRule.deserialize,
+            )
+        return self._stubs["update_event_create_rule"]
+
+    @property
+    def delete_event_create_rule(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteEventCreateRuleRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the delete event create rule method over gRPC.
+
+        Deletes an EventCreateRule.
+
+        Returns:
+            Callable[[~.DeleteEventCreateRuleRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_event_create_rule" not in self._stubs:
+            self._stubs["delete_event_create_rule"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteEventCreateRule",
+                request_serializer=analytics_admin.DeleteEventCreateRuleRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_event_create_rule"]
 
     def close(self):
         return self.grpc_channel.close()

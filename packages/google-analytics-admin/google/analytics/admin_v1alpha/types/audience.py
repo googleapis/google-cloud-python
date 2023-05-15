@@ -92,8 +92,13 @@ class AudienceDimensionOrMetricFilter(proto.Message):
 
             This field is a member of `oneof`_ ``one_filter``.
         field_name (str):
-            Required. Immutable. The dimension name or
-            metric name to filter.
+            Required. Immutable. The dimension name or metric name to
+            filter. If the field name refers to a custom dimension or
+            metric, a scope prefix will be added to the front of the
+            custom dimensions or metric name. For more on scope prefixes
+            or custom dimensions/metrics, reference the [Google
+            Analytics Data API documentation]
+            (https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#custom_dimensions).
         at_any_point_in_time (bool):
             Optional. Indicates whether this filter needs dynamic
             evaluation or not. If set to true, users join the Audience
@@ -107,8 +112,8 @@ class AudienceDimensionOrMetricFilter(proto.Message):
         in_any_n_day_period (int):
             Optional. If set, specifies the time window for which to
             evaluate data in number of days. If not set, then audience
-            data is evaluated against lifetime data (i.e., infinite time
-            window).
+            data is evaluated against lifetime data (For example,
+            infinite time window).
 
             For example, if set to 1 day, only the current day's data is
             evaluated. The reference point is the current day when
@@ -348,8 +353,8 @@ class AudienceEventFilter(proto.Message):
             Optional. If specified, this filter matches events that
             match both the single event name and the parameter filter
             expressions. AudienceEventFilter inside the parameter filter
-            expression cannot be set (i.e., nested event filters are not
-            supported). This should be a single and_group of
+            expression cannot be set (For example, nested event filters
+            are not supported). This should be a single and_group of
             dimension_or_metric_filter or not_expression; ANDs of ORs
             are not supported. Also, if it includes a filter for
             "eventCount", only that one will be considered; all the
@@ -391,7 +396,7 @@ class AudienceFilterExpression(proto.Message):
 
             This field is a member of `oneof`_ ``expr``.
         not_expression (google.analytics.admin_v1alpha.types.AudienceFilterExpression):
-            A filter expression to be NOT'ed (i.e., inverted,
+            A filter expression to be NOT'ed (For example, inverted,
             complemented). It can only include a
             dimension_or_metric_filter. This cannot be set on the top
             level AudienceFilterExpression.
@@ -520,8 +525,8 @@ class AudienceSequenceFilter(proto.Message):
                 step.
             constraint_duration (google.protobuf.duration_pb2.Duration):
                 Optional. When set, this step must be satisfied within the
-                constraint_duration of the previous step (i.e., t[i] -
-                t[i-1] <= constraint_duration). If not set, there is no
+                constraint_duration of the previous step (For example, t[i]
+                - t[i-1] <= constraint_duration). If not set, there is no
                 duration requirement (the duration is effectively
                 unlimited). It is ignored for the first step.
             filter_expression (google.analytics.admin_v1alpha.types.AudienceFilterExpression):
@@ -569,9 +574,10 @@ class AudienceSequenceFilter(proto.Message):
 
 class AudienceFilterClause(proto.Message):
     r"""A clause for defining either a simple or sequence filter. A
-    filter can be inclusive (i.e., users satisfying the filter
-    clause are included in the Audience) or exclusive (i.e., users
-    satisfying the filter clause are excluded from the Audience).
+    filter can be inclusive (For example, users satisfying the
+    filter clause are included in the Audience) or exclusive (For
+    example, users satisfying the filter clause are excluded from
+    the Audience).
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
