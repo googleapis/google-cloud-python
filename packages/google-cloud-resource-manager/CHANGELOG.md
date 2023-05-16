@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## [1.10.1](https://github.com/googleapis/python-resource-manager/compare/v1.10.0...v1.10.1) (2023-05-04)
+
+
+### Documentation
+
+* Add documentation for additional acceptable formats for `namespaced_tag_key` and `namespaced_tag_value`in `EffectiveTag`, `parent` in `ListTagKeysRequest`, `parent` in `TagKey`, and `namespaced_name` in `TagValue ([bb3ec07](https://github.com/googleapis/python-resource-manager/commit/bb3ec077ee1eda4156199aabcb79455747c6889b))
+* Update formatting for `Purpose` class documentation ([bb3ec07](https://github.com/googleapis/python-resource-manager/commit/bb3ec077ee1eda4156199aabcb79455747c6889b))
+* Update the table format in SearchProjects docs ([bb3ec07](https://github.com/googleapis/python-resource-manager/commit/bb3ec077ee1eda4156199aabcb79455747c6889b))
+
 ## [1.10.0](https://github.com/googleapis/python-resource-manager/compare/v1.9.1...v1.10.0) (2023-04-19)
 
 
