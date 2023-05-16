@@ -2549,6 +2549,7 @@ def test_create_job_rest(request_type):
                                 },
                             },
                             "timeout": {"seconds": 751, "nanos": 543},
+                            "labels": {},
                         }
                     ],
                     "compute_resource": {
@@ -2640,6 +2641,7 @@ def test_create_job_rest(request_type):
                     }
                 ]
             },
+            "placement": {"collocation": "collocation_value", "max_distance": 1264},
         },
         "labels": {},
         "status": {
@@ -2896,6 +2898,7 @@ def test_create_job_rest_bad_request(
                                 },
                             },
                             "timeout": {"seconds": 751, "nanos": 543},
+                            "labels": {},
                         }
                     ],
                     "compute_resource": {
@@ -2987,6 +2990,7 @@ def test_create_job_rest_bad_request(
                     }
                 ]
             },
+            "placement": {"collocation": "collocation_value", "max_distance": 1264},
         },
         "labels": {},
         "status": {
