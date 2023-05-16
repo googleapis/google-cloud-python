@@ -2670,6 +2670,10 @@ def test_create_job_rest(request_type):
                             }
                         ]
                     },
+                    "placement": {
+                        "collocation": "collocation_value",
+                        "max_distance": 1264,
+                    },
                 },
                 "labels": {},
                 "task_environments": {},
@@ -3048,6 +3052,10 @@ def test_create_job_rest_bad_request(
                                 "no_external_ip_address": True,
                             }
                         ]
+                    },
+                    "placement": {
+                        "collocation": "collocation_value",
+                        "max_distance": 1264,
                     },
                 },
                 "labels": {},
@@ -4187,6 +4195,7 @@ def test_list_tasks_rest_required_fields(request_type=batch.ListTasksRequest):
     assert not set(unset_fields) - set(
         (
             "filter",
+            "order_by",
             "page_size",
             "page_token",
         )
@@ -4247,6 +4256,7 @@ def test_list_tasks_rest_unset_required_fields():
         set(
             (
                 "filter",
+                "orderBy",
                 "pageSize",
                 "pageToken",
             )

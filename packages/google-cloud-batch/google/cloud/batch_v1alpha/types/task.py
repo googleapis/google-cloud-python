@@ -148,7 +148,7 @@ class TaskStatus(proto.Message):
 
         Values:
             STATE_UNSPECIFIED (0):
-                unknown state
+                Unknown state.
             PENDING (1):
                 The Task is created and waiting for
                 resources.
@@ -160,6 +160,9 @@ class TaskStatus(proto.Message):
                 The Task has failed.
             SUCCEEDED (5):
                 The Task has succeeded.
+            UNEXECUTED (6):
+                The Task has not been executed when the Job
+                finishes.
         """
         STATE_UNSPECIFIED = 0
         PENDING = 1
@@ -167,6 +170,7 @@ class TaskStatus(proto.Message):
         RUNNING = 3
         FAILED = 4
         SUCCEEDED = 5
+        UNEXECUTED = 6
 
     state: State = proto.Field(
         proto.ENUM,
@@ -279,10 +283,11 @@ class Runnable(proto.Message):
                 the "docker run" command when running this
                 container, e.g. "--network host".
             block_external_network (bool):
-                If set to true, external network access to
-                and from container will be blocked. The
-                container will use the default internal network
-                'goog-internal'.
+                If set to true, external network access to and from
+                container will be blocked, containers that are with
+                block_external_network as true can still communicate with
+                each other, network cannot be specified in the
+                ``container.options`` field.
             username (str):
                 Optional username for logging in to a docker registry. If
                 username matches ``projects/*/secrets/*/versions/*`` then

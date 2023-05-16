@@ -163,6 +163,9 @@ class ListJobsRequest(proto.Message):
             Parent path.
         filter (str):
             List filter.
+        order_by (str):
+            Sort results. Supported are "name", "name desc",
+            "create_time", "create_time desc", and "".
         page_size (int):
             Page size.
         page_token (str):
@@ -176,6 +179,10 @@ class ListJobsRequest(proto.Message):
     filter: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
     page_size: int = proto.Field(
         proto.INT32,
@@ -230,6 +237,9 @@ class ListTasksRequest(proto.Message):
             Task filter, null filter matches all Tasks.
             Filter string should be of the format
             State=TaskStatus.State e.g. State=RUNNING
+        order_by (str):
+            Sort results. Supported are "name", "name desc",
+            "create_time", "create_time desc", and "".
         page_size (int):
             Page size.
         page_token (str):
@@ -243,6 +253,10 @@ class ListTasksRequest(proto.Message):
     filter: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
     page_size: int = proto.Field(
         proto.INT32,

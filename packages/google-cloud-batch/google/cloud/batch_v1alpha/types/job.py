@@ -515,6 +515,8 @@ class AllocationPolicy(proto.Message):
             reserved.
         network (google.cloud.batch_v1alpha.types.AllocationPolicy.NetworkPolicy):
             The network policy.
+        placement (google.cloud.batch_v1alpha.types.AllocationPolicy.PlacementPolicy):
+            The placement policy.
     """
 
     class ProvisioningModel(proto.Enum):
@@ -547,13 +549,16 @@ class AllocationPolicy(proto.Message):
         Attributes:
             allowed_locations (MutableSequence[str]):
                 A list of allowed location names represented by internal
-                URLs. Each location can be a region or a zone. Only one
-                region or multiple zones in one region is supported now. For
-                example, ["regions/us-central1"] allow VMs in any zones in
-                region us-central1. ["zones/us-central1-a",
-                "zones/us-central1-c"] only allow VMs in zones us-central1-a
-                and us-central1-c. All locations end up in different regions
-                would cause errors. For example, ["regions/us-central1",
+                URLs.
+
+                Each location can be a region or a zone. Only one region or
+                multiple zones in one region is supported now. For example,
+                ["regions/us-central1"] allow VMs in any zones in region
+                us-central1. ["zones/us-central1-a", "zones/us-central1-c"]
+                only allow VMs in zones us-central1-a and us-central1-c.
+
+                All locations end up in different regions would cause
+                errors. For example, ["regions/us-central1",
                 "zones/us-central1-a", "zones/us-central1-b",
                 "zones/us-west1-a"] contains 2 regions "us-central1" and
                 "us-west1". An error is expected in this case.
@@ -574,7 +579,8 @@ class AllocationPolicy(proto.Message):
     class Disk(proto.Message):
         r"""A new persistent disk or a local ssd.
         A VM can only have one local SSD setting but multiple local SSD
-        partitions. https://cloud.google.com/compute/docs/disks#pdspecs.
+        partitions. See
+        https://cloud.google.com/compute/docs/disks#pdspecs and
         https://cloud.google.com/compute/docs/disks#localssds.
 
         This message has `oneof`_ fields (mutually exclusive fields).
@@ -587,20 +593,24 @@ class AllocationPolicy(proto.Message):
         Attributes:
             image (str):
                 Name of a public or custom image used as the data source.
-                For example, the following are all valid URLs: (1) Specify
-                the image by its family name:
-                projects/{project}/global/images/family/{image_family} (2)
-                Specify the image version:
-                projects/{project}/global/images/{image_version} You can
-                also use Batch customized image in short names. The
+                For example, the following are all valid URLs:
+
+                -  Specify the image by its family name:
+                   projects/{project}/global/images/family/{image_family}
+                -  Specify the image version:
+                   projects/{project}/global/images/{image_version}
+
+                You can also use Batch customized image in short names. The
                 following image values are supported for a boot disk:
-                "batch-debian": use Batch Debian images. "batch-centos": use
-                Batch CentOS images. "batch-cos": use Batch
-                Container-Optimized images.
+
+                -  "batch-debian": use Batch Debian images.
+                -  "batch-centos": use Batch CentOS images.
+                -  "batch-cos": use Batch Container-Optimized images.
 
                 This field is a member of `oneof`_ ``data_source``.
             snapshot (str):
                 Name of a snapshot used as the data source.
+                Snapshot is not supported as boot disk now.
 
                 This field is a member of `oneof`_ ``data_source``.
             type_ (str):
@@ -609,11 +619,13 @@ class AllocationPolicy(proto.Message):
                 disks and boot disks use "pd-balanced", "pd-extreme",
                 "pd-ssd" or "pd-standard".
             size_gb (int):
-                Disk size in GB. For persistent disk, this field is ignored
-                if ``data_source`` is ``image`` or ``snapshot``. For local
-                SSD, size_gb should be a multiple of 375GB, otherwise, the
-                final size will be the next greater multiple of 375 GB. For
-                boot disk, Batch will calculate the boot disk size based on
+                Disk size in GB.
+
+                For persistent disk, this field is ignored if
+                ``data_source`` is ``image`` or ``snapshot``. For local SSD,
+                size_gb should be a multiple of 375GB, otherwise, the final
+                size will be the next greater multiple of 375 GB. For boot
+                disk, Batch will calculate the boot disk size based on
                 source image and task requirements if you do not speicify
                 the size. If both this field and the boot_disk_mib field in
                 task spec's compute_resource are defined, Batch will only
@@ -728,8 +740,9 @@ class AllocationPolicy(proto.Message):
             machine_type (str):
                 The Compute Engine machine type.
             min_cpu_platform (str):
-                The minimum CPU platform. See
-                ``https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform``.
+                The minimum CPU platform.
+                See
+                https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform.
                 Not yet implemented.
             provisioning_model (google.cloud.batch_v1alpha.types.AllocationPolicy.ProvisioningModel):
                 The provisioning model.
@@ -737,16 +750,19 @@ class AllocationPolicy(proto.Message):
                 The accelerators attached to each VM
                 instance.
             boot_disk (google.cloud.batch_v1alpha.types.AllocationPolicy.Disk):
-                Book disk to be created and attached to each
+                Boot disk to be created and attached to each
                 VM by this InstancePolicy. Boot disk will be
-                deleted when the VM is deleted.
+                deleted when the VM is deleted. Batch API now
+                only supports booting from image.
             disks (MutableSequence[google.cloud.batch_v1alpha.types.AllocationPolicy.AttachedDisk]):
                 Non-boot disks to be attached for each VM
                 created by this InstancePolicy. New disks will
                 be deleted when the VM is deleted.
             reservation (str):
-                If specified, VMs will be allocated only
-                inside the matching reservation.
+                If specified, VMs will consume only the
+                specified reservation. If not specified
+                (default), VMs will consume any applicable
+                reservation.
         """
 
         allowed_machine_types: MutableSequence[str] = proto.RepeatedField(
@@ -837,21 +853,23 @@ class AllocationPolicy(proto.Message):
 
         Attributes:
             network (str):
-                The URL of an existing network resource.
-                You can specify the network as a full or partial
-                URL. For example, the following are all valid
-                URLs:
-                https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}
-                projects/{project}/global/networks/{network}
-                global/networks/{network}
+                The URL of an existing network resource. You can specify the
+                network as a full or partial URL.
+
+                For example, the following are all valid URLs:
+
+                -  https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}
+                -  projects/{project}/global/networks/{network}
+                -  global/networks/{network}
             subnetwork (str):
-                The URL of an existing subnetwork resource in
-                the network. You can specify the subnetwork as a
-                full or partial URL. For example, the following
-                are all valid URLs:
-                https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetwork}
-                projects/{project}/regions/{region}/subnetworks/{subnetwork}
-                regions/{region}/subnetworks/{subnetwork}
+                The URL of an existing subnetwork resource in the network.
+                You can specify the subnetwork as a full or partial URL.
+
+                For example, the following are all valid URLs:
+
+                -  https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetwork}
+                -  projects/{project}/regions/{region}/subnetworks/{subnetwork}
+                -  regions/{region}/subnetworks/{subnetwork}
             no_external_ip_address (bool):
                 Default is false (with an external IP
                 address). Required if no external public IP
@@ -892,6 +910,36 @@ class AllocationPolicy(proto.Message):
             proto.MESSAGE,
             number=1,
             message="AllocationPolicy.NetworkInterface",
+        )
+
+    class PlacementPolicy(proto.Message):
+        r"""PlacementPolicy describes a group placement policy for the
+        VMs controlled by this AllocationPolicy.
+
+        Attributes:
+            collocation (str):
+                UNSPECIFIED vs. COLLOCATED (default
+                UNSPECIFIED). Use COLLOCATED when you want VMs
+                to be located close to each other for low
+                network latency between the VMs. No placement
+                policy will be generated when collocation is
+                UNSPECIFIED.
+            max_distance (int):
+                When specified, causes the job to fail if more than
+                max_distance logical switches are required between VMs.
+                Batch uses the most compact possible placement of VMs even
+                when max_distance is not specified. An explicit max_distance
+                makes that level of compactness a strict requirement. Not
+                yet implemented
+        """
+
+        collocation: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        max_distance: int = proto.Field(
+            proto.INT64,
+            number=2,
         )
 
     location: LocationPolicy = proto.Field(
@@ -937,6 +985,11 @@ class AllocationPolicy(proto.Message):
         number=7,
         message=NetworkPolicy,
     )
+    placement: PlacementPolicy = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=PlacementPolicy,
+    )
 
 
 class TaskGroup(proto.Message):
@@ -954,12 +1007,14 @@ class TaskGroup(proto.Message):
             task spec.
         task_count (int):
             Number of Tasks in the TaskGroup.
-            default is 1
+            Default is 1.
         parallelism (int):
             Max number of tasks that can run in parallel. Default to
-            min(task_count, 1000).
+            min(task_count, 1000). Field parallelism must be 1 if the
+            scheduling_policy is IN_ORDER.
         scheduling_policy (google.cloud.batch_v1alpha.types.TaskGroup.SchedulingPolicy):
-            Scheduling policy for Tasks in the TaskGroup.
+            Scheduling policy for Tasks in the TaskGroup. The default
+            value is AS_SOON_AS_POSSIBLE.
         allocation_policy (google.cloud.batch_v1alpha.types.AllocationPolicy):
             Compute resource allocation for the
             TaskGroup. If specified, it overrides resources
@@ -1011,9 +1066,17 @@ class TaskGroup(proto.Message):
                 Unspecified.
             AS_SOON_AS_POSSIBLE (1):
                 Run Tasks as soon as resources are available.
+
+                Tasks might be executed in parallel depending on parallelism
+                and task_count values.
+            IN_ORDER (2):
+                Run Tasks sequentially with increased task
+                index.
+                Not yet implemented.
         """
         SCHEDULING_POLICY_UNSPECIFIED = 0
         AS_SOON_AS_POSSIBLE = 1
+        IN_ORDER = 2
 
     name: str = proto.Field(
         proto.STRING,
