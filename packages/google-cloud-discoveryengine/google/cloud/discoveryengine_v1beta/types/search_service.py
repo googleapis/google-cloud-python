@@ -157,7 +157,7 @@ class SearchRequest(proto.Message):
         safe_search (bool):
             Whether to turn on safe search. This is only supported for
             [ContentConfig.PUBLIC_WEBSITE][].
-        user_label (MutableMapping[str, str]):
+        user_labels (MutableMapping[str, str]):
             The user labels applied to a resource must meet the
             following requirements:
 
@@ -662,7 +662,7 @@ class SearchRequest(proto.Message):
         proto.BOOL,
         number=20,
     )
-    user_label: MutableMapping[str, str] = proto.MapField(
+    user_labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=22,
