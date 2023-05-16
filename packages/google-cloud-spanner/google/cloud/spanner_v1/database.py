@@ -29,6 +29,7 @@ from google.api_core.exceptions import Aborted
 from google.api_core import gapic_v1
 from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import options_pb2
+from google.protobuf.field_mask_pb2 import FieldMask
 
 from google.cloud.spanner_admin_database_v1 import CreateDatabaseRequest
 from google.cloud.spanner_admin_database_v1 import Database as DatabasePB
@@ -127,6 +128,9 @@ class Database(object):
         (Optional) database dialect for the database
     :type database_role: str or None
     :param database_role: (Optional) user-assigned database_role for the session.
+    :type enable_drop_protection: boolean
+    :param enable_drop_protection: (Optional) Represents whether the database
+        has drop protection enabled or not.
     """
 
     _spanner_api = None
@@ -141,6 +145,7 @@ class Database(object):
         encryption_config=None,
         database_dialect=DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED,
         database_role=None,
+        enable_drop_protection=False,
     ):
         self.database_id = database_id
         self._instance = instance
@@ -159,6 +164,8 @@ class Database(object):
         self._database_dialect = database_dialect
         self._database_role = database_role
         self._route_to_leader_enabled = self._instance._client.route_to_leader_enabled
+        self._enable_drop_protection = enable_drop_protection
+        self._reconciling = False
 
         if pool is None:
             pool = BurstyPool(database_role=database_role)
@@ -333,6 +340,29 @@ class Database(object):
         return self._database_role
 
     @property
+    def reconciling(self):
+        """Whether the database is currently reconciling.
+
+        :rtype: boolean
+        :returns: a boolean representing whether the database is reconciling
+        """
+        return self._reconciling
+
+    @property
+    def enable_drop_protection(self):
+        """Whether the database has drop protection enabled.
+
+        :rtype: boolean
+        :returns: a boolean representing whether the database has drop
+            protection enabled
+        """
+        return self._enable_drop_protection
+
+    @enable_drop_protection.setter
+    def enable_drop_protection(self, value):
+        self._enable_drop_protection = value
+
+    @property
     def logger(self):
         """Logger used by the database.
 
@@ -461,6 +491,8 @@ class Database(object):
         self._encryption_info = response.encryption_info
         self._default_leader = response.default_leader
         self._database_dialect = response.database_dialect
+        self._enable_drop_protection = response.enable_drop_protection
+        self._reconciling = response.reconciling
 
     def update_ddl(self, ddl_statements, operation_id=""):
         """Update DDL for this database.
@@ -468,7 +500,7 @@ class Database(object):
         Apply any configured schema from :attr:`ddl_statements`.
 
         See
-        https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabase
+        https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl
 
         :type ddl_statements: Sequence[str]
         :param ddl_statements: a list of DDL statements to use on this database
@@ -490,6 +522,46 @@ class Database(object):
         )
 
         future = api.update_database_ddl(request=request, metadata=metadata)
+        return future
+
+    def update(self, fields):
+        """Update this database.
+
+        See
+        https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabase
+
+        .. note::
+
+            Updates the specified fields of a Cloud Spanner database. Currently,
+            only the `enable_drop_protection` field supports updates. To change
+            this value before updating, set it via
+
+            .. code:: python
+
+                database.enable_drop_protection = True
+
+           before calling :meth:`update`.
+
+        :type fields: Sequence[str]
+        :param fields: a list of fields to update
+
+        :rtype: :class:`google.api_core.operation.Operation`
+        :returns: an operation instance
+        :raises NotFound: if the database does not exist
+        """
+        api = self._instance._client.database_admin_api
+        database_pb = DatabasePB(
+            name=self.name, enable_drop_protection=self._enable_drop_protection
+        )
+
+        # Only support updating drop protection for now.
+        field_mask = FieldMask(paths=fields)
+        metadata = _metadata_with_prefix(self.name)
+
+        future = api.update_database(
+            database=database_pb, update_mask=field_mask, metadata=metadata
+        )
+
         return future
 
     def drop(self):

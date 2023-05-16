@@ -432,6 +432,7 @@ class Instance(object):
         encryption_config=None,
         database_dialect=DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED,
         database_role=None,
+        enable_drop_protection=False,
     ):
         """Factory to create a database within this instance.
 
@@ -467,6 +468,10 @@ class Instance(object):
         :param database_dialect:
             (Optional) database dialect for the database
 
+        :type enable_drop_protection: boolean
+        :param enable_drop_protection: (Optional) Represents whether the database
+            has drop protection enabled or not.
+
         :rtype: :class:`~google.cloud.spanner_v1.database.Database`
         :returns: a database owned by this instance.
         """
@@ -479,6 +484,7 @@ class Instance(object):
             encryption_config=encryption_config,
             database_dialect=database_dialect,
             database_role=database_role,
+            enable_drop_protection=enable_drop_protection,
         )
 
     def list_databases(self, page_size=None):

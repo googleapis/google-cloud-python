@@ -154,6 +154,19 @@ def test_create_instance_with_processing_units(capsys, lci_instance_id):
     retry_429(instance.delete)()
 
 
+def test_update_database(capsys, instance_id, sample_database):
+    snippets.update_database(
+        instance_id, sample_database.database_id
+    )
+    out, _ = capsys.readouterr()
+    assert "Updated database {}.".format(sample_database.name) in out
+
+    # Cleanup
+    sample_database.enable_drop_protection = False
+    op = sample_database.update(["enable_drop_protection"])
+    op.result()
+
+
 def test_create_database_with_encryption_config(
   capsys, instance_id, cmek_database_id, kms_key_name
 ):
