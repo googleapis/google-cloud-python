@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.5.0...google-cloud-discoveryengine-v0.6.0) (2023-05-04)
+
+
+### Features
+
+* add document purge API ([#11140](https://github.com/googleapis/google-cloud-python/issues/11140)) ([1115310](https://github.com/googleapis/google-cloud-python/commit/1115310f07f767a5c6fac5831e046aa9e879f0ea))
+
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.4.1...google-cloud-discoveryengine-v0.5.0) (2023-04-21)
+
+
+### Features
+
+* add search, autocomplete and schema services ([5e1e0af](https://github.com/googleapis/google-cloud-python/commit/5e1e0af0dadd3bd801664c7d315b743a4dbf7b0b))
+* add unstructured document support (PDF/HTML) ([5e1e0af](https://github.com/googleapis/google-cloud-python/commit/5e1e0af0dadd3bd801664c7d315b743a4dbf7b0b))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([5e1e0af](https://github.com/googleapis/google-cloud-python/commit/5e1e0af0dadd3bd801664c7d315b743a4dbf7b0b))
+
 ## [0.4.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.4.0...google-cloud-discoveryengine-v0.4.1) (2023-03-25)
 
 

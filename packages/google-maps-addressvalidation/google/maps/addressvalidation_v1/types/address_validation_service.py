@@ -210,7 +210,9 @@ class ValidationResult(proto.Message):
             Information about the location and place that
             the address geocoded to.
         metadata (google.maps.addressvalidation_v1.types.AddressMetadata):
-            Other information relevant to deliverability.
+            Other information relevant to deliverability. ``metadata``
+            is not guaranteed to be fully populated for every address
+            sent to the Address Validation API.
         usps_data (google.maps.addressvalidation_v1.types.UspsData):
             Extra deliverability flags provided by USPS. Only provided
             in region ``US`` and ``PR``.

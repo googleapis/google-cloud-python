@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.2.1...google-cloud-workstations-v0.3.0) (2023-05-11)
+
+
+### Features
+
+* add output field for the control plane IP address ([60e16ee](https://github.com/googleapis/google-cloud-python/commit/60e16ee099ab5522563e44d307a76af4c8177288))
+* add output field for the number of pooled instances ([60e16ee](https://github.com/googleapis/google-cloud-python/commit/60e16ee099ab5522563e44d307a76af4c8177288))
+
+
+### Documentation
+
+* adjust documentation wording ([60e16ee](https://github.com/googleapis/google-cloud-python/commit/60e16ee099ab5522563e44d307a76af4c8177288))
+
+## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.2.0...google-cloud-workstations-v0.2.1) (2023-04-11)
+
+
+### Documentation
+
+* Adjust wording around service accounts and control planes ([#11057](https://github.com/googleapis/google-cloud-python/issues/11057)) ([9f5b7c5](https://github.com/googleapis/google-cloud-python/commit/9f5b7c5a03b34fa1219c7218fa239ea6d829a949))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.1.1...google-cloud-workstations-v0.2.0) (2023-04-06)
 
 

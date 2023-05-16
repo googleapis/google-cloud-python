@@ -1281,7 +1281,9 @@ class WorkstationsAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             workstation_config_id (:class:`str`):
-                Required. ID to use for the config.
+                Required. ID to use for the
+                workstation configuration.
+
                 This corresponds to the ``workstation_config_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1408,7 +1410,8 @@ class WorkstationsAsyncClient:
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. Mask specifying which
-                fields in the config should be updated.
+                fields in the workstation configuration
+                should be updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1530,8 +1533,8 @@ class WorkstationsAsyncClient:
                 The request object. Message for deleting a workstation
                 configuration.
             name (:class:`str`):
-                Required. Name of the config to
-                delete.
+                Required. Name of the workstation
+                configuration to delete.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1721,7 +1724,8 @@ class WorkstationsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkstationsAsyncPager:
-        r"""Returns all Workstations using the specified config.
+        r"""Returns all Workstations using the specified
+        workstation configuration.
 
         .. code-block:: python
 
@@ -1844,8 +1848,8 @@ class WorkstationsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListUsableWorkstationsAsyncPager:
-        r"""Returns all Workstations using the specified config
-        on which the caller has the
+        r"""Returns all workstations using the specified
+        workstation configuration on which the caller has the
         "workstations.workstations.use" permission.
 
         .. code-block:: python
@@ -2146,7 +2150,8 @@ class WorkstationsAsyncClient:
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. Mask specifying which
-                fields in the config should be updated.
+                fields in the workstation configuration
+                should be updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

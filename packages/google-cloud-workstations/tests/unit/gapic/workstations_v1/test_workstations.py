@@ -738,6 +738,7 @@ def test_get_workstation_cluster(request_type, transport: str = "grpc"):
             etag="etag_value",
             network="network_value",
             subnetwork="subnetwork_value",
+            control_plane_ip="control_plane_ip_value",
             degraded=True,
         )
         response = client.get_workstation_cluster(request)
@@ -756,6 +757,7 @@ def test_get_workstation_cluster(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
     assert response.network == "network_value"
     assert response.subnetwork == "subnetwork_value"
+    assert response.control_plane_ip == "control_plane_ip_value"
     assert response.degraded is True
 
 
@@ -805,6 +807,7 @@ async def test_get_workstation_cluster_async(
                 etag="etag_value",
                 network="network_value",
                 subnetwork="subnetwork_value",
+                control_plane_ip="control_plane_ip_value",
                 degraded=True,
             )
         )
@@ -824,6 +827,7 @@ async def test_get_workstation_cluster_async(
     assert response.etag == "etag_value"
     assert response.network == "network_value"
     assert response.subnetwork == "subnetwork_value"
+    assert response.control_plane_ip == "control_plane_ip_value"
     assert response.degraded is True
 
 
@@ -6739,6 +6743,7 @@ def test_get_workstation_cluster_rest(request_type):
             etag="etag_value",
             network="network_value",
             subnetwork="subnetwork_value",
+            control_plane_ip="control_plane_ip_value",
             degraded=True,
         )
 
@@ -6761,6 +6766,7 @@ def test_get_workstation_cluster_rest(request_type):
     assert response.etag == "etag_value"
     assert response.network == "network_value"
     assert response.subnetwork == "subnetwork_value"
+    assert response.control_plane_ip == "control_plane_ip_value"
     assert response.degraded is True
 
 
@@ -7371,6 +7377,7 @@ def test_create_workstation_cluster_rest(request_type):
         "etag": "etag_value",
         "network": "network_value",
         "subnetwork": "subnetwork_value",
+        "control_plane_ip": "control_plane_ip_value",
         "private_cluster_config": {
             "enable_private_endpoint": True,
             "cluster_hostname": "cluster_hostname_value",
@@ -7615,6 +7622,7 @@ def test_create_workstation_cluster_rest_bad_request(
         "etag": "etag_value",
         "network": "network_value",
         "subnetwork": "subnetwork_value",
+        "control_plane_ip": "control_plane_ip_value",
         "private_cluster_config": {
             "enable_private_endpoint": True,
             "cluster_hostname": "cluster_hostname_value",
@@ -7746,6 +7754,7 @@ def test_update_workstation_cluster_rest(request_type):
         "etag": "etag_value",
         "network": "network_value",
         "subnetwork": "subnetwork_value",
+        "control_plane_ip": "control_plane_ip_value",
         "private_cluster_config": {
             "enable_private_endpoint": True,
             "cluster_hostname": "cluster_hostname_value",
@@ -7974,6 +7983,7 @@ def test_update_workstation_cluster_rest_bad_request(
         "etag": "etag_value",
         "network": "network_value",
         "subnetwork": "subnetwork_value",
+        "control_plane_ip": "control_plane_ip_value",
         "private_cluster_config": {
             "enable_private_endpoint": True,
             "cluster_hostname": "cluster_hostname_value",
@@ -9397,6 +9407,7 @@ def test_create_workstation_config_rest(request_type):
                 "service_account": "service_account_value",
                 "tags": ["tags_value1", "tags_value2"],
                 "pool_size": 980,
+                "pooled_instances": 1706,
                 "disable_public_ip_addresses": True,
                 "enable_nested_virtualization": True,
                 "shielded_instance_config": {
@@ -9678,6 +9689,7 @@ def test_create_workstation_config_rest_bad_request(
                 "service_account": "service_account_value",
                 "tags": ["tags_value1", "tags_value2"],
                 "pool_size": 980,
+                "pooled_instances": 1706,
                 "disable_public_ip_addresses": True,
                 "enable_nested_virtualization": True,
                 "shielded_instance_config": {
@@ -9846,6 +9858,7 @@ def test_update_workstation_config_rest(request_type):
                 "service_account": "service_account_value",
                 "tags": ["tags_value1", "tags_value2"],
                 "pool_size": 980,
+                "pooled_instances": 1706,
                 "disable_public_ip_addresses": True,
                 "enable_nested_virtualization": True,
                 "shielded_instance_config": {
@@ -10109,6 +10122,7 @@ def test_update_workstation_config_rest_bad_request(
                 "service_account": "service_account_value",
                 "tags": ["tags_value1", "tags_value2"],
                 "pool_size": 980,
+                "pooled_instances": 1706,
                 "disable_public_ip_addresses": True,
                 "enable_nested_virtualization": True,
                 "shielded_instance_config": {

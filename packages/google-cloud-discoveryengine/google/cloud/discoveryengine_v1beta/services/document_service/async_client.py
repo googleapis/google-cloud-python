@@ -48,7 +48,11 @@ from google.longrunning import operations_pb2
 from google.protobuf import struct_pb2  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.services.document_service import pagers
-from google.cloud.discoveryengine_v1beta.types import document_service, import_config
+from google.cloud.discoveryengine_v1beta.types import (
+    document_service,
+    import_config,
+    purge_config,
+)
 from google.cloud.discoveryengine_v1beta.types import document
 from google.cloud.discoveryengine_v1beta.types import document as gcd_document
 
@@ -277,11 +281,11 @@ class DocumentServiceAsyncClient:
                 If the caller does not have permission to access the
                 [Document][google.cloud.discoveryengine.v1beta.Document],
                 regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                ``PERMISSION_DENIED`` error is returned.
 
                 If the requested
                 [Document][google.cloud.discoveryengine.v1beta.Document]
-                does not exist, a NOT_FOUND error is returned.
+                does not exist, a ``NOT_FOUND`` error is returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -393,8 +397,8 @@ class DocumentServiceAsyncClient:
 
                 If the caller does not have permission to list
                 [Documents][]s under this branch, regardless of whether
-                or not this branch exists, a PERMISSION_DENIED error is
-                returned.
+                or not this branch exists, a ``PERMISSION_DENIED`` error
+                is returned.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -536,18 +540,18 @@ class DocumentServiceAsyncClient:
                 If the caller does not have permission to create the
                 [Document][google.cloud.discoveryengine.v1beta.Document],
                 regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                ``PERMISSION_DENIED`` error is returned.
 
                 This field must be unique among all
                 [Document][google.cloud.discoveryengine.v1beta.Document]s
                 with the same
                 [parent][google.cloud.discoveryengine.v1beta.CreateDocumentRequest.parent].
-                Otherwise, an ALREADY_EXISTS error is returned.
+                Otherwise, an ``ALREADY_EXISTS`` error is returned.
 
                 This field must conform to
                 `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__
                 standard with a length limit of 63 characters.
-                Otherwise, an INVALID_ARGUMENT error is returned.
+                Otherwise, an ``INVALID_ARGUMENT`` error is returned.
 
                 This corresponds to the ``document_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -744,11 +748,12 @@ class DocumentServiceAsyncClient:
                 If the caller does not have permission to delete the
                 [Document][google.cloud.discoveryengine.v1beta.Document],
                 regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                ``PERMISSION_DENIED`` error is returned.
 
                 If the
                 [Document][google.cloud.discoveryengine.v1beta.Document]
-                to delete does not exist, a NOT_FOUND error is returned.
+                to delete does not exist, a ``NOT_FOUND`` error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -906,6 +911,123 @@ class DocumentServiceAsyncClient:
             self._client._transport.operations_client,
             import_config.ImportDocumentsResponse,
             metadata_type=import_config.ImportDocumentsMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def purge_documents(
+        self,
+        request: Optional[Union[purge_config.PurgeDocumentsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Permanently deletes all selected
+        [Document][google.cloud.discoveryengine.v1beta.Document]s in a
+        branch.
+
+        This process is asynchronous. Depending on the number of
+        [Document][google.cloud.discoveryengine.v1beta.Document]s to be
+        deleted, this operation can take hours to complete. Before the
+        delete operation completes, some
+        [Document][google.cloud.discoveryengine.v1beta.Document]s might
+        still be returned by
+        [DocumentService.GetDocument][google.cloud.discoveryengine.v1beta.DocumentService.GetDocument]
+        or
+        [DocumentService.ListDocuments][google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments].
+
+        To get a list of the
+        [Document][google.cloud.discoveryengine.v1beta.Document]s to be
+        deleted, set
+        [PurgeDocumentsRequest.force][google.cloud.discoveryengine.v1beta.PurgeDocumentsRequest.force]
+        to false.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1beta
+
+            async def sample_purge_documents():
+                # Create a client
+                client = discoveryengine_v1beta.DocumentServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1beta.PurgeDocumentsRequest(
+                    parent="parent_value",
+                    filter="filter_value",
+                )
+
+                # Make the request
+                operation = client.purge_documents(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.PurgeDocumentsRequest, dict]]):
+                The request object. Request message for
+                [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1beta.DocumentService.PurgeDocuments]
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.discoveryengine_v1beta.types.PurgeDocumentsResponse` Response message for
+                   [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1beta.DocumentService.PurgeDocuments]
+                   method. If the long running operation is successfully
+                   done, then this message is returned by the
+                   google.longrunning.Operations.response field.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = purge_config.PurgeDocumentsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.purge_documents,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            purge_config.PurgeDocumentsResponse,
+            metadata_type=purge_config.PurgeDocumentsMetadata,
         )
 
         # Done; return the response.

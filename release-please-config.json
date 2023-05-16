@@ -2,7 +2,6 @@
     "packages": {
         "packages/google-apps-script-type": {
             "component": "google-apps-script-type",
-            "release-type": "python",
             "extra-files": [
                 "google/apps/script/type/drive/gapic_version.py",
                 "google/apps/script/type/slides/gapic_version.py",
@@ -11,185 +10,270 @@
                 "google/apps/script/type/sheets/gapic_version.py",
                 "google/apps/script/type/gapic_version.py",
                 "google/apps/script/type/calendar/gapic_version.py"
-            ]
-        },
-        "packages/google-cloud-contentwarehouse": {
-            "component": "google-cloud-contentwarehouse",
-            "release-type": "python",
-            "extra-files": [
-                "google/cloud/contentwarehouse/gapic_version.py",
-                "google/cloud/contentwarehouse_v1/gapic_version.py",
-                {
-                    "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.contentwarehouse.v1.json",
-                    "jsonpath": "$.clientLibrary.version"
-                }
-            ]
-        },
-        "packages/google-cloud-datacatalog-lineage": {
-            "component": "google-cloud-datacatalog-lineage",
-            "release-type": "python",
-            "extra-files": [
-                "google/cloud/datacatalog/lineage_v1/gapic_version.py",
-                "google/cloud/datacatalog/lineage/gapic_version.py",
-                {
-                    "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.datacatalog.lineage.v1.json",
-                    "jsonpath": "$.clientLibrary.version"
-                }
-            ]
-        },
-        "packages/google-cloud-discoveryengine": {
-            "component": "google-cloud-discoveryengine",
-            "release-type": "python",
-            "extra-files": [
-                "google/cloud/discoveryengine/gapic_version.py",
-                "google/cloud/discoveryengine_v1beta/gapic_version.py",
-                {
-                    "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.discoveryengine.v1beta.json",
-                    "jsonpath": "$.clientLibrary.version"
-                }
-            ]
-        },
-        "packages/google-cloud-enterpriseknowledgegraph": {
-            "component": "google-cloud-enterpriseknowledgegraph",
-            "release-type": "python",
-            "extra-files": [
-                "google/cloud/enterpriseknowledgegraph/gapic_version.py",
-                "google/cloud/enterpriseknowledgegraph_v1/gapic_version.py",
-                {
-                    "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.enterpriseknowledgegraph.v1.json",
-                    "jsonpath": "$.clientLibrary.version"
-                }
-            ]
-        },
-        "packages/google-cloud-vmwareengine": {
-            "component": "google-cloud-vmwareengine",
-            "release-type": "python",
-            "extra-files": [
-                "google/cloud/vmwareengine_v1/gapic_version.py",
-                "google/cloud/vmwareengine/gapic_version.py",
-                {
-                    "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.vmwareengine.v1.json",
-                    "jsonpath": "$.clientLibrary.version"
-                }
-            ]
-        },
-        "packages/google-geo-type": {
-            "component": "google-geo-type",
-            "release-type": "python",
-            "extra-files": [
-                "google/geo/type/gapic_version.py"
-            ]
-        },
-        "packages/google-maps-addressvalidation": {
-            "component": "google-maps-addressvalidation",
-            "release-type": "python",
-            "extra-files": [
-                "google/maps/addressvalidation/gapic_version.py",
-                "google/maps/addressvalidation_v1/gapic_version.py",
-                {
-                    "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.maps.addressvalidation.v1.json",
-                    "jsonpath": "$.clientLibrary.version"
-                }
-            ]
-        },
-        "packages/google-maps-mapsplatformdatasets": {
-            "component": "google-maps-mapsplatformdatasets",
-            "release-type": "python",
-            "extra-files": [
-                "google/maps/mapsplatformdatasets_v1alpha/gapic_version.py",
-                "google/maps/mapsplatformdatasets/gapic_version.py",
-                {
-                    "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.maps.mapsplatformdatasets.v1alpha.json",
-                    "jsonpath": "$.clientLibrary.version"
-                }
-            ]
-        },
-        "packages/google-maps-routing": {
-            "component": "google-maps-routing",
-            "release-type": "python",
-            "extra-files": [
-                "google/maps/routing/gapic_version.py",
-                "google/maps/routing_v2/gapic_version.py",
-                {
-                    "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.maps.routing.v2.json",
-                    "jsonpath": "$.clientLibrary.version"
-                }
-            ]
+            ],
+            "release-type": "python"
         },
         "packages/google-cloud-advisorynotifications": {
             "component": "google-cloud-advisorynotifications",
-            "release-type": "python",
             "extra-files": [
                 "google/cloud/advisorynotifications/gapic_version.py",
                 "google/cloud/advisorynotifications_v1/gapic_version.py",
                 {
-                    "type": "json",
+                    "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.advisorynotifications.v1.json",
-                    "jsonpath": "$.clientLibrary.version"
+                    "type": "json"
                 }
-            ]
+            ],
+            "release-type": "python"
         },
         "packages/google-cloud-alloydb": {
             "component": "google-cloud-alloydb",
-            "release-type": "python",
             "extra-files": [
                 "google/cloud/alloydb/gapic_version.py",
                 "google/cloud/alloydb_v1/gapic_version.py",
                 "google/cloud/alloydb_v1alpha/gapic_version.py",
                 "google/cloud/alloydb_v1beta/gapic_version.py",
                 {
-                    "type": "json",
+                    "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1beta.json",
-                    "jsonpath": "$.clientLibrary.version"
+                    "type": "json"
                 },
                 {
-                    "type": "json",
+                    "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1.json",
-                    "jsonpath": "$.clientLibrary.version"
+                    "type": "json"
                 },
                 {
-                    "type": "json",
+                    "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1alpha.json",
-                    "jsonpath": "$.clientLibrary.version"
+                    "type": "json"
                 }
-            ]
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-bigquery-biglake": {
+            "component": "google-cloud-bigquery-biglake",
+            "extra-files": [
+                "google/cloud/bigquery/biglake/gapic_version.py",
+                "google/cloud/bigquery/biglake_v1/gapic_version.py",
+                "google/cloud/bigquery/biglake_v1alpha1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.biglake.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.biglake.v1alpha1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-confidentialcomputing": {
+            "component": "google-cloud-confidentialcomputing",
+            "extra-files": [
+                "google/cloud/confidentialcomputing/gapic_version.py",
+                "google/cloud/confidentialcomputing_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.confidentialcomputing.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-contentwarehouse": {
+            "component": "google-cloud-contentwarehouse",
+            "extra-files": [
+                "google/cloud/contentwarehouse/gapic_version.py",
+                "google/cloud/contentwarehouse_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.contentwarehouse.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-datacatalog-lineage": {
+            "component": "google-cloud-datacatalog-lineage",
+            "extra-files": [
+                "google/cloud/datacatalog/lineage_v1/gapic_version.py",
+                "google/cloud/datacatalog/lineage/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.datacatalog.lineage.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-discoveryengine": {
+            "component": "google-cloud-discoveryengine",
+            "extra-files": [
+                "google/cloud/discoveryengine/gapic_version.py",
+                "google/cloud/discoveryengine_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.discoveryengine.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-enterpriseknowledgegraph": {
+            "component": "google-cloud-enterpriseknowledgegraph",
+            "extra-files": [
+                "google/cloud/enterpriseknowledgegraph/gapic_version.py",
+                "google/cloud/enterpriseknowledgegraph_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.enterpriseknowledgegraph.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-ids": {
+            "component": "google-cloud-ids",
+            "extra-files": [
+                "google/cloud/ids/gapic_version.py",
+                "google/cloud/ids_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.ids.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-storageinsights": {
+            "component": "google-cloud-storageinsights",
+            "extra-files": [
+                "google/cloud/storageinsights/gapic_version.py",
+                "google/cloud/storageinsights_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.storageinsights.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-vmwareengine": {
+            "component": "google-cloud-vmwareengine",
+            "extra-files": [
+                "google/cloud/vmwareengine_v1/gapic_version.py",
+                "google/cloud/vmwareengine/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.vmwareengine.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
         },
         "packages/google-cloud-workstations": {
             "component": "google-cloud-workstations",
-            "release-type": "python",
             "extra-files": [
                 "google/cloud/workstations/gapic_version.py",
                 "google/cloud/workstations_v1beta/gapic_version.py",
                 "google/cloud/workstations_v1/gapic_version.py",
                 {
-                    "type": "json",
+                    "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.workstations.v1beta.json",
-                    "jsonpath": "$.clientLibrary.version"
+                    "type": "json"
                 },
                 {
-                    "type": "json",
+                    "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.workstations.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-geo-type": {
+            "component": "google-geo-type",
+            "extra-files": [
+                "google/geo/type/gapic_version.py"
+            ],
+            "release-type": "python"
+        },
+        "packages/google-maps-addressvalidation": {
+            "component": "google-maps-addressvalidation",
+            "extra-files": [
+                "google/maps/addressvalidation/gapic_version.py",
+                "google/maps/addressvalidation_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.maps.addressvalidation.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-maps-mapsplatformdatasets": {
+            "component": "google-maps-mapsplatformdatasets",
+            "extra-files": [
+                "google/maps/mapsplatformdatasets_v1alpha/gapic_version.py",
+                "google/maps/mapsplatformdatasets/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.maps.mapsplatformdatasets.v1alpha.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-maps-places": {
+            "component": "google-maps-places",
+            "extra-files": [
+                "google/maps/places/gapic_version.py",
+                "google/maps/places_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.maps.places.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-maps-routing": {
+            "component": "google-maps-routing",
+            "extra-files": [
+                "google/maps/routing/gapic_version.py",
+                "google/maps/routing_v2/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.maps.routing.v2.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-ai-generativelanguage": {
+            "component": "google-ai-generativelanguage",
+            "release-type": "python",
+            "extra-files": [
+                "google/ai/generativelanguage/gapic_version.py",
+                "google/ai/generativelanguage_v1beta2/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.ai.generativelanguage.v1beta2.json",
                     "jsonpath": "$.clientLibrary.version"
                 }
             ]
         },
-        "packages/google-cloud-bigquery-biglake": {
-            "component": "google-cloud-bigquery-biglake",
+        "packages/google-cloud-support": {
+            "component": "google-cloud-support",
             "release-type": "python",
             "extra-files": [
-                "google/cloud/bigquery/biglake/gapic_version.py",
-                "google/cloud/bigquery/biglake_v1alpha1/gapic_version.py",
+                "google/cloud/support/gapic_version.py",
+                "google/cloud/support_v2/gapic_version.py",
                 {
                     "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.biglake.v1alpha1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.support.v2.json",
                     "jsonpath": "$.clientLibrary.version"
                 }
             ]
