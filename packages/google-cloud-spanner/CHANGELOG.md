@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.34.0](https://github.com/googleapis/python-spanner/compare/v3.33.0...v3.34.0) (2023-05-16)
+
+
+### Features
+
+* Add support for UpdateDatabase in Cloud Spanner ([#941](https://github.com/googleapis/python-spanner/issues/941)) ([38fb890](https://github.com/googleapis/python-spanner/commit/38fb890e34762f104ca97e612e62d4f59e752133))
+
+
+### Bug Fixes
+
+* Upgrade version of sqlparse ([#943](https://github.com/googleapis/python-spanner/issues/943)) ([df57ce6](https://github.com/googleapis/python-spanner/commit/df57ce6f00b6a992024c9f1bd6948905ae1e5cf4))
+
 ## [3.33.0](https://github.com/googleapis/python-spanner/compare/v3.32.0...v3.33.0) (2023-04-27)
 
 
