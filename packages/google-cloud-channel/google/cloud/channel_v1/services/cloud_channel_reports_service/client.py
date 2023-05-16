@@ -97,8 +97,8 @@ class CloudChannelReportsServiceClientMeta(type):
 class CloudChannelReportsServiceClient(metaclass=CloudChannelReportsServiceClientMeta):
     """CloudChannelReportsService lets Google Cloud resellers and
     distributors retrieve and combine a variety of data in Cloud
-    Channel for multiple products (Google Cloud Platform (GCP),
-    Google Voice, and Google Workspace.)
+    Channel for multiple products (Google Cloud, Google Voice, and
+    Google Workspace.)
     """
 
     @staticmethod

@@ -130,16 +130,16 @@ class ResourceType(proto.Enum):
         MINUTES (5):
             Voice usage.
         IAAS_USAGE (6):
-            For IaaS SKUs like Google Cloud Platform,
-            monetization is based on usage accrued on your
-            billing account irrespective of the type of
-            monetizable resource. This enum represents an
-            aggregated resource/container for all usage SKUs
-            on a billing account. Currently, only applicable
-            to Google Cloud Platform.
+            For IaaS SKUs like Google Cloud, monetization
+            is based on usage accrued on your billing
+            account irrespective of the type of monetizable
+            resource. This enum represents an aggregated
+            resource/container for all usage SKUs on a
+            billing account. Currently, only applicable to
+            Google Cloud.
         SUBSCRIPTION (7):
-            For Google Cloud Platform subscriptions like
-            Anthos or SAP.
+            For Google Cloud subscriptions like Anthos or
+            SAP.
     """
     RESOURCE_TYPE_UNSPECIFIED = 0
     SEAT = 1
@@ -404,7 +404,7 @@ class Plan(proto.Message):
         billing_account (str):
             Reseller Billing account to charge after an
             offer transaction. Only present for Google Cloud
-            Platform offers.
+            offers.
     """
 
     payment_plan: "PaymentPlan" = proto.Field(

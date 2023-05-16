@@ -33,8 +33,8 @@ class CloudChannelReportsServiceGrpcTransport(CloudChannelReportsServiceTranspor
 
     CloudChannelReportsService lets Google Cloud resellers and
     distributors retrieve and combine a variety of data in Cloud
-    Channel for multiple products (Google Cloud Platform (GCP),
-    Google Voice, and Google Workspace.)
+    Channel for multiple products (Google Cloud, Google Voice, and
+    Google Workspace.)
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

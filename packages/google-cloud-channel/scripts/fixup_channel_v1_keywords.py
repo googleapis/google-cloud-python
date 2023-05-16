@@ -53,7 +53,7 @@ class channelCallTransformer(cst.CSTTransformer):
         'delete_channel_partner_repricing_config': ('name', ),
         'delete_customer': ('name', ),
         'delete_customer_repricing_config': ('name', ),
-        'fetch_report_results': ('report_job', 'page_size', 'page_token', ),
+        'fetch_report_results': ('report_job', 'page_size', 'page_token', 'partition_keys', ),
         'get_channel_partner_link': ('name', 'view', ),
         'get_channel_partner_repricing_config': ('name', ),
         'get_customer': ('name', ),

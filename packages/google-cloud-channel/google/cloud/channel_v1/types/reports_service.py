@@ -149,6 +149,10 @@ class FetchReportResultsRequest(proto.Message):
             of the previous
             [CloudChannelReportsService.FetchReportResults][google.cloud.channel.v1.CloudChannelReportsService.FetchReportResults]
             call.
+        partition_keys (MutableSequence[str]):
+            Optional. List of keys specifying which
+            report partitions to return. If empty, returns
+            all partitions.
     """
 
     report_job: str = proto.Field(
@@ -162,6 +166,10 @@ class FetchReportResultsRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    partition_keys: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -429,16 +437,14 @@ class DateRange(proto.Message):
             ``usage_start_date_time`` in Pacific time.
         invoice_start_date (google.type.date_pb2.Date):
             The earliest invoice date (inclusive).
-            If your product uses monthly invoices, and this
-            value is not the beginning of a month, this will
-            adjust the date to the first day of the given
-            month.
+            If this value is not the first day of a month,
+            this will move it back to the first day of the
+            given month.
         invoice_end_date (google.type.date_pb2.Date):
-            The latest invoice date (exclusive).
-            If your product uses monthly invoices, and this
-            value is not the beginning of a month, this will
-            adjust the date to the first day of the
-            following month.
+            The latest invoice date (inclusive).
+            If this value is not the last day of a month,
+            this will move it forward to the last day of the
+            given month.
     """
 
     usage_start_date_time: datetime_pb2.DateTime = proto.Field(
@@ -469,12 +475,20 @@ class Row(proto.Message):
     Attributes:
         values (MutableSequence[google.cloud.channel_v1.types.ReportValue]):
             The list of values in the row.
+        partition_key (str):
+            The key for the partition this row belongs
+            to. This field is empty if the report is not
+            partitioned.
     """
 
     values: MutableSequence["ReportValue"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ReportValue",
+    )
+    partition_key: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -608,8 +622,8 @@ class ReportStatus(proto.Message):
 
 class Report(proto.Message):
     r"""The ID and description of a report that was used to generate
-    report data. For example, "GCP Daily Spend", "Google Workspace
-    License Activity", etc.
+    report data. For example, "Google Cloud Daily Spend", "Google
+    Workspace License Activity", etc.
 
     Attributes:
         name (str):
