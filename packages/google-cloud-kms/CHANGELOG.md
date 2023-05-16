@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.17.0](https://github.com/googleapis/python-kms/compare/v2.16.1...v2.17.0) (2023-05-12)
+
+
+### Features
+
+* Added VerifyConnectivity RPC ([#388](https://github.com/googleapis/python-kms/issues/388)) ([b265bd7](https://github.com/googleapis/python-kms/commit/b265bd79502619a86ec179e19495df0b377b992b))
+
 ## [2.16.1](https://github.com/googleapis/python-kms/compare/v2.16.0...v2.16.1) (2023-03-28)
 
 
