@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.18.1](https://github.com/googleapis/python-bigtable/compare/v2.18.0...v2.18.1) (2023-05-11)
+
+
+### Bug Fixes
+
+* Revert "Feat: Threaded MutationsBatcher" ([#773](https://github.com/googleapis/python-bigtable/issues/773)) ([a767cff](https://github.com/googleapis/python-bigtable/commit/a767cff95d990994f85f5fd05cc10f952087b49d))
+
 ## [2.18.0](https://github.com/googleapis/python-bigtable/compare/v2.17.0...v2.18.0) (2023-05-10)
 
 
