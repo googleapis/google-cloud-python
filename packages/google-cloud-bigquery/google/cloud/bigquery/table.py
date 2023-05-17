@@ -687,7 +687,11 @@ class Table(_TableBase):
 
         if self.time_partitioning is None:
             self._properties[api_field] = {"type": TimePartitioningType.DAY}
-        self._properties[api_field]["expirationMs"] = str(value)
+
+        if value is None:
+            self._properties[api_field]["expirationMs"] = None
+        else:
+            self._properties[api_field]["expirationMs"] = str(value)
 
     @property
     def clustering_fields(self):
