@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.18.1](https://github.com/googleapis/google-auth-library-python/compare/v2.18.0...v2.18.1) (2023-05-17)
+
+
+### Bug Fixes
+
+* Self signed jwt token should be string type ([#1294](https://github.com/googleapis/google-auth-library-python/issues/1294)) ([17356fd](https://github.com/googleapis/google-auth-library-python/commit/17356fdd92da2123f989f67a5cebf82c78a3bc12))
+
 ## [2.18.0](https://github.com/googleapis/google-auth-library-python/compare/v2.17.3...v2.18.0) (2023-05-10)
 
 
