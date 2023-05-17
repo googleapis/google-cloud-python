@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.6.0...google-cloud-discoveryengine-v0.7.0) (2023-05-17)
+
+
+### Features
+
+* allow users to provide additional labels in search ([c6addce](https://github.com/googleapis/google-cloud-python/commit/c6addce5b9281c75db2c7e96d7a57cb202d48006))
+* allow users to provide user info in search ([c6addce](https://github.com/googleapis/google-cloud-python/commit/c6addce5b9281c75db2c7e96d7a57cb202d48006))
+* enable safe search feature for site search ([c6addce](https://github.com/googleapis/google-cloud-python/commit/c6addce5b9281c75db2c7e96d7a57cb202d48006))
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.5.0...google-cloud-discoveryengine-v0.6.0) (2023-05-04)
 
 

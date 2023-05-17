@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.3.0...google-cloud-workstations-v0.4.0) (2023-05-17)
+
+
+### Features
+
+* **v1beta:** add auditd support ([78957ed](https://github.com/googleapis/google-cloud-python/commit/78957ed60b63eb3c5d26912934c77c99b288c3a7))
+* **v1beta:** add output field for the control plane IP address ([78957ed](https://github.com/googleapis/google-cloud-python/commit/78957ed60b63eb3c5d26912934c77c99b288c3a7))
+* **v1beta:** add output field for the number of pooled instances ([78957ed](https://github.com/googleapis/google-cloud-python/commit/78957ed60b63eb3c5d26912934c77c99b288c3a7))
+* **v1beta:** add support for accelerators ([78957ed](https://github.com/googleapis/google-cloud-python/commit/78957ed60b63eb3c5d26912934c77c99b288c3a7))
+* **v1beta:** add support for readiness checks ([78957ed](https://github.com/googleapis/google-cloud-python/commit/78957ed60b63eb3c5d26912934c77c99b288c3a7))
+* **v1beta:** add support for workstation-level environment variables ([78957ed](https://github.com/googleapis/google-cloud-python/commit/78957ed60b63eb3c5d26912934c77c99b288c3a7))
+
+
+### Documentation
+
+* **v1beta:** adjust documentation wording ([78957ed](https://github.com/googleapis/google-cloud-python/commit/78957ed60b63eb3c5d26912934c77c99b288c3a7))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.2.1...google-cloud-workstations-v0.3.0) (2023-05-11)
 
 
