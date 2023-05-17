@@ -418,7 +418,7 @@ class Credentials(
         # subject exists, then we should not use self signed JWT.
         if self._subject is None and self._jwt_credentials is not None:
             self._jwt_credentials.refresh(request)
-            self.token = self._jwt_credentials.token
+            self.token = self._jwt_credentials.token.decode()
             self.expiry = self._jwt_credentials.expiry
         else:
             assertion = self._make_authorization_grant_assertion()

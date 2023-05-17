@@ -41,4 +41,4 @@ def test_authorized_session_with_service_account_and_self_signed_jwt():
 
     # Check that self-signed JWT was created and is being used
     assert credentials._jwt_credentials is not None
-    assert credentials._jwt_credentials.token == credentials.token
+    assert credentials._jwt_credentials.token.decode() == credentials.token

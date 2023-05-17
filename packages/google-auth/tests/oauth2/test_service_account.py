@@ -18,6 +18,7 @@ import os
 
 import mock
 import pytest  # type: ignore
+import six
 
 from google.auth import _helpers
 from google.auth import crypt
@@ -470,7 +471,7 @@ class TestCredentials(object):
 
         token = "token"
         expiry = _helpers.utcnow() + datetime.timedelta(seconds=500)
-        make_jwt.return_value = (token, expiry)
+        make_jwt.return_value = (b"token", expiry)
 
         # Credentials should start as invalid
         assert not credentials.valid
@@ -486,6 +487,16 @@ class TestCredentials(object):
 
         assert credentials.token == token
         assert credentials.expiry == expiry
+
+    def test_refresh_with_jwt_credentials_token_type_check(self):
+        credentials = self.make_credentials()
+        credentials._create_self_signed_jwt("https://pubsub.googleapis.com")
+        credentials.refresh(mock.Mock())
+
+        # Credentials token should be a JWT string.
+        assert isinstance(credentials.token, six.string_types)
+        payload = jwt.decode(credentials.token, verify=False)
+        assert payload["aud"] == "https://pubsub.googleapis.com"
 
     @mock.patch("google.oauth2._client.jwt_grant", autospec=True)
     @mock.patch("google.auth.jwt.Credentials.refresh", autospec=True)
