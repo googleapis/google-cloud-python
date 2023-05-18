@@ -80,7 +80,7 @@ def main(args):
         )
 
     # Cleanup and delete blobs.
-    _pu.cleanup_bucket(bucket)
+    _pu.cleanup_bucket(bucket, delete_bucket=args.delete_bucket)
 
     # BBMC will not surface errors unless the process is terminated with a non zero code.
     if counter.count.errors != 0:
@@ -172,6 +172,12 @@ if __name__ == "__main__":
         type=str,
         default=_pu.DEFAULT_BASE_DIR,
         help="Temp directory path on file system",
+    )
+    parser.add_argument(
+        "--delete_bucket",
+        type=bool,
+        default=False,
+        help="Whether or not to delete GCS bucket used for benchmarking",
     )
     args = parser.parse_args()
 

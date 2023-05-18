@@ -32,6 +32,7 @@ $ python3 benchmarking.py --num_samples 10000 --object_size 5120..16384 --output
 | --test_type | test type to run benchmarking | `w1r3`, `range` | `w1r3` |
 | --output_file | file to output results to | any file path | `output_bench<TIMESTAMP>.csv` |
 | --tmp_dir | temp directory path on file system | any file path | `tm-perf-metrics` |
+| --delete_bucket | whether or not to delete GCS bucket used for benchmarking| bool | `False` |
 
 
 ## Workload definition and CSV headers

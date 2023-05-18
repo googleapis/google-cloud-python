@@ -193,7 +193,7 @@ def get_bucket_instance(bucket_name):
     return bucket
 
 
-def cleanup_bucket(bucket):
+def cleanup_bucket(bucket, delete_bucket=False):
     # Delete blobs first as the bucket may contain more than 256 blobs.
     try:
         blobs = bucket.list_blobs()
@@ -201,11 +201,12 @@ def cleanup_bucket(bucket):
             blob.delete()
     except Exception as e:
         logging.exception(f"Caught an exception while deleting blobs\n {e}")
-    # Delete bucket.
-    try:
-        bucket.delete(force=True)
-    except Exception as e:
-        logging.exception(f"Caught an exception while deleting bucket\n {e}")
+    # Delete bucket if delete_bucket is set to True
+    if delete_bucket:
+        try:
+            bucket.delete(force=True)
+        except Exception as e:
+            logging.exception(f"Caught an exception while deleting bucket\n {e}")
 
 
 def get_min_max_size(object_size):
