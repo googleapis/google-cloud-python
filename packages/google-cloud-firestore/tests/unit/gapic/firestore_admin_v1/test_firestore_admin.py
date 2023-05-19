@@ -1405,6 +1405,7 @@ def test_get_index(request_type, transport: str = "grpc"):
         call.return_value = index.Index(
             name="name_value",
             query_scope=index.Index.QueryScope.COLLECTION,
+            api_scope=index.Index.ApiScope.DATASTORE_MODE_API,
             state=index.Index.State.CREATING,
         )
         response = client.get_index(request)
@@ -1418,6 +1419,7 @@ def test_get_index(request_type, transport: str = "grpc"):
     assert isinstance(response, index.Index)
     assert response.name == "name_value"
     assert response.query_scope == index.Index.QueryScope.COLLECTION
+    assert response.api_scope == index.Index.ApiScope.DATASTORE_MODE_API
     assert response.state == index.Index.State.CREATING
 
 
@@ -1457,6 +1459,7 @@ async def test_get_index_async(
             index.Index(
                 name="name_value",
                 query_scope=index.Index.QueryScope.COLLECTION,
+                api_scope=index.Index.ApiScope.DATASTORE_MODE_API,
                 state=index.Index.State.CREATING,
             )
         )
@@ -1471,6 +1474,7 @@ async def test_get_index_async(
     assert isinstance(response, index.Index)
     assert response.name == "name_value"
     assert response.query_scope == index.Index.QueryScope.COLLECTION
+    assert response.api_scope == index.Index.ApiScope.DATASTORE_MODE_API
     assert response.state == index.Index.State.CREATING
 
 
@@ -3904,6 +3908,7 @@ def test_create_index_rest(request_type):
     request_init["index"] = {
         "name": "name_value",
         "query_scope": 1,
+        "api_scope": 1,
         "fields": [{"field_path": "field_path_value", "order": 1, "array_config": 1}],
         "state": 1,
     }
@@ -4094,6 +4099,7 @@ def test_create_index_rest_bad_request(
     request_init["index"] = {
         "name": "name_value",
         "query_scope": 1,
+        "api_scope": 1,
         "fields": [{"field_path": "field_path_value", "order": 1, "array_config": 1}],
         "state": 1,
     }
@@ -4551,6 +4557,7 @@ def test_get_index_rest(request_type):
         return_value = index.Index(
             name="name_value",
             query_scope=index.Index.QueryScope.COLLECTION,
+            api_scope=index.Index.ApiScope.DATASTORE_MODE_API,
             state=index.Index.State.CREATING,
         )
 
@@ -4568,6 +4575,7 @@ def test_get_index_rest(request_type):
     assert isinstance(response, index.Index)
     assert response.name == "name_value"
     assert response.query_scope == index.Index.QueryScope.COLLECTION
+    assert response.api_scope == index.Index.ApiScope.DATASTORE_MODE_API
     assert response.state == index.Index.State.CREATING
 
 
@@ -5355,6 +5363,7 @@ def test_update_field_rest(request_type):
                 {
                     "name": "name_value",
                     "query_scope": 1,
+                    "api_scope": 1,
                     "fields": [
                         {
                             "field_path": "field_path_value",
@@ -5553,6 +5562,7 @@ def test_update_field_rest_bad_request(
                 {
                     "name": "name_value",
                     "query_scope": 1,
+                    "api_scope": 1,
                     "fields": [
                         {
                             "field_path": "field_path_value",

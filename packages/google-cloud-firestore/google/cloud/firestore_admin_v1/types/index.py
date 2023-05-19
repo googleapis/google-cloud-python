@@ -49,17 +49,19 @@ class Index(proto.Message):
             descended from a specific document, specified at
             query time, and that have the same collection id
             as this index.
+        api_scope (google.cloud.firestore_admin_v1.types.Index.ApiScope):
+            The API scope supported by this index.
         fields (MutableSequence[google.cloud.firestore_admin_v1.types.Index.IndexField]):
             The fields supported by this index.
 
-            For composite indexes, this is always 2 or more fields. The
-            last field entry is always for the field path ``__name__``.
-            If, on creation, ``__name__`` was not specified as the last
-            field, it will be added automatically with the same
-            direction as that of the last field defined. If the final
-            field in a composite index is not directional, the
-            ``__name__`` will be ordered ASCENDING (unless explicitly
-            specified).
+            For composite indexes, this requires a minimum of 2 and a
+            maximum of 100 fields. The last field entry is always for
+            the field path ``__name__``. If, on creation, ``__name__``
+            was not specified as the last field, it will be added
+            automatically with the same direction as that of the last
+            field defined. If the final field in a composite index is
+            not directional, the ``__name__`` will be ordered ASCENDING
+            (unless explicitly specified).
 
             For single field indexes, this will always be exactly one
             entry with a field path equal to the field path of the
@@ -87,10 +89,30 @@ class Index(proto.Message):
                 specified allow queries against all collections
                 that has the collection id specified by the
                 index.
+            COLLECTION_RECURSIVE (3):
+                Include all the collections's ancestor in the
+                index. Only available for Datastore Mode
+                databases.
         """
         QUERY_SCOPE_UNSPECIFIED = 0
         COLLECTION = 1
         COLLECTION_GROUP = 2
+        COLLECTION_RECURSIVE = 3
+
+    class ApiScope(proto.Enum):
+        r"""API Scope defines the APIs (Firestore Native, or Firestore in
+        Datastore Mode) that are supported for queries.
+
+        Values:
+            ANY_API (0):
+                The index can only be used by the Firestore
+                Native query API. This is the default.
+            DATASTORE_MODE_API (1):
+                The index can only be used by the Firestore
+                in Datastore Mode query API.
+        """
+        ANY_API = 0
+        DATASTORE_MODE_API = 1
 
     class State(proto.Enum):
         r"""The state of an index. During index creation, an index will be in
@@ -213,6 +235,11 @@ class Index(proto.Message):
         proto.ENUM,
         number=2,
         enum=QueryScope,
+    )
+    api_scope: ApiScope = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=ApiScope,
     )
     fields: MutableSequence[IndexField] = proto.RepeatedField(
         proto.MESSAGE,
