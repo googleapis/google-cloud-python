@@ -43,6 +43,7 @@ class webriskCallTransformer(cst.CSTTransformer):
         'create_submission': ('parent', 'submission', ),
         'search_hashes': ('threat_types', 'hash_prefix', ),
         'search_uris': ('uri', 'threat_types', ),
+        'submit_uri': ('parent', 'submission', 'threat_info', 'threat_discovery', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

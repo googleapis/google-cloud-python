@@ -37,7 +37,11 @@ __protobuf__ = proto.module(
         "RawHashes",
         "RiceDeltaEncoding",
         "Submission",
+        "ThreatInfo",
+        "ThreatDiscovery",
         "CreateSubmissionRequest",
+        "SubmitUriRequest",
+        "SubmitUriMetadata",
     },
 )
 
@@ -555,11 +559,214 @@ class Submission(proto.Message):
         uri (str):
             Required. The URI that is being reported for
             malicious content to be analyzed.
+        threat_types (MutableSequence[google.cloud.webrisk_v1.types.ThreatType]):
+            Output only. ThreatTypes found to be
+            associated with the submitted URI after
+            reviewing it. This might be empty if the URI was
+            not added to any list.
     """
 
     uri: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    threat_types: MutableSequence["ThreatType"] = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum="ThreatType",
+    )
+
+
+class ThreatInfo(proto.Message):
+    r"""Context about the submission including the type of abuse found on
+    the URI and supporting details. option
+    (google.api.message_visibility).restriction = "TRUSTED_TESTER";
+
+    Attributes:
+        abuse_type (google.cloud.webrisk_v1.types.ThreatInfo.AbuseType):
+            The type of abuse.
+        threat_confidence (google.cloud.webrisk_v1.types.ThreatInfo.Confidence):
+            Confidence that the URI is unsafe.
+        threat_justification (google.cloud.webrisk_v1.types.ThreatInfo.ThreatJustification):
+            Context about why the URI is unsafe.
+    """
+
+    class AbuseType(proto.Enum):
+        r"""The abuse type found on the URI.
+
+        Values:
+            ABUSE_TYPE_UNSPECIFIED (0):
+                Default.
+            MALWARE (1):
+                The URI contains malware.
+            SOCIAL_ENGINEERING (2):
+                The URI contains social engineering.
+            UNWANTED_SOFTWARE (3):
+                The URI contains unwanted software.
+        """
+        ABUSE_TYPE_UNSPECIFIED = 0
+        MALWARE = 1
+        SOCIAL_ENGINEERING = 2
+        UNWANTED_SOFTWARE = 3
+
+    class Confidence(proto.Message):
+        r"""Confidence that a URI is unsafe.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            score (float):
+                A decimal representation of confidence in the
+                range of 0 to 1 where 0 indicates no confidence
+                and 1 indicates complete confidence.
+
+                This field is a member of `oneof`_ ``value``.
+            level (google.cloud.webrisk_v1.types.ThreatInfo.Confidence.ConfidenceLevel):
+                Enum representation of confidence.
+
+                This field is a member of `oneof`_ ``value``.
+        """
+
+        class ConfidenceLevel(proto.Enum):
+            r"""Enum representation of confidence.
+
+            Values:
+                CONFIDENCE_LEVEL_UNSPECIFIED (0):
+                    Default.
+                LOW (1):
+                    Less than 60% confidence that the URI is
+                    unsafe.
+                MEDIUM (2):
+                    Between 60% and 80% confidence that the URI
+                    is unsafe.
+                HIGH (3):
+                    Greater than 80% confidence that the URI is
+                    unsafe.
+            """
+            CONFIDENCE_LEVEL_UNSPECIFIED = 0
+            LOW = 1
+            MEDIUM = 2
+            HIGH = 3
+
+        score: float = proto.Field(
+            proto.FLOAT,
+            number=1,
+            oneof="value",
+        )
+        level: "ThreatInfo.Confidence.ConfidenceLevel" = proto.Field(
+            proto.ENUM,
+            number=2,
+            oneof="value",
+            enum="ThreatInfo.Confidence.ConfidenceLevel",
+        )
+
+    class ThreatJustification(proto.Message):
+        r"""Context about why the URI is unsafe.
+
+        Attributes:
+            labels (MutableSequence[google.cloud.webrisk_v1.types.ThreatInfo.ThreatJustification.JustificationLabel]):
+                Labels associated with this URI that explain
+                how it was classified.
+            comments (MutableSequence[str]):
+                Free-form context on why this URI is unsafe.
+        """
+
+        class JustificationLabel(proto.Enum):
+            r"""Labels that explain how the URI was classified.
+
+            Values:
+                JUSTIFICATION_LABEL_UNSPECIFIED (0):
+                    Default.
+                MANUAL_VERIFICATION (1):
+                    The submitter manually verified that the
+                    submission is unsafe.
+                USER_REPORT (2):
+                    The submitter received the submission from an
+                    end user.
+                AUTOMATED_REPORT (3):
+                    The submitter received the submission from an
+                    automated system.
+            """
+            JUSTIFICATION_LABEL_UNSPECIFIED = 0
+            MANUAL_VERIFICATION = 1
+            USER_REPORT = 2
+            AUTOMATED_REPORT = 3
+
+        labels: MutableSequence[
+            "ThreatInfo.ThreatJustification.JustificationLabel"
+        ] = proto.RepeatedField(
+            proto.ENUM,
+            number=1,
+            enum="ThreatInfo.ThreatJustification.JustificationLabel",
+        )
+        comments: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+
+    abuse_type: AbuseType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=AbuseType,
+    )
+    threat_confidence: Confidence = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=Confidence,
+    )
+    threat_justification: ThreatJustification = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=ThreatJustification,
+    )
+
+
+class ThreatDiscovery(proto.Message):
+    r"""Details about how the threat was discovered.
+
+    Attributes:
+        platform (google.cloud.webrisk_v1.types.ThreatDiscovery.Platform):
+            Platform on which the threat was discovered.
+        region_codes (MutableSequence[str]):
+            CLDR region code of the countries/regions the
+            URI poses a threat ordered from most impact to
+            least impact. Example: "US" for United States.
+    """
+
+    class Platform(proto.Enum):
+        r"""Platform types.
+
+        Values:
+            PLATFORM_UNSPECIFIED (0):
+                Default.
+            ANDROID (1):
+                General Android platform.
+            IOS (2):
+                General iOS platform.
+            MACOS (3):
+                General macOS platform.
+            WINDOWS (4):
+                General Windows platform.
+        """
+        PLATFORM_UNSPECIFIED = 0
+        ANDROID = 1
+        IOS = 2
+        MACOS = 3
+        WINDOWS = 4
+
+    platform: Platform = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Platform,
+    )
+    region_codes: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -584,6 +791,101 @@ class CreateSubmissionRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message="Submission",
+    )
+
+
+class SubmitUriRequest(proto.Message):
+    r"""Request to send a potentially malicious URI to WebRisk.
+
+    Attributes:
+        parent (str):
+            Required. The name of the project that is making the
+            submission. This string is in the format
+            "projects/{project_number}".
+        submission (google.cloud.webrisk_v1.types.Submission):
+            Required. The submission that contains the
+            URI to be scanned.
+        threat_info (google.cloud.webrisk_v1.types.ThreatInfo):
+            Provides additional information about the
+            submission.
+        threat_discovery (google.cloud.webrisk_v1.types.ThreatDiscovery):
+            Provides additional information about how the
+            submission was discovered.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    submission: "Submission" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Submission",
+    )
+    threat_info: "ThreatInfo" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ThreatInfo",
+    )
+    threat_discovery: "ThreatDiscovery" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="ThreatDiscovery",
+    )
+
+
+class SubmitUriMetadata(proto.Message):
+    r"""Metadata for the Submit URI long-running operation. option
+    (google.api.message_visibility).restriction = "TRUSTED_TESTER";
+
+    Attributes:
+        state (google.cloud.webrisk_v1.types.SubmitUriMetadata.State):
+            The state of the operation.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Creation time of the operation.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Latest update time of the operation.
+    """
+
+    class State(proto.Enum):
+        r"""Enum that represents the state of the long-running operation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default unspecified state.
+            RUNNING (1):
+                The operation is currently running.
+            SUCCEEDED (2):
+                The operation finished with a success status.
+            CANCELLED (3):
+                The operation was cancelled.
+            FAILED (4):
+                The operation finished with a failure status.
+            CLOSED (5):
+                The operation was closed with no action
+                taken.
+        """
+        STATE_UNSPECIFIED = 0
+        RUNNING = 1
+        SUCCEEDED = 2
+        CANCELLED = 3
+        FAILED = 4
+        CLOSED = 5
+
+    state: State = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
     )
 
 

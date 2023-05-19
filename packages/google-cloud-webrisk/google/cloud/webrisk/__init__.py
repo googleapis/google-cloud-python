@@ -37,8 +37,12 @@ from google.cloud.webrisk_v1.types.webrisk import (
     SearchUrisRequest,
     SearchUrisResponse,
     Submission,
+    SubmitUriMetadata,
+    SubmitUriRequest,
+    ThreatDiscovery,
     ThreatEntryAdditions,
     ThreatEntryRemovals,
+    ThreatInfo,
     ThreatType,
 )
 
@@ -56,8 +60,12 @@ __all__ = (
     "SearchUrisRequest",
     "SearchUrisResponse",
     "Submission",
+    "SubmitUriMetadata",
+    "SubmitUriRequest",
+    "ThreatDiscovery",
     "ThreatEntryAdditions",
     "ThreatEntryRemovals",
+    "ThreatInfo",
     "CompressionType",
     "ThreatType",
 )

@@ -29,6 +29,11 @@
               "methods": [
                 "search_uris"
               ]
+            },
+            "SubmitUri": {
+              "methods": [
+                "submit_uri"
+              ]
             }
           }
         },
@@ -54,6 +59,11 @@
               "methods": [
                 "search_uris"
               ]
+            },
+            "SubmitUri": {
+              "methods": [
+                "submit_uri"
+              ]
             }
           }
         },
@@ -78,6 +88,11 @@
             "SearchUris": {
               "methods": [
                 "search_uris"
+              ]
+            },
+            "SubmitUri": {
+              "methods": [
+                "submit_uri"
               ]
             }
           }

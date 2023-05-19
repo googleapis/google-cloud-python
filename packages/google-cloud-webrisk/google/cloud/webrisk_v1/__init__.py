@@ -32,8 +32,12 @@ from .types.webrisk import (
     SearchUrisRequest,
     SearchUrisResponse,
     Submission,
+    SubmitUriMetadata,
+    SubmitUriRequest,
+    ThreatDiscovery,
     ThreatEntryAdditions,
     ThreatEntryRemovals,
+    ThreatInfo,
     ThreatType,
 )
 
@@ -51,8 +55,12 @@ __all__ = (
     "SearchUrisRequest",
     "SearchUrisResponse",
     "Submission",
+    "SubmitUriMetadata",
+    "SubmitUriRequest",
+    "ThreatDiscovery",
     "ThreatEntryAdditions",
     "ThreatEntryRemovals",
+    "ThreatInfo",
     "ThreatType",
     "WebRiskServiceClient",
 )
