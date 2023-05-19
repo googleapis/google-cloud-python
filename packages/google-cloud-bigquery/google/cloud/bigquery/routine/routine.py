@@ -67,6 +67,7 @@ class Routine(object):
         "type_": "routineType",
         "description": "description",
         "determinism_level": "determinismLevel",
+        "remote_function_options": "remoteFunctionOptions",
     }
 
     def __init__(self, routine_ref, **kwargs) -> None:
@@ -296,6 +297,37 @@ class Routine(object):
     @determinism_level.setter
     def determinism_level(self, value):
         self._properties[self._PROPERTY_TO_API_FIELD["determinism_level"]] = value
+
+    @property
+    def remote_function_options(self):
+        """Optional[google.cloud.bigquery.routine.RemoteFunctionOptions]: Configures remote function
+        options for a routine.
+
+        Raises:
+            ValueError:
+                If the value is not
+                :class:`~google.cloud.bigquery.routine.RemoteFunctionOptions` or
+                :data:`None`.
+        """
+        prop = self._properties.get(
+            self._PROPERTY_TO_API_FIELD["remote_function_options"]
+        )
+        if prop is not None:
+            return RemoteFunctionOptions.from_api_repr(prop)
+
+    @remote_function_options.setter
+    def remote_function_options(self, value):
+        api_repr = value
+        if isinstance(value, RemoteFunctionOptions):
+            api_repr = value.to_api_repr()
+        elif value is not None:
+            raise ValueError(
+                "value must be google.cloud.bigquery.routine.RemoteFunctionOptions "
+                "or None"
+            )
+        self._properties[
+            self._PROPERTY_TO_API_FIELD["remote_function_options"]
+        ] = api_repr
 
     @classmethod
     def from_api_repr(cls, resource: dict) -> "Routine":
@@ -563,3 +595,124 @@ class RoutineReference(object):
         This is a fully-qualified ID, including the project ID and dataset ID.
         """
         return "{}.{}.{}".format(self.project, self.dataset_id, self.routine_id)
+
+
+class RemoteFunctionOptions(object):
+    """Configuration options for controlling remote BigQuery functions."""
+
+    _PROPERTY_TO_API_FIELD = {
+        "endpoint": "endpoint",
+        "connection": "connection",
+        "max_batching_rows": "maxBatchingRows",
+        "user_defined_context": "userDefinedContext",
+    }
+
+    def __init__(
+        self,
+        endpoint=None,
+        connection=None,
+        max_batching_rows=None,
+        user_defined_context=None,
+        _properties=None,
+    ) -> None:
+        if _properties is None:
+            _properties = {}
+        self._properties = _properties
+
+        if endpoint is not None:
+            self.endpoint = endpoint
+        if connection is not None:
+            self.connection = connection
+        if max_batching_rows is not None:
+            self.max_batching_rows = max_batching_rows
+        if user_defined_context is not None:
+            self.user_defined_context = user_defined_context
+
+    @property
+    def connection(self):
+        """string: Fully qualified name of the user-provided connection object which holds the authentication information to send requests to the remote service.
+
+        Format is  "projects/{projectId}/locations/{locationId}/connections/{connectionId}"
+        """
+        return _helpers._str_or_none(self._properties.get("connection"))
+
+    @connection.setter
+    def connection(self, value):
+        self._properties["connection"] = _helpers._str_or_none(value)
+
+    @property
+    def endpoint(self):
+        """string: Endpoint of the user-provided remote service
+
+        Example: "https://us-east1-my_gcf_project.cloudfunctions.net/remote_add"
+        """
+        return _helpers._str_or_none(self._properties.get("endpoint"))
+
+    @endpoint.setter
+    def endpoint(self, value):
+        self._properties["endpoint"] = _helpers._str_or_none(value)
+
+    @property
+    def max_batching_rows(self):
+        """int64: Max number of rows in each batch sent to the remote service.
+
+        If absent or if 0, BigQuery dynamically decides the number of rows in a batch.
+        """
+        return _helpers._int_or_none(self._properties.get("maxBatchingRows"))
+
+    @max_batching_rows.setter
+    def max_batching_rows(self, value):
+        self._properties["maxBatchingRows"] = _helpers._str_or_none(value)
+
+    @property
+    def user_defined_context(self):
+        """Dict[str, str]: User-defined context as a set of key/value pairs,
+            which will be sent as function invocation context together with
+        batched arguments in the requests to the remote service. The total
+            number of bytes of keys and values must be less than 8KB.
+        """
+        return self._properties.get("userDefinedContext")
+
+    @user_defined_context.setter
+    def user_defined_context(self, value):
+        if not isinstance(value, dict):
+            raise ValueError("value must be dictionary")
+        self._properties["userDefinedContext"] = value
+
+    @classmethod
+    def from_api_repr(cls, resource: dict) -> "RemoteFunctionOptions":
+        """Factory: construct remote function options given its API representation.
+
+        Args:
+            resource (Dict[str, object]): Resource, as returned from the API.
+
+        Returns:
+            google.cloud.bigquery.routine.RemoteFunctionOptions:
+                Python object, as parsed from ``resource``.
+        """
+        ref = cls()
+        ref._properties = resource
+        return ref
+
+    def to_api_repr(self) -> dict:
+        """Construct the API resource representation of this RemoteFunctionOptions.
+
+        Returns:
+            Dict[str, object]: Remote function options represented as an API resource.
+        """
+        return self._properties
+
+    def __eq__(self, other):
+        if not isinstance(other, RemoteFunctionOptions):
+            return NotImplemented
+        return self._properties == other._properties
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __repr__(self):
+        all_properties = [
+            "{}={}".format(property_name, repr(getattr(self, property_name)))
+            for property_name in sorted(self._PROPERTY_TO_API_FIELD)
+        ]
+        return "RemoteFunctionOptions({})".format(", ".join(all_properties))
