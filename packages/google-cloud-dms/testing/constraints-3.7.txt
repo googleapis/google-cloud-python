@@ -7,3 +7,4 @@
 google-api-core==1.34.0
 proto-plus==1.22.0
 protobuf==3.19.5
+grpc-google-iam-v1==0.12.4

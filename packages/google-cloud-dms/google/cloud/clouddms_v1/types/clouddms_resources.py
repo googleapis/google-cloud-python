@@ -26,24 +26,53 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.clouddms.v1",
     manifest={
+        "NetworkArchitecture",
         "DatabaseEngine",
         "DatabaseProvider",
         "SslConfig",
         "MySqlConnectionProfile",
         "PostgreSqlConnectionProfile",
+        "OracleConnectionProfile",
         "CloudSqlConnectionProfile",
+        "AlloyDbConnectionProfile",
         "SqlAclEntry",
         "SqlIpConfig",
         "CloudSqlSettings",
+        "AlloyDbSettings",
         "StaticIpConnectivity",
+        "PrivateServiceConnectConnectivity",
         "ReverseSshConnectivity",
         "VpcPeeringConnectivity",
+        "ForwardSshTunnelConnectivity",
+        "StaticServiceIpConnectivity",
+        "PrivateConnectivity",
         "DatabaseType",
         "MigrationJob",
+        "ConversionWorkspaceInfo",
         "ConnectionProfile",
         "MigrationJobVerificationError",
+        "PrivateConnection",
+        "VpcPeeringConfig",
     },
 )
+
+
+class NetworkArchitecture(proto.Enum):
+    r"""
+
+    Values:
+        NETWORK_ARCHITECTURE_UNSPECIFIED (0):
+            No description available.
+        NETWORK_ARCHITECTURE_OLD_CSQL_PRODUCER (1):
+            Instance is in Cloud SQL's old producer
+            network architecture.
+        NETWORK_ARCHITECTURE_NEW_CSQL_PRODUCER (2):
+            Instance is in Cloud SQL's new producer
+            network architecture.
+    """
+    NETWORK_ARCHITECTURE_UNSPECIFIED = 0
+    NETWORK_ARCHITECTURE_OLD_CSQL_PRODUCER = 1
+    NETWORK_ARCHITECTURE_NEW_CSQL_PRODUCER = 2
 
 
 class DatabaseEngine(proto.Enum):
@@ -57,10 +86,13 @@ class DatabaseEngine(proto.Enum):
             The source engine is MySQL.
         POSTGRESQL (2):
             The source engine is PostgreSQL.
+        ORACLE (4):
+            The source engine is Oracle.
     """
     DATABASE_ENGINE_UNSPECIFIED = 0
     MYSQL = 1
     POSTGRESQL = 2
+    ORACLE = 4
 
 
 class DatabaseProvider(proto.Enum):
@@ -73,10 +105,16 @@ class DatabaseProvider(proto.Enum):
             CloudSQL runs the database.
         RDS (2):
             RDS runs the database.
+        AURORA (3):
+            Amazon Aurora.
+        ALLOYDB (4):
+            AlloyDB.
     """
     DATABASE_PROVIDER_UNSPECIFIED = 0
     CLOUDSQL = 1
     RDS = 2
+    AURORA = 3
+    ALLOYDB = 4
 
 
 class SslConfig(proto.Message):
@@ -209,6 +247,13 @@ class PostgreSqlConnectionProfile(proto.Message):
     r"""Specifies connection parameters required specifically for
     PostgreSQL databases.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         host (str):
             Required. The IP or hostname of the source
@@ -238,6 +283,19 @@ class PostgreSqlConnectionProfile(proto.Message):
             If the source is a Cloud SQL database, use
             this field to provide the Cloud SQL instance ID
             of the source.
+        network_architecture (google.cloud.clouddms_v1.types.NetworkArchitecture):
+            Output only. If the source is a Cloud SQL
+            database, this field indicates the network
+            architecture it's associated with.
+        static_ip_connectivity (google.cloud.clouddms_v1.types.StaticIpConnectivity):
+            Static ip connectivity data (default, no
+            additional details needed).
+
+            This field is a member of `oneof`_ ``connectivity``.
+        private_service_connect_connectivity (google.cloud.clouddms_v1.types.PrivateServiceConnectConnectivity):
+            Private service connect connectivity.
+
+            This field is a member of `oneof`_ ``connectivity``.
     """
 
     host: str = proto.Field(
@@ -269,6 +327,119 @@ class PostgreSqlConnectionProfile(proto.Message):
         proto.STRING,
         number=7,
     )
+    network_architecture: "NetworkArchitecture" = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum="NetworkArchitecture",
+    )
+    static_ip_connectivity: "StaticIpConnectivity" = proto.Field(
+        proto.MESSAGE,
+        number=100,
+        oneof="connectivity",
+        message="StaticIpConnectivity",
+    )
+    private_service_connect_connectivity: "PrivateServiceConnectConnectivity" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=101,
+            oneof="connectivity",
+            message="PrivateServiceConnectConnectivity",
+        )
+    )
+
+
+class OracleConnectionProfile(proto.Message):
+    r"""Specifies connection parameters required specifically for
+    Oracle databases.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        host (str):
+            Required. The IP or hostname of the source
+            Oracle database.
+        port (int):
+            Required. The network port of the source
+            Oracle database.
+        username (str):
+            Required. The username that Database
+            Migration Service will use to connect to the
+            database. The value is encrypted when stored in
+            Database Migration Service.
+        password (str):
+            Required. Input only. The password for the
+            user that Database Migration Service will be
+            using to connect to the database. This field is
+            not returned on request, and the value is
+            encrypted when stored in Database Migration
+            Service.
+        password_set (bool):
+            Output only. Indicates whether a new password
+            is included in the request.
+        database_service (str):
+            Required. Database service for the Oracle
+            connection.
+        static_service_ip_connectivity (google.cloud.clouddms_v1.types.StaticServiceIpConnectivity):
+            Static Service IP connectivity.
+
+            This field is a member of `oneof`_ ``connectivity``.
+        forward_ssh_connectivity (google.cloud.clouddms_v1.types.ForwardSshTunnelConnectivity):
+            Forward SSH tunnel connectivity.
+
+            This field is a member of `oneof`_ ``connectivity``.
+        private_connectivity (google.cloud.clouddms_v1.types.PrivateConnectivity):
+            Private connectivity.
+
+            This field is a member of `oneof`_ ``connectivity``.
+    """
+
+    host: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    port: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    username: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    password: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    password_set: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    database_service: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    static_service_ip_connectivity: "StaticServiceIpConnectivity" = proto.Field(
+        proto.MESSAGE,
+        number=100,
+        oneof="connectivity",
+        message="StaticServiceIpConnectivity",
+    )
+    forward_ssh_connectivity: "ForwardSshTunnelConnectivity" = proto.Field(
+        proto.MESSAGE,
+        number=101,
+        oneof="connectivity",
+        message="ForwardSshTunnelConnectivity",
+    )
+    private_connectivity: "PrivateConnectivity" = proto.Field(
+        proto.MESSAGE,
+        number=102,
+        oneof="connectivity",
+        message="PrivateConnectivity",
+    )
 
 
 class CloudSqlConnectionProfile(proto.Message):
@@ -289,6 +460,12 @@ class CloudSqlConnectionProfile(proto.Message):
         public_ip (str):
             Output only. The Cloud SQL database
             instance's public IP.
+        additional_public_ip (str):
+            Output only. The Cloud SQL database
+            instance's additional (outgoing) public IP. Used
+            when the Cloud SQL database availability type is
+            REGIONAL (i.e. multiple zones / highly
+            available).
     """
 
     cloud_sql_id: str = proto.Field(
@@ -307,6 +484,34 @@ class CloudSqlConnectionProfile(proto.Message):
     public_ip: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    additional_public_ip: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class AlloyDbConnectionProfile(proto.Message):
+    r"""Specifies required connection parameters, and the parameters
+    required to create an AlloyDB destination cluster.
+
+    Attributes:
+        cluster_id (str):
+            Required. The AlloyDB cluster ID that this
+            connection profile is associated with.
+        settings (google.cloud.clouddms_v1.types.AlloyDbSettings):
+            Immutable. Metadata used to create the
+            destination AlloyDB cluster.
+    """
+
+    cluster_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    settings: "AlloyDbSettings" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="AlloyDbSettings",
     )
 
 
@@ -373,6 +578,17 @@ class SqlIpConfig(proto.Message):
             SQL instance is accessible for private IP. For example,
             ``projects/myProject/global/networks/default``. This setting
             can be updated, but it cannot be removed after it is set.
+        allocated_ip_range (str):
+            Optional. The name of the allocated IP
+            address range for the private IP Cloud SQL
+            instance. This name refers to an already
+            allocated IP range address. If set, the instance
+            IP address will be created in the allocated
+            range. Note that this IP address range can't be
+            modified after the instance is created. If you
+            change the VPC when configuring connectivity
+            settings for the migration job, this field is
+            not relevant.
         require_ssl (google.protobuf.wrappers_pb2.BoolValue):
             Whether SSL connections over IP should be
             enforced or not.
@@ -391,6 +607,10 @@ class SqlIpConfig(proto.Message):
     private_network: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    allocated_ip_range: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
     require_ssl: wrappers_pb2.BoolValue = proto.Field(
         proto.MESSAGE,
@@ -465,7 +685,13 @@ class CloudSqlSettings(proto.Message):
             is 10GB.
         zone (str):
             The Google Cloud Platform zone where your
-            Cloud SQL datdabse instance is located.
+            Cloud SQL database instance is located.
+        secondary_zone (str):
+            Optional. The Google Cloud Platform zone
+            where the failover Cloud SQL database instance
+            is located. Used when the Cloud SQL database
+            availability type is REGIONAL (i.e. multiple
+            zones / highly available).
         source_id (str):
             The Database Migration Service source connection profile ID,
             in the format:
@@ -478,6 +704,15 @@ class CloudSqlSettings(proto.Message):
         collation (str):
             The Cloud SQL default instance level
             collation.
+        cmek_key_name (str):
+            The KMS key name used for the csql instance.
+        availability_type (google.cloud.clouddms_v1.types.CloudSqlSettings.SqlAvailabilityType):
+            Optional. Availability type. Potential values:
+
+            -  ``ZONAL``: The instance serves data from only one zone.
+               Outages in that zone affect data availability.
+            -  ``REGIONAL``: The instance can serve data from more than
+               one zone in a region (it is highly available).
     """
 
     class SqlActivationPolicy(proto.Enum):
@@ -532,6 +767,8 @@ class CloudSqlSettings(proto.Message):
                 PostgreSQL 12.
             POSTGRES_13 (8):
                 PostgreSQL 13.
+            POSTGRES_14 (17):
+                PostgreSQL 14.
         """
         SQL_DATABASE_VERSION_UNSPECIFIED = 0
         MYSQL_5_6 = 1
@@ -542,6 +779,22 @@ class CloudSqlSettings(proto.Message):
         MYSQL_8_0 = 6
         POSTGRES_12 = 7
         POSTGRES_13 = 8
+        POSTGRES_14 = 17
+
+    class SqlAvailabilityType(proto.Enum):
+        r"""The availability type of the given Cloud SQL instance.
+
+        Values:
+            SQL_AVAILABILITY_TYPE_UNSPECIFIED (0):
+                This is an unknown Availability type.
+            ZONAL (1):
+                Zonal availablility instance.
+            REGIONAL (2):
+                Regional availability instance.
+        """
+        SQL_AVAILABILITY_TYPE_UNSPECIFIED = 0
+        ZONAL = 1
+        REGIONAL = 2
 
     database_version: SqlDatabaseVersion = proto.Field(
         proto.ENUM,
@@ -596,6 +849,10 @@ class CloudSqlSettings(proto.Message):
         proto.STRING,
         number=11,
     )
+    secondary_zone: str = proto.Field(
+        proto.STRING,
+        number=18,
+    )
     source_id: str = proto.Field(
         proto.STRING,
         number=12,
@@ -612,15 +869,205 @@ class CloudSqlSettings(proto.Message):
         proto.STRING,
         number=15,
     )
+    cmek_key_name: str = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    availability_type: SqlAvailabilityType = proto.Field(
+        proto.ENUM,
+        number=17,
+        enum=SqlAvailabilityType,
+    )
+
+
+class AlloyDbSettings(proto.Message):
+    r"""Settings for creating an AlloyDB cluster.
+
+    Attributes:
+        initial_user (google.cloud.clouddms_v1.types.AlloyDbSettings.UserPassword):
+            Required. Input only. Initial user to setup
+            during cluster creation. Required.
+        vpc_network (str):
+            Required. The resource link for the VPC network in which
+            cluster resources are created and from which they are
+            accessible via Private IP. The network must belong to the
+            same project as the cluster. It is specified in the form:
+            "projects/{project_number}/global/networks/{network_id}".
+            This is required to create a cluster.
+        labels (MutableMapping[str, str]):
+            Labels for the AlloyDB cluster created by
+            DMS. An object containing a list of 'key',
+            'value' pairs.
+        primary_instance_settings (google.cloud.clouddms_v1.types.AlloyDbSettings.PrimaryInstanceSettings):
+
+        encryption_config (google.cloud.clouddms_v1.types.AlloyDbSettings.EncryptionConfig):
+            Optional. The encryption config can be
+            specified to encrypt the data disks and other
+            persistent data resources of a cluster with a
+            customer-managed encryption key (CMEK). When
+            this field is not specified, the cluster will
+            then use default encryption scheme to protect
+            the user data.
+    """
+
+    class UserPassword(proto.Message):
+        r"""The username/password for a database user. Used for
+        specifying initial users at cluster creation time.
+
+        Attributes:
+            user (str):
+                The database username.
+            password (str):
+                The initial password for the user.
+            password_set (bool):
+                Output only. Indicates if the initial_user.password field
+                has been set.
+        """
+
+        user: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        password: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        password_set: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+
+    class PrimaryInstanceSettings(proto.Message):
+        r"""Settings for the cluster's primary instance
+
+        Attributes:
+            id (str):
+                Required. The ID of the AlloyDB primary instance. The ID
+                must satisfy the regex expression "[a-z0-9-]+".
+            machine_config (google.cloud.clouddms_v1.types.AlloyDbSettings.PrimaryInstanceSettings.MachineConfig):
+                Configuration for the machines that host the
+                underlying database engine.
+            database_flags (MutableMapping[str, str]):
+                Database flags to pass to AlloyDB when DMS is
+                creating the AlloyDB cluster and instances. See
+                the AlloyDB documentation for how these can be
+                used.
+            labels (MutableMapping[str, str]):
+                Labels for the AlloyDB primary instance
+                created by DMS. An object containing a list of
+                'key', 'value' pairs.
+            private_ip (str):
+                Output only. The private IP address for the
+                Instance. This is the connection endpoint for an
+                end-user application.
+        """
+
+        class MachineConfig(proto.Message):
+            r"""MachineConfig describes the configuration of a machine.
+
+            Attributes:
+                cpu_count (int):
+                    The number of CPU's in the VM instance.
+            """
+
+            cpu_count: int = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+
+        id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        machine_config: "AlloyDbSettings.PrimaryInstanceSettings.MachineConfig" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="AlloyDbSettings.PrimaryInstanceSettings.MachineConfig",
+            )
+        )
+        database_flags: MutableMapping[str, str] = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=6,
+        )
+        labels: MutableMapping[str, str] = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=7,
+        )
+        private_ip: str = proto.Field(
+            proto.STRING,
+            number=8,
+        )
+
+    class EncryptionConfig(proto.Message):
+        r"""EncryptionConfig describes the encryption config of a cluster
+        that is encrypted with a CMEK (customer-managed encryption key).
+
+        Attributes:
+            kms_key_name (str):
+                The fully-qualified resource name of the KMS key. Each Cloud
+                KMS key is regionalized and has the following format:
+                projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]
+        """
+
+        kms_key_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    initial_user: UserPassword = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=UserPassword,
+    )
+    vpc_network: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
+    primary_instance_settings: PrimaryInstanceSettings = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=PrimaryInstanceSettings,
+    )
+    encryption_config: EncryptionConfig = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=EncryptionConfig,
+    )
 
 
 class StaticIpConnectivity(proto.Message):
     r"""The source database will allow incoming connections from the
-    destination database's public IP. You can retrieve the Cloud SQL
-    instance's public IP from the Cloud SQL console or using Cloud
-    SQL APIs. No additional configuration is required.
+    public IP of the destination database. You can retrieve the
+    public IP of the Cloud SQL instance from the Cloud SQL console
+    or using Cloud SQL APIs. No additional configuration is
+    required.
 
     """
+
+
+class PrivateServiceConnectConnectivity(proto.Message):
+    r"""Private Service Connect connectivity
+    (https://cloud.google.com/vpc/docs/private-service-connect#service-attachments)
+
+    Attributes:
+        service_attachment (str):
+            Required. A service attachment that exposes a database, and
+            has the following format:
+            projects/{project}/regions/{region}/serviceAttachments/{service_attachment_name}
+    """
+
+    service_attachment: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ReverseSshConnectivity(proto.Message):
@@ -685,6 +1132,76 @@ class VpcPeeringConnectivity(proto.Message):
     )
 
 
+class ForwardSshTunnelConnectivity(proto.Message):
+    r"""Forward SSH Tunnel connectivity.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        hostname (str):
+            Required. Hostname for the SSH tunnel.
+        username (str):
+            Required. Username for the SSH tunnel.
+        port (int):
+            Port for the SSH tunnel, default value is 22.
+        password (str):
+            Input only. SSH password.
+
+            This field is a member of `oneof`_ ``authentication_method``.
+        private_key (str):
+            Input only. SSH private key.
+
+            This field is a member of `oneof`_ ``authentication_method``.
+    """
+
+    hostname: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    username: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    port: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    password: str = proto.Field(
+        proto.STRING,
+        number=100,
+        oneof="authentication_method",
+    )
+    private_key: str = proto.Field(
+        proto.STRING,
+        number=101,
+        oneof="authentication_method",
+    )
+
+
+class StaticServiceIpConnectivity(proto.Message):
+    r"""Static IP address connectivity configured on service project."""
+
+
+class PrivateConnectivity(proto.Message):
+    r"""Private Connectivity.
+
+    Attributes:
+        private_connection (str):
+            Required. The resource name (URI) of the
+            private connection.
+    """
+
+    private_connection: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class DatabaseType(proto.Message):
     r"""A message defining the database engine and provider.
 
@@ -721,7 +1238,7 @@ class MigrationJob(proto.Message):
         name (str):
             The name (URI) of this migration job
             resource, in the form of:
-            projects/{project}/locations/{location}/instances/{instance}.
+            projects/{project}/locations/{location}/migrationJobs/{migrationJob}.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the migration
             job resource was created. A timestamp in RFC3339
@@ -750,7 +1267,11 @@ class MigrationJob(proto.Message):
             Required. The migration job type.
         dump_path (str):
             The path to the dump file in Google Cloud Storage, in the
-            format: (gs://[BUCKET_NAME]/[OBJECT_NAME]).
+            format: (gs://[BUCKET_NAME]/[OBJECT_NAME]). This field and
+            the "dump_flags" field are mutually exclusive.
+        dump_flags (google.cloud.clouddms_v1.types.MigrationJob.DumpFlags):
+            The initial dump flags. This field and the "dump_path" field
+            are mutually exclusive.
         source (str):
             Required. The resource name (URI) of the
             source connection profile.
@@ -789,6 +1310,30 @@ class MigrationJob(proto.Message):
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. If the migration job is
             completed, the time when it was completed.
+        conversion_workspace (google.cloud.clouddms_v1.types.ConversionWorkspaceInfo):
+            The conversion workspace used by the
+            migration.
+        filter (str):
+            This field can be used to select the entities
+            to migrate as part of the migration job. It uses
+            AIP-160 notation to select a subset of the
+            entities configured on the associated
+            conversion-workspace. This field should not be
+            set on migration-jobs that are not associated
+            with a conversion workspace.
+        cmek_key_name (str):
+            The CMEK (customer-managed encryption key) fully qualified
+            key name used for the migration job. This field supports all
+            migration jobs types except for:
+
+            -  Mysql to Mysql (use the cmek field in the cloudsql
+               connection profile instead).
+            -  PostrgeSQL to PostgreSQL (use the cmek field in the
+               cloudsql connection profile instead).
+            -  PostgreSQL to AlloyDB (use the kms_key_name field in the
+               alloydb connection profile instead). Each Cloud CMEK key
+               has the following format:
+               projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]
     """
 
     class State(proto.Enum):
@@ -888,6 +1433,39 @@ class MigrationJob(proto.Message):
         ONE_TIME = 1
         CONTINUOUS = 2
 
+    class DumpFlag(proto.Message):
+        r"""Dump flag definition.
+
+        Attributes:
+            name (str):
+                The name of the flag
+            value (str):
+                The value of the flag.
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        value: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class DumpFlags(proto.Message):
+        r"""Dump flags definition.
+
+        Attributes:
+            dump_flags (MutableSequence[google.cloud.clouddms_v1.types.MigrationJob.DumpFlag]):
+                The flags for the initial dump.
+        """
+
+        dump_flags: MutableSequence["MigrationJob.DumpFlag"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="MigrationJob.DumpFlag",
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -929,6 +1507,11 @@ class MigrationJob(proto.Message):
     dump_path: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+    dump_flags: DumpFlags = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message=DumpFlags,
     )
     source: str = proto.Field(
         proto.STRING,
@@ -981,6 +1564,40 @@ class MigrationJob(proto.Message):
         number=16,
         message=timestamp_pb2.Timestamp,
     )
+    conversion_workspace: "ConversionWorkspaceInfo" = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message="ConversionWorkspaceInfo",
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=20,
+    )
+    cmek_key_name: str = proto.Field(
+        proto.STRING,
+        number=21,
+    )
+
+
+class ConversionWorkspaceInfo(proto.Message):
+    r"""A conversion workspace's version.
+
+    Attributes:
+        name (str):
+            The resource name (URI) of the conversion
+            workspace.
+        commit_id (str):
+            The commit ID of the conversion workspace.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    commit_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ConnectionProfile(proto.Message):
@@ -997,7 +1614,7 @@ class ConnectionProfile(proto.Message):
         name (str):
             The name of this connection profile resource
             in the form of
-            projects/{project}/locations/{location}/instances/{instance}.
+            projects/{project}/locations/{location}/connectionProfiles/{connectionProfile}.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the resource
             was created. A timestamp in RFC3339 UTC "Zulu"
@@ -1029,8 +1646,16 @@ class ConnectionProfile(proto.Message):
             A PostgreSQL database connection profile.
 
             This field is a member of `oneof`_ ``connection_profile``.
+        oracle (google.cloud.clouddms_v1.types.OracleConnectionProfile):
+            An Oracle database connection profile.
+
+            This field is a member of `oneof`_ ``connection_profile``.
         cloudsql (google.cloud.clouddms_v1.types.CloudSqlConnectionProfile):
             A CloudSQL database connection profile.
+
+            This field is a member of `oneof`_ ``connection_profile``.
+        alloydb (google.cloud.clouddms_v1.types.AlloyDbConnectionProfile):
+            An AlloyDB cluster connection profile.
 
             This field is a member of `oneof`_ ``connection_profile``.
         error (google.rpc.status_pb2.Status):
@@ -1114,11 +1739,23 @@ class ConnectionProfile(proto.Message):
         oneof="connection_profile",
         message="PostgreSqlConnectionProfile",
     )
+    oracle: "OracleConnectionProfile" = proto.Field(
+        proto.MESSAGE,
+        number=104,
+        oneof="connection_profile",
+        message="OracleConnectionProfile",
+    )
     cloudsql: "CloudSqlConnectionProfile" = proto.Field(
         proto.MESSAGE,
         number=102,
         oneof="connection_profile",
         message="CloudSqlConnectionProfile",
+    )
+    alloydb: "AlloyDbConnectionProfile" = proto.Field(
+        proto.MESSAGE,
+        number=105,
+        oneof="connection_profile",
+        message="AlloyDbConnectionProfile",
     )
     error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
@@ -1205,6 +1842,20 @@ class MigrationJobVerificationError(proto.Message):
             CANT_RESTART_RUNNING_MIGRATION (21):
                 Migration is already running at the time of
                 restart request.
+            TABLES_WITH_LIMITED_SUPPORT (24):
+                The source has tables with limited support.
+                E.g. PostgreSQL tables without primary keys.
+            UNSUPPORTED_DATABASE_LOCALE (25):
+                The source uses an unsupported locale.
+            UNSUPPORTED_DATABASE_FDW_CONFIG (26):
+                The source uses an unsupported Foreign Data
+                Wrapper configuration.
+            ERROR_RDBMS (27):
+                There was an underlying RDBMS error.
+            SOURCE_SIZE_EXCEEDS_THRESHOLD (28):
+                The source DB size in Bytes exceeds a certain
+                threshold. The migration might require an
+                increase of quota, or might not be supported.
         """
         ERROR_CODE_UNSPECIFIED = 0
         CONNECTION_FAILURE = 1
@@ -1226,6 +1877,11 @@ class MigrationJobVerificationError(proto.Message):
         UNSUPPORTED_TABLE_DEFINITION = 18
         UNSUPPORTED_DEFINER = 19
         CANT_RESTART_RUNNING_MIGRATION = 21
+        TABLES_WITH_LIMITED_SUPPORT = 24
+        UNSUPPORTED_DATABASE_LOCALE = 25
+        UNSUPPORTED_DATABASE_FDW_CONFIG = 26
+        ERROR_RDBMS = 27
+        SOURCE_SIZE_EXCEEDS_THRESHOLD = 28
 
     error_code: ErrorCode = proto.Field(
         proto.ENUM,
@@ -1239,6 +1895,137 @@ class MigrationJobVerificationError(proto.Message):
     error_detail_message: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class PrivateConnection(proto.Message):
+    r"""The PrivateConnection resource is used to establish private
+    connectivity with the customer's network.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            The name of the resource.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The create time of the resource.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The last update time of the
+            resource.
+        labels (MutableMapping[str, str]):
+            The resource labels for private connections to use to
+            annotate any related underlying resources such as Compute
+            Engine VMs. An object containing a list of "key": "value"
+            pairs.
+
+            Example:
+            ``{ "name": "wrench", "mass": "1.3kg", "count": "3" }``.
+        display_name (str):
+            The private connection display name.
+        state (google.cloud.clouddms_v1.types.PrivateConnection.State):
+            Output only. The state of the private
+            connection.
+        error (google.rpc.status_pb2.Status):
+            Output only. The error details in case of
+            state FAILED.
+        vpc_peering_config (google.cloud.clouddms_v1.types.VpcPeeringConfig):
+            VPC peering configuration.
+
+            This field is a member of `oneof`_ ``connectivity``.
+    """
+
+    class State(proto.Enum):
+        r"""Private Connection state.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                No description available.
+            CREATING (1):
+                The private connection is in creation state -
+                creating resources.
+            CREATED (2):
+                The private connection has been created with
+                all of its resources.
+            FAILED (3):
+                The private connection creation has failed.
+            DELETING (4):
+                The private connection is being deleted.
+            FAILED_TO_DELETE (5):
+                Delete request has failed, resource is in
+                invalid state.
+            DELETED (6):
+                The private connection has been deleted.
+        """
+        STATE_UNSPECIFIED = 0
+        CREATING = 1
+        CREATED = 2
+        FAILED = 3
+        DELETING = 4
+        FAILED_TO_DELETE = 5
+        DELETED = 6
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=State,
+    )
+    error: status_pb2.Status = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=status_pb2.Status,
+    )
+    vpc_peering_config: "VpcPeeringConfig" = proto.Field(
+        proto.MESSAGE,
+        number=100,
+        oneof="connectivity",
+        message="VpcPeeringConfig",
+    )
+
+
+class VpcPeeringConfig(proto.Message):
+    r"""The VPC peering configuration is used to create VPC peering
+    with the consumer's VPC.
+
+    Attributes:
+        vpc_name (str):
+            Required. Fully qualified name of the VPC
+            that Database Migration Service will peer to.
+        subnet (str):
+            Required. A free subnet for peering. (CIDR of
+            /29)
+    """
+
+    vpc_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    subnet: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

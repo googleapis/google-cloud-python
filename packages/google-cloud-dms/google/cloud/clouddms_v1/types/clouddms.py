@@ -21,7 +21,10 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.clouddms_v1.types import clouddms_resources
+from google.cloud.clouddms_v1.types import (
+    clouddms_resources,
+    conversionworkspace_resources,
+)
 
 __protobuf__ = proto.module(
     package="google.cloud.clouddms.v1",
@@ -48,25 +51,50 @@ __protobuf__ = proto.module(
         "CreateConnectionProfileRequest",
         "UpdateConnectionProfileRequest",
         "DeleteConnectionProfileRequest",
+        "CreatePrivateConnectionRequest",
+        "ListPrivateConnectionsRequest",
+        "ListPrivateConnectionsResponse",
+        "DeletePrivateConnectionRequest",
+        "GetPrivateConnectionRequest",
         "OperationMetadata",
+        "ListConversionWorkspacesRequest",
+        "ListConversionWorkspacesResponse",
+        "GetConversionWorkspaceRequest",
+        "CreateConversionWorkspaceRequest",
+        "UpdateConversionWorkspaceRequest",
+        "DeleteConversionWorkspaceRequest",
+        "CommitConversionWorkspaceRequest",
+        "RollbackConversionWorkspaceRequest",
+        "ApplyConversionWorkspaceRequest",
+        "SeedConversionWorkspaceRequest",
+        "ConvertConversionWorkspaceRequest",
+        "ImportMappingRulesRequest",
+        "DescribeDatabaseEntitiesRequest",
+        "DescribeDatabaseEntitiesResponse",
+        "SearchBackgroundJobsRequest",
+        "SearchBackgroundJobsResponse",
+        "DescribeConversionWorkspaceRevisionsRequest",
+        "DescribeConversionWorkspaceRevisionsResponse",
+        "FetchStaticIpsRequest",
+        "FetchStaticIpsResponse",
     },
 )
 
 
 class ListMigrationJobsRequest(proto.Message):
-    r"""Retrieve a list of all migration jobs in a given project and
+    r"""Retrieves a list of all migration jobs in a given project and
     location.
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this
+            Required. The parent which owns this
             collection of migrationJobs.
         page_size (int):
             The maximum number of migration jobs to
             return. The service may return fewer than this
             value. If unspecified, at most 50 migration jobs
             will be returned. The maximum value is 1000;
-            values above 1000 will be coerced to 1000.
+            values above 1000 are coerced to 1000.
         page_token (str):
             The nextPageToken value received in the
             previous call to migrationJobs.list, used in the
@@ -123,7 +151,7 @@ class ListMigrationJobsResponse(proto.Message):
         migration_jobs (MutableSequence[google.cloud.clouddms_v1.types.MigrationJob]):
             The list of migration jobs objects.
         next_page_token (str):
-            A token, which can be sent as ``page_token`` to retrieve the
+            A token which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
         unreachable (MutableSequence[str]):
@@ -172,7 +200,7 @@ class CreateMigrationJobRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this
+            Required. The parent which owns this
             collection of migration jobs.
         migration_job_id (str):
             Required. The ID of the instance to create.
@@ -181,13 +209,13 @@ class CreateMigrationJobRequest(proto.Message):
             job <https://cloud.google.com/database-migration/docs/reference/rest/v1/projects.locations.migrationJobs>`__
             object.
         request_id (str):
-            A unique id used to identify the request. If the server
-            receives two requests with the same id, then the second
-            request will be ignored.
+            A unique ID used to identify the request. If the server
+            receives two requests with the same ID, then the second
+            request is ignored.
 
             It is recommended to always set this value to a UUID.
 
-            The id must contain only letters (a-z, A-Z), numbers (0-9),
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
             underscores (_), and hyphens (-). The maximum length is 40
             characters.
     """
@@ -217,19 +245,19 @@ class UpdateMigrationJobRequest(proto.Message):
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Field mask is used to specify the
-            fields to be overwritten in the migration job
-            resource by the update.
+            fields to be overwritten by the update in the
+            conversion workspace resource.
         migration_job (google.cloud.clouddms_v1.types.MigrationJob):
             Required. The migration job parameters to
             update.
         request_id (str):
-            A unique id used to identify the request. If the server
-            receives two requests with the same id, then the second
-            request will be ignored.
+            A unique ID used to identify the request. If the server
+            receives two requests with the same ID, then the second
+            request is ignored.
 
             It is recommended to always set this value to a UUID.
 
-            The id must contain only letters (a-z, A-Z), numbers (0-9),
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
             underscores (_), and hyphens (-). The maximum length is 40
             characters.
     """
@@ -258,13 +286,13 @@ class DeleteMigrationJobRequest(proto.Message):
             Required. Name of the migration job resource
             to delete.
         request_id (str):
-            A unique id used to identify the request. If the server
-            receives two requests with the same id, then the second
-            request will be ignored.
+            A unique ID used to identify the request. If the server
+            receives two requests with the same ID, then the second
+            request is ignored.
 
             It is recommended to always set this value to a UUID.
 
-            The id must contain only letters (a-z, A-Z), numbers (0-9),
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
             underscores (_), and hyphens (-). The maximum length is 40
             characters.
         force (bool):
@@ -401,7 +429,7 @@ class GenerateSshScriptRequest(proto.Message):
             This field is a member of `oneof`_ ``vm_config``.
         vm_port (int):
             The port that will be open on the bastion
-            host
+            host.
     """
 
     migration_job: str = proto.Field(
@@ -492,14 +520,14 @@ class ListConnectionProfilesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this
+            Required. The parent which owns this
             collection of connection profiles.
         page_size (int):
             The maximum number of connection profiles to
             return. The service may return fewer than this
             value. If unspecified, at most 50 connection
             profiles will be returned. The maximum value is
-            1000; values above 1000 will be coerced to 1000.
+            1000; values above 1000 are coerced to 1000.
         page_token (str):
             A page token, received from a previous
             ``ListConnectionProfiles`` call. Provide this to retrieve
@@ -521,7 +549,8 @@ class ListConnectionProfilesRequest(proto.Message):
             %lt;my_username%gt;** to list all connection profiles
             configured to connect with a specific username.
         order_by (str):
-            the order by fields for the result.
+            A comma-separated list of fields to order
+            results according to.
     """
 
     parent: str = proto.Field(
@@ -553,7 +582,7 @@ class ListConnectionProfilesResponse(proto.Message):
         connection_profiles (MutableSequence[google.cloud.clouddms_v1.types.ConnectionProfile]):
             The response list of connection profiles.
         next_page_token (str):
-            A token, which can be sent as ``page_token`` to retrieve the
+            A token which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
         unreachable (MutableSequence[str]):
@@ -601,7 +630,7 @@ class CreateConnectionProfileRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this
+            Required. The parent which owns this
             collection of connection profiles.
         connection_profile_id (str):
             Required. The connection profile identifier.
@@ -609,15 +638,24 @@ class CreateConnectionProfileRequest(proto.Message):
             Required. The create request body including
             the connection profile data
         request_id (str):
-            A unique id used to identify the request. If the server
-            receives two requests with the same id, then the second
-            request will be ignored.
+            Optional. A unique ID used to identify the request. If the
+            server receives two requests with the same ID, then the
+            second request is ignored.
 
             It is recommended to always set this value to a UUID.
 
-            The id must contain only letters (a-z, A-Z), numbers (0-9),
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
             underscores (_), and hyphens (-). The maximum length is 40
             characters.
+        validate_only (bool):
+            Optional. Only validate the connection
+            profile, but don't create any resources. The
+            default is false. Only supported for Oracle
+            connection profiles.
+        skip_validation (bool):
+            Optional. Create the connection profile
+            without validating it. The default is false.
+            Only supported for Oracle connection profiles.
     """
 
     parent: str = proto.Field(
@@ -637,6 +675,14 @@ class CreateConnectionProfileRequest(proto.Message):
         proto.STRING,
         number=4,
     )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    skip_validation: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
 
 
 class UpdateConnectionProfileRequest(proto.Message):
@@ -645,21 +691,30 @@ class UpdateConnectionProfileRequest(proto.Message):
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Field mask is used to specify the
-            fields to be overwritten in the connection
-            profile resource by the update.
+            fields to be overwritten by the update in the
+            conversion workspace resource.
         connection_profile (google.cloud.clouddms_v1.types.ConnectionProfile):
             Required. The connection profile parameters
             to update.
         request_id (str):
-            A unique id used to identify the request. If the server
-            receives two requests with the same id, then the second
-            request will be ignored.
+            Optional. A unique ID used to identify the request. If the
+            server receives two requests with the same ID, then the
+            second request is ignored.
 
             It is recommended to always set this value to a UUID.
 
-            The id must contain only letters (a-z, A-Z), numbers (0-9),
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
             underscores (_), and hyphens (-). The maximum length is 40
             characters.
+        validate_only (bool):
+            Optional. Only validate the connection
+            profile, but don't update any resources. The
+            default is false. Only supported for Oracle
+            connection profiles.
+        skip_validation (bool):
+            Optional. Update the connection profile
+            without validating it. The default is false.
+            Only supported for Oracle connection profiles.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(
@@ -676,6 +731,14 @@ class UpdateConnectionProfileRequest(proto.Message):
         proto.STRING,
         number=3,
     )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    skip_validation: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class DeleteConnectionProfileRequest(proto.Message):
@@ -686,13 +749,13 @@ class DeleteConnectionProfileRequest(proto.Message):
             Required. Name of the connection profile
             resource to delete.
         request_id (str):
-            A unique id used to identify the request. If the server
-            receives two requests with the same id, then the second
-            request will be ignored.
+            A unique ID used to identify the request. If the server
+            receives two requests with the same ID, then the second
+            request is ignored.
 
             It is recommended to always set this value to a UUID.
 
-            The id must contain only letters (a-z, A-Z), numbers (0-9),
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
             underscores (_), and hyphens (-). The maximum length is 40
             characters.
         force (bool):
@@ -712,6 +775,192 @@ class DeleteConnectionProfileRequest(proto.Message):
     force: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+
+
+class CreatePrivateConnectionRequest(proto.Message):
+    r"""Request message to create a new private connection in the
+    specified project and region.
+
+    Attributes:
+        parent (str):
+            Required. The parent that owns the collection
+            of PrivateConnections.
+        private_connection_id (str):
+            Required. The private connection identifier.
+        private_connection (google.cloud.clouddms_v1.types.PrivateConnection):
+            Required. The private connection resource to
+            create.
+        request_id (str):
+            Optional. A unique ID used to identify the request. If the
+            server receives two requests with the same ID, then the
+            second request is ignored.
+
+            It is recommended to always set this value to a UUID.
+
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
+            underscores (_), and hyphens (-). The maximum length is 40
+            characters.
+        skip_validation (bool):
+            Optional. If set to true, will skip
+            validations.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    private_connection_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    private_connection: clouddms_resources.PrivateConnection = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=clouddms_resources.PrivateConnection,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    skip_validation: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+
+
+class ListPrivateConnectionsRequest(proto.Message):
+    r"""Request message to retrieve a list of private connections in
+    a given project and location.
+
+    Attributes:
+        parent (str):
+            Required. The parent that owns the collection
+            of private connections.
+        page_size (int):
+            Maximum number of private connections to
+            return. If unspecified, at most 50 private
+            connections that are returned. The maximum value
+            is 1000; values above 1000 are coerced to 1000.
+        page_token (str):
+            Page token received from a previous
+            ``ListPrivateConnections`` call. Provide this to retrieve
+            the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListPrivateConnections`` must match the call that provided
+            the page token.
+        filter (str):
+            A filter expression that filters private connections listed
+            in the response. The expression must specify the field name,
+            a comparison operator, and the value that you want to use
+            for filtering. The value must be a string, a number, or a
+            boolean. The comparison operator must be either =, !=, >, or
+            <. For example, list private connections created this year
+            by specifying **createTime %gt;
+            2021-01-01T00:00:00.000000000Z**.
+        order_by (str):
+            Order by fields for the result.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListPrivateConnectionsResponse(proto.Message):
+    r"""Response message for 'ListPrivateConnections' request.
+
+    Attributes:
+        private_connections (MutableSequence[google.cloud.clouddms_v1.types.PrivateConnection]):
+            List of private connections.
+        next_page_token (str):
+            A token which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    private_connections: MutableSequence[
+        clouddms_resources.PrivateConnection
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=clouddms_resources.PrivateConnection,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class DeletePrivateConnectionRequest(proto.Message):
+    r"""Request message to delete a private connection.
+
+    Attributes:
+        name (str):
+            Required. The name of the private connection
+            to delete.
+        request_id (str):
+            Optional. A unique ID used to identify the request. If the
+            server receives two requests with the same ID, then the
+            second request is ignored.
+
+            It is recommended to always set this value to a UUID.
+
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
+            underscores (_), and hyphens (-). The maximum length is 40
+            characters.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetPrivateConnectionRequest(proto.Message):
+    r"""Request message to get a private connection resource.
+
+    Attributes:
+        name (str):
+            Required. The name of the private connection
+            to get.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -774,6 +1023,715 @@ class OperationMetadata(proto.Message):
     api_version: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+
+
+class ListConversionWorkspacesRequest(proto.Message):
+    r"""Retrieve a list of all conversion workspaces in a given
+    project and location.
+
+    Attributes:
+        parent (str):
+            Required. The parent which owns this
+            collection of conversion workspaces.
+        page_size (int):
+            The maximum number of conversion workspaces
+            to return. The service may return fewer than
+            this value. If unspecified, at most 50 sets are
+            returned.
+        page_token (str):
+            The nextPageToken value received in the
+            previous call to conversionWorkspaces.list, used
+            in the subsequent request to retrieve the next
+            page of results. On first call this should be
+            left blank. When paginating, all other
+            parameters provided to conversionWorkspaces.list
+            must match the call that provided the page
+            token.
+        filter (str):
+            A filter expression that filters conversion workspaces
+            listed in the response. The expression must specify the
+            field name, a comparison operator, and the value that you
+            want to use for filtering. The value must be a string, a
+            number, or a boolean. The comparison operator must be either
+            =, !=, >, or <. For example, list conversion workspaces
+            created this year by specifying **createTime %gt;
+            2020-01-01T00:00:00.000000000Z.** You can also filter nested
+            fields. For example, you could specify **source.version =
+            "12.c.1"** to select all conversion workspaces with source
+            database version equal to 12.c.1.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListConversionWorkspacesResponse(proto.Message):
+    r"""Response message for 'ListConversionWorkspaces' request.
+
+    Attributes:
+        conversion_workspaces (MutableSequence[google.cloud.clouddms_v1.types.ConversionWorkspace]):
+            The list of conversion workspace objects.
+        next_page_token (str):
+            A token which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    conversion_workspaces: MutableSequence[
+        conversionworkspace_resources.ConversionWorkspace
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=conversionworkspace_resources.ConversionWorkspace,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetConversionWorkspaceRequest(proto.Message):
+    r"""Request message for 'GetConversionWorkspace' request.
+
+    Attributes:
+        name (str):
+            Required. Name of the conversion workspace
+            resource to get.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateConversionWorkspaceRequest(proto.Message):
+    r"""Request message to create a new Conversion Workspace
+    in the specified project and region.
+
+    Attributes:
+        parent (str):
+            Required. The parent which owns this
+            collection of conversion workspaces.
+        conversion_workspace_id (str):
+            Required. The ID of the conversion workspace
+            to create.
+        conversion_workspace (google.cloud.clouddms_v1.types.ConversionWorkspace):
+            Required. Represents a conversion workspace
+            object.
+        request_id (str):
+            A unique ID used to identify the request. If the server
+            receives two requests with the same ID, then the second
+            request is ignored.
+
+            It is recommended to always set this value to a UUID.
+
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
+            underscores (_), and hyphens (-). The maximum length is 40
+            characters.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    conversion_workspace_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    conversion_workspace: conversionworkspace_resources.ConversionWorkspace = (
+        proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=conversionworkspace_resources.ConversionWorkspace,
+        )
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class UpdateConversionWorkspaceRequest(proto.Message):
+    r"""Request message for 'UpdateConversionWorkspace' request.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. Field mask is used to specify the
+            fields to be overwritten by the update in the
+            conversion workspace resource.
+        conversion_workspace (google.cloud.clouddms_v1.types.ConversionWorkspace):
+            Required. The conversion workspace parameters
+            to update.
+        request_id (str):
+            A unique ID used to identify the request. If the server
+            receives two requests with the same ID, then the second
+            request is ignored.
+
+            It is recommended to always set this value to a UUID.
+
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
+            underscores (_), and hyphens (-). The maximum length is 40
+            characters.
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    conversion_workspace: conversionworkspace_resources.ConversionWorkspace = (
+        proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=conversionworkspace_resources.ConversionWorkspace,
+        )
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class DeleteConversionWorkspaceRequest(proto.Message):
+    r"""Request message for 'DeleteConversionWorkspace' request.
+
+    Attributes:
+        name (str):
+            Required. Name of the conversion workspace
+            resource to delete.
+        request_id (str):
+            A unique ID used to identify the request. If the server
+            receives two requests with the same ID, then the second
+            request is ignored.
+
+            It is recommended to always set this value to a UUID.
+
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
+            underscores (_), and hyphens (-). The maximum length is 40
+            characters.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CommitConversionWorkspaceRequest(proto.Message):
+    r"""Request message for 'CommitConversionWorkspace' request.
+
+    Attributes:
+        name (str):
+            Required. Name of the conversion workspace
+            resource to commit.
+        commit_name (str):
+            Optional. Optional name of the commit.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    commit_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class RollbackConversionWorkspaceRequest(proto.Message):
+    r"""Request message for 'RollbackConversionWorkspace' request.
+
+    Attributes:
+        name (str):
+            Required. Name of the conversion workspace
+            resource to roll back to.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ApplyConversionWorkspaceRequest(proto.Message):
+    r"""Request message for 'ApplyConversionWorkspace' request.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Required. The name of the conversion workspace resource for
+            which to apply the draft tree. Must be in the form of:
+            projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
+        filter (str):
+            Filter which entities to apply. Leaving this
+            field empty will apply all of the entities.
+            Supports Google AIP 160 based filtering.
+        connection_profile (str):
+            Fully qualified (Uri) name of the destination
+            connection profile.
+
+            This field is a member of `oneof`_ ``destination``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    connection_profile: str = proto.Field(
+        proto.STRING,
+        number=100,
+        oneof="destination",
+    )
+
+
+class SeedConversionWorkspaceRequest(proto.Message):
+    r"""Request message for 'SeedConversionWorkspace' request.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Name of the conversion workspace resource to seed with new
+            database structure, in the form of:
+            projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
+        auto_commit (bool):
+            Should the conversion workspace be committed
+            automatically after the seed operation.
+        source_connection_profile (str):
+            Fully qualified (Uri) name of the source
+            connection profile.
+
+            This field is a member of `oneof`_ ``seed_from``.
+        destination_connection_profile (str):
+            Fully qualified (Uri) name of the destination
+            connection profile.
+
+            This field is a member of `oneof`_ ``seed_from``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    auto_commit: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    source_connection_profile: str = proto.Field(
+        proto.STRING,
+        number=100,
+        oneof="seed_from",
+    )
+    destination_connection_profile: str = proto.Field(
+        proto.STRING,
+        number=101,
+        oneof="seed_from",
+    )
+
+
+class ConvertConversionWorkspaceRequest(proto.Message):
+    r"""Request message for 'ConvertConversionWorkspace' request.
+
+    Attributes:
+        name (str):
+            Name of the conversion workspace resource to convert in the
+            form of:
+            projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
+        auto_commit (bool):
+            Specifies whether the conversion workspace is
+            to be committed automatically after the
+            conversion.
+        filter (str):
+            Filter the entities to convert. Leaving this
+            field empty will convert all of the entities.
+            Supports Google AIP-160 style filtering.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    auto_commit: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ImportMappingRulesRequest(proto.Message):
+    r"""Request message for 'ImportMappingRules' request.
+
+    Attributes:
+        parent (str):
+            Required. Name of the conversion workspace resource to
+            import the rules to in the form of:
+            projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
+        rules_format (google.cloud.clouddms_v1.types.ImportRulesFileFormat):
+            The format of the rules content file.
+        rules_files (MutableSequence[google.cloud.clouddms_v1.types.ImportMappingRulesRequest.RulesFile]):
+            One or more rules files.
+        auto_commit (bool):
+            Should the conversion workspace be committed
+            automatically after the import operation.
+    """
+
+    class RulesFile(proto.Message):
+        r"""Details of a single rules file.
+
+        Attributes:
+            rules_source_filename (str):
+                The filename of the rules that needs to be
+                converted. The filename is used mainly so that
+                future logs of the import rules job contain it,
+                and can therefore be searched by it.
+            rules_content (str):
+                The text content of the rules that needs to
+                be converted.
+        """
+
+        rules_source_filename: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        rules_content: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    rules_format: conversionworkspace_resources.ImportRulesFileFormat = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=conversionworkspace_resources.ImportRulesFileFormat,
+    )
+    rules_files: MutableSequence[RulesFile] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=RulesFile,
+    )
+    auto_commit: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+
+
+class DescribeDatabaseEntitiesRequest(proto.Message):
+    r"""Request message for 'DescribeDatabaseEntities' request.
+
+    Attributes:
+        conversion_workspace (str):
+            Required. Name of the conversion workspace resource whose
+            database entities are described. Must be in the form of:
+            projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
+        page_size (int):
+            The maximum number of entities to return. The
+            service may return fewer entities than the value
+            specifies.
+        page_token (str):
+            The nextPageToken value received in the
+            previous call to
+            conversionWorkspace.describeDatabaseEntities,
+            used in the subsequent request to retrieve the
+            next page of results. On first call this should
+            be left blank. When paginating, all other
+            parameters provided to
+            conversionWorkspace.describeDatabaseEntities
+            must match the call that provided the page
+            token.
+        tree (google.cloud.clouddms_v1.types.DescribeDatabaseEntitiesRequest.DBTreeType):
+            The tree to fetch.
+        uncommitted (bool):
+            Whether to retrieve the latest committed version of the
+            entities or the latest version. This field is ignored if a
+            specific commit_id is specified.
+        commit_id (str):
+            Request a specific commit ID. If not
+            specified, the entities from the latest commit
+            are returned.
+        filter (str):
+            Filter the returned entities based on AIP-160
+            standard.
+    """
+
+    class DBTreeType(proto.Enum):
+        r"""The type of a tree to return
+
+        Values:
+            DB_TREE_TYPE_UNSPECIFIED (0):
+                Unspecified tree type.
+            SOURCE_TREE (1):
+                The source database tree.
+            DRAFT_TREE (2):
+                The draft database tree.
+            DESTINATION_TREE (3):
+                The destination database tree.
+        """
+        DB_TREE_TYPE_UNSPECIFIED = 0
+        SOURCE_TREE = 1
+        DRAFT_TREE = 2
+        DESTINATION_TREE = 3
+
+    conversion_workspace: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    tree: DBTreeType = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=DBTreeType,
+    )
+    uncommitted: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+    )
+    commit_id: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+
+
+class DescribeDatabaseEntitiesResponse(proto.Message):
+    r"""Response message for 'DescribeDatabaseEntities' request.
+
+    Attributes:
+        database_entities (MutableSequence[google.cloud.clouddms_v1.types.DatabaseEntity]):
+            The list of database entities for the
+            conversion workspace.
+        next_page_token (str):
+            A token which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    database_entities: MutableSequence[
+        conversionworkspace_resources.DatabaseEntity
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=conversionworkspace_resources.DatabaseEntity,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class SearchBackgroundJobsRequest(proto.Message):
+    r"""Request message for 'SearchBackgroundJobs' request.
+
+    Attributes:
+        conversion_workspace (str):
+            Required. Name of the conversion workspace resource whose
+            jobs are listed, in the form of:
+            projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
+        return_most_recent_per_job_type (bool):
+            Optional. Whether or not to return just the
+            most recent job per job type,
+        max_size (int):
+            Optional. The maximum number of jobs to
+            return. The service may return fewer than this
+            value. If unspecified, at most 100 jobs are
+            returned. The maximum value is 100; values above
+            100 are coerced to 100.
+        completed_until_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. If provided, only returns jobs that
+            completed until (not including) the given
+            timestamp.
+    """
+
+    conversion_workspace: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    return_most_recent_per_job_type: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    max_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    completed_until_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class SearchBackgroundJobsResponse(proto.Message):
+    r"""Response message for 'SearchBackgroundJobs' request.
+
+    Attributes:
+        jobs (MutableSequence[google.cloud.clouddms_v1.types.BackgroundJobLogEntry]):
+            The list of conversion workspace mapping
+            rules.
+    """
+
+    jobs: MutableSequence[
+        conversionworkspace_resources.BackgroundJobLogEntry
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=conversionworkspace_resources.BackgroundJobLogEntry,
+    )
+
+
+class DescribeConversionWorkspaceRevisionsRequest(proto.Message):
+    r"""Request message for 'DescribeConversionWorkspaceRevisions'
+    request.
+
+    Attributes:
+        conversion_workspace (str):
+            Required. Name of the conversion workspace resource whose
+            revisions are listed. Must be in the form of:
+            projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
+        commit_id (str):
+            Optional. Optional filter to request a
+            specific commit ID.
+    """
+
+    conversion_workspace: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    commit_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class DescribeConversionWorkspaceRevisionsResponse(proto.Message):
+    r"""Response message for 'DescribeConversionWorkspaceRevisions'
+    request.
+
+    Attributes:
+        revisions (MutableSequence[google.cloud.clouddms_v1.types.ConversionWorkspace]):
+            The list of conversion workspace revisions.
+    """
+
+    revisions: MutableSequence[
+        conversionworkspace_resources.ConversionWorkspace
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=conversionworkspace_resources.ConversionWorkspace,
+    )
+
+
+class FetchStaticIpsRequest(proto.Message):
+    r"""Request message for 'FetchStaticIps' request.
+
+    Attributes:
+        name (str):
+            Required. The resource name for the location for which
+            static IPs should be returned. Must be in the format
+            ``projects/*/locations/*``.
+        page_size (int):
+            Maximum number of IPs to return.
+        page_token (str):
+            A page token, received from a previous ``FetchStaticIps``
+            call.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class FetchStaticIpsResponse(proto.Message):
+    r"""Response message for a 'FetchStaticIps' request.
+
+    Attributes:
+        static_ips (MutableSequence[str]):
+            List of static IPs.
+        next_page_token (str):
+            A token that can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    static_ips: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

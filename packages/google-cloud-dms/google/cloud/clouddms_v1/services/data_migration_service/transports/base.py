@@ -22,11 +22,18 @@ from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.clouddms_v1 import gapic_version as package_version
-from google.cloud.clouddms_v1.types import clouddms, clouddms_resources
+from google.cloud.clouddms_v1.types import (
+    clouddms,
+    clouddms_resources,
+    conversionworkspace_resources,
+)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -208,6 +215,101 @@ class DataMigrationServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.create_private_connection: gapic_v1.method.wrap_method(
+                self.create_private_connection,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_private_connection: gapic_v1.method.wrap_method(
+                self.get_private_connection,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_private_connections: gapic_v1.method.wrap_method(
+                self.list_private_connections,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_private_connection: gapic_v1.method.wrap_method(
+                self.delete_private_connection,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_conversion_workspace: gapic_v1.method.wrap_method(
+                self.get_conversion_workspace,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_conversion_workspaces: gapic_v1.method.wrap_method(
+                self.list_conversion_workspaces,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_conversion_workspace: gapic_v1.method.wrap_method(
+                self.create_conversion_workspace,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_conversion_workspace: gapic_v1.method.wrap_method(
+                self.update_conversion_workspace,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_conversion_workspace: gapic_v1.method.wrap_method(
+                self.delete_conversion_workspace,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.seed_conversion_workspace: gapic_v1.method.wrap_method(
+                self.seed_conversion_workspace,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.import_mapping_rules: gapic_v1.method.wrap_method(
+                self.import_mapping_rules,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.convert_conversion_workspace: gapic_v1.method.wrap_method(
+                self.convert_conversion_workspace,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.commit_conversion_workspace: gapic_v1.method.wrap_method(
+                self.commit_conversion_workspace,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.rollback_conversion_workspace: gapic_v1.method.wrap_method(
+                self.rollback_conversion_workspace,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.apply_conversion_workspace: gapic_v1.method.wrap_method(
+                self.apply_conversion_workspace,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.describe_database_entities: gapic_v1.method.wrap_method(
+                self.describe_database_entities,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.search_background_jobs: gapic_v1.method.wrap_method(
+                self.search_background_jobs,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.describe_conversion_workspace_revisions: gapic_v1.method.wrap_method(
+                self.describe_conversion_workspace_revisions,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.fetch_static_ips: gapic_v1.method.wrap_method(
+                self.fetch_static_ips,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -385,6 +487,284 @@ class DataMigrationServiceTransport(abc.ABC):
     ) -> Callable[
         [clouddms.DeleteConnectionProfileRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_private_connection(
+        self,
+    ) -> Callable[
+        [clouddms.CreatePrivateConnectionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_private_connection(
+        self,
+    ) -> Callable[
+        [clouddms.GetPrivateConnectionRequest],
+        Union[
+            clouddms_resources.PrivateConnection,
+            Awaitable[clouddms_resources.PrivateConnection],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_private_connections(
+        self,
+    ) -> Callable[
+        [clouddms.ListPrivateConnectionsRequest],
+        Union[
+            clouddms.ListPrivateConnectionsResponse,
+            Awaitable[clouddms.ListPrivateConnectionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_private_connection(
+        self,
+    ) -> Callable[
+        [clouddms.DeletePrivateConnectionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_conversion_workspace(
+        self,
+    ) -> Callable[
+        [clouddms.GetConversionWorkspaceRequest],
+        Union[
+            conversionworkspace_resources.ConversionWorkspace,
+            Awaitable[conversionworkspace_resources.ConversionWorkspace],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_conversion_workspaces(
+        self,
+    ) -> Callable[
+        [clouddms.ListConversionWorkspacesRequest],
+        Union[
+            clouddms.ListConversionWorkspacesResponse,
+            Awaitable[clouddms.ListConversionWorkspacesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_conversion_workspace(
+        self,
+    ) -> Callable[
+        [clouddms.CreateConversionWorkspaceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_conversion_workspace(
+        self,
+    ) -> Callable[
+        [clouddms.UpdateConversionWorkspaceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_conversion_workspace(
+        self,
+    ) -> Callable[
+        [clouddms.DeleteConversionWorkspaceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def seed_conversion_workspace(
+        self,
+    ) -> Callable[
+        [clouddms.SeedConversionWorkspaceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def import_mapping_rules(
+        self,
+    ) -> Callable[
+        [clouddms.ImportMappingRulesRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def convert_conversion_workspace(
+        self,
+    ) -> Callable[
+        [clouddms.ConvertConversionWorkspaceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def commit_conversion_workspace(
+        self,
+    ) -> Callable[
+        [clouddms.CommitConversionWorkspaceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def rollback_conversion_workspace(
+        self,
+    ) -> Callable[
+        [clouddms.RollbackConversionWorkspaceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def apply_conversion_workspace(
+        self,
+    ) -> Callable[
+        [clouddms.ApplyConversionWorkspaceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def describe_database_entities(
+        self,
+    ) -> Callable[
+        [clouddms.DescribeDatabaseEntitiesRequest],
+        Union[
+            clouddms.DescribeDatabaseEntitiesResponse,
+            Awaitable[clouddms.DescribeDatabaseEntitiesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def search_background_jobs(
+        self,
+    ) -> Callable[
+        [clouddms.SearchBackgroundJobsRequest],
+        Union[
+            clouddms.SearchBackgroundJobsResponse,
+            Awaitable[clouddms.SearchBackgroundJobsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def describe_conversion_workspace_revisions(
+        self,
+    ) -> Callable[
+        [clouddms.DescribeConversionWorkspaceRevisionsRequest],
+        Union[
+            clouddms.DescribeConversionWorkspaceRevisionsResponse,
+            Awaitable[clouddms.DescribeConversionWorkspaceRevisionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_static_ips(
+        self,
+    ) -> Callable[
+        [clouddms.FetchStaticIpsRequest],
+        Union[
+            clouddms.FetchStaticIpsResponse, Awaitable[clouddms.FetchStaticIpsResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.SetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.GetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        Union[
+            iam_policy_pb2.TestIamPermissionsResponse,
+            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_location(
+        self,
+    ) -> Callable[
+        [locations_pb2.GetLocationRequest],
+        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest],
+        Union[
+            locations_pb2.ListLocationsResponse,
+            Awaitable[locations_pb2.ListLocationsResponse],
+        ],
     ]:
         raise NotImplementedError()
 
