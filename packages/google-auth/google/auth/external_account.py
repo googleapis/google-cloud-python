@@ -52,6 +52,8 @@ _STS_REQUESTED_TOKEN_TYPE = "urn:ietf:params:oauth:token-type:access_token"
 # Cloud resource manager URL used to retrieve project information.
 _CLOUD_RESOURCE_MANAGER = "https://cloudresourcemanager.googleapis.com/v1/projects/"
 
+_DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
+
 
 @six.add_metaclass(abc.ABCMeta)
 class Credentials(
@@ -82,6 +84,7 @@ class Credentials(
         scopes=None,
         default_scopes=None,
         workforce_pool_user_project=None,
+        universe_domain=_DEFAULT_UNIVERSE_DOMAIN,
     ):
         """Instantiates an external account credentials object.
 
@@ -105,6 +108,8 @@ class Credentials(
                 a workload identity pool. The underlying principal must still have
                 serviceusage.services.use IAM permission to use the project for
                 billing/quota.
+            universe_domain (str): The universe domain. The default universe
+                domain is googleapis.com.
         Raises:
             google.auth.exceptions.RefreshError: If the generateAccessToken
                 endpoint returned an error.
@@ -125,6 +130,7 @@ class Credentials(
         self._scopes = scopes
         self._default_scopes = default_scopes
         self._workforce_pool_user_project = workforce_pool_user_project
+        self._universe_domain = universe_domain or _DEFAULT_UNIVERSE_DOMAIN
 
         if self._client_id:
             self._client_auth = utils.ClientAuthentication(
@@ -186,6 +192,7 @@ class Credentials(
             "workforce_pool_user_project": self._workforce_pool_user_project,
             "scopes": self._scopes,
             "default_scopes": self._default_scopes,
+            "universe_domain": self._universe_domain,
         }
         if not self.is_workforce_pool:
             args.pop("workforce_pool_user_project")
@@ -458,6 +465,7 @@ class Credentials(
             credential_source=info.get("credential_source"),
             quota_project_id=info.get("quota_project_id"),
             workforce_pool_user_project=info.get("workforce_pool_user_project"),
+            universe_domain=info.get("universe_domain", _DEFAULT_UNIVERSE_DOMAIN),
             **kwargs
         )
 

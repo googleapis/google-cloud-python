@@ -69,6 +69,7 @@ REQUEST_PARAMS = '{"KeySchema":[{"KeyType":"HASH","AttributeName":"Id"}],"TableN
 # Each tuple contains the following entries:
 # region, time, credentials, original_request, signed_request
 
+DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
 VALID_TOKEN_URLS = [
     "https://sts.googleapis.com",
     "https://us-east-1.sts.googleapis.com",
@@ -925,6 +926,7 @@ class TestCredentials(object):
             credential_source=self.CREDENTIAL_SOURCE,
             quota_project_id=QUOTA_PROJECT_ID,
             workforce_pool_user_project=None,
+            universe_domain=DEFAULT_UNIVERSE_DOMAIN,
         )
 
     @mock.patch.object(aws.Credentials, "__init__", return_value=None)
@@ -952,6 +954,7 @@ class TestCredentials(object):
             credential_source=self.CREDENTIAL_SOURCE,
             quota_project_id=None,
             workforce_pool_user_project=None,
+            universe_domain=DEFAULT_UNIVERSE_DOMAIN,
         )
 
     @mock.patch.object(aws.Credentials, "__init__", return_value=None)
@@ -967,6 +970,7 @@ class TestCredentials(object):
             "client_secret": CLIENT_SECRET,
             "quota_project_id": QUOTA_PROJECT_ID,
             "credential_source": self.CREDENTIAL_SOURCE,
+            "universe_domain": DEFAULT_UNIVERSE_DOMAIN,
         }
         config_file = tmpdir.join("config.json")
         config_file.write(json.dumps(info))
@@ -986,6 +990,7 @@ class TestCredentials(object):
             credential_source=self.CREDENTIAL_SOURCE,
             quota_project_id=QUOTA_PROJECT_ID,
             workforce_pool_user_project=None,
+            universe_domain=DEFAULT_UNIVERSE_DOMAIN,
         )
 
     @mock.patch.object(aws.Credentials, "__init__", return_value=None)
@@ -1014,6 +1019,7 @@ class TestCredentials(object):
             credential_source=self.CREDENTIAL_SOURCE,
             quota_project_id=None,
             workforce_pool_user_project=None,
+            universe_domain=DEFAULT_UNIVERSE_DOMAIN,
         )
 
     def test_constructor_invalid_credential_source(self):
@@ -1067,6 +1073,7 @@ class TestCredentials(object):
             "token_url": TOKEN_URL,
             "token_info_url": TOKEN_INFO_URL,
             "credential_source": self.CREDENTIAL_SOURCE,
+            "universe_domain": DEFAULT_UNIVERSE_DOMAIN,
         }
 
     def test_token_info_url(self):
