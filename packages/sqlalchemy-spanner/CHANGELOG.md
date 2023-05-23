@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.6.0...v1.6.1) (2023-05-23)
+
+
+### Bug Fixes
+
+* Add opentelemetry version ([#322](https://github.com/googleapis/python-spanner-sqlalchemy/issues/322)) ([b80d24d](https://github.com/googleapis/python-spanner-sqlalchemy/commit/b80d24d251f07d4c000aa214955cf9729cd49545))
+* Fix check so it's all lowercase. ([#321](https://github.com/googleapis/python-spanner-sqlalchemy/issues/321)) ([8fae358](https://github.com/googleapis/python-spanner-sqlalchemy/commit/8fae3587d5c963539b255c976136b18041147e5b))
+
 ## [1.6.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.5.0...v1.6.0) (2023-04-26)
 
 
