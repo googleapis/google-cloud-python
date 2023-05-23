@@ -22,6 +22,7 @@ import six
 
 from google.auth import _helpers, environment_vars
 from google.auth import exceptions
+from google.auth import metrics
 
 
 @six.add_metaclass(abc.ABCMeta)
@@ -100,6 +101,21 @@ class Credentials(object):
         # (pylint doesn't recognize that this is abstract)
         raise NotImplementedError("Refresh must be implemented")
 
+    def _metric_header_for_usage(self):
+        """The x-goog-api-client header for token usage metric.
+
+        This header will be added to the API service requests in before_request
+        method. For example, "cred-type/sa-jwt" means service account self
+        signed jwt access token is used in the API service request
+        authorization header. Children credentials classes need to override
+        this method to provide the header value, if the token usage metric is
+        needed.
+
+        Returns:
+            str: The x-goog-api-client header value.
+        """
+        return None
+
     def apply(self, headers, token=None):
         """Apply the token to the authentication header.
 
@@ -133,6 +149,7 @@ class Credentials(object):
         # the http request.)
         if not self.valid:
             self.refresh(request)
+        metrics.add_metric_header(headers, self._metric_header_for_usage())
         self.apply(headers)
 
 

@@ -28,6 +28,14 @@ class CredentialsImpl(credentials.Credentials):
         raise NotImplementedError()
 
 
+class CredentialsImplWithMetrics(credentials.Credentials):
+    def refresh(self, request):
+        self.token = request
+
+    def _metric_header_for_usage(self):
+        return "foo"
+
+
 def test_credentials_constructor():
     credentials = CredentialsImpl()
     assert not credentials.token
@@ -81,6 +89,15 @@ def test_before_request():
     assert credentials.valid
     assert credentials.token == "token"
     assert headers["authorization"] == "Bearer token"
+
+
+def test_before_request_metrics():
+    credentials = CredentialsImplWithMetrics()
+    request = "token"
+    headers = {}
+
+    credentials.before_request(request, "http://example.com", "GET", headers)
+    assert headers["x-goog-api-client"] == "foo"
 
 
 def test_anonymous_credentials_ctor():
