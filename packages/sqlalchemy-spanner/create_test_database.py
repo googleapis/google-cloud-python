@@ -70,7 +70,7 @@ def create_test_instance():
     configs = list(CLIENT.list_instance_configs())
     if not USE_EMULATOR:
         # Filter out non "us" locations
-        configs = [config for config in configs if "us-west1" in config.name]
+        configs = [config for config in configs if "asia-southeast1" in config.name]
 
     instance_config = configs[0].name
     create_time = str(int(time.time()))
