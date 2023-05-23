@@ -235,9 +235,6 @@ Libraries
    * - `IAM Policy Troubleshooter API <https://github.com/googleapis/python-policy-troubleshooter>`_
      - |stable|
      - |PyPI-google-cloud-policy-troubleshooter|
-   * - `IDS <https://github.com/googleapis/python-ids>`_
-     - |stable|
-     - |PyPI-google-cloud-ids|
    * - `Identity and Access Management <https://github.com/googleapis/python-iam>`_
      - |stable|
      - |PyPI-google-cloud-iam|
@@ -646,8 +643,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-iam-logging
 .. |PyPI-google-cloud-policy-troubleshooter| image:: https://img.shields.io/pypi/v/google-cloud-policy-troubleshooter.svg
      :target: https://pypi.org/project/google-cloud-policy-troubleshooter
-.. |PyPI-google-cloud-ids| image:: https://img.shields.io/pypi/v/google-cloud-ids.svg
-     :target: https://pypi.org/project/google-cloud-ids
 .. |PyPI-google-cloud-iam| image:: https://img.shields.io/pypi/v/google-cloud-iam.svg
      :target: https://pypi.org/project/google-cloud-iam
 .. |PyPI-grpc-google-iam-v1| image:: https://img.shields.io/pypi/v/grpc-google-iam-v1.svg
