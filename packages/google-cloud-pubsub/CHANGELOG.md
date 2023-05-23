@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.17.1](https://github.com/googleapis/python-pubsub/compare/v2.17.0...v2.17.1) (2023-05-23)
+
+
+### Documentation
+
+* Add attributes to pubsub_v1.types ([#921](https://github.com/googleapis/python-pubsub/issues/921)) ([4607dca](https://github.com/googleapis/python-pubsub/commit/4607dca983a8f5d4043c5661165da99453f2ef4a))
+
 ## [2.17.0](https://github.com/googleapis/python-pubsub/compare/v2.16.1...v2.17.0) (2023-05-12)
 
 
