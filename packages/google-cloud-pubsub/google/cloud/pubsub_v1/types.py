@@ -61,7 +61,21 @@ if typing.TYPE_CHECKING:  # pragma: NO COVER
 # these settings can be altered to tweak Pub/Sub behavior.
 # The defaults should be fine for most use cases.
 class BatchSettings(NamedTuple):
-    """The settings for batch publishing the messages."""
+    """The settings for batch publishing the messages.
+
+    Attributes:
+        max_bytes (int):
+            The maximum total size of the messages to collect before automatically
+            publishing the batch, including any byte size overhead of the publish
+            request itself. The maximum value is bound by the server-side limit of
+            10_000_000 bytes. Defaults to 1 MB.
+        max_latency (float):
+            The maximum number of seconds to wait for additional messages before
+            automatically publishing the batch. Defaults to 10ms.
+        max_messages (int):
+            The maximum number of messages to collect before automatically
+            publishing the batch. Defaults to 100.
+    """
 
     max_bytes: int = 1 * 1000 * 1000  # 1 MB
     (
@@ -93,7 +107,19 @@ class LimitExceededBehavior(str, enum.Enum):
 
 
 class PublishFlowControl(NamedTuple):
-    """The client flow control settings for message publishing."""
+    """The client flow control settings for message publishing.
+
+    Attributes:
+        message_limit (int):
+            The maximum number of messages awaiting to be published.
+            Defaults to 1000.
+        byte_limit (int):
+            The maximum total size of messages awaiting to be published.
+            Defaults to 10MB.
+        limit_exceeded_behavior (LimitExceededBehavior):
+            The action to take when publish flow control limits are exceeded.
+            Defaults to LimitExceededBehavior.IGNORE.
+    """
 
     message_limit: int = 10 * BatchSettings.__new__.__defaults__[2]  # type: ignore
     """The maximum number of messages awaiting to be published."""
@@ -110,7 +136,22 @@ class PublishFlowControl(NamedTuple):
 # This class is used when creating a publisher client to pass in options
 # to enable/disable features.
 class PublisherOptions(NamedTuple):
-    """The options for the publisher client."""
+    """The options for the publisher client.
+
+    Attributes:
+        enable_message_ordering (bool):
+            Whether to order messages in a batch by a supplied ordering key.
+            Defaults to false.
+        flow_control (PublishFlowControl):
+            Flow control settings for message publishing by the client. By default
+            the publisher client does not do any throttling.
+        retry (OptionalRetry):
+            Retry settings for message publishing by the client. This should be
+            an instance of :class:`google.api_core.retry.Retry`.
+        timeout (OptionalTimeout):
+            Timeout settings for message publishing by the client. It should be
+            compatible with :class:`~.pubsub_v1.types.TimeoutType`.
+    """
 
     enable_message_ordering: bool = False
     """Whether to order messages in a batch by a supplied ordering key."""
@@ -142,6 +183,26 @@ class PublisherOptions(NamedTuple):
 class FlowControl(NamedTuple):
     """The settings for controlling the rate at which messages are pulled
     with an asynchronous subscription.
+
+    Attributes:
+        max_bytes (int):
+            The maximum total size of received - but not yet processed - messages
+            before pausing the message stream. Defaults to 100 MiB.
+        max_messages (int):
+            The maximum number of received - but not yet processed - messages before
+            pausing the message stream. Defaults to 1000.
+        max_lease_duration (float):
+            The maximum amount of time in seconds to hold a lease on a message
+            before dropping it from the lease management. Defaults to 1 hour.
+        min_duration_per_lease_extension (float):
+            The min amount of time in seconds for a single lease extension attempt.
+            Must be between 10 and 600 (inclusive). Ignored by default, but set to
+            60 seconds if the subscription has exactly-once delivery enabled.
+        max_duration_per_lease_extension (float):
+            The max amount of time in seconds for a single lease extension attempt.
+            Bounds the delay before a message redelivery if the subscriber
+            fails to extend the deadline. Must be between 10 and 600 (inclusive). Ignored
+            if set to 0.
     """
 
     max_bytes: int = 100 * 1024 * 1024  # 100 MiB
