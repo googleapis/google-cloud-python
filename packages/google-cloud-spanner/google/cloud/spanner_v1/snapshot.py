@@ -29,13 +29,15 @@ from google.api_core.exceptions import InternalServerError
 from google.api_core.exceptions import ServiceUnavailable
 from google.api_core.exceptions import InvalidArgument
 from google.api_core import gapic_v1
-from google.cloud.spanner_v1._helpers import _make_value_pb
-from google.cloud.spanner_v1._helpers import _merge_query_options
 from google.cloud.spanner_v1._helpers import (
+    _make_value_pb,
+    _merge_query_options,
     _metadata_with_prefix,
     _metadata_with_leader_aware_routing,
+    _retry,
+    _check_rst_stream_error,
+    _SessionWrapper,
 )
-from google.cloud.spanner_v1._helpers import _SessionWrapper
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
 from google.cloud.spanner_v1.streamed import StreamedResultSet
 from google.cloud.spanner_v1 import RequestOptions
@@ -560,11 +562,16 @@ class _SnapshotBase(_SessionWrapper):
         with trace_call(
             "CloudSpanner.PartitionReadOnlyTransaction", self._session, trace_attributes
         ):
-            response = api.partition_read(
+            method = functools.partial(
+                api.partition_read,
                 request=request,
                 metadata=metadata,
                 retry=retry,
                 timeout=timeout,
+            )
+            response = _retry(
+                method,
+                allowed_exceptions={InternalServerError: _check_rst_stream_error},
             )
 
         return [partition.partition_token for partition in response.partitions]
@@ -659,11 +666,16 @@ class _SnapshotBase(_SessionWrapper):
             self._session,
             trace_attributes,
         ):
-            response = api.partition_query(
+            method = functools.partial(
+                api.partition_query,
                 request=request,
                 metadata=metadata,
                 retry=retry,
                 timeout=timeout,
+            )
+            response = _retry(
+                method,
+                allowed_exceptions={InternalServerError: _check_rst_stream_error},
             )
 
         return [partition.partition_token for partition in response.partitions]
@@ -791,10 +803,15 @@ class Snapshot(_SnapshotBase):
             )
         txn_selector = self._make_txn_selector()
         with trace_call("CloudSpanner.BeginTransaction", self._session):
-            response = api.begin_transaction(
+            method = functools.partial(
+                api.begin_transaction,
                 session=self._session.name,
                 options=txn_selector.begin,
                 metadata=metadata,
+            )
+            response = _retry(
+                method,
+                allowed_exceptions={InternalServerError: _check_rst_stream_error},
             )
         self._transaction_id = response.id
         return self._transaction_id

@@ -22,6 +22,8 @@ from google.cloud.spanner_v1._helpers import (
     _merge_query_options,
     _metadata_with_prefix,
     _metadata_with_leader_aware_routing,
+    _retry,
+    _check_rst_stream_error,
 )
 from google.cloud.spanner_v1 import CommitRequest
 from google.cloud.spanner_v1 import ExecuteBatchDmlRequest
@@ -33,6 +35,7 @@ from google.cloud.spanner_v1.batch import _BatchBase
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
 from google.cloud.spanner_v1 import RequestOptions
 from google.api_core import gapic_v1
+from google.api_core.exceptions import InternalServerError
 
 
 class Transaction(_SnapshotBase, _BatchBase):
@@ -102,7 +105,11 @@ class Transaction(_SnapshotBase, _BatchBase):
         transaction = self._make_txn_selector()
         request.transaction = transaction
         with trace_call(trace_name, session, attributes):
-            response = method(request=request)
+            method = functools.partial(method, request=request)
+            response = _retry(
+                method,
+                allowed_exceptions={InternalServerError: _check_rst_stream_error},
+            )
 
         return response
 
@@ -132,8 +139,15 @@ class Transaction(_SnapshotBase, _BatchBase):
             )
         txn_options = TransactionOptions(read_write=TransactionOptions.ReadWrite())
         with trace_call("CloudSpanner.BeginTransaction", self._session):
-            response = api.begin_transaction(
-                session=self._session.name, options=txn_options, metadata=metadata
+            method = functools.partial(
+                api.begin_transaction,
+                session=self._session.name,
+                options=txn_options,
+                metadata=metadata,
+            )
+            response = _retry(
+                method,
+                allowed_exceptions={InternalServerError: _check_rst_stream_error},
             )
         self._transaction_id = response.id
         return self._transaction_id
@@ -153,10 +167,15 @@ class Transaction(_SnapshotBase, _BatchBase):
                     )
                 )
             with trace_call("CloudSpanner.Rollback", self._session):
-                api.rollback(
+                method = functools.partial(
+                    api.rollback,
                     session=self._session.name,
                     transaction_id=self._transaction_id,
                     metadata=metadata,
+                )
+                _retry(
+                    method,
+                    allowed_exceptions={InternalServerError: _check_rst_stream_error},
                 )
         self.rolled_back = True
         del self._session._transaction
@@ -212,9 +231,14 @@ class Transaction(_SnapshotBase, _BatchBase):
             request_options=request_options,
         )
         with trace_call("CloudSpanner.Commit", self._session, trace_attributes):
-            response = api.commit(
+            method = functools.partial(
+                api.commit,
                 request=request,
                 metadata=metadata,
+            )
+            response = _retry(
+                method,
+                allowed_exceptions={InternalServerError: _check_rst_stream_error},
             )
         self.committed = response.commit_timestamp
         if return_commit_stats:

@@ -14,6 +14,7 @@
 
 
 import unittest
+import mock
 
 
 class Test_merge_query_options(unittest.TestCase):
@@ -669,6 +670,83 @@ class Test_metadata_with_prefix(unittest.TestCase):
         prefix = "prefix"
         metadata = self._call_fut(prefix)
         self.assertEqual(metadata, [("google-cloud-resource-prefix", prefix)])
+
+
+class Test_retry(unittest.TestCase):
+    class test_class:
+        def test_fxn(self):
+            return True
+
+    def test_retry_on_error(self):
+        from google.api_core.exceptions import InternalServerError, NotFound
+        from google.cloud.spanner_v1._helpers import _retry
+        import functools
+
+        test_api = mock.create_autospec(self.test_class)
+        test_api.test_fxn.side_effect = [
+            InternalServerError("testing"),
+            NotFound("testing"),
+            True,
+        ]
+
+        _retry(functools.partial(test_api.test_fxn))
+
+        self.assertEqual(test_api.test_fxn.call_count, 3)
+
+    def test_retry_allowed_exceptions(self):
+        from google.api_core.exceptions import InternalServerError, NotFound
+        from google.cloud.spanner_v1._helpers import _retry
+        import functools
+
+        test_api = mock.create_autospec(self.test_class)
+        test_api.test_fxn.side_effect = [
+            NotFound("testing"),
+            InternalServerError("testing"),
+            True,
+        ]
+
+        with self.assertRaises(InternalServerError):
+            _retry(
+                functools.partial(test_api.test_fxn),
+                allowed_exceptions={NotFound: None},
+            )
+
+        self.assertEqual(test_api.test_fxn.call_count, 2)
+
+    def test_retry_count(self):
+        from google.api_core.exceptions import InternalServerError
+        from google.cloud.spanner_v1._helpers import _retry
+        import functools
+
+        test_api = mock.create_autospec(self.test_class)
+        test_api.test_fxn.side_effect = [
+            InternalServerError("testing"),
+            InternalServerError("testing"),
+        ]
+
+        with self.assertRaises(InternalServerError):
+            _retry(functools.partial(test_api.test_fxn), retry_count=1)
+
+        self.assertEqual(test_api.test_fxn.call_count, 2)
+
+    def test_check_rst_stream_error(self):
+        from google.api_core.exceptions import InternalServerError
+        from google.cloud.spanner_v1._helpers import _retry, _check_rst_stream_error
+        import functools
+
+        test_api = mock.create_autospec(self.test_class)
+        test_api.test_fxn.side_effect = [
+            InternalServerError("Received unexpected EOS on DATA frame from server"),
+            InternalServerError("RST_STREAM"),
+            True,
+        ]
+
+        _retry(
+            functools.partial(test_api.test_fxn),
+            allowed_exceptions={InternalServerError: _check_rst_stream_error},
+        )
+
+        self.assertEqual(test_api.test_fxn.call_count, 3)
 
 
 class Test_metadata_with_leader_aware_routing(unittest.TestCase):

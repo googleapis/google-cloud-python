@@ -170,7 +170,7 @@ class TestConnection(unittest.TestCase):
         connection._session_checkout()
         self.assertEqual(connection._session, "db_session")
 
-    def test__session_checkout_database_error(self):
+    def test_session_checkout_database_error(self):
         from google.cloud.spanner_dbapi import Connection
 
         connection = Connection(INSTANCE)
@@ -191,7 +191,7 @@ class TestConnection(unittest.TestCase):
         pool.put.assert_called_once_with("session")
         self.assertIsNone(connection._session)
 
-    def test__release_session_database_error(self):
+    def test_release_session_database_error(self):
         from google.cloud.spanner_dbapi import Connection
 
         connection = Connection(INSTANCE)

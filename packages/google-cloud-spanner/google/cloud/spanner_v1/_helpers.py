@@ -17,6 +17,7 @@
 import datetime
 import decimal
 import math
+import time
 
 from google.protobuf.struct_pb2 import ListValue
 from google.protobuf.struct_pb2 import Value
@@ -292,6 +293,59 @@ def _metadata_with_prefix(prefix, **kw):
         List[Tuple[str, str]]: RPC metadata with supplied prefix
     """
     return [("google-cloud-resource-prefix", prefix)]
+
+
+def _retry(
+    func,
+    retry_count=5,
+    delay=2,
+    allowed_exceptions=None,
+):
+    """
+    Retry a function with a specified number of retries, delay between retries, and list of allowed exceptions.
+
+    Args:
+        func: The function to be retried.
+        retry_count: The maximum number of times to retry the function.
+        delay: The delay in seconds between retries.
+        allowed_exceptions: A tuple of exceptions that are allowed to occur without triggering a retry.
+                            Passing allowed_exceptions as None will lead to retrying for all exceptions.
+
+    Returns:
+        The result of the function if it is successful, or raises the last exception if all retries fail.
+    """
+    retries = 0
+    while retries <= retry_count:
+        try:
+            return func()
+        except Exception as exc:
+            if (
+                allowed_exceptions is None or exc.__class__ in allowed_exceptions
+            ) and retries < retry_count:
+                if (
+                    allowed_exceptions is not None
+                    and allowed_exceptions[exc.__class__] is not None
+                ):
+                    allowed_exceptions[exc.__class__](exc)
+                time.sleep(delay)
+                delay = delay * 2
+                retries = retries + 1
+            else:
+                raise exc
+
+
+def _check_rst_stream_error(exc):
+    resumable_error = (
+        any(
+            resumable_message in exc.message
+            for resumable_message in (
+                "RST_STREAM",
+                "Received unexpected EOS on DATA frame from server",
+            )
+        ),
+    )
+    if not resumable_error:
+        raise
 
 
 def _metadata_with_leader_aware_routing(value, **kw):

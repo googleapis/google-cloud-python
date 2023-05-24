@@ -194,6 +194,25 @@ class TestTransaction(OpenTelemetryBase):
             "CloudSpanner.BeginTransaction", attributes=TestTransaction.BASE_ATTRIBUTES
         )
 
+    def test_begin_w_retry(self):
+        from google.cloud.spanner_v1 import (
+            Transaction as TransactionPB,
+        )
+        from google.api_core.exceptions import InternalServerError
+
+        database = _Database()
+        api = database.spanner_api = self._make_spanner_api()
+        database.spanner_api.begin_transaction.side_effect = [
+            InternalServerError("Received unexpected EOS on DATA frame from server"),
+            TransactionPB(id=self.TRANSACTION_ID),
+        ]
+
+        session = _Session(database)
+        transaction = self._make_one(session)
+        transaction.begin()
+
+        self.assertEqual(api.begin_transaction.call_count, 2)
+
     def test_rollback_not_begun(self):
         database = _Database()
         api = database.spanner_api = self._make_spanner_api()
