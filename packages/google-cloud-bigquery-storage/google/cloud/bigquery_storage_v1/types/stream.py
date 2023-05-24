@@ -230,6 +230,16 @@ class ReadSession(proto.Message):
                 output format
 
                 This field is a member of `oneof`_ ``output_format_serialization_options``.
+            sample_percentage (float):
+                Optional. Specifies a table sampling percentage.
+                Specifically, the query planner will use TABLESAMPLE SYSTEM
+                (sample_percentage PERCENT). This samples at the file-level.
+                It will randomly choose for each file whether to include
+                that file in the sample returned. Note, that if the table
+                only has one file, then TABLESAMPLE SYSTEM will select that
+                file and return all returnable rows contained within.
+
+                This field is a member of `oneof`_ ``_sample_percentage``.
         """
 
         selected_fields: MutableSequence[str] = proto.RepeatedField(
@@ -251,6 +261,11 @@ class ReadSession(proto.Message):
             number=4,
             oneof="output_format_serialization_options",
             message=avro.AvroSerializationOptions,
+        )
+        sample_percentage: float = proto.Field(
+            proto.DOUBLE,
+            number=5,
+            optional=True,
         )
 
     name: str = proto.Field(

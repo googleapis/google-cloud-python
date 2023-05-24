@@ -790,6 +790,21 @@ class StorageError(proto.Message):
                 Offset already exists.
             OFFSET_OUT_OF_RANGE (9):
                 Offset out of range.
+            CMEK_NOT_PROVIDED (10):
+                Customer-managed encryption key (CMEK) not
+                provided for CMEK-enabled data.
+            INVALID_CMEK_PROVIDED (11):
+                Customer-managed encryption key (CMEK) was
+                incorrectly provided.
+            CMEK_ENCRYPTION_ERROR (12):
+                There is an encryption error while using
+                customer-managed encryption key.
+            KMS_SERVICE_ERROR (13):
+                Key Management Service (KMS) service returned
+                an error.
+            KMS_PERMISSION_DENIED (14):
+                Permission denied while using
+                customer-managed encryption key.
         """
         STORAGE_ERROR_CODE_UNSPECIFIED = 0
         TABLE_NOT_FOUND = 1
@@ -801,6 +816,11 @@ class StorageError(proto.Message):
         SCHEMA_MISMATCH_EXTRA_FIELDS = 7
         OFFSET_ALREADY_EXISTS = 8
         OFFSET_OUT_OF_RANGE = 9
+        CMEK_NOT_PROVIDED = 10
+        INVALID_CMEK_PROVIDED = 11
+        CMEK_ENCRYPTION_ERROR = 12
+        KMS_SERVICE_ERROR = 13
+        KMS_PERMISSION_DENIED = 14
 
     code: StorageErrorCode = proto.Field(
         proto.ENUM,
