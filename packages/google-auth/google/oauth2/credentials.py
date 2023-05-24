@@ -42,6 +42,7 @@ from google.auth import _cloud_sdk
 from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
+from google.auth import metrics
 from google.oauth2 import reauth
 
 _LOGGER = logging.getLogger(__name__)
@@ -286,6 +287,9 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             rapt_token=self.rapt_token,
             enable_reauth_refresh=self._enable_reauth_refresh,
         )
+
+    def _metric_header_for_usage(self):
+        return metrics.CRED_TYPE_USER
 
     @_helpers.copy_docstring(credentials.Credentials)
     def refresh(self, request):

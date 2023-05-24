@@ -69,6 +69,16 @@ class TestCredentials(object):
         assert credentials.rapt_token == self.RAPT_TOKEN
         assert credentials.refresh_handler is None
 
+    def test_token_usage_metrics(self):
+        credentials = self.make_credentials()
+        credentials.token = "token"
+        credentials.expiry = None
+
+        headers = {}
+        credentials.before_request(mock.Mock(), None, None, headers)
+        assert headers["authorization"] == "Bearer token"
+        assert headers["x-goog-api-client"] == "cred-type/u"
+
     def test_refresh_handler_setter_and_getter(self):
         scopes = ["email", "profile"]
         original_refresh_handler = mock.Mock(return_value=("ACCESS_TOKEN_1", None))

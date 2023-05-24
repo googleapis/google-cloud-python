@@ -408,6 +408,37 @@ class TestCredentials(object):
         credentials._create_self_signed_jwt(None)
         jwt.from_signing_credentials.assert_not_called()
 
+    def test_token_usage_metrics_assertion(self):
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.TOKEN_URI,
+            always_use_jwt_access=False,
+        )
+        credentials.token = "token"
+        credentials.expiry = None
+
+        headers = {}
+        credentials.before_request(mock.Mock(), None, None, headers)
+        assert headers["authorization"] == "Bearer token"
+        assert headers["x-goog-api-client"] == "cred-type/sa"
+
+    def test_token_usage_metrics_self_signed_jwt(self):
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.TOKEN_URI,
+            always_use_jwt_access=True,
+        )
+        credentials._create_self_signed_jwt("foo.googleapis.com")
+        credentials.token = "token"
+        credentials.expiry = None
+
+        headers = {}
+        credentials.before_request(mock.Mock(), None, None, headers)
+        assert headers["authorization"] == "Bearer token"
+        assert headers["x-goog-api-client"] == "cred-type/jwt"
+
     @mock.patch("google.oauth2._client.jwt_grant", autospec=True)
     def test_refresh_success(self, jwt_grant):
         credentials = self.make_credentials()

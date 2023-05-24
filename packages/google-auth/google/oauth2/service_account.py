@@ -78,6 +78,7 @@ from google.auth import _service_account_info
 from google.auth import credentials
 from google.auth import exceptions
 from google.auth import jwt
+from google.auth import metrics
 from google.oauth2 import _client
 
 _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
@@ -400,6 +401,16 @@ class Credentials(
 
         return token
 
+    def _use_self_signed_jwt(self):
+        # Since domain wide delegation doesn't work with self signed JWT. If
+        # subject exists, then we should not use self signed JWT.
+        return self._subject is None and self._jwt_credentials is not None
+
+    def _metric_header_for_usage(self):
+        if self._use_self_signed_jwt():
+            return metrics.CRED_TYPE_SA_JWT
+        return metrics.CRED_TYPE_SA_ASSERTION
+
     @_helpers.copy_docstring(credentials.Credentials)
     def refresh(self, request):
         if (
@@ -414,9 +425,7 @@ class Credentials(
                 "domain wide delegation is not supported for non-default universe domain"
             )
 
-        # Since domain wide delegation doesn't work with self signed JWT. If
-        # subject exists, then we should not use self signed JWT.
-        if self._subject is None and self._jwt_credentials is not None:
+        if self._use_self_signed_jwt():
             self._jwt_credentials.refresh(request)
             self.token = self._jwt_credentials.token.decode()
             self.expiry = self._jwt_credentials.expiry

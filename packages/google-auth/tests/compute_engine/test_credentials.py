@@ -185,6 +185,15 @@ class TestCredentials(object):
 
         assert self.credentials._scopes == scopes
 
+    def test_token_usage_metrics(self):
+        self.credentials.token = "token"
+        self.credentials.expiry = None
+
+        headers = {}
+        self.credentials.before_request(mock.Mock(), None, None, headers)
+        assert headers["authorization"] == "Bearer token"
+        assert headers["x-goog-api-client"] == "cred-type/mds"
+
 
 class TestIDTokenCredentials(object):
     credentials = None

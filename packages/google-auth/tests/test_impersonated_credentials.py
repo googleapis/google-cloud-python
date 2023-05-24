@@ -162,6 +162,16 @@ class TestImpersonatedCredentials(object):
 
         return request
 
+    def test_token_usage_metrics(self):
+        credentials = self.make_credentials()
+        credentials.token = "token"
+        credentials.expiry = None
+
+        headers = {}
+        credentials.before_request(mock.Mock(), None, None, headers)
+        assert headers["authorization"] == "Bearer token"
+        assert headers["x-goog-api-client"] == "cred-type/imp"
+
     @pytest.mark.parametrize("use_data_bytes", [True, False])
     def test_refresh_success(self, use_data_bytes, mock_donor_credentials):
         credentials = self.make_credentials(lifetime=None)

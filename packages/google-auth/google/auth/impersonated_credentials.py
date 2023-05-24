@@ -37,6 +37,7 @@ from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
 from google.auth import jwt
+from google.auth import metrics
 
 _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 
@@ -237,6 +238,9 @@ class Credentials(
         self.expiry = _helpers.utcnow()
         self._quota_project_id = quota_project_id
         self._iam_endpoint_override = iam_endpoint_override
+
+    def _metric_header_for_usage(self):
+        return metrics.CRED_TYPE_SA_IMPERSONATE
 
     @_helpers.copy_docstring(credentials.Credentials)
     def refresh(self, request):
