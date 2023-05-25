@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -530,7 +530,7 @@ class LineageRestInterceptor:
         self,
         request: operations_pb2.CancelOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> None:
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -538,9 +538,7 @@ class LineageRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_operation(
-        self, response: operations_pb2.CancelOperationRequest
-    ) -> None:
+    def post_cancel_operation(self, response: None) -> None:
         """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
@@ -553,7 +551,7 @@ class LineageRestInterceptor:
         self,
         request: operations_pb2.DeleteOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> None:
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -561,9 +559,7 @@ class LineageRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_operation(
-        self, response: operations_pb2.DeleteOperationRequest
-    ) -> None:
+    def post_delete_operation(self, response: None) -> None:
         """Post-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the response
@@ -576,7 +572,7 @@ class LineageRestInterceptor:
         self,
         request: operations_pb2.GetOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.Operation:
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -585,7 +581,7 @@ class LineageRestInterceptor:
         return request, metadata
 
     def post_get_operation(
-        self, response: operations_pb2.GetOperationRequest
+        self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
@@ -599,7 +595,7 @@ class LineageRestInterceptor:
         self,
         request: operations_pb2.ListOperationsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.ListOperationsResponse:
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -608,7 +604,7 @@ class LineageRestInterceptor:
         return request, metadata
 
     def post_list_operations(
-        self, response: operations_pb2.ListOperationsRequest
+        self, response: operations_pb2.ListOperationsResponse
     ) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
@@ -777,7 +773,7 @@ class LineageRestTransport(LineageTransport):
         def __hash__(self):
             return hash("BatchSearchLinkProcesses")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -802,7 +798,6 @@ class LineageRestTransport(LineageTransport):
                     request (~.lineage.BatchSearchLinkProcessesRequest):
                         The request object. Request message for
                     [BatchSearchLinkProcesses][google.cloud.datacatalog.lineage.v1.Lineage.BatchSearchLinkProcesses].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -879,7 +874,7 @@ class LineageRestTransport(LineageTransport):
         def __hash__(self):
             return hash("CreateLineageEvent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -903,7 +898,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.CreateLineageEventRequest):
                     The request object. Request message for
                 [CreateLineageEvent][google.cloud.datacatalog.lineage.v1.CreateLineageEvent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -983,7 +977,7 @@ class LineageRestTransport(LineageTransport):
         def __hash__(self):
             return hash("CreateProcess")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1007,7 +1001,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.CreateProcessRequest):
                     The request object. Request message for
                 [CreateProcess][google.cloud.datacatalog.lineage.v1.CreateProcess].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1082,7 +1075,7 @@ class LineageRestTransport(LineageTransport):
         def __hash__(self):
             return hash("CreateRun")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1106,7 +1099,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.CreateRunRequest):
                     The request object. Request message for
                 [CreateRun][google.cloud.datacatalog.lineage.v1.CreateRun].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1182,7 +1174,7 @@ class LineageRestTransport(LineageTransport):
         def __hash__(self):
             return hash("DeleteLineageEvent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1206,7 +1198,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.DeleteLineageEventRequest):
                     The request object. Request message for
                 [DeleteLineageEvent][google.cloud.datacatalog.lineage.v1.DeleteLineageEvent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1260,7 +1251,7 @@ class LineageRestTransport(LineageTransport):
         def __hash__(self):
             return hash("DeleteProcess")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1284,7 +1275,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.DeleteProcessRequest):
                     The request object. Request message for
                 [DeleteProcess][google.cloud.datacatalog.lineage.v1.DeleteProcess].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1349,7 +1339,7 @@ class LineageRestTransport(LineageTransport):
         def __hash__(self):
             return hash("DeleteRun")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1373,7 +1363,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.DeleteRunRequest):
                     The request object. Request message for
                 [DeleteRun][google.cloud.datacatalog.lineage.v1.DeleteRun].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1438,7 +1427,7 @@ class LineageRestTransport(LineageTransport):
         def __hash__(self):
             return hash("GetLineageEvent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1462,7 +1451,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.GetLineageEventRequest):
                     The request object. Request message for
                 [GetLineageEvent][google.cloud.datacatalog.lineage.v1.GetLineageEvent].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1533,7 +1521,7 @@ class LineageRestTransport(LineageTransport):
         def __hash__(self):
             return hash("GetProcess")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1557,7 +1545,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.GetProcessRequest):
                     The request object. Request message for
                 [GetProcess][google.cloud.datacatalog.lineage.v1.GetProcess].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1623,7 +1610,7 @@ class LineageRestTransport(LineageTransport):
         def __hash__(self):
             return hash("GetRun")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1647,7 +1634,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.GetRunRequest):
                     The request object. Request message for
                 [GetRun][google.cloud.datacatalog.lineage.v1.GetRun].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1714,7 +1700,7 @@ class LineageRestTransport(LineageTransport):
         def __hash__(self):
             return hash("ListLineageEvents")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1738,7 +1724,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.ListLineageEventsRequest):
                     The request object. Request message for
                 [ListLineageEvents][google.cloud.datacatalog.lineage.v1.ListLineageEvents].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1806,7 +1791,7 @@ class LineageRestTransport(LineageTransport):
         def __hash__(self):
             return hash("ListProcesses")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1830,7 +1815,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.ListProcessesRequest):
                     The request object. Request message for
                 [ListProcesses][google.cloud.datacatalog.lineage.v1.ListProcesses].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1896,7 +1880,7 @@ class LineageRestTransport(LineageTransport):
         def __hash__(self):
             return hash("ListRuns")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1920,7 +1904,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.ListRunsRequest):
                     The request object. Request message for
                 [ListRuns][google.cloud.datacatalog.lineage.v1.ListRuns].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1986,7 +1969,7 @@ class LineageRestTransport(LineageTransport):
         def __hash__(self):
             return hash("SearchLinks")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2010,7 +1993,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.SearchLinksRequest):
                     The request object. Request message for
                 [SearchLinks][google.cloud.datacatalog.lineage.v1.Lineage.SearchLinks].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2085,7 +2067,7 @@ class LineageRestTransport(LineageTransport):
         def __hash__(self):
             return hash("UpdateProcess")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2109,7 +2091,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.UpdateProcessRequest):
                     The request object. Request message for
                 [UpdateProcess][google.cloud.datacatalog.lineage.v1.UpdateProcess].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2184,7 +2165,7 @@ class LineageRestTransport(LineageTransport):
         def __hash__(self):
             return hash("UpdateRun")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2208,7 +2189,6 @@ class LineageRestTransport(LineageTransport):
                 request (~.lineage.UpdateRunRequest):
                     The request object. Request message for
                 [UpdateRun][google.cloud.datacatalog.lineage.v1.UpdateRun].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

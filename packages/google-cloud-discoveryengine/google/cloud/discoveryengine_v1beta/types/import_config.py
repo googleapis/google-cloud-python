@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -39,31 +41,43 @@ __protobuf__ = proto.module(
 
 
 class GcsSource(proto.Message):
-    r"""Google Cloud Storage location for input content.
-    format.
+    r"""Cloud Storage location for input content.
 
     Attributes:
         input_uris (MutableSequence[str]):
-            Required. Google Cloud Storage URIs to input files. URI can
-            be up to 2000 characters long. URIs can match the full
-            object path (for example,
-            ``gs://bucket/directory/object.json``) or a pattern matching
-            one or more files, such as ``gs://bucket/directory/*.json``.
-            A request can contain at most 100 files, and each file can
-            be up to 2 GB.
+            Required. Cloud Storage URIs to input files. URI can be up
+            to 2000 characters long. URIs can match the full object path
+            (for example, ``gs://bucket/directory/object.json``) or a
+            pattern matching one or more files, such as
+            ``gs://bucket/directory/*.json``.
+
+            A request can contain at most 100 files (or 100,000 files if
+            ``data_schema`` is ``content``). Each file can be up to 2 GB
+            (or 100 MB if ``data_schema`` is ``content``).
         data_schema (str):
             The schema to use when parsing the data from the source.
 
-            Supported values for imports:
-
-            -  ``user_event`` (default): One JSON
-               [UserEvent][google.cloud.discoveryengine.v1beta.UserEvent]
-               per line.
+            Supported values for document imports:
 
             -  ``document`` (default): One JSON
                [Document][google.cloud.discoveryengine.v1beta.Document]
                per line. Each document must have a valid
                [Document.id][google.cloud.discoveryengine.v1beta.Document.id].
+            -  ``content``: Unstructured data (e.g. PDF, HTML). Each
+               file matched by ``input_uris`` will become a document,
+               with the ID set to the first 128 bits of SHA256(URI)
+               encoded as a hex string.
+            -  ``custom``: One custom data JSON per row in arbitrary
+               format that conforms the defined
+               [Schema][google.cloud.discoveryengine.v1beta.Schema] of
+               the data store. This can only be used by the GENERIC Data
+               Store vertical.
+
+            Supported values for user even imports:
+
+            -  ``user_event`` (default): One JSON
+               [UserEvent][google.cloud.discoveryengine.v1beta.UserEvent]
+               per line.
     """
 
     input_uris: MutableSequence[str] = proto.RepeatedField(
@@ -108,16 +122,27 @@ class BigQuerySource(proto.Message):
         data_schema (str):
             The schema to use when parsing the data from the source.
 
-            Supported values for imports:
+            Supported values for user event imports:
 
-            -  ``user_event`` (default): One JSON
+            -  ``user_event`` (default): One
                [UserEvent][google.cloud.discoveryengine.v1beta.UserEvent]
-               per line.
+               per row.
 
-            -  ``document`` (default): One JSON
+            Supported values for document imports:
+
+            -  ``document`` (default): One
                [Document][google.cloud.discoveryengine.v1beta.Document]
-               per line. Each document must have a valid
-               [document.id][].
+               format per row. Each document must have a valid
+               [Document.id][google.cloud.discoveryengine.v1beta.Document.id]
+               and one of
+               [Document.json_data][google.cloud.discoveryengine.v1beta.Document.json_data]
+               or
+               [Document.struct_data][google.cloud.discoveryengine.v1beta.Document.struct_data].
+            -  ``custom``: One custom data per row in arbitrary format
+               that conforms the defined
+               [Schema][google.cloud.discoveryengine.v1beta.Schema] of
+               the data store. This can only be used by the GENERIC Data
+               Store vertical.
     """
 
     partition_date: date_pb2.Date = proto.Field(
@@ -155,10 +180,10 @@ class ImportErrorConfig(proto.Message):
 
     Attributes:
         gcs_prefix (str):
-            Google Cloud Storage prefix for import errors. This must be
-            an empty, existing Cloud Storage directory. Import errors
-            will be written to sharded files in this directory, one per
-            line, as a JSON-encoded ``google.rpc.Status`` message.
+            Cloud Storage prefix for import errors. This must be an
+            empty, existing Cloud Storage directory. Import errors will
+            be written to sharded files in this directory, one per line,
+            as a JSON-encoded ``google.rpc.Status`` message.
 
             This field is a member of `oneof`_ ``destination``.
     """
@@ -187,8 +212,8 @@ class ImportUserEventsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         gcs_source (google.cloud.discoveryengine_v1beta.types.GcsSource):
-            Required. Google Cloud Storage location for
-            the input content.
+            Required. Cloud Storage location for the
+            input content.
 
             This field is a member of `oneof`_ ``source``.
         bigquery_source (google.cloud.discoveryengine_v1beta.types.BigQuerySource):
@@ -197,7 +222,7 @@ class ImportUserEventsRequest(proto.Message):
             This field is a member of `oneof`_ ``source``.
         parent (str):
             Required. Parent DataStore resource name, of the form
-            ``projects/{project}/locations/{location}/dataStores/{data_store}``
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``
         error_config (google.cloud.discoveryengine_v1beta.types.ImportErrorConfig):
             The desired location of errors incurred
             during the Import. Cannot be set for inline user
@@ -386,8 +411,7 @@ class ImportDocumentsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         gcs_source (google.cloud.discoveryengine_v1beta.types.GcsSource):
-            Google Cloud Storage location for the input
-            content.
+            Cloud Storage location for the input content.
 
             This field is a member of `oneof`_ ``source``.
         bigquery_source (google.cloud.discoveryengine_v1beta.types.BigQuerySource):
@@ -396,7 +420,7 @@ class ImportDocumentsRequest(proto.Message):
             This field is a member of `oneof`_ ``source``.
         parent (str):
             Required. The parent branch resource name, such as
-            ``projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}``.
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
             Requires create/update permission.
         error_config (google.cloud.discoveryengine_v1beta.types.ImportErrorConfig):
             The desired location of errors incurred
@@ -405,6 +429,69 @@ class ImportDocumentsRequest(proto.Message):
             The mode of reconciliation between existing documents and
             the documents to be imported. Defaults to
             [ReconciliationMode.INCREMENTAL][google.cloud.discoveryengine.v1beta.ImportDocumentsRequest.ReconciliationMode.INCREMENTAL].
+        auto_generate_ids (bool):
+            Whether to automatically generate IDs for the documents if
+            absent.
+
+            If set to ``true``,
+            [Document.id][google.cloud.discoveryengine.v1beta.Document.id]s
+            are automatically generated based on the hash of the
+            payload, where IDs may not be consistent during multiple
+            imports. In which case
+            [ReconciliationMode.FULL][google.cloud.discoveryengine.v1beta.ImportDocumentsRequest.ReconciliationMode.FULL]
+            is highly recommended to avoid duplicate contents. If unset
+            or set to ``false``,
+            [Document.id][google.cloud.discoveryengine.v1beta.Document.id]s
+            have to be specified using
+            [id_field][google.cloud.discoveryengine.v1beta.ImportDocumentsRequest.id_field],
+            otherwises, documents without IDs will fail to be imported.
+
+            Only set this field when using
+            [GcsSource][google.cloud.discoveryengine.v1beta.GcsSource]
+            or
+            [BigQuerySource][google.cloud.discoveryengine.v1beta.BigQuerySource],
+            and when
+            [GcsSource.data_schema][google.cloud.discoveryengine.v1beta.GcsSource.data_schema]
+            or
+            [BigQuerySource.data_schema][google.cloud.discoveryengine.v1beta.BigQuerySource.data_schema]
+            is ``custom``. Otherwise, an INVALID_ARGUMENT error is
+            thrown.
+        id_field (str):
+            The field in the Cloud Storage and BigQuery sources that
+            indicates the unique IDs of the documents.
+
+            For
+            [GcsSource][google.cloud.discoveryengine.v1beta.GcsSource]
+            it is the key of the JSON field. For instance, ``my_id`` for
+            JSON ``{"my_id": "some_uuid"}``. For
+            [BigQuerySource][google.cloud.discoveryengine.v1beta.BigQuerySource]
+            it is the column name of the BigQuery table where the unique
+            ids are stored.
+
+            The values of the JSON field or the BigQuery column will be
+            used as the
+            [Document.id][google.cloud.discoveryengine.v1beta.Document.id]s.
+            The JSON field or the BigQuery column must be of string
+            type, and the values must be set as valid strings conform to
+            `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ with 1-63
+            characters. Otherwise, documents without valid IDs will fail
+            to be imported.
+
+            Only set this field when using
+            [GcsSource][google.cloud.discoveryengine.v1beta.GcsSource]
+            or
+            [BigQuerySource][google.cloud.discoveryengine.v1beta.BigQuerySource],
+            and when
+            [GcsSource.data_schema][google.cloud.discoveryengine.v1beta.GcsSource.data_schema]
+            or
+            [BigQuerySource.data_schema][google.cloud.discoveryengine.v1beta.BigQuerySource.data_schema]
+            is ``custom``. And only set this field when
+            [auto_generate_ids][google.cloud.discoveryengine.v1beta.ImportDocumentsRequest.auto_generate_ids]
+            is unset or set as ``false``. Otherwise, an INVALID_ARGUMENT
+            error is thrown.
+
+            If it is unset, a default value ``_id`` is used when
+            importing from the allowed data sources.
     """
 
     class ReconciliationMode(proto.Enum):
@@ -476,6 +563,14 @@ class ImportDocumentsRequest(proto.Message):
         proto.ENUM,
         number=6,
         enum=ReconciliationMode,
+    )
+    auto_generate_ids: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+    id_field: str = proto.Field(
+        proto.STRING,
+        number=9,
     )
 
 

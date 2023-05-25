@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
@@ -36,7 +38,7 @@ class WriteUserEventRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent DataStore resource name, such as
-            ``projects/{project}/locations/{location}/dataStores/{data_store}``.
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
         user_event (google.cloud.discoveryengine_v1beta.types.UserEvent):
             Required. User event to write.
 
@@ -63,7 +65,7 @@ class CollectUserEventRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent DataStore resource name, such as
-            ``projects/{project}/locations/{location}/dataStores/{data_store}``.
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
         user_event (str):
             Required. URL encoded UserEvent proto with a
             length limit of 2,000,000 characters.

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
@@ -33,8 +35,8 @@ class VehicleInfo(proto.Message):
 
     Attributes:
         emission_type (google.maps.routing_v2.types.VehicleEmissionType):
-            Describes the vehicle's emission type.
-            Applies only to the DRIVE travel mode.
+            Describes the vehicle's emission type. Applies only to the
+            ``DRIVE`` travel mode.
     """
 
     emission_type: vehicle_emission_type.VehicleEmissionType = proto.Field(

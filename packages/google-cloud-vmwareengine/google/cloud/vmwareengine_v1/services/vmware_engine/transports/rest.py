@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -1052,7 +1052,7 @@ class VmwareEngineRestInterceptor:
         self,
         request: locations_pb2.GetLocationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> locations_pb2.Location:
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1061,7 +1061,7 @@ class VmwareEngineRestInterceptor:
         return request, metadata
 
     def post_get_location(
-        self, response: locations_pb2.GetLocationRequest
+        self, response: locations_pb2.Location
     ) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
@@ -1075,7 +1075,7 @@ class VmwareEngineRestInterceptor:
         self,
         request: locations_pb2.ListLocationsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> locations_pb2.ListLocationsResponse:
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1084,7 +1084,7 @@ class VmwareEngineRestInterceptor:
         return request, metadata
 
     def post_list_locations(
-        self, response: locations_pb2.ListLocationsRequest
+        self, response: locations_pb2.ListLocationsResponse
     ) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
@@ -1098,7 +1098,7 @@ class VmwareEngineRestInterceptor:
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> policy_pb2.Policy:
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1106,9 +1106,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_get_iam_policy(
-        self, response: iam_policy_pb2.GetIamPolicyRequest
-    ) -> policy_pb2.Policy:
+    def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the response
@@ -1121,7 +1119,7 @@ class VmwareEngineRestInterceptor:
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> policy_pb2.Policy:
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1129,9 +1127,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_set_iam_policy(
-        self, response: iam_policy_pb2.SetIamPolicyRequest
-    ) -> policy_pb2.Policy:
+    def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
         """Post-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the response
@@ -1144,7 +1140,7 @@ class VmwareEngineRestInterceptor:
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -1153,7 +1149,7 @@ class VmwareEngineRestInterceptor:
         return request, metadata
 
     def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsRequest
+        self, response: iam_policy_pb2.TestIamPermissionsResponse
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
@@ -1167,7 +1163,7 @@ class VmwareEngineRestInterceptor:
         self,
         request: operations_pb2.DeleteOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> None:
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1175,9 +1171,7 @@ class VmwareEngineRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_operation(
-        self, response: operations_pb2.DeleteOperationRequest
-    ) -> None:
+    def post_delete_operation(self, response: None) -> None:
         """Post-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the response
@@ -1190,7 +1184,7 @@ class VmwareEngineRestInterceptor:
         self,
         request: operations_pb2.GetOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.Operation:
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1199,7 +1193,7 @@ class VmwareEngineRestInterceptor:
         return request, metadata
 
     def post_get_operation(
-        self, response: operations_pb2.GetOperationRequest
+        self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
@@ -1213,7 +1207,7 @@ class VmwareEngineRestInterceptor:
         self,
         request: operations_pb2.ListOperationsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.ListOperationsResponse:
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1222,7 +1216,7 @@ class VmwareEngineRestInterceptor:
         return request, metadata
 
     def post_list_operations(
-        self, response: operations_pb2.ListOperationsRequest
+        self, response: operations_pb2.ListOperationsResponse
     ) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
@@ -1380,7 +1374,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("CreateCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "clusterId": "",
         }
 
@@ -1406,7 +1400,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.CreateClusterRequest):
                     The request object. Request message for
                 [VmwareEngine.CreateCluster][google.cloud.vmwareengine.v1.VmwareEngine.CreateCluster]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1480,7 +1473,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("CreateHcxActivationKey")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "hcxActivationKeyId": "",
         }
 
@@ -1506,7 +1499,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.CreateHcxActivationKeyRequest):
                     The request object. Request message for
                 [VmwareEngine.CreateHcxActivationKey][google.cloud.vmwareengine.v1.VmwareEngine.CreateHcxActivationKey]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1582,7 +1574,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("CreateNetworkPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "networkPolicyId": "",
         }
 
@@ -1608,7 +1600,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.CreateNetworkPolicyRequest):
                     The request object. Request message for
                 [VmwareEngine.CreateNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.CreateNetworkPolicy]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1684,7 +1675,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("CreatePrivateCloud")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "privateCloudId": "",
         }
 
@@ -1710,7 +1701,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.CreatePrivateCloudRequest):
                     The request object. Request message for
                 [VmwareEngine.CreatePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.CreatePrivateCloud]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1786,7 +1776,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("CreateVmwareEngineNetwork")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "vmwareEngineNetworkId": "",
         }
 
@@ -1813,7 +1803,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     request (~.vmwareengine.CreateVmwareEngineNetworkRequest):
                         The request object. Request message for
                     [VmwareEngine.CreateVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.CreateVmwareEngineNetwork]
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1889,7 +1878,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("DeleteCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -1913,7 +1902,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.DeleteClusterRequest):
                     The request object. Request message for
                 [VmwareEngine.DeleteCluster][google.cloud.vmwareengine.v1.VmwareEngine.DeleteCluster]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1978,7 +1966,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("DeleteNetworkPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2002,7 +1990,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.DeleteNetworkPolicyRequest):
                     The request object. Request message for
                 [VmwareEngine.DeleteNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.DeleteNetworkPolicy]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2069,7 +2056,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("DeletePrivateCloud")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2093,7 +2080,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.DeletePrivateCloudRequest):
                     The request object. Request message for
                 [VmwareEngine.DeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.DeletePrivateCloud]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2160,7 +2146,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("DeleteVmwareEngineNetwork")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2185,7 +2171,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     request (~.vmwareengine.DeleteVmwareEngineNetworkRequest):
                         The request object. Request message for
                     [VmwareEngine.DeleteVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.DeleteVmwareEngineNetwork]
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -2252,7 +2237,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("GetCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2276,7 +2261,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.GetClusterRequest):
                     The request object. Request message for
                 [VmwareEngine.GetCluster][google.cloud.vmwareengine.v1.VmwareEngine.GetCluster]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2340,7 +2324,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("GetHcxActivationKey")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2364,7 +2348,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.GetHcxActivationKeyRequest):
                     The request object. Request message for
                 [VmwareEngine.GetHcxActivationKeys][]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2437,7 +2420,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("GetNetworkPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2461,7 +2444,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.GetNetworkPolicyRequest):
                     The request object. Request message for
                 [VmwareEngine.GetNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.GetNetworkPolicy]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2538,7 +2520,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("GetNodeType")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2562,7 +2544,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.GetNodeTypeRequest):
                     The request object. Request message for
                 [VmwareEngine.GetNodeType][google.cloud.vmwareengine.v1.VmwareEngine.GetNodeType]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2626,7 +2607,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("GetPrivateCloud")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2650,7 +2631,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.GetPrivateCloudRequest):
                     The request object. Request message for
                 [VmwareEngine.GetPrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.GetPrivateCloud]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2718,7 +2698,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("GetVmwareEngineNetwork")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2742,7 +2722,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.GetVmwareEngineNetworkRequest):
                     The request object. Request message for
                 [VmwareEngine.GetVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.GetVmwareEngineNetwork]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2811,7 +2790,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("ListClusters")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2835,7 +2814,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ListClustersRequest):
                     The request object. Request message for
                 [VmwareEngine.ListClusters][google.cloud.vmwareengine.v1.VmwareEngine.ListClusters]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2901,7 +2879,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("ListHcxActivationKeys")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2925,7 +2903,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ListHcxActivationKeysRequest):
                     The request object. Request message for
                 [VmwareEngine.ListHcxActivationKeys][google.cloud.vmwareengine.v1.VmwareEngine.ListHcxActivationKeys]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2993,7 +2970,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("ListNetworkPolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3017,7 +2994,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ListNetworkPoliciesRequest):
                     The request object. Request message for
                 [VmwareEngine.ListNetworkPolicies][google.cloud.vmwareengine.v1.VmwareEngine.ListNetworkPolicies]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3085,7 +3061,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("ListNodeTypes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3109,7 +3085,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ListNodeTypesRequest):
                     The request object. Request message for
                 [VmwareEngine.ListNodeTypes][google.cloud.vmwareengine.v1.VmwareEngine.ListNodeTypes]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3175,7 +3150,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("ListPrivateClouds")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3199,7 +3174,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ListPrivateCloudsRequest):
                     The request object. Request message for
                 [VmwareEngine.ListPrivateClouds][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateClouds]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3267,7 +3241,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("ListSubnets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3291,7 +3265,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ListSubnetsRequest):
                     The request object. Request message for
                 [VmwareEngine.ListSubnets][google.cloud.vmwareengine.v1.VmwareEngine.ListSubnets]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3357,7 +3330,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("ListVmwareEngineNetworks")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3382,7 +3355,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     request (~.vmwareengine.ListVmwareEngineNetworksRequest):
                         The request object. Request message for
                     [VmwareEngine.ListVmwareEngineNetworks][google.cloud.vmwareengine.v1.VmwareEngine.ListVmwareEngineNetworks]
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3450,7 +3422,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("ResetNsxCredentials")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3474,7 +3446,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ResetNsxCredentialsRequest):
                     The request object. Request message for
                 [VmwareEngine.ResetNsxCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ResetNsxCredentials]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3550,7 +3521,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("ResetVcenterCredentials")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3574,7 +3545,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ResetVcenterCredentialsRequest):
                     The request object. Request message for
                 [VmwareEngine.ResetVcenterCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ResetVcenterCredentials]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3650,7 +3620,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("ShowNsxCredentials")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3674,7 +3644,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ShowNsxCredentialsRequest):
                     The request object. Request message for
                 [VmwareEngine.ShowNsxCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ShowNsxCredentials]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3740,7 +3709,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("ShowVcenterCredentials")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3764,7 +3733,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.ShowVcenterCredentialsRequest):
                     The request object. Request message for
                 [VmwareEngine.ShowVcenterCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ShowVcenterCredentials]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3830,7 +3798,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("UndeletePrivateCloud")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -3854,7 +3822,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.UndeletePrivateCloudRequest):
                     The request object. Request message for
                 [VmwareEngine.UndeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.UndeletePrivateCloud]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3930,7 +3897,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("UpdateCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
@@ -3956,7 +3923,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.UpdateClusterRequest):
                     The request object. Request message for
                 [VmwareEngine.UpdateCluster][google.cloud.vmwareengine.v1.VmwareEngine.UpdateCluster]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4030,7 +3996,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("UpdateNetworkPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
@@ -4056,7 +4022,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.UpdateNetworkPolicyRequest):
                     The request object. Request message for
                 [VmwareEngine.UpdateNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.UpdateNetworkPolicy]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4132,7 +4097,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("UpdatePrivateCloud")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
@@ -4158,7 +4123,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 request (~.vmwareengine.UpdatePrivateCloudRequest):
                     The request object. Request message for
                 [VmwareEngine.UpdatePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.UpdatePrivateCloud]
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -4234,7 +4198,7 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         def __hash__(self):
             return hash("UpdateVmwareEngineNetwork")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "updateMask": {},
         }
 
@@ -4261,7 +4225,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     request (~.vmwareengine.UpdateVmwareEngineNetworkRequest):
                         The request object. Request message for
                     [VmwareEngine.UpdateVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.UpdateVmwareEngineNetwork]
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

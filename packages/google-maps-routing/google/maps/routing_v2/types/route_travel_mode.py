@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
@@ -26,11 +28,11 @@ __protobuf__ = proto.module(
 
 
 class RouteTravelMode(proto.Enum):
-    r"""A set of values used to specify the mode of travel. NOTE: WALK,
-    BICYCLE, and TWO_WHEELER routes are in beta and might sometimes be
-    missing clear sidewalks, pedestrian paths, or bicycling paths. You
-    must display this warning to the user for all walking, bicycling,
-    and two-wheel routes that you display in your app.
+    r"""A set of values used to specify the mode of travel. NOTE: ``WALK``,
+    ``BICYCLE``, and ``TWO_WHEELER`` routes are in beta and might
+    sometimes be missing clear sidewalks, pedestrian paths, or bicycling
+    paths. You must display this warning to the user for all walking,
+    bicycling, and two-wheel routes that you display in your app.
 
     Values:
         TRAVEL_MODE_UNSPECIFIED (0):

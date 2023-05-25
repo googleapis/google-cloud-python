@@ -46,8 +46,9 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.cloud.documentai_v1.types import document as gcd_document
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.contentwarehouse_v1.services.document_service import pagers
@@ -62,6 +63,7 @@ from google.cloud.contentwarehouse_v1.types import document as gcc_document
 from .transports.base import DEFAULT_CLIENT_INFO, DocumentServiceTransport
 from .transports.grpc import DocumentServiceGrpcTransport
 from .transports.grpc_asyncio import DocumentServiceGrpcAsyncIOTransport
+from .transports.rest import DocumentServiceRestTransport
 
 
 class DocumentServiceClientMeta(type):
@@ -77,6 +79,7 @@ class DocumentServiceClientMeta(type):
     )  # type: Dict[str, Type[DocumentServiceTransport]]
     _transport_registry["grpc"] = DocumentServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = DocumentServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = DocumentServiceRestTransport
 
     def get_transport_class(
         cls,
@@ -1052,6 +1055,111 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
         # Done; return the response.
         return response
 
+    def lock_document(
+        self,
+        request: Optional[
+            Union[document_service_request.LockDocumentRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcc_document.Document:
+        r"""Lock the document so the document cannot be updated
+        by other users.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contentwarehouse_v1
+
+            def sample_lock_document():
+                # Create a client
+                client = contentwarehouse_v1.DocumentServiceClient()
+
+                # Initialize request argument(s)
+                request = contentwarehouse_v1.LockDocumentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.lock_document(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.contentwarehouse_v1.types.LockDocumentRequest, dict]):
+                The request object. Request message for
+                DocumentService.LockDocument.
+            name (str):
+                Required. The name of the document to lock. Format:
+                projects/{project_number}/locations/{location}/documents/{document}.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contentwarehouse_v1.types.Document:
+                Defines the structure for content
+                warehouse document proto.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a document_service_request.LockDocumentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, document_service_request.LockDocumentRequest):
+            request = document_service_request.LockDocumentRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.lock_document]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def fetch_acl(
         self,
         request: Optional[Union[document_service_request.FetchAclRequest, dict]] = None,
@@ -1099,6 +1207,8 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 Required. REQUIRED: The resource for which the policy is
                 being requested. Format for document:
                 projects/{project_number}/locations/{location}/documents/{document_id}.
+                Format for collection:
+                projects/{project_number}/locations/{location}/collections/{collection_id}.
                 Format for project: projects/{project_number}.
 
                 This corresponds to the ``resource`` field
@@ -1205,6 +1315,8 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 Required. REQUIRED: The resource for which the policy is
                 being requested. Format for document:
                 projects/{project_number}/locations/{location}/documents/{document_id}.
+                Format for collection:
+                projects/{project_number}/locations/{location}/collections/{collection_id}.
                 Format for project: projects/{project_number}.
 
                 This corresponds to the ``resource`` field
@@ -1213,7 +1325,26 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
             policy (google.iam.v1.policy_pb2.Policy):
                 Required. REQUIRED: The complete policy to be applied to
                 the ``resource``. The size of the policy is limited to a
-                few 10s of KB.
+                few 10s of KB. This refers to an Identity and Access
+                (IAM) policy, which specifies access controls for the
+                Document.
+
+                You can set ACL with condition for projects only.
+
+                Supported operators are: ``=``, ``!=``, ``<``, ``<=``,
+                ``>``, and ``>=`` where the left of the operator is
+                ``DocumentSchemaId`` or property name and the right of
+                the operator is a number or a quoted string. You must
+                escape backslash (\) and quote (") characters.
+
+                Boolean expressions (AND/OR) are supported up to 3
+                levels of nesting (for example, "((A AND B AND C) OR D)
+                AND E"), a maximum of 10 comparisons are allowed in the
+                expression. The expression must be < 6000 bytes in
+                length.
+
+                Sample condition:
+                ``"DocumentSchemaId = \"some schema id\" OR SchemaId.floatPropertyName >= 10"``
 
                 This corresponds to the ``policy`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1286,6 +1417,60 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
             and may cause errors in other clients!
         """
         self.transport.close()
+
+    def get_operation(
+        self,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.Operation:
+        r"""Gets the latest state of a long-running operation.
+
+        Args:
+            request (:class:`~.operations_pb2.GetOperationRequest`):
+                The request object. Request message for
+                `GetOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.Operation:
+                An ``Operation`` object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.GetOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.get_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

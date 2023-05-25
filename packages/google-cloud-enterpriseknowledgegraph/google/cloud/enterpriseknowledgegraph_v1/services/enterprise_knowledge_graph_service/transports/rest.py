@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
@@ -418,7 +418,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         def __hash__(self):
             return hash("CancelEntityReconciliationJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -443,7 +443,6 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                     request (~.service.CancelEntityReconciliationJobRequest):
                         The request object. Request message for
                     CancelEntityReconciliationJob.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -506,7 +505,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         def __hash__(self):
             return hash("CreateEntityReconciliationJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -531,7 +530,6 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                     request (~.service.CreateEntityReconciliationJobRequest):
                         The request object. Request message for
                     CreateEntityReconciliationJob.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -606,7 +604,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         def __hash__(self):
             return hash("DeleteEntityReconciliationJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -631,7 +629,6 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                     request (~.service.DeleteEntityReconciliationJobRequest):
                         The request object. Request message for
                     DeleteEntityReconciliationJob.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -685,7 +682,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         def __hash__(self):
             return hash("GetEntityReconciliationJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -710,7 +707,6 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                     request (~.service.GetEntityReconciliationJobRequest):
                         The request object. Request message for
                     GetEntityReconciliationJob.
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -776,7 +772,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         def __hash__(self):
             return hash("ListEntityReconciliationJobs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -801,7 +797,6 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                     request (~.service.ListEntityReconciliationJobsRequest):
                         The request object. Request message for
                     [EnterpriseKnowledgeGraphService.ListEntityReconciliationJobs][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.ListEntityReconciliationJobs].
-
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -869,7 +864,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         def __hash__(self):
             return hash("Lookup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "ids": "",
         }
 
@@ -895,7 +890,6 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 request (~.service.LookupRequest):
                     The request object. Request message for
                 [EnterpriseKnowledgeGraphService.Lookup][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Lookup].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -961,7 +955,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         def __hash__(self):
             return hash("LookupPublicKg")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "ids": "",
         }
 
@@ -987,7 +981,6 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 request (~.service.LookupPublicKgRequest):
                     The request object. Request message for
                 [EnterpriseKnowledgeGraphService.LookupPublicKg][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.LookupPublicKg].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1055,7 +1048,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         def __hash__(self):
             return hash("Search")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "query": "",
         }
 
@@ -1081,7 +1074,6 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 request (~.service.SearchRequest):
                     The request object. Request message for
                 [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1147,7 +1139,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         def __hash__(self):
             return hash("SearchPublicKg")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "query": "",
         }
 
@@ -1173,7 +1165,6 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 request (~.service.SearchPublicKgRequest):
                     The request object. Request message for
                 [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

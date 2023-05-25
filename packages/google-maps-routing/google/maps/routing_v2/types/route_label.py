@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
@@ -26,8 +28,9 @@ __protobuf__ = proto.module(
 
 
 class RouteLabel(proto.Enum):
-    r"""Labels for the ``Route`` that are useful to identify specific
-    properties of the route to compare against others.
+    r"""Labels for the [Route][google.maps.routing.v2.Route] that are useful
+    to identify specific properties of the route to compare against
+    others.
 
     Values:
         ROUTE_LABEL_UNSPECIFIED (0):
@@ -38,8 +41,8 @@ class RouteLabel(proto.Enum):
         DEFAULT_ROUTE_ALTERNATE (2):
             An alternative to the default "best" route. Routes like this
             will be returned when
-            ``ComputeRoutesRequest.compute_alternative_routes`` is
-            specified.
+            [compute_alternative_routes][google.maps.routing.v2.ComputeRoutesRequest.compute_alternative_routes]
+            is specified.
         FUEL_EFFICIENT (3):
             Fuel efficient route. Routes labeled with
             this value are determined to be optimized for

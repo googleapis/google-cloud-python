@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
@@ -26,7 +28,10 @@ __protobuf__ = proto.module(
 
 
 class AddressMetadata(proto.Message):
-    r"""The metadata for the address.
+    r"""The metadata for the address. ``metadata`` is not guaranteed to be
+    fully populated for every address sent to the Address Validation
+    API.
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 

@@ -19,6 +19,7 @@ from typing import Dict, Type
 from .base import DocumentLinkServiceTransport
 from .grpc import DocumentLinkServiceGrpcTransport
 from .grpc_asyncio import DocumentLinkServiceGrpcAsyncIOTransport
+from .rest import DocumentLinkServiceRestInterceptor, DocumentLinkServiceRestTransport
 
 # Compile a registry of transports.
 _transport_registry = (
@@ -26,9 +27,12 @@ _transport_registry = (
 )  # type: Dict[str, Type[DocumentLinkServiceTransport]]
 _transport_registry["grpc"] = DocumentLinkServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = DocumentLinkServiceGrpcAsyncIOTransport
+_transport_registry["rest"] = DocumentLinkServiceRestTransport
 
 __all__ = (
     "DocumentLinkServiceTransport",
     "DocumentLinkServiceGrpcTransport",
     "DocumentLinkServiceGrpcAsyncIOTransport",
+    "DocumentLinkServiceRestTransport",
+    "DocumentLinkServiceRestInterceptor",
 )

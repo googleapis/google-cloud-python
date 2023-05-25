@@ -22,6 +22,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import Iterable
+import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
@@ -32,12 +34,15 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
 
 from google.maps.mapsplatformdatasets_v1alpha.services.maps_platform_datasets_v1_alpha import (
     MapsPlatformDatasetsV1AlphaAsyncClient,
@@ -103,6 +108,7 @@ def test__get_default_mtls_endpoint():
     [
         (MapsPlatformDatasetsV1AlphaClient, "grpc"),
         (MapsPlatformDatasetsV1AlphaAsyncClient, "grpc_asyncio"),
+        (MapsPlatformDatasetsV1AlphaClient, "rest"),
     ],
 )
 def test_maps_platform_datasets_v1_alpha_client_from_service_account_info(
@@ -118,7 +124,11 @@ def test_maps_platform_datasets_v1_alpha_client_from_service_account_info(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("mapsplatformdatasets.googleapis.com:443")
+        assert client.transport._host == (
+            "mapsplatformdatasets.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://mapsplatformdatasets.googleapis.com"
+        )
 
 
 @pytest.mark.parametrize(
@@ -126,6 +136,7 @@ def test_maps_platform_datasets_v1_alpha_client_from_service_account_info(
     [
         (transports.MapsPlatformDatasetsV1AlphaGrpcTransport, "grpc"),
         (transports.MapsPlatformDatasetsV1AlphaGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.MapsPlatformDatasetsV1AlphaRestTransport, "rest"),
     ],
 )
 def test_maps_platform_datasets_v1_alpha_client_service_account_always_use_jwt(
@@ -151,6 +162,7 @@ def test_maps_platform_datasets_v1_alpha_client_service_account_always_use_jwt(
     [
         (MapsPlatformDatasetsV1AlphaClient, "grpc"),
         (MapsPlatformDatasetsV1AlphaAsyncClient, "grpc_asyncio"),
+        (MapsPlatformDatasetsV1AlphaClient, "rest"),
     ],
 )
 def test_maps_platform_datasets_v1_alpha_client_from_service_account_file(
@@ -173,13 +185,18 @@ def test_maps_platform_datasets_v1_alpha_client_from_service_account_file(
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == ("mapsplatformdatasets.googleapis.com:443")
+        assert client.transport._host == (
+            "mapsplatformdatasets.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://mapsplatformdatasets.googleapis.com"
+        )
 
 
 def test_maps_platform_datasets_v1_alpha_client_get_transport_class():
     transport = MapsPlatformDatasetsV1AlphaClient.get_transport_class()
     available_transports = [
         transports.MapsPlatformDatasetsV1AlphaGrpcTransport,
+        transports.MapsPlatformDatasetsV1AlphaRestTransport,
     ]
     assert transport in available_transports
 
@@ -199,6 +216,11 @@ def test_maps_platform_datasets_v1_alpha_client_get_transport_class():
             MapsPlatformDatasetsV1AlphaAsyncClient,
             transports.MapsPlatformDatasetsV1AlphaGrpcAsyncIOTransport,
             "grpc_asyncio",
+        ),
+        (
+            MapsPlatformDatasetsV1AlphaClient,
+            transports.MapsPlatformDatasetsV1AlphaRestTransport,
+            "rest",
         ),
     ],
 )
@@ -357,6 +379,18 @@ def test_maps_platform_datasets_v1_alpha_client_client_options(
             MapsPlatformDatasetsV1AlphaAsyncClient,
             transports.MapsPlatformDatasetsV1AlphaGrpcAsyncIOTransport,
             "grpc_asyncio",
+            "false",
+        ),
+        (
+            MapsPlatformDatasetsV1AlphaClient,
+            transports.MapsPlatformDatasetsV1AlphaRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            MapsPlatformDatasetsV1AlphaClient,
+            transports.MapsPlatformDatasetsV1AlphaRestTransport,
+            "rest",
             "false",
         ),
     ],
@@ -565,6 +599,11 @@ def test_maps_platform_datasets_v1_alpha_client_get_mtls_endpoint_and_cert_sourc
             transports.MapsPlatformDatasetsV1AlphaGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
+        (
+            MapsPlatformDatasetsV1AlphaClient,
+            transports.MapsPlatformDatasetsV1AlphaRestTransport,
+            "rest",
+        ),
     ],
 )
 def test_maps_platform_datasets_v1_alpha_client_client_options_scopes(
@@ -604,6 +643,12 @@ def test_maps_platform_datasets_v1_alpha_client_client_options_scopes(
             transports.MapsPlatformDatasetsV1AlphaGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
+        ),
+        (
+            MapsPlatformDatasetsV1AlphaClient,
+            transports.MapsPlatformDatasetsV1AlphaRestTransport,
+            "rest",
+            None,
         ),
     ],
 )
@@ -2833,6 +2878,2110 @@ async def test_delete_dataset_version_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        maps_platform_datasets.CreateDatasetRequest,
+        dict,
+    ],
+)
+def test_create_dataset_rest(request_type):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request_init["dataset"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "version_id": "version_id_value",
+        "usage": [1],
+        "local_file_source": {"filename": "filename_value", "file_format": 1},
+        "gcs_source": {"input_uri": "input_uri_value", "file_format": 1},
+        "status": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "version_create_time": {},
+        "version_description": "version_description_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gmm_dataset.Dataset(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            version_id="version_id_value",
+            usage=[gmm_dataset.Usage.USAGE_DATA_DRIVEN_STYLING],
+            status=gmm_dataset.State.STATE_IMPORTING,
+            version_description="version_description_value",
+            local_file_source=data_source.LocalFileSource(filename="filename_value"),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gmm_dataset.Dataset.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_dataset(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gmm_dataset.Dataset)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.version_id == "version_id_value"
+    assert response.usage == [gmm_dataset.Usage.USAGE_DATA_DRIVEN_STYLING]
+    assert response.status == gmm_dataset.State.STATE_IMPORTING
+    assert response.version_description == "version_description_value"
+
+
+def test_create_dataset_rest_required_fields(
+    request_type=maps_platform_datasets.CreateDatasetRequest,
+):
+    transport_class = transports.MapsPlatformDatasetsV1AlphaRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_dataset._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_dataset._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gmm_dataset.Dataset()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gmm_dataset.Dataset.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_dataset(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_dataset_rest_unset_required_fields():
+    transport = transports.MapsPlatformDatasetsV1AlphaRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_dataset._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "dataset",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_dataset_rest_interceptors(null_interceptor):
+    transport = transports.MapsPlatformDatasetsV1AlphaRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.MapsPlatformDatasetsV1AlphaRestInterceptor(),
+    )
+    client = MapsPlatformDatasetsV1AlphaClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.MapsPlatformDatasetsV1AlphaRestInterceptor, "post_create_dataset"
+    ) as post, mock.patch.object(
+        transports.MapsPlatformDatasetsV1AlphaRestInterceptor, "pre_create_dataset"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = maps_platform_datasets.CreateDatasetRequest.pb(
+            maps_platform_datasets.CreateDatasetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gmm_dataset.Dataset.to_json(gmm_dataset.Dataset())
+
+        request = maps_platform_datasets.CreateDatasetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gmm_dataset.Dataset()
+
+        client.create_dataset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_dataset_rest_bad_request(
+    transport: str = "rest", request_type=maps_platform_datasets.CreateDatasetRequest
+):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request_init["dataset"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "version_id": "version_id_value",
+        "usage": [1],
+        "local_file_source": {"filename": "filename_value", "file_format": 1},
+        "gcs_source": {"input_uri": "input_uri_value", "file_format": 1},
+        "status": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "version_create_time": {},
+        "version_description": "version_description_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_dataset(request)
+
+
+def test_create_dataset_rest_flattened():
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gmm_dataset.Dataset()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            dataset=gmm_dataset.Dataset(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gmm_dataset.Dataset.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_dataset(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=projects/*}/datasets" % client.transport._host, args[1]
+        )
+
+
+def test_create_dataset_rest_flattened_error(transport: str = "rest"):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_dataset(
+            maps_platform_datasets.CreateDatasetRequest(),
+            parent="parent_value",
+            dataset=gmm_dataset.Dataset(name="name_value"),
+        )
+
+
+def test_create_dataset_rest_error():
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        maps_platform_datasets.UpdateDatasetMetadataRequest,
+        dict,
+    ],
+)
+def test_update_dataset_metadata_rest(request_type):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"dataset": {"name": "projects/sample1/datasets/sample2"}}
+    request_init["dataset"] = {
+        "name": "projects/sample1/datasets/sample2",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "version_id": "version_id_value",
+        "usage": [1],
+        "local_file_source": {"filename": "filename_value", "file_format": 1},
+        "gcs_source": {"input_uri": "input_uri_value", "file_format": 1},
+        "status": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "version_create_time": {},
+        "version_description": "version_description_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gmm_dataset.Dataset(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            version_id="version_id_value",
+            usage=[gmm_dataset.Usage.USAGE_DATA_DRIVEN_STYLING],
+            status=gmm_dataset.State.STATE_IMPORTING,
+            version_description="version_description_value",
+            local_file_source=data_source.LocalFileSource(filename="filename_value"),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gmm_dataset.Dataset.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_dataset_metadata(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gmm_dataset.Dataset)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.version_id == "version_id_value"
+    assert response.usage == [gmm_dataset.Usage.USAGE_DATA_DRIVEN_STYLING]
+    assert response.status == gmm_dataset.State.STATE_IMPORTING
+    assert response.version_description == "version_description_value"
+
+
+def test_update_dataset_metadata_rest_required_fields(
+    request_type=maps_platform_datasets.UpdateDatasetMetadataRequest,
+):
+    transport_class = transports.MapsPlatformDatasetsV1AlphaRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_dataset_metadata._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_dataset_metadata._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gmm_dataset.Dataset()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gmm_dataset.Dataset.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_dataset_metadata(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_dataset_metadata_rest_unset_required_fields():
+    transport = transports.MapsPlatformDatasetsV1AlphaRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_dataset_metadata._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("dataset",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_dataset_metadata_rest_interceptors(null_interceptor):
+    transport = transports.MapsPlatformDatasetsV1AlphaRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.MapsPlatformDatasetsV1AlphaRestInterceptor(),
+    )
+    client = MapsPlatformDatasetsV1AlphaClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.MapsPlatformDatasetsV1AlphaRestInterceptor,
+        "post_update_dataset_metadata",
+    ) as post, mock.patch.object(
+        transports.MapsPlatformDatasetsV1AlphaRestInterceptor,
+        "pre_update_dataset_metadata",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = maps_platform_datasets.UpdateDatasetMetadataRequest.pb(
+            maps_platform_datasets.UpdateDatasetMetadataRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gmm_dataset.Dataset.to_json(gmm_dataset.Dataset())
+
+        request = maps_platform_datasets.UpdateDatasetMetadataRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gmm_dataset.Dataset()
+
+        client.update_dataset_metadata(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_dataset_metadata_rest_bad_request(
+    transport: str = "rest",
+    request_type=maps_platform_datasets.UpdateDatasetMetadataRequest,
+):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"dataset": {"name": "projects/sample1/datasets/sample2"}}
+    request_init["dataset"] = {
+        "name": "projects/sample1/datasets/sample2",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "version_id": "version_id_value",
+        "usage": [1],
+        "local_file_source": {"filename": "filename_value", "file_format": 1},
+        "gcs_source": {"input_uri": "input_uri_value", "file_format": 1},
+        "status": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "version_create_time": {},
+        "version_description": "version_description_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_dataset_metadata(request)
+
+
+def test_update_dataset_metadata_rest_flattened():
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gmm_dataset.Dataset()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"dataset": {"name": "projects/sample1/datasets/sample2"}}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            dataset=gmm_dataset.Dataset(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gmm_dataset.Dataset.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_dataset_metadata(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{dataset.name=projects/*/datasets/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_dataset_metadata_rest_flattened_error(transport: str = "rest"):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_dataset_metadata(
+            maps_platform_datasets.UpdateDatasetMetadataRequest(),
+            dataset=gmm_dataset.Dataset(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_dataset_metadata_rest_error():
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        maps_platform_datasets.GetDatasetRequest,
+        dict,
+    ],
+)
+def test_get_dataset_rest(request_type):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/datasets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataset.Dataset(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            version_id="version_id_value",
+            usage=[dataset.Usage.USAGE_DATA_DRIVEN_STYLING],
+            status=dataset.State.STATE_IMPORTING,
+            version_description="version_description_value",
+            local_file_source=data_source.LocalFileSource(filename="filename_value"),
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = dataset.Dataset.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_dataset(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataset.Dataset)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.version_id == "version_id_value"
+    assert response.usage == [dataset.Usage.USAGE_DATA_DRIVEN_STYLING]
+    assert response.status == dataset.State.STATE_IMPORTING
+    assert response.version_description == "version_description_value"
+
+
+def test_get_dataset_rest_required_fields(
+    request_type=maps_platform_datasets.GetDatasetRequest,
+):
+    transport_class = transports.MapsPlatformDatasetsV1AlphaRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_dataset._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_dataset._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("published_usage",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = dataset.Dataset()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = dataset.Dataset.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_dataset(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_dataset_rest_unset_required_fields():
+    transport = transports.MapsPlatformDatasetsV1AlphaRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_dataset._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("publishedUsage",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_dataset_rest_interceptors(null_interceptor):
+    transport = transports.MapsPlatformDatasetsV1AlphaRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.MapsPlatformDatasetsV1AlphaRestInterceptor(),
+    )
+    client = MapsPlatformDatasetsV1AlphaClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.MapsPlatformDatasetsV1AlphaRestInterceptor, "post_get_dataset"
+    ) as post, mock.patch.object(
+        transports.MapsPlatformDatasetsV1AlphaRestInterceptor, "pre_get_dataset"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = maps_platform_datasets.GetDatasetRequest.pb(
+            maps_platform_datasets.GetDatasetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = dataset.Dataset.to_json(dataset.Dataset())
+
+        request = maps_platform_datasets.GetDatasetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dataset.Dataset()
+
+        client.get_dataset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_dataset_rest_bad_request(
+    transport: str = "rest", request_type=maps_platform_datasets.GetDatasetRequest
+):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/datasets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_dataset(request)
+
+
+def test_get_dataset_rest_flattened():
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataset.Dataset()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/datasets/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = dataset.Dataset.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_dataset(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/datasets/*}" % client.transport._host, args[1]
+        )
+
+
+def test_get_dataset_rest_flattened_error(transport: str = "rest"):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_dataset(
+            maps_platform_datasets.GetDatasetRequest(),
+            name="name_value",
+        )
+
+
+def test_get_dataset_rest_error():
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        maps_platform_datasets.ListDatasetVersionsRequest,
+        dict,
+    ],
+)
+def test_list_dataset_versions_rest(request_type):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/datasets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = maps_platform_datasets.ListDatasetVersionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = maps_platform_datasets.ListDatasetVersionsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_dataset_versions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDatasetVersionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_dataset_versions_rest_required_fields(
+    request_type=maps_platform_datasets.ListDatasetVersionsRequest,
+):
+    transport_class = transports.MapsPlatformDatasetsV1AlphaRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_dataset_versions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_dataset_versions._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = maps_platform_datasets.ListDatasetVersionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = maps_platform_datasets.ListDatasetVersionsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_dataset_versions(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_dataset_versions_rest_unset_required_fields():
+    transport = transports.MapsPlatformDatasetsV1AlphaRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_dataset_versions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_dataset_versions_rest_interceptors(null_interceptor):
+    transport = transports.MapsPlatformDatasetsV1AlphaRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.MapsPlatformDatasetsV1AlphaRestInterceptor(),
+    )
+    client = MapsPlatformDatasetsV1AlphaClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.MapsPlatformDatasetsV1AlphaRestInterceptor,
+        "post_list_dataset_versions",
+    ) as post, mock.patch.object(
+        transports.MapsPlatformDatasetsV1AlphaRestInterceptor,
+        "pre_list_dataset_versions",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = maps_platform_datasets.ListDatasetVersionsRequest.pb(
+            maps_platform_datasets.ListDatasetVersionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            maps_platform_datasets.ListDatasetVersionsResponse.to_json(
+                maps_platform_datasets.ListDatasetVersionsResponse()
+            )
+        )
+
+        request = maps_platform_datasets.ListDatasetVersionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = maps_platform_datasets.ListDatasetVersionsResponse()
+
+        client.list_dataset_versions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_dataset_versions_rest_bad_request(
+    transport: str = "rest",
+    request_type=maps_platform_datasets.ListDatasetVersionsRequest,
+):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/datasets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_dataset_versions(request)
+
+
+def test_list_dataset_versions_rest_flattened():
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = maps_platform_datasets.ListDatasetVersionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/datasets/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = maps_platform_datasets.ListDatasetVersionsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_dataset_versions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/datasets/*}:listVersions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_dataset_versions_rest_flattened_error(transport: str = "rest"):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_dataset_versions(
+            maps_platform_datasets.ListDatasetVersionsRequest(),
+            name="name_value",
+        )
+
+
+def test_list_dataset_versions_rest_pager(transport: str = "rest"):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            maps_platform_datasets.ListDatasetVersionsResponse(
+                datasets=[
+                    dataset.Dataset(),
+                    dataset.Dataset(),
+                    dataset.Dataset(),
+                ],
+                next_page_token="abc",
+            ),
+            maps_platform_datasets.ListDatasetVersionsResponse(
+                datasets=[],
+                next_page_token="def",
+            ),
+            maps_platform_datasets.ListDatasetVersionsResponse(
+                datasets=[
+                    dataset.Dataset(),
+                ],
+                next_page_token="ghi",
+            ),
+            maps_platform_datasets.ListDatasetVersionsResponse(
+                datasets=[
+                    dataset.Dataset(),
+                    dataset.Dataset(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            maps_platform_datasets.ListDatasetVersionsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"name": "projects/sample1/datasets/sample2"}
+
+        pager = client.list_dataset_versions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, dataset.Dataset) for i in results)
+
+        pages = list(client.list_dataset_versions(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        maps_platform_datasets.ListDatasetsRequest,
+        dict,
+    ],
+)
+def test_list_datasets_rest(request_type):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = maps_platform_datasets.ListDatasetsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = maps_platform_datasets.ListDatasetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_datasets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDatasetsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_datasets_rest_required_fields(
+    request_type=maps_platform_datasets.ListDatasetsRequest,
+):
+    transport_class = transports.MapsPlatformDatasetsV1AlphaRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_datasets._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_datasets._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = maps_platform_datasets.ListDatasetsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = maps_platform_datasets.ListDatasetsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_datasets(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_datasets_rest_unset_required_fields():
+    transport = transports.MapsPlatformDatasetsV1AlphaRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_datasets._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_datasets_rest_interceptors(null_interceptor):
+    transport = transports.MapsPlatformDatasetsV1AlphaRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.MapsPlatformDatasetsV1AlphaRestInterceptor(),
+    )
+    client = MapsPlatformDatasetsV1AlphaClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.MapsPlatformDatasetsV1AlphaRestInterceptor, "post_list_datasets"
+    ) as post, mock.patch.object(
+        transports.MapsPlatformDatasetsV1AlphaRestInterceptor, "pre_list_datasets"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = maps_platform_datasets.ListDatasetsRequest.pb(
+            maps_platform_datasets.ListDatasetsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = maps_platform_datasets.ListDatasetsResponse.to_json(
+            maps_platform_datasets.ListDatasetsResponse()
+        )
+
+        request = maps_platform_datasets.ListDatasetsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = maps_platform_datasets.ListDatasetsResponse()
+
+        client.list_datasets(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_datasets_rest_bad_request(
+    transport: str = "rest", request_type=maps_platform_datasets.ListDatasetsRequest
+):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_datasets(request)
+
+
+def test_list_datasets_rest_flattened():
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = maps_platform_datasets.ListDatasetsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = maps_platform_datasets.ListDatasetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_datasets(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=projects/*}/datasets" % client.transport._host, args[1]
+        )
+
+
+def test_list_datasets_rest_flattened_error(transport: str = "rest"):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_datasets(
+            maps_platform_datasets.ListDatasetsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_datasets_rest_pager(transport: str = "rest"):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            maps_platform_datasets.ListDatasetsResponse(
+                datasets=[
+                    dataset.Dataset(),
+                    dataset.Dataset(),
+                    dataset.Dataset(),
+                ],
+                next_page_token="abc",
+            ),
+            maps_platform_datasets.ListDatasetsResponse(
+                datasets=[],
+                next_page_token="def",
+            ),
+            maps_platform_datasets.ListDatasetsResponse(
+                datasets=[
+                    dataset.Dataset(),
+                ],
+                next_page_token="ghi",
+            ),
+            maps_platform_datasets.ListDatasetsResponse(
+                datasets=[
+                    dataset.Dataset(),
+                    dataset.Dataset(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            maps_platform_datasets.ListDatasetsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1"}
+
+        pager = client.list_datasets(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, dataset.Dataset) for i in results)
+
+        pages = list(client.list_datasets(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        maps_platform_datasets.DeleteDatasetRequest,
+        dict,
+    ],
+)
+def test_delete_dataset_rest(request_type):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/datasets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_dataset(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_dataset_rest_required_fields(
+    request_type=maps_platform_datasets.DeleteDatasetRequest,
+):
+    transport_class = transports.MapsPlatformDatasetsV1AlphaRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_dataset._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_dataset._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("force",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_dataset(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_dataset_rest_unset_required_fields():
+    transport = transports.MapsPlatformDatasetsV1AlphaRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_dataset._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("force",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_dataset_rest_interceptors(null_interceptor):
+    transport = transports.MapsPlatformDatasetsV1AlphaRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.MapsPlatformDatasetsV1AlphaRestInterceptor(),
+    )
+    client = MapsPlatformDatasetsV1AlphaClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.MapsPlatformDatasetsV1AlphaRestInterceptor, "pre_delete_dataset"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = maps_platform_datasets.DeleteDatasetRequest.pb(
+            maps_platform_datasets.DeleteDatasetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = maps_platform_datasets.DeleteDatasetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_dataset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_dataset_rest_bad_request(
+    transport: str = "rest", request_type=maps_platform_datasets.DeleteDatasetRequest
+):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/datasets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_dataset(request)
+
+
+def test_delete_dataset_rest_flattened():
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/datasets/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_dataset(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/datasets/*}" % client.transport._host, args[1]
+        )
+
+
+def test_delete_dataset_rest_flattened_error(transport: str = "rest"):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_dataset(
+            maps_platform_datasets.DeleteDatasetRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_dataset_rest_error():
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        maps_platform_datasets.DeleteDatasetVersionRequest,
+        dict,
+    ],
+)
+def test_delete_dataset_version_rest(request_type):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/datasets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_dataset_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_dataset_version_rest_required_fields(
+    request_type=maps_platform_datasets.DeleteDatasetVersionRequest,
+):
+    transport_class = transports.MapsPlatformDatasetsV1AlphaRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_dataset_version._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_dataset_version._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_dataset_version(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_dataset_version_rest_unset_required_fields():
+    transport = transports.MapsPlatformDatasetsV1AlphaRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_dataset_version._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_dataset_version_rest_interceptors(null_interceptor):
+    transport = transports.MapsPlatformDatasetsV1AlphaRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.MapsPlatformDatasetsV1AlphaRestInterceptor(),
+    )
+    client = MapsPlatformDatasetsV1AlphaClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.MapsPlatformDatasetsV1AlphaRestInterceptor,
+        "pre_delete_dataset_version",
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = maps_platform_datasets.DeleteDatasetVersionRequest.pb(
+            maps_platform_datasets.DeleteDatasetVersionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = maps_platform_datasets.DeleteDatasetVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_dataset_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_dataset_version_rest_bad_request(
+    transport: str = "rest",
+    request_type=maps_platform_datasets.DeleteDatasetVersionRequest,
+):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/datasets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_dataset_version(request)
+
+
+def test_delete_dataset_version_rest_flattened():
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/datasets/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_dataset_version(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/datasets/*}:deleteVersion"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_dataset_version_rest_flattened_error(transport: str = "rest"):
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_dataset_version(
+            maps_platform_datasets.DeleteDatasetVersionRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_dataset_version_rest_error():
+    client = MapsPlatformDatasetsV1AlphaClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.MapsPlatformDatasetsV1AlphaGrpcTransport(
@@ -2914,6 +5063,7 @@ def test_transport_get_channel():
     [
         transports.MapsPlatformDatasetsV1AlphaGrpcTransport,
         transports.MapsPlatformDatasetsV1AlphaGrpcAsyncIOTransport,
+        transports.MapsPlatformDatasetsV1AlphaRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -2928,6 +5078,7 @@ def test_transport_adc(transport_class):
     "transport_name",
     [
         "grpc",
+        "rest",
     ],
 )
 def test_transport_kind(transport_name):
@@ -3063,6 +5214,7 @@ def test_maps_platform_datasets_v1_alpha_transport_auth_adc(transport_class):
     [
         transports.MapsPlatformDatasetsV1AlphaGrpcTransport,
         transports.MapsPlatformDatasetsV1AlphaGrpcAsyncIOTransport,
+        transports.MapsPlatformDatasetsV1AlphaRestTransport,
     ],
 )
 def test_maps_platform_datasets_v1_alpha_transport_auth_gdch_credentials(
@@ -3169,11 +5321,23 @@ def test_maps_platform_datasets_v1_alpha_grpc_transport_client_cert_source_for_m
             )
 
 
+def test_maps_platform_datasets_v1_alpha_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.MapsPlatformDatasetsV1AlphaRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
 @pytest.mark.parametrize(
     "transport_name",
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_maps_platform_datasets_v1_alpha_host_no_port(transport_name):
@@ -3184,7 +5348,11 @@ def test_maps_platform_datasets_v1_alpha_host_no_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("mapsplatformdatasets.googleapis.com:443")
+    assert client.transport._host == (
+        "mapsplatformdatasets.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://mapsplatformdatasets.googleapis.com"
+    )
 
 
 @pytest.mark.parametrize(
@@ -3192,6 +5360,7 @@ def test_maps_platform_datasets_v1_alpha_host_no_port(transport_name):
     [
         "grpc",
         "grpc_asyncio",
+        "rest",
     ],
 )
 def test_maps_platform_datasets_v1_alpha_host_with_port(transport_name):
@@ -3202,7 +5371,53 @@ def test_maps_platform_datasets_v1_alpha_host_with_port(transport_name):
         ),
         transport=transport_name,
     )
-    assert client.transport._host == ("mapsplatformdatasets.googleapis.com:8000")
+    assert client.transport._host == (
+        "mapsplatformdatasets.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://mapsplatformdatasets.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_maps_platform_datasets_v1_alpha_client_transport_session_collision(
+    transport_name,
+):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = MapsPlatformDatasetsV1AlphaClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = MapsPlatformDatasetsV1AlphaClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.create_dataset._session
+    session2 = client2.transport.create_dataset._session
+    assert session1 != session2
+    session1 = client1.transport.update_dataset_metadata._session
+    session2 = client2.transport.update_dataset_metadata._session
+    assert session1 != session2
+    session1 = client1.transport.get_dataset._session
+    session2 = client2.transport.get_dataset._session
+    assert session1 != session2
+    session1 = client1.transport.list_dataset_versions._session
+    session2 = client2.transport.list_dataset_versions._session
+    assert session1 != session2
+    session1 = client1.transport.list_datasets._session
+    session2 = client2.transport.list_datasets._session
+    assert session1 != session2
+    session1 = client1.transport.delete_dataset._session
+    session2 = client2.transport.delete_dataset._session
+    assert session1 != session2
+    session1 = client1.transport.delete_dataset_version._session
+    session2 = client2.transport.delete_dataset_version._session
+    assert session1 != session2
 
 
 def test_maps_platform_datasets_v1_alpha_grpc_transport_channel():
@@ -3500,6 +5715,7 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
+        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -3517,6 +5733,7 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
+        "rest",
         "grpc",
     ]
     for transport in transports:

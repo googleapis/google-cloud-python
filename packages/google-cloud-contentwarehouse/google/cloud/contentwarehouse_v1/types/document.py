@@ -13,9 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
-import google.cloud.documentai_v1.types
+from google.cloud.documentai_v1.types import document as gcd_document
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
 import proto  # type: ignore
@@ -24,6 +26,7 @@ __protobuf__ = proto.module(
     package="google.cloud.contentwarehouse.v1",
     manifest={
         "RawDocumentFileType",
+        "ContentCategory",
         "Document",
         "DocumentReference",
         "Property",
@@ -60,6 +63,8 @@ class RawDocumentFileType(proto.Enum):
             Microsoft Powerpoint format
         RAW_DOCUMENT_FILE_TYPE_TEXT (5):
             UTF-8 encoded text format
+        RAW_DOCUMENT_FILE_TYPE_TIFF (6):
+            TIFF or TIF image file format
     """
     RAW_DOCUMENT_FILE_TYPE_UNSPECIFIED = 0
     RAW_DOCUMENT_FILE_TYPE_PDF = 1
@@ -67,6 +72,27 @@ class RawDocumentFileType(proto.Enum):
     RAW_DOCUMENT_FILE_TYPE_XLSX = 3
     RAW_DOCUMENT_FILE_TYPE_PPTX = 4
     RAW_DOCUMENT_FILE_TYPE_TEXT = 5
+    RAW_DOCUMENT_FILE_TYPE_TIFF = 6
+
+
+class ContentCategory(proto.Enum):
+    r"""When a raw document or structured content is supplied, this
+    stores the content category.
+
+    Values:
+        CONTENT_CATEGORY_UNSPECIFIED (0):
+            No category is specified.
+        CONTENT_CATEGORY_IMAGE (1):
+            Content is of image type.
+        CONTENT_CATEGORY_AUDIO (2):
+            Content is of audio type.
+        CONTENT_CATEGORY_VIDEO (3):
+            Content is of video type.
+    """
+    CONTENT_CATEGORY_UNSPECIFIED = 0
+    CONTENT_CATEGORY_IMAGE = 1
+    CONTENT_CATEGORY_AUDIO = 2
+    CONTENT_CATEGORY_VIDEO = 3
 
 
 class Document(proto.Message):
@@ -97,9 +123,8 @@ class Document(proto.Message):
             the top heading in the document.
         title (str):
             Title that describes the document.
-            This is usually present in the top section of
-            the document, and is a mandatory field for the
-            question-answering feature.
+            This can be the top heading or text that
+            describes the document.
         display_uri (str):
             Uri to display the document, for example, in
             the UI.
@@ -143,9 +168,14 @@ class Document(proto.Message):
         async_enabled (bool):
             If true, makes the document visible to
             asynchronous policies and rules.
+        content_category (google.cloud.contentwarehouse_v1.types.ContentCategory):
+            Indicates the category (image, audio, video
+            etc.) of the original content.
         text_extraction_disabled (bool):
             If true, text extraction will not be
             performed.
+        text_extraction_enabled (bool):
+            If true, text extraction will be performed.
         creator (str):
             The user who creates the document.
         updater (str):
@@ -181,11 +211,11 @@ class Document(proto.Message):
         number=15,
         oneof="structured_content",
     )
-    cloud_ai_document: google.cloud.documentai_v1.types.Document = proto.Field(
+    cloud_ai_document: gcd_document.Document = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="structured_content",
-        message=google.cloud.documentai_v1.types.Document,
+        message=gcd_document.Document,
     )
     structured_content_uri: str = proto.Field(
         proto.STRING,
@@ -225,9 +255,18 @@ class Document(proto.Message):
         proto.BOOL,
         number=12,
     )
+    content_category: "ContentCategory" = proto.Field(
+        proto.ENUM,
+        number=20,
+        enum="ContentCategory",
+    )
     text_extraction_disabled: bool = proto.Field(
         proto.BOOL,
         number=19,
+    )
+    text_extraction_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=21,
     )
     creator: str = proto.Field(
         proto.STRING,

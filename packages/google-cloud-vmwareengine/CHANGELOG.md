@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.0.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v1.0.0...google-cloud-vmwareengine-v1.0.1) (2023-03-25)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#10867](https://github.com/googleapis/google-cloud-python/issues/10867)) ([d34a425](https://github.com/googleapis/google-cloud-python/commit/d34a425f7d0f02bebaf20d24b725b8c25c699697))
+
+## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v0.2.2...google-cloud-vmwareengine-v1.0.0) (2023-01-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* resource proto messages moved to new file ([#10829](https://github.com/googleapis/google-cloud-python/issues/10829))
+
+### Bug Fixes
+
+* resource proto messages moved to new file ([#10829](https://github.com/googleapis/google-cloud-python/issues/10829)) ([bf1ef3d](https://github.com/googleapis/google-cloud-python/commit/bf1ef3d2db8f8cd2e88d4ab29bff73a1af3ae99c))
+
 ## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v0.2.1...google-cloud-vmwareengine-v0.2.2) (2023-01-20)
 
 
