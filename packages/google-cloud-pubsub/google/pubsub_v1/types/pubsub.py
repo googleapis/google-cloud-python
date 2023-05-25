@@ -959,6 +959,11 @@ class ExpirationPolicy(proto.Message):
 class PushConfig(proto.Message):
     r"""Configuration for a push delivery endpoint.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
@@ -998,6 +1003,18 @@ class PushConfig(proto.Message):
             every pushed message.
 
             This field is a member of `oneof`_ ``authentication_method``.
+        pubsub_wrapper (google.pubsub_v1.types.PushConfig.PubsubWrapper):
+            When set, the payload to the push endpoint is
+            in the form of the JSON representation of a
+            PubsubMessage
+            (https://cloud.google.com/pubsub/docs/reference/rpc/google.pubsub.v1#pubsubmessage).
+
+            This field is a member of `oneof`_ ``wrapper``.
+        no_wrapper (google.pubsub_v1.types.PushConfig.NoWrapper):
+            When set, the payload to the push endpoint is
+            not wrapped.
+
+            This field is a member of `oneof`_ ``wrapper``.
     """
 
     class OidcToken(proto.Message):
@@ -1033,6 +1050,29 @@ class PushConfig(proto.Message):
             number=2,
         )
 
+    class PubsubWrapper(proto.Message):
+        r"""The payload to the push endpoint is in the form of the JSON
+        representation of a PubsubMessage
+        (https://cloud.google.com/pubsub/docs/reference/rpc/google.pubsub.v1#pubsubmessage).
+
+        """
+
+    class NoWrapper(proto.Message):
+        r"""Sets the ``data`` field as the HTTP body for delivery.
+
+        Attributes:
+            write_metadata (bool):
+                When true, writes the Pub/Sub message metadata to
+                ``x-goog-pubsub-<KEY>:<VAL>`` headers of the HTTP request.
+                Writes the Pub/Sub message attributes to ``<KEY>:<VAL>``
+                headers of the HTTP request.
+        """
+
+        write_metadata: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+
     push_endpoint: str = proto.Field(
         proto.STRING,
         number=1,
@@ -1047,6 +1087,18 @@ class PushConfig(proto.Message):
         number=3,
         oneof="authentication_method",
         message=OidcToken,
+    )
+    pubsub_wrapper: PubsubWrapper = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="wrapper",
+        message=PubsubWrapper,
+    )
+    no_wrapper: NoWrapper = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="wrapper",
+        message=NoWrapper,
     )
 
 
