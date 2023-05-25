@@ -1,5 +1,18 @@
 {
     "packages": {
+        "packages/google-ai-generativelanguage": {
+            "component": "google-ai-generativelanguage",
+            "extra-files": [
+                "google/ai/generativelanguage/gapic_version.py",
+                "google/ai/generativelanguage_v1beta2/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.ai.generativelanguage.v1beta2.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-apps-script-type": {
             "component": "google-apps-script-type",
             "extra-files": [
@@ -161,6 +174,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-support": {
+            "component": "google-cloud-support",
+            "extra-files": [
+                "google/cloud/support/gapic_version.py",
+                "google/cloud/support_v2/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.support.v2.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-vmwareengine": {
             "component": "google-cloud-vmwareengine",
             "extra-files": [
@@ -251,32 +277,6 @@
                 }
             ],
             "release-type": "python"
-        },
-        "packages/google-ai-generativelanguage": {
-            "component": "google-ai-generativelanguage",
-            "release-type": "python",
-            "extra-files": [
-                "google/ai/generativelanguage/gapic_version.py",
-                "google/ai/generativelanguage_v1beta2/gapic_version.py",
-                {
-                    "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.ai.generativelanguage.v1beta2.json",
-                    "jsonpath": "$.clientLibrary.version"
-                }
-            ]
-        },
-        "packages/google-cloud-support": {
-            "component": "google-cloud-support",
-            "release-type": "python",
-            "extra-files": [
-                "google/cloud/support/gapic_version.py",
-                "google/cloud/support_v2/gapic_version.py",
-                {
-                    "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.support.v2.json",
-                    "jsonpath": "$.clientLibrary.version"
-                }
-            ]
         }
     }
 }

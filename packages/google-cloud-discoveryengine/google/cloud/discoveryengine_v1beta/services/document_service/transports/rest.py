@@ -454,6 +454,10 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     },
                     {
                         "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/collections/*/operations/*}",
                     },
                     {
@@ -485,6 +489,10 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     {
                         "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
                     },
                     {
                         "method": "get",
@@ -1323,6 +1331,10 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 },
                 {
                     "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/collections/*/operations/*}",
                 },
                 {
@@ -1415,6 +1427,10 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
                 },
                 {
                     "method": "get",

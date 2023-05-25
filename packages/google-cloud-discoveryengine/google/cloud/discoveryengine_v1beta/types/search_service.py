@@ -114,9 +114,7 @@ class SearchRequest(proto.Message):
         params (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             Additional search parameters.
 
-            For
-            [IndustryVertical.SITE_SEARCH][google.cloud.discoveryengine.v1beta.IndustryVertical.SITE_SEARCH]
-            vertical, supported values are:
+            For public website search only, supported values are:
 
             -  ``user_country_code``: string. Default empty. If set to
                non-empty, results are restricted or boosted based on the
@@ -157,7 +155,7 @@ class SearchRequest(proto.Message):
         safe_search (bool):
             Whether to turn on safe search. This is only supported for
             [ContentConfig.PUBLIC_WEBSITE][].
-        user_label (MutableMapping[str, str]):
+        user_labels (MutableMapping[str, str]):
             The user labels applied to a resource must meet the
             following requirements:
 
@@ -662,7 +660,7 @@ class SearchRequest(proto.Message):
         proto.BOOL,
         number=20,
     )
-    user_label: MutableMapping[str, str] = proto.MapField(
+    user_labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=22,
