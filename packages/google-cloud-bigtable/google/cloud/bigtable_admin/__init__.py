@@ -200,6 +200,7 @@ from google.cloud.bigtable_admin_v2.types.instance import HotTablet
 from google.cloud.bigtable_admin_v2.types.instance import Instance
 from google.cloud.bigtable_admin_v2.types.table import Backup
 from google.cloud.bigtable_admin_v2.types.table import BackupInfo
+from google.cloud.bigtable_admin_v2.types.table import ChangeStreamConfig
 from google.cloud.bigtable_admin_v2.types.table import ColumnFamily
 from google.cloud.bigtable_admin_v2.types.table import EncryptionInfo
 from google.cloud.bigtable_admin_v2.types.table import GcRule
@@ -282,6 +283,7 @@ __all__ = (
     "Instance",
     "Backup",
     "BackupInfo",
+    "ChangeStreamConfig",
     "ColumnFamily",
     "EncryptionInfo",
     "GcRule",

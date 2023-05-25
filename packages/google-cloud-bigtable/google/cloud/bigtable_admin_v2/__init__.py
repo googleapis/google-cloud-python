@@ -92,6 +92,7 @@ from .types.instance import HotTablet
 from .types.instance import Instance
 from .types.table import Backup
 from .types.table import BackupInfo
+from .types.table import ChangeStreamConfig
 from .types.table import ColumnFamily
 from .types.table import EncryptionInfo
 from .types.table import GcRule
@@ -110,6 +111,7 @@ __all__ = (
     "BackupInfo",
     "BigtableInstanceAdminClient",
     "BigtableTableAdminClient",
+    "ChangeStreamConfig",
     "CheckConsistencyRequest",
     "CheckConsistencyResponse",
     "Cluster",

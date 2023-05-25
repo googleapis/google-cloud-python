@@ -8202,6 +8202,7 @@ def test_update_table_rest(request_type):
                 "source_table": "source_table_value",
             },
         },
+        "change_stream_config": {"retention_period": {"seconds": 751, "nanos": 543}},
         "deletion_protection": True,
     }
     request = request_type(**request_init)
@@ -8399,6 +8400,7 @@ def test_update_table_rest_bad_request(
                 "source_table": "source_table_value",
             },
         },
+        "change_stream_config": {"retention_period": {"seconds": 751, "nanos": 543}},
         "deletion_protection": True,
     }
     request = request_type(**request_init)

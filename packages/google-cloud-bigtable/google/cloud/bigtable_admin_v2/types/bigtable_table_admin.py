@@ -460,14 +460,18 @@ class UpdateTableRequest(proto.Message):
             used to identify the table to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The list of fields to update. A mask specifying
-            which fields (e.g. ``deletion_protection``) in the ``table``
-            field should be updated. This mask is relative to the
-            ``table`` field, not to the request message. The wildcard
-            (*) path is currently not supported. Currently UpdateTable
-            is only supported for the following field:
+            which fields (e.g. ``change_stream_config``) in the
+            ``table`` field should be updated. This mask is relative to
+            the ``table`` field, not to the request message. The
+            wildcard (*) path is currently not supported. Currently
+            UpdateTable is only supported for the following fields:
 
-            -  ``deletion_protection`` If ``column_families`` is set in
-               ``update_mask``, it will return an UNIMPLEMENTED error.
+            -  ``change_stream_config``
+            -  ``change_stream_config.retention_period``
+            -  ``deletion_protection``
+
+            If ``column_families`` is set in ``update_mask``, it will
+            return an UNIMPLEMENTED error.
     """
 
     table: gba_table.Table = proto.Field(

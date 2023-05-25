@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
     manifest={
         "RestoreSourceType",
         "RestoreInfo",
+        "ChangeStreamConfig",
         "Table",
         "ColumnFamily",
         "GcRule",
@@ -82,6 +83,27 @@ class RestoreInfo(proto.Message):
     )
 
 
+class ChangeStreamConfig(proto.Message):
+    r"""Change stream configuration.
+
+    Attributes:
+        retention_period (google.protobuf.duration_pb2.Duration):
+            How long the change stream should be
+            retained. Change stream data older than the
+            retention period will not be returned when
+            reading the change stream from the table.
+            Values must be at least 1 day and at most 7
+            days, and will be truncated to microsecond
+            granularity.
+    """
+
+    retention_period: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
+
+
 class Table(proto.Message):
     r"""A collection of user data indexed by row, column, and
     timestamp. Each table is served using the resources of its
@@ -114,6 +136,10 @@ class Table(proto.Message):
             another data source (e.g. a backup), this field
             will be populated with information about the
             restore.
+        change_stream_config (google.cloud.bigtable_admin_v2.types.ChangeStreamConfig):
+            If specified, enable the change stream on
+            this table. Otherwise, the change stream is
+            disabled and the change stream is not retained.
         deletion_protection (bool):
             Set to true to make the table protected
             against data loss. i.e. deleting the following
@@ -262,6 +288,11 @@ class Table(proto.Message):
         proto.MESSAGE,
         number=6,
         message="RestoreInfo",
+    )
+    change_stream_config: "ChangeStreamConfig" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="ChangeStreamConfig",
     )
     deletion_protection: bool = proto.Field(
         proto.BOOL,

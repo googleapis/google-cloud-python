@@ -91,6 +91,7 @@ from .instance import (
 from .table import (
     Backup,
     BackupInfo,
+    ChangeStreamConfig,
     ColumnFamily,
     EncryptionInfo,
     GcRule,
@@ -170,6 +171,7 @@ __all__ = (
     "Instance",
     "Backup",
     "BackupInfo",
+    "ChangeStreamConfig",
     "ColumnFamily",
     "EncryptionInfo",
     "GcRule",
