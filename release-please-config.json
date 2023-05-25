@@ -16,13 +16,13 @@
         "packages/google-apps-script-type": {
             "component": "google-apps-script-type",
             "extra-files": [
-                "google/apps/script/type/drive/gapic_version.py",
-                "google/apps/script/type/slides/gapic_version.py",
+                "google/apps/script/type/calendar/gapic_version.py",
                 "google/apps/script/type/docs/gapic_version.py",
+                "google/apps/script/type/drive/gapic_version.py",
+                "google/apps/script/type/gapic_version.py",
                 "google/apps/script/type/gmail/gapic_version.py",
                 "google/apps/script/type/sheets/gapic_version.py",
-                "google/apps/script/type/gapic_version.py",
-                "google/apps/script/type/calendar/gapic_version.py"
+                "google/apps/script/type/slides/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -53,12 +53,12 @@
                 },
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1alpha.json",
                     "type": "json"
                 },
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1alpha.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1.json",
                     "type": "json"
                 }
             ],
@@ -72,12 +72,12 @@
                 "google/cloud/bigquery/biglake_v1alpha1/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.biglake.v1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.biglake.v1alpha1.json",
                     "type": "json"
                 },
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.biglake.v1alpha1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.biglake.v1.json",
                     "type": "json"
                 }
             ],
@@ -112,8 +112,8 @@
         "packages/google-cloud-datacatalog-lineage": {
             "component": "google-cloud-datacatalog-lineage",
             "extra-files": [
-                "google/cloud/datacatalog/lineage_v1/gapic_version.py",
                 "google/cloud/datacatalog/lineage/gapic_version.py",
+                "google/cloud/datacatalog/lineage_v1/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.datacatalog.lineage.v1.json",
@@ -126,10 +126,16 @@
             "component": "google-cloud-discoveryengine",
             "extra-files": [
                 "google/cloud/discoveryengine/gapic_version.py",
+                "google/cloud/discoveryengine_v1/gapic_version.py",
                 "google/cloud/discoveryengine_v1beta/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.discoveryengine.v1beta.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.discoveryengine.v1.json",
                     "type": "json"
                 }
             ],
@@ -152,12 +158,7 @@
             "component": "google-cloud-ids",
             "extra-files": [
                 "google/cloud/ids/gapic_version.py",
-                "google/cloud/ids_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.ids.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/ids_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -190,8 +191,8 @@
         "packages/google-cloud-vmwareengine": {
             "component": "google-cloud-vmwareengine",
             "extra-files": [
-                "google/cloud/vmwareengine_v1/gapic_version.py",
                 "google/cloud/vmwareengine/gapic_version.py",
+                "google/cloud/vmwareengine_v1/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.vmwareengine.v1.json",
@@ -204,8 +205,8 @@
             "component": "google-cloud-workstations",
             "extra-files": [
                 "google/cloud/workstations/gapic_version.py",
-                "google/cloud/workstations_v1beta/gapic_version.py",
                 "google/cloud/workstations_v1/gapic_version.py",
+                "google/cloud/workstations_v1beta/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.workstations.v1beta.json",
@@ -242,8 +243,8 @@
         "packages/google-maps-mapsplatformdatasets": {
             "component": "google-maps-mapsplatformdatasets",
             "extra-files": [
-                "google/maps/mapsplatformdatasets_v1alpha/gapic_version.py",
                 "google/maps/mapsplatformdatasets/gapic_version.py",
+                "google/maps/mapsplatformdatasets_v1alpha/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.maps.mapsplatformdatasets.v1alpha.json",
