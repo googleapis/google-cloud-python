@@ -9,6 +9,9 @@ PACKAGES_DIR = SCRIPT_DIR / "test_resources" / "packages"
 
 
 class TestChangeSummary(unittest.TestCase):
+    def test_failing_test(self):
+        self.assertTrue(False)
+
     def test_get_version_for_package(self):
         path_to_gapic_version_py = (
             PACKAGES_DIR / "google-cloud-ids/google/cloud/ids/gapic_version.py"
