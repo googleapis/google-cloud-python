@@ -116,7 +116,7 @@ def _ensure_tuple_or_list(arg_name, tuple_or_list):
     """Ensures an input is a tuple or list.
 
     This effectively reduces the iterable types allowed to a very short
-    whitelist: list and tuple.
+    allowlist: list and tuple.
 
     :type arg_name: str
     :param arg_name: Name of argument to use in error message.
