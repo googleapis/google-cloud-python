@@ -265,7 +265,10 @@ class Credentials(
             "lifetime": str(self._lifetime) + "s",
         }
 
-        headers = {"Content-Type": "application/json"}
+        headers = {
+            "Content-Type": "application/json",
+            metrics.API_CLIENT_HEADER: metrics.token_request_access_token_impersonate(),
+        }
 
         # Apply the source credentials authentication info.
         self._source_credentials.apply(headers)
@@ -426,7 +429,10 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
             "includeEmail": self._include_email,
         }
 
-        headers = {"Content-Type": "application/json"}
+        headers = {
+            "Content-Type": "application/json",
+            metrics.API_CLIENT_HEADER: metrics.token_request_id_token_impersonate(),
+        }
 
         authed_session = AuthorizedSession(
             self._target_credentials._source_credentials, auth_request=request

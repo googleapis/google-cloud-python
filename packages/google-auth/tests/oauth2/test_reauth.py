@@ -40,6 +40,12 @@ CHALLENGES_RESPONSE_AUTHENTICATED = {
     "encodedProofOfReauthToken": "new_rapt_token",
 }
 
+REAUTH_START_METRICS_HEADER_VALUE = "gl-python/3.7 auth/1.1 auth-request-type/re-start"
+REAUTH_CONTINUE_METRICS_HEADER_VALUE = (
+    "gl-python/3.7 auth/1.1 auth-request-type/re-cont"
+)
+TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/3.7 auth/1.1 cred-type/u"
+
 
 class MockChallenge(object):
     def __init__(self, name, locally_eligible, challenge_input):
@@ -56,7 +62,10 @@ def test_is_interactive():
         assert reauth.is_interactive()
 
 
-def test__get_challenges():
+@mock.patch(
+    "google.auth.metrics.reauth_start", return_value=REAUTH_START_METRICS_HEADER_VALUE
+)
+def test__get_challenges(mock_metrics_header_value):
     with mock.patch(
         "google.oauth2._client._token_endpoint_request"
     ) as mock_token_endpoint_request:
@@ -67,10 +76,14 @@ def test__get_challenges():
             {"supportedChallengeTypes": ["SAML"]},
             access_token="token",
             use_json=True,
+            headers={"x-goog-api-client": REAUTH_START_METRICS_HEADER_VALUE},
         )
 
 
-def test__get_challenges_with_scopes():
+@mock.patch(
+    "google.auth.metrics.reauth_start", return_value=REAUTH_START_METRICS_HEADER_VALUE
+)
+def test__get_challenges_with_scopes(mock_metrics_header_value):
     with mock.patch(
         "google.oauth2._client._token_endpoint_request"
     ) as mock_token_endpoint_request:
@@ -86,10 +99,15 @@ def test__get_challenges_with_scopes():
             },
             access_token="token",
             use_json=True,
+            headers={"x-goog-api-client": REAUTH_START_METRICS_HEADER_VALUE},
         )
 
 
-def test__send_challenge_result():
+@mock.patch(
+    "google.auth.metrics.reauth_continue",
+    return_value=REAUTH_CONTINUE_METRICS_HEADER_VALUE,
+)
+def test__send_challenge_result(mock_metrics_header_value):
     with mock.patch(
         "google.oauth2._client._token_endpoint_request"
     ) as mock_token_endpoint_request:
@@ -107,6 +125,7 @@ def test__send_challenge_result():
             },
             access_token="token",
             use_json=True,
+            headers={"x-goog-api-client": REAUTH_CONTINUE_METRICS_HEADER_VALUE},
         )
 
 
@@ -270,7 +289,11 @@ def test_get_rapt_token():
             )
 
 
-def test_refresh_grant_failed():
+@mock.patch(
+    "google.auth.metrics.token_request_user",
+    return_value=TOKEN_REQUEST_METRICS_HEADER_VALUE,
+)
+def test_refresh_grant_failed(mock_metrics_header_value):
     with mock.patch(
         "google.oauth2._client._token_endpoint_request_no_throw"
     ) as mock_token_request:
@@ -299,6 +322,7 @@ def test_refresh_grant_failed():
                 "scope": "foo bar",
                 "rapt": "rapt_token",
             },
+            headers={"x-goog-api-client": TOKEN_REQUEST_METRICS_HEADER_VALUE},
         )
 
 

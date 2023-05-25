@@ -29,6 +29,7 @@ from six.moves.urllib import parse as urlparse
 from google.auth import _helpers
 from google.auth import environment_vars
 from google.auth import exceptions
+from google.auth import metrics
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -121,13 +122,13 @@ def ping(request, timeout=_METADATA_DEFAULT_TIMEOUT, retry_count=3):
     #       the metadata resolution was particularly slow. The latter case is
     #       "unlikely".
     retries = 0
+    headers = _METADATA_HEADERS.copy()
+    headers[metrics.API_CLIENT_HEADER] = metrics.mds_ping()
+
     while retries < retry_count:
         try:
             response = request(
-                url=_METADATA_IP_ROOT,
-                method="GET",
-                headers=_METADATA_HEADERS,
-                timeout=timeout,
+                url=_METADATA_IP_ROOT, method="GET", headers=headers, timeout=timeout
             )
 
             metadata_flavor = response.headers.get(_METADATA_FLAVOR_HEADER)
@@ -150,7 +151,13 @@ def ping(request, timeout=_METADATA_DEFAULT_TIMEOUT, retry_count=3):
 
 
 def get(
-    request, path, root=_METADATA_ROOT, params=None, recursive=False, retry_count=5
+    request,
+    path,
+    root=_METADATA_ROOT,
+    params=None,
+    recursive=False,
+    retry_count=5,
+    headers=None,
 ):
     """Fetch a resource from the metadata server.
 
@@ -167,6 +174,7 @@ def get(
             details.
         retry_count (int): How many times to attempt connecting to metadata
             server using above timeout.
+        headers (Optional[Mapping[str, str]]): Headers for the request.
 
     Returns:
         Union[Mapping, str]: If the metadata server returns JSON, a mapping of
@@ -180,6 +188,10 @@ def get(
     base_url = urlparse.urljoin(root, path)
     query_params = {} if params is None else params
 
+    headers_to_use = _METADATA_HEADERS.copy()
+    if headers:
+        headers_to_use.update(headers)
+
     if recursive:
         query_params["recursive"] = "true"
 
@@ -188,7 +200,7 @@ def get(
     retries = 0
     while retries < retry_count:
         try:
-            response = request(url=url, method="GET", headers=_METADATA_HEADERS)
+            response = request(url=url, method="GET", headers=headers_to_use)
             break
 
         except exceptions.TransportError as e:
@@ -300,8 +312,12 @@ def get_service_account_token(request, service_account="default", scopes=None):
     else:
         params = None
 
+    metrics_header = {
+        metrics.API_CLIENT_HEADER: metrics.token_request_access_token_mds()
+    }
+
     path = "instance/service-accounts/{0}/token".format(service_account)
-    token_json = get(request, path, params=params)
+    token_json = get(request, path, params=params, headers=metrics_header)
     token_expiry = _helpers.utcnow() + datetime.timedelta(
         seconds=token_json["expires_in"]
     )

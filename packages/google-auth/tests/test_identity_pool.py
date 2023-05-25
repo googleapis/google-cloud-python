@@ -286,6 +286,9 @@ class TestCredentials(object):
                 json.dumps({"userProject": workforce_pool_user_project})
             )
 
+        metrics_header_value = (
+            "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/imp"
+        )
         if service_account_impersonation_url:
             # Service account impersonation request/response.
             expire_time = (
@@ -299,6 +302,7 @@ class TestCredentials(object):
             impersonation_headers = {
                 "Content-Type": "application/json",
                 "authorization": "Bearer {}".format(token_response["access_token"]),
+                "x-goog-api-client": metrics_header_value,
             }
             impersonation_request_data = {
                 "delegates": None,
@@ -321,7 +325,11 @@ class TestCredentials(object):
 
         request = cls.make_mock_request(*[el for req in requests for el in req])
 
-        credentials.refresh(request)
+        with mock.patch(
+            "google.auth.metrics.token_request_access_token_impersonate",
+            return_value=metrics_header_value,
+        ):
+            credentials.refresh(request)
 
         assert len(request.call_args_list) == len(requests)
         if credential_data:

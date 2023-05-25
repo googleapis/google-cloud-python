@@ -46,6 +46,13 @@ SCOPES_AS_STRING = (
     " https://www.googleapis.com/auth/logging.write"
 )
 
+ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
+    "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/sa"
+)
+ID_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
+    "gl-python/3.7 auth/1.1 auth-request-type/it cred-type/sa"
+)
+
 
 @pytest.mark.parametrize("retryable", [True, False])
 def test__handle_error_response(retryable):
@@ -483,47 +490,83 @@ def test_refresh_grant_no_access_token():
     assert not excinfo.value.retryable
 
 
+@mock.patch(
+    "google.auth.metrics.token_request_access_token_sa_assertion",
+    return_value=ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+)
 @mock.patch("google.oauth2._client._parse_expiry", return_value=None)
 @mock.patch.object(_client, "_token_endpoint_request", autospec=True)
-def test_jwt_grant_retry_default(mock_token_endpoint_request, mock_expiry):
+def test_jwt_grant_retry_default(
+    mock_token_endpoint_request, mock_expiry, mock_metrics_header_value
+):
     _client.jwt_grant(mock.Mock(), mock.Mock(), mock.Mock())
     mock_token_endpoint_request.assert_called_with(
-        mock.ANY, mock.ANY, mock.ANY, can_retry=True
+        mock.ANY,
+        mock.ANY,
+        mock.ANY,
+        can_retry=True,
+        headers={"x-goog-api-client": ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE},
     )
 
 
 @pytest.mark.parametrize("can_retry", [True, False])
+@mock.patch(
+    "google.auth.metrics.token_request_access_token_sa_assertion",
+    return_value=ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+)
 @mock.patch("google.oauth2._client._parse_expiry", return_value=None)
 @mock.patch.object(_client, "_token_endpoint_request", autospec=True)
 def test_jwt_grant_retry_with_retry(
-    mock_token_endpoint_request, mock_expiry, can_retry
+    mock_token_endpoint_request, mock_expiry, mock_metrics_header_value, can_retry
 ):
     _client.jwt_grant(mock.Mock(), mock.Mock(), mock.Mock(), can_retry=can_retry)
     mock_token_endpoint_request.assert_called_with(
-        mock.ANY, mock.ANY, mock.ANY, can_retry=can_retry
+        mock.ANY,
+        mock.ANY,
+        mock.ANY,
+        can_retry=can_retry,
+        headers={"x-goog-api-client": ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE},
     )
 
 
+@mock.patch(
+    "google.auth.metrics.token_request_id_token_sa_assertion",
+    return_value=ID_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+)
 @mock.patch("google.auth.jwt.decode", return_value={"exp": 0})
 @mock.patch.object(_client, "_token_endpoint_request", autospec=True)
-def test_id_token_jwt_grant_retry_default(mock_token_endpoint_request, mock_jwt_decode):
+def test_id_token_jwt_grant_retry_default(
+    mock_token_endpoint_request, mock_jwt_decode, mock_metrics_header_value
+):
     _client.id_token_jwt_grant(mock.Mock(), mock.Mock(), mock.Mock())
     mock_token_endpoint_request.assert_called_with(
-        mock.ANY, mock.ANY, mock.ANY, can_retry=True
+        mock.ANY,
+        mock.ANY,
+        mock.ANY,
+        can_retry=True,
+        headers={"x-goog-api-client": ID_TOKEN_REQUEST_METRICS_HEADER_VALUE},
     )
 
 
 @pytest.mark.parametrize("can_retry", [True, False])
+@mock.patch(
+    "google.auth.metrics.token_request_id_token_sa_assertion",
+    return_value=ID_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+)
 @mock.patch("google.auth.jwt.decode", return_value={"exp": 0})
 @mock.patch.object(_client, "_token_endpoint_request", autospec=True)
 def test_id_token_jwt_grant_retry_with_retry(
-    mock_token_endpoint_request, mock_jwt_decode, can_retry
+    mock_token_endpoint_request, mock_jwt_decode, mock_metrics_header_value, can_retry
 ):
     _client.id_token_jwt_grant(
         mock.Mock(), mock.Mock(), mock.Mock(), can_retry=can_retry
     )
     mock_token_endpoint_request.assert_called_with(
-        mock.ANY, mock.ANY, mock.ANY, can_retry=can_retry
+        mock.ANY,
+        mock.ANY,
+        mock.ANY,
+        can_retry=can_retry,
+        headers={"x-goog-api-client": ID_TOKEN_REQUEST_METRICS_HEADER_VALUE},
     )
 
 

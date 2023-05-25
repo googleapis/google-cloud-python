@@ -28,6 +28,10 @@ from google.auth import exceptions
 from google.auth import transport
 
 
+IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
+    "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/imp"
+)
+
 CLIENT_ID = "username"
 CLIENT_SECRET = "password"
 # Base64 encoding of "username:password".
@@ -1901,8 +1905,14 @@ class TestCredentials(object):
         assert credentials.scopes is None
         assert credentials.default_scopes == SCOPES
 
+    @mock.patch(
+        "google.auth.metrics.token_request_access_token_impersonate",
+        return_value=IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+    )
     @mock.patch("google.auth._helpers.utcnow")
-    def test_refresh_success_with_impersonation_ignore_default_scopes(self, utcnow):
+    def test_refresh_success_with_impersonation_ignore_default_scopes(
+        self, utcnow, mock_metrics_header_value
+    ):
         utcnow.return_value = datetime.datetime.strptime(
             self.AWS_SIGNATURE_TIME, "%Y-%m-%dT%H:%M:%SZ"
         )
@@ -1937,6 +1947,7 @@ class TestCredentials(object):
             "Content-Type": "application/json",
             "authorization": "Bearer {}".format(self.SUCCESS_RESPONSE["access_token"]),
             "x-goog-user-project": QUOTA_PROJECT_ID,
+            "x-goog-api-client": IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
         }
         impersonation_request_data = {
             "delegates": None,
@@ -1985,8 +1996,14 @@ class TestCredentials(object):
         assert credentials.scopes == SCOPES
         assert credentials.default_scopes == ["ignored"]
 
+    @mock.patch(
+        "google.auth.metrics.token_request_access_token_impersonate",
+        return_value=IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+    )
     @mock.patch("google.auth._helpers.utcnow")
-    def test_refresh_success_with_impersonation_use_default_scopes(self, utcnow):
+    def test_refresh_success_with_impersonation_use_default_scopes(
+        self, utcnow, mock_metrics_header_value
+    ):
         utcnow.return_value = datetime.datetime.strptime(
             self.AWS_SIGNATURE_TIME, "%Y-%m-%dT%H:%M:%SZ"
         )
@@ -2021,6 +2038,7 @@ class TestCredentials(object):
             "Content-Type": "application/json",
             "authorization": "Bearer {}".format(self.SUCCESS_RESPONSE["access_token"]),
             "x-goog-user-project": QUOTA_PROJECT_ID,
+            "x-goog-api-client": IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
         }
         impersonation_request_data = {
             "delegates": None,

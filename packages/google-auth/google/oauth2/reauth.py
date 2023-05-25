@@ -37,6 +37,7 @@ import sys
 from six.moves import range
 
 from google.auth import exceptions
+from google.auth import metrics
 from google.oauth2 import _client
 from google.oauth2 import challenges
 
@@ -94,9 +95,15 @@ def _get_challenges(
     body = {"supportedChallengeTypes": supported_challenge_types}
     if requested_scopes:
         body["oauthScopesForDomainPolicyLookup"] = requested_scopes
+    metrics_header = {metrics.API_CLIENT_HEADER: metrics.reauth_start()}
 
     return _client._token_endpoint_request(
-        request, _REAUTH_API + ":start", body, access_token=access_token, use_json=True
+        request,
+        _REAUTH_API + ":start",
+        body,
+        access_token=access_token,
+        use_json=True,
+        headers=metrics_header,
     )
 
 
@@ -123,6 +130,7 @@ def _send_challenge_result(
         "action": "RESPOND",
         "proposalResponse": client_input,
     }
+    metrics_header = {metrics.API_CLIENT_HEADER: metrics.reauth_continue()}
 
     return _client._token_endpoint_request(
         request,
@@ -130,6 +138,7 @@ def _send_challenge_result(
         body,
         access_token=access_token,
         use_json=True,
+        headers=metrics_header,
     )
 
 
@@ -320,9 +329,10 @@ def refresh_grant(
         body["scope"] = " ".join(scopes)
     if rapt_token:
         body["rapt"] = rapt_token
+    metrics_header = {metrics.API_CLIENT_HEADER: metrics.token_request_user()}
 
     response_status_ok, response_data, retryable_error = _client._token_endpoint_request_no_throw(
-        request, token_uri, body
+        request, token_uri, body, headers=metrics_header
     )
     if (
         not response_status_ok
@@ -345,7 +355,9 @@ def refresh_grant(
             response_status_ok,
             response_data,
             retryable_error,
-        ) = _client._token_endpoint_request_no_throw(request, token_uri, body)
+        ) = _client._token_endpoint_request_no_throw(
+            request, token_uri, body, headers=metrics_header
+        )
 
     if not response_status_ok:
         _client._handle_error_response(response_data, retryable_error)

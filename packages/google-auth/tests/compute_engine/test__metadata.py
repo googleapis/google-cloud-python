@@ -38,6 +38,15 @@ SMBIOS_PRODUCT_NAME_NON_GOOGLE = os.path.join(
     DATA_DIR, "smbios_product_name_non_google"
 )
 
+ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
+    "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/mds"
+)
+MDS_PING_METRICS_HEADER_VALUE = "gl-python/3.7 auth/1.1 auth-request-type/mds"
+MDS_PING_REQUEST_HEADER = {
+    "metadata-flavor": "Google",
+    "x-goog-api-client": MDS_PING_METRICS_HEADER_VALUE,
+}
+
 
 def make_request(data, status=http_client.OK, headers=None, retry=False):
     response = mock.create_autospec(transport.Response, instance=True)
@@ -87,7 +96,8 @@ def test_is_on_gce_linux_success():
     assert _metadata.is_on_gce(request)
 
 
-def test_ping_success():
+@mock.patch("google.auth.metrics.mds_ping", return_value=MDS_PING_METRICS_HEADER_VALUE)
+def test_ping_success(mock_metrics_header_value):
     request = make_request("", headers=_metadata._METADATA_HEADERS)
 
     assert _metadata.ping(request)
@@ -95,12 +105,13 @@ def test_ping_success():
     request.assert_called_once_with(
         method="GET",
         url=_metadata._METADATA_IP_ROOT,
-        headers=_metadata._METADATA_HEADERS,
+        headers=MDS_PING_REQUEST_HEADER,
         timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
 
 
-def test_ping_success_retry():
+@mock.patch("google.auth.metrics.mds_ping", return_value=MDS_PING_METRICS_HEADER_VALUE)
+def test_ping_success_retry(mock_metrics_header_value):
     request = make_request("", headers=_metadata._METADATA_HEADERS, retry=True)
 
     assert _metadata.ping(request)
@@ -108,7 +119,7 @@ def test_ping_success_retry():
     request.assert_called_with(
         method="GET",
         url=_metadata._METADATA_IP_ROOT,
-        headers=_metadata._METADATA_HEADERS,
+        headers=MDS_PING_REQUEST_HEADER,
         timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
     assert request.call_count == 2
@@ -127,7 +138,8 @@ def test_ping_failure_connection_failed():
     assert not _metadata.ping(request)
 
 
-def test_ping_success_custom_root():
+@mock.patch("google.auth.metrics.mds_ping", return_value=MDS_PING_METRICS_HEADER_VALUE)
+def test_ping_success_custom_root(mock_metrics_header_value):
     request = make_request("", headers=_metadata._METADATA_HEADERS)
 
     fake_ip = "1.2.3.4"
@@ -143,7 +155,7 @@ def test_ping_success_custom_root():
     request.assert_called_once_with(
         method="GET",
         url="http://" + fake_ip,
-        headers=_metadata._METADATA_HEADERS,
+        headers=MDS_PING_REQUEST_HEADER,
         timeout=_metadata._METADATA_DEFAULT_TIMEOUT,
     )
 
@@ -341,8 +353,12 @@ def test_get_project_id():
     assert project_id == project
 
 
+@mock.patch(
+    "google.auth.metrics.token_request_access_token_mds",
+    return_value=ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+)
 @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
-def test_get_service_account_token(utcnow):
+def test_get_service_account_token(utcnow, mock_metrics_header_value):
     ttl = 500
     request = make_request(
         json.dumps({"access_token": "token", "expires_in": ttl}),
@@ -354,14 +370,21 @@ def test_get_service_account_token(utcnow):
     request.assert_called_once_with(
         method="GET",
         url=_metadata._METADATA_ROOT + PATH + "/token",
-        headers=_metadata._METADATA_HEADERS,
+        headers={
+            "metadata-flavor": "Google",
+            "x-goog-api-client": ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+        },
     )
     assert token == "token"
     assert expiry == utcnow() + datetime.timedelta(seconds=ttl)
 
 
+@mock.patch(
+    "google.auth.metrics.token_request_access_token_mds",
+    return_value=ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+)
 @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
-def test_get_service_account_token_with_scopes_list(utcnow):
+def test_get_service_account_token_with_scopes_list(utcnow, mock_metrics_header_value):
     ttl = 500
     request = make_request(
         json.dumps({"access_token": "token", "expires_in": ttl}),
@@ -373,14 +396,23 @@ def test_get_service_account_token_with_scopes_list(utcnow):
     request.assert_called_once_with(
         method="GET",
         url=_metadata._METADATA_ROOT + PATH + "/token" + "?scopes=foo%2Cbar",
-        headers=_metadata._METADATA_HEADERS,
+        headers={
+            "metadata-flavor": "Google",
+            "x-goog-api-client": ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+        },
     )
     assert token == "token"
     assert expiry == utcnow() + datetime.timedelta(seconds=ttl)
 
 
+@mock.patch(
+    "google.auth.metrics.token_request_access_token_mds",
+    return_value=ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+)
 @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
-def test_get_service_account_token_with_scopes_string(utcnow):
+def test_get_service_account_token_with_scopes_string(
+    utcnow, mock_metrics_header_value
+):
     ttl = 500
     request = make_request(
         json.dumps({"access_token": "token", "expires_in": ttl}),
@@ -392,7 +424,10 @@ def test_get_service_account_token_with_scopes_string(utcnow):
     request.assert_called_once_with(
         method="GET",
         url=_metadata._METADATA_ROOT + PATH + "/token" + "?scopes=foo%2Cbar",
-        headers=_metadata._METADATA_HEADERS,
+        headers={
+            "metadata-flavor": "Google",
+            "x-goog-api-client": ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
+        },
     )
     assert token == "token"
     assert expiry == utcnow() + datetime.timedelta(seconds=ttl)

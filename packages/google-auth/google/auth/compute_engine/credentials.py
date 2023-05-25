@@ -378,7 +378,12 @@ class IDTokenCredentials(
         try:
             path = "instance/service-accounts/default/identity"
             params = {"audience": self._target_audience, "format": "full"}
-            id_token = _metadata.get(request, path, params=params)
+            metrics_header = {
+                metrics.API_CLIENT_HEADER: metrics.token_request_id_token_mds()
+            }
+            id_token = _metadata.get(
+                request, path, params=params, headers=metrics_header
+            )
         except exceptions.TransportError as caught_exc:
             new_exc = exceptions.RefreshError(caught_exc)
             six.raise_from(new_exc, caught_exc)
