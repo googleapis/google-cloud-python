@@ -26,7 +26,9 @@ from google.auth import external_account
 from google.auth import transport
 
 
-METRICS_HEADER_VALUE = "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/imp"
+IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
+    "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/imp"
+)
 
 CLIENT_ID = "username"
 CLIENT_SECRET = "password"
@@ -755,7 +757,7 @@ class TestCredentials(object):
 
     @mock.patch(
         "google.auth.metrics.token_request_access_token_impersonate",
-        return_value=METRICS_HEADER_VALUE,
+        return_value=IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
     )
     def test_refresh_impersonation_without_client_auth_success(
         self, mock_metrics_header_value
@@ -784,7 +786,7 @@ class TestCredentials(object):
         impersonation_headers = {
             "Content-Type": "application/json",
             "authorization": "Bearer {}".format(token_response["access_token"]),
-            "x-goog-api-client": METRICS_HEADER_VALUE,
+            "x-goog-api-client": IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
         }
         impersonation_request_data = {
             "delegates": None,
@@ -826,7 +828,7 @@ class TestCredentials(object):
 
     @mock.patch(
         "google.auth.metrics.token_request_access_token_impersonate",
-        return_value=METRICS_HEADER_VALUE,
+        return_value=IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
     )
     def test_refresh_workforce_impersonation_without_client_auth_success(
         self, mock_metrics_header_value
@@ -858,7 +860,7 @@ class TestCredentials(object):
         impersonation_headers = {
             "Content-Type": "application/json",
             "authorization": "Bearer {}".format(token_response["access_token"]),
-            "x-goog-api-client": METRICS_HEADER_VALUE,
+            "x-goog-api-client": IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
         }
         impersonation_request_data = {
             "delegates": None,
@@ -1018,7 +1020,7 @@ class TestCredentials(object):
 
     @mock.patch(
         "google.auth.metrics.token_request_access_token_impersonate",
-        return_value=METRICS_HEADER_VALUE,
+        return_value=IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
     )
     def test_refresh_impersonation_with_client_auth_success_ignore_default_scopes(
         self, mock_metrics_header_value
@@ -1050,7 +1052,7 @@ class TestCredentials(object):
         impersonation_headers = {
             "Content-Type": "application/json",
             "authorization": "Bearer {}".format(token_response["access_token"]),
-            "x-goog-api-client": METRICS_HEADER_VALUE,
+            "x-goog-api-client": IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
         }
         impersonation_request_data = {
             "delegates": None,
@@ -1096,7 +1098,7 @@ class TestCredentials(object):
 
     @mock.patch(
         "google.auth.metrics.token_request_access_token_impersonate",
-        return_value=METRICS_HEADER_VALUE,
+        return_value=IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
     )
     def test_refresh_impersonation_with_client_auth_success_use_default_scopes(
         self, mock_metrics_header_value
@@ -1128,7 +1130,7 @@ class TestCredentials(object):
         impersonation_headers = {
             "Content-Type": "application/json",
             "authorization": "Bearer {}".format(token_response["access_token"]),
-            "x-goog-api-client": METRICS_HEADER_VALUE,
+            "x-goog-api-client": IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
         }
         impersonation_request_data = {
             "delegates": None,
@@ -1520,7 +1522,7 @@ class TestCredentials(object):
 
     @mock.patch(
         "google.auth.metrics.token_request_access_token_impersonate",
-        return_value=METRICS_HEADER_VALUE,
+        return_value=IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
     )
     def test_get_project_id_cloud_resource_manager_success(
         self, mock_metrics_header_value
@@ -1549,7 +1551,7 @@ class TestCredentials(object):
             "Content-Type": "application/json",
             "x-goog-user-project": self.QUOTA_PROJECT_ID,
             "authorization": "Bearer {}".format(token_response["access_token"]),
-            "x-goog-api-client": METRICS_HEADER_VALUE,
+            "x-goog-api-client": IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
         }
         impersonation_request_data = {
             "delegates": None,
@@ -1677,7 +1679,7 @@ class TestCredentials(object):
 
     @mock.patch(
         "google.auth.metrics.token_request_access_token_impersonate",
-        return_value=METRICS_HEADER_VALUE,
+        return_value=IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
     )
     def test_refresh_impersonation_with_lifetime(self, mock_metrics_header_value):
         # Simulate service account access token expires in 2800 seconds.
@@ -1704,7 +1706,7 @@ class TestCredentials(object):
         impersonation_headers = {
             "Content-Type": "application/json",
             "authorization": "Bearer {}".format(token_response["access_token"]),
-            "x-goog-api-client": METRICS_HEADER_VALUE,
+            "x-goog-api-client": IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
         }
         impersonation_request_data = {
             "delegates": None,
