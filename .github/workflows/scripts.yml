@@ -2,13 +2,13 @@ on:
   pull_request:
     branches:
       - main
-name: configure_release_please_scripts
+name: scripts
 
 permissions:
   contents: read
 
 jobs:
-  configure_release_please_scripts:
+  test_release_please_scripts:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
