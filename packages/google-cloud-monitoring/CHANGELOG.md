@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.15.0](https://github.com/googleapis/python-monitoring/compare/v2.14.2...v2.15.0) (2023-05-25)
+
+
+### Features
+
+* Add basic http authentication ([2774ac4](https://github.com/googleapis/python-monitoring/commit/2774ac41588c9707102b2f6f1af79c3728db5eae))
+* Add httpStatusCode ([2774ac4](https://github.com/googleapis/python-monitoring/commit/2774ac41588c9707102b2f6f1af79c3728db5eae))
+* Add ICMP pings ([2774ac4](https://github.com/googleapis/python-monitoring/commit/2774ac41588c9707102b2f6f1af79c3728db5eae))
+* Add individual USA regions ([2774ac4](https://github.com/googleapis/python-monitoring/commit/2774ac41588c9707102b2f6f1af79c3728db5eae))
+* Add json path matching capabilities ([2774ac4](https://github.com/googleapis/python-monitoring/commit/2774ac41588c9707102b2f6f1af79c3728db5eae))
+
 ## [2.14.2](https://github.com/googleapis/python-monitoring/compare/v2.14.1...v2.14.2) (2023-03-23)
 
 
