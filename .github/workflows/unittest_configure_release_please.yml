@@ -1,0 +1,22 @@
+on:
+  pull_request:
+    branches:
+      - main
+name: configure_release_please_scripts
+
+permissions:
+  contents: read
+
+jobs:
+  configure_release_please_scripts:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+    - name: Run configure_release_please_scripts tests
+      run: |
+        pytest scripts/configure_release_please
