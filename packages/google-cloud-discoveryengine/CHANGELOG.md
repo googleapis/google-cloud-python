@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.7.0...google-cloud-discoveryengine-v0.8.0) (2023-05-25)
+
+
+### Features
+
+* **v1:** add discovery engine v1 client library ([10671ec](https://github.com/googleapis/google-cloud-python/commit/10671ec9c0b16892100f2c91a6138571fabcbeb2))
+* **v1beta:** add LRO API for schema service ([10671ec](https://github.com/googleapis/google-cloud-python/commit/10671ec9c0b16892100f2c91a6138571fabcbeb2))
+* **v1beta:** allow users to specify id field in documents gcs import ([10671ec](https://github.com/googleapis/google-cloud-python/commit/10671ec9c0b16892100f2c91a6138571fabcbeb2))
+
+
+### Documentation
+
+* **v1beta:** keep the API doc up-to-date with recent changes ([10671ec](https://github.com/googleapis/google-cloud-python/commit/10671ec9c0b16892100f2c91a6138571fabcbeb2))
+
 ## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.6.0...google-cloud-discoveryengine-v0.7.0) (2023-05-17)
 
 
