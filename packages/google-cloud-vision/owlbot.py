@@ -63,43 +63,6 @@ for library in s.get_staging_dirs(default_version):
         "__all__ = (",
     )
 
-    # Temporary workaround due to bug https://github.com/googleapis/proto-plus-python/issues/135
-    s.replace(
-        library / f"google/cloud/vision_{library.name}/services/image_annotator/client.py",
-        "request = image_annotator.BatchAnnotateImagesRequest\(request\)",
-        "request = image_annotator.BatchAnnotateImagesRequest(request)\n"
-        "            if requests is not None:\n"
-        "                for i in range(len(requests)):\n"
-        "                    requests[i] = image_annotator.AnnotateImageRequest(requests[i])"
-    )
-
-    s.replace(
-        library / f"google/cloud/vision_{library.name}/services/image_annotator/client.py",
-        "request = image_annotator.BatchAnnotateFilesRequest\(request\)",
-        "request = image_annotator.BatchAnnotateFilesRequest(request)\n"
-        "            if requests is not None:\n"
-        "                for i in range(len(requests)):\n"
-        "                    requests[i] = image_annotator.AnnotateFileRequest(requests[i])"
-    )
-
-    s.replace(
-        library / f"google/cloud/vision_{library.name}/services/image_annotator/client.py",
-        "request = image_annotator.AsyncBatchAnnotateImagesRequest\(request\)",
-        "request = image_annotator.AsyncBatchAnnotateImagesRequest(request)\n"
-        "            if requests is not None:\n"
-        "                for i in range(len(requests)):\n"
-        "                    requests[i] = image_annotator.AnnotateImageRequest(requests[i])"
-    )
-
-    s.replace(
-        library / f"google/cloud/vision_{library.name}/services/image_annotator/client.py",
-        "request = image_annotator.AsyncBatchAnnotateFilesRequest\(request\)",
-        "request = image_annotator.AsyncBatchAnnotateFilesRequest(request)\n"
-        "            if requests is not None:\n"
-        "                for i in range(len(requests)):\n"
-        "                    requests[i] = image_annotator.AsyncAnnotateFileRequest(requests[i])"
-    )
-
     s.move([library], excludes=["**/gapic_version.py", "README.rst", "docs/index.rst", "docs/vision_v1p1beta1", "google/cloud/vision/__init__.py"])
 s.remove_staging_dirs()
 

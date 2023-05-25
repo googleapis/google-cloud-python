@@ -551,9 +551,6 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         # there are no flattened fields.
         if not isinstance(request, image_annotator.BatchAnnotateImagesRequest):
             request = image_annotator.BatchAnnotateImagesRequest(request)
-            if requests is not None:
-                for i in range(len(requests)):
-                    requests[i] = image_annotator.AnnotateImageRequest(requests[i])
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if requests is not None:
@@ -658,9 +655,6 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         # there are no flattened fields.
         if not isinstance(request, image_annotator.BatchAnnotateFilesRequest):
             request = image_annotator.BatchAnnotateFilesRequest(request)
-            if requests is not None:
-                for i in range(len(requests)):
-                    requests[i] = image_annotator.AnnotateFileRequest(requests[i])
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if requests is not None:
@@ -786,9 +780,6 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         # there are no flattened fields.
         if not isinstance(request, image_annotator.AsyncBatchAnnotateImagesRequest):
             request = image_annotator.AsyncBatchAnnotateImagesRequest(request)
-            if requests is not None:
-                for i in range(len(requests)):
-                    requests[i] = image_annotator.AnnotateImageRequest(requests[i])
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if requests is not None:
@@ -914,9 +905,6 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         # there are no flattened fields.
         if not isinstance(request, image_annotator.AsyncBatchAnnotateFilesRequest):
             request = image_annotator.AsyncBatchAnnotateFilesRequest(request)
-            if requests is not None:
-                for i in range(len(requests)):
-                    requests[i] = image_annotator.AsyncAnnotateFileRequest(requests[i])
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if requests is not None:
