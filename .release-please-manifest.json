@@ -7,7 +7,7 @@
     "packages/google-cloud-confidentialcomputing": "0.1.0",
     "packages/google-cloud-contentwarehouse": "0.5.0",
     "packages/google-cloud-datacatalog-lineage": "0.2.2",
-    "packages/google-cloud-discoveryengine": "0.7.0",
+    "packages/google-cloud-discoveryengine": "0.8.0",
     "packages/google-cloud-enterpriseknowledgegraph": "0.3.2",
     "packages/google-cloud-ids": "1.5.1",
     "packages/google-cloud-storageinsights": "0.1.0",
