@@ -401,6 +401,10 @@ class SchemaServiceRestTransport(SchemaServiceTransport):
                     },
                     {
                         "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/collections/*/operations/*}",
                     },
                     {
@@ -432,6 +436,10 @@ class SchemaServiceRestTransport(SchemaServiceTransport):
                     {
                         "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
                     },
                     {
                         "method": "get",
@@ -1054,6 +1062,10 @@ class SchemaServiceRestTransport(SchemaServiceTransport):
                 },
                 {
                     "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/collections/*/operations/*}",
                 },
                 {
@@ -1146,6 +1158,10 @@ class SchemaServiceRestTransport(SchemaServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
                 },
                 {
                     "method": "get",

@@ -47,7 +47,7 @@ class discoveryengineCallTransformer(cst.CSTTransformer):
         'delete_schema': ('name', ),
         'get_document': ('name', ),
         'get_schema': ('name', ),
-        'import_documents': ('parent', 'inline_source', 'gcs_source', 'bigquery_source', 'error_config', 'reconciliation_mode', ),
+        'import_documents': ('parent', 'inline_source', 'gcs_source', 'bigquery_source', 'error_config', 'reconciliation_mode', 'auto_generate_ids', 'id_field', ),
         'import_user_events': ('inline_source', 'gcs_source', 'bigquery_source', 'parent', 'error_config', ),
         'list_documents': ('parent', 'page_size', 'page_token', ),
         'list_schemas': ('parent', 'page_size', 'page_token', ),
