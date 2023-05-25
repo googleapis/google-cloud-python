@@ -51,6 +51,7 @@ __protobuf__ = proto.module(
         "ListRuntimesRequest",
         "ListRuntimesResponse",
         "OperationMetadata",
+        "LocationMetadata",
         "Stage",
     },
 )
@@ -82,9 +83,6 @@ class Function(proto.Message):
             A user-defined name of the function. Function names must be
             unique globally and match pattern
             ``projects/*/locations/*/functions/*``
-        environment (google.cloud.functions_v2.types.Environment):
-            Describe whether the function is 1st Gen or
-            2nd Gen.
         description (str):
             User-provided description of a function.
         build_config (google.cloud.functions_v2.types.BuildConfig):
@@ -108,15 +106,18 @@ class Function(proto.Message):
         state_messages (MutableSequence[google.cloud.functions_v2.types.StateMessage]):
             Output only. State Messages for this Cloud
             Function.
-        kms_key_name (str):
-            Resource name of a KMS crypto key (managed by the user) used
-            to encrypt/decrypt function resources.
-
-            It must match the pattern
-            ``projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}``.
+        environment (google.cloud.functions_v2.types.Environment):
+            Describe whether the function is 1st Gen or
+            2nd Gen.
         url (str):
             Output only. The deployed url for the
             function.
+        kms_key_name (str):
+            [Preview] Resource name of a KMS crypto key (managed by the
+            user) used to encrypt/decrypt function resources.
+
+            It must match the pattern
+            ``projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}``.
     """
 
     class State(proto.Enum):
@@ -151,11 +152,6 @@ class Function(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
-    )
-    environment: "Environment" = proto.Field(
-        proto.ENUM,
-        number=10,
-        enum="Environment",
     )
     description: str = proto.Field(
         proto.STRING,
@@ -196,13 +192,18 @@ class Function(proto.Message):
         number=9,
         message="StateMessage",
     )
-    kms_key_name: str = proto.Field(
-        proto.STRING,
-        number=25,
+    environment: "Environment" = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum="Environment",
     )
     url: str = proto.Field(
         proto.STRING,
         number=14,
+    )
+    kms_key_name: str = proto.Field(
+        proto.STRING,
+        number=25,
     )
 
 
@@ -473,7 +474,7 @@ class BuildConfig(proto.Message):
             User-provided build-time environment
             variables for the function
         docker_registry (google.cloud.functions_v2.types.BuildConfig.DockerRegistry):
-            Optional. Docker Registry to use for this deployment. This
+            Docker Registry to use for this deployment. This
             configuration is only applicable to 1st Gen functions, 2nd
             Gen functions can only use Artifact Registry.
 
@@ -564,7 +565,6 @@ class BuildConfig(proto.Message):
 class ServiceConfig(proto.Message):
     r"""Describes the Service being deployed.
     Currently Supported : Cloud Run (fully managed).
-    Next tag: 23
 
     Attributes:
         service (str):
@@ -585,10 +585,9 @@ class ServiceConfig(proto.Message):
             https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachinery/pkg/api/resource/quantity.go
             a full description.
         available_cpu (str):
-            The number of CPUs used in a single container
-            instance. Default value is calculated from
-            available memory. Supports the same values as
-            Cloud Run, see
+            [Preview] The number of CPUs used in a single container
+            instance. Default value is calculated from available memory.
+            Supports the same values as Cloud Run, see
             https://cloud.google.com/run/docs/reference/rest/v1/Container#resourcerequirements
             Example: "1" indicates 1 vCPU
         environment_variables (MutableMapping[str, str]):
@@ -652,9 +651,8 @@ class ServiceConfig(proto.Message):
         revision (str):
             Output only. The name of service revision.
         max_instance_request_concurrency (int):
-            Sets the maximum number of concurrent
-            requests that each instance can receive.
-            Defaults to 1.
+            [Preview] Sets the maximum number of concurrent requests
+            that each instance can receive. Defaults to 1.
         security_level (google.cloud.functions_v2.types.ServiceConfig.SecurityLevel):
             Security level configure whether the function
             only accepts https. This configuration is only
@@ -713,7 +711,7 @@ class ServiceConfig(proto.Message):
 
         This enforces security protocol on function URL.
 
-        Security level is only ocnfigurable for 1st Gen functions, If
+        Security level is only configurable for 1st Gen functions, If
         unspecified, SECURE_OPTIONAL will be used. 2nd Gen functions are
         SECURE_ALWAYS ONLY.
 
@@ -1251,9 +1249,9 @@ class GenerateUploadUrlRequest(proto.Message):
             Storage signed URL should be generated, specified in the
             format ``projects/*/locations/*``.
         kms_key_name (str):
-            Resource name of a KMS crypto key (managed by the user) used
-            to encrypt/decrypt function source code objects in
-            intermediate Cloud Storage buckets. When you generate an
+            [Preview] Resource name of a KMS crypto key (managed by the
+            user) used to encrypt/decrypt function source code objects
+            in intermediate Cloud Storage buckets. When you generate an
             upload url and upload your source code, it gets copied to an
             intermediate Cloud Storage bucket. The source code is then
             copied to a versioned directory in the sources bucket in the
@@ -1525,6 +1523,22 @@ class OperationMetadata(proto.Message):
         proto.MESSAGE,
         number=9,
         message="Stage",
+    )
+
+
+class LocationMetadata(proto.Message):
+    r"""Extra GCF specific location information.
+
+    Attributes:
+        environments (MutableSequence[google.cloud.functions_v2.types.Environment]):
+            The Cloud Function environments this location
+            supports.
+    """
+
+    environments: MutableSequence["Environment"] = proto.RepeatedField(
+        proto.ENUM,
+        number=1,
+        enum="Environment",
     )
 
 

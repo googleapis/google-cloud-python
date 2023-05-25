@@ -765,11 +765,11 @@ def test_get_function(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = functions.Function(
             name="name_value",
-            environment=functions.Environment.GEN_1,
             description="description_value",
             state=functions.Function.State.ACTIVE,
-            kms_key_name="kms_key_name_value",
+            environment=functions.Environment.GEN_1,
             url="url_value",
+            kms_key_name="kms_key_name_value",
         )
         response = client.get_function(request)
 
@@ -781,11 +781,11 @@ def test_get_function(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, functions.Function)
     assert response.name == "name_value"
-    assert response.environment == functions.Environment.GEN_1
     assert response.description == "description_value"
     assert response.state == functions.Function.State.ACTIVE
-    assert response.kms_key_name == "kms_key_name_value"
+    assert response.environment == functions.Environment.GEN_1
     assert response.url == "url_value"
+    assert response.kms_key_name == "kms_key_name_value"
 
 
 def test_get_function_empty_call():
@@ -823,11 +823,11 @@ async def test_get_function_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             functions.Function(
                 name="name_value",
-                environment=functions.Environment.GEN_1,
                 description="description_value",
                 state=functions.Function.State.ACTIVE,
-                kms_key_name="kms_key_name_value",
+                environment=functions.Environment.GEN_1,
                 url="url_value",
+                kms_key_name="kms_key_name_value",
             )
         )
         response = await client.get_function(request)
@@ -840,11 +840,11 @@ async def test_get_function_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, functions.Function)
     assert response.name == "name_value"
-    assert response.environment == functions.Environment.GEN_1
     assert response.description == "description_value"
     assert response.state == functions.Function.State.ACTIVE
-    assert response.kms_key_name == "kms_key_name_value"
+    assert response.environment == functions.Environment.GEN_1
     assert response.url == "url_value"
+    assert response.kms_key_name == "kms_key_name_value"
 
 
 @pytest.mark.asyncio
@@ -2691,11 +2691,11 @@ def test_get_function_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = functions.Function(
             name="name_value",
-            environment=functions.Environment.GEN_1,
             description="description_value",
             state=functions.Function.State.ACTIVE,
-            kms_key_name="kms_key_name_value",
+            environment=functions.Environment.GEN_1,
             url="url_value",
+            kms_key_name="kms_key_name_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -2711,11 +2711,11 @@ def test_get_function_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, functions.Function)
     assert response.name == "name_value"
-    assert response.environment == functions.Environment.GEN_1
     assert response.description == "description_value"
     assert response.state == functions.Function.State.ACTIVE
-    assert response.kms_key_name == "kms_key_name_value"
+    assert response.environment == functions.Environment.GEN_1
     assert response.url == "url_value"
+    assert response.kms_key_name == "kms_key_name_value"
 
 
 def test_get_function_rest_required_fields(request_type=functions.GetFunctionRequest):
@@ -3300,7 +3300,6 @@ def test_create_function_rest(request_type):
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request_init["function"] = {
         "name": "name_value",
-        "environment": 1,
         "description": "description_value",
         "build_config": {
             "build": "build_value",
@@ -3387,8 +3386,9 @@ def test_create_function_rest(request_type):
         "state_messages": [
             {"severity": 1, "type_": "type__value", "message": "message_value"}
         ],
-        "kms_key_name": "kms_key_name_value",
+        "environment": 1,
         "url": "url_value",
+        "kms_key_name": "kms_key_name_value",
     }
     request = request_type(**request_init)
 
@@ -3576,7 +3576,6 @@ def test_create_function_rest_bad_request(
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request_init["function"] = {
         "name": "name_value",
-        "environment": 1,
         "description": "description_value",
         "build_config": {
             "build": "build_value",
@@ -3663,8 +3662,9 @@ def test_create_function_rest_bad_request(
         "state_messages": [
             {"severity": 1, "type_": "type__value", "message": "message_value"}
         ],
-        "kms_key_name": "kms_key_name_value",
+        "environment": 1,
         "url": "url_value",
+        "kms_key_name": "kms_key_name_value",
     }
     request = request_type(**request_init)
 
@@ -3763,7 +3763,6 @@ def test_update_function_rest(request_type):
     }
     request_init["function"] = {
         "name": "projects/sample1/locations/sample2/functions/sample3",
-        "environment": 1,
         "description": "description_value",
         "build_config": {
             "build": "build_value",
@@ -3850,8 +3849,9 @@ def test_update_function_rest(request_type):
         "state_messages": [
             {"severity": 1, "type_": "type__value", "message": "message_value"}
         ],
-        "kms_key_name": "kms_key_name_value",
+        "environment": 1,
         "url": "url_value",
+        "kms_key_name": "kms_key_name_value",
     }
     request = request_type(**request_init)
 
@@ -4028,7 +4028,6 @@ def test_update_function_rest_bad_request(
     }
     request_init["function"] = {
         "name": "projects/sample1/locations/sample2/functions/sample3",
-        "environment": 1,
         "description": "description_value",
         "build_config": {
             "build": "build_value",
@@ -4115,8 +4114,9 @@ def test_update_function_rest_bad_request(
         "state_messages": [
             {"severity": 1, "type_": "type__value", "message": "message_value"}
         ],
-        "kms_key_name": "kms_key_name_value",
+        "environment": 1,
         "url": "url_value",
+        "kms_key_name": "kms_key_name_value",
     }
     request = request_type(**request_init)
 
