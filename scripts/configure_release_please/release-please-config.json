@@ -1,0 +1,12 @@
+{
+    "packages": {
+        "packages/google-cloud-ids": {
+            "component": "google-cloud-ids",
+            "extra-files": [
+                "google/cloud/ids/gapic_version.py",
+                "google/cloud/ids_v1/gapic_version.py"
+            ],
+            "release-type": "python"
+        }
+    }
+}
