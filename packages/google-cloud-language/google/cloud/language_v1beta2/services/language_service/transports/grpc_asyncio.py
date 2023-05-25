@@ -386,6 +386,36 @@ class LanguageServiceGrpcAsyncIOTransport(LanguageServiceTransport):
         return self._stubs["classify_text"]
 
     @property
+    def moderate_text(
+        self,
+    ) -> Callable[
+        [language_service.ModerateTextRequest],
+        Awaitable[language_service.ModerateTextResponse],
+    ]:
+        r"""Return a callable for the moderate text method over gRPC.
+
+        Moderates a document for harmful and sensitive
+        categories.
+
+        Returns:
+            Callable[[~.ModerateTextRequest],
+                    Awaitable[~.ModerateTextResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "moderate_text" not in self._stubs:
+            self._stubs["moderate_text"] = self.grpc_channel.unary_unary(
+                "/google.cloud.language.v1beta2.LanguageService/ModerateText",
+                request_serializer=language_service.ModerateTextRequest.serialize,
+                response_deserializer=language_service.ModerateTextResponse.deserialize,
+            )
+        return self._stubs["moderate_text"]
+
+    @property
     def annotate_text(
         self,
     ) -> Callable[

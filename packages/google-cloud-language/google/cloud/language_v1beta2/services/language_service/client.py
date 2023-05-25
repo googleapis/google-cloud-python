@@ -952,6 +952,104 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         # Done; return the response.
         return response
 
+    def moderate_text(
+        self,
+        request: Optional[Union[language_service.ModerateTextRequest, dict]] = None,
+        *,
+        document: Optional[language_service.Document] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> language_service.ModerateTextResponse:
+        r"""Moderates a document for harmful and sensitive
+        categories.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import language_v1beta2
+
+            def sample_moderate_text():
+                # Create a client
+                client = language_v1beta2.LanguageServiceClient()
+
+                # Initialize request argument(s)
+                document = language_v1beta2.Document()
+                document.content = "content_value"
+
+                request = language_v1beta2.ModerateTextRequest(
+                    document=document,
+                )
+
+                # Make the request
+                response = client.moderate_text(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.language_v1beta2.types.ModerateTextRequest, dict]):
+                The request object. The document moderation request
+                message.
+            document (google.cloud.language_v1beta2.types.Document):
+                Required. Input document.
+                This corresponds to the ``document`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.language_v1beta2.types.ModerateTextResponse:
+                The document moderation response
+                message.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([document])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a language_service.ModerateTextRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, language_service.ModerateTextRequest):
+            request = language_service.ModerateTextRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if document is not None:
+                request.document = document
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.moderate_text]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def annotate_text(
         self,
         request: Optional[Union[language_service.AnnotateTextRequest, dict]] = None,

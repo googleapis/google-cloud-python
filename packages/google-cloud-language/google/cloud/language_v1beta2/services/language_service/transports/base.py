@@ -200,6 +200,11 @@ class LanguageServiceTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.moderate_text: gapic_v1.method.wrap_method(
+                self.moderate_text,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.annotate_text: gapic_v1.method.wrap_method(
                 self.annotate_text,
                 default_retry=retries.Retry(
@@ -282,6 +287,18 @@ class LanguageServiceTransport(abc.ABC):
         Union[
             language_service.ClassifyTextResponse,
             Awaitable[language_service.ClassifyTextResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def moderate_text(
+        self,
+    ) -> Callable[
+        [language_service.ModerateTextRequest],
+        Union[
+            language_service.ModerateTextResponse,
+            Awaitable[language_service.ModerateTextResponse],
         ],
     ]:
         raise NotImplementedError()

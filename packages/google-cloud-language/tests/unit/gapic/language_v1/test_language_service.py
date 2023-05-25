@@ -1703,6 +1703,183 @@ async def test_classify_text_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        language_service.ModerateTextRequest,
+        dict,
+    ],
+)
+def test_moderate_text(request_type, transport: str = "grpc"):
+    client = LanguageServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.moderate_text), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = language_service.ModerateTextResponse()
+        response = client.moderate_text(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == language_service.ModerateTextRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, language_service.ModerateTextResponse)
+
+
+def test_moderate_text_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LanguageServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.moderate_text), "__call__") as call:
+        client.moderate_text()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == language_service.ModerateTextRequest()
+
+
+@pytest.mark.asyncio
+async def test_moderate_text_async(
+    transport: str = "grpc_asyncio", request_type=language_service.ModerateTextRequest
+):
+    client = LanguageServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.moderate_text), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            language_service.ModerateTextResponse()
+        )
+        response = await client.moderate_text(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == language_service.ModerateTextRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, language_service.ModerateTextResponse)
+
+
+@pytest.mark.asyncio
+async def test_moderate_text_async_from_dict():
+    await test_moderate_text_async(request_type=dict)
+
+
+def test_moderate_text_flattened():
+    client = LanguageServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.moderate_text), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = language_service.ModerateTextResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.moderate_text(
+            document=language_service.Document(
+                type_=language_service.Document.Type.PLAIN_TEXT
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].document
+        mock_val = language_service.Document(
+            type_=language_service.Document.Type.PLAIN_TEXT
+        )
+        assert arg == mock_val
+
+
+def test_moderate_text_flattened_error():
+    client = LanguageServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.moderate_text(
+            language_service.ModerateTextRequest(),
+            document=language_service.Document(
+                type_=language_service.Document.Type.PLAIN_TEXT
+            ),
+        )
+
+
+@pytest.mark.asyncio
+async def test_moderate_text_flattened_async():
+    client = LanguageServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.moderate_text), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = language_service.ModerateTextResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            language_service.ModerateTextResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.moderate_text(
+            document=language_service.Document(
+                type_=language_service.Document.Type.PLAIN_TEXT
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].document
+        mock_val = language_service.Document(
+            type_=language_service.Document.Type.PLAIN_TEXT
+        )
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_moderate_text_flattened_error_async():
+    client = LanguageServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.moderate_text(
+            language_service.ModerateTextRequest(),
+            document=language_service.Document(
+                type_=language_service.Document.Type.PLAIN_TEXT
+            ),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         language_service.AnnotateTextRequest,
         dict,
     ],
@@ -3249,6 +3426,269 @@ def test_classify_text_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        language_service.ModerateTextRequest,
+        dict,
+    ],
+)
+def test_moderate_text_rest(request_type):
+    client = LanguageServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = language_service.ModerateTextResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = language_service.ModerateTextResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.moderate_text(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, language_service.ModerateTextResponse)
+
+
+def test_moderate_text_rest_required_fields(
+    request_type=language_service.ModerateTextRequest,
+):
+    transport_class = transports.LanguageServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).moderate_text._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).moderate_text._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = LanguageServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = language_service.ModerateTextResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = language_service.ModerateTextResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.moderate_text(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_moderate_text_rest_unset_required_fields():
+    transport = transports.LanguageServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.moderate_text._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("document",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_moderate_text_rest_interceptors(null_interceptor):
+    transport = transports.LanguageServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.LanguageServiceRestInterceptor(),
+    )
+    client = LanguageServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LanguageServiceRestInterceptor, "post_moderate_text"
+    ) as post, mock.patch.object(
+        transports.LanguageServiceRestInterceptor, "pre_moderate_text"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = language_service.ModerateTextRequest.pb(
+            language_service.ModerateTextRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = language_service.ModerateTextResponse.to_json(
+            language_service.ModerateTextResponse()
+        )
+
+        request = language_service.ModerateTextRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = language_service.ModerateTextResponse()
+
+        client.moderate_text(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_moderate_text_rest_bad_request(
+    transport: str = "rest", request_type=language_service.ModerateTextRequest
+):
+    client = LanguageServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.moderate_text(request)
+
+
+def test_moderate_text_rest_flattened():
+    client = LanguageServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = language_service.ModerateTextResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            document=language_service.Document(
+                type_=language_service.Document.Type.PLAIN_TEXT
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = language_service.ModerateTextResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.moderate_text(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/documents:moderateText" % client.transport._host, args[1]
+        )
+
+
+def test_moderate_text_rest_flattened_error(transport: str = "rest"):
+    client = LanguageServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.moderate_text(
+            language_service.ModerateTextRequest(),
+            document=language_service.Document(
+                type_=language_service.Document.Type.PLAIN_TEXT
+            ),
+        )
+
+
+def test_moderate_text_rest_error():
+    client = LanguageServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         language_service.AnnotateTextRequest,
         dict,
     ],
@@ -3668,6 +4108,7 @@ def test_language_service_base_transport():
         "analyze_entity_sentiment",
         "analyze_syntax",
         "classify_text",
+        "moderate_text",
         "annotate_text",
     )
     for method in methods:
@@ -3953,6 +4394,9 @@ def test_language_service_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.classify_text._session
     session2 = client2.transport.classify_text._session
+    assert session1 != session2
+    session1 = client1.transport.moderate_text._session
+    session2 = client2.transport.moderate_text._session
     assert session1 != session2
     session1 = client1.transport.annotate_text._session
     session2 = client2.transport.annotate_text._session

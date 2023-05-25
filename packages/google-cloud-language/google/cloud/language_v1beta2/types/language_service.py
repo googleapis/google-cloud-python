@@ -44,6 +44,8 @@ __protobuf__ = proto.module(
         "AnalyzeSyntaxResponse",
         "ClassifyTextRequest",
         "ClassifyTextResponse",
+        "ModerateTextRequest",
+        "ModerateTextResponse",
         "AnnotateTextRequest",
         "AnnotateTextResponse",
     },
@@ -1227,9 +1229,8 @@ class ClassificationCategory(proto.Message):
 
     Attributes:
         name (str):
-            The name of the category representing the document, from the
-            `predefined
-            taxonomy <https://cloud.google.com/natural-language/docs/categories>`__.
+            The name of the category representing the
+            document.
         confidence (float):
             The classifier's confidence of the category.
             Number represents how certain the classifier is
@@ -1570,6 +1571,39 @@ class ClassifyTextResponse(proto.Message):
     )
 
 
+class ModerateTextRequest(proto.Message):
+    r"""The document moderation request message.
+
+    Attributes:
+        document (google.cloud.language_v1beta2.types.Document):
+            Required. Input document.
+    """
+
+    document: "Document" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Document",
+    )
+
+
+class ModerateTextResponse(proto.Message):
+    r"""The document moderation response message.
+
+    Attributes:
+        moderation_categories (MutableSequence[google.cloud.language_v1beta2.types.ClassificationCategory]):
+            Harmful and sensitive categories representing
+            the input document.
+    """
+
+    moderation_categories: MutableSequence[
+        "ClassificationCategory"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ClassificationCategory",
+    )
+
+
 class AnnotateTextRequest(proto.Message):
     r"""The request message for the text annotation API, which can
     perform multiple analysis types (sentiment, entities, and
@@ -1588,7 +1622,7 @@ class AnnotateTextRequest(proto.Message):
     class Features(proto.Message):
         r"""All available features for sentiment, syntax, and semantic
         analysis. Setting each one to true will enable that specific
-        analysis for the input. Next ID: 11
+        analysis for the input. Next ID: 12
 
         Attributes:
             extract_syntax (bool):
@@ -1605,6 +1639,9 @@ class AnnotateTextRequest(proto.Message):
                 the API will use the default model which classifies into a
                 `predefined
                 taxonomy <https://cloud.google.com/natural-language/docs/categories>`__.
+            moderate_text (bool):
+                Moderate the document for harmful and
+                sensitive categories.
             classification_model_options (google.cloud.language_v1beta2.types.ClassificationModelOptions):
                 The model options to use for classification. Defaults to v1
                 options if not specified. Only used if ``classify_text`` is
@@ -1630,6 +1667,10 @@ class AnnotateTextRequest(proto.Message):
         classify_text: bool = proto.Field(
             proto.BOOL,
             number=6,
+        )
+        moderate_text: bool = proto.Field(
+            proto.BOOL,
+            number=11,
         )
         classification_model_options: "ClassificationModelOptions" = proto.Field(
             proto.MESSAGE,
@@ -1682,6 +1723,9 @@ class AnnotateTextResponse(proto.Message):
             field for more details.
         categories (MutableSequence[google.cloud.language_v1beta2.types.ClassificationCategory]):
             Categories identified in the input document.
+        moderation_categories (MutableSequence[google.cloud.language_v1beta2.types.ClassificationCategory]):
+            Harmful and sensitive categories identified
+            in the input document.
     """
 
     sentences: MutableSequence["Sentence"] = proto.RepeatedField(
@@ -1711,6 +1755,13 @@ class AnnotateTextResponse(proto.Message):
     categories: MutableSequence["ClassificationCategory"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
+        message="ClassificationCategory",
+    )
+    moderation_categories: MutableSequence[
+        "ClassificationCategory"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
         message="ClassificationCategory",
     )
 
