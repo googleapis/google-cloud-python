@@ -104,25 +104,6 @@ def unit(session):
     )
 
 
-@nox.session(python=["2.7"])
-def unit_prev_versions(session):
-    constraints_path = str(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
-    )
-    session.install("-r", "testing/requirements.txt", "-c", constraints_path)
-    session.install("-e", ".", "-c", constraints_path)
-    session.run(
-        "pytest",
-        f"--junitxml=unit_{session.python}_sponge_log.xml",
-        "--cov=google.auth",
-        "--cov=google.oauth2",
-        "--cov=tests",
-        "--ignore=tests/test_pluggable.py",  # Pluggable auth only support 3.6+ for now.
-        "tests",
-        "--ignore=tests/transport/test__custom_tls_signer.py",  # enterprise cert is for python 3.6+
-    )
-
-
 @nox.session(python="3.8")
 def cover(session):
     session.install("-r", "testing/requirements.txt")

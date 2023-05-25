@@ -24,19 +24,14 @@ DEPENDENCIES = (
     "pyasn1-modules>=0.2.1",
     # rsa==4.5 is the last version to support 2.7
     # https://github.com/sybrenstuvel/python-rsa/issues/152#issuecomment-643470233
-    'rsa<4.6; python_version < "3.6"',
-    'rsa>=3.1.4,<5; python_version >= "3.6"',
+    "rsa>=3.1.4,<5",
     # install enum34 to support 2.7. enum34 only works up to python version 3.3.
-    'enum34>=1.1.10; python_version < "3.4"',
     "six>=1.9.0",
     "urllib3<2.0",
 )
 
 extras = {
-    "aiohttp": [
-        "aiohttp >= 3.6.2, < 4.0.0dev; python_version>='3.6'",
-        "requests >= 2.20.0, < 3.0.0dev",
-    ],
+    "aiohttp": ["aiohttp >= 3.6.2, < 4.0.0dev", "requests >= 2.20.0, < 3.0.0dev"],
     "pyopenssl": ["pyopenssl>=20.0.0", "cryptography>=38.0.3"],
     "requests": "requests >= 2.20.0, < 3.0.0dev",
     "reauth": "pyu2f>=0.1.5",
@@ -67,7 +62,7 @@ setup(
     namespace_packages=("google",),
     install_requires=DEPENDENCIES,
     extras_require=extras,
-    python_requires=">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*",
+    python_requires=">=3.6",
     license="Apache 2.0",
     keywords="google auth oauth client",
     classifiers=[
