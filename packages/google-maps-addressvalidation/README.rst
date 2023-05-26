@@ -15,7 +15,7 @@ Python Client for Address Validation API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-maps-addressvalidation.svg
    :target: https://pypi.org/project/google-maps-addressvalidation/
 .. _Address Validation API: https://mapsplatform.google.com/maps-products/address-validation/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/addressvalidation/latest
+.. _Client Library Documentation: https://googleapis.dev/python/addressvalidation/latest
 .. _Product Documentation:  https://mapsplatform.google.com/maps-products/address-validation/
 
 Quick Start
