@@ -19,5 +19,5 @@
     "packages/google-maps-mapsplatformdatasets": "0.2.1",
     "packages/google-maps-places": "0.1.0",
     "packages/google-maps-routing": "0.5.0",
-    "packages/google-cloud-rapidmigrationassessment": "0.0.0"
+    "packages/google-cloud-rapidmigrationassessment": "0.1.0"
 }
