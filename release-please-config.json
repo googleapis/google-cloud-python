@@ -278,6 +278,13 @@
                 }
             ],
             "release-type": "python"
+        },
+        "packages/google-cloud-rapidmigrationassessment": {
+            "component": "google-cloud-rapidmigrationassessment",
+            "release-type": "python",
+            "extra-files": [
+                "google/cloud/rapidmigrationassessment/gapic_version.py"
+            ]
         }
     }
 }
