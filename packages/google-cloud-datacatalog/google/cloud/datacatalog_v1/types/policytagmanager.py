@@ -128,7 +128,7 @@ class Taxonomy(proto.Message):
             name (google.cloud.datacatalog_v1.types.ManagingSystem):
                 The Google Cloud service name.
             identity (str):
-                P4SA Identity of the service.
+                The service agent for the service.
         """
 
         name: common.ManagingSystem = proto.Field(

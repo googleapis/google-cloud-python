@@ -47,6 +47,8 @@ from google.cloud.datacatalog_v1.types.common import (
 from google.cloud.datacatalog_v1.types.data_source import DataSource, StorageProperties
 from google.cloud.datacatalog_v1.types.datacatalog import (
     BusinessContext,
+    CloudBigtableInstanceSpec,
+    CloudBigtableSystemSpec,
     Contacts,
     CreateEntryGroupRequest,
     CreateEntryRequest,
@@ -89,6 +91,7 @@ from google.cloud.datacatalog_v1.types.datacatalog import (
     RoutineSpec,
     SearchCatalogRequest,
     SearchCatalogResponse,
+    ServiceSpec,
     SqlDatabaseSystemSpec,
     StarEntryRequest,
     StarEntryResponse,
@@ -181,6 +184,8 @@ __all__ = (
     "DataSource",
     "StorageProperties",
     "BusinessContext",
+    "CloudBigtableInstanceSpec",
+    "CloudBigtableSystemSpec",
     "Contacts",
     "CreateEntryGroupRequest",
     "CreateEntryRequest",
@@ -222,6 +227,7 @@ __all__ = (
     "RoutineSpec",
     "SearchCatalogRequest",
     "SearchCatalogResponse",
+    "ServiceSpec",
     "SqlDatabaseSystemSpec",
     "StarEntryRequest",
     "StarEntryResponse",

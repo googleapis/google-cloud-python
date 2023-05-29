@@ -708,6 +708,7 @@ def test_search_catalog(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.search_catalog), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.SearchCatalogResponse(
+            total_size=1086,
             next_page_token="next_page_token_value",
             unreachable=["unreachable_value"],
         )
@@ -720,6 +721,7 @@ def test_search_catalog(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchCatalogPager)
+    assert response.total_size == 1086
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
 
@@ -758,6 +760,7 @@ async def test_search_catalog_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datacatalog.SearchCatalogResponse(
+                total_size=1086,
                 next_page_token="next_page_token_value",
                 unreachable=["unreachable_value"],
             )
@@ -771,6 +774,7 @@ async def test_search_catalog_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchCatalogAsyncPager)
+    assert response.total_size == 1086
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
 

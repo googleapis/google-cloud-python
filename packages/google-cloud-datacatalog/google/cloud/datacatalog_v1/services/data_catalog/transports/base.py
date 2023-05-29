@@ -128,16 +128,7 @@ class DataCatalogTransport(abc.ABC):
         self._wrapped_methods = {
             self.search_catalog: gapic_v1.method.wrap_method(
                 self.search_catalog,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.create_entry_group: gapic_v1.method.wrap_method(
@@ -147,16 +138,7 @@ class DataCatalogTransport(abc.ABC):
             ),
             self.get_entry_group: gapic_v1.method.wrap_method(
                 self.get_entry_group,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.update_entry_group: gapic_v1.method.wrap_method(
@@ -171,16 +153,7 @@ class DataCatalogTransport(abc.ABC):
             ),
             self.list_entry_groups: gapic_v1.method.wrap_method(
                 self.list_entry_groups,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.create_entry: gapic_v1.method.wrap_method(
@@ -200,44 +173,17 @@ class DataCatalogTransport(abc.ABC):
             ),
             self.get_entry: gapic_v1.method.wrap_method(
                 self.get_entry,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.lookup_entry: gapic_v1.method.wrap_method(
                 self.lookup_entry,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_entries: gapic_v1.method.wrap_method(
                 self.list_entries,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.modify_entry_overview: gapic_v1.method.wrap_method(
@@ -312,16 +258,7 @@ class DataCatalogTransport(abc.ABC):
             ),
             self.list_tags: gapic_v1.method.wrap_method(
                 self.list_tags,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.reconcile_tags: gapic_v1.method.wrap_method(
@@ -346,16 +283,7 @@ class DataCatalogTransport(abc.ABC):
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
                 self.get_iam_policy,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
@@ -365,16 +293,7 @@ class DataCatalogTransport(abc.ABC):
             ),
             self.import_entries: gapic_v1.method.wrap_method(
                 self.import_entries,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }

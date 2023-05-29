@@ -43,13 +43,13 @@ class TaggedEntry(proto.Message):
 
             This field is a member of `oneof`_ ``entry``.
         present_tags (MutableSequence[google.cloud.datacatalog_v1.types.Tag]):
-            Tags that should be ingested into the Data
-            Catalog. Caller should populate template name,
-            column and fields.
+            Optional. Tags that should be ingested into
+            the Data Catalog. Caller should populate
+            template name, column and fields.
         absent_tags (MutableSequence[google.cloud.datacatalog_v1.types.Tag]):
-            Tags that should be deleted from the Data
-            Catalog. Caller should populate template name
-            and column only.
+            Optional. Tags that should be deleted from
+            the Data Catalog. Caller should populate
+            template name and column only.
     """
 
     v1_entry: datacatalog.Entry = proto.Field(

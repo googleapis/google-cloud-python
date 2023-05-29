@@ -54,6 +54,9 @@ __protobuf__ = proto.module(
         "RoutineSpec",
         "SqlDatabaseSystemSpec",
         "LookerSystemSpec",
+        "CloudBigtableSystemSpec",
+        "CloudBigtableInstanceSpec",
+        "ServiceSpec",
         "BusinessContext",
         "EntryOverview",
         "Contacts",
@@ -320,6 +323,9 @@ class SearchCatalogResponse(proto.Message):
     Attributes:
         results (MutableSequence[google.cloud.datacatalog_v1.types.SearchCatalogResult]):
             Search results.
+        total_size (int):
+            The approximate total number of entries
+            matched by the query.
         next_page_token (str):
             Pagination token that can be used in
             subsequent calls to retrieve the next page of
@@ -342,6 +348,10 @@ class SearchCatalogResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message=search.SearchCatalogResult,
+    )
+    total_size: int = proto.Field(
+        proto.INT32,
+        number=2,
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -685,7 +695,9 @@ class LookupEntryRequest(proto.Message):
 
             This field is a member of `oneof`_ ``target_name``.
         fully_qualified_name (str):
-            Fully qualified name (FQN) of the resource.
+            `Fully Qualified Name
+            (FQN) <https://cloud.google.com//data-catalog/docs/fully-qualified-names>`__
+            of the resource.
 
             FQNs take two forms:
 
@@ -702,6 +714,16 @@ class LookupEntryRequest(proto.Message):
             ``dataproc_metastore:{PROJECT_ID}.{LOCATION_ID}.{INSTANCE_ID}.{DATABASE_ID}.{TABLE_ID}``
 
             This field is a member of `oneof`_ ``target_name``.
+        project (str):
+            Project where the lookup should be performed. Required to
+            lookup entry that is not a part of ``DPMS`` or ``DATAPLEX``
+            ``integrated_system`` using its ``fully_qualified_name``.
+            Ignored in other cases.
+        location (str):
+            Location where the lookup should be performed. Required to
+            lookup entry that is not a part of ``DPMS`` or ``DATAPLEX``
+            ``integrated_system`` using its ``fully_qualified_name``.
+            Ignored in other cases.
     """
 
     linked_resource: str = proto.Field(
@@ -718,6 +740,14 @@ class LookupEntryRequest(proto.Message):
         proto.STRING,
         number=5,
         oneof="target_name",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 
@@ -768,25 +798,12 @@ class Entry(proto.Message):
             slashes (/), dashes (-), and hashes (#). The maximum size is
             200 bytes when encoded in UTF-8.
         fully_qualified_name (str):
-            Fully qualified name (FQN) of the resource. Set
-            automatically for entries representing resources from synced
-            systems. Settable only during creation and read-only
-            afterwards. Can be used for search and lookup of the
-            entries.
-
-            FQNs take two forms:
-
-            -  For non-regionalized resources:
-
-               ``{SYSTEM}:{PROJECT}.{PATH_TO_RESOURCE_SEPARATED_WITH_DOTS}``
-
-            -  For regionalized resources:
-
-               ``{SYSTEM}:{PROJECT}.{LOCATION_ID}.{PATH_TO_RESOURCE_SEPARATED_WITH_DOTS}``
-
-            Example for a DPMS table:
-
-            ``dataproc_metastore:{PROJECT_ID}.{LOCATION_ID}.{INSTANCE_ID}.{DATABASE_ID}.{TABLE_ID}``
+            `Fully Qualified Name
+            (FQN) <https://cloud.google.com//data-catalog/docs/fully-qualified-names>`__
+            of the resource. Set automatically for entries representing
+            resources from synced systems. Settable only during
+            creation, and read-only later. Can be used for search and
+            lookup of the entries.
         type_ (google.cloud.datacatalog_v1.types.EntryType):
             The type of the entry. Only used for entries with types
             listed in the ``EntryType`` enum.
@@ -845,6 +862,12 @@ class Entry(proto.Message):
             when ``user_specified_system`` is equal to ``LOOKER``
 
             This field is a member of `oneof`_ ``system_spec``.
+        cloud_bigtable_system_spec (google.cloud.datacatalog_v1.types.CloudBigtableSystemSpec):
+            Specification that applies to Cloud Bigtable system. Only
+            settable when ``integrated_system`` is equal to
+            ``CLOUD_BIGTABLE``
+
+            This field is a member of `oneof`_ ``system_spec``.
         gcs_fileset_spec (google.cloud.datacatalog_v1.types.GcsFilesetSpec):
             Specification that applies to a Cloud Storage fileset. Valid
             only for entries with the ``FILESET`` type.
@@ -883,6 +906,11 @@ class Entry(proto.Message):
         fileset_spec (google.cloud.datacatalog_v1.types.FilesetSpec):
             Specification that applies to a fileset resource. Valid only
             for entries with the ``FILESET`` type.
+
+            This field is a member of `oneof`_ ``spec``.
+        service_spec (google.cloud.datacatalog_v1.types.ServiceSpec):
+            Specification that applies to a Service
+            resource.
 
             This field is a member of `oneof`_ ``spec``.
         display_name (str):
@@ -974,6 +1002,12 @@ class Entry(proto.Message):
         oneof="system_spec",
         message="LookerSystemSpec",
     )
+    cloud_bigtable_system_spec: "CloudBigtableSystemSpec" = proto.Field(
+        proto.MESSAGE,
+        number=41,
+        oneof="system_spec",
+        message="CloudBigtableSystemSpec",
+    )
     gcs_fileset_spec: gcd_gcs_fileset_spec.GcsFilesetSpec = proto.Field(
         proto.MESSAGE,
         number=6,
@@ -1015,6 +1049,12 @@ class Entry(proto.Message):
         number=33,
         oneof="spec",
         message="FilesetSpec",
+    )
+    service_spec: "ServiceSpec" = proto.Field(
+        proto.MESSAGE,
+        number=42,
+        oneof="spec",
+        message="ServiceSpec",
     )
     display_name: str = proto.Field(
         proto.STRING,
@@ -1400,6 +1440,98 @@ class LookerSystemSpec(proto.Message):
     parent_view_display_name: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+
+
+class CloudBigtableSystemSpec(proto.Message):
+    r"""Specification that applies to all entries that are part of
+    ``CLOUD_BIGTABLE`` system (user_specified_type)
+
+    Attributes:
+        instance_display_name (str):
+            Display name of the Instance. This is user
+            specified and different from the resource name.
+    """
+
+    instance_display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CloudBigtableInstanceSpec(proto.Message):
+    r"""Specification that applies to Instance entries that are part of
+    ``CLOUD_BIGTABLE`` system. (user_specified_type)
+
+    Attributes:
+        cloud_bigtable_cluster_specs (MutableSequence[google.cloud.datacatalog_v1.types.CloudBigtableInstanceSpec.CloudBigtableClusterSpec]):
+            The list of clusters for the Instance.
+    """
+
+    class CloudBigtableClusterSpec(proto.Message):
+        r"""Spec that applies to clusters of an Instance of Cloud
+        Bigtable.
+
+        Attributes:
+            display_name (str):
+                Name of the cluster.
+            location (str):
+                Location of the cluster, typically a Cloud
+                zone.
+            type_ (str):
+                Type of the resource. For a cluster this
+                would be "CLUSTER".
+            linked_resource (str):
+                A link back to the parent resource, in this
+                case Instance.
+        """
+
+        display_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        location: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        type_: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        linked_resource: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+
+    cloud_bigtable_cluster_specs: MutableSequence[
+        CloudBigtableClusterSpec
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=CloudBigtableClusterSpec,
+    )
+
+
+class ServiceSpec(proto.Message):
+    r"""Specification that applies to a Service resource. Valid only for
+    entries with the ``SERVICE`` type.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        cloud_bigtable_instance_spec (google.cloud.datacatalog_v1.types.CloudBigtableInstanceSpec):
+            Specification that applies to Instance entries of
+            ``CLOUD_BIGTABLE`` system.
+
+            This field is a member of `oneof`_ ``system_spec``.
+    """
+
+    cloud_bigtable_instance_spec: "CloudBigtableInstanceSpec" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="system_spec",
+        message="CloudBigtableInstanceSpec",
     )
 
 
@@ -2175,6 +2307,10 @@ class ImportEntriesRequest(proto.Message):
             a dump ready for ingestion.
 
             This field is a member of `oneof`_ ``source``.
+        job_id (str):
+            Optional. (Optional) Dataplex task job id, if
+            specified will be used as part of ImportEntries
+            LRO ID
     """
 
     parent: str = proto.Field(
@@ -2185,6 +2321,10 @@ class ImportEntriesRequest(proto.Message):
         proto.STRING,
         number=2,
         oneof="source",
+    )
+    job_id: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

@@ -22,6 +22,8 @@ from .common import IntegratedSystem, ManagingSystem, PersonalDetails
 from .data_source import DataSource, StorageProperties
 from .datacatalog import (
     BusinessContext,
+    CloudBigtableInstanceSpec,
+    CloudBigtableSystemSpec,
     Contacts,
     CreateEntryGroupRequest,
     CreateEntryRequest,
@@ -64,6 +66,7 @@ from .datacatalog import (
     RoutineSpec,
     SearchCatalogRequest,
     SearchCatalogResponse,
+    ServiceSpec,
     SqlDatabaseSystemSpec,
     StarEntryRequest,
     StarEntryResponse,
@@ -134,6 +137,8 @@ __all__ = (
     "DataSource",
     "StorageProperties",
     "BusinessContext",
+    "CloudBigtableInstanceSpec",
+    "CloudBigtableSystemSpec",
     "Contacts",
     "CreateEntryGroupRequest",
     "CreateEntryRequest",
@@ -175,6 +180,7 @@ __all__ = (
     "RoutineSpec",
     "SearchCatalogRequest",
     "SearchCatalogResponse",
+    "ServiceSpec",
     "SqlDatabaseSystemSpec",
     "StarEntryRequest",
     "StarEntryResponse",

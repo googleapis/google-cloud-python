@@ -45,6 +45,10 @@ class IntegratedSystem(proto.Enum):
             Dataproc Metastore.
         DATAPLEX (4):
             Dataplex.
+        CLOUD_SPANNER (6):
+            Cloud Spanner
+        CLOUD_BIGTABLE (7):
+            Cloud Bigtable
         CLOUD_SQL (8):
             Cloud Sql
         LOOKER (9):
@@ -55,6 +59,8 @@ class IntegratedSystem(proto.Enum):
     CLOUD_PUBSUB = 2
     DATAPROC_METASTORE = 3
     DATAPLEX = 4
+    CLOUD_SPANNER = 6
+    CLOUD_BIGTABLE = 7
     CLOUD_SQL = 8
     LOOKER = 9
 

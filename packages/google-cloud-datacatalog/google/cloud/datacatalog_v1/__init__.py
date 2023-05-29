@@ -36,6 +36,8 @@ from .types.common import IntegratedSystem, ManagingSystem, PersonalDetails
 from .types.data_source import DataSource, StorageProperties
 from .types.datacatalog import (
     BusinessContext,
+    CloudBigtableInstanceSpec,
+    CloudBigtableSystemSpec,
     Contacts,
     CreateEntryGroupRequest,
     CreateEntryRequest,
@@ -78,6 +80,7 @@ from .types.datacatalog import (
     RoutineSpec,
     SearchCatalogRequest,
     SearchCatalogResponse,
+    ServiceSpec,
     SqlDatabaseSystemSpec,
     StarEntryRequest,
     StarEntryResponse,
@@ -147,6 +150,8 @@ __all__ = (
     "BigQueryRoutineSpec",
     "BigQueryTableSpec",
     "BusinessContext",
+    "CloudBigtableInstanceSpec",
+    "CloudBigtableSystemSpec",
     "CloudSqlBigQueryConnectionSpec",
     "ColumnSchema",
     "CommonUsageStats",
@@ -231,6 +236,7 @@ __all__ = (
     "SearchResultType",
     "SerializedPolicyTag",
     "SerializedTaxonomy",
+    "ServiceSpec",
     "SqlDatabaseSystemSpec",
     "StarEntryRequest",
     "StarEntryResponse",
