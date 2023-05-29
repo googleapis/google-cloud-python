@@ -162,6 +162,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-rapidmigrationassessment": {
+            "component": "google-cloud-rapidmigrationassessment",
+            "extra-files": [
+                "google/cloud/rapidmigrationassessment/gapic_version.py",
+                "google/cloud/rapidmigrationassessment_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.rapidmigrationassessment.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-storageinsights": {
             "component": "google-cloud-storageinsights",
             "extra-files": [
@@ -278,13 +291,6 @@
                 }
             ],
             "release-type": "python"
-        },
-        "packages/google-cloud-rapidmigrationassessment": {
-            "component": "google-cloud-rapidmigrationassessment",
-            "release-type": "python",
-            "extra-files": [
-                "google/cloud/rapidmigrationassessment/gapic_version.py"
-            ]
         }
     }
 }
