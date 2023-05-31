@@ -531,7 +531,7 @@ class SpannerDialect(DefaultDialect):
     supports_sane_rowcount = False
     supports_sane_multi_rowcount = False
     supports_default_values = False
-    supports_sequences = True
+    supports_sequences = False
     supports_native_enum = True
     supports_native_boolean = True
     supports_native_decimal = True
