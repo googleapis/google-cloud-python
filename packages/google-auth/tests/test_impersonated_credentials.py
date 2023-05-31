@@ -318,6 +318,27 @@ class TestImpersonatedCredentials(object):
         assert not credentials.valid
         assert credentials.expired
 
+    def test_refresh_failure(self):
+        credentials = self.make_credentials(lifetime=None)
+        credentials.expiry = None
+        credentials.token = "token"
+        id_creds = impersonated_credentials.IDTokenCredentials(
+            credentials, target_audience="audience"
+        )
+
+        response = mock.create_autospec(transport.Response, instance=False)
+        response.status_code = http_client.UNAUTHORIZED
+        response.json = mock.Mock(return_value="failed to get ID token")
+
+        with mock.patch(
+            "google.auth.transport.requests.AuthorizedSession.post",
+            return_value=response,
+        ):
+            with pytest.raises(exceptions.RefreshError) as excinfo:
+                id_creds.refresh(None)
+
+        assert excinfo.match("Error getting ID token")
+
     def test_refresh_failure_http_error(self, mock_donor_credentials):
         credentials = self.make_credentials(lifetime=None)
 
