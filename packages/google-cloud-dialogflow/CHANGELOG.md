@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.22.0](https://github.com/googleapis/python-dialogflow/compare/v2.21.0...v2.22.0) (2023-05-25)
+
+
+### Features
+
+* Add baseline model configuration for conversation summarization ([#636](https://github.com/googleapis/python-dialogflow/issues/636)) ([c0a030e](https://github.com/googleapis/python-dialogflow/commit/c0a030ee32e07b3d3e3bdfe738b4754eda4dbc64))
+* Added debug info for StreamingDetectIntent ([06fea2a](https://github.com/googleapis/python-dialogflow/commit/06fea2a9b5b8f7c4c5ec7dd9881b7f55de9ea149))
+* Added GenerateStatelessSummary method ([06fea2a](https://github.com/googleapis/python-dialogflow/commit/06fea2a9b5b8f7c4c5ec7dd9881b7f55de9ea149))
+* Extended StreamingListCallCompanionEvents timeout to 600 seconds ([06fea2a](https://github.com/googleapis/python-dialogflow/commit/06fea2a9b5b8f7c4c5ec7dd9881b7f55de9ea149))
+
 ## [2.21.0](https://github.com/googleapis/python-dialogflow/compare/v2.20.0...v2.21.0) (2023-03-23)
 
 
