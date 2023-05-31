@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.21.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.20.1...v1.21.0) (2023-05-25)
+
+
+### Features
+
+* Added debug info to StreamingDetectIntent ([6da4342](https://github.com/googleapis/python-dialogflow-cx/commit/6da4342f5f835f1dd36570d7243852ba9d8afde5))
+* Added dtmf digits to WebhookRequest ([6da4342](https://github.com/googleapis/python-dialogflow-cx/commit/6da4342f5f835f1dd36570d7243852ba9d8afde5))
+* Added FLOW as a new DiffType in TestRunDifference ([6da4342](https://github.com/googleapis/python-dialogflow-cx/commit/6da4342f5f835f1dd36570d7243852ba9d8afde5))
+* Extended CreateAgent timeout to 180 seconds ([6da4342](https://github.com/googleapis/python-dialogflow-cx/commit/6da4342f5f835f1dd36570d7243852ba9d8afde5))
+
 ## [1.20.1](https://github.com/googleapis/python-dialogflow-cx/compare/v1.20.0...v1.20.1) (2023-03-23)
 
 
