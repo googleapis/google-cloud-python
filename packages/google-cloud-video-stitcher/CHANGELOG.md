@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.2](https://github.com/googleapis/python-video-stitcher/compare/v0.7.1...v0.7.2) (2023-05-25)
+
+
+### Documentation
+
+* **samples:** Add samples for live config and live session ([b2f73e7](https://github.com/googleapis/python-video-stitcher/commit/b2f73e76e5f88287903d50db9478e07bfefcaf39))
+* **samples:** Update slates and CDN keys to use LROs ([b2f73e7](https://github.com/googleapis/python-video-stitcher/commit/b2f73e76e5f88287903d50db9478e07bfefcaf39))
+
 ## [0.7.1](https://github.com/googleapis/python-video-stitcher/compare/v0.7.0...v0.7.1) (2023-05-15)
 
 
