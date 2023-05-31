@@ -665,6 +665,10 @@ class SearchJobsRequest(proto.Message):
                 in the same company to be shown at once, the other jobs
                 under same company are pushed to the end of the last page of
                 search result.
+            MAX_THREE_PER_COMPANY (6):
+                Similar to ONE_PER_COMPANY, but it allows at most three jobs
+                in the same company to be shown at once, the other jobs
+                under same company are dropped.
             DIVERSIFY_BY_LOOSER_SIMILARITY (5):
                 The result list is ordered such that somewhat
                 similar results are pushed to the end of the
@@ -677,6 +681,7 @@ class SearchJobsRequest(proto.Message):
         SIMPLE = 2
         ONE_PER_COMPANY = 3
         TWO_PER_COMPANY = 4
+        MAX_THREE_PER_COMPANY = 6
         DIVERSIFY_BY_LOOSER_SIMILARITY = 5
 
     class KeywordMatchMode(proto.Enum):
