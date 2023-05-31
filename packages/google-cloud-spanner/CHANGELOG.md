@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.35.1](https://github.com/googleapis/python-spanner/compare/v3.35.0...v3.35.1) (2023-05-25)
+
+
+### Bug Fixes
+
+* Catch rst stream error for all transactions ([#934](https://github.com/googleapis/python-spanner/issues/934)) ([d317d2e](https://github.com/googleapis/python-spanner/commit/d317d2e1b882d9cf576bfc6c195fa9df7c518c4e))
+
 ## [3.35.0](https://github.com/googleapis/python-spanner/compare/v3.34.0...v3.35.0) (2023-05-16)
 
 
