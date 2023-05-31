@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/python-contact-center-insights/compare/v1.10.0...v1.11.0) (2023-05-25)
+
+
+### Features
+
+* Support for generating summaries during conversation analysis ([#303](https://github.com/googleapis/python-contact-center-insights/issues/303)) ([fb662bb](https://github.com/googleapis/python-contact-center-insights/commit/fb662bb26979589b8304116bea67547d16116289))
+
 ## [1.10.0](https://github.com/googleapis/python-contact-center-insights/compare/v1.9.1...v1.10.0) (2023-04-06)
 
 
