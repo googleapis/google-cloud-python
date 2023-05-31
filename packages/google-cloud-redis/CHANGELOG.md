@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [2.13.0](https://github.com/googleapis/python-redis/compare/v2.12.1...v2.13.0) (2023-05-25)
+
+
+### Features
+
+* Add CMEK key field ([1c47bee](https://github.com/googleapis/python-redis/commit/1c47bee962fafb6f4b9be49db31a82e737ab9458))
+* Add persistence support ([1c47bee](https://github.com/googleapis/python-redis/commit/1c47bee962fafb6f4b9be49db31a82e737ab9458))
+* Add self service update maintenance version support ([1c47bee](https://github.com/googleapis/python-redis/commit/1c47bee962fafb6f4b9be49db31a82e737ab9458))
+* Add suspension_reasons field ([1c47bee](https://github.com/googleapis/python-redis/commit/1c47bee962fafb6f4b9be49db31a82e737ab9458))
+
 ## [2.12.1](https://github.com/googleapis/python-redis/compare/v2.12.0...v2.12.1) (2023-03-23)
 
 
