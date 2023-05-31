@@ -1,9 +1,9 @@
-Python Client for Identity-Aware Proxy API
-==========================================
+Python Client for Identity-Aware Proxy
+======================================
 
 |stable| |pypi| |versions|
 
-`Identity-Aware Proxy API`_: Identity-Aware Proxy includes a number of features that can be used to protect access to Google Cloud hosted resources and applications hosted on Google Cloud.
+`Identity-Aware Proxy`_: Identity-Aware Proxy includes a number of features that can be used to protect access to Google Cloud hosted resources and applications hosted on Google Cloud.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Identity-Aware Proxy API
    :target: https://pypi.org/project/google-cloud-iap/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-iap.svg
    :target: https://pypi.org/project/google-cloud-iap/
-.. _Identity-Aware Proxy API: https://cloud.google.com/iap
+.. _Identity-Aware Proxy: https://cloud.google.com/iap
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/iap/latest
 .. _Product Documentation:  https://cloud.google.com/iap
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Identity-Aware Proxy API.`_
+3. `Enable the Identity-Aware Proxy.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Identity-Aware Proxy API.:  https://cloud.google.com/iap
+.. _Enable the Identity-Aware Proxy.:  https://cloud.google.com/iap
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Identity-Aware Proxy API
+-  Read the `Client Library Documentation`_ for Identity-Aware Proxy
    to see other available methods on the client.
--  Read the `Identity-Aware Proxy API Product documentation`_ to learn
+-  Read the `Identity-Aware Proxy Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Identity-Aware Proxy API Product documentation:  https://cloud.google.com/iap
+.. _Identity-Aware Proxy Product documentation:  https://cloud.google.com/iap
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
