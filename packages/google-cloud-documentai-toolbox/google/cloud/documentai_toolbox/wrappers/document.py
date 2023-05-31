@@ -40,6 +40,7 @@ from google.cloud.documentai_toolbox.wrappers import page
 
 from google.cloud.documentai_toolbox.converters.vision_helpers import (
     _convert_document_page,
+    _generate_entity_annotations,
     _get_text_anchor_substring,
     PageInfo,
 )
@@ -169,13 +170,17 @@ def _convert_to_vision_annotate_file_response(text: str, pages: List[page.Page])
     page_idx = 0
     while page_idx < len(pages):
         page_info = PageInfo(pages[page_idx].documentai_page, text)
-        page_vision_annotation = _convert_document_page(page_info)
-        page_vision_annotation.text = _get_text_anchor_substring(
+
+        full_text_annotation = _convert_document_page(page_info)
+        full_text_annotation.text = _get_text_anchor_substring(
             text, pages[page_idx].documentai_page.layout.text_anchor
         )
+        text_annotations = _generate_entity_annotations(page_info)
+
         responses.append(
             AnnotateImageResponse(
-                full_text_annotation=page_vision_annotation,
+                full_text_annotation=full_text_annotation,
+                text_annotations=text_annotations,
                 context=ImageAnnotationContext(page_number=page_idx + 1),
             )
         )

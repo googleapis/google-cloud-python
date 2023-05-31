@@ -522,7 +522,18 @@ def test_convert_document_to_annotate_file_response():
 
     actual = doc.convert_document_to_annotate_file_response()
 
-    assert actual != AnnotateFileResponse()
+    with open("tests/unit/resources/toolbox_invoice_test-0-vision.json", "r") as f:
+        invoice_json = f.read()
+
+    expected = AnnotateFileResponse.from_json(invoice_json)
+
+    assert actual.responses[0].text_annotations[0].description == "Invoice"
+    assert len(actual.responses[0].text_annotations) == 86
+
+    assert len(actual.responses[0].full_text_annotation.pages) == 1
+    assert actual.responses[0].full_text_annotation.text is not None
+
+    assert actual == expected
 
 
 def test_export_images(get_bytes_images_mock):

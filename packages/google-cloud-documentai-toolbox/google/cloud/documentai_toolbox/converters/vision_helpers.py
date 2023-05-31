@@ -21,7 +21,16 @@ from typing import List, Union
 import immutabledict
 
 from google.cloud.documentai import Document
-from google.cloud.vision import TextAnnotation, Symbol, Word, Paragraph, Block, Page
+from google.cloud.vision_v1.types import geometry
+from google.cloud.vision import (
+    EntityAnnotation,
+    TextAnnotation,
+    Symbol,
+    Word,
+    Paragraph,
+    Block,
+    Page,
+)
 from google.cloud import vision
 
 
@@ -225,6 +234,54 @@ def _convert_document_token(
         )
         page_info.token_idx += 1
     return vision_words
+
+
+def _generate_entity_annotations(
+    page_info: PageInfo,
+) -> List[EntityAnnotation]:
+    """Generate a list of EntityAnnotations from Document.
+
+    Args:
+      page_info: Current page information, including document page to be converted
+        , its text, and the position of reading cursor.
+
+    Returns:
+      A list of EntityAnnotations with descriptions and bounding box populated. A
+      EntityAnnotation has a word level information.
+    """
+    entity_annotations: List[EntityAnnotation] = []
+    for token in page_info.page.tokens:
+        v: vision.Vertex = []
+        bounding_box = geometry.BoundingPoly()
+        if token.layout.bounding_poly.vertices:
+            for vertex in token.layout.bounding_poly.vertices:
+                v.append({"x": int(vertex.x), "y": int(vertex.y)})
+        else:
+            for normalized_vertex in token.layout.bounding_poly.normalized_vertices:
+                v.append(
+                    {
+                        "x": int(normalized_vertex.x * page_info.page.dimension.width),
+                        "y": int(normalized_vertex.y * page_info.page.dimension.height),
+                    }
+                )
+        bounding_box = geometry.BoundingPoly(vertices=v)
+
+        text_start_index = token.layout.text_anchor.text_segments[0].start_index
+        text_end_index = token.layout.text_anchor.text_segments[0].end_index
+        # The word in docai response contains the break text. Remove the break text.
+        if (
+            token.detected_break
+            != Document.Page.Token.DetectedBreak.Type.TYPE_UNSPECIFIED
+        ):
+            text_end_index -= 1
+
+        entity_annotations.append(
+            EntityAnnotation(
+                description=page_info.text[text_start_index:text_end_index],
+                bounding_poly=bounding_box,
+            )
+        )
+    return entity_annotations
 
 
 def _convert_document_paragraph(
