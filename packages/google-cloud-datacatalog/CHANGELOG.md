@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.13.0](https://github.com/googleapis/python-datacatalog/compare/v3.12.0...v3.13.0) (2023-05-29)
+
+
+### Features
+
+* Add support for entries associated with Spanner and CloudBigTable ([c057e0d](https://github.com/googleapis/python-datacatalog/commit/c057e0d27554b680ee097e3cc8fb656cdfca23d6))
+* Expand SearchCatalogResponse with totalSize ([c057e0d](https://github.com/googleapis/python-datacatalog/commit/c057e0d27554b680ee097e3cc8fb656cdfca23d6))
+* Extend ImportApiRequest with jobId parameter ([c057e0d](https://github.com/googleapis/python-datacatalog/commit/c057e0d27554b680ee097e3cc8fb656cdfca23d6))
+* Modify documentation for FQN support ([c057e0d](https://github.com/googleapis/python-datacatalog/commit/c057e0d27554b680ee097e3cc8fb656cdfca23d6))
+
 ## [3.12.0](https://github.com/googleapis/python-datacatalog/compare/v3.11.1...v3.12.0) (2023-03-23)
 
 
