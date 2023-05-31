@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.6.0-alpha...v0.7.0-alpha) (2023-05-31)
+
+
+### Features
+
+* Added text_annotation to vision conversion ([#114](https://github.com/googleapis/python-documentai-toolbox/issues/114)) ([27196bb](https://github.com/googleapis/python-documentai-toolbox/commit/27196bbb6e8e90ef6ebcc5f97690b9751d70fd9b))
+
 ## [0.6.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.5.0-alpha...v0.6.0-alpha) (2023-04-17)
 
 
