@@ -3,6 +3,13 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.12.0](https://github.com/googleapis/python-webrisk/compare/v1.11.1...v1.12.0) (2023-05-25)
+
+
+### Features
+
+* Add SubmitUri endpoint ([#264](https://github.com/googleapis/python-webrisk/issues/264)) ([f981b96](https://github.com/googleapis/python-webrisk/commit/f981b9611c1158ff8aeb3466a608753a83933de2))
+
 ## [1.11.1](https://github.com/googleapis/python-webrisk/compare/v1.11.0...v1.11.1) (2023-03-23)
 
 
