@@ -20,4 +20,4 @@ For a list of all ``google-area120-tables`` releases:
 .. toctree::
     :maxdepth: 2
 
-    changelog
+    CHANGELOG
