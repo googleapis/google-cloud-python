@@ -1,8 +1,10 @@
 {
     "packages/google-ai-generativelanguage": "0.2.0",
     "packages/google-apps-script-type": "0.3.1",
+    "packages/google-area120-tables": "0.11.2",
     "packages/google-cloud-advisorynotifications": "0.2.0",
     "packages/google-cloud-alloydb": "0.1.1",
+    "packages/google-cloud-apigee-connect": "1.7.1",
     "packages/google-cloud-bigquery-biglake": "0.3.0",
     "packages/google-cloud-confidentialcomputing": "0.1.0",
     "packages/google-cloud-contentwarehouse": "0.5.0",
