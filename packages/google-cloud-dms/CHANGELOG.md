@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/python-dms/compare/v1.6.2...v1.7.0) (2023-05-25)
+
+
+### Features
+
+* Add Oracle to PostgreSQL migration APIs ([#176](https://github.com/googleapis/python-dms/issues/176)) ([bf5348b](https://github.com/googleapis/python-dms/commit/bf5348be1fabd967f2a0df3719c4046378ebf4c4))
+
 ## [1.6.2](https://github.com/googleapis/python-dms/compare/v1.6.1...v1.6.2) (2023-03-23)
 
 
