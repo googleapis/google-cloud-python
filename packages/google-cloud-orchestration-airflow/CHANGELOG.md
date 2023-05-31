@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-orchestration-airflow/compare/v1.7.1...v1.8.0) (2023-05-25)
+
+
+### Features
+
+* Add airflow_byoid_uri field to Cloud Composer API ([#172](https://github.com/googleapis/python-orchestration-airflow/issues/172)) ([a402b20](https://github.com/googleapis/python-orchestration-airflow/commit/a402b20bed535b193b030ff077b76515aa27a81e))
+
 ## [1.7.1](https://github.com/googleapis/python-orchestration-airflow/compare/v1.7.0...v1.7.1) (2023-03-23)
 
 
