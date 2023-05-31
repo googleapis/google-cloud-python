@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.2](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.6.1...v1.6.2) (2023-05-31)
+
+
+### Bug Fixes
+
+* Disables sequence support ([#326](https://github.com/googleapis/python-spanner-sqlalchemy/issues/326)) ([7b441ff](https://github.com/googleapis/python-spanner-sqlalchemy/commit/7b441ff867160a102ebe88dfa27b3e21b9149007))
+
 ## [1.6.1](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.6.0...v1.6.1) (2023-05-23)
 
 
