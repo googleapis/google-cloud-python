@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-service-control/compare/v1.8.1...v1.9.0) (2023-05-25)
+
+
+### Features
+
+* Add a proto message used for batch mode resource info ([#200](https://github.com/googleapis/python-service-control/issues/200)) ([caa55bc](https://github.com/googleapis/python-service-control/commit/caa55bc8bb6f06ec2c1e8f243070d2882c040757))
+
 ## [1.8.1](https://github.com/googleapis/python-service-control/compare/v1.8.0...v1.8.1) (2023-03-23)
 
 
