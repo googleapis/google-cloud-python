@@ -307,17 +307,24 @@ class Client(ClientWithProject):
         """
         return Bucket(client=self, name=bucket_name, user_project=user_project)
 
-    def batch(self):
+    def batch(self, raise_exception=True):
         """Factory constructor for batch object.
 
         .. note::
           This will not make an HTTP request; it simply instantiates
           a batch object owned by this client.
 
+        :type raise_exception: bool
+        :param raise_exception:
+            (Optional) Defaults to True. If True, instead of adding exceptions
+            to the list of return responses, the final exception will be raised.
+            Note that exceptions are unwrapped after all operations are complete
+            in success or failure, and only the last exception is raised.
+
         :rtype: :class:`google.cloud.storage.batch.Batch`
         :returns: The batch object created.
         """
-        return Batch(client=self)
+        return Batch(client=self, raise_exception=raise_exception)
 
     def _get_resource(
         self,

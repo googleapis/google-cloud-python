@@ -334,6 +334,7 @@ class TestBatch(unittest.TestCase):
         result = batch.finish()
 
         self.assertEqual(len(result), len(batch._requests))
+        self.assertEqual(len(result), len(batch._responses))
 
         response1, response2, response3 = result
 
@@ -438,6 +439,55 @@ class TestBatch(unittest.TestCase):
         self._check_subrequest_payload(chunks[0], "GET", url, {})
         self._check_subrequest_payload(chunks[1], "GET", url, {})
 
+    def test_finish_no_raise_exception(self):
+        url = "http://api.example.com/other_api"
+        expected_response = _make_response(
+            content=_TWO_PART_MIME_RESPONSE_WITH_FAIL,
+            headers={"content-type": 'multipart/mixed; boundary="DEADBEEF="'},
+        )
+        http = _make_requests_session([expected_response])
+        connection = _Connection(http=http)
+        client = _Client(connection)
+        batch = self._make_one(client)
+        batch.API_BASE_URL = "http://api.example.com"
+        target1 = _MockObject()
+        target2 = _MockObject()
+
+        batch._do_request("GET", url, {}, None, target1, timeout=42)
+        batch._do_request("GET", url, {}, None, target2, timeout=420)
+
+        # Make sure futures are not populated.
+        self.assertEqual(
+            [future for future in batch._target_objects], [target1, target2]
+        )
+
+        batch.finish(raise_exception=False)
+
+        self.assertEqual(len(batch._requests), 2)
+        self.assertEqual(len(batch._responses), 2)
+
+        # Make sure NotFound exception is added to responses and target2
+        self.assertEqual(target1._properties, {"foo": 1, "bar": 2})
+        self.assertEqual(target2._properties, {"error": {"message": "Not Found"}})
+
+        expected_url = f"{batch.API_BASE_URL}/batch/storage/v1"
+        http.request.assert_called_once_with(
+            method="POST",
+            url=expected_url,
+            headers=mock.ANY,
+            data=mock.ANY,
+            timeout=420,  # the last request timeout prevails
+        )
+
+        _, request_body, _, boundary = self._get_mutlipart_request(http)
+
+        chunks = self._get_payload_chunks(boundary, request_body)
+        self.assertEqual(len(chunks), 2)
+        self._check_subrequest_payload(chunks[0], "GET", url, {})
+        self._check_subrequest_payload(chunks[1], "GET", url, {})
+        self.assertEqual(batch._responses[0].status_code, 200)
+        self.assertEqual(batch._responses[1].status_code, 404)
+
     def test_finish_nonempty_non_multipart_response(self):
         url = "http://api.example.com/other_api"
         http = _make_requests_session([_make_response()])
@@ -497,6 +547,7 @@ class TestBatch(unittest.TestCase):
 
         self.assertEqual(list(client._batch_stack), [])
         self.assertEqual(len(batch._requests), 3)
+        self.assertEqual(len(batch._responses), 3)
         self.assertEqual(batch._requests[0][0], "POST")
         self.assertEqual(batch._requests[1][0], "PATCH")
         self.assertEqual(batch._requests[2][0], "DELETE")
@@ -504,6 +555,43 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(target1._properties, {"foo": 1, "bar": 2})
         self.assertEqual(target2._properties, {"foo": 1, "bar": 3})
         self.assertEqual(target3._properties, b"")
+
+    def test_as_context_mgr_no_raise_exception(self):
+        from google.cloud.storage.client import Client
+
+        url = "http://api.example.com/other_api"
+        expected_response = _make_response(
+            content=_TWO_PART_MIME_RESPONSE_WITH_FAIL,
+            headers={"content-type": 'multipart/mixed; boundary="DEADBEEF="'},
+        )
+        http = _make_requests_session([expected_response])
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = Client(project=project, credentials=credentials)
+        client._http_internal = http
+
+        self.assertEqual(list(client._batch_stack), [])
+
+        target1 = _MockObject()
+        target2 = _MockObject()
+
+        with self._make_one(client, raise_exception=False) as batch:
+            self.assertEqual(list(client._batch_stack), [batch])
+            batch._make_request("GET", url, {}, target_object=target1)
+            batch._make_request("GET", url, {}, target_object=target2)
+
+        self.assertEqual(list(client._batch_stack), [])
+        self.assertEqual(len(batch._requests), 2)
+        self.assertEqual(len(batch._responses), 2)
+        self.assertEqual(batch._requests[0][0], "GET")
+        self.assertEqual(batch._requests[1][0], "GET")
+        self.assertEqual(batch._target_objects, [target1, target2])
+
+        # Make sure NotFound exception is added to responses and target2
+        self.assertEqual(batch._responses[0].status_code, 200)
+        self.assertEqual(batch._responses[1].status_code, 404)
+        self.assertEqual(target1._properties, {"foo": 1, "bar": 2})
+        self.assertEqual(target2._properties, {"error": {"message": "Not Found"}})
 
     def test_as_context_mgr_w_error(self):
         from google.cloud.storage.batch import _FutureDict

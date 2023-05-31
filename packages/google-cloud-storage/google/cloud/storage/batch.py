@@ -133,11 +133,18 @@ class Batch(Connection):
 
     :type client: :class:`google.cloud.storage.client.Client`
     :param client: The client to use for making connections.
+
+    :type raise_exception: bool
+    :param raise_exception:
+        (Optional) Defaults to True. If True, instead of adding exceptions
+        to the list of return responses, the final exception will be raised.
+        Note that exceptions are unwrapped after all operations are complete
+        in success or failure, and only the last exception is raised.
     """
 
     _MAX_BATCH_SIZE = 1000
 
-    def __init__(self, client):
+    def __init__(self, client, raise_exception=True):
         api_endpoint = client._connection.API_BASE_URL
         client_info = client._connection._client_info
         super(Batch, self).__init__(
@@ -145,6 +152,8 @@ class Batch(Connection):
         )
         self._requests = []
         self._target_objects = []
+        self._responses = []
+        self._raise_exception = raise_exception
 
     def _do_request(
         self, method, url, headers, data, target_object, timeout=_DEFAULT_TIMEOUT
@@ -219,24 +228,34 @@ class Batch(Connection):
         _, body = payload.split("\n\n", 1)
         return dict(multi._headers), body, timeout
 
-    def _finish_futures(self, responses):
+    def _finish_futures(self, responses, raise_exception=True):
         """Apply all the batch responses to the futures created.
 
         :type responses: list of (headers, payload) tuples.
         :param responses: List of headers and payloads from each response in
                           the batch.
 
+        :type raise_exception: bool
+        :param raise_exception:
+            (Optional) Defaults to True. If True, instead of adding exceptions
+            to the list of return responses, the final exception will be raised.
+            Note that exceptions are unwrapped after all operations are complete
+            in success or failure, and only the last exception is raised.
+
         :raises: :class:`ValueError` if no requests have been deferred.
         """
         # If a bad status occurs, we track it, but don't raise an exception
         # until all futures have been populated.
+        # If raise_exception=False, we add exceptions to the list of responses.
         exception_args = None
 
         if len(self._target_objects) != len(responses):  # pragma: NO COVER
             raise ValueError("Expected a response for every request.")
 
         for target_object, subresponse in zip(self._target_objects, responses):
-            if not 200 <= subresponse.status_code < 300:
+            # For backwards compatibility, only the final exception will be raised.
+            # Set raise_exception=False to include all exceptions to the list of return responses.
+            if not 200 <= subresponse.status_code < 300 and raise_exception:
                 exception_args = exception_args or subresponse
             elif target_object is not None:
                 try:
@@ -247,8 +266,15 @@ class Batch(Connection):
         if exception_args is not None:
             raise exceptions.from_http_response(exception_args)
 
-    def finish(self):
+    def finish(self, raise_exception=True):
         """Submit a single `multipart/mixed` request with deferred requests.
+
+        :type raise_exception: bool
+        :param raise_exception:
+            (Optional) Defaults to True. If True, instead of adding exceptions
+            to the list of return responses, the final exception will be raised.
+            Note that exceptions are unwrapped after all operations are complete
+            in success or failure, and only the last exception is raised.
 
         :rtype: list of tuples
         :returns: one ``(headers, payload)`` tuple per deferred request.
@@ -269,7 +295,8 @@ class Batch(Connection):
             raise exceptions.from_http_response(response)
 
         responses = list(_unpack_batch_response(response))
-        self._finish_futures(responses)
+        self._finish_futures(responses, raise_exception=raise_exception)
+        self._responses = responses
         return responses
 
     def current(self):
@@ -283,7 +310,7 @@ class Batch(Connection):
     def __exit__(self, exc_type, exc_val, exc_tb):
         try:
             if exc_type is None:
-                self.finish()
+                self.finish(raise_exception=self._raise_exception)
         finally:
             self._client._pop_batch()
 
