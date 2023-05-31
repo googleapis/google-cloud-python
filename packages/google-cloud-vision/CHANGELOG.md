@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [3.4.2](https://github.com/googleapis/python-vision/compare/v3.4.1...v3.4.2) (2023-05-25)
+
+
+### Bug Fixes
+
+* Remove workarounds in image_annotator ([#529](https://github.com/googleapis/python-vision/issues/529)) ([6692feb](https://github.com/googleapis/python-vision/commit/6692feb6c0f6e41a4da5ec4a9e9ac3ff7505e181))
+
 ## [3.4.1](https://github.com/googleapis/python-vision/compare/v3.4.0...v3.4.1) (2023-03-23)
 
 
