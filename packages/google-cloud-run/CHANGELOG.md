@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.8.0](https://github.com/googleapis/python-run/compare/v0.7.1...v0.8.0) (2023-05-25)
+
+
+### Features
+
+* Adds support for Session affinity in Service (GA) ([c907927](https://github.com/googleapis/python-run/commit/c907927b59079867825954786192954293aa6184))
+* Adds support for Startup CPU Boost (GA) ([c907927](https://github.com/googleapis/python-run/commit/c907927b59079867825954786192954293aa6184))
+* New 'port' field for HttpGetAction probe type ([c907927](https://github.com/googleapis/python-run/commit/c907927b59079867825954786192954293aa6184))
+* New fields/enum values ([c907927](https://github.com/googleapis/python-run/commit/c907927b59079867825954786192954293aa6184))
+
+
+### Documentation
+
+* General documentation fixes. ([c907927](https://github.com/googleapis/python-run/commit/c907927b59079867825954786192954293aa6184))
+
 ## [0.7.1](https://github.com/googleapis/python-run/compare/v0.7.0...v0.7.1) (2023-03-23)
 
 
