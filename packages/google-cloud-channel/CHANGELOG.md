@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.14.0](https://github.com/googleapis/python-channel/compare/v1.13.0...v1.14.0) (2023-05-25)
+
+
+### Features
+
+* Add billing account to entitlement definitions [Cloud Channel API] ([f3a411b](https://github.com/googleapis/python-channel/commit/f3a411b74007f0abf2761f36f5626e3a54d25cc9))
+* Added partition_keys field to filter results from FetchReportResults ([#235](https://github.com/googleapis/python-channel/issues/235)) ([3e304f1](https://github.com/googleapis/python-channel/commit/3e304f1e26f3be410acd08f49ae20ffe116ee761))
+
 ## [1.13.0](https://github.com/googleapis/python-channel/compare/v1.12.1...v1.13.0) (2023-03-16)
 
 
