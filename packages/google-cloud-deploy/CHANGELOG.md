@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-deploy/compare/v1.8.0...v1.9.0) (2023-05-25)
+
+
+### Features
+
+* Added support for DeployArtifacts ([3c6733e](https://github.com/googleapis/python-deploy/commit/3c6733ea3523bde28ac43a0e1e443e5d5ae4dc32))
+* Added support for in cluster verification ([3c6733e](https://github.com/googleapis/python-deploy/commit/3c6733ea3523bde28ac43a0e1e443e5d5ae4dc32))
+
 ## [1.8.0](https://github.com/googleapis/python-deploy/compare/v1.7.0...v1.8.0) (2023-03-24)
 
 
