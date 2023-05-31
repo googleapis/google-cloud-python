@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.10.0](https://github.com/googleapis/python-language/compare/v2.9.1...v2.10.0) (2023-05-25)
+
+
+### Features
+
+* Add support for ModerateText ([#433](https://github.com/googleapis/python-language/issues/433)) ([033a20b](https://github.com/googleapis/python-language/commit/033a20bf9aee96b2cbadd15a36d520b4ec40c7ab))
+
 ## [2.9.1](https://github.com/googleapis/python-language/compare/v2.9.0...v2.9.1) (2023-03-23)
 
 
