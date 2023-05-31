@@ -10,6 +10,7 @@
     "packages/google-cloud-discoveryengine": "0.8.0",
     "packages/google-cloud-enterpriseknowledgegraph": "0.3.2",
     "packages/google-cloud-ids": "1.5.1",
+    "packages/google-cloud-rapidmigrationassessment": "0.1.0",
     "packages/google-cloud-storageinsights": "0.1.0",
     "packages/google-cloud-support": "0.1.0",
     "packages/google-cloud-vmwareengine": "1.0.1",
@@ -18,6 +19,5 @@
     "packages/google-maps-addressvalidation": "0.3.3",
     "packages/google-maps-mapsplatformdatasets": "0.2.1",
     "packages/google-maps-places": "0.1.0",
-    "packages/google-maps-routing": "0.5.0",
-    "packages/google-cloud-rapidmigrationassessment": "0.0.0"
+    "packages/google-maps-routing": "0.5.0"
 }
