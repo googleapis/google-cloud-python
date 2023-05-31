@@ -149,9 +149,7 @@ def test_alembic_scenario(alembic_table):
         """
     )
 
-    # One thing we can alter about a column is we can make it
-    # nullable:
-    op.alter_column("transactions", "amount", True)
+    op.alter_column("transactions", "amount", nullable=True)
     assert alembic_table("transactions", "schema") == [
         SchemaField("account", "INTEGER", "REQUIRED"),
         SchemaField("transaction_time", "DATETIME", "REQUIRED"),
