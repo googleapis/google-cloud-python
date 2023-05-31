@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-dataplex/compare/v1.4.3...v1.5.0) (2023-05-25)
+
+
+### Features
+
+* Add `managed_access_identity` to `ResourceStatus` message ([17cf7f1](https://github.com/googleapis/python-dataplex/commit/17cf7f19242bfe8ca1a3b4d4348ab6d588b908ad))
+* Add `read_access_mode` to `ResourceSpec` message ([17cf7f1](https://github.com/googleapis/python-dataplex/commit/17cf7f19242bfe8ca1a3b4d4348ab6d588b908ad))
+* Add `resource` to `DataSource` message ([17cf7f1](https://github.com/googleapis/python-dataplex/commit/17cf7f19242bfe8ca1a3b4d4348ab6d588b908ad))
+* Add `StorageAccess`, `RunTaskRequest`, `RunTaskResponse`, ([17cf7f1](https://github.com/googleapis/python-dataplex/commit/17cf7f19242bfe8ca1a3b4d4348ab6d588b908ad))
+* Add `validate_only` to `CreateDataScanRequest` ([17cf7f1](https://github.com/googleapis/python-dataplex/commit/17cf7f19242bfe8ca1a3b4d4348ab6d588b908ad))
+* Added new Dataplex APIs and new features for existing APIs (e.g. DataScans) ([17cf7f1](https://github.com/googleapis/python-dataplex/commit/17cf7f19242bfe8ca1a3b4d4348ab6d588b908ad))
+
+
+### Documentation
+
+* Updated comments for multiple Dataplex APIs ([17cf7f1](https://github.com/googleapis/python-dataplex/commit/17cf7f19242bfe8ca1a3b4d4348ab6d588b908ad))
+
 ## [1.4.3](https://github.com/googleapis/python-dataplex/compare/v1.4.2...v1.4.3) (2023-03-23)
 
 
