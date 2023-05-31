@@ -19,7 +19,7 @@ def get_version_for_package(version_path: Path) -> Tuple[int]:
     Returns:
         Tuple[int] in the format (<major>, <minor>, <patch>)
     """
-    VERSION_REGEX = r"__version__\s=\s\"(?P<major_version>\d)\.(?P<minor_version>\d)\.(?P<patch_version>\d)\""
+    VERSION_REGEX = r"__version__\s=\s\"(?P<major_version>\d+)\.(?P<minor_version>\d+)\.(?P<patch_version>\d+)\""
     match = re.search(VERSION_REGEX, version_path.read_text())
 
     if match is None:
