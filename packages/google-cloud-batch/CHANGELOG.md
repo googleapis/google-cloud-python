@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.11.0](https://github.com/googleapis/python-batch/compare/v0.10.0...v0.11.0) (2023-05-25)
+
+
+### Features
+
+* **v1:** Add support for per-Runnable labels ([977ce57](https://github.com/googleapis/python-batch/commit/977ce57f89e15b46ead282df89ed371e68631ca6))
+* **v1:** Add support for placement policies ([977ce57](https://github.com/googleapis/python-batch/commit/977ce57f89e15b46ead282df89ed371e68631ca6))
+* **v1alpha:** Add support for placement policies ([be22675](https://github.com/googleapis/python-batch/commit/be226750e6783a5994a497106c87cc7183654549))
+* **v1alpha:** Support order_by in ListJobs and ListTasks requests ([be22675](https://github.com/googleapis/python-batch/commit/be226750e6783a5994a497106c87cc7183654549))
+
 ## [0.10.0](https://github.com/googleapis/python-batch/compare/v0.9.0...v0.10.0) (2023-03-16)
 
 
