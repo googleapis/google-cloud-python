@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-datastream/compare/v1.5.1...v1.6.0) (2023-05-25)
+
+
+### Features
+
+* Max concurrent backfill tasks ([#168](https://github.com/googleapis/python-datastream/issues/168)) ([06a127b](https://github.com/googleapis/python-datastream/commit/06a127b42677c91e8d5297253fd973e35b4823cc))
+
 ## [1.5.1](https://github.com/googleapis/python-datastream/compare/v1.5.0...v1.5.1) (2023-03-23)
 
 
