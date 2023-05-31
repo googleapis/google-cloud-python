@@ -44,6 +44,7 @@ from .types.spanner_database_admin import CreateDatabaseMetadata
 from .types.spanner_database_admin import CreateDatabaseRequest
 from .types.spanner_database_admin import Database
 from .types.spanner_database_admin import DatabaseRole
+from .types.spanner_database_admin import DdlStatementActionInfo
 from .types.spanner_database_admin import DropDatabaseRequest
 from .types.spanner_database_admin import GetDatabaseDdlRequest
 from .types.spanner_database_admin import GetDatabaseDdlResponse
@@ -81,6 +82,7 @@ __all__ = (
     "DatabaseAdminClient",
     "DatabaseDialect",
     "DatabaseRole",
+    "DdlStatementActionInfo",
     "DeleteBackupRequest",
     "DropDatabaseRequest",
     "EncryptionConfig",

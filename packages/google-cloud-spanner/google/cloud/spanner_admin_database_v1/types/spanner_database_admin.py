@@ -40,6 +40,7 @@ __protobuf__ = proto.module(
         "UpdateDatabaseRequest",
         "UpdateDatabaseMetadata",
         "UpdateDatabaseDdlRequest",
+        "DdlStatementActionInfo",
         "UpdateDatabaseDdlMetadata",
         "DropDatabaseRequest",
         "GetDatabaseDdlRequest",
@@ -533,6 +534,46 @@ class UpdateDatabaseDdlRequest(proto.Message):
     )
 
 
+class DdlStatementActionInfo(proto.Message):
+    r"""Action information extracted from a DDL statement. This proto is
+    used to display the brief info of the DDL statement for the
+    operation
+    [UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl].
+
+    Attributes:
+        action (str):
+            The action for the DDL statement, e.g.
+            CREATE, ALTER, DROP, GRANT, etc. This field is a
+            non-empty string.
+        entity_type (str):
+            The entity type for the DDL statement, e.g. TABLE, INDEX,
+            VIEW, etc. This field can be empty string for some DDL
+            statement, e.g. for statement "ANALYZE", ``entity_type`` =
+            "".
+        entity_names (MutableSequence[str]):
+            The entity name(s) being operated on the DDL statement. E.g.
+
+            1. For statement "CREATE TABLE t1(...)", ``entity_names`` =
+               ["t1"].
+            2. For statement "GRANT ROLE r1, r2 ...", ``entity_names`` =
+               ["r1", "r2"].
+            3. For statement "ANALYZE", ``entity_names`` = [].
+    """
+
+    action: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    entity_type: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    entity_names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
 class UpdateDatabaseDdlMetadata(proto.Message):
     r"""Metadata type for the operation returned by
     [UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl].
@@ -550,20 +591,22 @@ class UpdateDatabaseDdlMetadata(proto.Message):
             commit timestamp for the statement ``statements[i]``.
         throttled (bool):
             Output only. When true, indicates that the
-            operation is throttled e.g due to resource
+            operation is throttled e.g. due to resource
             constraints. When resources become available the
             operation will resume and this field will be
             false again.
         progress (MutableSequence[google.cloud.spanner_admin_database_v1.types.OperationProgress]):
             The progress of the
             [UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl]
-            operations. Currently, only index creation statements will
-            have a continuously updating progress. For non-index
-            creation statements, ``progress[i]`` will have start time
-            and end time populated with commit timestamp of operation,
-            as well as a progress of 100% once the operation has
-            completed. ``progress[i]`` is the operation progress for
-            ``statements[i]``.
+            operations. All DDL statements will have continuously
+            updating progress, and ``progress[i]`` is the operation
+            progress for ``statements[i]``. Also, ``progress[i]`` will
+            have start time and end time populated with commit timestamp
+            of operation, as well as a progress of 100% once the
+            operation has completed.
+        actions (MutableSequence[google.cloud.spanner_admin_database_v1.types.DdlStatementActionInfo]):
+            The brief action info for the DDL statements. ``actions[i]``
+            is the brief info for ``statements[i]``.
     """
 
     database: str = proto.Field(
@@ -587,6 +630,11 @@ class UpdateDatabaseDdlMetadata(proto.Message):
         proto.MESSAGE,
         number=5,
         message=common.OperationProgress,
+    )
+    actions: MutableSequence["DdlStatementActionInfo"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="DdlStatementActionInfo",
     )
 
 
