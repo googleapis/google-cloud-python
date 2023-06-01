@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.17.0](https://github.com/googleapis/python-analytics-admin/compare/v0.16.0...v0.17.0) (2023-05-31)
+
+
+### Features
+
+* **v1alpha:** Add `AdSenseLink` type ([e3b5b03](https://github.com/googleapis/python-analytics-admin/commit/e3b5b03b937d3bdd827419be1ca9a10c79691823))
+* **v1alpha:** Add `audience`, `event_create_rule` fields to the `ChangeHistoryResource.resource` oneof field ([e3b5b03](https://github.com/googleapis/python-analytics-admin/commit/e3b5b03b937d3bdd827419be1ca9a10c79691823))
+* **v1alpha:** Add `AUDIENCE`, `EVENT_CREATE_RULE` options to the `ChangeHistoryResourceType` enum ([e3b5b03](https://github.com/googleapis/python-analytics-admin/commit/e3b5b03b937d3bdd827419be1ca9a10c79691823))
+* **v1alpha:** Add `ChannelGroupFilter`, `ChannelGroupFilterExpression`, `ChannelGroupFilterExpressionList`, `GroupingRule`, `ChannelGroup` types ([2ef0b67](https://github.com/googleapis/python-analytics-admin/commit/2ef0b674161c721ff854fdcd7debbfc8552a9ef8))
+* **v1alpha:** Add `CreateEventCreateRule`, `UpdateEventCreateRule`,`DeleteEventCreateRule`, `ListEventCreateRules` methods ([e3b5b03](https://github.com/googleapis/python-analytics-admin/commit/e3b5b03b937d3bdd827419be1ca9a10c79691823))
+* **v1alpha:** Add `EventCreateRule`, `MatchingCondition` types ([e3b5b03](https://github.com/googleapis/python-analytics-admin/commit/e3b5b03b937d3bdd827419be1ca9a10c79691823))
+* **v1alpha:** Add `FetchConnectedGa4Property` method ([e3b5b03](https://github.com/googleapis/python-analytics-admin/commit/e3b5b03b937d3bdd827419be1ca9a10c79691823))
+* **v1alpha:** Add `GetAdSenseLink`, `CreateAdSenseLink`, `DeleteAdSenseLink`, `ListAdSenseLinks` methods ([e3b5b03](https://github.com/googleapis/python-analytics-admin/commit/e3b5b03b937d3bdd827419be1ca9a10c79691823))
+* **v1alpha:** Add `GetChannelGroup`, `ListChannelGroups`, `CreateChannelGroup`, `UpdateChannelGroup` methods ([2ef0b67](https://github.com/googleapis/python-analytics-admin/commit/2ef0b674161c721ff854fdcd7debbfc8552a9ef8))
+* **v1alpha:** Add FetchConnectedGa4Property method ([2ef0b67](https://github.com/googleapis/python-analytics-admin/commit/2ef0b674161c721ff854fdcd7debbfc8552a9ef8))
+
 ## [0.16.0](https://github.com/googleapis/python-analytics-admin/compare/v0.15.0...v0.16.0) (2023-03-24)
 
 
