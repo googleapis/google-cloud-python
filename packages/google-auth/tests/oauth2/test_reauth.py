@@ -326,6 +326,26 @@ def test_refresh_grant_failed(mock_metrics_header_value):
         )
 
 
+def test_refresh_grant_failed_with_string_type_response():
+    with mock.patch(
+        "google.oauth2._client._token_endpoint_request_no_throw"
+    ) as mock_token_request:
+        mock_token_request.return_value = (False, "string type error", False)
+        with pytest.raises(exceptions.RefreshError) as excinfo:
+            reauth.refresh_grant(
+                MOCK_REQUEST,
+                "token_uri",
+                "refresh_token",
+                "client_id",
+                "client_secret",
+                scopes=["foo", "bar"],
+                rapt_token="rapt_token",
+                enable_reauth_refresh=True,
+            )
+        assert excinfo.match(r"string type error")
+        assert not excinfo.value.retryable
+
+
 def test_refresh_grant_success():
     with mock.patch(
         "google.oauth2._client._token_endpoint_request_no_throw"

@@ -525,8 +525,8 @@ class TestIDTokenCredentials(object):
             token_uri="http://xyz.com",
         )
         assert self.credentials._token_uri == "http://xyz.com"
-        creds_with_token_uri = self.credentials.with_token_uri("http://abc.com")
-        assert creds_with_token_uri._token_uri == "http://abc.com"
+        creds_with_token_uri = self.credentials.with_token_uri("http://example.com")
+        assert creds_with_token_uri._token_uri == "http://example.com"
 
     @mock.patch(
         "google.auth._helpers.utcnow",
@@ -548,7 +548,7 @@ class TestIDTokenCredentials(object):
         )
         assert self.credentials._token_uri is None
         with pytest.raises(ValueError):
-            self.credentials.with_token_uri("http://abc.com")
+            self.credentials.with_token_uri("http://example.com")
 
     @responses.activate
     def test_with_quota_project_integration(self):
