@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.11.2](https://github.com/googleapis/python-videointelligence/compare/v2.11.1...v2.11.2) (2023-06-01)
+
+
+### Documentation
+
+* **samples:** Expand region tags to include imports ([4ff158d](https://github.com/googleapis/python-videointelligence/commit/4ff158da2450cfd6be7bf8881f7bf7aa55911c78))
+
 ## [2.11.1](https://github.com/googleapis/python-videointelligence/compare/v2.11.0...v2.11.1) (2023-03-23)
 
 
