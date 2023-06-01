@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-connect-v1.7.1...google-cloud-apigee-connect-v1.8.0) (2023-06-01)
+
+
+### Features
+
+* add audience parameter ([ac7a473](https://github.com/googleapis/google-cloud-python/commit/ac7a473872fe17e5e96827db592ae32315334a01))
+* add support for `google.cloud.apigeeconnect.__version__` ([#153](https://github.com/googleapis/google-cloud-python/issues/153)) ([e7416f3](https://github.com/googleapis/google-cloud-python/commit/e7416f376853f32a9a3c14fdf8cc7a94ff6cdf8a))
+* Add support for python 3.11 ([#168](https://github.com/googleapis/google-cloud-python/issues/168)) ([20334a1](https://github.com/googleapis/google-cloud-python/commit/20334a1156c6029e837279e6c19fb1ab8e1b5b90))
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf &lt; 5.0.0 ([#133](https://github.com/googleapis/google-cloud-python/issues/133)) ([1df994a](https://github.com/googleapis/google-cloud-python/commit/1df994a9d55c014a93b1ddd1ea2cf16c16493d12))
+* **deps:** allow protobuf 3.19.5 ([#151](https://github.com/googleapis/google-cloud-python/issues/151)) ([54b394b](https://github.com/googleapis/google-cloud-python/commit/54b394bd03f7491c280572f092d36881d652a102))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([#163](https://github.com/googleapis/google-cloud-python/issues/163)) ([01b4500](https://github.com/googleapis/google-cloud-python/commit/01b4500f508526658c5fb1e046b8bb938b07cb65))
+* **deps:** require google-api-core&gt;=1.32.0,>=2.8.0 ([#124](https://github.com/googleapis/google-cloud-python/issues/124)) ([ac7a473](https://github.com/googleapis/google-cloud-python/commit/ac7a473872fe17e5e96827db592ae32315334a01))
+* **deps:** require proto-plus &gt;= 1.22.0 ([1df994a](https://github.com/googleapis/google-cloud-python/commit/1df994a9d55c014a93b1ddd1ea2cf16c16493d12))
+* **deps:** require protobuf &gt;= 3.20.2 ([#148](https://github.com/googleapis/google-cloud-python/issues/148)) ([d97b88d](https://github.com/googleapis/google-cloud-python/commit/d97b88d1d4b0cbd7ae77ef858940f76bfb523eb6))
+* require python 3.7+ ([#126](https://github.com/googleapis/google-cloud-python/issues/126)) ([d20ecfd](https://github.com/googleapis/google-cloud-python/commit/d20ecfd902999ccbc5d063edf26fbe1768966b07))
+
+
+### Documentation
+
+* Add documentation for enums ([#171](https://github.com/googleapis/google-cloud-python/issues/171)) ([9e48540](https://github.com/googleapis/google-cloud-python/commit/9e48540509d205d905d223f1624ba2d129fc3669))
+
 ## [1.7.1](https://github.com/googleapis/python-apigee-connect/compare/v1.7.0...v1.7.1) (2023-01-20)
 
 

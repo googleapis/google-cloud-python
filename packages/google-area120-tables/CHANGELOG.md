@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.12.0](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.2...google-area120-tables-v0.12.0) (2023-06-01)
+
+
+### Features
+
+* add audience parameter ([81670bc](https://github.com/googleapis/google-cloud-python/commit/81670bc66e0bb1bc5f6e6efc303ada2745eb1b85))
+* add support for `google.area120.tables.__version__` ([#204](https://github.com/googleapis/google-cloud-python/issues/204)) ([e2ff8f8](https://github.com/googleapis/google-cloud-python/commit/e2ff8f89b78090dc43c09e0894e08d2f3de0506d))
+* Add support for python 3.11 ([#219](https://github.com/googleapis/google-cloud-python/issues/219)) ([63be6d3](https://github.com/googleapis/google-cloud-python/commit/63be6d3f622ec04333c7ac88c193ae4c9543489c))
+* Add support for REST transport ([#194](https://github.com/googleapis/google-cloud-python/issues/194)) ([a778761](https://github.com/googleapis/google-cloud-python/commit/a7787618ba5e30160c74c101750b68015891d4db))
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf &lt; 5.0.0 ([#181](https://github.com/googleapis/google-cloud-python/issues/181)) ([b716dbb](https://github.com/googleapis/google-cloud-python/commit/b716dbb77dfaea80704d1dd74b2c8ea4154ca5ad))
+* **deps:** allow protobuf 3.19.5 ([#201](https://github.com/googleapis/google-cloud-python/issues/201)) ([35868e0](https://github.com/googleapis/google-cloud-python/commit/35868e015a7dd2b0453857b1d105c1375af30934))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0 ([#214](https://github.com/googleapis/google-cloud-python/issues/214)) ([566c08b](https://github.com/googleapis/google-cloud-python/commit/566c08b7c34d1ad2ff0889740d03f8b63e37f4b6))
+* **deps:** require google-api-core&gt;=1.32.0,>=2.8.0 ([#173](https://github.com/googleapis/google-cloud-python/issues/173)) ([81670bc](https://github.com/googleapis/google-cloud-python/commit/81670bc66e0bb1bc5f6e6efc303ada2745eb1b85))
+* **deps:** require google-api-core&gt;=1.33.1,>=2.8.0 ([a778761](https://github.com/googleapis/google-cloud-python/commit/a7787618ba5e30160c74c101750b68015891d4db))
+* **deps:** require google-api-core&gt;=1.33.2 ([35868e0](https://github.com/googleapis/google-cloud-python/commit/35868e015a7dd2b0453857b1d105c1375af30934))
+* **deps:** require proto-plus &gt;= 1.22.0 ([b716dbb](https://github.com/googleapis/google-cloud-python/commit/b716dbb77dfaea80704d1dd74b2c8ea4154ca5ad))
+* **deps:** require protobuf &gt;= 3.20.1 ([a778761](https://github.com/googleapis/google-cloud-python/commit/a7787618ba5e30160c74c101750b68015891d4db))
+* **deps:** require protobuf &gt;= 3.20.2 ([#198](https://github.com/googleapis/google-cloud-python/issues/198)) ([2c18357](https://github.com/googleapis/google-cloud-python/commit/2c1835713547fc06550ec42f7785747d0024fefb))
+* require python 3.7+ ([#175](https://github.com/googleapis/google-cloud-python/issues/175)) ([53302e4](https://github.com/googleapis/google-cloud-python/commit/53302e45aef895bb189c574e79283814095928ef))
+
+
+### Documentation
+
+* Add documentation for enums ([#221](https://github.com/googleapis/google-cloud-python/issues/221)) ([a7de734](https://github.com/googleapis/google-cloud-python/commit/a7de7343346a2709890a1535ac5a9d7741f85da4))
+* Fix formatting of request arg in docstring ([#230](https://github.com/googleapis/google-cloud-python/issues/230)) ([04c3e88](https://github.com/googleapis/google-cloud-python/commit/04c3e884491bc2bf1ee2ac87f15af82c044bbdec))
+
 ## [0.11.2](https://github.com/googleapis/python-area120-tables/compare/v0.11.1...v0.11.2) (2023-03-23)
 
 
