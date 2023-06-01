@@ -69,7 +69,7 @@ then
   exit 1
 fi
 
-PATH_MONOREPO="$(dirname $(realpath "$1"))"
+PATH_MONOREPO="$(realpath "$1")"
 cat <<EOF
 Post-processing multiple pacakges
   PATH_MONOREPO:         ${PATH_MONOREPO}
