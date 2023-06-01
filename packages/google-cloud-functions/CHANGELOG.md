@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/python-functions/compare/v1.12.0...v1.13.0) (2023-05-25)
+
+
+### Features
+
+* Added helper methods for long running operations, IAM, and locations ([17b7a5b](https://github.com/googleapis/python-functions/commit/17b7a5ba23bb561ea06c58df0436d5fed79d0413))
+* ListFunctions now include metadata which indicates whether a function is a `GEN_1` or `GEN_2` function ([#263](https://github.com/googleapis/python-functions/issues/263)) ([ea38aad](https://github.com/googleapis/python-functions/commit/ea38aadbd148e7984a6cfd4a68acaa8b697affc1))
+
+
+### Documentation
+
+* Applied general style guide updates to descriptions ([17b7a5b](https://github.com/googleapis/python-functions/commit/17b7a5ba23bb561ea06c58df0436d5fed79d0413))
+* Clarified that vpcConnector shortname is only returned if the connector is in the same project as the function ([17b7a5b](https://github.com/googleapis/python-functions/commit/17b7a5ba23bb561ea06c58df0436d5fed79d0413))
+
 ## [1.12.0](https://github.com/googleapis/python-functions/compare/v1.11.0...v1.12.0) (2023-03-23)
 
 
