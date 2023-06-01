@@ -46,6 +46,7 @@ __protobuf__ = proto.module(
         "EphemeralStorageLocalSsdConfig",
         "GcfsConfig",
         "ReservationAffinity",
+        "SoleTenantConfig",
         "NodeTaint",
         "NodeTaints",
         "NodeLabels",
@@ -64,6 +65,7 @@ __protobuf__ = proto.module(
         "ConfigConnectorConfig",
         "GcePersistentDiskCsiDriverConfig",
         "GcpFilestoreCsiDriverConfig",
+        "GcsFuseCsiDriverConfig",
         "PrivateClusterMasterGlobalAccessConfig",
         "PrivateClusterConfig",
         "IstioConfig",
@@ -657,6 +659,9 @@ class NodeConfig(proto.Message):
             If unspecified, ephemeral storage is backed by the boot
             disk. This field is functionally equivalent to the
             ephemeral_storage_config
+        sole_tenant_config (google.cloud.container_v1beta1.types.SoleTenantConfig):
+            Parameters for node pools to be backed by
+            shared sole tenant node groups.
     """
 
     machine_type: str = proto.Field(
@@ -816,6 +821,11 @@ class NodeConfig(proto.Message):
         proto.MESSAGE,
         number=41,
         message="EphemeralStorageLocalSsdConfig",
+    )
+    sole_tenant_config: "SoleTenantConfig" = proto.Field(
+        proto.MESSAGE,
+        number=42,
+        message="SoleTenantConfig",
     )
 
 
@@ -1197,6 +1207,67 @@ class ReservationAffinity(proto.Message):
     )
 
 
+class SoleTenantConfig(proto.Message):
+    r"""SoleTenantConfig contains the NodeAffinities to specify what
+    shared sole tenant node groups should back the node pool.
+
+    Attributes:
+        node_affinities (MutableSequence[google.cloud.container_v1beta1.types.SoleTenantConfig.NodeAffinity]):
+            NodeAffinities used to match to a shared sole
+            tenant node group.
+    """
+
+    class NodeAffinity(proto.Message):
+        r"""Specifies the NodeAffinity key, values, and affinity operator
+        according to `shared sole tenant node group
+        affinities <https://cloud.google.com/compute/docs/nodes/sole-tenant-nodes#node_affinity_and_anti-affinity>`__.
+
+        Attributes:
+            key (str):
+                Key for NodeAffinity.
+            operator (google.cloud.container_v1beta1.types.SoleTenantConfig.NodeAffinity.Operator):
+                Operator for NodeAffinity.
+            values (MutableSequence[str]):
+                Values for NodeAffinity.
+        """
+
+        class Operator(proto.Enum):
+            r"""Operator allows user to specify affinity or anti-affinity for
+            the given key values.
+
+            Values:
+                OPERATOR_UNSPECIFIED (0):
+                    Invalid or unspecified affinity operator.
+                IN (1):
+                    Affinity operator.
+                NOT_IN (2):
+                    Anti-affinity operator.
+            """
+            OPERATOR_UNSPECIFIED = 0
+            IN = 1
+            NOT_IN = 2
+
+        key: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        operator: "SoleTenantConfig.NodeAffinity.Operator" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="SoleTenantConfig.NodeAffinity.Operator",
+        )
+        values: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
+
+    node_affinities: MutableSequence[NodeAffinity] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=NodeAffinity,
+    )
+
+
 class NodeTaint(proto.Message):
     r"""Kubernetes taint is composed of three fields: key, value, and
     effect. Effect can only be one of three types: NoSchedule,
@@ -1453,6 +1524,9 @@ class AddonsConfig(proto.Message):
         gke_backup_agent_config (google.cloud.container_v1beta1.types.GkeBackupAgentConfig):
             Configuration for the Backup for GKE agent
             addon.
+        gcs_fuse_csi_driver_config (google.cloud.container_v1beta1.types.GcsFuseCsiDriverConfig):
+            Configuration for the Cloud Storage Fuse CSI
+            driver.
     """
 
     http_load_balancing: "HttpLoadBalancing" = proto.Field(
@@ -1516,6 +1590,11 @@ class AddonsConfig(proto.Message):
         proto.MESSAGE,
         number=16,
         message="GkeBackupAgentConfig",
+    )
+    gcs_fuse_csi_driver_config: "GcsFuseCsiDriverConfig" = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message="GcsFuseCsiDriverConfig",
     )
 
 
@@ -1670,6 +1749,21 @@ class GcpFilestoreCsiDriverConfig(proto.Message):
     Attributes:
         enabled (bool):
             Whether the GCP Filestore CSI driver is
+            enabled for this cluster.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
+class GcsFuseCsiDriverConfig(proto.Message):
+    r"""Configuration for the Cloud Storage Fuse CSI driver.
+
+    Attributes:
+        enabled (bool):
+            Whether the Cloud Storage Fuse CSI driver is
             enabled for this cluster.
     """
 
@@ -2563,7 +2657,15 @@ class Cluster(proto.Message):
         shielded_nodes (google.cloud.container_v1beta1.types.ShieldedNodes):
             Shielded Nodes configuration.
         release_channel (google.cloud.container_v1beta1.types.ReleaseChannel):
-            Release channel configuration.
+            Release channel configuration. If left
+            unspecified on cluster creation and a version is
+            specified, the cluster is enrolled in the most
+            mature release channel where the version is
+            available (first checking STABLE, then REGULAR,
+            and finally RAPID). Otherwise, if no release
+            channel configuration and no version is
+            specified, the cluster is enrolled in the
+            REGULAR channel with its default version.
         workload_identity_config (google.cloud.container_v1beta1.types.WorkloadIdentityConfig):
             Configuration for the use of Kubernetes
             Service Accounts in GCP IAM policies.
@@ -3456,6 +3558,9 @@ class ClusterUpdate(proto.Message):
         desired_node_pool_logging_config (google.cloud.container_v1beta1.types.NodePoolLoggingConfig):
             The desired node pool logging configuration
             defaults for the cluster.
+        desired_fleet (google.cloud.container_v1beta1.types.Fleet):
+            The desired fleet configuration for the
+            cluster.
         desired_stack_type (google.cloud.container_v1beta1.types.StackType):
             The desired stack type of the cluster.
             If a stack type is provided and does not match
@@ -3698,6 +3803,11 @@ class ClusterUpdate(proto.Message):
         number=116,
         message="NodePoolLoggingConfig",
     )
+    desired_fleet: "Fleet" = proto.Field(
+        proto.MESSAGE,
+        number=117,
+        message="Fleet",
+    )
     desired_stack_type: "StackType" = proto.Field(
         proto.ENUM,
         number=119,
@@ -3755,10 +3865,24 @@ class Operation(proto.Message):
             textual description of the error. Deprecated.
             Use field error instead.
         self_link (str):
-            Server-defined URL for the resource.
+            Server-defined URI for the operation. Example:
+            ``https://container.googleapis.com/v1alpha1/projects/123/locations/us-central1/operations/operation-123``.
         target_link (str):
-            Server-defined URL for the target of the
-            operation.
+            Server-defined URI for the target of the operation. The
+            format of this is a URI to the resource being modified (such
+            as a cluster, node pool, or node). For node pool repairs,
+            there may be multiple nodes being repaired, but only one
+            will be the target.
+
+            Examples:
+
+            -
+
+            ``https://container.googleapis.com/v1/projects/123/locations/us-central1/clusters/my-cluster``
+
+            ``https://container.googleapis.com/v1/projects/123/zones/us-central1-c/clusters/my-cluster/nodePools/my-np``
+
+            ``https://container.googleapis.com/v1/projects/123/zones/us-central1-c/clusters/my-cluster/nodePools/my-np/node/my-node``
         location (str):
             [Output only] The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/regions-zones/regions-zones#available>`__
@@ -3810,43 +3934,120 @@ class Operation(proto.Message):
         ABORTING = 4
 
     class Type(proto.Enum):
-        r"""Operation type.
+        r"""Operation type categorizes the operation.
 
         Values:
             TYPE_UNSPECIFIED (0):
                 Not set.
             CREATE_CLUSTER (1):
-                Cluster create.
+                The cluster is being created. The cluster should be assumed
+                to be unusable until the operation finishes.
+
+                In the event of the operation failing, the cluster will
+                enter the [ERROR state][Cluster.Status.ERROR] and eventually
+                be deleted.
             DELETE_CLUSTER (2):
-                Cluster delete.
+                The cluster is being deleted. The cluster should be assumed
+                to be unusable as soon as this operation starts.
+
+                In the event of the operation failing, the cluster will
+                enter the [ERROR state][Cluster.Status.ERROR] and the
+                deletion will be automatically retried until completed.
             UPGRADE_MASTER (3):
-                A master upgrade.
+                The [cluster
+                version][google.container.v1beta1.ClusterUpdate.desired_master_version]
+                is being updated. Note that this includes "upgrades" to the
+                same version, which are simply a recreation. This also
+                includes
+                `auto-upgrades <https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-upgrades#upgrading_automatically>`__.
+                For more details, see `documentation on cluster
+                upgrades <https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-upgrades#cluster_upgrades>`__.
             UPGRADE_NODES (4):
-                A node upgrade.
+                A node pool is being updated. Despite calling this an
+                "upgrade", this includes most forms of updates to node
+                pools. This also includes
+                `auto-upgrades <https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-upgrades>`__.
+
+                This operation sets the
+                [progress][google.container.v1beta1.Operation.progress]
+                field and may be
+                [canceled][google.container.v1beta1.ClusterManager.CancelOperation].
+
+                The upgrade strategy depends on `node pool
+                configuration <https://cloud.google.com/kubernetes-engine/docs/concepts/node-pool-upgrade-strategies>`__.
+                The nodes are generally still usable during this operation.
             REPAIR_CLUSTER (5):
-                Cluster repair.
+                A problem has been detected with the control plane and is
+                being repaired. This operation type is initiated by GKE. For
+                more details, see `documentation on
+                repairs <https://cloud.google.com/kubernetes-engine/docs/concepts/maintenance-windows-and-exclusions#repairs>`__.
             UPDATE_CLUSTER (6):
-                Cluster update.
+                The cluster is being updated. This is a broad category of
+                operations and includes operations that only change metadata
+                as well as those that must recreate the entire cluster. If
+                the control plane must be recreated, this will cause
+                temporary downtime for zonal clusters.
+
+                Some features require recreating the nodes as well. Those
+                will be recreated as separate operations and the update may
+                not be completely functional until the node pools
+                recreations finish. Node recreations will generally follow
+                `maintenance
+                policies <https://cloud.google.com/kubernetes-engine/docs/concepts/maintenance-windows-and-exclusions>`__.
+
+                Some GKE-initiated operations use this type. This includes
+                certain types of auto-upgrades and incident mitigations.
             CREATE_NODE_POOL (7):
-                Node pool create.
+                A node pool is being created. The node pool should be
+                assumed to be unusable until this operation finishes. In the
+                event of an error, the node pool may be partially created.
+
+                If enabled, `node
+                autoprovisioning <https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-provisioning>`__
+                may have automatically initiated such operations.
             DELETE_NODE_POOL (8):
-                Node pool delete.
+                The node pool is being deleted. The node pool
+                should be assumed to be unusable as soon as this
+                operation starts.
             SET_NODE_POOL_MANAGEMENT (9):
-                Set node pool management.
+                The node pool's
+                [manamagent][google.container.v1beta1.NodePool.management]
+                field is being updated. These operations only update
+                metadata and may be concurrent with most other operations.
             AUTO_REPAIR_NODES (10):
-                Automatic node pool repair.
+                A problem has been detected with nodes and `they are being
+                repaired <https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-repair>`__.
+                This operation type is initiated by GKE, typically
+                automatically. This operation may be concurrent with other
+                operations and there may be multiple repairs occurring on
+                the same node pool.
             AUTO_UPGRADE_NODES (11):
-                Automatic node upgrade.
+                Unused. Automatic node upgrade uses
+                [UPGRADE_NODES][google.container.v1beta1.Operation.Type.UPGRADE_NODES].
             SET_LABELS (12):
-                Set labels.
+                Unused. Updating labels uses
+                [UPDATE_CLUSTER][google.container.v1beta1.Operation.Type.UPDATE_CLUSTER].
             SET_MASTER_AUTH (13):
-                Set/generate master auth materials
+                Unused. Updating master auth uses
+                [UPDATE_CLUSTER][google.container.v1beta1.Operation.Type.UPDATE_CLUSTER].
             SET_NODE_POOL_SIZE (14):
-                Set node pool size.
+                The node pool is being resized. With the
+                exception of resizing to or from size zero, the
+                node pool is generally usable during this
+                operation.
             SET_NETWORK_POLICY (15):
-                Updates network policy for a cluster.
+                Unused. Updating network policy uses
+                [UPDATE_CLUSTER][google.container.v1beta1.Operation.Type.UPDATE_CLUSTER].
             SET_MAINTENANCE_POLICY (16):
-                Set the maintenance policy.
+                Unused. Updating maintenance policy uses
+                [UPDATE_CLUSTER][google.container.v1beta1.Operation.Type.UPDATE_CLUSTER].
+            RESIZE_CLUSTER (18):
+                The control plane is being resized. This operation type is
+                initiated by GKE. These operations are often performed
+                preemptively to ensure that the control plane has sufficient
+                resources and is not typically an indication of issues. For
+                more details, see `documentation on
+                resizes <https://cloud.google.com/kubernetes-engine/docs/concepts/maintenance-windows-and-exclusions#repairs>`__.
         """
         TYPE_UNSPECIFIED = 0
         CREATE_CLUSTER = 1
@@ -3865,6 +4066,7 @@ class Operation(proto.Message):
         SET_NODE_POOL_SIZE = 14
         SET_NETWORK_POLICY = 15
         SET_MAINTENANCE_POLICY = 16
+        RESIZE_CLUSTER = 18
 
     name: str = proto.Field(
         proto.STRING,
@@ -7995,12 +8197,12 @@ class DatabaseEncryption(proto.Message):
     r"""Configuration of etcd encryption.
 
     Attributes:
-        state (google.cloud.container_v1beta1.types.DatabaseEncryption.State):
-            Denotes the state of etcd encryption.
         key_name (str):
             Name of CloudKMS key to use for the
             encryption of secrets in etcd. Ex.
             projects/my-project/locations/global/keyRings/my-ring/cryptoKeys/my-key
+        state (google.cloud.container_v1beta1.types.DatabaseEncryption.State):
+            The desired state of etcd encryption.
     """
 
     class State(proto.Enum):
@@ -8020,14 +8222,14 @@ class DatabaseEncryption(proto.Message):
         ENCRYPTED = 1
         DECRYPTED = 2
 
+    key_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     state: State = proto.Field(
         proto.ENUM,
         number=2,
         enum=State,
-    )
-    key_name: str = proto.Field(
-        proto.STRING,
-        number=1,
     )
 
 
