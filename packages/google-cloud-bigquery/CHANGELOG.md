@@ -5,6 +5,20 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.11.0](https://github.com/googleapis/python-bigquery/compare/v3.10.0...v3.11.0) (2023-06-01)
+
+
+### Features
+
+* Add remote function options to routines ([#1558](https://github.com/googleapis/python-bigquery/issues/1558)) ([84ad11d](https://github.com/googleapis/python-bigquery/commit/84ad11d00d99d279e4e6e0fa4ca60e59575b1dad))
+
+
+### Bug Fixes
+
+* Filter None values from OpenTelemetry attributes ([#1567](https://github.com/googleapis/python-bigquery/issues/1567)) ([9ea2e21](https://github.com/googleapis/python-bigquery/commit/9ea2e21c35783782993d1ad2d3b910bbe9981ce2))
+* Handle case when expirationMs is None ([#1553](https://github.com/googleapis/python-bigquery/issues/1553)) ([fa6e13d](https://github.com/googleapis/python-bigquery/commit/fa6e13d5006caadb36899b4e2a24ca82b7f11b17))
+* Raise most recent exception when not able to fetch query job after starting the job ([#1362](https://github.com/googleapis/python-bigquery/issues/1362)) ([09cc1df](https://github.com/googleapis/python-bigquery/commit/09cc1df6babaf90ea0b0a6fd926f8013822a31ed))
+
 ## [3.10.0](https://github.com/googleapis/python-bigquery/compare/v3.9.0...v3.10.0) (2023-04-18)
 
 
