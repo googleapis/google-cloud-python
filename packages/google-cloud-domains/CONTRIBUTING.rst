@@ -35,21 +35,21 @@ Using a Development Checkout
 You'll have to create a development environment using a Git checkout:
 
 - While logged into your GitHub account, navigate to the
-  ``python-domains`` `repo`_ on GitHub.
+  ``google-cloud-python`` `repo`_ on GitHub.
 
-- Fork and clone the ``python-domains`` repository to your GitHub account by
+- Fork and clone the ``google-cloud-python`` repository to your GitHub account by
   clicking the "Fork" button.
 
-- Clone your fork of ``python-domains`` from your GitHub account to your local
+- Clone your fork of ``google-cloud-python`` from your GitHub account to your local
   computer, substituting your account username and specifying the destination
-  as ``hack-on-python-domains``.  E.g.::
+  as ``hack-on-google-cloud-python``.  E.g.::
 
    $ cd ${HOME}
-   $ git clone git@github.com:USERNAME/python-domains.git hack-on-python-domains
-   $ cd hack-on-python-domains
-   # Configure remotes such that you can pull changes from the googleapis/python-domains
+   $ git clone git@github.com:USERNAME/google-cloud-python.git hack-on-google-cloud-python
+   $ cd hack-on-google-cloud-python
+   # Configure remotes such that you can pull changes from the googleapis/google-cloud-python
    # repository into your local repository.
-   $ git remote add upstream git@github.com:googleapis/python-domains.git
+   $ git remote add upstream git@github.com:googleapis/google-cloud-python.git
    # fetch and merge changes from upstream into main
    $ git fetch upstream
    $ git merge upstream/main
@@ -60,7 +60,7 @@ repo, from which you can submit a pull request.
 To work on the codebase and run the tests, we recommend using ``nox``,
 but you can also use a ``virtualenv`` of your own creation.
 
-.. _repo: https://github.com/googleapis/python-domains
+.. _repo: https://github.com/googleapis/google-cloud-python
 
 Using ``nox``
 =============
@@ -113,7 +113,7 @@ Coding Style
    export GOOGLE_CLOUD_TESTING_BRANCH="main"
 
   By doing this, you are specifying the location of the most up-to-date
-  version of ``python-domains``. The
+  version of ``google-cloud-python``. The
   remote name ``upstream`` should point to the official ``googleapis``
   checkout and the branch should be the default branch on that remote (``main``).
 
@@ -209,7 +209,7 @@ The `description on PyPI`_ for the project comes directly from the
 ``README``. Due to the reStructuredText (``rst``) parser used by
 PyPI, relative links which will work on GitHub (e.g. ``CONTRIBUTING.rst``
 instead of
-``https://github.com/googleapis/python-domains/blob/main/CONTRIBUTING.rst``)
+``https://github.com/googleapis/google-cloud-python/blob/main/CONTRIBUTING.rst``)
 may cause problems creating links or rendering the description.
 
 .. _description on PyPI: https://pypi.org/project/google-cloud-domains
@@ -236,8 +236,20 @@ We support:
 
 Supported versions can be found in our ``noxfile.py`` `config`_.
 
-.. _config: https://github.com/googleapis/python-domains/blob/main/noxfile.py
+.. _config: https://github.com/googleapis/google-cloud-python/blob/main/noxfile.py
 
+
+We also explicitly decided to support Python 3 beginning with version 3.7.
+Reasons for this include:
+
+-  Encouraging use of newest versions of Python 3
+-  Taking the lead of `prominent`_ open-source `projects`_
+-  `Unicode literal support`_ which allows for a cleaner codebase that
+   works in both Python 2 and Python 3
+
+.. _prominent: https://docs.djangoproject.com/en/1.9/faq/install/#what-python-version-can-i-use-with-django
+.. _projects: http://flask.pocoo.org/docs/0.10/python3/
+.. _Unicode literal support: https://www.python.org/dev/peps/pep-0414/
 
 **********
 Versioning
