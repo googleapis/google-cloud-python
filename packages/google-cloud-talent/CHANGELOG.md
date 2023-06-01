@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.11.0](https://github.com/googleapis/python-talent/compare/v2.10.1...v2.11.0) (2023-06-01)
+
+
+### Features
+
+* Add three per company option to diversification levels ([532f474](https://github.com/googleapis/python-talent/commit/532f47463aa580113e358475cb5de8b622fd3b88))
+
+
+### Bug Fixes
+
+* **v4:** Change timeout settings for SearchJobsForAlert ([#335](https://github.com/googleapis/python-talent/issues/335)) ([9414e03](https://github.com/googleapis/python-talent/commit/9414e03a853ca5ae4c3a6fa79f38801412f4c52c))
+
 ## [2.10.1](https://github.com/googleapis/python-talent/compare/v2.10.0...v2.10.1) (2023-03-23)
 
 
