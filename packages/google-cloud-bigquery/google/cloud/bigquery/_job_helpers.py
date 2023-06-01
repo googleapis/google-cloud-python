@@ -105,7 +105,7 @@ def query_jobs_insert(
                     timeout=timeout,
                 )
             except core_exceptions.GoogleAPIError:  # (includes RetryError)
-                raise create_exc
+                raise
             else:
                 return query_job
         else:

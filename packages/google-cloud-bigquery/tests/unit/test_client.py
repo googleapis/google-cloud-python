@@ -5092,12 +5092,14 @@ class TestClient(unittest.TestCase):
             QueryJob, "_begin", side_effect=job_create_error
         )
         get_job_patcher = mock.patch.object(
-            client, "get_job", side_effect=DataLoss("we lost yor job, sorry")
+            client, "get_job", side_effect=DataLoss("we lost your job, sorry")
         )
 
         with job_begin_patcher, get_job_patcher:
-            # If get job request fails, the original exception should be raised.
-            with pytest.raises(Conflict, match="Job already exists."):
+            # If get job request fails but supposedly there does exist a job
+            # with this ID already, raise the exception explaining why we
+            # couldn't recover the job.
+            with pytest.raises(DataLoss, match="we lost your job, sorry"):
                 client.query("SELECT 1;", job_id=None)
 
     def test_query_job_rpc_fail_w_conflict_random_id_job_fetch_succeeds(self):
