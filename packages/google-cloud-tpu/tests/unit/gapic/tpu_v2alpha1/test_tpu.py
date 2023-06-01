@@ -1092,6 +1092,7 @@ def test_get_node(request_type, transport: str = "grpc"):
             id=205,
             api_version=cloud_tpu.Node.ApiVersion.V1_ALPHA1,
             queued_resource="queued_resource_value",
+            multislice_node=True,
         )
         response = client.get_node(request)
 
@@ -1114,6 +1115,7 @@ def test_get_node(request_type, transport: str = "grpc"):
     assert response.id == 205
     assert response.api_version == cloud_tpu.Node.ApiVersion.V1_ALPHA1
     assert response.queued_resource == "queued_resource_value"
+    assert response.multislice_node is True
 
 
 def test_get_node_empty_call():
@@ -1162,6 +1164,7 @@ async def test_get_node_async(
                 id=205,
                 api_version=cloud_tpu.Node.ApiVersion.V1_ALPHA1,
                 queued_resource="queued_resource_value",
+                multislice_node=True,
             )
         )
         response = await client.get_node(request)
@@ -1185,6 +1188,7 @@ async def test_get_node_async(
     assert response.id == 205
     assert response.api_version == cloud_tpu.Node.ApiVersion.V1_ALPHA1
     assert response.queued_resource == "queued_resource_value"
+    assert response.multislice_node is True
 
 
 @pytest.mark.asyncio

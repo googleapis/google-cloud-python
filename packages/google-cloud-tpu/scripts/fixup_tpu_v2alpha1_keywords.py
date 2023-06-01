@@ -42,7 +42,7 @@ class tpuCallTransformer(cst.CSTTransformer):
         'create_node': ('parent', 'node', 'node_id', 'request_id', ),
         'create_queued_resource': ('parent', 'queued_resource', 'queued_resource_id', 'request_id', ),
         'delete_node': ('name', 'request_id', ),
-        'delete_queued_resource': ('name', 'request_id', ),
+        'delete_queued_resource': ('name', 'request_id', 'force', ),
         'generate_service_identity': ('parent', ),
         'get_accelerator_type': ('name', ),
         'get_guest_attributes': ('name', 'query_path', 'worker_ids', ),

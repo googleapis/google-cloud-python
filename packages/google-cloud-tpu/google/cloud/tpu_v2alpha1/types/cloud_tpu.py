@@ -396,6 +396,9 @@ class Node(proto.Message):
             The AccleratorConfig for the TPU Node.
         shielded_instance_config (google.cloud.tpu_v2alpha1.types.ShieldedInstanceConfig):
             Shielded Instance options.
+        multislice_node (bool):
+            Output only. Whether the Node belongs to a
+            Multislice group.
     """
 
     class State(proto.Enum):
@@ -602,6 +605,10 @@ class Node(proto.Message):
         proto.MESSAGE,
         number=45,
         message="ShieldedInstanceConfig",
+    )
+    multislice_node: bool = proto.Field(
+        proto.BOOL,
+        number=47,
     )
 
 
@@ -1317,6 +1324,14 @@ class DeleteQueuedResourceRequest(proto.Message):
             Required. The resource name.
         request_id (str):
             Idempotent request UUID.
+        force (bool):
+            If set to true, all running nodes belonging
+            to this queued resource will be deleted first
+            and then the queued resource will be deleted.
+            Otherwise (i.e. force=false), the queued
+            resource will only be deleted if its nodes have
+            already been deleted or the queued resource is
+            in the ACCEPTED, FAILED, or SUSPENDED state.
     """
 
     name: str = proto.Field(
@@ -1326,6 +1341,10 @@ class DeleteQueuedResourceRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 
