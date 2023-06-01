@@ -55,6 +55,10 @@ fi
   return -10
 }
 
+# to allow echoing commands for debugging, precede the following with something
+# like "echo"
+GIT="git"
+
 # We require executing the script so that an early exit (explicitly or via -e)
 # does not kill the user's shell.
                                      
