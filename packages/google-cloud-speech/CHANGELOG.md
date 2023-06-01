@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.20.0](https://github.com/googleapis/python-speech/compare/v2.19.0...v2.20.0) (2023-05-25)
+
+
+### Features
+
+* **v2:** Add processing strategy to batch recognition requests ([#514](https://github.com/googleapis/python-speech/issues/514)) ([5bbf3a4](https://github.com/googleapis/python-speech/commit/5bbf3a4f4c758c76502ad3f0a8ce03604ef86c14))
+
 ## [2.19.0](https://github.com/googleapis/python-speech/compare/v2.18.0...v2.19.0) (2023-03-27)
 
 
