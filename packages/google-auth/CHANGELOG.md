@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.19.1](https://github.com/googleapis/google-auth-library-python/compare/v2.19.0...v2.19.1) (2023-06-01)
+
+
+### Bug Fixes
+
+* Check id token error response ([#1315](https://github.com/googleapis/google-auth-library-python/issues/1315)) ([2a71f7b](https://github.com/googleapis/google-auth-library-python/commit/2a71f7b2e9058efe5bfa42eaf58baa3228baf1bc))
+* Fix "AttributeError: 'str' object has no attribute 'get'"  ([dac7cc3](https://github.com/googleapis/google-auth-library-python/commit/dac7cc3a126d8bd21cd20ccc536a2923f4cdecec))
+
+
+### Documentation
+
+* Replacing abc.com with example.com ([dac7cc3](https://github.com/googleapis/google-auth-library-python/commit/dac7cc3a126d8bd21cd20ccc536a2923f4cdecec))
+
 ## [2.19.0](https://github.com/googleapis/google-auth-library-python/compare/v2.18.1...v2.19.0) (2023-05-25)
 
 
