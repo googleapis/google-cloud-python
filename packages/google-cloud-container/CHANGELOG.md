@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.22.0](https://github.com/googleapis/python-container/compare/v2.21.0...v2.22.0) (2023-06-01)
+
+
+### Features
+
+* Add SoleTenantConfig API ([f3126af](https://github.com/googleapis/python-container/commit/f3126afbc21296e5f3e0608276bc7903ae969fe3))
+* Cluster resizes will now have their own operation type (RESIZE_CLUSTER) instead of reusing REPAIR_CLUSTER; they will start using this in the near future ([f3126af](https://github.com/googleapis/python-container/commit/f3126afbc21296e5f3e0608276bc7903ae969fe3))
+* Support fleet registration via cluster update ([f3126af](https://github.com/googleapis/python-container/commit/f3126afbc21296e5f3e0608276bc7903ae969fe3))
+
+
+### Documentation
+
+* Clarified release channel defaulting behavior for create cluster requests when release channel is unspecified ([f3126af](https://github.com/googleapis/python-container/commit/f3126afbc21296e5f3e0608276bc7903ae969fe3))
+* Operation.self_link and Operation.target_link given examples ([f3126af](https://github.com/googleapis/python-container/commit/f3126afbc21296e5f3e0608276bc7903ae969fe3))
+* Operation.Type is now documented in detail ([f3126af](https://github.com/googleapis/python-container/commit/f3126afbc21296e5f3e0608276bc7903ae969fe3))
+
 ## [2.21.0](https://github.com/googleapis/python-container/compare/v2.20.0...v2.21.0) (2023-04-15)
 
 
