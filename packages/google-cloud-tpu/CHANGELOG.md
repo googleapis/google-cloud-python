@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/python-tpu/compare/v1.10.1...v1.11.0) (2023-06-01)
+
+
+### Features
+
+* **v2alpha1:** Add MultisliceNode ([df85e2c](https://github.com/googleapis/python-tpu/commit/df85e2c95a097b2620c1f368a2dc0325c5fc9a81))
+* **v2alpha1:** Enable Force on DeleteQueuedResource ([df85e2c](https://github.com/googleapis/python-tpu/commit/df85e2c95a097b2620c1f368a2dc0325c5fc9a81))
+
 ## [1.10.1](https://github.com/googleapis/python-tpu/compare/v1.10.0...v1.10.1) (2023-05-04)
 
 
