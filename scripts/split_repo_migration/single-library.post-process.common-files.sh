@@ -189,7 +189,7 @@ LRT_VERSION="${RPM_VERSION//\"/}"
 # any of the gapic_version.py files will do: they all match
 LRT_VERSION_FILE="$(find ${MONOREPO_PATH_PACKAGE} -name "gapic_version.py" | head -n 1)"
 LRT_SHA=$(git log --format=oneline ${LRT_VERSION_FILE} | grep release | head -n 1 | awk '{ print $1 }')
-$GIT tag ${MONOREPO_PACKAGE_NAME}-v${LRT_VERSION} ${LRT_SHA}
+$GIT tag -f ${MONOREPO_PACKAGE_NAME}-v${LRT_VERSION} ${LRT_SHA}
 $GIT push --tags
 ## END migrate release tags
 
