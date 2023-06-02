@@ -105,7 +105,8 @@ done
 
 ## START invoke OwlBot post-processor ########################################
 echo -e "\nInvoking owl-bot post-processor locally. PLEASE WAIT...."
-docker run --user $(id -u):$(id -g) --rm -v ${PATH_MONOREPO}:/repo -w /repo gcr.io/cloud-devrel-public-resources/owlbot-python-mono-repo:latest
+docker pull gcr.io/cloud-devrel-public-resources/owlbot-python-mono-repo:latest
+docker run --user $(id -u):$(id -g) --rm --mount type=bind,source=${PATH_MONOREPO},destination=/repo -w /repo gcr.io/cloud-devrel-public-resources/owlbot-python-mono-repo:latest
 ## END invoke OwlBot post-processor
 
 ## START commit changes #############################################
@@ -117,6 +118,3 @@ ${GIT} commit -am "$(echo -e "migration: post-process\n\nThis includes post proc
 popd >& /dev/null # "${PATH_MONOREPO}"
 
 [[ -z ${MESSAGE} ]] && echo "Done." || echo -e "Done, with a message:\n\n${MESSAGE}\n"
-
-
-
