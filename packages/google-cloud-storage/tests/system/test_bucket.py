@@ -920,6 +920,9 @@ def test_new_bucket_created_w_inherited_pap(
 
     bucket.iam_configuration.uniform_bucket_level_access_enabled = False
     bucket.patch()
+
+    _helpers.await_config_changes_propagate()
+
     assert (
         bucket.iam_configuration.public_access_prevention
         == constants.PUBLIC_ACCESS_PREVENTION_ENFORCED

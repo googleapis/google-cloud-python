@@ -44,6 +44,8 @@ _hierarchy_filenames = [
     "parent/child/other/file32.txt",
 ]
 
+ebh_bucket_iteration = 0
+
 
 @pytest.fixture(scope="session")
 def storage_client():
@@ -165,12 +167,20 @@ def signing_bucket(storage_client, signing_bucket_name):
     _helpers.delete_bucket(bucket)
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def default_ebh_bucket_name():
-    return _helpers.unique_name("gcp-systest-default-ebh")
+    # Keep track of how many ebh buckets have been created so we can get a
+    # clean one each rerun. "unique_name" is unique per test iteration, not
+    # per test rerun.
+    global ebh_bucket_iteration
+    ebh_bucket_iteration += 1
+    return _helpers.unique_name("gcp-systest-default-ebh") + "-{}".format(
+        ebh_bucket_iteration
+    )
 
 
-@pytest.fixture(scope="session")
+# ebh_bucket/name are not scope=session because the bucket is modified in test.
+@pytest.fixture(scope="function")
 def default_ebh_bucket(storage_client, default_ebh_bucket_name):
     bucket = storage_client.bucket(default_ebh_bucket_name)
     bucket.default_event_based_hold = True

@@ -111,8 +111,12 @@ def delete_bucket(bucket):
     retry(bucket.delete)(force=True)
 
 
-def await_config_changes_propagate(sec=3):
+def await_config_changes_propagate(sec=12):
     # Changes to the bucket will be readable immediately after writing,
     # but configuration changes may take time to propagate.
     # See https://cloud.google.com/storage/docs/json_api/v1/buckets/patch
+    #
+    # The default was changed from 3 to 12 in May 2023 due to changes in bucket
+    # metadata handling. Note that the documentation recommends waiting "30
+    # seconds".
     time.sleep(sec)
