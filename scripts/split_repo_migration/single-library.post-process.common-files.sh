@@ -71,6 +71,9 @@ NOP="echo -n"
 DEBUG=""  # "yes"  # set to blank for a real run, or non-blank to prevent modifying the split-repo
 MESSAGE=""
 
+# Use indent of 4 when formatting json for readability
+INDENT_JSON="--indent 4"
+
 [[ -n ${DEBUG} ]] && {
   # Comment out some commands for development/debugging
   RM='echo "*** would run:" rm'
@@ -156,10 +159,10 @@ echo "Migrating: ${RPC_MONO_PATH}"
 RPC_SORT_KEYS="${SORT_JSON_KEYS}"
 
 RPC_SPLIT_PATH="${PATH_PACKAGE}/release-please-config.json"
-jq ".packages.\".\" += {component: \"${MONOREPO_PACKAGE_NAME}\"}" "${RPC_SPLIT_PATH}" | sponge "${RPC_SPLIT_PATH}"
+jq ${INDENT_JSON} ".packages.\".\" += {component: \"${MONOREPO_PACKAGE_NAME}\"}" "${RPC_SPLIT_PATH}" | sponge "${RPC_SPLIT_PATH}"
 RPC_NEW_OBJECT="$(jq '.packages."."' "${RPC_SPLIT_PATH}")"
 
-jq ${RPC_SORT_KEYS} --argjson newObject "${RPC_NEW_OBJECT}" ". * {\"packages\": {\"${MONOREPO_PATH_PACKAGE}\": \$newObject}}" ${RPC_MONO_PATH} | sponge ${RPC_MONO_PATH}
+jq ${INDENT_JSON} ${RPC_SORT_KEYS} --argjson newObject "${RPC_NEW_OBJECT}" ". * {\"packages\": {\"${MONOREPO_PATH_PACKAGE}\": \$newObject}}" ${RPC_MONO_PATH} | sponge ${RPC_MONO_PATH}
 $RM ${RPC_SPLIT_PATH}
 ## END release-please config migration
 
@@ -174,7 +177,7 @@ RPM_SORT_KEYS="${SORT_JSON_KEYS}"
 
 RPM_SPLIT_PATH="${PATH_PACKAGE}/.release-please-manifest.json"
 RPM_VERSION="$(jq '."."' "${RPM_SPLIT_PATH}")"
-jq ${RPM_SORT_KEYS}  ". * {\"${MONOREPO_PATH_PACKAGE}\": ${RPM_VERSION}}" ${RPM_MONO_PATH} | sponge ${RPM_MONO_PATH}
+jq ${INDENT_JSON} ${RPM_SORT_KEYS} ${INDENT_JSON} ". * {\"${MONOREPO_PATH_PACKAGE}\": ${RPM_VERSION}}" ${RPM_MONO_PATH} | sponge ${RPM_MONO_PATH}
 $RM ${RPM_SPLIT_PATH}
 ## END release-please manifest migration
 
@@ -189,8 +192,8 @@ LRT_VERSION="${RPM_VERSION//\"/}"
 # any of the gapic_version.py files will do: they all match
 LRT_VERSION_FILE="$(find ${MONOREPO_PATH_PACKAGE} -name "gapic_version.py" | head -n 1)"
 LRT_SHA=$(git log --format=oneline ${LRT_VERSION_FILE} | grep release | head -n 1 | awk '{ print $1 }')
-$GIT tag ${MONOREPO_PACKAGE_NAME}-v${LRT_VERSION} ${LRT_SHA}
-$GIT push --tags
+# $GIT tag ${MONOREPO_PACKAGE_NAME}-v${LRT_VERSION} ${LRT_SHA}
+# $GIT push --tags
 ## END migrate release tags
 
 
@@ -206,9 +209,9 @@ RMJ_SPLIT_PATH="${PATH_PACKAGE}/.repo-metadata.json"
 cp ${RMJ_SPLIT_PATH} ${RMJ_MONO_PATH}
 }
 
-jq '.repo = "googleapis/google-cloud-python"' ${RMJ_MONO_PATH} | sponge ${RMJ_MONO_PATH}
+jq ${INDENT_JSON} '.repo = "googleapis/google-cloud-python"' ${RMJ_MONO_PATH} | sponge ${RMJ_MONO_PATH}
 jq -r ".issue_tracker" "${RMJ_MONO_PATH}" | grep -q "github.com"  && {
-  jq '.issue_tracker = "https://github.com/googleapis/google-cloud-python/issues"' ${RMJ_MONO_PATH} | sponge ${RMJ_MONO_PATH}
+  jq ${INDENT_JSON} '.issue_tracker = "https://github.com/googleapis/google-cloud-python/issues"' ${RMJ_MONO_PATH} | sponge ${RMJ_MONO_PATH}
 } || { $NOP ; }
 ## END .repo-metadata.json migration
 
