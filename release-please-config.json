@@ -160,9 +160,19 @@
         "packages/google-cloud-domains": {
             "component": "google-cloud-domains",
             "extra-files": [
+                "google/cloud/domains_v1beta1/gapic_version.py",
                 "google/cloud/domains/gapic_version.py",
                 "google/cloud/domains_v1/gapic_version.py",
-                "google/cloud/domains_v1beta1/gapic_version.py"
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.domains.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.domains.v1beta1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
