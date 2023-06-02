@@ -75,8 +75,13 @@
         "packages/google-cloud-apigee-connect": {
             "component": "google-cloud-apigee-connect",
             "extra-files": [
+                "google/cloud/apigeeconnect_v1/gapic_version.py",
                 "google/cloud/apigeeconnect/gapic_version.py",
-                "google/cloud/apigeeconnect_v1/gapic_version.py"
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.apigeeconnect.v1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
