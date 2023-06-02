@@ -177,7 +177,7 @@ RPM_SORT_KEYS="${SORT_JSON_KEYS}"
 
 RPM_SPLIT_PATH="${PATH_PACKAGE}/.release-please-manifest.json"
 RPM_VERSION="$(jq '."."' "${RPM_SPLIT_PATH}")"
-jq ${INDENT_JSON} ${RPM_SORT_KEYS} ${INDENT_JSON} ". * {\"${MONOREPO_PATH_PACKAGE}\": ${RPM_VERSION}}" ${RPM_MONO_PATH} | sponge ${RPM_MONO_PATH}
+jq ${INDENT_JSON} ${RPM_SORT_KEYS}  ". * {\"${MONOREPO_PATH_PACKAGE}\": ${RPM_VERSION}}" ${RPM_MONO_PATH} | sponge ${RPM_MONO_PATH}
 $RM ${RPM_SPLIT_PATH}
 ## END release-please manifest migration
 
