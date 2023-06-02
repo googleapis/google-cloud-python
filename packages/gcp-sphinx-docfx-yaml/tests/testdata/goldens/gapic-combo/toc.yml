@@ -122,7 +122,12 @@
         uid: google.cloud.pubsub_v1.types.EnumValueOptions
       - name: ExpirationPolicy
         uid: google.cloud.pubsub_v1.types.ExpirationPolicy
-      - name: ExtensionRangeOptions
+      - items:
+        - name: Overview
+          uid: google.cloud.pubsub_v1.types.ExtensionRangeOptions
+        - name: Declaration
+          uid: google.cloud.pubsub_v1.types.ExtensionRangeOptions.Declaration
+        name: ExtensionRangeOptions
         uid: google.cloud.pubsub_v1.types.ExtensionRangeOptions
       - name: FieldDescriptorProto
         uid: google.cloud.pubsub_v1.types.FieldDescriptorProto

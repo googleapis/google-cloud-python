@@ -384,15 +384,15 @@ def move_markdown_pages(
             key=lambda entry: entry['href'],
         )
 
-        if index_page_entry is None:
-            return
 
-        # Place the Overview page at the top of the list.
-        app.env.markdown_pages['/'].insert(
-            0,
-            index_page_entry,
-        )
+    if index_page_entry is None:
+        return
 
+    # Place the Overview page at the top of the list.
+    app.env.markdown_pages['/'].insert(
+        0,
+        index_page_entry,
+    )
 
 def remove_unused_pages(
     added_pages: MutableSet[str],

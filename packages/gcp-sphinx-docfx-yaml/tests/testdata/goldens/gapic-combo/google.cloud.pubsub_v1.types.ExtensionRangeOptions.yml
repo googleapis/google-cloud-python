@@ -1,7 +1,8 @@
 ### YamlMime:UniversalReference
 api_name: []
 items:
-- children: []
+- children:
+  - google.cloud.pubsub_v1.types.ExtensionRangeOptions.Declaration
   class: google.cloud.pubsub_v1.types.ExtensionRangeOptions
   fullName: google.cloud.pubsub_v1.types.ExtensionRangeOptions
   langs:
@@ -16,4 +17,9 @@ items:
   syntax: {}
   type: class
   uid: google.cloud.pubsub_v1.types.ExtensionRangeOptions
-references: []
+references:
+- fullName: google.cloud.pubsub_v1.types.ExtensionRangeOptions.Declaration
+  isExternal: false
+  name: Declaration
+  parent: google.cloud.pubsub_v1.types.ExtensionRangeOptions
+  uid: google.cloud.pubsub_v1.types.ExtensionRangeOptions.Declaration
