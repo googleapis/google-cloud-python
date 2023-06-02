@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.4](https://github.com/googleapis/sphinx-docfx-yaml/compare/v2.0.3...v2.0.4) (2023-06-02)
+
+
+### Bug Fixes
+
+* Allow top level page to only have index page ([#301](https://github.com/googleapis/sphinx-docfx-yaml/issues/301)) ([85c049a](https://github.com/googleapis/sphinx-docfx-yaml/commit/85c049a55f29ca78a1263e3f9ec4a3f5e4d5cad0))
+
 ## [2.0.3](https://github.com/googleapis/sphinx-docfx-yaml/compare/v2.0.2...v2.0.3) (2023-03-22)
 
 
