@@ -115,6 +115,7 @@ docker run --user $(id -u):$(id -g) --rm --mount type=bind,source=${PATH_MONOREP
 echo "Committing changes locally"
 ${GIT} add .
 ${GIT} commit -am "$(echo -e "migration: post-process\n\nThis includes post processing for:\n$@")"
+${GIT} push -u origin "${BRANCH}" --force
 gh pr create --title "chore(migration): Update common files for batch migration" --body "This updates the common files for the migration batch that contains $@"
 ${GIT} checkout main # to restore to a known state and allow reruns
 ## END commit changes
