@@ -55,6 +55,10 @@ fi
   return -10
 }
 
+# to allow echoing commands for debugging, precede the following with something
+# like "echo"
+GIT="git"
+
 # We require executing the script so that an early exit (explicitly or via -e)
 # does not kill the user's shell.
                                      
@@ -69,7 +73,7 @@ then
   exit 1
 fi
 
-PATH_MONOREPO="$(dirname $(realpath "$1"))"
+PATH_MONOREPO="$(realpath "$1")"
 cat <<EOF
 Post-processing multiple pacakges
   PATH_MONOREPO:         ${PATH_MONOREPO}
@@ -91,7 +95,7 @@ do
   cat <<EOF
   MONOREPO_PACKAGE_NAME: ${MONOREPO_PACKAGE_NAME}
 EOF
-  ./single-library.post-process.common-files.sh "${MONOREPO_PATH_PACKAGE}"
+  ./scripts/split_repo_migration/single-library.post-process.common-files.sh "${MONOREPO_PATH_PACKAGE}"
 
   # we need the following directory present so OwlBot will include it in its
   # processing below.

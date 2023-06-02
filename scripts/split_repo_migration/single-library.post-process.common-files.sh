@@ -187,7 +187,7 @@ $RM ${RPM_SPLIT_PATH}
 # variable prefix: LRT_*
 echo "Replicating latest release tag"
 
-LRT_VERSION="${RPM_VERSION}"
+LRT_VERSION="${RPM_VERSION//\"/}"
 
 # any of the gapic_version.py files will do: they all match
 LRT_VERSION_FILE="$(find ${MONOREPO_PATH_PACKAGE} -name "gapic_version.py" | head -n 1)"

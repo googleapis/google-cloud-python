@@ -1,0 +1,17 @@
+{
+    "name": "domains",
+    "name_pretty": "Cloud Domains",
+    "product_documentation": "https://cloud.google.com/domains",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/domains/latest",
+    "issue_tracker": "",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-domains",
+    "distribution_name": "google-cloud-domains",
+    "api_id": "domains.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "domains",
+    "api_description": "allows you to register and manage domains by using Cloud Domains."
+}
