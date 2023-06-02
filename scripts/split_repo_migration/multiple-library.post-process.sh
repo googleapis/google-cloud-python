@@ -118,6 +118,3 @@ ${GIT} commit -am "$(echo -e "migration: post-process\n\nThis includes post proc
 popd >& /dev/null # "${PATH_MONOREPO}"
 
 [[ -z ${MESSAGE} ]] && echo "Done." || echo -e "Done, with a message:\n\n${MESSAGE}\n"
-
-
-
