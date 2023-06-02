@@ -30,7 +30,12 @@
             "component": "google-area120-tables",
             "extra-files": [
                 "google/area120/tables/gapic_version.py",
-                "google/area120/tables_v1alpha1/gapic_version.py"
+                "google/area120/tables_v1alpha1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.area120.tables.v1alpha1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
@@ -75,8 +80,13 @@
         "packages/google-cloud-apigee-connect": {
             "component": "google-cloud-apigee-connect",
             "extra-files": [
+                "google/cloud/apigeeconnect_v1/gapic_version.py",
                 "google/cloud/apigeeconnect/gapic_version.py",
-                "google/cloud/apigeeconnect_v1/gapic_version.py"
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.apigeeconnect.v1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },

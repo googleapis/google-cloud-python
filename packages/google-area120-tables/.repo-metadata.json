@@ -7,7 +7,7 @@
     "release_level": "preview",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-area120-tables",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-area120-tables",
     "api_id": "area120tables.googleapis.com",
     "default_version": "v1alpha1",
