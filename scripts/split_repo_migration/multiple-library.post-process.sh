@@ -82,6 +82,8 @@ shift
 
 pushd "${PATH_MONOREPO}" >& /dev/null
 
+BRANCH="migration-batch-${USER}-$$"
+${GIT} checkout -b "${BRANCH}"
 
 # variable naming convention
 #   PATH_* are absolute system paths
@@ -109,10 +111,8 @@ docker pull gcr.io/cloud-devrel-public-resources/owlbot-python-mono-repo:latest
 docker run --user $(id -u):$(id -g) --rm --mount type=bind,source=${PATH_MONOREPO},destination=/repo -w /repo gcr.io/cloud-devrel-public-resources/owlbot-python-mono-repo:latest
 ## END invoke OwlBot post-processor
 
-BRANCH="migration-batch-${USER}-$$"
 ## START commit changes #############################################
 echo "Committing changes locally"
-${GIT} checkout -b "${BRANCH}"
 ${GIT} add .
 ${GIT} commit -am "$(echo -e "migration: post-process\n\nThis includes post processing for:\n$@")"
 gh pr create --title "chore(migration): Update common files for batch migration" --body "This updates the common files for the migration batch that contains $@"
