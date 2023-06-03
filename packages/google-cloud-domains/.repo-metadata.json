@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-domains",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-domains",
     "api_id": "domains.googleapis.com",
     "default_version": "v1",
