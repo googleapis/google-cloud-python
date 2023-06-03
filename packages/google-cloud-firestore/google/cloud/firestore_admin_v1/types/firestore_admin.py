@@ -29,6 +29,8 @@ __protobuf__ = proto.module(
     package="google.firestore.admin.v1",
     manifest={
         "ListDatabasesRequest",
+        "CreateDatabaseRequest",
+        "CreateDatabaseMetadata",
         "ListDatabasesResponse",
         "GetDatabaseRequest",
         "UpdateDatabaseRequest",
@@ -62,6 +64,42 @@ class ListDatabasesRequest(proto.Message):
         proto.STRING,
         number=1,
     )
+
+
+class CreateDatabaseRequest(proto.Message):
+    r"""The request for
+    [FirestoreAdmin.CreateDatabase][google.firestore.admin.v1.FirestoreAdmin.CreateDatabase].
+
+    Attributes:
+        parent (str):
+            Required. A parent name of the form
+            ``projects/{project_id}``
+        database (google.cloud.firestore_admin_v1.types.Database):
+            Required. The Database to create.
+        database_id (str):
+            Required. The ID to use for the database,
+            which will become the final component of the
+            database's resource name.
+            The value must be set to "(default)".
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    database: gfa_database.Database = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gfa_database.Database,
+    )
+    database_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class CreateDatabaseMetadata(proto.Message):
+    r"""Metadata related to the create database operation."""
 
 
 class ListDatabasesResponse(proto.Message):

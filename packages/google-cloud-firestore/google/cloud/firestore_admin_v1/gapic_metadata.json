@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "FirestoreAdminClient",
           "rpcs": {
+            "CreateDatabase": {
+              "methods": [
+                "create_database"
+              ]
+            },
             "CreateIndex": {
               "methods": [
                 "create_index"
@@ -75,6 +80,11 @@
         "grpc-async": {
           "libraryClient": "FirestoreAdminAsyncClient",
           "rpcs": {
+            "CreateDatabase": {
+              "methods": [
+                "create_database"
+              ]
+            },
             "CreateIndex": {
               "methods": [
                 "create_index"
@@ -140,6 +150,11 @@
         "rest": {
           "libraryClient": "FirestoreAdminClient",
           "rpcs": {
+            "CreateDatabase": {
+              "methods": [
+                "create_database"
+              ]
+            },
             "CreateIndex": {
               "methods": [
                 "create_index"

@@ -20,6 +20,8 @@ from .field import (
     Field,
 )
 from .firestore_admin import (
+    CreateDatabaseMetadata,
+    CreateDatabaseRequest,
     CreateIndexRequest,
     DeleteIndexRequest,
     ExportDocumentsRequest,
@@ -56,6 +58,8 @@ from .operation import (
 __all__ = (
     "Database",
     "Field",
+    "CreateDatabaseMetadata",
+    "CreateDatabaseRequest",
     "CreateIndexRequest",
     "DeleteIndexRequest",
     "ExportDocumentsRequest",

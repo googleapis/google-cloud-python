@@ -234,6 +234,11 @@ class FirestoreAdminTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.create_database: gapic_v1.method.wrap_method(
+                self.create_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_database: gapic_v1.method.wrap_method(
                 self.get_database,
                 default_timeout=None,
@@ -346,6 +351,15 @@ class FirestoreAdminTransport(abc.ABC):
         self,
     ) -> Callable[
         [firestore_admin.ImportDocumentsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_database(
+        self,
+    ) -> Callable[
+        [firestore_admin.CreateDatabaseRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

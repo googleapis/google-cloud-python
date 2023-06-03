@@ -45,6 +45,7 @@ def partition(
 class firestore_adminCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'create_database': ('parent', 'database', 'database_id', ),
         'create_index': ('parent', 'index', ),
         'delete_index': ('name', ),
         'export_documents': ('name', 'collection_ids', 'output_uri_prefix', ),
