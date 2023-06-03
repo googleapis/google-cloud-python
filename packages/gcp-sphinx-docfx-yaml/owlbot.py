@@ -53,3 +53,9 @@ s.move(
     ],
 )
 
+# Diable the dependency resolver.
+s.replace(
+    ".kokoro/release.sh",
+    "python3 -m pip install --require-hashes",
+    "python3 -m pip install --no-deps --require-hashes",
+)
