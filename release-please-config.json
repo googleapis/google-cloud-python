@@ -30,12 +30,7 @@
             "component": "google-area120-tables",
             "extra-files": [
                 "google/area120/tables/gapic_version.py",
-                "google/area120/tables_v1alpha1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.area120.tables.v1alpha1.json",
-                    "type": "json"
-                }
+                "google/area120/tables_v1alpha1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -61,12 +56,12 @@
                 "google/cloud/alloydb_v1beta/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1beta.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1alpha.json",
                     "type": "json"
                 },
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1alpha.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1beta.json",
                     "type": "json"
                 },
                 {
@@ -80,13 +75,8 @@
         "packages/google-cloud-apigee-connect": {
             "component": "google-cloud-apigee-connect",
             "extra-files": [
-                "google/cloud/apigeeconnect_v1/gapic_version.py",
                 "google/cloud/apigeeconnect/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.apigeeconnect.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/apigeeconnect_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -156,12 +146,12 @@
                 "google/cloud/discoveryengine_v1beta/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.discoveryengine.v1beta.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.discoveryengine.v1.json",
                     "type": "json"
                 },
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.discoveryengine.v1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.discoveryengine.v1beta.json",
                     "type": "json"
                 }
             ],
@@ -170,19 +160,9 @@
         "packages/google-cloud-domains": {
             "component": "google-cloud-domains",
             "extra-files": [
-                "google/cloud/domains_v1beta1/gapic_version.py",
                 "google/cloud/domains/gapic_version.py",
                 "google/cloud/domains_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.domains.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.domains.v1beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/domains_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -203,12 +183,7 @@
             "component": "google-cloud-iap",
             "extra-files": [
                 "google/cloud/iap/gapic_version.py",
-                "google/cloud/iap_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.iap.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/iap_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -280,12 +255,12 @@
                 "google/cloud/workstations_v1beta/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.workstations.v1beta.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.workstations.v1.json",
                     "type": "json"
                 },
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.workstations.v1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.workstations.v1beta.json",
                     "type": "json"
                 }
             ],
@@ -315,10 +290,16 @@
             "component": "google-maps-mapsplatformdatasets",
             "extra-files": [
                 "google/maps/mapsplatformdatasets/gapic_version.py",
+                "google/maps/mapsplatformdatasets_v1/gapic_version.py",
                 "google/maps/mapsplatformdatasets_v1alpha/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.maps.mapsplatformdatasets.v1alpha.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.maps.mapsplatformdatasets.v1.json",
                     "type": "json"
                 }
             ],
