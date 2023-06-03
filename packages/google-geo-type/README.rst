@@ -15,7 +15,7 @@ Python Client for Geo Type Protos
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-geo-type.svg
    :target: https://pypi.org/project/google-geo-type/
 .. _Geo Type Protos: https://mapsplatform.google.com/maps-products
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/type/latest
+.. _Client Library Documentation: https://googleapis.dev/python/geotype/latest
 .. _Product Documentation:  https://mapsplatform.google.com/maps-products
 
 Quick Start
