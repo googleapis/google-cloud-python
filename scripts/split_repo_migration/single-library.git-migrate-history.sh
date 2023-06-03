@@ -77,13 +77,6 @@ pushd source-repo
 DISTRIBUTION_NAME=$(jq -r '.distribution_name' .repo-metadata.json) # -r removes quotes around the name.
 TARGET_PATH="packages/${DISTRIBUTION_NAME}"
 
-# TODO: Remove this safeguard once https://github.com/googleapis/google-cloud-python/issues/11137 is fixed.
-[[ -d  "${DISTRIBUTION_NAME//-//}" ]] || { \
-  echo "*** ERROR: Can't migrate ${DISTRIBUTION_NAME}"
-  echo "    see https://github.com/googleapis/google-cloud-python/issues/11137"
-  $EXIT -20
-}
-
 git remote remove origin
 
 # prune only files within the specified directory
@@ -173,7 +166,7 @@ git push -u origin "${BRANCH}" --force
 # create pull request
 if which gh > /dev/null
 then
-  gh pr create --title "chore(migration): Migrate code from ${SOURCE_REPO} into ${TARGET_PATH}" --body "See #${ISSUE_NUMBER}. $(echo '\n\nThis PR should be merged with a merge-commit, not a squash-commit, in order to preserve the git history.')"
+  gh pr create --title "chore(migration): Migrate code from ${SOURCE_REPO} into ${TARGET_PATH}" --body "$(echo "See #${ISSUE_NUMBER}. \n\nThis PR should be merged with a merge-commit, not a squash-commit, in order to preserve the git history.")"
 else
   hub pull-request -m "migrate code from ${SOURCE_REPO}"
 fi

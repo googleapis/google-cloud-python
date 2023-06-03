@@ -26,6 +26,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-area120-tables": {
+            "component": "google-area120-tables",
+            "extra-files": [
+                "google/area120/tables/gapic_version.py",
+                "google/area120/tables_v1alpha1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.area120.tables.v1alpha1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-advisorynotifications": {
             "component": "google-cloud-advisorynotifications",
             "extra-files": [
@@ -59,6 +72,19 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-apigee-connect": {
+            "component": "google-cloud-apigee-connect",
+            "extra-files": [
+                "google/cloud/apigeeconnect_v1/gapic_version.py",
+                "google/cloud/apigeeconnect/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.apigeeconnect.v1.json",
                     "type": "json"
                 }
             ],
@@ -141,6 +167,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-domains": {
+            "component": "google-cloud-domains",
+            "extra-files": [
+                "google/cloud/domains_v1beta1/gapic_version.py",
+                "google/cloud/domains/gapic_version.py",
+                "google/cloud/domains_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.domains.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.domains.v1beta1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-enterpriseknowledgegraph": {
             "component": "google-cloud-enterpriseknowledgegraph",
             "extra-files": [
@@ -154,11 +199,37 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-iap": {
+            "component": "google-cloud-iap",
+            "extra-files": [
+                "google/cloud/iap/gapic_version.py",
+                "google/cloud/iap_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.iap.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-ids": {
             "component": "google-cloud-ids",
             "extra-files": [
                 "google/cloud/ids/gapic_version.py",
                 "google/cloud/ids_v1/gapic_version.py"
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-rapidmigrationassessment": {
+            "component": "google-cloud-rapidmigrationassessment",
+            "extra-files": [
+                "google/cloud/rapidmigrationassessment/gapic_version.py",
+                "google/cloud/rapidmigrationassessment_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.rapidmigrationassessment.v1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
