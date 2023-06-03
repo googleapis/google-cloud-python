@@ -13,4 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-__version__ = "0.1.0"  # {x-release-please-version}
+import proto  # type: ignore
+
+__protobuf__ = proto.module(
+    package="google.maps.mapsplatformdatasets.v1",
+    manifest={},
+)
+
+
+__all__ = tuple(sorted(__protobuf__.manifest))
