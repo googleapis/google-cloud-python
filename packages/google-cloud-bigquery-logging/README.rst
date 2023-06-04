@@ -1,9 +1,9 @@
-Python Client for BigQuery Logging Protos API
-=============================================
+Python Client for BigQuery Logging Protos
+=========================================
 
 |stable| |pypi| |versions|
 
-`BigQuery Logging Protos API`_: 
+`BigQuery Logging Protos`_: 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for BigQuery Logging Protos API
    :target: https://pypi.org/project/google-cloud-bigquery-logging/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-logging.svg
    :target: https://pypi.org/project/google-cloud-bigquery-logging/
-.. _BigQuery Logging Protos API: https://cloud.google.com/bigquery/docs/reference/auditlogs
+.. _BigQuery Logging Protos: https://cloud.google.com/bigquery/docs/reference/auditlogs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigquerylogging/latest
 .. _Product Documentation:  https://cloud.google.com/bigquery/docs/reference/auditlogs
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the BigQuery Logging Protos API.`_
+3. `Enable the BigQuery Logging Protos.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the BigQuery Logging Protos API.:  https://cloud.google.com/bigquery/docs/reference/auditlogs
+.. _Enable the BigQuery Logging Protos.:  https://cloud.google.com/bigquery/docs/reference/auditlogs
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for BigQuery Logging Protos API
+-  Read the `Client Library Documentation`_ for BigQuery Logging Protos
    to see other available methods on the client.
--  Read the `BigQuery Logging Protos API Product documentation`_ to learn
+-  Read the `BigQuery Logging Protos Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _BigQuery Logging Protos API Product documentation:  https://cloud.google.com/bigquery/docs/reference/auditlogs
+.. _BigQuery Logging Protos Product documentation:  https://cloud.google.com/bigquery/docs/reference/auditlogs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
