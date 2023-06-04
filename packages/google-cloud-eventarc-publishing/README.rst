@@ -1,9 +1,9 @@
-Python Client for Eventarc Publishing API
-=========================================
+Python Client for Eventarc Publishing
+=====================================
 
 |preview| |pypi| |versions|
 
-`Eventarc Publishing API`_: lets you asynchronously deliver events from Google services, SaaS, and your own apps using loosely coupled services that react to state changes.
+`Eventarc Publishing`_: lets you asynchronously deliver events from Google services, SaaS, and your own apps using loosely coupled services that react to state changes.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Eventarc Publishing API
    :target: https://pypi.org/project/google-cloud-eventarc-publishing/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-eventarc-publishing.svg
    :target: https://pypi.org/project/google-cloud-eventarc-publishing/
-.. _Eventarc Publishing API: https://cloud.google.com/eventarc/docs
+.. _Eventarc Publishing: https://cloud.google.com/eventarc/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/eventarcpublishing/latest
 .. _Product Documentation:  https://cloud.google.com/eventarc/docs
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Eventarc Publishing API.`_
+3. `Enable the Eventarc Publishing.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Eventarc Publishing API.:  https://cloud.google.com/eventarc/docs
+.. _Enable the Eventarc Publishing.:  https://cloud.google.com/eventarc/docs
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Eventarc Publishing API
+-  Read the `Client Library Documentation`_ for Eventarc Publishing
    to see other available methods on the client.
--  Read the `Eventarc Publishing API Product documentation`_ to learn
+-  Read the `Eventarc Publishing Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Eventarc Publishing API Product documentation:  https://cloud.google.com/eventarc/docs
+.. _Eventarc Publishing Product documentation:  https://cloud.google.com/eventarc/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
