@@ -1,0 +1,298 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.eventarc_v1",
+  "protoPackage": "google.cloud.eventarc.v1",
+  "schema": "1.0",
+  "services": {
+    "Eventarc": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "EventarcClient",
+          "rpcs": {
+            "CreateChannel": {
+              "methods": [
+                "create_channel"
+              ]
+            },
+            "CreateChannelConnection": {
+              "methods": [
+                "create_channel_connection"
+              ]
+            },
+            "CreateTrigger": {
+              "methods": [
+                "create_trigger"
+              ]
+            },
+            "DeleteChannel": {
+              "methods": [
+                "delete_channel"
+              ]
+            },
+            "DeleteChannelConnection": {
+              "methods": [
+                "delete_channel_connection"
+              ]
+            },
+            "DeleteTrigger": {
+              "methods": [
+                "delete_trigger"
+              ]
+            },
+            "GetChannel": {
+              "methods": [
+                "get_channel"
+              ]
+            },
+            "GetChannelConnection": {
+              "methods": [
+                "get_channel_connection"
+              ]
+            },
+            "GetGoogleChannelConfig": {
+              "methods": [
+                "get_google_channel_config"
+              ]
+            },
+            "GetProvider": {
+              "methods": [
+                "get_provider"
+              ]
+            },
+            "GetTrigger": {
+              "methods": [
+                "get_trigger"
+              ]
+            },
+            "ListChannelConnections": {
+              "methods": [
+                "list_channel_connections"
+              ]
+            },
+            "ListChannels": {
+              "methods": [
+                "list_channels"
+              ]
+            },
+            "ListProviders": {
+              "methods": [
+                "list_providers"
+              ]
+            },
+            "ListTriggers": {
+              "methods": [
+                "list_triggers"
+              ]
+            },
+            "UpdateChannel": {
+              "methods": [
+                "update_channel"
+              ]
+            },
+            "UpdateGoogleChannelConfig": {
+              "methods": [
+                "update_google_channel_config"
+              ]
+            },
+            "UpdateTrigger": {
+              "methods": [
+                "update_trigger"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "EventarcAsyncClient",
+          "rpcs": {
+            "CreateChannel": {
+              "methods": [
+                "create_channel"
+              ]
+            },
+            "CreateChannelConnection": {
+              "methods": [
+                "create_channel_connection"
+              ]
+            },
+            "CreateTrigger": {
+              "methods": [
+                "create_trigger"
+              ]
+            },
+            "DeleteChannel": {
+              "methods": [
+                "delete_channel"
+              ]
+            },
+            "DeleteChannelConnection": {
+              "methods": [
+                "delete_channel_connection"
+              ]
+            },
+            "DeleteTrigger": {
+              "methods": [
+                "delete_trigger"
+              ]
+            },
+            "GetChannel": {
+              "methods": [
+                "get_channel"
+              ]
+            },
+            "GetChannelConnection": {
+              "methods": [
+                "get_channel_connection"
+              ]
+            },
+            "GetGoogleChannelConfig": {
+              "methods": [
+                "get_google_channel_config"
+              ]
+            },
+            "GetProvider": {
+              "methods": [
+                "get_provider"
+              ]
+            },
+            "GetTrigger": {
+              "methods": [
+                "get_trigger"
+              ]
+            },
+            "ListChannelConnections": {
+              "methods": [
+                "list_channel_connections"
+              ]
+            },
+            "ListChannels": {
+              "methods": [
+                "list_channels"
+              ]
+            },
+            "ListProviders": {
+              "methods": [
+                "list_providers"
+              ]
+            },
+            "ListTriggers": {
+              "methods": [
+                "list_triggers"
+              ]
+            },
+            "UpdateChannel": {
+              "methods": [
+                "update_channel"
+              ]
+            },
+            "UpdateGoogleChannelConfig": {
+              "methods": [
+                "update_google_channel_config"
+              ]
+            },
+            "UpdateTrigger": {
+              "methods": [
+                "update_trigger"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "EventarcClient",
+          "rpcs": {
+            "CreateChannel": {
+              "methods": [
+                "create_channel"
+              ]
+            },
+            "CreateChannelConnection": {
+              "methods": [
+                "create_channel_connection"
+              ]
+            },
+            "CreateTrigger": {
+              "methods": [
+                "create_trigger"
+              ]
+            },
+            "DeleteChannel": {
+              "methods": [
+                "delete_channel"
+              ]
+            },
+            "DeleteChannelConnection": {
+              "methods": [
+                "delete_channel_connection"
+              ]
+            },
+            "DeleteTrigger": {
+              "methods": [
+                "delete_trigger"
+              ]
+            },
+            "GetChannel": {
+              "methods": [
+                "get_channel"
+              ]
+            },
+            "GetChannelConnection": {
+              "methods": [
+                "get_channel_connection"
+              ]
+            },
+            "GetGoogleChannelConfig": {
+              "methods": [
+                "get_google_channel_config"
+              ]
+            },
+            "GetProvider": {
+              "methods": [
+                "get_provider"
+              ]
+            },
+            "GetTrigger": {
+              "methods": [
+                "get_trigger"
+              ]
+            },
+            "ListChannelConnections": {
+              "methods": [
+                "list_channel_connections"
+              ]
+            },
+            "ListChannels": {
+              "methods": [
+                "list_channels"
+              ]
+            },
+            "ListProviders": {
+              "methods": [
+                "list_providers"
+              ]
+            },
+            "ListTriggers": {
+              "methods": [
+                "list_triggers"
+              ]
+            },
+            "UpdateChannel": {
+              "methods": [
+                "update_channel"
+              ]
+            },
+            "UpdateGoogleChannelConfig": {
+              "methods": [
+                "update_google_channel_config"
+              ]
+            },
+            "UpdateTrigger": {
+              "methods": [
+                "update_trigger"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
