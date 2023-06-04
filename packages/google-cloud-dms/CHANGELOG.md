@@ -1,0 +1,218 @@
+# Changelog
+
+## [1.7.0](https://github.com/googleapis/python-dms/compare/v1.6.2...v1.7.0) (2023-05-25)
+
+
+### Features
+
+* Add Oracle to PostgreSQL migration APIs ([#176](https://github.com/googleapis/python-dms/issues/176)) ([bf5348b](https://github.com/googleapis/python-dms/commit/bf5348be1fabd967f2a0df3719c4046378ebf4c4))
+
+## [1.6.2](https://github.com/googleapis/python-dms/compare/v1.6.1...v1.6.2) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#174](https://github.com/googleapis/python-dms/issues/174)) ([3a87dd9](https://github.com/googleapis/python-dms/commit/3a87dd9474e017b133a2b5e03a420fcc2c9ea59b))
+
+## [1.6.1](https://github.com/googleapis/python-dms/compare/v1.6.0...v1.6.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([c92d273](https://github.com/googleapis/python-dms/commit/c92d273be32a4d83899c3c29d1998df4e99e484f))
+
+
+### Documentation
+
+* Add documentation for enums ([c92d273](https://github.com/googleapis/python-dms/commit/c92d273be32a4d83899c3c29d1998df4e99e484f))
+
+## [1.6.0](https://github.com/googleapis/python-dms/compare/v1.5.0...v1.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#163](https://github.com/googleapis/python-dms/issues/163)) ([22e13a3](https://github.com/googleapis/python-dms/commit/22e13a313170ad55f5022f60dcfc431145ee1127))
+
+## [1.5.0](https://github.com/googleapis/python-dms/compare/v1.4.3...v1.5.0) (2022-12-15)
+
+
+### Features
+
+* Add support for `google.cloud.clouddms.__version__` ([a840a50](https://github.com/googleapis/python-dms/commit/a840a509d82a0d89590da824bd21334ef231df65))
+* Add typing to proto.Message based class attributes ([a840a50](https://github.com/googleapis/python-dms/commit/a840a509d82a0d89590da824bd21334ef231df65))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([a840a50](https://github.com/googleapis/python-dms/commit/a840a509d82a0d89590da824bd21334ef231df65))
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([27e01af](https://github.com/googleapis/python-dms/commit/27e01afdeeb50838f011408dcf78c8326bc807ca))
+* Drop usage of pkg_resources ([27e01af](https://github.com/googleapis/python-dms/commit/27e01afdeeb50838f011408dcf78c8326bc807ca))
+* Fix timeout default values ([27e01af](https://github.com/googleapis/python-dms/commit/27e01afdeeb50838f011408dcf78c8326bc807ca))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([a840a50](https://github.com/googleapis/python-dms/commit/a840a509d82a0d89590da824bd21334ef231df65))
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([27e01af](https://github.com/googleapis/python-dms/commit/27e01afdeeb50838f011408dcf78c8326bc807ca))
+
+## [1.4.3](https://github.com/googleapis/python-dms/compare/v1.4.2...v1.4.3) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#153](https://github.com/googleapis/python-dms/issues/153)) ([9961f78](https://github.com/googleapis/python-dms/commit/9961f7897831bba6baed49e9999b516c9dd6a87f))
+
+## [1.4.2](https://github.com/googleapis/python-dms/compare/v1.4.1...v1.4.2) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#151](https://github.com/googleapis/python-dms/issues/151)) ([8c9802e](https://github.com/googleapis/python-dms/commit/8c9802e34760ac6e9e1eb4b74fab9d95b0e6a3d5))
+
+## [1.4.1](https://github.com/googleapis/python-dms/compare/v1.4.0...v1.4.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#138](https://github.com/googleapis/python-dms/issues/138)) ([38c3499](https://github.com/googleapis/python-dms/commit/38c34995c1f34e1bf44791f462cca975fd5fddb4))
+* **deps:** require proto-plus >= 1.22.0 ([38c3499](https://github.com/googleapis/python-dms/commit/38c34995c1f34e1bf44791f462cca975fd5fddb4))
+
+## [1.4.0](https://github.com/googleapis/python-dms/compare/v1.3.2...v1.4.0) (2022-07-14)
+
+
+### Features
+
+* add audience parameter ([256aec4](https://github.com/googleapis/python-dms/commit/256aec45fe7b5e0e11e336e9560b88a85cd5c65f))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#129](https://github.com/googleapis/python-dms/issues/129)) ([256aec4](https://github.com/googleapis/python-dms/commit/256aec45fe7b5e0e11e336e9560b88a85cd5c65f))
+* require python 3.7+ ([#131](https://github.com/googleapis/python-dms/issues/131)) ([83822f1](https://github.com/googleapis/python-dms/commit/83822f13d600dc36158ef8b62217e6e3544d9b87))
+
+## [1.3.2](https://github.com/googleapis/python-dms/compare/v1.3.1...v1.3.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#120](https://github.com/googleapis/python-dms/issues/120)) ([aa852de](https://github.com/googleapis/python-dms/commit/aa852de1c441c66f8f1e169171c9d0cfaa17314a))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#119](https://github.com/googleapis/python-dms/issues/119)) ([2781a13](https://github.com/googleapis/python-dms/commit/2781a136d0eced234aecc962389f5f4bc033f2b1))
+
+## [1.3.1](https://github.com/googleapis/python-dms/compare/v1.3.0...v1.3.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#88](https://github.com/googleapis/python-dms/issues/88)) ([208f9f8](https://github.com/googleapis/python-dms/commit/208f9f8832a708ff17aef86d0ef6cc83f8a31c92))
+
+## [1.3.0](https://github.com/googleapis/python-dms/compare/v1.2.1...v1.3.0) (2022-02-26)
+
+
+### Features
+
+* add api key support ([#73](https://github.com/googleapis/python-dms/issues/73)) ([3b954e1](https://github.com/googleapis/python-dms/commit/3b954e11633af4d4542c6fa0d07ce476c7e01c82))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([64bc21f](https://github.com/googleapis/python-dms/commit/64bc21f3b660738e6f5fb4b63d994da2b6c84350))
+
+## [1.2.1](https://www.github.com/googleapis/python-dms/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([c369810](https://www.github.com/googleapis/python-dms/commit/c369810a8dd6771a065cc99ff62d550a1658a014))
+* **deps:** require google-api-core >= 1.28.0 ([c369810](https://www.github.com/googleapis/python-dms/commit/c369810a8dd6771a065cc99ff62d550a1658a014))
+
+
+### Documentation
+
+* list oneofs in docstring ([c369810](https://www.github.com/googleapis/python-dms/commit/c369810a8dd6771a065cc99ff62d550a1658a014))
+
+## [1.2.0](https://www.github.com/googleapis/python-dms/compare/v1.1.0...v1.2.0) (2021-10-18)
+
+
+### Features
+
+* add support for python 3.10 ([#53](https://www.github.com/googleapis/python-dms/issues/53)) ([112b15b](https://www.github.com/googleapis/python-dms/commit/112b15bf26dded8ceec5e4c3865ffd9e4c5cc93a))
+
+## [1.1.0](https://www.github.com/googleapis/python-dms/compare/v1.0.2...v1.1.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#50](https://www.github.com/googleapis/python-dms/issues/50)) ([01d2652](https://www.github.com/googleapis/python-dms/commit/01d2652f1a619688fe8baf7478540787cdcf7530))
+
+## [1.0.2](https://www.github.com/googleapis/python-dms/compare/v1.0.1...v1.0.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([2a7b8f2](https://www.github.com/googleapis/python-dms/commit/2a7b8f2fcc0eaf4f13a044282aeac22dc53ea918))
+
+## [1.0.1](https://www.github.com/googleapis/python-dms/compare/v1.0.0...v1.0.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([f82e865](https://www.github.com/googleapis/python-dms/commit/f82e8653bf754d4dbb5f119f23eaa97fa8faf445))
+
+## [1.0.0](https://www.github.com/googleapis/python-dms/compare/v0.2.2...v1.0.0) (2021-08-03)
+
+
+### Features
+
+* bump release level to production/stable ([#28](https://www.github.com/googleapis/python-dms/issues/28)) ([a2490a1](https://www.github.com/googleapis/python-dms/commit/a2490a18ec60a6eeb30d2e0da5a690d39256fcc3))
+
+## [0.2.2](https://www.github.com/googleapis/python-dms/compare/v0.2.1...v0.2.2) (2021-07-29)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#24](https://www.github.com/googleapis/python-dms/issues/24)) ([26b493b](https://www.github.com/googleapis/python-dms/commit/26b493b90991df0d17773c6ceb3aa0d6a14a6c52))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#20](https://www.github.com/googleapis/python-dms/issues/20)) ([21247a3](https://www.github.com/googleapis/python-dms/commit/21247a331aa1b6ddecdeb13efe4705e0b60ba69d))
+
+
+### Miscellaneous Chores
+
+* release as 0.2.2 ([#25](https://www.github.com/googleapis/python-dms/issues/25)) ([787b401](https://www.github.com/googleapis/python-dms/commit/787b401c50047303c1beabb046e9117497824a1d))
+
+## [0.2.1](https://www.github.com/googleapis/python-dms/compare/v0.2.0...v0.2.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#19](https://www.github.com/googleapis/python-dms/issues/19)) ([98cf0fe](https://www.github.com/googleapis/python-dms/commit/98cf0fed4dc550df01420d10499eff073de3631a))
+
+## [0.2.0](https://www.github.com/googleapis/python-dms/compare/v0.1.0...v0.2.0) (2021-07-14)
+
+
+### Features
+
+* add always_use_jwt_access ([#11](https://www.github.com/googleapis/python-dms/issues/11)) ([9890aff](https://www.github.com/googleapis/python-dms/commit/9890aff9f9eea86bca8222335da86477874df630))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#15](https://www.github.com/googleapis/python-dms/issues/15)) ([5c8155e](https://www.github.com/googleapis/python-dms/commit/5c8155ed1b4c490a87ba4d2de25377aa3a55aff1))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-dms/issues/1127)) ([#6](https://www.github.com/googleapis/python-dms/issues/6)) ([37e10ea](https://www.github.com/googleapis/python-dms/commit/37e10ea0acbdc4d595461acd2f82e5d30856b70f)), closes [#1126](https://www.github.com/googleapis/python-dms/issues/1126)
+
+## 0.1.0 (2021-06-13)
+
+
+### Features
+
+* generate v1 ([33856df](https://www.github.com/googleapis/python-dms/commit/33856dfaa1a52aa776b73f6d014bafefb1ef1c57))
