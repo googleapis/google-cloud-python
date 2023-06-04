@@ -1,9 +1,9 @@
-Python Client for AI Platform Notebooks API
-===========================================
+Python Client for AI Platform Notebooks
+=======================================
 
 |stable| |pypi| |versions|
 
-`AI Platform Notebooks API`_: is a managed service that offers an integrated and secure JupyterLab environment for data scientists and machine learning developers to experiment, develop, and deploy models into production. Users can create instances running JupyterLab that come pre-installed with the latest data science and machine learning frameworks in a single click.
+`AI Platform Notebooks`_: is a managed service that offers an integrated and secure JupyterLab environment for data scientists and machine learning developers to experiment, develop, and deploy models into production. Users can create instances running JupyterLab that come pre-installed with the latest data science and machine learning frameworks in a single click.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for AI Platform Notebooks API
    :target: https://pypi.org/project/google-cloud-notebooks/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-notebooks.svg
    :target: https://pypi.org/project/google-cloud-notebooks/
-.. _AI Platform Notebooks API: https://cloud.google.com/ai-platform/notebooks/
+.. _AI Platform Notebooks: https://cloud.google.com/ai-platform/notebooks/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/notebooks/latest
 .. _Product Documentation:  https://cloud.google.com/ai-platform/notebooks/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the AI Platform Notebooks API.`_
+3. `Enable the AI Platform Notebooks.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the AI Platform Notebooks API.:  https://cloud.google.com/ai-platform/notebooks/
+.. _Enable the AI Platform Notebooks.:  https://cloud.google.com/ai-platform/notebooks/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for AI Platform Notebooks API
+-  Read the `Client Library Documentation`_ for AI Platform Notebooks
    to see other available methods on the client.
--  Read the `AI Platform Notebooks API Product documentation`_ to learn
+-  Read the `AI Platform Notebooks Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _AI Platform Notebooks API Product documentation:  https://cloud.google.com/ai-platform/notebooks/
+.. _AI Platform Notebooks Product documentation:  https://cloud.google.com/ai-platform/notebooks/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
