@@ -1,0 +1,17 @@
+{
+    "name": "eventarcpublishing",
+    "name_pretty": "Eventarc Publishing",
+    "product_documentation": "https://cloud.google.com/eventarc/docs",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/eventarcpublishing/latest",
+    "issue_tracker": "",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-eventarc-publishing",
+    "distribution_name": "google-cloud-eventarc-publishing",
+    "api_id": "eventarcpublishing.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "eventarcpublishing",
+    "api_description": "lets you asynchronously deliver events from Google services, SaaS, and your own apps using loosely coupled services that react to state changes."
+}
