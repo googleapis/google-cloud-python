@@ -1,0 +1,18 @@
+{
+    "name": "recommender",
+    "name_pretty": "Cloud Recommender",
+    "product_documentation": "https://cloud.google.com/recommender",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/recommender/latest",
+    "issue_tracker": "",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-recommender",
+    "distribution_name": "google-cloud-recommender",
+    "api_id": "recommender.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v1",
+    "codeowner_team": "@googleapis/cdpe-cloudai",
+    "api_shortname": "recommender",
+    "api_description": "delivers highly personalized product recommendations at scale."
+}

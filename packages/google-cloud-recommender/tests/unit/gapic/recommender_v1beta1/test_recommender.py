@@ -1,0 +1,8927 @@
+# -*- coding: utf-8 -*-
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+import os
+
+# try/except added for compatibility with python < 3.8
+try:
+    from unittest import mock
+    from unittest.mock import AsyncMock  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    import mock
+
+from collections.abc import Iterable
+import json
+import math
+
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import client_options
+from google.api_core import exceptions as core_exceptions
+import google.auth
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
+from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+from google.cloud.recommender_v1beta1.services.recommender import (
+    RecommenderAsyncClient,
+    RecommenderClient,
+    pagers,
+    transports,
+)
+from google.cloud.recommender_v1beta1.types import (
+    insight_type_config as gcr_insight_type_config,
+)
+from google.cloud.recommender_v1beta1.types import (
+    recommender_config as gcr_recommender_config,
+)
+from google.cloud.recommender_v1beta1.types import insight
+from google.cloud.recommender_v1beta1.types import insight_type_config
+from google.cloud.recommender_v1beta1.types import recommendation
+from google.cloud.recommender_v1beta1.types import recommender_config
+from google.cloud.recommender_v1beta1.types import recommender_service
+
+
+def client_cert_source_callback():
+    return b"cert bytes", b"key bytes"
+
+
+# If default endpoint is localhost, then default mtls endpoint will be the same.
+# This method modifies the default endpoint so the client can produce a different
+# mtls endpoint for endpoint testing purposes.
+def modify_default_endpoint(client):
+    return (
+        "foo.googleapis.com"
+        if ("localhost" in client.DEFAULT_ENDPOINT)
+        else client.DEFAULT_ENDPOINT
+    )
+
+
+def test__get_default_mtls_endpoint():
+    api_endpoint = "example.googleapis.com"
+    api_mtls_endpoint = "example.mtls.googleapis.com"
+    sandbox_endpoint = "example.sandbox.googleapis.com"
+    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
+    non_googleapi = "api.example.com"
+
+    assert RecommenderClient._get_default_mtls_endpoint(None) is None
+    assert (
+        RecommenderClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
+    )
+    assert (
+        RecommenderClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        == api_mtls_endpoint
+    )
+    assert (
+        RecommenderClient._get_default_mtls_endpoint(sandbox_endpoint)
+        == sandbox_mtls_endpoint
+    )
+    assert (
+        RecommenderClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        == sandbox_mtls_endpoint
+    )
+    assert RecommenderClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_name",
+    [
+        (RecommenderClient, "grpc"),
+        (RecommenderAsyncClient, "grpc_asyncio"),
+        (RecommenderClient, "rest"),
+    ],
+)
+def test_recommender_client_from_service_account_info(client_class, transport_name):
+    creds = ga_credentials.AnonymousCredentials()
+    with mock.patch.object(
+        service_account.Credentials, "from_service_account_info"
+    ) as factory:
+        factory.return_value = creds
+        info = {"valid": True}
+        client = client_class.from_service_account_info(info, transport=transport_name)
+        assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
+
+        assert client.transport._host == (
+            "recommender.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://recommender.googleapis.com"
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class,transport_name",
+    [
+        (transports.RecommenderGrpcTransport, "grpc"),
+        (transports.RecommenderGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.RecommenderRestTransport, "rest"),
+    ],
+)
+def test_recommender_client_service_account_always_use_jwt(
+    transport_class, transport_name
+):
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=True)
+        use_jwt.assert_called_once_with(True)
+
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=False)
+        use_jwt.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_name",
+    [
+        (RecommenderClient, "grpc"),
+        (RecommenderAsyncClient, "grpc_asyncio"),
+        (RecommenderClient, "rest"),
+    ],
+)
+def test_recommender_client_from_service_account_file(client_class, transport_name):
+    creds = ga_credentials.AnonymousCredentials()
+    with mock.patch.object(
+        service_account.Credentials, "from_service_account_file"
+    ) as factory:
+        factory.return_value = creds
+        client = client_class.from_service_account_file(
+            "dummy/file/path.json", transport=transport_name
+        )
+        assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
+
+        client = client_class.from_service_account_json(
+            "dummy/file/path.json", transport=transport_name
+        )
+        assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
+
+        assert client.transport._host == (
+            "recommender.googleapis.com:443"
+            if transport_name in ["grpc", "grpc_asyncio"]
+            else "https://recommender.googleapis.com"
+        )
+
+
+def test_recommender_client_get_transport_class():
+    transport = RecommenderClient.get_transport_class()
+    available_transports = [
+        transports.RecommenderGrpcTransport,
+        transports.RecommenderRestTransport,
+    ]
+    assert transport in available_transports
+
+    transport = RecommenderClient.get_transport_class("grpc")
+    assert transport == transports.RecommenderGrpcTransport
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name",
+    [
+        (RecommenderClient, transports.RecommenderGrpcTransport, "grpc"),
+        (
+            RecommenderAsyncClient,
+            transports.RecommenderGrpcAsyncIOTransport,
+            "grpc_asyncio",
+        ),
+        (RecommenderClient, transports.RecommenderRestTransport, "rest"),
+    ],
+)
+@mock.patch.object(
+    RecommenderClient, "DEFAULT_ENDPOINT", modify_default_endpoint(RecommenderClient)
+)
+@mock.patch.object(
+    RecommenderAsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(RecommenderAsyncClient),
+)
+def test_recommender_client_client_options(
+    client_class, transport_class, transport_name
+):
+    # Check that if channel is provided we won't create a new one.
+    with mock.patch.object(RecommenderClient, "get_transport_class") as gtc:
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
+        client = client_class(transport=transport)
+        gtc.assert_not_called()
+
+    # Check that if channel is provided via str we will create a new one.
+    with mock.patch.object(RecommenderClient, "get_transport_class") as gtc:
+        client = client_class(transport=transport_name)
+        gtc.assert_called()
+
+    # Check the case api_endpoint is provided.
+    options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(transport=transport_name, client_options=options)
+        patched.assert_called_once_with(
+            credentials=None,
+            credentials_file=None,
+            host="squid.clam.whelk",
+            scopes=None,
+            client_cert_source_for_mtls=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
+            api_audience=None,
+        )
+
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
+    # "never".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            patched.return_value = None
+            client = client_class(transport=transport_name)
+            patched.assert_called_once_with(
+                credentials=None,
+                credentials_file=None,
+                host=client.DEFAULT_ENDPOINT,
+                scopes=None,
+                client_cert_source_for_mtls=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
+                api_audience=None,
+            )
+
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
+    # "always".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            patched.return_value = None
+            client = client_class(transport=transport_name)
+            patched.assert_called_once_with(
+                credentials=None,
+                credentials_file=None,
+                host=client.DEFAULT_MTLS_ENDPOINT,
+                scopes=None,
+                client_cert_source_for_mtls=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
+                api_audience=None,
+            )
+
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
+    # unsupported value.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError):
+            client = client_class(transport=transport_name)
+
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+    ):
+        with pytest.raises(ValueError):
+            client = client_class(transport=transport_name)
+
+    # Check the case quota_project_id is provided
+    options = client_options.ClientOptions(quota_project_id="octopus")
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(client_options=options, transport=transport_name)
+        patched.assert_called_once_with(
+            credentials=None,
+            credentials_file=None,
+            host=client.DEFAULT_ENDPOINT,
+            scopes=None,
+            client_cert_source_for_mtls=None,
+            quota_project_id="octopus",
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
+            api_audience=None,
+        )
+    # Check the case api_endpoint is provided
+    options = client_options.ClientOptions(
+        api_audience="https://language.googleapis.com"
+    )
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(client_options=options, transport=transport_name)
+        patched.assert_called_once_with(
+            credentials=None,
+            credentials_file=None,
+            host=client.DEFAULT_ENDPOINT,
+            scopes=None,
+            client_cert_source_for_mtls=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
+            api_audience="https://language.googleapis.com",
+        )
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name,use_client_cert_env",
+    [
+        (RecommenderClient, transports.RecommenderGrpcTransport, "grpc", "true"),
+        (
+            RecommenderAsyncClient,
+            transports.RecommenderGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "true",
+        ),
+        (RecommenderClient, transports.RecommenderGrpcTransport, "grpc", "false"),
+        (
+            RecommenderAsyncClient,
+            transports.RecommenderGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "false",
+        ),
+        (RecommenderClient, transports.RecommenderRestTransport, "rest", "true"),
+        (RecommenderClient, transports.RecommenderRestTransport, "rest", "false"),
+    ],
+)
+@mock.patch.object(
+    RecommenderClient, "DEFAULT_ENDPOINT", modify_default_endpoint(RecommenderClient)
+)
+@mock.patch.object(
+    RecommenderAsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(RecommenderAsyncClient),
+)
+@mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
+def test_recommender_client_mtls_env_auto(
+    client_class, transport_class, transport_name, use_client_cert_env
+):
+    # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
+    # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
+
+    # Check the case client_cert_source is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        options = client_options.ClientOptions(
+            client_cert_source=client_cert_source_callback
+        )
+        with mock.patch.object(transport_class, "__init__") as patched:
+            patched.return_value = None
+            client = client_class(client_options=options, transport=transport_name)
+
+            if use_client_cert_env == "false":
+                expected_client_cert_source = None
+                expected_host = client.DEFAULT_ENDPOINT
+            else:
+                expected_client_cert_source = client_cert_source_callback
+                expected_host = client.DEFAULT_MTLS_ENDPOINT
+
+            patched.assert_called_once_with(
+                credentials=None,
+                credentials_file=None,
+                host=expected_host,
+                scopes=None,
+                client_cert_source_for_mtls=expected_client_cert_source,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
+                api_audience=None,
+            )
+
+    # Check the case ADC client cert is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=True,
+            ):
+                with mock.patch(
+                    "google.auth.transport.mtls.default_client_cert_source",
+                    return_value=client_cert_source_callback,
+                ):
+                    if use_client_cert_env == "false":
+                        expected_host = client.DEFAULT_ENDPOINT
+                        expected_client_cert_source = None
+                    else:
+                        expected_host = client.DEFAULT_MTLS_ENDPOINT
+                        expected_client_cert_source = client_cert_source_callback
+
+                    patched.return_value = None
+                    client = client_class(transport=transport_name)
+                    patched.assert_called_once_with(
+                        credentials=None,
+                        credentials_file=None,
+                        host=expected_host,
+                        scopes=None,
+                        client_cert_source_for_mtls=expected_client_cert_source,
+                        quota_project_id=None,
+                        client_info=transports.base.DEFAULT_CLIENT_INFO,
+                        always_use_jwt_access=True,
+                        api_audience=None,
+                    )
+
+    # Check the case client_cert_source and ADC client cert are not provided.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=False,
+            ):
+                patched.return_value = None
+                client = client_class(transport=transport_name)
+                patched.assert_called_once_with(
+                    credentials=None,
+                    credentials_file=None,
+                    host=client.DEFAULT_ENDPOINT,
+                    scopes=None,
+                    client_cert_source_for_mtls=None,
+                    quota_project_id=None,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    always_use_jwt_access=True,
+                    api_audience=None,
+                )
+
+
+@pytest.mark.parametrize("client_class", [RecommenderClient, RecommenderAsyncClient])
+@mock.patch.object(
+    RecommenderClient, "DEFAULT_ENDPOINT", modify_default_endpoint(RecommenderClient)
+)
+@mock.patch.object(
+    RecommenderAsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(RecommenderAsyncClient),
+)
+def test_recommender_client_get_mtls_endpoint_and_cert_source(client_class):
+    mock_client_cert_source = mock.Mock()
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(
+            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
+        )
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
+            options
+        )
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source == mock_client_cert_source
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "false".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        mock_client_cert_source = mock.Mock()
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(
+            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
+        )
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
+            options
+        )
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "always".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=False,
+        ):
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+            assert api_endpoint == client_class.DEFAULT_ENDPOINT
+            assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=True,
+        ):
+            with mock.patch(
+                "google.auth.transport.mtls.default_client_cert_source",
+                return_value=mock_client_cert_source,
+            ):
+                (
+                    api_endpoint,
+                    cert_source,
+                ) = client_class.get_mtls_endpoint_and_cert_source()
+                assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+                assert cert_source == mock_client_cert_source
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name",
+    [
+        (RecommenderClient, transports.RecommenderGrpcTransport, "grpc"),
+        (
+            RecommenderAsyncClient,
+            transports.RecommenderGrpcAsyncIOTransport,
+            "grpc_asyncio",
+        ),
+        (RecommenderClient, transports.RecommenderRestTransport, "rest"),
+    ],
+)
+def test_recommender_client_client_options_scopes(
+    client_class, transport_class, transport_name
+):
+    # Check the case scopes are provided.
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(client_options=options, transport=transport_name)
+        patched.assert_called_once_with(
+            credentials=None,
+            credentials_file=None,
+            host=client.DEFAULT_ENDPOINT,
+            scopes=["1", "2"],
+            client_cert_source_for_mtls=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
+            api_audience=None,
+        )
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name,grpc_helpers",
+    [
+        (RecommenderClient, transports.RecommenderGrpcTransport, "grpc", grpc_helpers),
+        (
+            RecommenderAsyncClient,
+            transports.RecommenderGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            grpc_helpers_async,
+        ),
+        (RecommenderClient, transports.RecommenderRestTransport, "rest", None),
+    ],
+)
+def test_recommender_client_client_options_credentials_file(
+    client_class, transport_class, transport_name, grpc_helpers
+):
+    # Check the case credentials file is provided.
+    options = client_options.ClientOptions(credentials_file="credentials.json")
+
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(client_options=options, transport=transport_name)
+        patched.assert_called_once_with(
+            credentials=None,
+            credentials_file="credentials.json",
+            host=client.DEFAULT_ENDPOINT,
+            scopes=None,
+            client_cert_source_for_mtls=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
+            api_audience=None,
+        )
+
+
+def test_recommender_client_client_options_from_dict():
+    with mock.patch(
+        "google.cloud.recommender_v1beta1.services.recommender.transports.RecommenderGrpcTransport.__init__"
+    ) as grpc_transport:
+        grpc_transport.return_value = None
+        client = RecommenderClient(client_options={"api_endpoint": "squid.clam.whelk"})
+        grpc_transport.assert_called_once_with(
+            credentials=None,
+            credentials_file=None,
+            host="squid.clam.whelk",
+            scopes=None,
+            client_cert_source_for_mtls=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
+            api_audience=None,
+        )
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name,grpc_helpers",
+    [
+        (RecommenderClient, transports.RecommenderGrpcTransport, "grpc", grpc_helpers),
+        (
+            RecommenderAsyncClient,
+            transports.RecommenderGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            grpc_helpers_async,
+        ),
+    ],
+)
+def test_recommender_client_create_channel_credentials_file(
+    client_class, transport_class, transport_name, grpc_helpers
+):
+    # Check the case credentials file is provided.
+    options = client_options.ClientOptions(credentials_file="credentials.json")
+
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(client_options=options, transport=transport_name)
+        patched.assert_called_once_with(
+            credentials=None,
+            credentials_file="credentials.json",
+            host=client.DEFAULT_ENDPOINT,
+            scopes=None,
+            client_cert_source_for_mtls=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
+            api_audience=None,
+        )
+
+    # test that the credentials from file are saved and used as the credentials.
+    with mock.patch.object(
+        google.auth, "load_credentials_from_file", autospec=True
+    ) as load_creds, mock.patch.object(
+        google.auth, "default", autospec=True
+    ) as adc, mock.patch.object(
+        grpc_helpers, "create_channel"
+    ) as create_channel:
+        creds = ga_credentials.AnonymousCredentials()
+        file_creds = ga_credentials.AnonymousCredentials()
+        load_creds.return_value = (file_creds, None)
+        adc.return_value = (creds, None)
+        client = client_class(client_options=options, transport=transport_name)
+        create_channel.assert_called_with(
+            "recommender.googleapis.com:443",
+            credentials=file_creds,
+            credentials_file=None,
+            quota_project_id=None,
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            scopes=None,
+            default_host="recommender.googleapis.com",
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.ListInsightsRequest,
+        dict,
+    ],
+)
+def test_list_insights(request_type, transport: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_insights), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommender_service.ListInsightsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_insights(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.ListInsightsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListInsightsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_insights_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_insights), "__call__") as call:
+        client.list_insights()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.ListInsightsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_insights_async(
+    transport: str = "grpc_asyncio",
+    request_type=recommender_service.ListInsightsRequest,
+):
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_insights), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommender_service.ListInsightsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_insights(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.ListInsightsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListInsightsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_insights_async_from_dict():
+    await test_list_insights_async(request_type=dict)
+
+
+def test_list_insights_field_headers():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.ListInsightsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_insights), "__call__") as call:
+        call.return_value = recommender_service.ListInsightsResponse()
+        client.list_insights(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_insights_field_headers_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.ListInsightsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_insights), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommender_service.ListInsightsResponse()
+        )
+        await client.list_insights(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_insights_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_insights), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommender_service.ListInsightsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_insights(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_insights_flattened_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_insights(
+            recommender_service.ListInsightsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_insights_flattened_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_insights), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommender_service.ListInsightsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommender_service.ListInsightsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_insights(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_insights_flattened_error_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_insights(
+            recommender_service.ListInsightsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_insights_pager(transport_name: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_insights), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recommender_service.ListInsightsResponse(
+                insights=[
+                    insight.Insight(),
+                    insight.Insight(),
+                    insight.Insight(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListInsightsResponse(
+                insights=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListInsightsResponse(
+                insights=[
+                    insight.Insight(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListInsightsResponse(
+                insights=[
+                    insight.Insight(),
+                    insight.Insight(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_insights(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, insight.Insight) for i in results)
+
+
+def test_list_insights_pages(transport_name: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_insights), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recommender_service.ListInsightsResponse(
+                insights=[
+                    insight.Insight(),
+                    insight.Insight(),
+                    insight.Insight(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListInsightsResponse(
+                insights=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListInsightsResponse(
+                insights=[
+                    insight.Insight(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListInsightsResponse(
+                insights=[
+                    insight.Insight(),
+                    insight.Insight(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_insights(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_insights_async_pager():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_insights), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recommender_service.ListInsightsResponse(
+                insights=[
+                    insight.Insight(),
+                    insight.Insight(),
+                    insight.Insight(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListInsightsResponse(
+                insights=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListInsightsResponse(
+                insights=[
+                    insight.Insight(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListInsightsResponse(
+                insights=[
+                    insight.Insight(),
+                    insight.Insight(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_insights(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, insight.Insight) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_insights_async_pages():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_insights), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recommender_service.ListInsightsResponse(
+                insights=[
+                    insight.Insight(),
+                    insight.Insight(),
+                    insight.Insight(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListInsightsResponse(
+                insights=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListInsightsResponse(
+                insights=[
+                    insight.Insight(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListInsightsResponse(
+                insights=[
+                    insight.Insight(),
+                    insight.Insight(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_insights(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.GetInsightRequest,
+        dict,
+    ],
+)
+def test_get_insight(request_type, transport: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_insight), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = insight.Insight(
+            name="name_value",
+            description="description_value",
+            target_resources=["target_resources_value"],
+            insight_subtype="insight_subtype_value",
+            category=insight.Insight.Category.COST,
+            severity=insight.Insight.Severity.LOW,
+            etag="etag_value",
+        )
+        response = client.get_insight(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.GetInsightRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, insight.Insight)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.target_resources == ["target_resources_value"]
+    assert response.insight_subtype == "insight_subtype_value"
+    assert response.category == insight.Insight.Category.COST
+    assert response.severity == insight.Insight.Severity.LOW
+    assert response.etag == "etag_value"
+
+
+def test_get_insight_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_insight), "__call__") as call:
+        client.get_insight()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.GetInsightRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_insight_async(
+    transport: str = "grpc_asyncio", request_type=recommender_service.GetInsightRequest
+):
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_insight), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            insight.Insight(
+                name="name_value",
+                description="description_value",
+                target_resources=["target_resources_value"],
+                insight_subtype="insight_subtype_value",
+                category=insight.Insight.Category.COST,
+                severity=insight.Insight.Severity.LOW,
+                etag="etag_value",
+            )
+        )
+        response = await client.get_insight(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.GetInsightRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, insight.Insight)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.target_resources == ["target_resources_value"]
+    assert response.insight_subtype == "insight_subtype_value"
+    assert response.category == insight.Insight.Category.COST
+    assert response.severity == insight.Insight.Severity.LOW
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.asyncio
+async def test_get_insight_async_from_dict():
+    await test_get_insight_async(request_type=dict)
+
+
+def test_get_insight_field_headers():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.GetInsightRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_insight), "__call__") as call:
+        call.return_value = insight.Insight()
+        client.get_insight(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_insight_field_headers_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.GetInsightRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_insight), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(insight.Insight())
+        await client.get_insight(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_insight_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_insight), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = insight.Insight()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_insight(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_insight_flattened_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_insight(
+            recommender_service.GetInsightRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_insight_flattened_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_insight), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = insight.Insight()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(insight.Insight())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_insight(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_insight_flattened_error_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_insight(
+            recommender_service.GetInsightRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.MarkInsightAcceptedRequest,
+        dict,
+    ],
+)
+def test_mark_insight_accepted(request_type, transport: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_insight_accepted), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = insight.Insight(
+            name="name_value",
+            description="description_value",
+            target_resources=["target_resources_value"],
+            insight_subtype="insight_subtype_value",
+            category=insight.Insight.Category.COST,
+            severity=insight.Insight.Severity.LOW,
+            etag="etag_value",
+        )
+        response = client.mark_insight_accepted(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.MarkInsightAcceptedRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, insight.Insight)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.target_resources == ["target_resources_value"]
+    assert response.insight_subtype == "insight_subtype_value"
+    assert response.category == insight.Insight.Category.COST
+    assert response.severity == insight.Insight.Severity.LOW
+    assert response.etag == "etag_value"
+
+
+def test_mark_insight_accepted_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_insight_accepted), "__call__"
+    ) as call:
+        client.mark_insight_accepted()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.MarkInsightAcceptedRequest()
+
+
+@pytest.mark.asyncio
+async def test_mark_insight_accepted_async(
+    transport: str = "grpc_asyncio",
+    request_type=recommender_service.MarkInsightAcceptedRequest,
+):
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_insight_accepted), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            insight.Insight(
+                name="name_value",
+                description="description_value",
+                target_resources=["target_resources_value"],
+                insight_subtype="insight_subtype_value",
+                category=insight.Insight.Category.COST,
+                severity=insight.Insight.Severity.LOW,
+                etag="etag_value",
+            )
+        )
+        response = await client.mark_insight_accepted(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.MarkInsightAcceptedRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, insight.Insight)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.target_resources == ["target_resources_value"]
+    assert response.insight_subtype == "insight_subtype_value"
+    assert response.category == insight.Insight.Category.COST
+    assert response.severity == insight.Insight.Severity.LOW
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.asyncio
+async def test_mark_insight_accepted_async_from_dict():
+    await test_mark_insight_accepted_async(request_type=dict)
+
+
+def test_mark_insight_accepted_field_headers():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.MarkInsightAcceptedRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_insight_accepted), "__call__"
+    ) as call:
+        call.return_value = insight.Insight()
+        client.mark_insight_accepted(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_mark_insight_accepted_field_headers_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.MarkInsightAcceptedRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_insight_accepted), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(insight.Insight())
+        await client.mark_insight_accepted(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_mark_insight_accepted_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_insight_accepted), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = insight.Insight()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.mark_insight_accepted(
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].state_metadata
+        mock_val = {"key_value": "value_value"}
+        assert arg == mock_val
+        arg = args[0].etag
+        mock_val = "etag_value"
+        assert arg == mock_val
+
+
+def test_mark_insight_accepted_flattened_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.mark_insight_accepted(
+            recommender_service.MarkInsightAcceptedRequest(),
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_mark_insight_accepted_flattened_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_insight_accepted), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = insight.Insight()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(insight.Insight())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.mark_insight_accepted(
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].state_metadata
+        mock_val = {"key_value": "value_value"}
+        assert arg == mock_val
+        arg = args[0].etag
+        mock_val = "etag_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_mark_insight_accepted_flattened_error_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.mark_insight_accepted(
+            recommender_service.MarkInsightAcceptedRequest(),
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.ListRecommendationsRequest,
+        dict,
+    ],
+)
+def test_list_recommendations(request_type, transport: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_recommendations), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommender_service.ListRecommendationsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_recommendations(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.ListRecommendationsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListRecommendationsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_recommendations_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_recommendations), "__call__"
+    ) as call:
+        client.list_recommendations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.ListRecommendationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_recommendations_async(
+    transport: str = "grpc_asyncio",
+    request_type=recommender_service.ListRecommendationsRequest,
+):
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_recommendations), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommender_service.ListRecommendationsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_recommendations(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.ListRecommendationsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListRecommendationsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_recommendations_async_from_dict():
+    await test_list_recommendations_async(request_type=dict)
+
+
+def test_list_recommendations_field_headers():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.ListRecommendationsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_recommendations), "__call__"
+    ) as call:
+        call.return_value = recommender_service.ListRecommendationsResponse()
+        client.list_recommendations(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_recommendations_field_headers_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.ListRecommendationsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_recommendations), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommender_service.ListRecommendationsResponse()
+        )
+        await client.list_recommendations(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_recommendations_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_recommendations), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommender_service.ListRecommendationsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_recommendations(
+            parent="parent_value",
+            filter="filter_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
+
+
+def test_list_recommendations_flattened_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_recommendations(
+            recommender_service.ListRecommendationsRequest(),
+            parent="parent_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_recommendations_flattened_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_recommendations), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommender_service.ListRecommendationsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommender_service.ListRecommendationsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_recommendations(
+            parent="parent_value",
+            filter="filter_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_recommendations_flattened_error_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_recommendations(
+            recommender_service.ListRecommendationsRequest(),
+            parent="parent_value",
+            filter="filter_value",
+        )
+
+
+def test_list_recommendations_pager(transport_name: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_recommendations), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[
+                    recommendation.Recommendation(),
+                    recommendation.Recommendation(),
+                    recommendation.Recommendation(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[
+                    recommendation.Recommendation(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[
+                    recommendation.Recommendation(),
+                    recommendation.Recommendation(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_recommendations(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, recommendation.Recommendation) for i in results)
+
+
+def test_list_recommendations_pages(transport_name: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_recommendations), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[
+                    recommendation.Recommendation(),
+                    recommendation.Recommendation(),
+                    recommendation.Recommendation(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[
+                    recommendation.Recommendation(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[
+                    recommendation.Recommendation(),
+                    recommendation.Recommendation(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_recommendations(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_recommendations_async_pager():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_recommendations),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[
+                    recommendation.Recommendation(),
+                    recommendation.Recommendation(),
+                    recommendation.Recommendation(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[
+                    recommendation.Recommendation(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[
+                    recommendation.Recommendation(),
+                    recommendation.Recommendation(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_recommendations(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, recommendation.Recommendation) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_recommendations_async_pages():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_recommendations),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[
+                    recommendation.Recommendation(),
+                    recommendation.Recommendation(),
+                    recommendation.Recommendation(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[
+                    recommendation.Recommendation(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[
+                    recommendation.Recommendation(),
+                    recommendation.Recommendation(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_recommendations(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.GetRecommendationRequest,
+        dict,
+    ],
+)
+def test_get_recommendation(request_type, transport: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_recommendation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommendation.Recommendation(
+            name="name_value",
+            description="description_value",
+            recommender_subtype="recommender_subtype_value",
+            priority=recommendation.Recommendation.Priority.P4,
+            etag="etag_value",
+            xor_group_id="xor_group_id_value",
+        )
+        response = client.get_recommendation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.GetRecommendationRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recommendation.Recommendation)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
+    assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
+
+
+def test_get_recommendation_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_recommendation), "__call__"
+    ) as call:
+        client.get_recommendation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.GetRecommendationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_recommendation_async(
+    transport: str = "grpc_asyncio",
+    request_type=recommender_service.GetRecommendationRequest,
+):
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_recommendation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommendation.Recommendation(
+                name="name_value",
+                description="description_value",
+                recommender_subtype="recommender_subtype_value",
+                priority=recommendation.Recommendation.Priority.P4,
+                etag="etag_value",
+                xor_group_id="xor_group_id_value",
+            )
+        )
+        response = await client.get_recommendation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.GetRecommendationRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recommendation.Recommendation)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
+    assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
+
+
+@pytest.mark.asyncio
+async def test_get_recommendation_async_from_dict():
+    await test_get_recommendation_async(request_type=dict)
+
+
+def test_get_recommendation_field_headers():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.GetRecommendationRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_recommendation), "__call__"
+    ) as call:
+        call.return_value = recommendation.Recommendation()
+        client.get_recommendation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_recommendation_field_headers_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.GetRecommendationRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_recommendation), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommendation.Recommendation()
+        )
+        await client.get_recommendation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_recommendation_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_recommendation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommendation.Recommendation()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_recommendation(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_recommendation_flattened_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_recommendation(
+            recommender_service.GetRecommendationRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_recommendation_flattened_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_recommendation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommendation.Recommendation()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommendation.Recommendation()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_recommendation(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_recommendation_flattened_error_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_recommendation(
+            recommender_service.GetRecommendationRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.MarkRecommendationClaimedRequest,
+        dict,
+    ],
+)
+def test_mark_recommendation_claimed(request_type, transport: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_claimed), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommendation.Recommendation(
+            name="name_value",
+            description="description_value",
+            recommender_subtype="recommender_subtype_value",
+            priority=recommendation.Recommendation.Priority.P4,
+            etag="etag_value",
+            xor_group_id="xor_group_id_value",
+        )
+        response = client.mark_recommendation_claimed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.MarkRecommendationClaimedRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recommendation.Recommendation)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
+    assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
+
+
+def test_mark_recommendation_claimed_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_claimed), "__call__"
+    ) as call:
+        client.mark_recommendation_claimed()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.MarkRecommendationClaimedRequest()
+
+
+@pytest.mark.asyncio
+async def test_mark_recommendation_claimed_async(
+    transport: str = "grpc_asyncio",
+    request_type=recommender_service.MarkRecommendationClaimedRequest,
+):
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_claimed), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommendation.Recommendation(
+                name="name_value",
+                description="description_value",
+                recommender_subtype="recommender_subtype_value",
+                priority=recommendation.Recommendation.Priority.P4,
+                etag="etag_value",
+                xor_group_id="xor_group_id_value",
+            )
+        )
+        response = await client.mark_recommendation_claimed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.MarkRecommendationClaimedRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recommendation.Recommendation)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
+    assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
+
+
+@pytest.mark.asyncio
+async def test_mark_recommendation_claimed_async_from_dict():
+    await test_mark_recommendation_claimed_async(request_type=dict)
+
+
+def test_mark_recommendation_claimed_field_headers():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.MarkRecommendationClaimedRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_claimed), "__call__"
+    ) as call:
+        call.return_value = recommendation.Recommendation()
+        client.mark_recommendation_claimed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_mark_recommendation_claimed_field_headers_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.MarkRecommendationClaimedRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_claimed), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommendation.Recommendation()
+        )
+        await client.mark_recommendation_claimed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_mark_recommendation_claimed_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_claimed), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommendation.Recommendation()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.mark_recommendation_claimed(
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].state_metadata
+        mock_val = {"key_value": "value_value"}
+        assert arg == mock_val
+        arg = args[0].etag
+        mock_val = "etag_value"
+        assert arg == mock_val
+
+
+def test_mark_recommendation_claimed_flattened_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.mark_recommendation_claimed(
+            recommender_service.MarkRecommendationClaimedRequest(),
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_mark_recommendation_claimed_flattened_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_claimed), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommendation.Recommendation()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommendation.Recommendation()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.mark_recommendation_claimed(
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].state_metadata
+        mock_val = {"key_value": "value_value"}
+        assert arg == mock_val
+        arg = args[0].etag
+        mock_val = "etag_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_mark_recommendation_claimed_flattened_error_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.mark_recommendation_claimed(
+            recommender_service.MarkRecommendationClaimedRequest(),
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.MarkRecommendationSucceededRequest,
+        dict,
+    ],
+)
+def test_mark_recommendation_succeeded(request_type, transport: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_succeeded), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommendation.Recommendation(
+            name="name_value",
+            description="description_value",
+            recommender_subtype="recommender_subtype_value",
+            priority=recommendation.Recommendation.Priority.P4,
+            etag="etag_value",
+            xor_group_id="xor_group_id_value",
+        )
+        response = client.mark_recommendation_succeeded(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.MarkRecommendationSucceededRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recommendation.Recommendation)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
+    assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
+
+
+def test_mark_recommendation_succeeded_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_succeeded), "__call__"
+    ) as call:
+        client.mark_recommendation_succeeded()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.MarkRecommendationSucceededRequest()
+
+
+@pytest.mark.asyncio
+async def test_mark_recommendation_succeeded_async(
+    transport: str = "grpc_asyncio",
+    request_type=recommender_service.MarkRecommendationSucceededRequest,
+):
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_succeeded), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommendation.Recommendation(
+                name="name_value",
+                description="description_value",
+                recommender_subtype="recommender_subtype_value",
+                priority=recommendation.Recommendation.Priority.P4,
+                etag="etag_value",
+                xor_group_id="xor_group_id_value",
+            )
+        )
+        response = await client.mark_recommendation_succeeded(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.MarkRecommendationSucceededRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recommendation.Recommendation)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
+    assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
+
+
+@pytest.mark.asyncio
+async def test_mark_recommendation_succeeded_async_from_dict():
+    await test_mark_recommendation_succeeded_async(request_type=dict)
+
+
+def test_mark_recommendation_succeeded_field_headers():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.MarkRecommendationSucceededRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_succeeded), "__call__"
+    ) as call:
+        call.return_value = recommendation.Recommendation()
+        client.mark_recommendation_succeeded(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_mark_recommendation_succeeded_field_headers_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.MarkRecommendationSucceededRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_succeeded), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommendation.Recommendation()
+        )
+        await client.mark_recommendation_succeeded(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_mark_recommendation_succeeded_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_succeeded), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommendation.Recommendation()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.mark_recommendation_succeeded(
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].state_metadata
+        mock_val = {"key_value": "value_value"}
+        assert arg == mock_val
+        arg = args[0].etag
+        mock_val = "etag_value"
+        assert arg == mock_val
+
+
+def test_mark_recommendation_succeeded_flattened_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.mark_recommendation_succeeded(
+            recommender_service.MarkRecommendationSucceededRequest(),
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_mark_recommendation_succeeded_flattened_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_succeeded), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommendation.Recommendation()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommendation.Recommendation()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.mark_recommendation_succeeded(
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].state_metadata
+        mock_val = {"key_value": "value_value"}
+        assert arg == mock_val
+        arg = args[0].etag
+        mock_val = "etag_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_mark_recommendation_succeeded_flattened_error_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.mark_recommendation_succeeded(
+            recommender_service.MarkRecommendationSucceededRequest(),
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.MarkRecommendationFailedRequest,
+        dict,
+    ],
+)
+def test_mark_recommendation_failed(request_type, transport: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_failed), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommendation.Recommendation(
+            name="name_value",
+            description="description_value",
+            recommender_subtype="recommender_subtype_value",
+            priority=recommendation.Recommendation.Priority.P4,
+            etag="etag_value",
+            xor_group_id="xor_group_id_value",
+        )
+        response = client.mark_recommendation_failed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.MarkRecommendationFailedRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recommendation.Recommendation)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
+    assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
+
+
+def test_mark_recommendation_failed_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_failed), "__call__"
+    ) as call:
+        client.mark_recommendation_failed()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.MarkRecommendationFailedRequest()
+
+
+@pytest.mark.asyncio
+async def test_mark_recommendation_failed_async(
+    transport: str = "grpc_asyncio",
+    request_type=recommender_service.MarkRecommendationFailedRequest,
+):
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_failed), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommendation.Recommendation(
+                name="name_value",
+                description="description_value",
+                recommender_subtype="recommender_subtype_value",
+                priority=recommendation.Recommendation.Priority.P4,
+                etag="etag_value",
+                xor_group_id="xor_group_id_value",
+            )
+        )
+        response = await client.mark_recommendation_failed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.MarkRecommendationFailedRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recommendation.Recommendation)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
+    assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
+
+
+@pytest.mark.asyncio
+async def test_mark_recommendation_failed_async_from_dict():
+    await test_mark_recommendation_failed_async(request_type=dict)
+
+
+def test_mark_recommendation_failed_field_headers():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.MarkRecommendationFailedRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_failed), "__call__"
+    ) as call:
+        call.return_value = recommendation.Recommendation()
+        client.mark_recommendation_failed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_mark_recommendation_failed_field_headers_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.MarkRecommendationFailedRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_failed), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommendation.Recommendation()
+        )
+        await client.mark_recommendation_failed(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_mark_recommendation_failed_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_failed), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommendation.Recommendation()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.mark_recommendation_failed(
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].state_metadata
+        mock_val = {"key_value": "value_value"}
+        assert arg == mock_val
+        arg = args[0].etag
+        mock_val = "etag_value"
+        assert arg == mock_val
+
+
+def test_mark_recommendation_failed_flattened_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.mark_recommendation_failed(
+            recommender_service.MarkRecommendationFailedRequest(),
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_mark_recommendation_failed_flattened_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.mark_recommendation_failed), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommendation.Recommendation()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommendation.Recommendation()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.mark_recommendation_failed(
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].state_metadata
+        mock_val = {"key_value": "value_value"}
+        assert arg == mock_val
+        arg = args[0].etag
+        mock_val = "etag_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_mark_recommendation_failed_flattened_error_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.mark_recommendation_failed(
+            recommender_service.MarkRecommendationFailedRequest(),
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.GetRecommenderConfigRequest,
+        dict,
+    ],
+)
+def test_get_recommender_config(request_type, transport: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_recommender_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommender_config.RecommenderConfig(
+            name="name_value",
+            etag="etag_value",
+            revision_id="revision_id_value",
+            display_name="display_name_value",
+        )
+        response = client.get_recommender_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.GetRecommenderConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recommender_config.RecommenderConfig)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_get_recommender_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_recommender_config), "__call__"
+    ) as call:
+        client.get_recommender_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.GetRecommenderConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_recommender_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=recommender_service.GetRecommenderConfigRequest,
+):
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_recommender_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommender_config.RecommenderConfig(
+                name="name_value",
+                etag="etag_value",
+                revision_id="revision_id_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_recommender_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.GetRecommenderConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recommender_config.RecommenderConfig)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_recommender_config_async_from_dict():
+    await test_get_recommender_config_async(request_type=dict)
+
+
+def test_get_recommender_config_field_headers():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.GetRecommenderConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_recommender_config), "__call__"
+    ) as call:
+        call.return_value = recommender_config.RecommenderConfig()
+        client.get_recommender_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_recommender_config_field_headers_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.GetRecommenderConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_recommender_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommender_config.RecommenderConfig()
+        )
+        await client.get_recommender_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_recommender_config_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_recommender_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommender_config.RecommenderConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_recommender_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_recommender_config_flattened_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_recommender_config(
+            recommender_service.GetRecommenderConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_recommender_config_flattened_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_recommender_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommender_config.RecommenderConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommender_config.RecommenderConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_recommender_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_recommender_config_flattened_error_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_recommender_config(
+            recommender_service.GetRecommenderConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.UpdateRecommenderConfigRequest,
+        dict,
+    ],
+)
+def test_update_recommender_config(request_type, transport: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_recommender_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcr_recommender_config.RecommenderConfig(
+            name="name_value",
+            etag="etag_value",
+            revision_id="revision_id_value",
+            display_name="display_name_value",
+        )
+        response = client.update_recommender_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.UpdateRecommenderConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcr_recommender_config.RecommenderConfig)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_update_recommender_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_recommender_config), "__call__"
+    ) as call:
+        client.update_recommender_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.UpdateRecommenderConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_recommender_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=recommender_service.UpdateRecommenderConfigRequest,
+):
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_recommender_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcr_recommender_config.RecommenderConfig(
+                name="name_value",
+                etag="etag_value",
+                revision_id="revision_id_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.update_recommender_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.UpdateRecommenderConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcr_recommender_config.RecommenderConfig)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_update_recommender_config_async_from_dict():
+    await test_update_recommender_config_async(request_type=dict)
+
+
+def test_update_recommender_config_field_headers():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.UpdateRecommenderConfigRequest()
+
+    request.recommender_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_recommender_config), "__call__"
+    ) as call:
+        call.return_value = gcr_recommender_config.RecommenderConfig()
+        client.update_recommender_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "recommender_config.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_recommender_config_field_headers_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.UpdateRecommenderConfigRequest()
+
+    request.recommender_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_recommender_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcr_recommender_config.RecommenderConfig()
+        )
+        await client.update_recommender_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "recommender_config.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_recommender_config_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_recommender_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcr_recommender_config.RecommenderConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_recommender_config(
+            recommender_config=gcr_recommender_config.RecommenderConfig(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].recommender_config
+        mock_val = gcr_recommender_config.RecommenderConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_recommender_config_flattened_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_recommender_config(
+            recommender_service.UpdateRecommenderConfigRequest(),
+            recommender_config=gcr_recommender_config.RecommenderConfig(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_recommender_config_flattened_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_recommender_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcr_recommender_config.RecommenderConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcr_recommender_config.RecommenderConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_recommender_config(
+            recommender_config=gcr_recommender_config.RecommenderConfig(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].recommender_config
+        mock_val = gcr_recommender_config.RecommenderConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_recommender_config_flattened_error_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_recommender_config(
+            recommender_service.UpdateRecommenderConfigRequest(),
+            recommender_config=gcr_recommender_config.RecommenderConfig(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.GetInsightTypeConfigRequest,
+        dict,
+    ],
+)
+def test_get_insight_type_config(request_type, transport: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_insight_type_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = insight_type_config.InsightTypeConfig(
+            name="name_value",
+            etag="etag_value",
+            revision_id="revision_id_value",
+            display_name="display_name_value",
+        )
+        response = client.get_insight_type_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.GetInsightTypeConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, insight_type_config.InsightTypeConfig)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_get_insight_type_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_insight_type_config), "__call__"
+    ) as call:
+        client.get_insight_type_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.GetInsightTypeConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_insight_type_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=recommender_service.GetInsightTypeConfigRequest,
+):
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_insight_type_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            insight_type_config.InsightTypeConfig(
+                name="name_value",
+                etag="etag_value",
+                revision_id="revision_id_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_insight_type_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.GetInsightTypeConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, insight_type_config.InsightTypeConfig)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_insight_type_config_async_from_dict():
+    await test_get_insight_type_config_async(request_type=dict)
+
+
+def test_get_insight_type_config_field_headers():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.GetInsightTypeConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_insight_type_config), "__call__"
+    ) as call:
+        call.return_value = insight_type_config.InsightTypeConfig()
+        client.get_insight_type_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_insight_type_config_field_headers_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.GetInsightTypeConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_insight_type_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            insight_type_config.InsightTypeConfig()
+        )
+        await client.get_insight_type_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_insight_type_config_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_insight_type_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = insight_type_config.InsightTypeConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_insight_type_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_insight_type_config_flattened_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_insight_type_config(
+            recommender_service.GetInsightTypeConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_insight_type_config_flattened_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_insight_type_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = insight_type_config.InsightTypeConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            insight_type_config.InsightTypeConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_insight_type_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_insight_type_config_flattened_error_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_insight_type_config(
+            recommender_service.GetInsightTypeConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.UpdateInsightTypeConfigRequest,
+        dict,
+    ],
+)
+def test_update_insight_type_config(request_type, transport: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_insight_type_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcr_insight_type_config.InsightTypeConfig(
+            name="name_value",
+            etag="etag_value",
+            revision_id="revision_id_value",
+            display_name="display_name_value",
+        )
+        response = client.update_insight_type_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.UpdateInsightTypeConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcr_insight_type_config.InsightTypeConfig)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_update_insight_type_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_insight_type_config), "__call__"
+    ) as call:
+        client.update_insight_type_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.UpdateInsightTypeConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_insight_type_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=recommender_service.UpdateInsightTypeConfigRequest,
+):
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_insight_type_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcr_insight_type_config.InsightTypeConfig(
+                name="name_value",
+                etag="etag_value",
+                revision_id="revision_id_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.update_insight_type_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.UpdateInsightTypeConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcr_insight_type_config.InsightTypeConfig)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_update_insight_type_config_async_from_dict():
+    await test_update_insight_type_config_async(request_type=dict)
+
+
+def test_update_insight_type_config_field_headers():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.UpdateInsightTypeConfigRequest()
+
+    request.insight_type_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_insight_type_config), "__call__"
+    ) as call:
+        call.return_value = gcr_insight_type_config.InsightTypeConfig()
+        client.update_insight_type_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "insight_type_config.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_insight_type_config_field_headers_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recommender_service.UpdateInsightTypeConfigRequest()
+
+    request.insight_type_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_insight_type_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcr_insight_type_config.InsightTypeConfig()
+        )
+        await client.update_insight_type_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "insight_type_config.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_insight_type_config_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_insight_type_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcr_insight_type_config.InsightTypeConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_insight_type_config(
+            insight_type_config=gcr_insight_type_config.InsightTypeConfig(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].insight_type_config
+        mock_val = gcr_insight_type_config.InsightTypeConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_insight_type_config_flattened_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_insight_type_config(
+            recommender_service.UpdateInsightTypeConfigRequest(),
+            insight_type_config=gcr_insight_type_config.InsightTypeConfig(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_insight_type_config_flattened_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_insight_type_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcr_insight_type_config.InsightTypeConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcr_insight_type_config.InsightTypeConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_insight_type_config(
+            insight_type_config=gcr_insight_type_config.InsightTypeConfig(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].insight_type_config
+        mock_val = gcr_insight_type_config.InsightTypeConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_insight_type_config_flattened_error_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_insight_type_config(
+            recommender_service.UpdateInsightTypeConfigRequest(),
+            insight_type_config=gcr_insight_type_config.InsightTypeConfig(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.ListInsightsRequest,
+        dict,
+    ],
+)
+def test_list_insights_rest(request_type):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/insightTypes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = recommender_service.ListInsightsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = recommender_service.ListInsightsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_insights(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListInsightsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_insights_rest_required_fields(
+    request_type=recommender_service.ListInsightsRequest,
+):
+    transport_class = transports.RecommenderRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_insights._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_insights._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = recommender_service.ListInsightsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = recommender_service.ListInsightsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_insights(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_insights_rest_unset_required_fields():
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_insights._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_insights_rest_interceptors(null_interceptor):
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RecommenderRestInterceptor(),
+    )
+    client = RecommenderClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RecommenderRestInterceptor, "post_list_insights"
+    ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor, "pre_list_insights"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = recommender_service.ListInsightsRequest.pb(
+            recommender_service.ListInsightsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = recommender_service.ListInsightsResponse.to_json(
+            recommender_service.ListInsightsResponse()
+        )
+
+        request = recommender_service.ListInsightsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = recommender_service.ListInsightsResponse()
+
+        client.list_insights(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_insights_rest_bad_request(
+    transport: str = "rest", request_type=recommender_service.ListInsightsRequest
+):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/insightTypes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_insights(request)
+
+
+def test_list_insights_rest_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = recommender_service.ListInsightsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/insightTypes/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = recommender_service.ListInsightsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_insights(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{parent=projects/*/locations/*/insightTypes/*}/insights"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_insights_rest_flattened_error(transport: str = "rest"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_insights(
+            recommender_service.ListInsightsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_insights_rest_pager(transport: str = "rest"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            recommender_service.ListInsightsResponse(
+                insights=[
+                    insight.Insight(),
+                    insight.Insight(),
+                    insight.Insight(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListInsightsResponse(
+                insights=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListInsightsResponse(
+                insights=[
+                    insight.Insight(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListInsightsResponse(
+                insights=[
+                    insight.Insight(),
+                    insight.Insight(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            recommender_service.ListInsightsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/insightTypes/sample3"
+        }
+
+        pager = client.list_insights(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, insight.Insight) for i in results)
+
+        pages = list(client.list_insights(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.GetInsightRequest,
+        dict,
+    ],
+)
+def test_get_insight_rest(request_type):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/insightTypes/sample3/insights/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = insight.Insight(
+            name="name_value",
+            description="description_value",
+            target_resources=["target_resources_value"],
+            insight_subtype="insight_subtype_value",
+            category=insight.Insight.Category.COST,
+            severity=insight.Insight.Severity.LOW,
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = insight.Insight.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_insight(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, insight.Insight)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.target_resources == ["target_resources_value"]
+    assert response.insight_subtype == "insight_subtype_value"
+    assert response.category == insight.Insight.Category.COST
+    assert response.severity == insight.Insight.Severity.LOW
+    assert response.etag == "etag_value"
+
+
+def test_get_insight_rest_required_fields(
+    request_type=recommender_service.GetInsightRequest,
+):
+    transport_class = transports.RecommenderRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_insight._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_insight._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = insight.Insight()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = insight.Insight.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_insight(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_insight_rest_unset_required_fields():
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_insight._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_insight_rest_interceptors(null_interceptor):
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RecommenderRestInterceptor(),
+    )
+    client = RecommenderClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RecommenderRestInterceptor, "post_get_insight"
+    ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor, "pre_get_insight"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = recommender_service.GetInsightRequest.pb(
+            recommender_service.GetInsightRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = insight.Insight.to_json(insight.Insight())
+
+        request = recommender_service.GetInsightRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = insight.Insight()
+
+        client.get_insight(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_insight_rest_bad_request(
+    transport: str = "rest", request_type=recommender_service.GetInsightRequest
+):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/insightTypes/sample3/insights/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_insight(request)
+
+
+def test_get_insight_rest_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = insight.Insight()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/insightTypes/sample3/insights/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = insight.Insight.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_insight(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{name=projects/*/locations/*/insightTypes/*/insights/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_insight_rest_flattened_error(transport: str = "rest"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_insight(
+            recommender_service.GetInsightRequest(),
+            name="name_value",
+        )
+
+
+def test_get_insight_rest_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.MarkInsightAcceptedRequest,
+        dict,
+    ],
+)
+def test_mark_insight_accepted_rest(request_type):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/insightTypes/sample3/insights/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = insight.Insight(
+            name="name_value",
+            description="description_value",
+            target_resources=["target_resources_value"],
+            insight_subtype="insight_subtype_value",
+            category=insight.Insight.Category.COST,
+            severity=insight.Insight.Severity.LOW,
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = insight.Insight.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.mark_insight_accepted(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, insight.Insight)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.target_resources == ["target_resources_value"]
+    assert response.insight_subtype == "insight_subtype_value"
+    assert response.category == insight.Insight.Category.COST
+    assert response.severity == insight.Insight.Severity.LOW
+    assert response.etag == "etag_value"
+
+
+def test_mark_insight_accepted_rest_required_fields(
+    request_type=recommender_service.MarkInsightAcceptedRequest,
+):
+    transport_class = transports.RecommenderRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["etag"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).mark_insight_accepted._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["etag"] = "etag_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).mark_insight_accepted._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "etag" in jsonified_request
+    assert jsonified_request["etag"] == "etag_value"
+
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = insight.Insight()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = insight.Insight.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.mark_insight_accepted(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_mark_insight_accepted_rest_unset_required_fields():
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.mark_insight_accepted._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "etag",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_mark_insight_accepted_rest_interceptors(null_interceptor):
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RecommenderRestInterceptor(),
+    )
+    client = RecommenderClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RecommenderRestInterceptor, "post_mark_insight_accepted"
+    ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor, "pre_mark_insight_accepted"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = recommender_service.MarkInsightAcceptedRequest.pb(
+            recommender_service.MarkInsightAcceptedRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = insight.Insight.to_json(insight.Insight())
+
+        request = recommender_service.MarkInsightAcceptedRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = insight.Insight()
+
+        client.mark_insight_accepted(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_mark_insight_accepted_rest_bad_request(
+    transport: str = "rest", request_type=recommender_service.MarkInsightAcceptedRequest
+):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/insightTypes/sample3/insights/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.mark_insight_accepted(request)
+
+
+def test_mark_insight_accepted_rest_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = insight.Insight()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/insightTypes/sample3/insights/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = insight.Insight.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.mark_insight_accepted(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{name=projects/*/locations/*/insightTypes/*/insights/*}:markAccepted"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_mark_insight_accepted_rest_flattened_error(transport: str = "rest"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.mark_insight_accepted(
+            recommender_service.MarkInsightAcceptedRequest(),
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+
+def test_mark_insight_accepted_rest_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.ListRecommendationsRequest,
+        dict,
+    ],
+)
+def test_list_recommendations_rest(request_type):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/recommenders/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = recommender_service.ListRecommendationsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = recommender_service.ListRecommendationsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_recommendations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListRecommendationsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_recommendations_rest_required_fields(
+    request_type=recommender_service.ListRecommendationsRequest,
+):
+    transport_class = transports.RecommenderRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_recommendations._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_recommendations._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = recommender_service.ListRecommendationsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = recommender_service.ListRecommendationsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_recommendations(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_recommendations_rest_unset_required_fields():
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_recommendations._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_recommendations_rest_interceptors(null_interceptor):
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RecommenderRestInterceptor(),
+    )
+    client = RecommenderClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RecommenderRestInterceptor, "post_list_recommendations"
+    ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor, "pre_list_recommendations"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = recommender_service.ListRecommendationsRequest.pb(
+            recommender_service.ListRecommendationsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            recommender_service.ListRecommendationsResponse.to_json(
+                recommender_service.ListRecommendationsResponse()
+            )
+        )
+
+        request = recommender_service.ListRecommendationsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = recommender_service.ListRecommendationsResponse()
+
+        client.list_recommendations(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_recommendations_rest_bad_request(
+    transport: str = "rest", request_type=recommender_service.ListRecommendationsRequest
+):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/recommenders/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_recommendations(request)
+
+
+def test_list_recommendations_rest_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = recommender_service.ListRecommendationsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/recommenders/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            filter="filter_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = recommender_service.ListRecommendationsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_recommendations(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{parent=projects/*/locations/*/recommenders/*}/recommendations"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_recommendations_rest_flattened_error(transport: str = "rest"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_recommendations(
+            recommender_service.ListRecommendationsRequest(),
+            parent="parent_value",
+            filter="filter_value",
+        )
+
+
+def test_list_recommendations_rest_pager(transport: str = "rest"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[
+                    recommendation.Recommendation(),
+                    recommendation.Recommendation(),
+                    recommendation.Recommendation(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[
+                    recommendation.Recommendation(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListRecommendationsResponse(
+                recommendations=[
+                    recommendation.Recommendation(),
+                    recommendation.Recommendation(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            recommender_service.ListRecommendationsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/recommenders/sample3"
+        }
+
+        pager = client.list_recommendations(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, recommendation.Recommendation) for i in results)
+
+        pages = list(client.list_recommendations(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.GetRecommendationRequest,
+        dict,
+    ],
+)
+def test_get_recommendation_rest(request_type):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/recommenders/sample3/recommendations/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = recommendation.Recommendation(
+            name="name_value",
+            description="description_value",
+            recommender_subtype="recommender_subtype_value",
+            priority=recommendation.Recommendation.Priority.P4,
+            etag="etag_value",
+            xor_group_id="xor_group_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = recommendation.Recommendation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_recommendation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recommendation.Recommendation)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
+    assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
+
+
+def test_get_recommendation_rest_required_fields(
+    request_type=recommender_service.GetRecommendationRequest,
+):
+    transport_class = transports.RecommenderRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_recommendation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_recommendation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = recommendation.Recommendation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = recommendation.Recommendation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_recommendation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_recommendation_rest_unset_required_fields():
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_recommendation._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_recommendation_rest_interceptors(null_interceptor):
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RecommenderRestInterceptor(),
+    )
+    client = RecommenderClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RecommenderRestInterceptor, "post_get_recommendation"
+    ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor, "pre_get_recommendation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = recommender_service.GetRecommendationRequest.pb(
+            recommender_service.GetRecommendationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = recommendation.Recommendation.to_json(
+            recommendation.Recommendation()
+        )
+
+        request = recommender_service.GetRecommendationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = recommendation.Recommendation()
+
+        client.get_recommendation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_recommendation_rest_bad_request(
+    transport: str = "rest", request_type=recommender_service.GetRecommendationRequest
+):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/recommenders/sample3/recommendations/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_recommendation(request)
+
+
+def test_get_recommendation_rest_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = recommendation.Recommendation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/recommenders/sample3/recommendations/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = recommendation.Recommendation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_recommendation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_recommendation_rest_flattened_error(transport: str = "rest"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_recommendation(
+            recommender_service.GetRecommendationRequest(),
+            name="name_value",
+        )
+
+
+def test_get_recommendation_rest_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.MarkRecommendationClaimedRequest,
+        dict,
+    ],
+)
+def test_mark_recommendation_claimed_rest(request_type):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/recommenders/sample3/recommendations/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = recommendation.Recommendation(
+            name="name_value",
+            description="description_value",
+            recommender_subtype="recommender_subtype_value",
+            priority=recommendation.Recommendation.Priority.P4,
+            etag="etag_value",
+            xor_group_id="xor_group_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = recommendation.Recommendation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.mark_recommendation_claimed(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recommendation.Recommendation)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
+    assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
+
+
+def test_mark_recommendation_claimed_rest_required_fields(
+    request_type=recommender_service.MarkRecommendationClaimedRequest,
+):
+    transport_class = transports.RecommenderRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["etag"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).mark_recommendation_claimed._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["etag"] = "etag_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).mark_recommendation_claimed._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "etag" in jsonified_request
+    assert jsonified_request["etag"] == "etag_value"
+
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = recommendation.Recommendation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = recommendation.Recommendation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.mark_recommendation_claimed(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_mark_recommendation_claimed_rest_unset_required_fields():
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.mark_recommendation_claimed._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "etag",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_mark_recommendation_claimed_rest_interceptors(null_interceptor):
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RecommenderRestInterceptor(),
+    )
+    client = RecommenderClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RecommenderRestInterceptor, "post_mark_recommendation_claimed"
+    ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor, "pre_mark_recommendation_claimed"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = recommender_service.MarkRecommendationClaimedRequest.pb(
+            recommender_service.MarkRecommendationClaimedRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = recommendation.Recommendation.to_json(
+            recommendation.Recommendation()
+        )
+
+        request = recommender_service.MarkRecommendationClaimedRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = recommendation.Recommendation()
+
+        client.mark_recommendation_claimed(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_mark_recommendation_claimed_rest_bad_request(
+    transport: str = "rest",
+    request_type=recommender_service.MarkRecommendationClaimedRequest,
+):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/recommenders/sample3/recommendations/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.mark_recommendation_claimed(request)
+
+
+def test_mark_recommendation_claimed_rest_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = recommendation.Recommendation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/recommenders/sample3/recommendations/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = recommendation.Recommendation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.mark_recommendation_claimed(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markClaimed"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_mark_recommendation_claimed_rest_flattened_error(transport: str = "rest"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.mark_recommendation_claimed(
+            recommender_service.MarkRecommendationClaimedRequest(),
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+
+def test_mark_recommendation_claimed_rest_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.MarkRecommendationSucceededRequest,
+        dict,
+    ],
+)
+def test_mark_recommendation_succeeded_rest(request_type):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/recommenders/sample3/recommendations/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = recommendation.Recommendation(
+            name="name_value",
+            description="description_value",
+            recommender_subtype="recommender_subtype_value",
+            priority=recommendation.Recommendation.Priority.P4,
+            etag="etag_value",
+            xor_group_id="xor_group_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = recommendation.Recommendation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.mark_recommendation_succeeded(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recommendation.Recommendation)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
+    assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
+
+
+def test_mark_recommendation_succeeded_rest_required_fields(
+    request_type=recommender_service.MarkRecommendationSucceededRequest,
+):
+    transport_class = transports.RecommenderRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["etag"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).mark_recommendation_succeeded._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["etag"] = "etag_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).mark_recommendation_succeeded._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "etag" in jsonified_request
+    assert jsonified_request["etag"] == "etag_value"
+
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = recommendation.Recommendation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = recommendation.Recommendation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.mark_recommendation_succeeded(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_mark_recommendation_succeeded_rest_unset_required_fields():
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.mark_recommendation_succeeded._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "etag",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_mark_recommendation_succeeded_rest_interceptors(null_interceptor):
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RecommenderRestInterceptor(),
+    )
+    client = RecommenderClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RecommenderRestInterceptor, "post_mark_recommendation_succeeded"
+    ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor, "pre_mark_recommendation_succeeded"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = recommender_service.MarkRecommendationSucceededRequest.pb(
+            recommender_service.MarkRecommendationSucceededRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = recommendation.Recommendation.to_json(
+            recommendation.Recommendation()
+        )
+
+        request = recommender_service.MarkRecommendationSucceededRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = recommendation.Recommendation()
+
+        client.mark_recommendation_succeeded(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_mark_recommendation_succeeded_rest_bad_request(
+    transport: str = "rest",
+    request_type=recommender_service.MarkRecommendationSucceededRequest,
+):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/recommenders/sample3/recommendations/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.mark_recommendation_succeeded(request)
+
+
+def test_mark_recommendation_succeeded_rest_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = recommendation.Recommendation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/recommenders/sample3/recommendations/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = recommendation.Recommendation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.mark_recommendation_succeeded(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markSucceeded"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_mark_recommendation_succeeded_rest_flattened_error(transport: str = "rest"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.mark_recommendation_succeeded(
+            recommender_service.MarkRecommendationSucceededRequest(),
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+
+def test_mark_recommendation_succeeded_rest_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.MarkRecommendationFailedRequest,
+        dict,
+    ],
+)
+def test_mark_recommendation_failed_rest(request_type):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/recommenders/sample3/recommendations/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = recommendation.Recommendation(
+            name="name_value",
+            description="description_value",
+            recommender_subtype="recommender_subtype_value",
+            priority=recommendation.Recommendation.Priority.P4,
+            etag="etag_value",
+            xor_group_id="xor_group_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = recommendation.Recommendation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.mark_recommendation_failed(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recommendation.Recommendation)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
+    assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
+
+
+def test_mark_recommendation_failed_rest_required_fields(
+    request_type=recommender_service.MarkRecommendationFailedRequest,
+):
+    transport_class = transports.RecommenderRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["etag"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).mark_recommendation_failed._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["etag"] = "etag_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).mark_recommendation_failed._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "etag" in jsonified_request
+    assert jsonified_request["etag"] == "etag_value"
+
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = recommendation.Recommendation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = recommendation.Recommendation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.mark_recommendation_failed(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_mark_recommendation_failed_rest_unset_required_fields():
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.mark_recommendation_failed._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "etag",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_mark_recommendation_failed_rest_interceptors(null_interceptor):
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RecommenderRestInterceptor(),
+    )
+    client = RecommenderClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RecommenderRestInterceptor, "post_mark_recommendation_failed"
+    ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor, "pre_mark_recommendation_failed"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = recommender_service.MarkRecommendationFailedRequest.pb(
+            recommender_service.MarkRecommendationFailedRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = recommendation.Recommendation.to_json(
+            recommendation.Recommendation()
+        )
+
+        request = recommender_service.MarkRecommendationFailedRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = recommendation.Recommendation()
+
+        client.mark_recommendation_failed(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_mark_recommendation_failed_rest_bad_request(
+    transport: str = "rest",
+    request_type=recommender_service.MarkRecommendationFailedRequest,
+):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/recommenders/sample3/recommendations/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.mark_recommendation_failed(request)
+
+
+def test_mark_recommendation_failed_rest_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = recommendation.Recommendation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/recommenders/sample3/recommendations/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = recommendation.Recommendation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.mark_recommendation_failed(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markFailed"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_mark_recommendation_failed_rest_flattened_error(transport: str = "rest"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.mark_recommendation_failed(
+            recommender_service.MarkRecommendationFailedRequest(),
+            name="name_value",
+            state_metadata={"key_value": "value_value"},
+            etag="etag_value",
+        )
+
+
+def test_mark_recommendation_failed_rest_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.GetRecommenderConfigRequest,
+        dict,
+    ],
+)
+def test_get_recommender_config_rest(request_type):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/recommenders/sample3/config"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = recommender_config.RecommenderConfig(
+            name="name_value",
+            etag="etag_value",
+            revision_id="revision_id_value",
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = recommender_config.RecommenderConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_recommender_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recommender_config.RecommenderConfig)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_get_recommender_config_rest_required_fields(
+    request_type=recommender_service.GetRecommenderConfigRequest,
+):
+    transport_class = transports.RecommenderRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_recommender_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_recommender_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = recommender_config.RecommenderConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = recommender_config.RecommenderConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_recommender_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_recommender_config_rest_unset_required_fields():
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_recommender_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_recommender_config_rest_interceptors(null_interceptor):
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RecommenderRestInterceptor(),
+    )
+    client = RecommenderClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RecommenderRestInterceptor, "post_get_recommender_config"
+    ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor, "pre_get_recommender_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = recommender_service.GetRecommenderConfigRequest.pb(
+            recommender_service.GetRecommenderConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = recommender_config.RecommenderConfig.to_json(
+            recommender_config.RecommenderConfig()
+        )
+
+        request = recommender_service.GetRecommenderConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = recommender_config.RecommenderConfig()
+
+        client.get_recommender_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_recommender_config_rest_bad_request(
+    transport: str = "rest",
+    request_type=recommender_service.GetRecommenderConfigRequest,
+):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/recommenders/sample3/config"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_recommender_config(request)
+
+
+def test_get_recommender_config_rest_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = recommender_config.RecommenderConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/recommenders/sample3/config"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = recommender_config.RecommenderConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_recommender_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{name=projects/*/locations/*/recommenders/*/config}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_recommender_config_rest_flattened_error(transport: str = "rest"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_recommender_config(
+            recommender_service.GetRecommenderConfigRequest(),
+            name="name_value",
+        )
+
+
+def test_get_recommender_config_rest_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.UpdateRecommenderConfigRequest,
+        dict,
+    ],
+)
+def test_update_recommender_config_rest(request_type):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "recommender_config": {
+            "name": "projects/sample1/locations/sample2/recommenders/sample3/config"
+        }
+    }
+    request_init["recommender_config"] = {
+        "name": "projects/sample1/locations/sample2/recommenders/sample3/config",
+        "recommender_generation_config": {"params": {"fields": {}}},
+        "etag": "etag_value",
+        "update_time": {"seconds": 751, "nanos": 543},
+        "revision_id": "revision_id_value",
+        "annotations": {},
+        "display_name": "display_name_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcr_recommender_config.RecommenderConfig(
+            name="name_value",
+            etag="etag_value",
+            revision_id="revision_id_value",
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcr_recommender_config.RecommenderConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_recommender_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcr_recommender_config.RecommenderConfig)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_update_recommender_config_rest_required_fields(
+    request_type=recommender_service.UpdateRecommenderConfigRequest,
+):
+    transport_class = transports.RecommenderRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_recommender_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_recommender_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "update_mask",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcr_recommender_config.RecommenderConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gcr_recommender_config.RecommenderConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_recommender_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_recommender_config_rest_unset_required_fields():
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_recommender_config._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "updateMask",
+                "validateOnly",
+            )
+        )
+        & set(("recommenderConfig",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_recommender_config_rest_interceptors(null_interceptor):
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RecommenderRestInterceptor(),
+    )
+    client = RecommenderClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RecommenderRestInterceptor, "post_update_recommender_config"
+    ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor, "pre_update_recommender_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = recommender_service.UpdateRecommenderConfigRequest.pb(
+            recommender_service.UpdateRecommenderConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcr_recommender_config.RecommenderConfig.to_json(
+            gcr_recommender_config.RecommenderConfig()
+        )
+
+        request = recommender_service.UpdateRecommenderConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcr_recommender_config.RecommenderConfig()
+
+        client.update_recommender_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_recommender_config_rest_bad_request(
+    transport: str = "rest",
+    request_type=recommender_service.UpdateRecommenderConfigRequest,
+):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "recommender_config": {
+            "name": "projects/sample1/locations/sample2/recommenders/sample3/config"
+        }
+    }
+    request_init["recommender_config"] = {
+        "name": "projects/sample1/locations/sample2/recommenders/sample3/config",
+        "recommender_generation_config": {"params": {"fields": {}}},
+        "etag": "etag_value",
+        "update_time": {"seconds": 751, "nanos": 543},
+        "revision_id": "revision_id_value",
+        "annotations": {},
+        "display_name": "display_name_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_recommender_config(request)
+
+
+def test_update_recommender_config_rest_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcr_recommender_config.RecommenderConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "recommender_config": {
+                "name": "projects/sample1/locations/sample2/recommenders/sample3/config"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            recommender_config=gcr_recommender_config.RecommenderConfig(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcr_recommender_config.RecommenderConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_recommender_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{recommender_config.name=projects/*/locations/*/recommenders/*/config}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_recommender_config_rest_flattened_error(transport: str = "rest"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_recommender_config(
+            recommender_service.UpdateRecommenderConfigRequest(),
+            recommender_config=gcr_recommender_config.RecommenderConfig(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_recommender_config_rest_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.GetInsightTypeConfigRequest,
+        dict,
+    ],
+)
+def test_get_insight_type_config_rest(request_type):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/insightTypes/sample3/config"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = insight_type_config.InsightTypeConfig(
+            name="name_value",
+            etag="etag_value",
+            revision_id="revision_id_value",
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = insight_type_config.InsightTypeConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_insight_type_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, insight_type_config.InsightTypeConfig)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_get_insight_type_config_rest_required_fields(
+    request_type=recommender_service.GetInsightTypeConfigRequest,
+):
+    transport_class = transports.RecommenderRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_insight_type_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_insight_type_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = insight_type_config.InsightTypeConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = insight_type_config.InsightTypeConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_insight_type_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_insight_type_config_rest_unset_required_fields():
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_insight_type_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_insight_type_config_rest_interceptors(null_interceptor):
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RecommenderRestInterceptor(),
+    )
+    client = RecommenderClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RecommenderRestInterceptor, "post_get_insight_type_config"
+    ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor, "pre_get_insight_type_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = recommender_service.GetInsightTypeConfigRequest.pb(
+            recommender_service.GetInsightTypeConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = insight_type_config.InsightTypeConfig.to_json(
+            insight_type_config.InsightTypeConfig()
+        )
+
+        request = recommender_service.GetInsightTypeConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = insight_type_config.InsightTypeConfig()
+
+        client.get_insight_type_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_insight_type_config_rest_bad_request(
+    transport: str = "rest",
+    request_type=recommender_service.GetInsightTypeConfigRequest,
+):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/insightTypes/sample3/config"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_insight_type_config(request)
+
+
+def test_get_insight_type_config_rest_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = insight_type_config.InsightTypeConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/insightTypes/sample3/config"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = insight_type_config.InsightTypeConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_insight_type_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{name=projects/*/locations/*/insightTypes/*/config}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_insight_type_config_rest_flattened_error(transport: str = "rest"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_insight_type_config(
+            recommender_service.GetInsightTypeConfigRequest(),
+            name="name_value",
+        )
+
+
+def test_get_insight_type_config_rest_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.UpdateInsightTypeConfigRequest,
+        dict,
+    ],
+)
+def test_update_insight_type_config_rest(request_type):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "insight_type_config": {
+            "name": "projects/sample1/locations/sample2/insightTypes/sample3/config"
+        }
+    }
+    request_init["insight_type_config"] = {
+        "name": "projects/sample1/locations/sample2/insightTypes/sample3/config",
+        "insight_type_generation_config": {"params": {"fields": {}}},
+        "etag": "etag_value",
+        "update_time": {"seconds": 751, "nanos": 543},
+        "revision_id": "revision_id_value",
+        "annotations": {},
+        "display_name": "display_name_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcr_insight_type_config.InsightTypeConfig(
+            name="name_value",
+            etag="etag_value",
+            revision_id="revision_id_value",
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcr_insight_type_config.InsightTypeConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_insight_type_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcr_insight_type_config.InsightTypeConfig)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_update_insight_type_config_rest_required_fields(
+    request_type=recommender_service.UpdateInsightTypeConfigRequest,
+):
+    transport_class = transports.RecommenderRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_insight_type_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_insight_type_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "update_mask",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcr_insight_type_config.InsightTypeConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gcr_insight_type_config.InsightTypeConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_insight_type_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_insight_type_config_rest_unset_required_fields():
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_insight_type_config._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "updateMask",
+                "validateOnly",
+            )
+        )
+        & set(("insightTypeConfig",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_insight_type_config_rest_interceptors(null_interceptor):
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RecommenderRestInterceptor(),
+    )
+    client = RecommenderClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RecommenderRestInterceptor, "post_update_insight_type_config"
+    ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor, "pre_update_insight_type_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = recommender_service.UpdateInsightTypeConfigRequest.pb(
+            recommender_service.UpdateInsightTypeConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcr_insight_type_config.InsightTypeConfig.to_json(
+            gcr_insight_type_config.InsightTypeConfig()
+        )
+
+        request = recommender_service.UpdateInsightTypeConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcr_insight_type_config.InsightTypeConfig()
+
+        client.update_insight_type_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_insight_type_config_rest_bad_request(
+    transport: str = "rest",
+    request_type=recommender_service.UpdateInsightTypeConfigRequest,
+):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "insight_type_config": {
+            "name": "projects/sample1/locations/sample2/insightTypes/sample3/config"
+        }
+    }
+    request_init["insight_type_config"] = {
+        "name": "projects/sample1/locations/sample2/insightTypes/sample3/config",
+        "insight_type_generation_config": {"params": {"fields": {}}},
+        "etag": "etag_value",
+        "update_time": {"seconds": 751, "nanos": 543},
+        "revision_id": "revision_id_value",
+        "annotations": {},
+        "display_name": "display_name_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_insight_type_config(request)
+
+
+def test_update_insight_type_config_rest_flattened():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcr_insight_type_config.InsightTypeConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "insight_type_config": {
+                "name": "projects/sample1/locations/sample2/insightTypes/sample3/config"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            insight_type_config=gcr_insight_type_config.InsightTypeConfig(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcr_insight_type_config.InsightTypeConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_insight_type_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta1/{insight_type_config.name=projects/*/locations/*/insightTypes/*/config}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_insight_type_config_rest_flattened_error(transport: str = "rest"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_insight_type_config(
+            recommender_service.UpdateInsightTypeConfigRequest(),
+            insight_type_config=gcr_insight_type_config.InsightTypeConfig(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_insight_type_config_rest_error():
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+def test_credentials_transport_error():
+    # It is an error to provide credentials and a transport instance.
+    transport = transports.RecommenderGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = RecommenderClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+    # It is an error to provide a credentials file and a transport instance.
+    transport = transports.RecommenderGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = RecommenderClient(
+            client_options={"credentials_file": "credentials.json"},
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a transport instance.
+    transport = transports.RecommenderGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = RecommenderClient(
+            client_options=options,
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a credential.
+    options = mock.Mock()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = RecommenderClient(
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
+        )
+
+    # It is an error to provide scopes and a transport instance.
+    transport = transports.RecommenderGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = RecommenderClient(
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
+        )
+
+
+def test_transport_instance():
+    # A client may be instantiated with a custom transport instance.
+    transport = transports.RecommenderGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    client = RecommenderClient(transport=transport)
+    assert client.transport is transport
+
+
+def test_transport_get_channel():
+    # A client may be instantiated with a custom transport instance.
+    transport = transports.RecommenderGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    channel = transport.grpc_channel
+    assert channel
+
+    transport = transports.RecommenderGrpcAsyncIOTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    channel = transport.grpc_channel
+    assert channel
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.RecommenderGrpcTransport,
+        transports.RecommenderGrpcAsyncIOTransport,
+        transports.RecommenderRestTransport,
+    ],
+)
+def test_transport_adc(transport_class):
+    # Test default credentials are used if not provided.
+    with mock.patch.object(google.auth, "default") as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class()
+        adc.assert_called_once()
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "grpc",
+        "rest",
+    ],
+)
+def test_transport_kind(transport_name):
+    transport = RecommenderClient.get_transport_class(transport_name)(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert transport.kind == transport_name
+
+
+def test_transport_grpc_default():
+    # A client should use the gRPC transport by default.
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.RecommenderGrpcTransport,
+    )
+
+
+def test_recommender_base_transport_error():
+    # Passing both a credentials object and credentials_file should raise an error
+    with pytest.raises(core_exceptions.DuplicateCredentialArgs):
+        transport = transports.RecommenderTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            credentials_file="credentials.json",
+        )
+
+
+def test_recommender_base_transport():
+    # Instantiate the base transport.
+    with mock.patch(
+        "google.cloud.recommender_v1beta1.services.recommender.transports.RecommenderTransport.__init__"
+    ) as Transport:
+        Transport.return_value = None
+        transport = transports.RecommenderTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+        )
+
+    # Every method on the transport should just blindly
+    # raise NotImplementedError.
+    methods = (
+        "list_insights",
+        "get_insight",
+        "mark_insight_accepted",
+        "list_recommendations",
+        "get_recommendation",
+        "mark_recommendation_claimed",
+        "mark_recommendation_succeeded",
+        "mark_recommendation_failed",
+        "get_recommender_config",
+        "update_recommender_config",
+        "get_insight_type_config",
+        "update_insight_type_config",
+    )
+    for method in methods:
+        with pytest.raises(NotImplementedError):
+            getattr(transport, method)(request=object())
+
+    with pytest.raises(NotImplementedError):
+        transport.close()
+
+    # Catch all for all remaining methods and properties
+    remainder = [
+        "kind",
+    ]
+    for r in remainder:
+        with pytest.raises(NotImplementedError):
+            getattr(transport, r)()
+
+
+def test_recommender_base_transport_with_credentials_file():
+    # Instantiate the base transport with a credentials file
+    with mock.patch.object(
+        google.auth, "load_credentials_from_file", autospec=True
+    ) as load_creds, mock.patch(
+        "google.cloud.recommender_v1beta1.services.recommender.transports.RecommenderTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport = transports.RecommenderTransport(
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
+        )
+        load_creds.assert_called_once_with(
+            "credentials.json",
+            scopes=None,
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            quota_project_id="octopus",
+        )
+
+
+def test_recommender_base_transport_with_adc():
+    # Test the default credentials are used if credentials and credentials_file are None.
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
+        "google.cloud.recommender_v1beta1.services.recommender.transports.RecommenderTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport = transports.RecommenderTransport()
+        adc.assert_called_once()
+
+
+def test_recommender_auth_adc():
+    # If no credentials are provided, we should use ADC credentials.
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        RecommenderClient()
+        adc.assert_called_once_with(
+            scopes=None,
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            quota_project_id=None,
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.RecommenderGrpcTransport,
+        transports.RecommenderGrpcAsyncIOTransport,
+    ],
+)
+def test_recommender_transport_auth_adc(transport_class):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
+        adc.assert_called_once_with(
+            scopes=["1", "2"],
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            quota_project_id="octopus",
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.RecommenderGrpcTransport,
+        transports.RecommenderGrpcAsyncIOTransport,
+        transports.RecommenderRestTransport,
+    ],
+)
+def test_recommender_transport_auth_gdch_credentials(transport_class):
+    host = "https://language.com"
+    api_audience_tests = [None, "https://language2.com"]
+    api_audience_expect = [host, "https://language2.com"]
+    for t, e in zip(api_audience_tests, api_audience_expect):
+        with mock.patch.object(google.auth, "default", autospec=True) as adc:
+            gdch_mock = mock.MagicMock()
+            type(gdch_mock).with_gdch_audience = mock.PropertyMock(
+                return_value=gdch_mock
+            )
+            adc.return_value = (gdch_mock, None)
+            transport_class(host=host, api_audience=t)
+            gdch_mock.with_gdch_audience.assert_called_once_with(e)
+
+
+@pytest.mark.parametrize(
+    "transport_class,grpc_helpers",
+    [
+        (transports.RecommenderGrpcTransport, grpc_helpers),
+        (transports.RecommenderGrpcAsyncIOTransport, grpc_helpers_async),
+    ],
+)
+def test_recommender_transport_create_channel(transport_class, grpc_helpers):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(
+        google.auth, "default", autospec=True
+    ) as adc, mock.patch.object(
+        grpc_helpers, "create_channel", autospec=True
+    ) as create_channel:
+        creds = ga_credentials.AnonymousCredentials()
+        adc.return_value = (creds, None)
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
+
+        create_channel.assert_called_with(
+            "recommender.googleapis.com:443",
+            credentials=creds,
+            credentials_file=None,
+            quota_project_id="octopus",
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            scopes=["1", "2"],
+            default_host="recommender.googleapis.com",
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [transports.RecommenderGrpcTransport, transports.RecommenderGrpcAsyncIOTransport],
+)
+def test_recommender_grpc_transport_client_cert_source_for_mtls(transport_class):
+    cred = ga_credentials.AnonymousCredentials()
+
+    # Check ssl_channel_credentials is used if provided.
+    with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
+        mock_ssl_channel_creds = mock.Mock()
+        transport_class(
+            host="squid.clam.whelk",
+            credentials=cred,
+            ssl_channel_credentials=mock_ssl_channel_creds,
+        )
+        mock_create_channel.assert_called_once_with(
+            "squid.clam.whelk:443",
+            credentials=cred,
+            credentials_file=None,
+            scopes=None,
+            ssl_credentials=mock_ssl_channel_creds,
+            quota_project_id=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+    # Check if ssl_channel_credentials is not provided, then client_cert_source_for_mtls
+    # is used.
+    with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
+        with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
+            transport_class(
+                credentials=cred,
+                client_cert_source_for_mtls=client_cert_source_callback,
+            )
+            expected_cert, expected_key = client_cert_source_callback()
+            mock_ssl_cred.assert_called_once_with(
+                certificate_chain=expected_cert, private_key=expected_key
+            )
+
+
+def test_recommender_http_transport_client_cert_source_for_mtls():
+    cred = ga_credentials.AnonymousCredentials()
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transports.RecommenderRestTransport(
+            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
+        )
+        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "grpc",
+        "grpc_asyncio",
+        "rest",
+    ],
+)
+def test_recommender_host_no_port(transport_name):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        client_options=client_options.ClientOptions(
+            api_endpoint="recommender.googleapis.com"
+        ),
+        transport=transport_name,
+    )
+    assert client.transport._host == (
+        "recommender.googleapis.com:443"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://recommender.googleapis.com"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "grpc",
+        "grpc_asyncio",
+        "rest",
+    ],
+)
+def test_recommender_host_with_port(transport_name):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        client_options=client_options.ClientOptions(
+            api_endpoint="recommender.googleapis.com:8000"
+        ),
+        transport=transport_name,
+    )
+    assert client.transport._host == (
+        "recommender.googleapis.com:8000"
+        if transport_name in ["grpc", "grpc_asyncio"]
+        else "https://recommender.googleapis.com:8000"
+    )
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_recommender_client_transport_session_collision(transport_name):
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
+    client1 = RecommenderClient(
+        credentials=creds1,
+        transport=transport_name,
+    )
+    client2 = RecommenderClient(
+        credentials=creds2,
+        transport=transport_name,
+    )
+    session1 = client1.transport.list_insights._session
+    session2 = client2.transport.list_insights._session
+    assert session1 != session2
+    session1 = client1.transport.get_insight._session
+    session2 = client2.transport.get_insight._session
+    assert session1 != session2
+    session1 = client1.transport.mark_insight_accepted._session
+    session2 = client2.transport.mark_insight_accepted._session
+    assert session1 != session2
+    session1 = client1.transport.list_recommendations._session
+    session2 = client2.transport.list_recommendations._session
+    assert session1 != session2
+    session1 = client1.transport.get_recommendation._session
+    session2 = client2.transport.get_recommendation._session
+    assert session1 != session2
+    session1 = client1.transport.mark_recommendation_claimed._session
+    session2 = client2.transport.mark_recommendation_claimed._session
+    assert session1 != session2
+    session1 = client1.transport.mark_recommendation_succeeded._session
+    session2 = client2.transport.mark_recommendation_succeeded._session
+    assert session1 != session2
+    session1 = client1.transport.mark_recommendation_failed._session
+    session2 = client2.transport.mark_recommendation_failed._session
+    assert session1 != session2
+    session1 = client1.transport.get_recommender_config._session
+    session2 = client2.transport.get_recommender_config._session
+    assert session1 != session2
+    session1 = client1.transport.update_recommender_config._session
+    session2 = client2.transport.update_recommender_config._session
+    assert session1 != session2
+    session1 = client1.transport.get_insight_type_config._session
+    session2 = client2.transport.get_insight_type_config._session
+    assert session1 != session2
+    session1 = client1.transport.update_insight_type_config._session
+    session2 = client2.transport.update_insight_type_config._session
+    assert session1 != session2
+
+
+def test_recommender_grpc_transport_channel():
+    channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
+
+    # Check that channel is used if provided.
+    transport = transports.RecommenderGrpcTransport(
+        host="squid.clam.whelk",
+        channel=channel,
+    )
+    assert transport.grpc_channel == channel
+    assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
+
+
+def test_recommender_grpc_asyncio_transport_channel():
+    channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
+
+    # Check that channel is used if provided.
+    transport = transports.RecommenderGrpcAsyncIOTransport(
+        host="squid.clam.whelk",
+        channel=channel,
+    )
+    assert transport.grpc_channel == channel
+    assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
+
+
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
+@pytest.mark.parametrize(
+    "transport_class",
+    [transports.RecommenderGrpcTransport, transports.RecommenderGrpcAsyncIOTransport],
+)
+def test_recommender_transport_channel_mtls_with_client_cert_source(transport_class):
+    with mock.patch(
+        "grpc.ssl_channel_credentials", autospec=True
+    ) as grpc_ssl_channel_cred:
+        with mock.patch.object(
+            transport_class, "create_channel"
+        ) as grpc_create_channel:
+            mock_ssl_cred = mock.Mock()
+            grpc_ssl_channel_cred.return_value = mock_ssl_cred
+
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+
+            cred = ga_credentials.AnonymousCredentials()
+            with pytest.warns(DeprecationWarning):
+                with mock.patch.object(google.auth, "default") as adc:
+                    adc.return_value = (cred, None)
+                    transport = transport_class(
+                        host="squid.clam.whelk",
+                        api_mtls_endpoint="mtls.squid.clam.whelk",
+                        client_cert_source=client_cert_source_callback,
+                    )
+                    adc.assert_called_once()
+
+            grpc_ssl_channel_cred.assert_called_once_with(
+                certificate_chain=b"cert bytes", private_key=b"key bytes"
+            )
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=cred,
+                credentials_file=None,
+                scopes=None,
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
+            assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
+
+
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
+@pytest.mark.parametrize(
+    "transport_class",
+    [transports.RecommenderGrpcTransport, transports.RecommenderGrpcAsyncIOTransport],
+)
+def test_recommender_transport_channel_mtls_with_adc(transport_class):
+    mock_ssl_cred = mock.Mock()
+    with mock.patch.multiple(
+        "google.auth.transport.grpc.SslCredentials",
+        __init__=mock.Mock(return_value=None),
+        ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
+    ):
+        with mock.patch.object(
+            transport_class, "create_channel"
+        ) as grpc_create_channel:
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+            mock_cred = mock.Mock()
+
+            with pytest.warns(DeprecationWarning):
+                transport = transport_class(
+                    host="squid.clam.whelk",
+                    credentials=mock_cred,
+                    api_mtls_endpoint="mtls.squid.clam.whelk",
+                    client_cert_source=None,
+                )
+
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=mock_cred,
+                credentials_file=None,
+                scopes=None,
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
+            assert transport.grpc_channel == mock_grpc_channel
+
+
+def test_insight_path():
+    project = "squid"
+    location = "clam"
+    insight_type = "whelk"
+    insight = "octopus"
+    expected = "projects/{project}/locations/{location}/insightTypes/{insight_type}/insights/{insight}".format(
+        project=project,
+        location=location,
+        insight_type=insight_type,
+        insight=insight,
+    )
+    actual = RecommenderClient.insight_path(project, location, insight_type, insight)
+    assert expected == actual
+
+
+def test_parse_insight_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "insight_type": "cuttlefish",
+        "insight": "mussel",
+    }
+    path = RecommenderClient.insight_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecommenderClient.parse_insight_path(path)
+    assert expected == actual
+
+
+def test_insight_type_path():
+    project = "winkle"
+    location = "nautilus"
+    insight_type = "scallop"
+    expected = (
+        "projects/{project}/locations/{location}/insightTypes/{insight_type}".format(
+            project=project,
+            location=location,
+            insight_type=insight_type,
+        )
+    )
+    actual = RecommenderClient.insight_type_path(project, location, insight_type)
+    assert expected == actual
+
+
+def test_parse_insight_type_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
+        "insight_type": "clam",
+    }
+    path = RecommenderClient.insight_type_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecommenderClient.parse_insight_type_path(path)
+    assert expected == actual
+
+
+def test_insight_type_config_path():
+    project = "whelk"
+    location = "octopus"
+    insight_type = "oyster"
+    expected = "projects/{project}/locations/{location}/insightTypes/{insight_type}/config".format(
+        project=project,
+        location=location,
+        insight_type=insight_type,
+    )
+    actual = RecommenderClient.insight_type_config_path(project, location, insight_type)
+    assert expected == actual
+
+
+def test_parse_insight_type_config_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "insight_type": "mussel",
+    }
+    path = RecommenderClient.insight_type_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecommenderClient.parse_insight_type_config_path(path)
+    assert expected == actual
+
+
+def test_recommendation_path():
+    project = "winkle"
+    location = "nautilus"
+    recommender = "scallop"
+    recommendation = "abalone"
+    expected = "projects/{project}/locations/{location}/recommenders/{recommender}/recommendations/{recommendation}".format(
+        project=project,
+        location=location,
+        recommender=recommender,
+        recommendation=recommendation,
+    )
+    actual = RecommenderClient.recommendation_path(
+        project, location, recommender, recommendation
+    )
+    assert expected == actual
+
+
+def test_parse_recommendation_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "recommender": "whelk",
+        "recommendation": "octopus",
+    }
+    path = RecommenderClient.recommendation_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecommenderClient.parse_recommendation_path(path)
+    assert expected == actual
+
+
+def test_recommender_path():
+    project = "oyster"
+    location = "nudibranch"
+    recommender = "cuttlefish"
+    expected = (
+        "projects/{project}/locations/{location}/recommenders/{recommender}".format(
+            project=project,
+            location=location,
+            recommender=recommender,
+        )
+    )
+    actual = RecommenderClient.recommender_path(project, location, recommender)
+    assert expected == actual
+
+
+def test_parse_recommender_path():
+    expected = {
+        "project": "mussel",
+        "location": "winkle",
+        "recommender": "nautilus",
+    }
+    path = RecommenderClient.recommender_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecommenderClient.parse_recommender_path(path)
+    assert expected == actual
+
+
+def test_recommender_config_path():
+    project = "scallop"
+    location = "abalone"
+    recommender = "squid"
+    expected = "projects/{project}/locations/{location}/recommenders/{recommender}/config".format(
+        project=project,
+        location=location,
+        recommender=recommender,
+    )
+    actual = RecommenderClient.recommender_config_path(project, location, recommender)
+    assert expected == actual
+
+
+def test_parse_recommender_config_path():
+    expected = {
+        "project": "clam",
+        "location": "whelk",
+        "recommender": "octopus",
+    }
+    path = RecommenderClient.recommender_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecommenderClient.parse_recommender_config_path(path)
+    assert expected == actual
+
+
+def test_common_billing_account_path():
+    billing_account = "oyster"
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = RecommenderClient.common_billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "nudibranch",
+    }
+    path = RecommenderClient.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecommenderClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "cuttlefish"
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
+    actual = RecommenderClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "mussel",
+    }
+    path = RecommenderClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecommenderClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "winkle"
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
+    actual = RecommenderClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "nautilus",
+    }
+    path = RecommenderClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecommenderClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "scallop"
+    expected = "projects/{project}".format(
+        project=project,
+    )
+    actual = RecommenderClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "abalone",
+    }
+    path = RecommenderClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecommenderClient.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "squid"
+    location = "clam"
+    expected = "projects/{project}/locations/{location}".format(
+        project=project,
+        location=location,
+    )
+    actual = RecommenderClient.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+    }
+    path = RecommenderClient.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecommenderClient.parse_common_location_path(path)
+    assert expected == actual
+
+
+def test_client_with_default_client_info():
+    client_info = gapic_v1.client_info.ClientInfo()
+
+    with mock.patch.object(
+        transports.RecommenderTransport, "_prep_wrapped_messages"
+    ) as prep:
+        client = RecommenderClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
+        )
+        prep.assert_called_once_with(client_info)
+
+    with mock.patch.object(
+        transports.RecommenderTransport, "_prep_wrapped_messages"
+    ) as prep:
+        transport_class = RecommenderClient.get_transport_class()
+        transport = transport_class(
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
+        )
+        prep.assert_called_once_with(client_info)
+
+
+@pytest.mark.asyncio
+async def test_transport_close_async():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close():
+    transports = {
+        "rest": "_session",
+        "grpc": "_grpc_channel",
+    }
+
+    for transport, close_name in transports.items():
+        client = RecommenderClient(
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
+        )
+        with mock.patch.object(
+            type(getattr(client.transport, close_name)), "close"
+        ) as close:
+            with client:
+                close.assert_not_called()
+            close.assert_called_once()
+
+
+def test_client_ctx():
+    transports = [
+        "rest",
+        "grpc",
+    ]
+    for transport in transports:
+        client = RecommenderClient(
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
+        )
+        # Test client calls underlying transport.
+        with mock.patch.object(type(client.transport), "close") as close:
+            close.assert_not_called()
+            with client:
+                pass
+            close.assert_called()
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class",
+    [
+        (RecommenderClient, transports.RecommenderGrpcTransport),
+        (RecommenderAsyncClient, transports.RecommenderGrpcAsyncIOTransport),
+    ],
+)
+def test_api_key_credentials(client_class, transport_class):
+    with mock.patch.object(
+        google.auth._default, "get_api_key_credentials", create=True
+    ) as get_api_key_credentials:
+        mock_cred = mock.Mock()
+        get_api_key_credentials.return_value = mock_cred
+        options = client_options.ClientOptions()
+        options.api_key = "api_key"
+        with mock.patch.object(transport_class, "__init__") as patched:
+            patched.return_value = None
+            client = client_class(client_options=options)
+            patched.assert_called_once_with(
+                credentials=mock_cred,
+                credentials_file=None,
+                host=client.DEFAULT_ENDPOINT,
+                scopes=None,
+                client_cert_source_for_mtls=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
+                api_audience=None,
+            )
