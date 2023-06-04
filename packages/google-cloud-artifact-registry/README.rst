@@ -1,9 +1,9 @@
-Python Client for Artifact Registry API
-=======================================
+Python Client for Artifact Registry
+===================================
 
 |stable| |pypi| |versions|
 
-`Artifact Registry API`_: provides a single place for your organization to manage container images and language packages (such as Maven and npm). It is fully integrated with Google Cloud's tooling and runtimes and comes with support for native artifact protocols. This makes it simple to integrate it with your CI/CD tooling to set up automated pipelines.
+`Artifact Registry`_: provides a single place for your organization to manage container images and language packages (such as Maven and npm). It is fully integrated with Google Cloud's tooling and runtimes and comes with support for native artifact protocols. This makes it simple to integrate it with your CI/CD tooling to set up automated pipelines.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Artifact Registry API
    :target: https://pypi.org/project/google-cloud-artifact-registry/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-artifact-registry.svg
    :target: https://pypi.org/project/google-cloud-artifact-registry/
-.. _Artifact Registry API: https://cloud.google.com/artifact-registry
+.. _Artifact Registry: https://cloud.google.com/artifact-registry
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/artifactregistry/latest
 .. _Product Documentation:  https://cloud.google.com/artifact-registry
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Artifact Registry API.`_
+3. `Enable the Artifact Registry.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Artifact Registry API.:  https://cloud.google.com/artifact-registry
+.. _Enable the Artifact Registry.:  https://cloud.google.com/artifact-registry
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Artifact Registry API
+-  Read the `Client Library Documentation`_ for Artifact Registry
    to see other available methods on the client.
--  Read the `Artifact Registry API Product documentation`_ to learn
+-  Read the `Artifact Registry Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Artifact Registry API Product documentation:  https://cloud.google.com/artifact-registry
+.. _Artifact Registry Product documentation:  https://cloud.google.com/artifact-registry
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
