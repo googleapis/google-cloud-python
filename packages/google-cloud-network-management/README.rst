@@ -1,9 +1,9 @@
-Python Client for Network Management API
-========================================
+Python Client for Network Management
+====================================
 
 |stable| |pypi| |versions|
 
-`Network Management API`_: provides a collection of network performance monitoring and diagnostic capabilities.
+`Network Management`_: provides a collection of network performance monitoring and diagnostic capabilities.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Network Management API
    :target: https://pypi.org/project/google-cloud-network-management/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-network-management.svg
    :target: https://pypi.org/project/google-cloud-network-management/
-.. _Network Management API: https://cloud.google.com/network-management
+.. _Network Management: https://cloud.google.com/network-management
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/networkmanagement/latest
 .. _Product Documentation:  https://cloud.google.com/network-management
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Network Management API.`_
+3. `Enable the Network Management.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Network Management API.:  https://cloud.google.com/network-management
+.. _Enable the Network Management.:  https://cloud.google.com/network-management
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Network Management API
+-  Read the `Client Library Documentation`_ for Network Management
    to see other available methods on the client.
--  Read the `Network Management API Product documentation`_ to learn
+-  Read the `Network Management Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Network Management API Product documentation:  https://cloud.google.com/network-management
+.. _Network Management Product documentation:  https://cloud.google.com/network-management
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
