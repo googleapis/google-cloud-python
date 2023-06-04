@@ -1,0 +1,325 @@
+# Changelog
+
+## [1.8.1](https://github.com/googleapis/python-artifact-registry/compare/v1.8.0...v1.8.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#231](https://github.com/googleapis/python-artifact-registry/issues/231)) ([5433de8](https://github.com/googleapis/python-artifact-registry/commit/5433de8e9b3109dfa162d2ef1a454ab2061c35e6))
+
+## [1.8.0](https://github.com/googleapis/python-artifact-registry/compare/v1.7.0...v1.8.0) (2023-02-27)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#224](https://github.com/googleapis/python-artifact-registry/issues/224)) ([c06b139](https://github.com/googleapis/python-artifact-registry/commit/c06b13969006b365fe7e4450ca86146ee79701c0))
+
+## [1.7.0](https://github.com/googleapis/python-artifact-registry/compare/v1.6.1...v1.7.0) (2023-02-04)
+
+
+### Features
+
+* Add `BatchDeleteVersionMetadata` to return version that failed to delete ([bed057d](https://github.com/googleapis/python-artifact-registry/commit/bed057d56e91a912dacdc0d1428e801c91fff307))
+* Add `order_by` to `ListDockerImages` ([bed057d](https://github.com/googleapis/python-artifact-registry/commit/bed057d56e91a912dacdc0d1428e801c91fff307))
+* Add an API to get and update VPCSC config ([bed057d](https://github.com/googleapis/python-artifact-registry/commit/bed057d56e91a912dacdc0d1428e801c91fff307))
+* Add format-specific resources `MavenArtifact`, `NpmPackage`, `KfpArtifact` and `PythonPackage` ([bed057d](https://github.com/googleapis/python-artifact-registry/commit/bed057d56e91a912dacdc0d1428e801c91fff307))
+
+
+### Bug Fixes
+
+* Deprecate `REDIRECTION_FROM_GCR_IO_FINALIZED` ([bed057d](https://github.com/googleapis/python-artifact-registry/commit/bed057d56e91a912dacdc0d1428e801c91fff307))
+* Make `GetFileRequest.name` and `ListFilesRequest.parent` required ([bed057d](https://github.com/googleapis/python-artifact-registry/commit/bed057d56e91a912dacdc0d1428e801c91fff307))
+* Make `Package` a resource ([bed057d](https://github.com/googleapis/python-artifact-registry/commit/bed057d56e91a912dacdc0d1428e801c91fff307))
+
+## [1.6.1](https://github.com/googleapis/python-artifact-registry/compare/v1.6.0...v1.6.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([62d61be](https://github.com/googleapis/python-artifact-registry/commit/62d61be47caa52f7d96ccc054010aef6ff43d5bc))
+
+
+### Documentation
+
+* Add documentation for enums ([62d61be](https://github.com/googleapis/python-artifact-registry/commit/62d61be47caa52f7d96ccc054010aef6ff43d5bc))
+
+## [1.6.0](https://github.com/googleapis/python-artifact-registry/compare/v1.5.0...v1.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#214](https://github.com/googleapis/python-artifact-registry/issues/214)) ([1b68d31](https://github.com/googleapis/python-artifact-registry/commit/1b68d3161973acef42fb458efa52d6cb81597ae1))
+
+## [1.5.0](https://github.com/googleapis/python-artifact-registry/compare/v1.4.1...v1.5.0) (2023-01-03)
+
+
+### Features
+
+* Add location methods ([#211](https://github.com/googleapis/python-artifact-registry/issues/211)) ([2458b5e](https://github.com/googleapis/python-artifact-registry/commit/2458b5e00b1cb7a91254228a37e349816f13f96c))
+
+## [1.4.1](https://github.com/googleapis/python-artifact-registry/compare/v1.4.0...v1.4.1) (2022-12-08)
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([c6e2c56](https://github.com/googleapis/python-artifact-registry/commit/c6e2c5683d135ce34b3aa86ff0262967d4a8000a))
+* Drop usage of pkg_resources ([c6e2c56](https://github.com/googleapis/python-artifact-registry/commit/c6e2c5683d135ce34b3aa86ff0262967d4a8000a))
+* Fix timeout default values ([c6e2c56](https://github.com/googleapis/python-artifact-registry/commit/c6e2c5683d135ce34b3aa86ff0262967d4a8000a))
+
+
+### Documentation
+
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([c6e2c56](https://github.com/googleapis/python-artifact-registry/commit/c6e2c5683d135ce34b3aa86ff0262967d4a8000a))
+
+## [1.4.0](https://github.com/googleapis/python-artifact-registry/compare/v1.3.3...v1.4.0) (2022-11-16)
+
+
+### Features
+
+* add support for `google.cloud.artifactregistry.__version__` ([93a383f](https://github.com/googleapis/python-artifact-registry/commit/93a383ff7c66ed9f6f2a65e698cb5e22126c6cf2))
+* Add typing to proto.Message based class attributes ([9d151b1](https://github.com/googleapis/python-artifact-registry/commit/9d151b12c06d25beb5078ee293b79369eff46ca4))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([93a383f](https://github.com/googleapis/python-artifact-registry/commit/93a383ff7c66ed9f6f2a65e698cb5e22126c6cf2))
+* **deps:** require google-api-core &gt;=1.33.2 ([93a383f](https://github.com/googleapis/python-artifact-registry/commit/93a383ff7c66ed9f6f2a65e698cb5e22126c6cf2))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([9d151b1](https://github.com/googleapis/python-artifact-registry/commit/9d151b12c06d25beb5078ee293b79369eff46ca4))
+
+## [1.3.3](https://github.com/googleapis/python-artifact-registry/compare/v1.3.2...v1.3.3) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#196](https://github.com/googleapis/python-artifact-registry/issues/196)) ([ebb9234](https://github.com/googleapis/python-artifact-registry/commit/ebb92349e127ffa672ce3a35bc63104e81881f48))
+
+## [1.3.2](https://github.com/googleapis/python-artifact-registry/compare/v1.3.1...v1.3.2) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#194](https://github.com/googleapis/python-artifact-registry/issues/194)) ([903c755](https://github.com/googleapis/python-artifact-registry/commit/903c755294263b900f720d6249eb129d086cdbd5))
+
+## [1.3.1](https://github.com/googleapis/python-artifact-registry/compare/v1.3.0...v1.3.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#181](https://github.com/googleapis/python-artifact-registry/issues/181)) ([3a857d7](https://github.com/googleapis/python-artifact-registry/commit/3a857d7de80bcad309aff1ea62d687535b744a1c))
+* **deps:** require proto-plus >= 1.22.0 ([3a857d7](https://github.com/googleapis/python-artifact-registry/commit/3a857d7de80bcad309aff1ea62d687535b744a1c))
+
+## [1.3.0](https://github.com/googleapis/python-artifact-registry/compare/v1.2.1...v1.3.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([340303e](https://github.com/googleapis/python-artifact-registry/commit/340303e72af3bca4f2ab75e280f614ff3992b65e))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#172](https://github.com/googleapis/python-artifact-registry/issues/172)) ([340303e](https://github.com/googleapis/python-artifact-registry/commit/340303e72af3bca4f2ab75e280f614ff3992b65e))
+* require python 3.7+ ([#174](https://github.com/googleapis/python-artifact-registry/issues/174)) ([0c8a55c](https://github.com/googleapis/python-artifact-registry/commit/0c8a55c1b7097553bb3f8476e1a22cdbb81bf83f))
+
+## [1.2.1](https://github.com/googleapis/python-artifact-registry/compare/v1.2.0...v1.2.1) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#164](https://github.com/googleapis/python-artifact-registry/issues/164)) ([3f57f9a](https://github.com/googleapis/python-artifact-registry/commit/3f57f9a14b3e8a93abefe5f57a8e5066ff7a3b6f))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#165](https://github.com/googleapis/python-artifact-registry/issues/165)) ([57f37c9](https://github.com/googleapis/python-artifact-registry/commit/57f37c956ef4adf6800ba45f20266693e9f11b57))
+
+## [1.2.0](https://github.com/googleapis/python-artifact-registry/compare/v1.1.2...v1.2.0) (2022-04-21)
+
+
+### Features
+
+* AuditConfig for IAM v1 ([c22893b](https://github.com/googleapis/python-artifact-registry/commit/c22893b8e671fea8416ff1e6a4f23aa03e201e74))
+* promote v1beta2 features to v1 ([#138](https://github.com/googleapis/python-artifact-registry/issues/138)) ([842c107](https://github.com/googleapis/python-artifact-registry/commit/842c107cb6f6705c3228495ce43653414801af9f))
+
+
+### Bug Fixes
+
+* **deps:** require grpc-google-iam-v1 >=0.12.4 ([c22893b](https://github.com/googleapis/python-artifact-registry/commit/c22893b8e671fea8416ff1e6a4f23aa03e201e74))
+
+## [1.1.2](https://github.com/googleapis/python-artifact-registry/compare/v1.1.1...v1.1.2) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#136](https://github.com/googleapis/python-artifact-registry/issues/136)) ([9bc4ec5](https://github.com/googleapis/python-artifact-registry/commit/9bc4ec5ec05e8efaf9b45725782c9ca29d1c5076))
+* **deps:** require proto-plus>=1.15.0 ([9bc4ec5](https://github.com/googleapis/python-artifact-registry/commit/9bc4ec5ec05e8efaf9b45725782c9ca29d1c5076))
+
+
+### Documentation
+
+* more details for ListFilesRequest parent field ([#133](https://github.com/googleapis/python-artifact-registry/issues/133)) ([f4ef78b](https://github.com/googleapis/python-artifact-registry/commit/f4ef78b6b108543bf07d8c564f4316a8314e8d54))
+
+## [1.1.1](https://github.com/googleapis/python-artifact-registry/compare/v1.1.0...v1.1.1) (2022-02-15)
+
+
+### Bug Fixes
+
+* **deps:** remove unused dependency libcst ([#125](https://github.com/googleapis/python-artifact-registry/issues/125)) ([9980b1e](https://github.com/googleapis/python-artifact-registry/commit/9980b1ee169d0dab3306a785872a66d96b242eb5))
+* resolve DuplicateCredentialArgs error when using credentials_file ([d4329aa](https://github.com/googleapis/python-artifact-registry/commit/d4329aaffe59859df2c2f1ff10894eaa547ce7df))
+
+
+### Documentation
+
+* add autogenerated code snippets ([ef8af7a](https://github.com/googleapis/python-artifact-registry/commit/ef8af7ac0cbcca7acdbf6066c1823c468e2da71d))
+* add autogenerated code snippets ([#123](https://github.com/googleapis/python-artifact-registry/issues/123)) ([ef8af7a](https://github.com/googleapis/python-artifact-registry/commit/ef8af7ac0cbcca7acdbf6066c1823c468e2da71d)), closes [#65](https://github.com/googleapis/python-artifact-registry/issues/65)
+
+## [1.1.0](https://github.com/googleapis/python-artifact-registry/compare/v1.0.2...v1.1.0) (2022-01-25)
+
+
+### Features
+
+* add api key support ([#119](https://github.com/googleapis/python-artifact-registry/issues/119)) ([d22f2d9](https://github.com/googleapis/python-artifact-registry/commit/d22f2d93ffcc169540991d224a54c81eb7ca09a4))
+* add APIs for importing and uploading Apt and Yum artifacts ([#116](https://github.com/googleapis/python-artifact-registry/issues/116)) ([a86d4f1](https://github.com/googleapis/python-artifact-registry/commit/a86d4f143c401e20052182b7bba3b9178014dace))
+* add order_by support for listing versions ([a86d4f1](https://github.com/googleapis/python-artifact-registry/commit/a86d4f143c401e20052182b7bba3b9178014dace))
+* add version policy support for Maven repositories ([a86d4f1](https://github.com/googleapis/python-artifact-registry/commit/a86d4f143c401e20052182b7bba3b9178014dace))
+
+
+### Bug Fixes
+
+* mark a few resource name fields as required ([a86d4f1](https://github.com/googleapis/python-artifact-registry/commit/a86d4f143c401e20052182b7bba3b9178014dace))
+
+## [1.0.2](https://www.github.com/googleapis/python-artifact-registry/compare/v1.0.1...v1.0.2) (2022-01-07)
+
+
+### Bug Fixes
+
+* fix resource pattern ID segment name ([#107](https://www.github.com/googleapis/python-artifact-registry/issues/107)) ([254dc73](https://www.github.com/googleapis/python-artifact-registry/commit/254dc73dbbc52d41014e0d2db81f3cc6cd864058))
+
+## [1.0.1](https://www.github.com/googleapis/python-artifact-registry/compare/v1.0.0...v1.0.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([90e3313](https://www.github.com/googleapis/python-artifact-registry/commit/90e3313b50b127d6fc562e7138b12743412fa064))
+* **deps:** require google-api-core >= 1.28.0 ([90e3313](https://www.github.com/googleapis/python-artifact-registry/commit/90e3313b50b127d6fc562e7138b12743412fa064))
+
+
+### Documentation
+
+* list oneofs in docstring ([90e3313](https://www.github.com/googleapis/python-artifact-registry/commit/90e3313b50b127d6fc562e7138b12743412fa064))
+
+## [1.0.0](https://www.github.com/googleapis/python-artifact-registry/compare/v0.5.0...v1.0.0) (2021-10-22)
+
+
+### Features
+
+* bump release level to production/stable ([#82](https://www.github.com/googleapis/python-artifact-registry/issues/82)) ([d3705c1](https://www.github.com/googleapis/python-artifact-registry/commit/d3705c13605af3e4167c2e86eeb55683a271a3d4))
+
+
+### Documentation
+
+* fix docstring formatting ([#93](https://www.github.com/googleapis/python-artifact-registry/issues/93)) ([e6c2084](https://www.github.com/googleapis/python-artifact-registry/commit/e6c208427336e8c9d5a5d607c02406c856af6a94))
+
+## [0.5.0](https://www.github.com/googleapis/python-artifact-registry/compare/v0.4.1...v0.5.0) (2021-10-11)
+
+
+### Features
+
+* add context manager support in client ([#88](https://www.github.com/googleapis/python-artifact-registry/issues/88)) ([0f631cc](https://www.github.com/googleapis/python-artifact-registry/commit/0f631cc8bd8ff0928d5403e756d2206f1842c35c))
+* add trove classifier for python 3.10 ([#91](https://www.github.com/googleapis/python-artifact-registry/issues/91)) ([e392f56](https://www.github.com/googleapis/python-artifact-registry/commit/e392f565e5e9252bff8a5f6ede67c11b25438cdd))
+
+## [0.4.1](https://www.github.com/googleapis/python-artifact-registry/compare/v0.4.0...v0.4.1) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([8a6b687](https://www.github.com/googleapis/python-artifact-registry/commit/8a6b6870f39c34bd1cf2dafd591c58ebd2c48d77))
+
+## [0.4.0](https://www.github.com/googleapis/python-artifact-registry/compare/v0.3.3...v0.4.0) (2021-09-24)
+
+
+### Features
+
+* add Artifact Registry v1  ([#80](https://www.github.com/googleapis/python-artifact-registry/issues/80)) ([43413eb](https://www.github.com/googleapis/python-artifact-registry/commit/43413ebd0d6823233573ab88c0340e4165ee4487))
+* set artifactregistry_v1 as the default import ([43413eb](https://www.github.com/googleapis/python-artifact-registry/commit/43413ebd0d6823233573ab88c0340e4165ee4487))
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([43413eb](https://www.github.com/googleapis/python-artifact-registry/commit/43413ebd0d6823233573ab88c0340e4165ee4487))
+
+## [0.3.3](https://www.github.com/googleapis/python-artifact-registry/compare/v0.3.2...v0.3.3) (2021-07-27)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#59](https://www.github.com/googleapis/python-artifact-registry/issues/59)) ([bb98a8c](https://www.github.com/googleapis/python-artifact-registry/commit/bb98a8cfcbfadf95ef72499d8bf1fb4ae2e1b599))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#55](https://www.github.com/googleapis/python-artifact-registry/issues/55)) ([55773fe](https://www.github.com/googleapis/python-artifact-registry/commit/55773fe0ab33a8aa5c8b6669eb75e9615f226db0))
+
+
+### Miscellaneous Chores
+
+* release as 0.3.3 ([#60](https://www.github.com/googleapis/python-artifact-registry/issues/60)) ([b8d7865](https://www.github.com/googleapis/python-artifact-registry/commit/b8d78650cceae268f6616c4eefef3200c7477cc1))
+
+## [0.3.2](https://www.github.com/googleapis/python-artifact-registry/compare/v0.3.1...v0.3.2) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#54](https://www.github.com/googleapis/python-artifact-registry/issues/54)) ([b171295](https://www.github.com/googleapis/python-artifact-registry/commit/b171295c19c0e29025aad08975ceb9a8c9aac66c))
+
+## [0.3.1](https://www.github.com/googleapis/python-artifact-registry/compare/v0.3.0...v0.3.1) (2021-06-30)
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([ce910f4](https://www.github.com/googleapis/python-artifact-registry/commit/ce910f40a365c56a07372664adffe98a628fabe9))
+* disable always_use_jwt_access ([#50](https://www.github.com/googleapis/python-artifact-registry/issues/50)) ([ce910f4](https://www.github.com/googleapis/python-artifact-registry/commit/ce910f40a365c56a07372664adffe98a628fabe9))
+
+## [0.3.0](https://www.github.com/googleapis/python-artifact-registry/compare/v0.2.2...v0.3.0) (2021-06-23)
+
+
+### Features
+
+* add always_use_jwt_access ([#46](https://www.github.com/googleapis/python-artifact-registry/issues/46)) ([247d779](https://www.github.com/googleapis/python-artifact-registry/commit/247d779c881e7fdfc7696adcb3256ca06b3980c3))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-artifact-registry/issues/1127)) ([#41](https://www.github.com/googleapis/python-artifact-registry/issues/41)) ([7ae05ed](https://www.github.com/googleapis/python-artifact-registry/commit/7ae05eddef4fce0f3f09774e835381f901a6a031)), closes [#1126](https://www.github.com/googleapis/python-artifact-registry/issues/1126)
+
+## [0.2.2](https://www.github.com/googleapis/python-artifact-registry/compare/v0.2.1...v0.2.2) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#38](https://www.github.com/googleapis/python-artifact-registry/issues/38)) ([345496f](https://www.github.com/googleapis/python-artifact-registry/commit/345496fbd96d4c780acdb2ee940e530e7d48ab6c))
+
+## [0.2.1](https://www.github.com/googleapis/python-artifact-registry/compare/v0.2.0...v0.2.1) (2021-06-01)
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#33](https://www.github.com/googleapis/python-artifact-registry/issues/33)) ([ca2907e](https://www.github.com/googleapis/python-artifact-registry/commit/ca2907efdcd05a88a63c798a367baa71f2fb78b4))
+
+## [0.2.0](https://www.github.com/googleapis/python-artifact-registry/compare/v0.1.0...v0.2.0) (2021-05-25)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([#25](https://www.github.com/googleapis/python-artifact-registry/issues/25)) ([fade594](https://www.github.com/googleapis/python-artifact-registry/commit/fade594980fa8f389abc0e3f84e34cb1bcda1f1e))
+
+## 0.1.0 (2021-03-15)
+
+
+### Features
+
+* generate v1beta2 ([87afc6d](https://www.github.com/googleapis/python-artifact-registry/commit/87afc6ddd4966e4c9acb0a88c556cbcd2fb6b566))
