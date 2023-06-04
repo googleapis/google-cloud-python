@@ -1,9 +1,9 @@
-Python Client for Cloud Composer API
-====================================
+Python Client for Cloud Composer
+================================
 
 |stable| |pypi| |versions|
 
-`Cloud Composer API`_: is a managed Apache Airflow service that helps you create, schedule, monitor and manage workflows. Cloud Composer automation helps you create Airflow environments quickly and use Airflow-native tools, such as the powerful Airflow web interface and command line tools, so you can focus on your workflows and not your infrastructure.
+`Cloud Composer`_: is a managed Apache Airflow service that helps you create, schedule, monitor and manage workflows. Cloud Composer automation helps you create Airflow environments quickly and use Airflow-native tools, such as the powerful Airflow web interface and command line tools, so you can focus on your workflows and not your infrastructure.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Cloud Composer API
    :target: https://pypi.org/project/google-cloud-orchestration-airflow/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-orchestration-airflow.svg
    :target: https://pypi.org/project/google-cloud-orchestration-airflow/
-.. _Cloud Composer API: https://cloud.google.com/composer/
+.. _Cloud Composer: https://cloud.google.com/composer/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/composer/latest
 .. _Product Documentation:  https://cloud.google.com/composer/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Composer API.`_
+3. `Enable the Cloud Composer.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Composer API.:  https://cloud.google.com/composer/
+.. _Enable the Cloud Composer.:  https://cloud.google.com/composer/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Composer API
+-  Read the `Client Library Documentation`_ for Cloud Composer
    to see other available methods on the client.
--  Read the `Cloud Composer API Product documentation`_ to learn
+-  Read the `Cloud Composer Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Composer API Product documentation:  https://cloud.google.com/composer/
+.. _Cloud Composer Product documentation:  https://cloud.google.com/composer/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
