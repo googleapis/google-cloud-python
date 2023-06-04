@@ -1,0 +1,16 @@
+{
+    "name": "source",
+    "name_pretty": "Source Context",
+    "product_documentation": "https://cloud.google.com",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/source/latest",
+    "issue_tracker": "http://github.com/googleapis/python-source-context/issues",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "OTHER",
+    "repo": "googleapis/python-source-context",
+    "distribution_name": "google-cloud-source-context",
+    "api_id": "source.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "source"
+}
