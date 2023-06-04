@@ -1,0 +1,328 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.bare_metal_solution_v2",
+  "protoPackage": "google.cloud.baremetalsolution.v2",
+  "schema": "1.0",
+  "services": {
+    "BareMetalSolution": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "BareMetalSolutionClient",
+          "rpcs": {
+            "DetachLun": {
+              "methods": [
+                "detach_lun"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "GetLun": {
+              "methods": [
+                "get_lun"
+              ]
+            },
+            "GetNetwork": {
+              "methods": [
+                "get_network"
+              ]
+            },
+            "GetNfsShare": {
+              "methods": [
+                "get_nfs_share"
+              ]
+            },
+            "GetVolume": {
+              "methods": [
+                "get_volume"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "ListLuns": {
+              "methods": [
+                "list_luns"
+              ]
+            },
+            "ListNetworkUsage": {
+              "methods": [
+                "list_network_usage"
+              ]
+            },
+            "ListNetworks": {
+              "methods": [
+                "list_networks"
+              ]
+            },
+            "ListNfsShares": {
+              "methods": [
+                "list_nfs_shares"
+              ]
+            },
+            "ListVolumes": {
+              "methods": [
+                "list_volumes"
+              ]
+            },
+            "ResetInstance": {
+              "methods": [
+                "reset_instance"
+              ]
+            },
+            "ResizeVolume": {
+              "methods": [
+                "resize_volume"
+              ]
+            },
+            "StartInstance": {
+              "methods": [
+                "start_instance"
+              ]
+            },
+            "StopInstance": {
+              "methods": [
+                "stop_instance"
+              ]
+            },
+            "UpdateInstance": {
+              "methods": [
+                "update_instance"
+              ]
+            },
+            "UpdateNetwork": {
+              "methods": [
+                "update_network"
+              ]
+            },
+            "UpdateNfsShare": {
+              "methods": [
+                "update_nfs_share"
+              ]
+            },
+            "UpdateVolume": {
+              "methods": [
+                "update_volume"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "BareMetalSolutionAsyncClient",
+          "rpcs": {
+            "DetachLun": {
+              "methods": [
+                "detach_lun"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "GetLun": {
+              "methods": [
+                "get_lun"
+              ]
+            },
+            "GetNetwork": {
+              "methods": [
+                "get_network"
+              ]
+            },
+            "GetNfsShare": {
+              "methods": [
+                "get_nfs_share"
+              ]
+            },
+            "GetVolume": {
+              "methods": [
+                "get_volume"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "ListLuns": {
+              "methods": [
+                "list_luns"
+              ]
+            },
+            "ListNetworkUsage": {
+              "methods": [
+                "list_network_usage"
+              ]
+            },
+            "ListNetworks": {
+              "methods": [
+                "list_networks"
+              ]
+            },
+            "ListNfsShares": {
+              "methods": [
+                "list_nfs_shares"
+              ]
+            },
+            "ListVolumes": {
+              "methods": [
+                "list_volumes"
+              ]
+            },
+            "ResetInstance": {
+              "methods": [
+                "reset_instance"
+              ]
+            },
+            "ResizeVolume": {
+              "methods": [
+                "resize_volume"
+              ]
+            },
+            "StartInstance": {
+              "methods": [
+                "start_instance"
+              ]
+            },
+            "StopInstance": {
+              "methods": [
+                "stop_instance"
+              ]
+            },
+            "UpdateInstance": {
+              "methods": [
+                "update_instance"
+              ]
+            },
+            "UpdateNetwork": {
+              "methods": [
+                "update_network"
+              ]
+            },
+            "UpdateNfsShare": {
+              "methods": [
+                "update_nfs_share"
+              ]
+            },
+            "UpdateVolume": {
+              "methods": [
+                "update_volume"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "BareMetalSolutionClient",
+          "rpcs": {
+            "DetachLun": {
+              "methods": [
+                "detach_lun"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "GetLun": {
+              "methods": [
+                "get_lun"
+              ]
+            },
+            "GetNetwork": {
+              "methods": [
+                "get_network"
+              ]
+            },
+            "GetNfsShare": {
+              "methods": [
+                "get_nfs_share"
+              ]
+            },
+            "GetVolume": {
+              "methods": [
+                "get_volume"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "ListLuns": {
+              "methods": [
+                "list_luns"
+              ]
+            },
+            "ListNetworkUsage": {
+              "methods": [
+                "list_network_usage"
+              ]
+            },
+            "ListNetworks": {
+              "methods": [
+                "list_networks"
+              ]
+            },
+            "ListNfsShares": {
+              "methods": [
+                "list_nfs_shares"
+              ]
+            },
+            "ListVolumes": {
+              "methods": [
+                "list_volumes"
+              ]
+            },
+            "ResetInstance": {
+              "methods": [
+                "reset_instance"
+              ]
+            },
+            "ResizeVolume": {
+              "methods": [
+                "resize_volume"
+              ]
+            },
+            "StartInstance": {
+              "methods": [
+                "start_instance"
+              ]
+            },
+            "StopInstance": {
+              "methods": [
+                "stop_instance"
+              ]
+            },
+            "UpdateInstance": {
+              "methods": [
+                "update_instance"
+              ]
+            },
+            "UpdateNetwork": {
+              "methods": [
+                "update_network"
+              ]
+            },
+            "UpdateNfsShare": {
+              "methods": [
+                "update_nfs_share"
+              ]
+            },
+            "UpdateVolume": {
+              "methods": [
+                "update_volume"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
