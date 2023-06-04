@@ -39,4 +39,4 @@ For a list of all ``google-cloud-dataproc-metastore`` releases:
 .. toctree::
     :maxdepth: 2
 
-    changelog
+    CHANGELOG
