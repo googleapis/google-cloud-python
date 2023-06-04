@@ -1,9 +1,9 @@
-Python Client for Virtual Private Cloud API
-===========================================
+Python Client for Virtual Private Cloud
+=======================================
 
 |stable| |pypi| |versions|
 
-`Virtual Private Cloud API`_: provides networking functionality to Compute Engine virtual machine (VM) instances, Google Kubernetes Engine (GKE) containers, and the App Engine flexible environment. VPC provides networking for your cloud-based services that is global, scalable, and flexible.
+`Virtual Private Cloud`_: provides networking functionality to Compute Engine virtual machine (VM) instances, Google Kubernetes Engine (GKE) containers, and the App Engine flexible environment. VPC provides networking for your cloud-based services that is global, scalable, and flexible.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Virtual Private Cloud API
    :target: https://pypi.org/project/google-cloud-vpc-access/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-vpc-access.svg
    :target: https://pypi.org/project/google-cloud-vpc-access/
-.. _Virtual Private Cloud API: https://cloud.google.com/vpc/
+.. _Virtual Private Cloud: https://cloud.google.com/vpc/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/vpcaccess/latest
 .. _Product Documentation:  https://cloud.google.com/vpc/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Virtual Private Cloud API.`_
+3. `Enable the Virtual Private Cloud.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Virtual Private Cloud API.:  https://cloud.google.com/vpc/
+.. _Enable the Virtual Private Cloud.:  https://cloud.google.com/vpc/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Virtual Private Cloud API
+-  Read the `Client Library Documentation`_ for Virtual Private Cloud
    to see other available methods on the client.
--  Read the `Virtual Private Cloud API Product documentation`_ to learn
+-  Read the `Virtual Private Cloud Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Virtual Private Cloud API Product documentation:  https://cloud.google.com/vpc/
+.. _Virtual Private Cloud Product documentation:  https://cloud.google.com/vpc/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
