@@ -1,9 +1,9 @@
-Python Client for Service Usage API
-===================================
+Python Client for Service Usage
+===============================
 
 |stable| |pypi| |versions|
 
-`Service Usage API`_: is an infrastructure service of Google Cloud that lets you list and manage other APIs and services in your Cloud projects.
+`Service Usage`_: is an infrastructure service of Google Cloud that lets you list and manage other APIs and services in your Cloud projects.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Service Usage API
    :target: https://pypi.org/project/google-cloud-service-usage/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-service-usage.svg
    :target: https://pypi.org/project/google-cloud-service-usage/
-.. _Service Usage API: https://cloud.google.com/service-usage
+.. _Service Usage: https://cloud.google.com/service-usage
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/serviceusage/latest
 .. _Product Documentation:  https://cloud.google.com/service-usage
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Service Usage API.`_
+3. `Enable the Service Usage.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Service Usage API.:  https://cloud.google.com/service-usage
+.. _Enable the Service Usage.:  https://cloud.google.com/service-usage
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Service Usage API
+-  Read the `Client Library Documentation`_ for Service Usage
    to see other available methods on the client.
--  Read the `Service Usage API Product documentation`_ to learn
+-  Read the `Service Usage Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Service Usage API Product documentation:  https://cloud.google.com/service-usage
+.. _Service Usage Product documentation:  https://cloud.google.com/service-usage
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
