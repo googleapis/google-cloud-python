@@ -1,0 +1,15 @@
+{
+    "name": "apikeys",
+    "name_pretty": "API Keys",
+    "product_documentation": "https://cloud.google.com/api-keys/docs",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/apikeys/latest",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-api-keys",
+    "distribution_name": "google-cloud-api-keys",
+    "api_id": "apikeys.googleapis.com",
+    "default_version": "v2",
+    "codeowner_team": "",
+    "api_shortname": "apikeys"
+}
