@@ -1,0 +1,153 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.recaptchaenterprise_v1",
+  "protoPackage": "google.cloud.recaptchaenterprise.v1",
+  "schema": "1.0",
+  "services": {
+    "RecaptchaEnterpriseService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "RecaptchaEnterpriseServiceClient",
+          "rpcs": {
+            "AnnotateAssessment": {
+              "methods": [
+                "annotate_assessment"
+              ]
+            },
+            "CreateAssessment": {
+              "methods": [
+                "create_assessment"
+              ]
+            },
+            "CreateKey": {
+              "methods": [
+                "create_key"
+              ]
+            },
+            "DeleteKey": {
+              "methods": [
+                "delete_key"
+              ]
+            },
+            "GetKey": {
+              "methods": [
+                "get_key"
+              ]
+            },
+            "GetMetrics": {
+              "methods": [
+                "get_metrics"
+              ]
+            },
+            "ListKeys": {
+              "methods": [
+                "list_keys"
+              ]
+            },
+            "ListRelatedAccountGroupMemberships": {
+              "methods": [
+                "list_related_account_group_memberships"
+              ]
+            },
+            "ListRelatedAccountGroups": {
+              "methods": [
+                "list_related_account_groups"
+              ]
+            },
+            "MigrateKey": {
+              "methods": [
+                "migrate_key"
+              ]
+            },
+            "RetrieveLegacySecretKey": {
+              "methods": [
+                "retrieve_legacy_secret_key"
+              ]
+            },
+            "SearchRelatedAccountGroupMemberships": {
+              "methods": [
+                "search_related_account_group_memberships"
+              ]
+            },
+            "UpdateKey": {
+              "methods": [
+                "update_key"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "RecaptchaEnterpriseServiceAsyncClient",
+          "rpcs": {
+            "AnnotateAssessment": {
+              "methods": [
+                "annotate_assessment"
+              ]
+            },
+            "CreateAssessment": {
+              "methods": [
+                "create_assessment"
+              ]
+            },
+            "CreateKey": {
+              "methods": [
+                "create_key"
+              ]
+            },
+            "DeleteKey": {
+              "methods": [
+                "delete_key"
+              ]
+            },
+            "GetKey": {
+              "methods": [
+                "get_key"
+              ]
+            },
+            "GetMetrics": {
+              "methods": [
+                "get_metrics"
+              ]
+            },
+            "ListKeys": {
+              "methods": [
+                "list_keys"
+              ]
+            },
+            "ListRelatedAccountGroupMemberships": {
+              "methods": [
+                "list_related_account_group_memberships"
+              ]
+            },
+            "ListRelatedAccountGroups": {
+              "methods": [
+                "list_related_account_groups"
+              ]
+            },
+            "MigrateKey": {
+              "methods": [
+                "migrate_key"
+              ]
+            },
+            "RetrieveLegacySecretKey": {
+              "methods": [
+                "retrieve_legacy_secret_key"
+              ]
+            },
+            "SearchRelatedAccountGroupMemberships": {
+              "methods": [
+                "search_related_account_group_memberships"
+              ]
+            },
+            "UpdateKey": {
+              "methods": [
+                "update_key"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
