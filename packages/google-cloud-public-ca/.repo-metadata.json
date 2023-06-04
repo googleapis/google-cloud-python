@@ -1,0 +1,17 @@
+{
+    "name": "publicca",
+    "name_pretty": "Public Certificate Authority",
+    "product_documentation": "https://cloud.google.com/certificate-manager/docs/public-ca",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/publicca/latest",
+    "issue_tracker": "",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-security-public-ca",
+    "distribution_name": "google-cloud-public-ca",
+    "api_id": "publicca.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "publicca",
+    "api_description": "simplifies the deployment and management of public CAs without managing infrastructure."
+}
