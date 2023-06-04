@@ -1,9 +1,9 @@
-Python Client for BigQuery Analytics Hub API
-============================================
+Python Client for BigQuery Analytics Hub
+========================================
 
 |preview| |pypi| |versions|
 
-`BigQuery Analytics Hub API`_: is a data exchange that allows you to efficiently and securely exchange data assets across organizations to address challenges of data reliability and cost.
+`BigQuery Analytics Hub`_: is a data exchange that allows you to efficiently and securely exchange data assets across organizations to address challenges of data reliability and cost.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for BigQuery Analytics Hub API
    :target: https://pypi.org/project/google-cloud-bigquery-data-exchange/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-data-exchange.svg
    :target: https://pypi.org/project/google-cloud-bigquery-data-exchange/
-.. _BigQuery Analytics Hub API: https://cloud.google.com/bigquery/docs/analytics-hub-introduction
+.. _BigQuery Analytics Hub: https://cloud.google.com/bigquery/docs/analytics-hub-introduction
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/analyticshub/latest
 .. _Product Documentation:  https://cloud.google.com/bigquery/docs/analytics-hub-introduction
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the BigQuery Analytics Hub API.`_
+3. `Enable the BigQuery Analytics Hub.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the BigQuery Analytics Hub API.:  https://cloud.google.com/bigquery/docs/analytics-hub-introduction
+.. _Enable the BigQuery Analytics Hub.:  https://cloud.google.com/bigquery/docs/analytics-hub-introduction
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for BigQuery Analytics Hub API
+-  Read the `Client Library Documentation`_ for BigQuery Analytics Hub
    to see other available methods on the client.
--  Read the `BigQuery Analytics Hub API Product documentation`_ to learn
+-  Read the `BigQuery Analytics Hub Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _BigQuery Analytics Hub API Product documentation:  https://cloud.google.com/bigquery/docs/analytics-hub-introduction
+.. _BigQuery Analytics Hub Product documentation:  https://cloud.google.com/bigquery/docs/analytics-hub-introduction
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
