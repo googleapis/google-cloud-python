@@ -8,7 +8,7 @@
     "release_level": "preview",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-beyondcorp-clientconnectorservices",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-beyondcorp-clientconnectorservices",
     "api_id": "beyondcorp.googleapis.com",
     "default_version": "v1",

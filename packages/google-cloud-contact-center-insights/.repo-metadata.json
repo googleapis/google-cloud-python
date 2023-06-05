@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-contact-center-insights",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-contact-center-insights",
     "api_id": "contactcenterinsights.googleapis.com",
     "codeowner_team": "@googleapis/api-contact-center-insights",

@@ -7,7 +7,7 @@
     "release_level": "preview",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-private-catalog",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-private-catalog",
     "api_id": "cloudprivatecatalog.googleapis.com",
     "default_version": "v1beta1",

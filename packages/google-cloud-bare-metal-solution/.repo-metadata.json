@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-bare-metal-solution",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-bare-metal-solution",
     "api_id": "baremetalsolution.googleapis.com",
     "default_version": "v2",
