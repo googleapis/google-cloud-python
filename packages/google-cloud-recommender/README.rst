@@ -1,9 +1,9 @@
-Python Client for Cloud Recommender API
-=======================================
+Python Client for Cloud Recommender
+===================================
 
 |stable| |pypi| |versions|
 
-`Cloud Recommender API`_: delivers highly personalized product recommendations at scale.
+`Cloud Recommender`_: delivers highly personalized product recommendations at scale.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Cloud Recommender API
    :target: https://pypi.org/project/google-cloud-recommender/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-recommender.svg
    :target: https://pypi.org/project/google-cloud-recommender/
-.. _Cloud Recommender API: https://cloud.google.com/recommender
+.. _Cloud Recommender: https://cloud.google.com/recommender
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/recommender/latest
 .. _Product Documentation:  https://cloud.google.com/recommender
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Recommender API.`_
+3. `Enable the Cloud Recommender.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Recommender API.:  https://cloud.google.com/recommender
+.. _Enable the Cloud Recommender.:  https://cloud.google.com/recommender
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Recommender API
+-  Read the `Client Library Documentation`_ for Cloud Recommender
    to see other available methods on the client.
--  Read the `Cloud Recommender API Product documentation`_ to learn
+-  Read the `Cloud Recommender Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Recommender API Product documentation:  https://cloud.google.com/recommender
+.. _Cloud Recommender Product documentation:  https://cloud.google.com/recommender
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
