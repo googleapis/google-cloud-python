@@ -381,6 +381,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-contact-center-insights": {
+            "component": "google-cloud-contact-center-insights",
+            "extra-files": [
+                "google/cloud/contact_center_insights_v1/gapic_version.py",
+                "google/cloud/contact_center_insights/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.contactcenterinsights.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-contentwarehouse": {
             "component": "google-cloud-contentwarehouse",
             "extra-files": [
