@@ -1,9 +1,9 @@
-Python Client for Cloud Dataform API
-====================================
+Python Client for Cloud Dataform
+================================
 
 |preview| |pypi| |versions|
 
-`Cloud Dataform API`_: 
+`Cloud Dataform`_: 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Cloud Dataform API
    :target: https://pypi.org/project/google-cloud-dataform/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dataform.svg
    :target: https://pypi.org/project/google-cloud-dataform/
-.. _Cloud Dataform API: https://cloud.google.com
+.. _Cloud Dataform: https://cloud.google.com
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dataform/latest
 .. _Product Documentation:  https://cloud.google.com
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Dataform API.`_
+3. `Enable the Cloud Dataform.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Dataform API.:  https://cloud.google.com
+.. _Enable the Cloud Dataform.:  https://cloud.google.com
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Dataform API
+-  Read the `Client Library Documentation`_ for Cloud Dataform
    to see other available methods on the client.
--  Read the `Cloud Dataform API Product documentation`_ to learn
+-  Read the `Cloud Dataform Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Dataform API Product documentation:  https://cloud.google.com
+.. _Cloud Dataform Product documentation:  https://cloud.google.com
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
