@@ -1,9 +1,9 @@
-Python Client for Data QnA API
-==============================
+Python Client for Data QnA
+==========================
 
 |preview| |pypi| |versions|
 
-`Data QnA API`_: Data QnA is a natural language question and answer service for BigQuery data.
+`Data QnA`_: Data QnA is a natural language question and answer service for BigQuery data.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Data QnA API
    :target: https://pypi.org/project/google-cloud-data-qna/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-data-qna.svg
    :target: https://pypi.org/project/google-cloud-data-qna/
-.. _Data QnA API: https://cloud.google.com/bigquery/docs/dataqna
+.. _Data QnA: https://cloud.google.com/bigquery/docs/dataqna
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dataqna/latest
 .. _Product Documentation:  https://cloud.google.com/bigquery/docs/dataqna
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Data QnA API.`_
+3. `Enable the Data QnA.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Data QnA API.:  https://cloud.google.com/bigquery/docs/dataqna
+.. _Enable the Data QnA.:  https://cloud.google.com/bigquery/docs/dataqna
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Data QnA API
+-  Read the `Client Library Documentation`_ for Data QnA
    to see other available methods on the client.
--  Read the `Data QnA API Product documentation`_ to learn
+-  Read the `Data QnA Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Data QnA API Product documentation:  https://cloud.google.com/bigquery/docs/dataqna
+.. _Data QnA Product documentation:  https://cloud.google.com/bigquery/docs/dataqna
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
