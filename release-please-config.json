@@ -1255,6 +1255,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-vpc-access": {
+            "component": "google-cloud-vpc-access",
+            "extra-files": [
+                "google/cloud/vpcaccess/gapic_version.py",
+                "google/cloud/vpcaccess_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.vpcaccess.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-workstations": {
             "component": "google-cloud-workstations",
             "extra-files": [
