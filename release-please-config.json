@@ -1087,6 +1087,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-service-control": {
+            "component": "google-cloud-service-control",
+            "extra-files": [
+                "google/cloud/servicecontrol/gapic_version.py",
+                "google/cloud/servicecontrol_v1/gapic_version.py",
+                "google/cloud/servicecontrol_v2/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.api.servicecontrol.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.api.servicecontrol.v2.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-storageinsights": {
             "component": "google-cloud-storageinsights",
             "extra-files": [
