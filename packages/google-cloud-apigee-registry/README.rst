@@ -1,9 +1,9 @@
-Python Client for Apigee Registry API API
-=========================================
+Python Client for Apigee Registry API
+=====================================
 
 |preview| |pypi| |versions|
 
-`Apigee Registry API API`_: allows teams to upload and share machine-readable descriptions of APIs that are in use and in development.
+`Apigee Registry API`_: allows teams to upload and share machine-readable descriptions of APIs that are in use and in development.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Apigee Registry API API
    :target: https://pypi.org/project/google-cloud-apigee-registry/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-apigee-registry.svg
    :target: https://pypi.org/project/google-cloud-apigee-registry/
-.. _Apigee Registry API API: https://cloud.google.com/apigee/docs/api-hub/get-started-registry-api
+.. _Apigee Registry API: https://cloud.google.com/apigee/docs/api-hub/get-started-registry-api
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/apigeeregistry/latest
 .. _Product Documentation:  https://cloud.google.com/apigee/docs/api-hub/get-started-registry-api
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Apigee Registry API API.`_
+3. `Enable the Apigee Registry API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Apigee Registry API API.:  https://cloud.google.com/apigee/docs/api-hub/get-started-registry-api
+.. _Enable the Apigee Registry API.:  https://cloud.google.com/apigee/docs/api-hub/get-started-registry-api
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Apigee Registry API API
+-  Read the `Client Library Documentation`_ for Apigee Registry API
    to see other available methods on the client.
--  Read the `Apigee Registry API API Product documentation`_ to learn
+-  Read the `Apigee Registry API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Apigee Registry API API Product documentation:  https://cloud.google.com/apigee/docs/api-hub/get-started-registry-api
+.. _Apigee Registry API Product documentation:  https://cloud.google.com/apigee/docs/api-hub/get-started-registry-api
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
