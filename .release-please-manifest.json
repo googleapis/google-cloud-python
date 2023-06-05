@@ -17,6 +17,7 @@
     "packages/google-cloud-beyondcorp-appgateways": "0.4.2",
     "packages/google-cloud-beyondcorp-clientconnectorservices": "0.4.2",
     "packages/google-cloud-beyondcorp-clientgateways": "0.4.1",
+    "packages/google-cloud-bigquery-analyticshub": "0.3.2",
     "packages/google-cloud-bigquery-biglake": "0.3.0",
     "packages/google-cloud-confidentialcomputing": "0.1.0",
     "packages/google-cloud-contentwarehouse": "0.5.0",
