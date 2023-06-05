@@ -1016,6 +1016,20 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-secret-manager": {
+            "component": "google-cloud-secret-manager",
+            "extra-files": [
+                "google/cloud/secretmanager_v1/gapic_version.py",
+                "google/cloud/secretmanager_v1beta1/gapic_version.py",
+                "google/cloud/secretmanager/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.secretmanager.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-storageinsights": {
             "component": "google-cloud-storageinsights",
             "extra-files": [
