@@ -1,9 +1,9 @@
-Python Client for Channel Services API
-======================================
+Python Client for Channel Services
+==================================
 
 |stable| |pypi| |versions|
 
-`Channel Services API`_: With Channel Services, Google Cloud partners and resellers have a single unified resale platform, with a unified resale catalog, customer management, order management, billing management, policy and authorization management, and cost management.
+`Channel Services`_: With Channel Services, Google Cloud partners and resellers have a single unified resale platform, with a unified resale catalog, customer management, order management, billing management, policy and authorization management, and cost management.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Channel Services API
    :target: https://pypi.org/project/google-cloud-channel/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-channel.svg
    :target: https://pypi.org/project/google-cloud-channel/
-.. _Channel Services API: https://cloud.google.com/channel/
+.. _Channel Services: https://cloud.google.com/channel/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudchannel/latest
 .. _Product Documentation:  https://cloud.google.com/channel/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Channel Services API.`_
+3. `Enable the Channel Services.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Channel Services API.:  https://cloud.google.com/channel/
+.. _Enable the Channel Services.:  https://cloud.google.com/channel/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Channel Services API
+-  Read the `Client Library Documentation`_ for Channel Services
    to see other available methods on the client.
--  Read the `Channel Services API Product documentation`_ to learn
+-  Read the `Channel Services Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Channel Services API Product documentation:  https://cloud.google.com/channel/
+.. _Channel Services Product documentation:  https://cloud.google.com/channel/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
