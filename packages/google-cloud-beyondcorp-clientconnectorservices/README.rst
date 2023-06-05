@@ -1,9 +1,9 @@
-Python Client for BeyondCorp ClientConnectorServices API
-========================================================
+Python Client for BeyondCorp ClientConnectorServices
+====================================================
 
 |preview| |pypi| |versions|
 
-`BeyondCorp ClientConnectorServices API`_: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
+`BeyondCorp ClientConnectorServices`_: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for BeyondCorp ClientConnectorServices API
    :target: https://pypi.org/project/google-cloud-beyondcorp-clientconnectorservices/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-beyondcorp-clientconnectorservices.svg
    :target: https://pypi.org/project/google-cloud-beyondcorp-clientconnectorservices/
-.. _BeyondCorp ClientConnectorServices API: https://cloud.google.com/beyondcorp/
+.. _BeyondCorp ClientConnectorServices: https://cloud.google.com/beyondcorp/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/beyondcorpclientconnectorservices/latest
 .. _Product Documentation:  https://cloud.google.com/beyondcorp/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the BeyondCorp ClientConnectorServices API.`_
+3. `Enable the BeyondCorp ClientConnectorServices.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the BeyondCorp ClientConnectorServices API.:  https://cloud.google.com/beyondcorp/
+.. _Enable the BeyondCorp ClientConnectorServices.:  https://cloud.google.com/beyondcorp/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for BeyondCorp ClientConnectorServices API
+-  Read the `Client Library Documentation`_ for BeyondCorp ClientConnectorServices
    to see other available methods on the client.
--  Read the `BeyondCorp ClientConnectorServices API Product documentation`_ to learn
+-  Read the `BeyondCorp ClientConnectorServices Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _BeyondCorp ClientConnectorServices API Product documentation:  https://cloud.google.com/beyondcorp/
+.. _BeyondCorp ClientConnectorServices Product documentation:  https://cloud.google.com/beyondcorp/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
