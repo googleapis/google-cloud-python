@@ -1,9 +1,9 @@
-Python Client for reCAPTCHA Enterprise API
-==========================================
+Python Client for reCAPTCHA Enterprise
+======================================
 
 |stable| |pypi| |versions|
 
-`reCAPTCHA Enterprise API`_: protect your website from fraudulent activity like scraping, credential stuffing, and automated account creation.
+`reCAPTCHA Enterprise`_: protect your website from fraudulent activity like scraping, credential stuffing, and automated account creation.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for reCAPTCHA Enterprise API
    :target: https://pypi.org/project/google-cloud-recaptcha-enterprise/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-recaptcha-enterprise.svg
    :target: https://pypi.org/project/google-cloud-recaptcha-enterprise/
-.. _reCAPTCHA Enterprise API: https://cloud.google.com/recaptcha-enterprise
+.. _reCAPTCHA Enterprise: https://cloud.google.com/recaptcha-enterprise
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/recaptchaenterprise/latest
 .. _Product Documentation:  https://cloud.google.com/recaptcha-enterprise
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the reCAPTCHA Enterprise API.`_
+3. `Enable the reCAPTCHA Enterprise.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the reCAPTCHA Enterprise API.:  https://cloud.google.com/recaptcha-enterprise
+.. _Enable the reCAPTCHA Enterprise.:  https://cloud.google.com/recaptcha-enterprise
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for reCAPTCHA Enterprise API
+-  Read the `Client Library Documentation`_ for reCAPTCHA Enterprise
    to see other available methods on the client.
--  Read the `reCAPTCHA Enterprise API Product documentation`_ to learn
+-  Read the `reCAPTCHA Enterprise Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _reCAPTCHA Enterprise API Product documentation:  https://cloud.google.com/recaptcha-enterprise
+.. _reCAPTCHA Enterprise Product documentation:  https://cloud.google.com/recaptcha-enterprise
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
