@@ -1,9 +1,9 @@
-Python Client for Secret Manager API
-====================================
+Python Client for Secret Manager
+================================
 
 |stable| |pypi| |versions|
 
-`Secret Manager API`_: Stores, manages, and secures access to application secrets.
+`Secret Manager`_: Stores, manages, and secures access to application secrets.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Secret Manager API
    :target: https://pypi.org/project/google-cloud-secret-manager/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-secret-manager.svg
    :target: https://pypi.org/project/google-cloud-secret-manager/
-.. _Secret Manager API: https://cloud.google.com/secret-manager/
+.. _Secret Manager: https://cloud.google.com/secret-manager/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/secretmanager/latest
 .. _Product Documentation:  https://cloud.google.com/secret-manager/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Secret Manager API.`_
+3. `Enable the Secret Manager.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Secret Manager API.:  https://cloud.google.com/secret-manager/
+.. _Enable the Secret Manager.:  https://cloud.google.com/secret-manager/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Secret Manager API
+-  Read the `Client Library Documentation`_ for Secret Manager
    to see other available methods on the client.
--  Read the `Secret Manager API Product documentation`_ to learn
+-  Read the `Secret Manager Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Secret Manager API Product documentation:  https://cloud.google.com/secret-manager/
+.. _Secret Manager Product documentation:  https://cloud.google.com/secret-manager/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
