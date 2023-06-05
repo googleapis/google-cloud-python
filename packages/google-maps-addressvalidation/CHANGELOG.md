@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.4](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.3...google-maps-addressvalidation-v0.3.4) (2023-06-03)
+
+
+### Documentation
+
+* fix broken client library documentation links ([#11192](https://github.com/googleapis/google-cloud-python/issues/11192)) ([5e17f7a](https://github.com/googleapis/google-cloud-python/commit/5e17f7a901bbbae8ff9a44ed62f1abd2386da2c8))
+
 ## [0.3.3](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.2...google-maps-addressvalidation-v0.3.3) (2023-04-15)
 
 
