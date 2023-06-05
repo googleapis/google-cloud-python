@@ -900,6 +900,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-private-catalog": {
+            "component": "google-cloud-private-catalog",
+            "extra-files": [
+                "google/cloud/privatecatalog/gapic_version.py",
+                "google/cloud/privatecatalog_v1beta1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.privatecatalog.v1beta1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-rapidmigrationassessment": {
             "component": "google-cloud-rapidmigrationassessment",
             "extra-files": [
