@@ -29,6 +29,7 @@
     "packages/google-cloud-confidentialcomputing": "0.1.0",
     "packages/google-cloud-contact-center-insights": "1.11.0",
     "packages/google-cloud-contentwarehouse": "0.5.0",
+    "packages/google-cloud-data-fusion": "1.8.1",
     "packages/google-cloud-datacatalog": "3.13.0",
     "packages/google-cloud-datacatalog-lineage": "0.2.2",
     "packages/google-cloud-dataform": "0.5.1",
