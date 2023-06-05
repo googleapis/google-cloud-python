@@ -753,6 +753,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-memcache": {
+            "component": "google-cloud-memcache",
+            "extra-files": [
+                "google/cloud/memcache_v1beta2/gapic_version.py",
+                "google/cloud/memcache_v1/gapic_version.py",
+                "google/cloud/memcache/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.memcache.v1beta2.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.memcache.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-rapidmigrationassessment": {
             "component": "google-cloud-rapidmigrationassessment",
             "extra-files": [
