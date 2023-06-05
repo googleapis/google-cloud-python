@@ -1185,6 +1185,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-talent": {
+            "component": "google-cloud-talent",
+            "extra-files": [
+                "google/cloud/talent_v4beta1/gapic_version.py",
+                "google/cloud/talent_v4/gapic_version.py",
+                "google/cloud/talent/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.talent.v4.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.talent.v4beta1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-vmwareengine": {
             "component": "google-cloud-vmwareengine",
             "extra-files": [
