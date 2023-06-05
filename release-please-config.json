@@ -34,6 +34,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-access-approval": {
+            "component": "google-cloud-access-approval",
+            "extra-files": [
+                "google/cloud/accessapproval/gapic_version.py",
+                "google/cloud/accessapproval_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.accessapproval.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-advisorynotifications": {
             "component": "google-cloud-advisorynotifications",
             "extra-files": [

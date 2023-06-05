@@ -8,7 +8,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-access-approval",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-access-approval",
     "api_id": "accessapproval.googleapis.com",
     "default_version": "v1",
