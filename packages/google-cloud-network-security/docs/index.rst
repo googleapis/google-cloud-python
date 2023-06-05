@@ -31,4 +31,4 @@ For a list of all ``google-cloud-network-security`` releases:
 .. toctree::
     :maxdepth: 2
 
-    changelog
+    CHANGELOG
