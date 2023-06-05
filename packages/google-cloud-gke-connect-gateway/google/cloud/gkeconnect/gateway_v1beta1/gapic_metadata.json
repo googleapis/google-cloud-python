@@ -1,0 +1,73 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.gkeconnect.gateway_v1beta1",
+  "protoPackage": "google.cloud.gkeconnect.gateway.v1beta1",
+  "schema": "1.0",
+  "services": {
+    "GatewayService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "GatewayServiceClient",
+          "rpcs": {
+            "DeleteResource": {
+              "methods": [
+                "delete_resource"
+              ]
+            },
+            "GetResource": {
+              "methods": [
+                "get_resource"
+              ]
+            },
+            "PatchResource": {
+              "methods": [
+                "patch_resource"
+              ]
+            },
+            "PostResource": {
+              "methods": [
+                "post_resource"
+              ]
+            },
+            "PutResource": {
+              "methods": [
+                "put_resource"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "GatewayServiceAsyncClient",
+          "rpcs": {
+            "DeleteResource": {
+              "methods": [
+                "delete_resource"
+              ]
+            },
+            "GetResource": {
+              "methods": [
+                "get_resource"
+              ]
+            },
+            "PatchResource": {
+              "methods": [
+                "patch_resource"
+              ]
+            },
+            "PostResource": {
+              "methods": [
+                "post_resource"
+              ]
+            },
+            "PutResource": {
+              "methods": [
+                "put_resource"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
