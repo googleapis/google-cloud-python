@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-billingbudgets",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-billing-budgets",
     "api_id": "billingbudgets.googleapis.com",
     "requires_billing": true,
