@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-datacatalog",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-datacatalog",
     "api_id": "datacatalog.googleapis.com",
     "requires_billing": true,
