@@ -548,6 +548,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-deploy": {
+            "component": "google-cloud-deploy",
+            "extra-files": [
+                "google/cloud/deploy_v1/gapic_version.py",
+                "google/cloud/deploy/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.deploy.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-discoveryengine": {
             "component": "google-cloud-discoveryengine",
             "extra-files": [
