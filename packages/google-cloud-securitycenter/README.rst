@@ -1,9 +1,9 @@
-Python Client for Google Cloud Security Command Center API
-==========================================================
+Python Client for Google Cloud Security Command Center
+======================================================
 
 |stable| |pypi| |versions|
 
-`Google Cloud Security Command Center API`_: makes it easier for you to prevent, detect, and respond to threats. Identify security misconfigurations in virtual machines, networks, applications, and storage buckets from a centralized dashboard. Take action on them before they can potentially result in business damage or loss. Built-in capabilities can quickly surface suspicious activity in your Stackdriver security logs or indicate compromised virtual machines. Respond to threats by following actionable recommendations or exporting logs to your SIEM for further investigation.
+`Google Cloud Security Command Center`_: makes it easier for you to prevent, detect, and respond to threats. Identify security misconfigurations in virtual machines, networks, applications, and storage buckets from a centralized dashboard. Take action on them before they can potentially result in business damage or loss. Built-in capabilities can quickly surface suspicious activity in your Stackdriver security logs or indicate compromised virtual machines. Respond to threats by following actionable recommendations or exporting logs to your SIEM for further investigation.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Google Cloud Security Command Center API
    :target: https://pypi.org/project/google-cloud-securitycenter/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-securitycenter.svg
    :target: https://pypi.org/project/google-cloud-securitycenter/
-.. _Google Cloud Security Command Center API: https://cloud.google.com/security-command-center
+.. _Google Cloud Security Command Center: https://cloud.google.com/security-command-center
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/securitycenter/latest
 .. _Product Documentation:  https://cloud.google.com/security-command-center
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google Cloud Security Command Center API.`_
+3. `Enable the Google Cloud Security Command Center.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Cloud Security Command Center API.:  https://cloud.google.com/security-command-center
+.. _Enable the Google Cloud Security Command Center.:  https://cloud.google.com/security-command-center
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google Cloud Security Command Center API
+-  Read the `Client Library Documentation`_ for Google Cloud Security Command Center
    to see other available methods on the client.
--  Read the `Google Cloud Security Command Center API Product documentation`_ to learn
+-  Read the `Google Cloud Security Command Center Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Google Cloud Security Command Center API Product documentation:  https://cloud.google.com/security-command-center
+.. _Google Cloud Security Command Center Product documentation:  https://cloud.google.com/security-command-center
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
