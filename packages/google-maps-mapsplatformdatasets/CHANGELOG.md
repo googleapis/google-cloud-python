@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-mapsplatformdatasets-v0.2.1...google-maps-mapsplatformdatasets-v0.3.0) (2023-06-03)
+
+
+### Features
+
+* Add client libraries for v1 ([#11226](https://github.com/googleapis/google-cloud-python/issues/11226)) ([08b0fe0](https://github.com/googleapis/google-cloud-python/commit/08b0fe07a7841095669eb498af17d656e10b38ea))
+
+
+### Documentation
+
+* fix broken client library documentation links ([#11192](https://github.com/googleapis/google-cloud-python/issues/11192)) ([5e17f7a](https://github.com/googleapis/google-cloud-python/commit/5e17f7a901bbbae8ff9a44ed62f1abd2386da2c8))
+
 ## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-maps-mapsplatformdatasets-v0.2.0...google-maps-mapsplatformdatasets-v0.2.1) (2023-03-25)
 
 
