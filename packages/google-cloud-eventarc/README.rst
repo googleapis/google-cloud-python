@@ -1,9 +1,9 @@
-Python Client for Eventarc API
-==============================
+Python Client for Eventarc
+==========================
 
 |stable| |pypi| |versions|
 
-`Eventarc API`_: lets you asynchronously deliver events from Google services, SaaS, and your own apps using loosely coupled services that react to state changes. Eventarc requires no infrastructure management, you can optimize productivity and costs while building a modern, event-driven solution.
+`Eventarc`_: lets you asynchronously deliver events from Google services, SaaS, and your own apps using loosely coupled services that react to state changes. Eventarc requires no infrastructure management, you can optimize productivity and costs while building a modern, event-driven solution.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Eventarc API
    :target: https://pypi.org/project/google-cloud-eventarc/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-eventarc.svg
    :target: https://pypi.org/project/google-cloud-eventarc/
-.. _Eventarc API: https://cloud.google.com/eventarc/
+.. _Eventarc: https://cloud.google.com/eventarc/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/eventarc/latest
 .. _Product Documentation:  https://cloud.google.com/eventarc/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Eventarc API.`_
+3. `Enable the Eventarc.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Eventarc API.:  https://cloud.google.com/eventarc/
+.. _Enable the Eventarc.:  https://cloud.google.com/eventarc/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Eventarc API
+-  Read the `Client Library Documentation`_ for Eventarc
    to see other available methods on the client.
--  Read the `Eventarc API Product documentation`_ to learn
+-  Read the `Eventarc Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Eventarc API Product documentation:  https://cloud.google.com/eventarc/
+.. _Eventarc Product documentation:  https://cloud.google.com/eventarc/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
