@@ -1,9 +1,9 @@
-Python Client for Cloud TPU API
-===============================
+Python Client for Cloud TPU
+===========================
 
 |stable| |pypi| |versions|
 
-`Cloud TPU API`_: Cloud Tensor Processing Units (TPUs) are Google's custom-developed application-specific integrated circuits (ASICs) used to accelerate machine learning workloads.
+`Cloud TPU`_: Cloud Tensor Processing Units (TPUs) are Google's custom-developed application-specific integrated circuits (ASICs) used to accelerate machine learning workloads.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Cloud TPU API
    :target: https://pypi.org/project/google-cloud-tpu/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-tpu.svg
    :target: https://pypi.org/project/google-cloud-tpu/
-.. _Cloud TPU API: https://cloud.google.com/tpu/
+.. _Cloud TPU: https://cloud.google.com/tpu/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/tpu/latest
 .. _Product Documentation:  https://cloud.google.com/tpu/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud TPU API.`_
+3. `Enable the Cloud TPU.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud TPU API.:  https://cloud.google.com/tpu/
+.. _Enable the Cloud TPU.:  https://cloud.google.com/tpu/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud TPU API
+-  Read the `Client Library Documentation`_ for Cloud TPU
    to see other available methods on the client.
--  Read the `Cloud TPU API Product documentation`_ to learn
+-  Read the `Cloud TPU Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud TPU API Product documentation:  https://cloud.google.com/tpu/
+.. _Cloud TPU Product documentation:  https://cloud.google.com/tpu/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
