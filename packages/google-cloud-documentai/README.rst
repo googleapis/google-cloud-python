@@ -1,9 +1,9 @@
-Python Client for Document AI API
-=================================
+Python Client for Document AI
+=============================
 
 |stable| |pypi| |versions|
 
-`Document AI API`_: Service to parse structured information from unstructured or semi-structured documents using state-of-the-art Google AI such as natural language, computer vision, translation, and AutoML.
+`Document AI`_: Service to parse structured information from unstructured or semi-structured documents using state-of-the-art Google AI such as natural language, computer vision, translation, and AutoML.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Document AI API
    :target: https://pypi.org/project/google-cloud-documentai/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-documentai.svg
    :target: https://pypi.org/project/google-cloud-documentai/
-.. _Document AI API: https://cloud.google.com/document-ai/docs
+.. _Document AI: https://cloud.google.com/document-ai/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/documentai/latest
 .. _Product Documentation:  https://cloud.google.com/document-ai/docs
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Document AI API.`_
+3. `Enable the Document AI.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Document AI API.:  https://cloud.google.com/document-ai/docs
+.. _Enable the Document AI.:  https://cloud.google.com/document-ai/docs
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Document AI API
+-  Read the `Client Library Documentation`_ for Document AI
    to see other available methods on the client.
--  Read the `Document AI API Product documentation`_ to learn
+-  Read the `Document AI Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Document AI API Product documentation:  https://cloud.google.com/document-ai/docs
+.. _Document AI Product documentation:  https://cloud.google.com/document-ai/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
