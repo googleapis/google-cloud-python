@@ -1,0 +1,17 @@
+{
+    "name": "memcache",
+    "name_pretty": "Cloud Memorystore for Memcached",
+    "product_documentation": "cloud.google.com/memorystore/docs/memcached/",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/memcache/latest",
+    "issue_tracker": "",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-memcache",
+    "distribution_name": "google-cloud-memcache",
+    "api_id": "memcache.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "memcache",
+    "api_description": "is a fully-managed in-memory data store service for Memcache."
+}
