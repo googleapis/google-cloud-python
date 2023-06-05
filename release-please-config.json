@@ -990,6 +990,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-resource-manager": {
+            "component": "google-cloud-resource-manager",
+            "extra-files": [
+                "google/cloud/resourcemanager_v3/gapic_version.py",
+                "google/cloud/resourcemanager/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.resourcemanager.v3.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-storageinsights": {
             "component": "google-cloud-storageinsights",
             "extra-files": [
