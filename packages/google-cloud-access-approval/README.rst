@@ -1,9 +1,9 @@
-Python Client for Access Approval API
-=====================================
+Python Client for Access Approval
+=================================
 
 |stable| |pypi| |versions|
 
-`Access Approval API`_: enables controlling access to your organization's data by Google personnel.
+`Access Approval`_: enables controlling access to your organization's data by Google personnel.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Access Approval API
    :target: https://pypi.org/project/google-cloud-access-approval/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-access-approval.svg
    :target: https://pypi.org/project/google-cloud-access-approval/
-.. _Access Approval API: https://cloud.google.com/access-approval
+.. _Access Approval: https://cloud.google.com/access-approval
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/accessapproval/latest
 .. _Product Documentation:  https://cloud.google.com/access-approval
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Access Approval API.`_
+3. `Enable the Access Approval.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Access Approval API.:  https://cloud.google.com/access-approval
+.. _Enable the Access Approval.:  https://cloud.google.com/access-approval
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Access Approval API
+-  Read the `Client Library Documentation`_ for Access Approval
    to see other available methods on the client.
--  Read the `Access Approval API Product documentation`_ to learn
+-  Read the `Access Approval Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Access Approval API Product documentation:  https://cloud.google.com/access-approval
+.. _Access Approval Product documentation:  https://cloud.google.com/access-approval
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
