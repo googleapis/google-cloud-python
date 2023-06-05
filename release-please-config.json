@@ -1204,6 +1204,31 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-tpu": {
+            "component": "google-cloud-tpu",
+            "extra-files": [
+                "google/cloud/tpu/gapic_version.py",
+                "google/cloud/tpu_v1/gapic_version.py",
+                "google/cloud/tpu_v2alpha1/gapic_version.py",
+                "google/cloud/tpu_v2/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.tpu.v2alpha1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.tpu.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.tpu.v2.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-vmwareengine": {
             "component": "google-cloud-vmwareengine",
             "extra-files": [
