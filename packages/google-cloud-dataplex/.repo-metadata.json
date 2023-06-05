@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-dataplex",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-dataplex",
     "api_id": "dataplex.googleapis.com",
     "default_version": "v1",

@@ -478,6 +478,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-dataplex": {
+            "component": "google-cloud-dataplex",
+            "extra-files": [
+                "google/cloud/dataplex/gapic_version.py",
+                "google/cloud/dataplex_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.dataplex.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-discoveryengine": {
             "component": "google-cloud-discoveryengine",
             "extra-files": [
