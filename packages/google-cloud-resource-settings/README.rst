@@ -1,9 +1,9 @@
-Python Client for Resource Settings API
-=======================================
+Python Client for Resource Settings
+===================================
 
 |stable| |pypi| |versions|
 
-`Resource Settings API`_: allows users to control and modify the behavior of their GCP resources (e.g., VM, firewall, Project, etc.) across the Cloud Resource Hierarchy.
+`Resource Settings`_: allows users to control and modify the behavior of their GCP resources (e.g., VM, firewall, Project, etc.) across the Cloud Resource Hierarchy.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Resource Settings API
    :target: https://pypi.org/project/google-cloud-resource-settings/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-resource-settings.svg
    :target: https://pypi.org/project/google-cloud-resource-settings/
-.. _Resource Settings API: https://cloud.google.com/resource-manager/docs/reference/resource-settings/rest
+.. _Resource Settings: https://cloud.google.com/resource-manager/docs/reference/resource-settings/rest
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/resourcesettings/latest
 .. _Product Documentation:  https://cloud.google.com/resource-manager/docs/reference/resource-settings/rest
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Resource Settings API.`_
+3. `Enable the Resource Settings.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Resource Settings API.:  https://cloud.google.com/resource-manager/docs/reference/resource-settings/rest
+.. _Enable the Resource Settings.:  https://cloud.google.com/resource-manager/docs/reference/resource-settings/rest
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Resource Settings API
+-  Read the `Client Library Documentation`_ for Resource Settings
    to see other available methods on the client.
--  Read the `Resource Settings API Product documentation`_ to learn
+-  Read the `Resource Settings Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Resource Settings API Product documentation:  https://cloud.google.com/resource-manager/docs/reference/resource-settings/rest
+.. _Resource Settings Product documentation:  https://cloud.google.com/resource-manager/docs/reference/resource-settings/rest
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
