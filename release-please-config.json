@@ -1151,6 +1151,14 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-source-context": {
+            "component": "google-cloud-source-context",
+            "extra-files": [
+                "google/cloud/source_context/gapic_version.py",
+                "google/cloud/source_context_v1/gapic_version.py"
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-storageinsights": {
             "component": "google-cloud-storageinsights",
             "extra-files": [
