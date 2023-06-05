@@ -8,7 +8,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-network-management",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-network-management",
     "api_id": "networkmanagement.googleapis.com",
     "default_version": "v1",
