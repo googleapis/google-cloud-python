@@ -41,6 +41,7 @@
     "packages/google-cloud-deploy": "1.9.0",
     "packages/google-cloud-discoveryengine": "0.8.0",
     "packages/google-cloud-dms": "1.7.0",
+    "packages/google-cloud-documentai": "2.15.0",
     "packages/google-cloud-domains": "1.5.1",
     "packages/google-cloud-enterpriseknowledgegraph": "0.3.2",
     "packages/google-cloud-iap": "1.10.1",

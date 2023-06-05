@@ -593,6 +593,31 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-documentai": {
+            "component": "google-cloud-documentai",
+            "extra-files": [
+                "google/cloud/documentai_v1/gapic_version.py",
+                "google/cloud/documentai_v1beta3/gapic_version.py",
+                "google/cloud/documentai_v1beta2/gapic_version.py",
+                "google/cloud/documentai/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.documentai.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.documentai.v1beta2.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.documentai.v1beta3.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-domains": {
             "component": "google-cloud-domains",
             "extra-files": [
