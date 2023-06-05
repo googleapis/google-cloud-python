@@ -2097,6 +2097,10 @@ def test_create_budget_rest(request_type):
         "display_name": "display_name_value",
         "budget_filter": {
             "projects": ["projects_value1", "projects_value2"],
+            "resource_ancestors": [
+                "resource_ancestors_value1",
+                "resource_ancestors_value2",
+            ],
             "credit_types": ["credit_types_value1", "credit_types_value2"],
             "credit_types_treatment": 1,
             "services": ["services_value1", "services_value2"],
@@ -2321,6 +2325,10 @@ def test_create_budget_rest_bad_request(
         "display_name": "display_name_value",
         "budget_filter": {
             "projects": ["projects_value1", "projects_value2"],
+            "resource_ancestors": [
+                "resource_ancestors_value1",
+                "resource_ancestors_value2",
+            ],
             "credit_types": ["credit_types_value1", "credit_types_value2"],
             "credit_types_treatment": 1,
             "services": ["services_value1", "services_value2"],
@@ -2448,6 +2456,10 @@ def test_update_budget_rest(request_type):
         "display_name": "display_name_value",
         "budget_filter": {
             "projects": ["projects_value1", "projects_value2"],
+            "resource_ancestors": [
+                "resource_ancestors_value1",
+                "resource_ancestors_value2",
+            ],
             "credit_types": ["credit_types_value1", "credit_types_value2"],
             "credit_types_treatment": 1,
             "services": ["services_value1", "services_value2"],
@@ -2661,6 +2673,10 @@ def test_update_budget_rest_bad_request(
         "display_name": "display_name_value",
         "budget_filter": {
             "projects": ["projects_value1", "projects_value2"],
+            "resource_ancestors": [
+                "resource_ancestors_value1",
+                "resource_ancestors_value2",
+            ],
             "credit_types": ["credit_types_value1", "credit_types_value2"],
             "credit_types_treatment": 1,
             "services": ["services_value1", "services_value2"],
