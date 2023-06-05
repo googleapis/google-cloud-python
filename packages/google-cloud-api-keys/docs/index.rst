@@ -20,4 +20,4 @@ For a list of all ``google-cloud-api-keys`` releases:
 .. toctree::
     :maxdepth: 2
 
-    changelog
+    CHANGELOG
