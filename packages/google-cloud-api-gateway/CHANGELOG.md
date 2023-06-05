@@ -1,0 +1,262 @@
+# Changelog
+
+## [1.7.1](https://github.com/googleapis/python-api-gateway/compare/v1.7.0...v1.7.1) (2023-03-23)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#208](https://github.com/googleapis/python-api-gateway/issues/208)) ([f2254d6](https://github.com/googleapis/python-api-gateway/commit/f2254d61e95af85c8afe0f63c2a3dfef97719da8))
+
+## [1.7.0](https://github.com/googleapis/python-api-gateway/compare/v1.6.1...v1.7.0) (2023-02-27)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#202](https://github.com/googleapis/python-api-gateway/issues/202)) ([bff081a](https://github.com/googleapis/python-api-gateway/commit/bff081a911ed79585259319c42855e112d9c8920))
+
+## [1.6.1](https://github.com/googleapis/python-api-gateway/compare/v1.6.0...v1.6.1) (2023-01-20)
+
+
+### Bug Fixes
+
+* Add context manager return types ([9288267](https://github.com/googleapis/python-api-gateway/commit/92882675cc4e9e0ae19af2b25dfdf058235f97e7))
+
+
+### Documentation
+
+* Add documentation for enums ([9288267](https://github.com/googleapis/python-api-gateway/commit/92882675cc4e9e0ae19af2b25dfdf058235f97e7))
+
+## [1.6.0](https://github.com/googleapis/python-api-gateway/compare/v1.5.1...v1.6.0) (2023-01-10)
+
+
+### Features
+
+* Add support for python 3.11 ([#194](https://github.com/googleapis/python-api-gateway/issues/194)) ([f38c7c9](https://github.com/googleapis/python-api-gateway/commit/f38c7c96650d60842f14e3828039f42a133219b8))
+
+## [1.5.1](https://github.com/googleapis/python-api-gateway/compare/v1.5.0...v1.5.1) (2022-12-08)
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;=1.34.0, >=2.11.0  ([19703a5](https://github.com/googleapis/python-api-gateway/commit/19703a5ab92d011a580840e18c14af3e9ce09fd9))
+* Drop usage of pkg_resources ([19703a5](https://github.com/googleapis/python-api-gateway/commit/19703a5ab92d011a580840e18c14af3e9ce09fd9))
+* Fix timeout default values ([19703a5](https://github.com/googleapis/python-api-gateway/commit/19703a5ab92d011a580840e18c14af3e9ce09fd9))
+
+
+### Documentation
+
+* **samples:** Snippetgen should call await on the operation coroutine before calling result ([19703a5](https://github.com/googleapis/python-api-gateway/commit/19703a5ab92d011a580840e18c14af3e9ce09fd9))
+
+## [1.5.0](https://github.com/googleapis/python-api-gateway/compare/v1.4.0...v1.5.0) (2022-11-16)
+
+
+### Features
+
+* Add typing to proto.Message based class attributes ([7b87c92](https://github.com/googleapis/python-api-gateway/commit/7b87c9272f1af4207db884415de3d75e83ab6c44))
+
+
+### Documentation
+
+* **samples:** Snippetgen handling of repeated enum field ([7b87c92](https://github.com/googleapis/python-api-gateway/commit/7b87c9272f1af4207db884415de3d75e83ab6c44))
+
+## [1.4.0](https://github.com/googleapis/python-api-gateway/compare/v1.3.3...v1.4.0) (2022-11-07)
+
+
+### Features
+
+* add support for `google.cloud.apigateway.__version__` ([e9e9c31](https://github.com/googleapis/python-api-gateway/commit/e9e9c31115962509813b27ac44bfd53b0f42a836))
+
+
+### Bug Fixes
+
+* Add dict typing for client_options ([e9e9c31](https://github.com/googleapis/python-api-gateway/commit/e9e9c31115962509813b27ac44bfd53b0f42a836))
+* **deps:** require google-api-core &gt;=1.33.2 ([e9e9c31](https://github.com/googleapis/python-api-gateway/commit/e9e9c31115962509813b27ac44bfd53b0f42a836))
+
+## [1.3.3](https://github.com/googleapis/python-api-gateway/compare/v1.3.2...v1.3.3) (2022-10-07)
+
+
+### Bug Fixes
+
+* **deps:** Allow protobuf 3.19.5 ([#179](https://github.com/googleapis/python-api-gateway/issues/179)) ([787b0a6](https://github.com/googleapis/python-api-gateway/commit/787b0a6e5c007b0790dfe4b15fd700c730433354))
+
+## [1.3.2](https://github.com/googleapis/python-api-gateway/compare/v1.3.1...v1.3.2) (2022-09-29)
+
+
+### Bug Fixes
+
+* **deps:** Require protobuf >= 3.20.2 ([#177](https://github.com/googleapis/python-api-gateway/issues/177)) ([d43f7af](https://github.com/googleapis/python-api-gateway/commit/d43f7afcebeda57d16b78eb3a58cc83119004bfe))
+
+## [1.3.1](https://github.com/googleapis/python-api-gateway/compare/v1.3.0...v1.3.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* **deps:** allow protobuf < 5.0.0 ([#164](https://github.com/googleapis/python-api-gateway/issues/164)) ([4953359](https://github.com/googleapis/python-api-gateway/commit/4953359f8112aef3073086a746c973999a1d08b4))
+* **deps:** require proto-plus >= 1.22.0 ([4953359](https://github.com/googleapis/python-api-gateway/commit/4953359f8112aef3073086a746c973999a1d08b4))
+
+## [1.3.0](https://github.com/googleapis/python-api-gateway/compare/v1.2.2...v1.3.0) (2022-07-16)
+
+
+### Features
+
+* add audience parameter ([af598f0](https://github.com/googleapis/python-api-gateway/commit/af598f0b2cf6aaccc63d051861ac18199a38abb0))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.32.0,>=2.8.0 ([#158](https://github.com/googleapis/python-api-gateway/issues/158)) ([d36cf27](https://github.com/googleapis/python-api-gateway/commit/d36cf27b13fe4260ef42dca5e80b8c81f136c158))
+* require python 3.7+ ([#156](https://github.com/googleapis/python-api-gateway/issues/156)) ([57b848a](https://github.com/googleapis/python-api-gateway/commit/57b848a94ee8b2b0f746111522a33a21cb4ad635))
+
+## [1.2.2](https://github.com/googleapis/python-api-gateway/compare/v1.2.1...v1.2.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** require protobuf <4.0.0dev ([#146](https://github.com/googleapis/python-api-gateway/issues/146)) ([c1c7fbf](https://github.com/googleapis/python-api-gateway/commit/c1c7fbf9dbf0968cc63a53d5d73dced9dce6d427))
+
+
+### Documentation
+
+* fix changelog header to consistent size ([#147](https://github.com/googleapis/python-api-gateway/issues/147)) ([6e7f4f1](https://github.com/googleapis/python-api-gateway/commit/6e7f4f1b2310ae510dff2bbcfb262385b090c6d7))
+
+## [1.2.1](https://github.com/googleapis/python-api-gateway/compare/v1.2.0...v1.2.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#113](https://github.com/googleapis/python-api-gateway/issues/113)) ([729cc99](https://github.com/googleapis/python-api-gateway/commit/729cc997ad63feed9475580c63004efc14375d1a))
+* **deps:** require proto-plus>=1.15.0 ([729cc99](https://github.com/googleapis/python-api-gateway/commit/729cc997ad63feed9475580c63004efc14375d1a))
+
+## [1.2.0](https://github.com/googleapis/python-api-gateway/compare/v1.1.1...v1.2.0) (2022-02-11)
+
+
+### Features
+
+* add api key support ([#99](https://github.com/googleapis/python-api-gateway/issues/99)) ([72f55a7](https://github.com/googleapis/python-api-gateway/commit/72f55a7285b161de6177e177f917b9ba70bce57d))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([dd8ce9f](https://github.com/googleapis/python-api-gateway/commit/dd8ce9f801d4ab8719d1d5a0c0e6c06a2074bdd8))
+
+
+### Documentation
+
+* add autogenerated code snippets ([033bbc4](https://github.com/googleapis/python-api-gateway/commit/033bbc4c27b13e369df1b4527558f0a4de54fe80))
+
+## [1.1.1](https://www.github.com/googleapis/python-api-gateway/compare/v1.1.0...v1.1.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([ddf46fa](https://www.github.com/googleapis/python-api-gateway/commit/ddf46faab34fee5c5e23578f9fcdd5f038f8708a))
+* **deps:** require google-api-core >= 1.28.0 ([ddf46fa](https://www.github.com/googleapis/python-api-gateway/commit/ddf46faab34fee5c5e23578f9fcdd5f038f8708a))
+
+
+### Documentation
+
+* list oneofs in docstring ([ddf46fa](https://www.github.com/googleapis/python-api-gateway/commit/ddf46faab34fee5c5e23578f9fcdd5f038f8708a))
+
+## [1.1.0](https://www.github.com/googleapis/python-api-gateway/compare/v1.0.4...v1.1.0) (2021-10-11)
+
+
+### Features
+
+* add context manager support in client ([#74](https://www.github.com/googleapis/python-api-gateway/issues/74)) ([5b43933](https://www.github.com/googleapis/python-api-gateway/commit/5b4393306e81eb8fff207b167ecee3fe904a1e8c))
+* add trove classifier for python 3.9 and python 3.10 ([#77](https://www.github.com/googleapis/python-api-gateway/issues/77)) ([394dd62](https://www.github.com/googleapis/python-api-gateway/commit/394dd62dafaf81855c5a7f1f238cafc089530ffc))
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([fc86cd1](https://www.github.com/googleapis/python-api-gateway/commit/fc86cd1c93a932c3c205524040d8547f70dbfb1c))
+
+## [1.0.4](https://www.github.com/googleapis/python-api-gateway/compare/v1.0.3...v1.0.4) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([39ee308](https://www.github.com/googleapis/python-api-gateway/commit/39ee308769c9d999acca90c5ac56e4cd5806c822))
+
+## [1.0.3](https://www.github.com/googleapis/python-api-gateway/compare/v1.0.2...v1.0.3) (2021-07-27)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#52](https://www.github.com/googleapis/python-api-gateway/issues/52)) ([55a8883](https://www.github.com/googleapis/python-api-gateway/commit/55a888387c10ef20044a6a8e38e7667898d12219))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#48](https://www.github.com/googleapis/python-api-gateway/issues/48)) ([4e791d2](https://www.github.com/googleapis/python-api-gateway/commit/4e791d28ed4d798a93e5e622254f8ceec5bb7fdb))
+
+
+### Miscellaneous Chores
+
+* release as 1.0.3 ([#53](https://www.github.com/googleapis/python-api-gateway/issues/53)) ([aa6e493](https://www.github.com/googleapis/python-api-gateway/commit/aa6e49383d2df7b88282ee9fe032e802758a564f))
+
+## [1.0.2](https://www.github.com/googleapis/python-api-gateway/compare/v1.0.1...v1.0.2) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#47](https://www.github.com/googleapis/python-api-gateway/issues/47)) ([17aed88](https://www.github.com/googleapis/python-api-gateway/commit/17aed8856fd9143e141ffc5c6ff51c0fc8937743))
+
+## [1.0.1](https://www.github.com/googleapis/python-api-gateway/compare/v1.0.0...v1.0.1) (2021-07-12)
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([b2869e6](https://www.github.com/googleapis/python-api-gateway/commit/b2869e6fc540d65af1bdcf4329f8c888ab61de9a))
+* disable always_use_jwt_access ([#41](https://www.github.com/googleapis/python-api-gateway/issues/41)) ([b2869e6](https://www.github.com/googleapis/python-api-gateway/commit/b2869e6fc540d65af1bdcf4329f8c888ab61de9a))
+
+## [1.0.1](https://www.github.com/googleapis/python-api-gateway/compare/v1.0.0...v1.0.1) (2021-06-30)
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([b2869e6](https://www.github.com/googleapis/python-api-gateway/commit/b2869e6fc540d65af1bdcf4329f8c888ab61de9a))
+* disable always_use_jwt_access ([#41](https://www.github.com/googleapis/python-api-gateway/issues/41)) ([b2869e6](https://www.github.com/googleapis/python-api-gateway/commit/b2869e6fc540d65af1bdcf4329f8c888ab61de9a))
+
+## [1.0.0](https://www.github.com/googleapis/python-api-gateway/compare/v0.2.0...v1.0.0) (2021-06-24)
+
+
+### Features
+
+* add always_use_jwt_access ([#38](https://www.github.com/googleapis/python-api-gateway/issues/38)) ([3ffe025](https://www.github.com/googleapis/python-api-gateway/commit/3ffe0253794bb43940293cfed2850567cdb86a9a))
+* bump release level to production/stable ([#25](https://www.github.com/googleapis/python-api-gateway/issues/25)) ([0eadb82](https://www.github.com/googleapis/python-api-gateway/commit/0eadb82978e33261a4aa56b54a546d418658080a))
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#32](https://www.github.com/googleapis/python-api-gateway/issues/32)) ([8b176e5](https://www.github.com/googleapis/python-api-gateway/commit/8b176e56eaeb04e466f2496e4c043bfaf6e130a6))
+
+
+### Miscellaneous Chores
+
+* release as 1.0.0 ([#30](https://www.github.com/googleapis/python-api-gateway/issues/30)) ([4289246](https://www.github.com/googleapis/python-api-gateway/commit/42892467e4c6b594ad844a2ea733b65577d9d382))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-api-gateway/issues/1127)) ([#35](https://www.github.com/googleapis/python-api-gateway/issues/35)) ([2f3c1cc](https://www.github.com/googleapis/python-api-gateway/commit/2f3c1cc627db8495de970931fd7c7898bebc9fec))
+
+## [0.2.0](https://www.github.com/googleapis/python-api-gateway/compare/v0.1.0...v0.2.0) (2021-05-28)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([94695fe](https://www.github.com/googleapis/python-api-gateway/commit/94695fe7a57e4d259ac73b505feb9ab17bad1157))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([94695fe](https://www.github.com/googleapis/python-api-gateway/commit/94695fe7a57e4d259ac73b505feb9ab17bad1157))
+* **deps:** add packaging requirement ([#21](https://www.github.com/googleapis/python-api-gateway/issues/21)) ([80d7f64](https://www.github.com/googleapis/python-api-gateway/commit/80d7f647bb87eaf4c0d699e8d723a27c4853538e))
+* use correct retry deadline ([#3](https://www.github.com/googleapis/python-api-gateway/issues/3)) ([688cde1](https://www.github.com/googleapis/python-api-gateway/commit/688cde1c870dbaf5fa04540f708214d922d90e9c))
+
+## 0.1.0 (2021-03-23)
+
+
+### Features
+
+* generate v1 ([7a83fd6](https://www.github.com/googleapis/python-api-gateway/commit/7a83fd6dd7d40a80f1b24bf5ba87c59a1c1620da))
