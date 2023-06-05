@@ -159,6 +159,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-bare-metal-solution": {
+            "component": "google-cloud-bare-metal-solution",
+            "extra-files": [
+                "google/cloud/bare_metal_solution/gapic_version.py",
+                "google/cloud/bare_metal_solution_v2/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.baremetalsolution.v2.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-bigquery-biglake": {
             "component": "google-cloud-bigquery-biglake",
             "extra-files": [
