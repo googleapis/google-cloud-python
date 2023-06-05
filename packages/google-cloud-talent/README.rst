@@ -1,9 +1,9 @@
-Python Client for Talent Solution API
-=====================================
+Python Client for Talent Solution
+=================================
 
 |stable| |pypi| |versions|
 
-`Talent Solution API`_: Cloud Talent Solution provides the capability to create, read, update, and delete job postings, as well as search jobs based on keywords and filters.
+`Talent Solution`_: Cloud Talent Solution provides the capability to create, read, update, and delete job postings, as well as search jobs based on keywords and filters.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Talent Solution API
    :target: https://pypi.org/project/google-cloud-talent/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-talent.svg
    :target: https://pypi.org/project/google-cloud-talent/
-.. _Talent Solution API: https://cloud.google.com/solutions/talent-solution/
+.. _Talent Solution: https://cloud.google.com/solutions/talent-solution/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/talent/latest
 .. _Product Documentation:  https://cloud.google.com/solutions/talent-solution/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Talent Solution API.`_
+3. `Enable the Talent Solution.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Talent Solution API.:  https://cloud.google.com/solutions/talent-solution/
+.. _Enable the Talent Solution.:  https://cloud.google.com/solutions/talent-solution/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Talent Solution API
+-  Read the `Client Library Documentation`_ for Talent Solution
    to see other available methods on the client.
--  Read the `Talent Solution API Product documentation`_ to learn
+-  Read the `Talent Solution Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Talent Solution API Product documentation:  https://cloud.google.com/solutions/talent-solution/
+.. _Talent Solution Product documentation:  https://cloud.google.com/solutions/talent-solution/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
