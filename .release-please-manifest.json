@@ -64,6 +64,7 @@
     "packages/google-cloud-policy-troubleshooter": "1.8.1",
     "packages/google-cloud-private-catalog": "0.9.2",
     "packages/google-cloud-rapidmigrationassessment": "0.1.0",
+    "packages/google-cloud-recaptcha-enterprise": "1.12.0",
     "packages/google-cloud-storageinsights": "0.1.0",
     "packages/google-cloud-support": "0.1.0",
     "packages/google-cloud-vmwareengine": "1.0.1",

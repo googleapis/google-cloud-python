@@ -926,6 +926,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-recaptcha-enterprise": {
+            "component": "google-cloud-recaptcha-enterprise",
+            "extra-files": [
+                "google/cloud/recaptchaenterprise_v1/gapic_version.py",
+                "google/cloud/recaptchaenterprise/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.recaptchaenterprise.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-storageinsights": {
             "component": "google-cloud-storageinsights",
             "extra-files": [
