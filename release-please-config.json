@@ -1125,6 +1125,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-service-usage": {
+            "component": "google-cloud-service-usage",
+            "extra-files": [
+                "google/cloud/service_usage/gapic_version.py",
+                "google/cloud/service_usage_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.api.serviceusage.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-storageinsights": {
             "component": "google-cloud-storageinsights",
             "extra-files": [
