@@ -185,6 +185,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-beyondcorp-appconnectors": {
+            "component": "google-cloud-beyondcorp-appconnectors",
+            "extra-files": [
+                "google/cloud/beyondcorp_appconnectors/gapic_version.py",
+                "google/cloud/beyondcorp_appconnectors_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.beyondcorp.appconnectors.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-bigquery-biglake": {
             "component": "google-cloud-bigquery-biglake",
             "extra-files": [
