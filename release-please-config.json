@@ -971,6 +971,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-redis": {
+            "component": "google-cloud-redis",
+            "extra-files": [
+                "google/cloud/redis/gapic_version.py",
+                "google/cloud/redis_v1/gapic_version.py",
+                "google/cloud/redis_v1beta1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.redis.v1beta1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.redis.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-storageinsights": {
             "component": "google-cloud-storageinsights",
             "extra-files": [
