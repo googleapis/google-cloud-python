@@ -1,0 +1,17 @@
+{
+    "name": "notebooks",
+    "name_pretty": "AI Platform Notebooks",
+    "product_documentation": "https://cloud.google.com/ai-platform/notebooks/",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/notebooks/latest",
+    "issue_tracker": "",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-notebooks",
+    "distribution_name": "google-cloud-notebooks",
+    "api_id": "notebooks.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "@googleapis/cdpe-cloudai",
+    "api_shortname": "notebooks",
+    "api_description": "is a managed service that offers an integrated and secure JupyterLab environment for data scientists and machine learning developers to experiment, develop, and deploy models into production. Users can create instances running JupyterLab that come pre-installed with the latest data science and machine learning frameworks in a single click."
+}
