@@ -43,6 +43,7 @@
     "packages/google-cloud-dms": "1.7.0",
     "packages/google-cloud-documentai": "2.15.0",
     "packages/google-cloud-domains": "1.5.1",
+    "packages/google-cloud-edgecontainer": "0.5.1",
     "packages/google-cloud-enterpriseknowledgegraph": "0.3.2",
     "packages/google-cloud-iap": "1.10.1",
     "packages/google-cloud-ids": "1.5.1",

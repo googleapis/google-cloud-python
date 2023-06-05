@@ -627,6 +627,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-edgecontainer": {
+            "component": "google-cloud-edgecontainer",
+            "extra-files": [
+                "google/cloud/edgecontainer_v1/gapic_version.py",
+                "google/cloud/edgecontainer/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.edgecontainer.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-enterpriseknowledgegraph": {
             "component": "google-cloud-enterpriseknowledgegraph",
             "extra-files": [
