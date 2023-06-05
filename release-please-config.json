@@ -1138,6 +1138,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-shell": {
+            "component": "google-cloud-shell",
+            "extra-files": [
+                "google/cloud/shell/gapic_version.py",
+                "google/cloud/shell_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.shell.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-storageinsights": {
             "component": "google-cloud-storageinsights",
             "extra-files": [
