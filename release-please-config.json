@@ -1106,6 +1106,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-service-directory": {
+            "component": "google-cloud-service-directory",
+            "extra-files": [
+                "google/cloud/servicedirectory/gapic_version.py",
+                "google/cloud/servicedirectory_v1beta1/gapic_version.py",
+                "google/cloud/servicedirectory_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.servicedirectory.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.servicedirectory.v1beta1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-storageinsights": {
             "component": "google-cloud-storageinsights",
             "extra-files": [
