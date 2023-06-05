@@ -1,9 +1,9 @@
-Python Client for Service Control API
-=====================================
+Python Client for Service Control
+=================================
 
 |stable| |pypi| |versions|
 
-`Service Control API`_:  is a foundational platform for creating, managing, securing, and consuming APIs and services across organizations. It is used by Google APIs, Cloud APIs, Cloud Endpoints, and API Gateway.
+`Service Control`_:  is a foundational platform for creating, managing, securing, and consuming APIs and services across organizations. It is used by Google APIs, Cloud APIs, Cloud Endpoints, and API Gateway.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Service Control API
    :target: https://pypi.org/project/google-cloud-service-control/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-service-control.svg
    :target: https://pypi.org/project/google-cloud-service-control/
-.. _Service Control API: https://cloud.google.com/service-infrastructure/docs/overview/
+.. _Service Control: https://cloud.google.com/service-infrastructure/docs/overview/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/servicecontrol/latest
 .. _Product Documentation:  https://cloud.google.com/service-infrastructure/docs/overview/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Service Control API.`_
+3. `Enable the Service Control.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Service Control API.:  https://cloud.google.com/service-infrastructure/docs/overview/
+.. _Enable the Service Control.:  https://cloud.google.com/service-infrastructure/docs/overview/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Service Control API
+-  Read the `Client Library Documentation`_ for Service Control
    to see other available methods on the client.
--  Read the `Service Control API Product documentation`_ to learn
+-  Read the `Service Control Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Service Control API Product documentation:  https://cloud.google.com/service-infrastructure/docs/overview/
+.. _Service Control Product documentation:  https://cloud.google.com/service-infrastructure/docs/overview/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
