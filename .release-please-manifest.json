@@ -87,6 +87,7 @@
     "packages/google-cloud-vmwareengine": "1.0.1",
     "packages/google-cloud-vpc-access": "1.8.1",
     "packages/google-cloud-webrisk": "1.12.0",
+    "packages/google-cloud-websecurityscanner": "1.12.1",
     "packages/google-cloud-workstations": "0.4.0",
     "packages/google-geo-type": "0.3.1",
     "packages/google-maps-addressvalidation": "0.3.4",

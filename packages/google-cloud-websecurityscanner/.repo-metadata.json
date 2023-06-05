@@ -8,7 +8,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-websecurityscanner",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-websecurityscanner",
     "api_id": "websecurityscanner.googleapis.com",
     "requires_billing": true,
