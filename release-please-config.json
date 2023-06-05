@@ -785,6 +785,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-network-connectivity": {
+            "component": "google-cloud-network-connectivity",
+            "extra-files": [
+                "google/cloud/networkconnectivity_v1alpha1/gapic_version.py",
+                "google/cloud/networkconnectivity_v1/gapic_version.py",
+                "google/cloud/networkconnectivity/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.networkconnectivity.v1alpha1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.networkconnectivity.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-rapidmigrationassessment": {
             "component": "google-cloud-rapidmigrationassessment",
             "extra-files": [
