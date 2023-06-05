@@ -1268,6 +1268,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-webrisk": {
+            "component": "google-cloud-webrisk",
+            "extra-files": [
+                "google/cloud/webrisk_v1/gapic_version.py",
+                "google/cloud/webrisk_v1beta1/gapic_version.py",
+                "google/cloud/webrisk/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.webrisk.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.webrisk.v1beta1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-workstations": {
             "component": "google-cloud-workstations",
             "extra-files": [
