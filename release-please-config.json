@@ -772,6 +772,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-monitoring-metrics-scopes": {
+            "component": "google-cloud-monitoring-metrics-scopes",
+            "extra-files": [
+                "google/cloud/monitoring_metrics_scope_v1/gapic_version.py",
+                "google/cloud/monitoring_metrics_scope/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.monitoring.metricsscope.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-rapidmigrationassessment": {
             "component": "google-cloud-rapidmigrationassessment",
             "extra-files": [
