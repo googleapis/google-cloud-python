@@ -283,6 +283,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-bigquery-datapolicies": {
+            "component": "google-cloud-bigquery-datapolicies",
+            "extra-files": [
+                "google/cloud/bigquery/datapolicies_v1/gapic_version.py",
+                "google/cloud/bigquery/datapolicies_v1beta1/gapic_version.py",
+                "google/cloud/bigquery/datapolicies/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.datapolicies.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.datapolicies.v1beta1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-confidentialcomputing": {
             "component": "google-cloud-confidentialcomputing",
             "extra-files": [

@@ -20,6 +20,7 @@
     "packages/google-cloud-bigquery-analyticshub": "0.3.2",
     "packages/google-cloud-bigquery-biglake": "0.3.0",
     "packages/google-cloud-bigquery-data-exchange": "0.5.3",
+    "packages/google-cloud-bigquery-datapolicies": "0.4.0",
     "packages/google-cloud-confidentialcomputing": "0.1.0",
     "packages/google-cloud-contentwarehouse": "0.5.0",
     "packages/google-cloud-datacatalog-lineage": "0.2.2",
