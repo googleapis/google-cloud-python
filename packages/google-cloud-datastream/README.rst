@@ -1,9 +1,9 @@
-Python Client for Datastream API
-================================
+Python Client for Datastream
+============================
 
 |stable| |pypi| |versions|
 
-`Datastream API`_: is a serverless and easy-to-use change data capture (CDC) and replication service. It allows you to synchronize data across heterogeneous databases and applications reliably, and with minimal latency and downtime.
+`Datastream`_: is a serverless and easy-to-use change data capture (CDC) and replication service. It allows you to synchronize data across heterogeneous databases and applications reliably, and with minimal latency and downtime.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Datastream API
    :target: https://pypi.org/project/google-cloud-datastream/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-datastream.svg
    :target: https://pypi.org/project/google-cloud-datastream/
-.. _Datastream API: https://cloud.google.com/datastream/
+.. _Datastream: https://cloud.google.com/datastream/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/datastream/latest
 .. _Product Documentation:  https://cloud.google.com/datastream/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Datastream API.`_
+3. `Enable the Datastream.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Datastream API.:  https://cloud.google.com/datastream/
+.. _Enable the Datastream.:  https://cloud.google.com/datastream/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Datastream API
+-  Read the `Client Library Documentation`_ for Datastream
    to see other available methods on the client.
--  Read the `Datastream API Product documentation`_ to learn
+-  Read the `Datastream Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Datastream API Product documentation:  https://cloud.google.com/datastream/
+.. _Datastream Product documentation:  https://cloud.google.com/datastream/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
