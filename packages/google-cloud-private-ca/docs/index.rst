@@ -31,4 +31,4 @@ For a list of all ``google-cloud-private-ca`` releases:
 .. toctree::
     :maxdepth: 2
 
-    changelog
+    CHANGELOG
