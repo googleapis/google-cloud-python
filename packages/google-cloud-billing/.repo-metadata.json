@@ -1,0 +1,17 @@
+{
+    "name": "cloudbilling",
+    "name_pretty": "Cloud Billing",
+    "product_documentation": "https://cloud.google.com/billing",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/cloudbilling/latest",
+    "issue_tracker": "",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-billing",
+    "distribution_name": "google-cloud-billing",
+    "api_id": "cloudbilling.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "cloudbilling",
+    "api_description": "allows developers to manage their billing accounts or browse the catalog of SKUs and pricing."
+}
