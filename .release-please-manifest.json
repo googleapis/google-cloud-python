@@ -35,6 +35,7 @@
     "packages/google-cloud-dataform": "0.5.1",
     "packages/google-cloud-datalabeling": "1.8.2",
     "packages/google-cloud-dataplex": "1.5.0",
+    "packages/google-cloud-dataproc-metastore": "1.11.0",
     "packages/google-cloud-discoveryengine": "0.8.0",
     "packages/google-cloud-domains": "1.5.1",
     "packages/google-cloud-enterpriseknowledgegraph": "0.3.2",

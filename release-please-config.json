@@ -491,6 +491,31 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-dataproc-metastore": {
+            "component": "google-cloud-dataproc-metastore",
+            "extra-files": [
+                "google/cloud/metastore_v1/gapic_version.py",
+                "google/cloud/metastore_v1alpha/gapic_version.py",
+                "google/cloud/metastore/gapic_version.py",
+                "google/cloud/metastore_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.metastore.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.metastore.v1beta.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.metastore.v1alpha.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-discoveryengine": {
             "component": "google-cloud-discoveryengine",
             "extra-files": [
