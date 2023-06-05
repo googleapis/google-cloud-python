@@ -1,9 +1,9 @@
-Python Client for API Gateway API
-=================================
+Python Client for API Gateway
+=============================
 
 |stable| |pypi| |versions|
 
-`API Gateway API`_: enables you to provide secure access to your backend services through a well-defined REST API that is consistent across all of your services, regardless of the service implementation. Clients consume your REST APIS to implement standalone apps for a mobile device or tablet, through apps running in a browser, or through any other type of app that can make a request to an HTTP endpoint.
+`API Gateway`_: enables you to provide secure access to your backend services through a well-defined REST API that is consistent across all of your services, regardless of the service implementation. Clients consume your REST APIS to implement standalone apps for a mobile device or tablet, through apps running in a browser, or through any other type of app that can make a request to an HTTP endpoint.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for API Gateway API
    :target: https://pypi.org/project/google-cloud-api-gateway/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-api-gateway.svg
    :target: https://pypi.org/project/google-cloud-api-gateway/
-.. _API Gateway API: https://cloud.google.com/api-gateway
+.. _API Gateway: https://cloud.google.com/api-gateway
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/apigateway/latest
 .. _Product Documentation:  https://cloud.google.com/api-gateway
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the API Gateway API.`_
+3. `Enable the API Gateway.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the API Gateway API.:  https://cloud.google.com/api-gateway
+.. _Enable the API Gateway.:  https://cloud.google.com/api-gateway
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for API Gateway API
+-  Read the `Client Library Documentation`_ for API Gateway
    to see other available methods on the client.
--  Read the `API Gateway API Product documentation`_ to learn
+-  Read the `API Gateway Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _API Gateway API Product documentation:  https://cloud.google.com/api-gateway
+.. _API Gateway Product documentation:  https://cloud.google.com/api-gateway
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
