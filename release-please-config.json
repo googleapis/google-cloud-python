@@ -310,6 +310,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-billing": {
+            "component": "google-cloud-billing",
+            "extra-files": [
+                "google/cloud/billing_v1/gapic_version.py",
+                "google/cloud/billing/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.billing.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-billing-budgets": {
             "component": "google-cloud-billing-budgets",
             "extra-files": [
