@@ -342,6 +342,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-certificate-manager": {
+            "component": "google-cloud-certificate-manager",
+            "extra-files": [
+                "google/cloud/certificate_manager_v1/gapic_version.py",
+                "google/cloud/certificate_manager/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.certificatemanager.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-confidentialcomputing": {
             "component": "google-cloud-confidentialcomputing",
             "extra-files": [
