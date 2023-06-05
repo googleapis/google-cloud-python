@@ -900,6 +900,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-private-ca": {
+            "component": "google-cloud-private-ca",
+            "extra-files": [
+                "google/cloud/security/privateca/gapic_version.py",
+                "google/cloud/security/privateca_v1/gapic_version.py",
+                "google/cloud/security/privateca_v1beta1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.security.privateca.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.security.privateca.v1beta1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-private-catalog": {
             "component": "google-cloud-private-catalog",
             "extra-files": [

@@ -62,6 +62,7 @@
     "packages/google-cloud-orchestration-airflow": "1.8.0",
     "packages/google-cloud-phishing-protection": "1.9.0",
     "packages/google-cloud-policy-troubleshooter": "1.8.1",
+    "packages/google-cloud-private-ca": "1.8.0",
     "packages/google-cloud-private-catalog": "0.9.2",
     "packages/google-cloud-rapidmigrationassessment": "0.1.0",
     "packages/google-cloud-recaptcha-enterprise": "1.12.0",
