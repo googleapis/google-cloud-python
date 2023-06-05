@@ -1,9 +1,9 @@
-Python Client for Web Risk API
-==============================
+Python Client for Web Risk
+==========================
 
 |stable| |pypi| |versions|
 
-`Web Risk API`_: is a Google Cloud service that lets client applications check URLs against Google's constantly updated lists of unsafe web resources. Unsafe web resources include social engineering sites—such as phishing and deceptive sites—and sites that host malware or unwanted software. With the Web Risk API, you can quickly identify known bad sites, warn users before they click infected links, and prevent users from posting links to known infected pages from your site. The Web Risk API includes data on more than a million unsafe URLs and stays up to date by examining billions of URLs each day.
+`Web Risk`_: is a Google Cloud service that lets client applications check URLs against Google's constantly updated lists of unsafe web resources. Unsafe web resources include social engineering sites—such as phishing and deceptive sites—and sites that host malware or unwanted software. With the Web Risk API, you can quickly identify known bad sites, warn users before they click infected links, and prevent users from posting links to known infected pages from your site. The Web Risk API includes data on more than a million unsafe URLs and stays up to date by examining billions of URLs each day.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Web Risk API
    :target: https://pypi.org/project/google-cloud-webrisk/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-webrisk.svg
    :target: https://pypi.org/project/google-cloud-webrisk/
-.. _Web Risk API: https://cloud.google.com/web-risk/docs/
+.. _Web Risk: https://cloud.google.com/web-risk/docs/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/webrisk/latest
 .. _Product Documentation:  https://cloud.google.com/web-risk/docs/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Web Risk API.`_
+3. `Enable the Web Risk.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Web Risk API.:  https://cloud.google.com/web-risk/docs/
+.. _Enable the Web Risk.:  https://cloud.google.com/web-risk/docs/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Web Risk API
+-  Read the `Client Library Documentation`_ for Web Risk
    to see other available methods on the client.
--  Read the `Web Risk API Product documentation`_ to learn
+-  Read the `Web Risk Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Web Risk API Product documentation:  https://cloud.google.com/web-risk/docs/
+.. _Web Risk Product documentation:  https://cloud.google.com/web-risk/docs/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
