@@ -952,6 +952,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-recommender": {
+            "component": "google-cloud-recommender",
+            "extra-files": [
+                "google/cloud/recommender/gapic_version.py",
+                "google/cloud/recommender_v1beta1/gapic_version.py",
+                "google/cloud/recommender_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.recommender.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.recommender.v1beta1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-storageinsights": {
             "component": "google-cloud-storageinsights",
             "extra-files": [
