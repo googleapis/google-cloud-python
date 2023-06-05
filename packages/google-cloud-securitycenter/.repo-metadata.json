@@ -1,0 +1,18 @@
+{
+    "name": "securitycenter",
+    "name_pretty": "Google Cloud Security Command Center",
+    "product_documentation": "https://cloud.google.com/security-command-center",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/securitycenter/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559748",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-securitycenter",
+    "distribution_name": "google-cloud-securitycenter",
+    "api_id": "securitycenter.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "securitycenter",
+    "api_description": "makes it easier for you to prevent, detect, and respond to threats. Identify security misconfigurations in virtual machines, networks, applications, and storage buckets from a centralized dashboard. Take action on them before they can potentially result in business damage or loss. Built-in capabilities can quickly surface suspicious activity in your Stackdriver security logs or indicate compromised virtual machines. Respond to threats by following actionable recommendations or exporting logs to your SIEM for further investigation."
+}
