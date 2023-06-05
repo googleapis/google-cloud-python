@@ -85,6 +85,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-api-gateway": {
+            "component": "google-cloud-api-gateway",
+            "extra-files": [
+                "google/cloud/apigateway_v1/gapic_version.py",
+                "google/cloud/apigateway/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.apigateway.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-apigee-connect": {
             "component": "google-cloud-apigee-connect",
             "extra-files": [
