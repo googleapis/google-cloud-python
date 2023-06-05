@@ -740,6 +740,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-media-translation": {
+            "component": "google-cloud-media-translation",
+            "extra-files": [
+                "google/cloud/mediatranslation_v1beta1/gapic_version.py",
+                "google/cloud/mediatranslation/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.mediatranslation.v1beta1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-rapidmigrationassessment": {
             "component": "google-cloud-rapidmigrationassessment",
             "extra-files": [

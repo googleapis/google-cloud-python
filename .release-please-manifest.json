@@ -52,6 +52,7 @@
     "packages/google-cloud-gke-connect-gateway": "0.8.2",
     "packages/google-cloud-iap": "1.10.1",
     "packages/google-cloud-ids": "1.5.1",
+    "packages/google-cloud-media-translation": "0.11.2",
     "packages/google-cloud-rapidmigrationassessment": "0.1.0",
     "packages/google-cloud-storageinsights": "0.1.0",
     "packages/google-cloud-support": "0.1.0",
