@@ -1,0 +1,17 @@
+{
+    "name": "vpcaccess",
+    "name_pretty": "Virtual Private Cloud",
+    "product_documentation": "https://cloud.google.com/vpc/",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/vpcaccess/latest",
+    "issue_tracker": "",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-vpc-access",
+    "distribution_name": "google-cloud-vpc-access",
+    "api_id": "vpcaccess.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "vpcaccess",
+    "api_description": "provides networking functionality to Compute Engine virtual machine (VM) instances, Google Kubernetes Engine (GKE) containers, and the App Engine flexible environment. VPC provides networking for your cloud-based services that is global, scalable, and flexible."
+}
