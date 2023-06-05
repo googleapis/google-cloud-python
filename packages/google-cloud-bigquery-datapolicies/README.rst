@@ -1,9 +1,9 @@
-Python Client for BigQuery Data Policy API
-==========================================
+Python Client for BigQuery Data Policy
+======================================
 
 |preview| |pypi| |versions|
 
-`BigQuery Data Policy API`_: Allows users to manage BigQuery data policies.
+`BigQuery Data Policy`_: Allows users to manage BigQuery data policies.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for BigQuery Data Policy API
    :target: https://pypi.org/project/google-cloud-bigquery-datapolicies/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-datapolicies.svg
    :target: https://pypi.org/project/google-cloud-bigquery-datapolicies/
-.. _BigQuery Data Policy API: https://cloud.google.com/bigquery/docs/reference/bigquerydatapolicy/rest
+.. _BigQuery Data Policy: https://cloud.google.com/bigquery/docs/reference/bigquerydatapolicy/rest
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigquerydatapolicy/latest
 .. _Product Documentation:  https://cloud.google.com/bigquery/docs/reference/bigquerydatapolicy/rest
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the BigQuery Data Policy API.`_
+3. `Enable the BigQuery Data Policy.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the BigQuery Data Policy API.:  https://cloud.google.com/bigquery/docs/reference/bigquerydatapolicy/rest
+.. _Enable the BigQuery Data Policy.:  https://cloud.google.com/bigquery/docs/reference/bigquerydatapolicy/rest
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for BigQuery Data Policy API
+-  Read the `Client Library Documentation`_ for BigQuery Data Policy
    to see other available methods on the client.
--  Read the `BigQuery Data Policy API Product documentation`_ to learn
+-  Read the `BigQuery Data Policy Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _BigQuery Data Policy API Product documentation:  https://cloud.google.com/bigquery/docs/reference/bigquerydatapolicy/rest
+.. _BigQuery Data Policy Product documentation:  https://cloud.google.com/bigquery/docs/reference/bigquerydatapolicy/rest
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
