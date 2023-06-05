@@ -529,6 +529,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-datastream": {
+            "component": "google-cloud-datastream",
+            "extra-files": [
+                "google/cloud/datastream_v1/gapic_version.py",
+                "google/cloud/datastream/gapic_version.py",
+                "google/cloud/datastream_v1alpha1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.datastream.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.datastream.v1alpha1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-discoveryengine": {
             "component": "google-cloud-discoveryengine",
             "extra-files": [
