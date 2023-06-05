@@ -132,6 +132,14 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-appengine-logging": {
+            "component": "google-cloud-appengine-logging",
+            "extra-files": [
+                "google/cloud/appengine_logging/gapic_version.py",
+                "google/cloud/appengine_logging_v1/gapic_version.py"
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-bigquery-biglake": {
             "component": "google-cloud-bigquery-biglake",
             "extra-files": [
