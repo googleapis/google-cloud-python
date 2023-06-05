@@ -836,6 +836,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-notebooks": {
+            "component": "google-cloud-notebooks",
+            "extra-files": [
+                "google/cloud/notebooks/gapic_version.py",
+                "google/cloud/notebooks_v1/gapic_version.py",
+                "google/cloud/notebooks_v1beta1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.notebooks.v1beta1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.notebooks.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-rapidmigrationassessment": {
             "component": "google-cloud-rapidmigrationassessment",
             "extra-files": [
