@@ -6,6 +6,7 @@
     "packages/google-cloud-advisorynotifications": "0.2.0",
     "packages/google-cloud-alloydb": "0.1.1",
     "packages/google-cloud-api-gateway": "1.7.1",
+    "packages/google-cloud-api-keys": "0.5.2",
     "packages/google-cloud-apigee-connect": "1.7.1",
     "packages/google-cloud-apigee-registry": "0.6.2",
     "packages/google-cloud-bigquery-biglake": "0.3.0",

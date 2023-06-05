@@ -98,6 +98,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-api-keys": {
+            "component": "google-cloud-api-keys",
+            "extra-files": [
+                "google/cloud/api_keys/gapic_version.py",
+                "google/cloud/api_keys_v2/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.api.apikeys.v2.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-apigee-connect": {
             "component": "google-cloud-apigee-connect",
             "extra-files": [
