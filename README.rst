@@ -202,9 +202,6 @@ Libraries
    * - `Document AI <https://github.com/googleapis/python-documentai>`_
      - |stable|
      - |PyPI-google-cloud-documentai|
-   * - `Domains <https://github.com/googleapis/python-domains>`_
-     - |stable|
-     - |PyPI-google-cloud-domains|
    * - `Essential Contacts <https://github.com/googleapis/python-essential-contacts>`_
      - |stable|
      - |PyPI-google-cloud-essential-contacts|
@@ -235,18 +232,12 @@ Libraries
    * - `IAM Policy Troubleshooter API <https://github.com/googleapis/python-policy-troubleshooter>`_
      - |stable|
      - |PyPI-google-cloud-policy-troubleshooter|
-   * - `IDS <https://github.com/googleapis/python-ids>`_
-     - |stable|
-     - |PyPI-google-cloud-ids|
    * - `Identity and Access Management <https://github.com/googleapis/python-iam>`_
      - |stable|
      - |PyPI-google-cloud-iam|
    * - `Identity and Access Management <https://github.com/googleapis/python-grpc-google-iam-v1>`_
      - |stable|
      - |PyPI-grpc-google-iam-v1|
-   * - `Identity-Aware Proxy <https://github.com/googleapis/python-iap>`_
-     - |stable|
-     - |PyPI-google-cloud-iap|
    * - `Internet of Things (IoT) Core <https://github.com/googleapis/python-iot>`_
      - |stable|
      - |PyPI-google-cloud-iot|
@@ -624,8 +615,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-dialogflow-cx
 .. |PyPI-google-cloud-documentai| image:: https://img.shields.io/pypi/v/google-cloud-documentai.svg
      :target: https://pypi.org/project/google-cloud-documentai
-.. |PyPI-google-cloud-domains| image:: https://img.shields.io/pypi/v/google-cloud-domains.svg
-     :target: https://pypi.org/project/google-cloud-domains
 .. |PyPI-google-cloud-essential-contacts| image:: https://img.shields.io/pypi/v/google-cloud-essential-contacts.svg
      :target: https://pypi.org/project/google-cloud-essential-contacts
 .. |PyPI-google-cloud-eventarc| image:: https://img.shields.io/pypi/v/google-cloud-eventarc.svg
@@ -646,14 +635,10 @@ Libraries
      :target: https://pypi.org/project/google-cloud-iam-logging
 .. |PyPI-google-cloud-policy-troubleshooter| image:: https://img.shields.io/pypi/v/google-cloud-policy-troubleshooter.svg
      :target: https://pypi.org/project/google-cloud-policy-troubleshooter
-.. |PyPI-google-cloud-ids| image:: https://img.shields.io/pypi/v/google-cloud-ids.svg
-     :target: https://pypi.org/project/google-cloud-ids
 .. |PyPI-google-cloud-iam| image:: https://img.shields.io/pypi/v/google-cloud-iam.svg
      :target: https://pypi.org/project/google-cloud-iam
 .. |PyPI-grpc-google-iam-v1| image:: https://img.shields.io/pypi/v/grpc-google-iam-v1.svg
      :target: https://pypi.org/project/grpc-google-iam-v1
-.. |PyPI-google-cloud-iap| image:: https://img.shields.io/pypi/v/google-cloud-iap.svg
-     :target: https://pypi.org/project/google-cloud-iap
 .. |PyPI-google-cloud-iot| image:: https://img.shields.io/pypi/v/google-cloud-iot.svg
      :target: https://pypi.org/project/google-cloud-iot
 .. |PyPI-google-cloud-kms| image:: https://img.shields.io/pypi/v/google-cloud-kms.svg
