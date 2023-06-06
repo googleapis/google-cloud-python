@@ -343,7 +343,14 @@ class Filter(proto.Message):
             set of projects should be included in the budget. If
             omitted, the report will include all usage for the billing
             account, regardless of which project the usage occurred on.
-            Only zero or one project can be specified currently.
+        resource_ancestors (MutableSequence[str]):
+            Optional. A set of folder and organization names of the form
+            ``folders/{folderId}`` or
+            ``organizations/{organizationId}``, specifying that usage
+            from only this set of folders and organizations should be
+            included in the budget. If omitted, the report includes all
+            usage for all organizations, regardless of which
+            organization the usage occurred on.
         credit_types (MutableSequence[str]):
             Optional. If
             [Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment]
@@ -439,6 +446,10 @@ class Filter(proto.Message):
     projects: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
+    )
+    resource_ancestors: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
     )
     credit_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
