@@ -1,9 +1,9 @@
-Python Client for Anthos Multicloud API
-=======================================
+Python Client for Anthos Multicloud
+===================================
 
 |preview| |pypi| |versions|
 
-`Anthos Multicloud API`_: An API for provisioning and managing GKE clusters running on AWS and Azure infrastructure through a centralized Google Cloud backed control plane.
+`Anthos Multicloud`_: An API for provisioning and managing GKE clusters running on AWS and Azure infrastructure through a centralized Google Cloud backed control plane.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Anthos Multicloud API
    :target: https://pypi.org/project/google-cloud-gke-multicloud/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-gke-multicloud.svg
    :target: https://pypi.org/project/google-cloud-gke-multicloud/
-.. _Anthos Multicloud API: https://cloud.google.com/anthos/clusters/docs/multi-cloud
+.. _Anthos Multicloud: https://cloud.google.com/anthos/clusters/docs/multi-cloud
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/gkemulticloud/latest
 .. _Product Documentation:  https://cloud.google.com/anthos/clusters/docs/multi-cloud
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Anthos Multicloud API.`_
+3. `Enable the Anthos Multicloud.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Anthos Multicloud API.:  https://cloud.google.com/anthos/clusters/docs/multi-cloud
+.. _Enable the Anthos Multicloud.:  https://cloud.google.com/anthos/clusters/docs/multi-cloud
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Anthos Multicloud API
+-  Read the `Client Library Documentation`_ for Anthos Multicloud
    to see other available methods on the client.
--  Read the `Anthos Multicloud API Product documentation`_ to learn
+-  Read the `Anthos Multicloud Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Anthos Multicloud API Product documentation:  https://cloud.google.com/anthos/clusters/docs/multi-cloud
+.. _Anthos Multicloud Product documentation:  https://cloud.google.com/anthos/clusters/docs/multi-cloud
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
