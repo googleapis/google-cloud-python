@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.23.0](https://github.com/googleapis/python-container/compare/v2.22.0...v2.23.0) (2023-06-06)
+
+
+### Features
+
+* Add a API field to enable FQDN Network Policy on clusters ([52d1480](https://github.com/googleapis/python-container/commit/52d14803c65c06f65c1dcf7679faa9c6a0cca784))
+* Add CheckAutopilotCompatibility API to get autopilot compatibility issues for a given standard cluster ([52d1480](https://github.com/googleapis/python-container/commit/52d14803c65c06f65c1dcf7679faa9c6a0cca784))
+* Turn on public visibility for best effort provision ([52d1480](https://github.com/googleapis/python-container/commit/52d14803c65c06f65c1dcf7679faa9c6a0cca784))
+
 ## [2.22.0](https://github.com/googleapis/python-container/compare/v2.21.0...v2.22.0) (2023-06-01)
 
 
