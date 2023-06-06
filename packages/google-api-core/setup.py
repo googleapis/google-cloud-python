@@ -29,20 +29,20 @@ description = "Google API client core library"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    "googleapis-common-protos >= 1.56.2, < 2.0dev",
-    "protobuf>=3.19.5,<5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
-    "google-auth >= 2.14.1, < 3.0dev",
-    "requests >= 2.18.0, < 3.0.0dev",
+    "googleapis-common-protos >= 1.56.2, < 2.0.dev0",
+    "protobuf>=3.19.5,<5.0.0.dev0,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "google-auth >= 2.14.1, < 3.0.dev0",
+    "requests >= 2.18.0, < 3.0.0.dev0",
 ]
 extras = {
     "grpc": [
         "grpcio >= 1.33.2, < 2.0dev",
         "grpcio >= 1.49.1, < 2.0dev; python_version>='3.11'",
-        "grpcio-status >= 1.33.2, < 2.0dev",
-        "grpcio-status >= 1.49.1, < 2.0dev; python_version>='3.11'",
+        "grpcio-status >= 1.33.2, < 2.0.dev0",
+        "grpcio-status >= 1.49.1, < 2.0.dev0; python_version>='3.11'",
     ],
-    "grpcgcp": "grpcio-gcp >= 0.2.2, < 1.0dev",
-    "grpcio-gcp": "grpcio-gcp >= 0.2.2, < 1.0dev",
+    "grpcgcp": "grpcio-gcp >= 0.2.2, < 1.0.dev0",
+    "grpcio-gcp": "grpcio-gcp >= 0.2.2, < 1.0.dev0",
 }
 
 
