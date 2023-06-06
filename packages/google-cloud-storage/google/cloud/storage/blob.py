@@ -3450,6 +3450,10 @@ class Blob(_PropertyMixin):
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
 
+        .. note::
+
+           ``rewrite`` is not supported in a ``Batch`` context.
+
         :type source: :class:`Blob`
         :param source: blob whose contents will be rewritten into this blob.
 

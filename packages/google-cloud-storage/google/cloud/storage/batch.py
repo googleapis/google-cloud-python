@@ -13,7 +13,21 @@
 # limitations under the License.
 """Batch updates / deletes of storage buckets / blobs.
 
-See https://cloud.google.com/storage/docs/json_api/v1/how-tos/batch
+A batch request is a single standard HTTP request containing multiple Cloud Storage JSON API calls.
+Within this main HTTP request, there are multiple parts which each contain a nested HTTP request.
+The body of each part is itself a complete HTTP request, with its own verb, URL, headers, and body.
+
+Note that Cloud Storage does not support batch operations for uploading or downloading.
+Additionally, the current batch design does not support library methods whose return values
+depend on the response payload. See more details in the [Sending Batch Requests official guide](https://cloud.google.com/storage/docs/batch).
+
+Examples of situations when you might want to use the Batch module:
+``blob.patch()``
+``blob.update()``
+``blob.delete()``
+``bucket.delete_blob()``
+``bucket.patch()``
+``bucket.update()``
 """
 from email.encoders import encode_noop
 from email.generator import Generator
@@ -130,6 +144,12 @@ class _FutureResponse(requests.Response):
 
 class Batch(Connection):
     """Proxy an underlying connection, batching up change operations.
+
+    .. warning::
+
+        Cloud Storage does not support batch operations for uploading or downloading.
+        Additionally, the current batch design does not support library methods whose
+        return values depend on the response payload.
 
     :type client: :class:`google.cloud.storage.client.Client`
     :param client: The client to use for making connections.

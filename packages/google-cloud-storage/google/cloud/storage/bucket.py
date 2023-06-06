@@ -1482,7 +1482,8 @@ class Bucket(_PropertyMixin):
         If ``force=True`` and the bucket contains more than 256 objects / blobs
         this will cowardly refuse to delete the objects (or the bucket). This
         is to prevent accidental bucket deletion and to prevent extremely long
-        runtime of this method.
+        runtime of this method. Also note that ``force=True`` is not supported
+        in a ``Batch`` context.
 
         If :attr:`user_project` is set, bills the API request to that project.
 
@@ -1675,6 +1676,7 @@ class Bucket(_PropertyMixin):
                          Called once for each blob raising
                          :class:`~google.cloud.exceptions.NotFound`;
                          otherwise, the exception is propagated.
+                         Note that ``on_error`` is not supported in a ``Batch`` context.
 
         :type client: :class:`~google.cloud.storage.client.Client`
         :param client: (Optional) The client to use.  If not passed, falls back
@@ -1801,6 +1803,8 @@ class Bucket(_PropertyMixin):
         :param preserve_acl: DEPRECATED. This argument is not functional!
                              (Optional) Copies ACL from old blob to new blob.
                              Default: True.
+                             Note that ``preserve_acl`` is not supported in a
+                             ``Batch`` context.
 
         :type source_generation: long
         :param source_generation: (Optional) The generation of the blob to be
@@ -1932,8 +1936,11 @@ class Bucket(_PropertyMixin):
           old blob.  This means that with very large objects renaming
           could be a very (temporarily) costly or a very slow operation.
           If you need more control over the copy and deletion, instead
-          use `google.cloud.storage.blob.Blob.copy_to` and
-          `google.cloud.storage.blob.Blob.delete` directly.
+          use ``google.cloud.storage.blob.Blob.copy_to`` and
+          ``google.cloud.storage.blob.Blob.delete`` directly.
+
+          Also note that this method is not fully supported in a
+          ``Batch`` context.
 
         :type blob: :class:`google.cloud.storage.blob.Blob`
         :param blob: The blob to be renamed.
