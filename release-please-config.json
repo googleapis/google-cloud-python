@@ -38,12 +38,7 @@
             "component": "google-cloud-access-approval",
             "extra-files": [
                 "google/cloud/accessapproval/gapic_version.py",
-                "google/cloud/accessapproval_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.accessapproval.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/accessapproval_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -88,13 +83,8 @@
         "packages/google-cloud-api-gateway": {
             "component": "google-cloud-api-gateway",
             "extra-files": [
-                "google/cloud/apigateway_v1/gapic_version.py",
                 "google/cloud/apigateway/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.apigateway.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/apigateway_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -102,12 +92,7 @@
             "component": "google-cloud-api-keys",
             "extra-files": [
                 "google/cloud/api_keys/gapic_version.py",
-                "google/cloud/api_keys_v2/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.api.apikeys.v2.json",
-                    "type": "json"
-                }
+                "google/cloud/api_keys_v2/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -123,12 +108,7 @@
             "component": "google-cloud-apigee-registry",
             "extra-files": [
                 "google/cloud/apigee_registry/gapic_version.py",
-                "google/cloud/apigee_registry_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.apigeeregistry.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/apigee_registry_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -143,19 +123,9 @@
         "packages/google-cloud-artifact-registry": {
             "component": "google-cloud-artifact-registry",
             "extra-files": [
-                "google/cloud/artifactregistry_v1/gapic_version.py",
                 "google/cloud/artifactregistry/gapic_version.py",
-                "google/cloud/artifactregistry_v1beta2/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.devtools.artifactregistry.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.devtools.artifactregistry.v1beta2.json",
-                    "type": "json"
-                }
+                "google/cloud/artifactregistry_v1/gapic_version.py",
+                "google/cloud/artifactregistry_v1beta2/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -163,25 +133,15 @@
             "component": "google-cloud-bare-metal-solution",
             "extra-files": [
                 "google/cloud/bare_metal_solution/gapic_version.py",
-                "google/cloud/bare_metal_solution_v2/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.baremetalsolution.v2.json",
-                    "type": "json"
-                }
+                "google/cloud/bare_metal_solution_v2/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-beyondcorp-appconnections": {
             "component": "google-cloud-beyondcorp-appconnections",
             "extra-files": [
-                "google/cloud/beyondcorp_appconnections_v1/gapic_version.py",
                 "google/cloud/beyondcorp_appconnections/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.beyondcorp.appconnections.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/beyondcorp_appconnections_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -189,12 +149,7 @@
             "component": "google-cloud-beyondcorp-appconnectors",
             "extra-files": [
                 "google/cloud/beyondcorp_appconnectors/gapic_version.py",
-                "google/cloud/beyondcorp_appconnectors_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.beyondcorp.appconnectors.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/beyondcorp_appconnectors_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -202,12 +157,7 @@
             "component": "google-cloud-beyondcorp-appgateways",
             "extra-files": [
                 "google/cloud/beyondcorp_appgateways/gapic_version.py",
-                "google/cloud/beyondcorp_appgateways_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.beyondcorp.appgateways.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/beyondcorp_appgateways_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -215,12 +165,7 @@
             "component": "google-cloud-beyondcorp-clientconnectorservices",
             "extra-files": [
                 "google/cloud/beyondcorp_clientconnectorservices/gapic_version.py",
-                "google/cloud/beyondcorp_clientconnectorservices_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.beyondcorp.clientconnectorservices.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/beyondcorp_clientconnectorservices_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -228,12 +173,7 @@
             "component": "google-cloud-beyondcorp-clientgateways",
             "extra-files": [
                 "google/cloud/beyondcorp_clientgateways/gapic_version.py",
-                "google/cloud/beyondcorp_clientgateways_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.beyondcorp.clientgateways.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/beyondcorp_clientgateways_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -241,12 +181,7 @@
             "component": "google-cloud-bigquery-analyticshub",
             "extra-files": [
                 "google/cloud/bigquery/analyticshub/gapic_version.py",
-                "google/cloud/bigquery/analyticshub_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.analyticshub.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/bigquery/analyticshub_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -273,32 +208,16 @@
             "component": "google-cloud-bigquery-data-exchange",
             "extra-files": [
                 "google/cloud/bigquery_data_exchange/gapic_version.py",
-                "google/cloud/bigquery_data_exchange_v1beta1/gapic_version.py",
-                "google/cloud/bigquery_data_exchange_v1beta1/common/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.dataexchange.v1beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/bigquery_data_exchange_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-bigquery-datapolicies": {
             "component": "google-cloud-bigquery-datapolicies",
             "extra-files": [
-                "google/cloud/bigquery/datapolicies_v1/gapic_version.py",
-                "google/cloud/bigquery/datapolicies_v1beta1/gapic_version.py",
                 "google/cloud/bigquery/datapolicies/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.datapolicies.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.datapolicies.v1beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/bigquery/datapolicies_v1/gapic_version.py",
+                "google/cloud/bigquery/datapolicies_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -313,30 +232,25 @@
         "packages/google-cloud-billing": {
             "component": "google-cloud-billing",
             "extra-files": [
-                "google/cloud/billing_v1/gapic_version.py",
                 "google/cloud/billing/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.billing.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/billing_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-billing-budgets": {
             "component": "google-cloud-billing-budgets",
             "extra-files": [
-                "google/cloud/billing/budgets_v1/gapic_version.py",
                 "google/cloud/billing/budgets/gapic_version.py",
+                "google/cloud/billing/budgets_v1/gapic_version.py",
                 "google/cloud/billing/budgets_v1beta1/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.billing.budgets.v1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.billing.budgets.v1beta1.json",
                     "type": "json"
                 },
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.billing.budgets.v1beta1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.billing.budgets.v1.json",
                     "type": "json"
                 }
             ],
@@ -345,13 +259,8 @@
         "packages/google-cloud-certificate-manager": {
             "component": "google-cloud-certificate-manager",
             "extra-files": [
-                "google/cloud/certificate_manager_v1/gapic_version.py",
                 "google/cloud/certificate_manager/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.certificatemanager.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/certificate_manager_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -359,12 +268,7 @@
             "component": "google-cloud-channel",
             "extra-files": [
                 "google/cloud/channel/gapic_version.py",
-                "google/cloud/channel_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.channel.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/channel_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -384,13 +288,8 @@
         "packages/google-cloud-contact-center-insights": {
             "component": "google-cloud-contact-center-insights",
             "extra-files": [
-                "google/cloud/contact_center_insights_v1/gapic_version.py",
                 "google/cloud/contact_center_insights/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.contactcenterinsights.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/contact_center_insights_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -410,13 +309,8 @@
         "packages/google-cloud-data-fusion": {
             "component": "google-cloud-data-fusion",
             "extra-files": [
-                "google/cloud/data_fusion_v1/gapic_version.py",
                 "google/cloud/data_fusion/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.datafusion.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/data_fusion_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -424,12 +318,7 @@
             "component": "google-cloud-data-qna",
             "extra-files": [
                 "google/cloud/dataqna/gapic_version.py",
-                "google/cloud/dataqna_v1alpha/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.dataqna.v1alpha.json",
-                    "type": "json"
-                }
+                "google/cloud/dataqna_v1alpha/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -437,18 +326,8 @@
             "component": "google-cloud-datacatalog",
             "extra-files": [
                 "google/cloud/datacatalog/gapic_version.py",
-                "google/cloud/datacatalog_v1beta1/gapic_version.py",
                 "google/cloud/datacatalog_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.datacatalog.v1beta1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.datacatalog.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/datacatalog_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -469,25 +348,15 @@
             "component": "google-cloud-dataform",
             "extra-files": [
                 "google/cloud/dataform/gapic_version.py",
-                "google/cloud/dataform_v1beta1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.dataform.v1beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/dataform_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-datalabeling": {
             "component": "google-cloud-datalabeling",
             "extra-files": [
-                "google/cloud/datalabeling_v1beta1/gapic_version.py",
                 "google/cloud/datalabeling/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.datalabeling.v1beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/datalabeling_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -495,69 +364,34 @@
             "component": "google-cloud-dataplex",
             "extra-files": [
                 "google/cloud/dataplex/gapic_version.py",
-                "google/cloud/dataplex_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.dataplex.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/dataplex_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-dataproc-metastore": {
             "component": "google-cloud-dataproc-metastore",
             "extra-files": [
+                "google/cloud/metastore/gapic_version.py",
                 "google/cloud/metastore_v1/gapic_version.py",
                 "google/cloud/metastore_v1alpha/gapic_version.py",
-                "google/cloud/metastore/gapic_version.py",
-                "google/cloud/metastore_v1beta/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.metastore.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.metastore.v1beta.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.metastore.v1alpha.json",
-                    "type": "json"
-                }
+                "google/cloud/metastore_v1beta/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-datastream": {
             "component": "google-cloud-datastream",
             "extra-files": [
-                "google/cloud/datastream_v1/gapic_version.py",
                 "google/cloud/datastream/gapic_version.py",
-                "google/cloud/datastream_v1alpha1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.datastream.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.datastream.v1alpha1.json",
-                    "type": "json"
-                }
+                "google/cloud/datastream_v1/gapic_version.py",
+                "google/cloud/datastream_v1alpha1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-deploy": {
             "component": "google-cloud-deploy",
             "extra-files": [
-                "google/cloud/deploy_v1/gapic_version.py",
                 "google/cloud/deploy/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.deploy.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/deploy_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -584,37 +418,17 @@
             "component": "google-cloud-dms",
             "extra-files": [
                 "google/cloud/clouddms/gapic_version.py",
-                "google/cloud/clouddms_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.clouddms.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/clouddms_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-documentai": {
             "component": "google-cloud-documentai",
             "extra-files": [
-                "google/cloud/documentai_v1/gapic_version.py",
-                "google/cloud/documentai_v1beta3/gapic_version.py",
-                "google/cloud/documentai_v1beta2/gapic_version.py",
                 "google/cloud/documentai/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.documentai.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.documentai.v1beta2.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.documentai.v1beta3.json",
-                    "type": "json"
-                }
+                "google/cloud/documentai_v1/gapic_version.py",
+                "google/cloud/documentai_v1beta2/gapic_version.py",
+                "google/cloud/documentai_v1beta3/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -630,13 +444,8 @@
         "packages/google-cloud-edgecontainer": {
             "component": "google-cloud-edgecontainer",
             "extra-files": [
-                "google/cloud/edgecontainer_v1/gapic_version.py",
                 "google/cloud/edgecontainer/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.edgecontainer.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/edgecontainer_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -657,12 +466,7 @@
             "component": "google-cloud-essential-contacts",
             "extra-files": [
                 "google/cloud/essential_contacts/gapic_version.py",
-                "google/cloud/essential_contacts_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.essentialcontacts.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/essential_contacts_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -670,12 +474,7 @@
             "component": "google-cloud-eventarc",
             "extra-files": [
                 "google/cloud/eventarc/gapic_version.py",
-                "google/cloud/eventarc_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.eventarc.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/eventarc_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -683,31 +482,16 @@
             "component": "google-cloud-eventarc-publishing",
             "extra-files": [
                 "google/cloud/eventarc_publishing/gapic_version.py",
-                "google/cloud/eventarc_publishing_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.eventarc.publishing.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/eventarc_publishing_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-functions": {
             "component": "google-cloud-functions",
             "extra-files": [
-                "google/cloud/functions_v1/gapic_version.py",
                 "google/cloud/functions/gapic_version.py",
-                "google/cloud/functions_v2/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.functions.v2.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.functions.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/functions_v1/gapic_version.py",
+                "google/cloud/functions_v2/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -715,12 +499,7 @@
             "component": "google-cloud-gke-connect-gateway",
             "extra-files": [
                 "google/cloud/gkeconnect/gateway/gapic_version.py",
-                "google/cloud/gkeconnect/gateway_v1beta1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.gkeconnect.gateway.v1beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/gkeconnect/gateway_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -743,96 +522,51 @@
         "packages/google-cloud-media-translation": {
             "component": "google-cloud-media-translation",
             "extra-files": [
-                "google/cloud/mediatranslation_v1beta1/gapic_version.py",
                 "google/cloud/mediatranslation/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.mediatranslation.v1beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/mediatranslation_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-memcache": {
             "component": "google-cloud-memcache",
             "extra-files": [
-                "google/cloud/memcache_v1beta2/gapic_version.py",
-                "google/cloud/memcache_v1/gapic_version.py",
                 "google/cloud/memcache/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.memcache.v1beta2.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.memcache.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/memcache_v1/gapic_version.py",
+                "google/cloud/memcache_v1beta2/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-monitoring-metrics-scopes": {
             "component": "google-cloud-monitoring-metrics-scopes",
             "extra-files": [
-                "google/cloud/monitoring_metrics_scope_v1/gapic_version.py",
                 "google/cloud/monitoring_metrics_scope/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.monitoring.metricsscope.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/monitoring_metrics_scope_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-network-connectivity": {
             "component": "google-cloud-network-connectivity",
             "extra-files": [
-                "google/cloud/networkconnectivity_v1alpha1/gapic_version.py",
-                "google/cloud/networkconnectivity_v1/gapic_version.py",
                 "google/cloud/networkconnectivity/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.networkconnectivity.v1alpha1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.networkconnectivity.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/networkconnectivity_v1/gapic_version.py",
+                "google/cloud/networkconnectivity_v1alpha1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-network-management": {
             "component": "google-cloud-network-management",
             "extra-files": [
-                "google/cloud/network_management_v1/gapic_version.py",
                 "google/cloud/network_management/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.networkmanagement.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/network_management_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-network-security": {
             "component": "google-cloud-network-security",
             "extra-files": [
-                "google/cloud/network_security_v1beta1/gapic_version.py",
                 "google/cloud/network_security/gapic_version.py",
                 "google/cloud/network_security_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.networksecurity.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.networksecurity.v1beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/network_security_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -841,62 +575,32 @@
             "extra-files": [
                 "google/cloud/notebooks/gapic_version.py",
                 "google/cloud/notebooks_v1/gapic_version.py",
-                "google/cloud/notebooks_v1beta1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.notebooks.v1beta1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.notebooks.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/notebooks_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-orchestration-airflow": {
             "component": "google-cloud-orchestration-airflow",
             "extra-files": [
-                "google/cloud/orchestration/airflow/service_v1beta1/gapic_version.py",
-                "google/cloud/orchestration/airflow/service_v1/gapic_version.py",
                 "google/cloud/orchestration/airflow/service/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.orchestration.airflow.service.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.orchestration.airflow.service.v1beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/orchestration/airflow/service_v1/gapic_version.py",
+                "google/cloud/orchestration/airflow/service_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-phishing-protection": {
             "component": "google-cloud-phishing-protection",
             "extra-files": [
-                "google/cloud/phishingprotection_v1beta1/gapic_version.py",
                 "google/cloud/phishingprotection/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.phishingprotection.v1beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/phishingprotection_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-policy-troubleshooter": {
             "component": "google-cloud-policy-troubleshooter",
             "extra-files": [
-                "google/cloud/policytroubleshooter_v1/gapic_version.py",
                 "google/cloud/policytroubleshooter/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.policytroubleshooter.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/policytroubleshooter_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -905,17 +609,7 @@
             "extra-files": [
                 "google/cloud/security/privateca/gapic_version.py",
                 "google/cloud/security/privateca_v1/gapic_version.py",
-                "google/cloud/security/privateca_v1beta1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.security.privateca.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.security.privateca.v1beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/security/privateca_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -923,12 +617,7 @@
             "component": "google-cloud-private-catalog",
             "extra-files": [
                 "google/cloud/privatecatalog/gapic_version.py",
-                "google/cloud/privatecatalog_v1beta1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.privatecatalog.v1beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/privatecatalog_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -936,12 +625,7 @@
             "component": "google-cloud-public-ca",
             "extra-files": [
                 "google/cloud/security/publicca/gapic_version.py",
-                "google/cloud/security/publicca_v1beta1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.security.publicca.v1beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/security/publicca_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -961,26 +645,16 @@
         "packages/google-cloud-recaptcha-enterprise": {
             "component": "google-cloud-recaptcha-enterprise",
             "extra-files": [
-                "google/cloud/recaptchaenterprise_v1/gapic_version.py",
                 "google/cloud/recaptchaenterprise/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.recaptchaenterprise.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/recaptchaenterprise_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-recommendations-ai": {
             "component": "google-cloud-recommendations-ai",
             "extra-files": [
-                "google/cloud/recommendationengine_v1beta1/gapic_version.py",
                 "google/cloud/recommendationengine/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.recommendationengine.v1beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/recommendationengine_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -988,18 +662,8 @@
             "component": "google-cloud-recommender",
             "extra-files": [
                 "google/cloud/recommender/gapic_version.py",
-                "google/cloud/recommender_v1beta1/gapic_version.py",
                 "google/cloud/recommender_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.recommender.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.recommender.v1beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/recommender_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -1008,30 +672,15 @@
             "extra-files": [
                 "google/cloud/redis/gapic_version.py",
                 "google/cloud/redis_v1/gapic_version.py",
-                "google/cloud/redis_v1beta1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.redis.v1beta1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.redis.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/redis_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-resource-manager": {
             "component": "google-cloud-resource-manager",
             "extra-files": [
-                "google/cloud/resourcemanager_v3/gapic_version.py",
                 "google/cloud/resourcemanager/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.resourcemanager.v3.json",
-                    "type": "json"
-                }
+                "google/cloud/resourcemanager_v3/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -1039,51 +688,26 @@
             "component": "google-cloud-resource-settings",
             "extra-files": [
                 "google/cloud/resourcesettings/gapic_version.py",
-                "google/cloud/resourcesettings_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.resourcesettings.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/resourcesettings_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-secret-manager": {
             "component": "google-cloud-secret-manager",
             "extra-files": [
-                "google/cloud/secretmanager_v1/gapic_version.py",
-                "google/cloud/secretmanager_v1beta1/gapic_version.py",
                 "google/cloud/secretmanager/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.secretmanager.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/secretmanager_v1/gapic_version.py",
+                "google/cloud/secretmanager_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-securitycenter": {
             "component": "google-cloud-securitycenter",
             "extra-files": [
-                "google/cloud/securitycenter_v1beta1/gapic_version.py",
                 "google/cloud/securitycenter/gapic_version.py",
-                "google/cloud/securitycenter_v1p1beta1/gapic_version.py",
                 "google/cloud/securitycenter_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.securitycenter.v1p1beta1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.securitycenter.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.securitycenter.v1beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/securitycenter_v1beta1/gapic_version.py",
+                "google/cloud/securitycenter_v1p1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -1092,17 +716,7 @@
             "extra-files": [
                 "google/cloud/servicecontrol/gapic_version.py",
                 "google/cloud/servicecontrol_v1/gapic_version.py",
-                "google/cloud/servicecontrol_v2/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.api.servicecontrol.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.api.servicecontrol.v2.json",
-                    "type": "json"
-                }
+                "google/cloud/servicecontrol_v2/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -1110,18 +724,8 @@
             "component": "google-cloud-service-directory",
             "extra-files": [
                 "google/cloud/servicedirectory/gapic_version.py",
-                "google/cloud/servicedirectory_v1beta1/gapic_version.py",
                 "google/cloud/servicedirectory_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.servicedirectory.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.servicedirectory.v1beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/servicedirectory_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -1129,12 +733,7 @@
             "component": "google-cloud-service-usage",
             "extra-files": [
                 "google/cloud/service_usage/gapic_version.py",
-                "google/cloud/service_usage_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.api.serviceusage.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/service_usage_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -1142,12 +741,7 @@
             "component": "google-cloud-shell",
             "extra-files": [
                 "google/cloud/shell/gapic_version.py",
-                "google/cloud/shell_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.shell.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/shell_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -1188,19 +782,9 @@
         "packages/google-cloud-talent": {
             "component": "google-cloud-talent",
             "extra-files": [
-                "google/cloud/talent_v4beta1/gapic_version.py",
-                "google/cloud/talent_v4/gapic_version.py",
                 "google/cloud/talent/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.talent.v4.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.talent.v4beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/talent_v4/gapic_version.py",
+                "google/cloud/talent_v4beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -1209,23 +793,8 @@
             "extra-files": [
                 "google/cloud/tpu/gapic_version.py",
                 "google/cloud/tpu_v1/gapic_version.py",
-                "google/cloud/tpu_v2alpha1/gapic_version.py",
                 "google/cloud/tpu_v2/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.tpu.v2alpha1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.tpu.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.tpu.v2.json",
-                    "type": "json"
-                }
+                "google/cloud/tpu_v2alpha1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -1233,12 +802,7 @@
             "component": "google-cloud-vm-migration",
             "extra-files": [
                 "google/cloud/vmmigration/gapic_version.py",
-                "google/cloud/vmmigration_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.vmmigration.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/vmmigration_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -1259,31 +823,16 @@
             "component": "google-cloud-vpc-access",
             "extra-files": [
                 "google/cloud/vpcaccess/gapic_version.py",
-                "google/cloud/vpcaccess_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.vpcaccess.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/vpcaccess_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-webrisk": {
             "component": "google-cloud-webrisk",
             "extra-files": [
-                "google/cloud/webrisk_v1/gapic_version.py",
-                "google/cloud/webrisk_v1beta1/gapic_version.py",
                 "google/cloud/webrisk/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.webrisk.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.webrisk.v1beta1.json",
-                    "type": "json"
-                }
+                "google/cloud/webrisk_v1/gapic_version.py",
+                "google/cloud/webrisk_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -1291,24 +840,9 @@
             "component": "google-cloud-websecurityscanner",
             "extra-files": [
                 "google/cloud/websecurityscanner/gapic_version.py",
-                "google/cloud/websecurityscanner_v1beta/gapic_version.py",
                 "google/cloud/websecurityscanner_v1/gapic_version.py",
                 "google/cloud/websecurityscanner_v1alpha/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.websecurityscanner.v1alpha.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.websecurityscanner.v1beta.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.websecurityscanner.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/websecurityscanner_v1beta/gapic_version.py"
             ],
             "release-type": "python"
         },
