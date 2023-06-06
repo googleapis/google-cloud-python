@@ -1,9 +1,9 @@
-Python Client for Managed Service for Microsoft Active Directory API
-====================================================================
+Python Client for Managed Service for Microsoft Active Directory
+================================================================
 
 |stable| |pypi| |versions|
 
-`Managed Service for Microsoft Active Directory API`_: is a highly available, hardened Google Cloud service running actual Microsoft AD that enables you to manage authentication and authorization for your AD-dependent workloads, automate AD server maintenance and security configuration, and connect your on-premises AD domain to the cloud.
+`Managed Service for Microsoft Active Directory`_: is a highly available, hardened Google Cloud service running actual Microsoft AD that enables you to manage authentication and authorization for your AD-dependent workloads, automate AD server maintenance and security configuration, and connect your on-premises AD domain to the cloud.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Managed Service for Microsoft Active Directory API
    :target: https://pypi.org/project/google-cloud-managed-identities/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-managed-identities.svg
    :target: https://pypi.org/project/google-cloud-managed-identities/
-.. _Managed Service for Microsoft Active Directory API: https://cloud.google.com/managed-microsoft-ad/
+.. _Managed Service for Microsoft Active Directory: https://cloud.google.com/managed-microsoft-ad/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/managedidentities/latest
 .. _Product Documentation:  https://cloud.google.com/managed-microsoft-ad/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Managed Service for Microsoft Active Directory API.`_
+3. `Enable the Managed Service for Microsoft Active Directory.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Managed Service for Microsoft Active Directory API.:  https://cloud.google.com/managed-microsoft-ad/
+.. _Enable the Managed Service for Microsoft Active Directory.:  https://cloud.google.com/managed-microsoft-ad/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Managed Service for Microsoft Active Directory API
+-  Read the `Client Library Documentation`_ for Managed Service for Microsoft Active Directory
    to see other available methods on the client.
--  Read the `Managed Service for Microsoft Active Directory API Product documentation`_ to learn
+-  Read the `Managed Service for Microsoft Active Directory Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Managed Service for Microsoft Active Directory API Product documentation:  https://cloud.google.com/managed-microsoft-ad/
+.. _Managed Service for Microsoft Active Directory Product documentation:  https://cloud.google.com/managed-microsoft-ad/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
