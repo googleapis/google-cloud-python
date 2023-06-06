@@ -4687,6 +4687,89 @@ class ClusterManagerAsyncClient:
         # Done; return the response.
         return response
 
+    async def check_autopilot_compatibility(
+        self,
+        request: Optional[
+            Union[cluster_service.CheckAutopilotCompatibilityRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cluster_service.CheckAutopilotCompatibilityResponse:
+        r"""Checks the cluster compatibility with Autopilot mode,
+        and returns a list of compatibility issues.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import container_v1beta1
+
+            async def sample_check_autopilot_compatibility():
+                # Create a client
+                client = container_v1beta1.ClusterManagerAsyncClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.CheckAutopilotCompatibilityRequest(
+                )
+
+                # Make the request
+                response = await client.check_autopilot_compatibility(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.container_v1beta1.types.CheckAutopilotCompatibilityRequest, dict]]):
+                The request object. CheckAutopilotCompatibilityRequest
+                requests getting the blockers for the
+                given operation in the cluster.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.container_v1beta1.types.CheckAutopilotCompatibilityResponse:
+                CheckAutopilotCompatibilityResponse
+                has a list of compatibility issues.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = cluster_service.CheckAutopilotCompatibilityRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.check_autopilot_compatibility,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def list_locations(
         self,
         request: Optional[Union[cluster_service.ListLocationsRequest, dict]] = None,

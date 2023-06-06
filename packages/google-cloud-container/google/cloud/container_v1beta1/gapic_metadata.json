@@ -15,6 +15,11 @@
                 "cancel_operation"
               ]
             },
+            "CheckAutopilotCompatibility": {
+              "methods": [
+                "check_autopilot_compatibility"
+              ]
+            },
             "CompleteIPRotation": {
               "methods": [
                 "complete_ip_rotation"
@@ -188,6 +193,11 @@
             "CancelOperation": {
               "methods": [
                 "cancel_operation"
+              ]
+            },
+            "CheckAutopilotCompatibility": {
+              "methods": [
+                "check_autopilot_compatibility"
               ]
             },
             "CompleteIPRotation": {

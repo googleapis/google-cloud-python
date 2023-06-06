@@ -40,6 +40,7 @@ class containerCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'cancel_operation': ('project_id', 'zone', 'operation_id', 'name', ),
+        'check_autopilot_compatibility': ('name', ),
         'complete_ip_rotation': ('project_id', 'zone', 'cluster_id', 'name', ),
         'complete_node_pool_upgrade': ('name', ),
         'create_cluster': ('cluster', 'project_id', 'zone', 'parent', ),

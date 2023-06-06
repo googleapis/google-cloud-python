@@ -80,6 +80,7 @@ __protobuf__ = proto.module(
         "AuthenticatorGroupsConfig",
         "ClusterTelemetry",
         "Cluster",
+        "K8sBetaAPIConfig",
         "WorkloadConfig",
         "ProtectConfig",
         "NodePoolDefaults",
@@ -109,6 +110,7 @@ __protobuf__ = proto.module(
         "ListOperationsResponse",
         "GetServerConfigRequest",
         "ServerConfig",
+        "BestEffortProvisioning",
         "WindowsVersions",
         "CreateNodePoolRequest",
         "DeleteNodePoolRequest",
@@ -174,6 +176,9 @@ __protobuf__ = proto.module(
         "GetJSONWebKeysRequest",
         "Jwk",
         "GetJSONWebKeysResponse",
+        "CheckAutopilotCompatibilityRequest",
+        "AutopilotCompatibilityIssue",
+        "CheckAutopilotCompatibilityResponse",
         "ReleaseChannel",
         "CostManagementConfig",
         "TpuConfig",
@@ -2595,6 +2600,9 @@ class Cluster(proto.Message):
             master/node upgrades are disabled. Alpha enabled
             clusters are automatically deleted thirty days
             after creation.
+        enable_k8s_beta_apis (google.cloud.container_v1beta1.types.K8sBetaAPIConfig):
+            Kubernetes open source beta apis enabled on
+            the cluster. Only beta apis.
         resource_labels (MutableMapping[str, str]):
             The resource labels for the cluster to use to
             annotate any related Google Compute Engine
@@ -2917,6 +2925,11 @@ class Cluster(proto.Message):
         proto.BOOL,
         number=14,
     )
+    enable_k8s_beta_apis: "K8sBetaAPIConfig" = proto.Field(
+        proto.MESSAGE,
+        number=143,
+        message="K8sBetaAPIConfig",
+    )
     resource_labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
@@ -3192,6 +3205,21 @@ class Cluster(proto.Message):
         proto.MESSAGE,
         number=140,
         message="Fleet",
+    )
+
+
+class K8sBetaAPIConfig(proto.Message):
+    r"""Kubernetes open source beta apis enabled on the cluster.
+
+    Attributes:
+        enabled_apis (MutableSequence[str]):
+            api name, e.g.
+            storage.k8s.io/v1beta1/csistoragecapacities.
+    """
+
+    enabled_apis: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -3576,6 +3604,16 @@ class ClusterUpdate(proto.Message):
             cluster. The pod ranges specified here must have been
             specified earlier in the 'additional_pod_ranges_config'
             argument.
+        enable_k8s_beta_apis (google.cloud.container_v1beta1.types.K8sBetaAPIConfig):
+            Kubernetes open source beta apis enabled on
+            the cluster. Only beta apis
+        desired_enable_fqdn_network_policy (bool):
+            Enable/Disable FQDN Network Policy for the
+            cluster.
+
+            This field is a member of `oneof`_ ``_desired_enable_fqdn_network_policy``.
+        desired_k8s_beta_apis (google.cloud.container_v1beta1.types.K8sBetaAPIConfig):
+            Beta APIs enabled for cluster.
     """
 
     desired_node_version: str = proto.Field(
@@ -3822,6 +3860,21 @@ class ClusterUpdate(proto.Message):
         proto.MESSAGE,
         number=121,
         message="AdditionalPodRangesConfig",
+    )
+    enable_k8s_beta_apis: "K8sBetaAPIConfig" = proto.Field(
+        proto.MESSAGE,
+        number=122,
+        message="K8sBetaAPIConfig",
+    )
+    desired_enable_fqdn_network_policy: bool = proto.Field(
+        proto.BOOL,
+        number=126,
+        optional=True,
+    )
+    desired_k8s_beta_apis: "K8sBetaAPIConfig" = proto.Field(
+        proto.MESSAGE,
+        number=131,
+        message="K8sBetaAPIConfig",
     )
 
 
@@ -5411,6 +5464,34 @@ class ServerConfig(proto.Message):
     )
 
 
+class BestEffortProvisioning(proto.Message):
+    r"""Best effort provisioning.
+
+    Attributes:
+        enabled (bool):
+            When this is enabled, cluster/node pool
+            creations will ignore non-fatal errors like
+            stockout to best provision as many nodes as
+            possible right now and eventually bring up all
+            target number of nodes
+        min_provision_nodes (int):
+            Minimum number of nodes to be provisioned to
+            be considered as succeeded, and the rest of
+            nodes will be provisioned gradually and
+            eventually when stockout issue has been
+            resolved.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    min_provision_nodes: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+
+
 class WindowsVersions(proto.Message):
     r"""Windows server versions.
 
@@ -5829,6 +5910,8 @@ class NodePool(proto.Message):
             on the value of node pool fields, and may be
             sent on update requests to ensure the client has
             an up-to-date value before proceeding.
+        best_effort_provisioning (google.cloud.container_v1beta1.types.BestEffortProvisioning):
+            Enable best effort provisioning for nodes
     """
 
     class Status(proto.Enum):
@@ -6149,6 +6232,11 @@ class NodePool(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=110,
+    )
+    best_effort_provisioning: "BestEffortProvisioning" = proto.Field(
+        proto.MESSAGE,
+        number=113,
+        message="BestEffortProvisioning",
     )
 
 
@@ -7615,6 +7703,9 @@ class NetworkConfig(proto.Message):
     r"""NetworkConfig reports the relative names of network &
     subnetwork.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         network (str):
             Output only. The relative name of the Google Compute Engine
@@ -7658,6 +7749,11 @@ class NetworkConfig(proto.Message):
         gateway_api_config (google.cloud.container_v1beta1.types.GatewayAPIConfig):
             GatewayAPIConfig contains the desired config
             of Gateway API on this cluster.
+        enable_fqdn_network_policy (bool):
+            Whether FQDN Network Policy is enabled on
+            this cluster.
+
+            This field is a member of `oneof`_ ``_enable_fqdn_network_policy``.
     """
 
     network: str = proto.Field(
@@ -7705,6 +7801,11 @@ class NetworkConfig(proto.Message):
         proto.MESSAGE,
         number=16,
         message="GatewayAPIConfig",
+    )
+    enable_fqdn_network_policy: bool = proto.Field(
+        proto.BOOL,
+        number=19,
+        optional=True,
     )
 
 
@@ -8506,6 +8607,119 @@ class GetJSONWebKeysResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message="Jwk",
+    )
+
+
+class CheckAutopilotCompatibilityRequest(proto.Message):
+    r"""CheckAutopilotCompatibilityRequest requests getting the
+    blockers for the given operation in the cluster.
+
+    Attributes:
+        name (str):
+            The name (project, location, cluster) of the cluster to
+            retrieve. Specified in the format
+            ``projects/*/locations/*/clusters/*``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class AutopilotCompatibilityIssue(proto.Message):
+    r"""AutopilotCompatibilityIssue contains information about a
+    specific compatibility issue with Autopilot mode.
+
+    Attributes:
+        last_observation (google.protobuf.timestamp_pb2.Timestamp):
+            The last time when this issue was observed.
+        constraint_type (str):
+            The constraint type of the issue.
+        incompatibility_type (google.cloud.container_v1beta1.types.AutopilotCompatibilityIssue.IssueType):
+            The incompatibility type of this issue.
+        subjects (MutableSequence[str]):
+            The name of the resources which are subject
+            to this issue.
+        documentation_url (str):
+            A URL to a public documnetation, which
+            addresses resolving this issue.
+        description (str):
+            The description of the issue.
+    """
+
+    class IssueType(proto.Enum):
+        r"""The type of the reported issue.
+
+        Values:
+            UNSPECIFIED (0):
+                Default value, should not be used.
+            INCOMPATIBILITY (1):
+                Indicates that the issue is a known
+                incompatibility between the cluster and
+                Autopilot mode.
+            ADDITIONAL_CONFIG_REQUIRED (2):
+                Indicates the issue is an incompatibility if
+                customers take no further action to resolve.
+            PASSED_WITH_OPTIONAL_CONFIG (3):
+                Indicates the issue is not an
+                incompatibility, but depending on the workloads
+                business logic, there is a potential that they
+                won't work on Autopilot.
+        """
+        UNSPECIFIED = 0
+        INCOMPATIBILITY = 1
+        ADDITIONAL_CONFIG_REQUIRED = 2
+        PASSED_WITH_OPTIONAL_CONFIG = 3
+
+    last_observation: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    constraint_type: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    incompatibility_type: IssueType = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=IssueType,
+    )
+    subjects: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    documentation_url: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
+class CheckAutopilotCompatibilityResponse(proto.Message):
+    r"""CheckAutopilotCompatibilityResponse has a list of
+    compatibility issues.
+
+    Attributes:
+        issues (MutableSequence[google.cloud.container_v1beta1.types.AutopilotCompatibilityIssue]):
+            The list of issues for the given operation.
+        summary (str):
+            The summary of the autopilot compatibility
+            response.
+    """
+
+    issues: MutableSequence["AutopilotCompatibilityIssue"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="AutopilotCompatibilityIssue",
+    )
+    summary: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

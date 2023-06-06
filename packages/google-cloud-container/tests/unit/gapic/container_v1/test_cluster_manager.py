@@ -9931,6 +9931,167 @@ async def test_list_usable_subnetworks_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.CheckAutopilotCompatibilityRequest,
+        dict,
+    ],
+)
+def test_check_autopilot_compatibility(request_type, transport: str = "grpc"):
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.check_autopilot_compatibility), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cluster_service.CheckAutopilotCompatibilityResponse(
+            summary="summary_value",
+        )
+        response = client.check_autopilot_compatibility(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.CheckAutopilotCompatibilityRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cluster_service.CheckAutopilotCompatibilityResponse)
+    assert response.summary == "summary_value"
+
+
+def test_check_autopilot_compatibility_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.check_autopilot_compatibility), "__call__"
+    ) as call:
+        client.check_autopilot_compatibility()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.CheckAutopilotCompatibilityRequest()
+
+
+@pytest.mark.asyncio
+async def test_check_autopilot_compatibility_async(
+    transport: str = "grpc_asyncio",
+    request_type=cluster_service.CheckAutopilotCompatibilityRequest,
+):
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.check_autopilot_compatibility), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.CheckAutopilotCompatibilityResponse(
+                summary="summary_value",
+            )
+        )
+        response = await client.check_autopilot_compatibility(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.CheckAutopilotCompatibilityRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cluster_service.CheckAutopilotCompatibilityResponse)
+    assert response.summary == "summary_value"
+
+
+@pytest.mark.asyncio
+async def test_check_autopilot_compatibility_async_from_dict():
+    await test_check_autopilot_compatibility_async(request_type=dict)
+
+
+def test_check_autopilot_compatibility_field_headers():
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cluster_service.CheckAutopilotCompatibilityRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.check_autopilot_compatibility), "__call__"
+    ) as call:
+        call.return_value = cluster_service.CheckAutopilotCompatibilityResponse()
+        client.check_autopilot_compatibility(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_check_autopilot_compatibility_field_headers_async():
+    client = ClusterManagerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cluster_service.CheckAutopilotCompatibilityRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.check_autopilot_compatibility), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.CheckAutopilotCompatibilityResponse()
+        )
+        await client.check_autopilot_compatibility(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ClusterManagerGrpcTransport(
@@ -10101,6 +10262,7 @@ def test_cluster_manager_base_transport():
         "set_network_policy",
         "set_maintenance_policy",
         "list_usable_subnetworks",
+        "check_autopilot_compatibility",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):

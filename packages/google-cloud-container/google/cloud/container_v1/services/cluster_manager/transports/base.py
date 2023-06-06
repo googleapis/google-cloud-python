@@ -378,6 +378,11 @@ class ClusterManagerTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.check_autopilot_compatibility: gapic_v1.method.wrap_method(
+                self.check_autopilot_compatibility,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -697,6 +702,18 @@ class ClusterManagerTransport(abc.ABC):
         Union[
             cluster_service.ListUsableSubnetworksResponse,
             Awaitable[cluster_service.ListUsableSubnetworksResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def check_autopilot_compatibility(
+        self,
+    ) -> Callable[
+        [cluster_service.CheckAutopilotCompatibilityRequest],
+        Union[
+            cluster_service.CheckAutopilotCompatibilityResponse,
+            Awaitable[cluster_service.CheckAutopilotCompatibilityResponse],
         ],
     ]:
         raise NotImplementedError()

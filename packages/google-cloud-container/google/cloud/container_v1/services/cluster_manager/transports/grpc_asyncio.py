@@ -1208,6 +1208,38 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
             )
         return self._stubs["list_usable_subnetworks"]
 
+    @property
+    def check_autopilot_compatibility(
+        self,
+    ) -> Callable[
+        [cluster_service.CheckAutopilotCompatibilityRequest],
+        Awaitable[cluster_service.CheckAutopilotCompatibilityResponse],
+    ]:
+        r"""Return a callable for the check autopilot compatibility method over gRPC.
+
+        Checks the cluster compatibility with Autopilot mode,
+        and returns a list of compatibility issues.
+
+        Returns:
+            Callable[[~.CheckAutopilotCompatibilityRequest],
+                    Awaitable[~.CheckAutopilotCompatibilityResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "check_autopilot_compatibility" not in self._stubs:
+            self._stubs[
+                "check_autopilot_compatibility"
+            ] = self.grpc_channel.unary_unary(
+                "/google.container.v1.ClusterManager/CheckAutopilotCompatibility",
+                request_serializer=cluster_service.CheckAutopilotCompatibilityRequest.serialize,
+                response_deserializer=cluster_service.CheckAutopilotCompatibilityResponse.deserialize,
+            )
+        return self._stubs["check_autopilot_compatibility"]
+
     def close(self):
         return self.grpc_channel.close()
 
