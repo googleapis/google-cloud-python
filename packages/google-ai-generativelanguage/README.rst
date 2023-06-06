@@ -15,7 +15,7 @@ Python Client for Generative Language API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-ai-generativelanguage.svg
    :target: https://pypi.org/project/google-ai-generativelanguage/
 .. _Generative Language API: https://developers.generativeai.google/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/generativelanguage/latest
+.. _Client Library Documentation: https://googleapis.dev/python/generativelanguage/latest
 .. _Product Documentation:  https://developers.generativeai.google/
 
 Quick Start

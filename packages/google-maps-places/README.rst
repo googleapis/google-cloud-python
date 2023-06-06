@@ -15,7 +15,7 @@ Python Client for Places API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-maps-places.svg
    :target: https://pypi.org/project/google-maps-places/
 .. _Places API: https://developers.google.com/maps/documentation/places/web-service/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/places/latest
+.. _Client Library Documentation: https://googleapis.dev/python/places/latest
 .. _Product Documentation:  https://developers.google.com/maps/documentation/places/web-service/
 
 Quick Start

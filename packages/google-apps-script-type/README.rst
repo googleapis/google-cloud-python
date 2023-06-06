@@ -15,7 +15,7 @@ Python Client for Google Apps Script Type Protos
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-apps-script-type.svg
    :target: https://pypi.org/project/google-apps-script-type/
 .. _Google Apps Script Type Protos: https://developers.google.com/apps-script/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/type/latest
+.. _Client Library Documentation: https://googleapis.dev/python/type/latest
 .. _Product Documentation:  https://developers.google.com/apps-script/
 
 Quick Start
