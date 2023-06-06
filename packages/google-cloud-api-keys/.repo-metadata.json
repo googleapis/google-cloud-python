@@ -6,7 +6,7 @@
     "release_level": "preview",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-api-keys",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-api-keys",
     "api_id": "apikeys.googleapis.com",
     "default_version": "v2",
