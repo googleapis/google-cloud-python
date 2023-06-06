@@ -1,4 +1,11 @@
 # Changelog
+## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-budgets-v1.10.0...google-cloud-billing-budgets-v1.11.0) (2023-06-06)
+
+
+### Features
+
+* Add resource_ancestors field to support filtering by folders & organizations ([#11360](https://github.com/googleapis/google-cloud-python/issues/11360)) ([73377e6](https://github.com/googleapis/google-cloud-python/commit/73377e60569e6873178a2f5bfa612cb01406e0fb))
+
 ## [1.10.0](https://github.com/googleapis/python-billingbudgets/compare/v1.9.1...v1.10.0) (2023-02-27)
 
 
