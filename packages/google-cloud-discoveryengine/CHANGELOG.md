@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.8.0...google-cloud-discoveryengine-v0.8.1) (2023-06-07)
+
+
+### Bug Fixes
+
+* remove the summarization feature from v1 version ([#11375](https://github.com/googleapis/google-cloud-python/issues/11375)) ([9336efb](https://github.com/googleapis/google-cloud-python/commit/9336efb52d32d1e29a0a71c81c80fb64e448cac1))
+
 ## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.7.0...google-cloud-discoveryengine-v0.8.0) (2023-05-25)
 
 
