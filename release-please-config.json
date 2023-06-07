@@ -507,12 +507,7 @@
             "component": "google-cloud-gke-multicloud",
             "extra-files": [
                 "google/cloud/gke_multicloud/gapic_version.py",
-                "google/cloud/gke_multicloud_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.gkemulticloud.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/gke_multicloud_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -544,12 +539,7 @@
             "component": "google-cloud-life-sciences",
             "extra-files": [
                 "google/cloud/lifesciences/gapic_version.py",
-                "google/cloud/lifesciences_v2beta/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.lifesciences.v2beta.json",
-                    "type": "json"
-                }
+                "google/cloud/lifesciences_v2beta/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -557,12 +547,7 @@
             "component": "google-cloud-managed-identities",
             "extra-files": [
                 "google/cloud/managedidentities/gapic_version.py",
-                "google/cloud/managedidentities_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.managedidentities.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/managedidentities_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
