@@ -50,6 +50,7 @@
     "packages/google-cloud-eventarc-publishing": "0.6.2",
     "packages/google-cloud-functions": "1.13.0",
     "packages/google-cloud-gke-connect-gateway": "0.8.2",
+    "packages/google-cloud-gke-multicloud": "0.6.1",
     "packages/google-cloud-iap": "1.10.1",
     "packages/google-cloud-ids": "1.5.1",
     "packages/google-cloud-media-translation": "0.11.2",
