@@ -536,6 +536,19 @@ def test_convert_document_to_annotate_file_response():
     assert actual == expected
 
 
+def test_convert_document_to_annotate_file_json_response():
+    doc = document.Document.from_document_path(
+        document_path="tests/unit/resources/0/toolbox_invoice_test-0.json"
+    )
+
+    actual = doc.convert_document_to_annotate_file_json_response()
+
+    with open("tests/unit/resources/toolbox_invoice_test-0-vision.json", "r") as f:
+        expected = f.read()
+
+    assert actual == expected
+
+
 def test_export_images(get_bytes_images_mock):
     doc = document.Document.from_gcs(
         gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0"
