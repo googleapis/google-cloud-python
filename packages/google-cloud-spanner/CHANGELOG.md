@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.36.0](https://github.com/googleapis/python-spanner/compare/v3.35.1...v3.36.0) (2023-06-06)
+
+
+### Features
+
+* Add DdlStatementActionInfo and add actions to UpdateDatabaseDdlMetadata ([#948](https://github.com/googleapis/python-spanner/issues/948)) ([1ca6874](https://github.com/googleapis/python-spanner/commit/1ca687464fe65a19370a460556acc0957d693399))
+* Testing for fgac-pg ([#902](https://github.com/googleapis/python-spanner/issues/902)) ([ad1f527](https://github.com/googleapis/python-spanner/commit/ad1f5277dfb3b6a6c7458ff2ace5f724e56360c1))
+
 ## [3.35.1](https://github.com/googleapis/python-spanner/compare/v3.35.0...v3.35.1) (2023-05-25)
 
 
