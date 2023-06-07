@@ -239,9 +239,6 @@ class SearchRequest(proto.Message):
             snippet_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.SnippetSpec):
                 If there is no snippet spec provided, there
                 will be no snippet in the search result.
-            summary_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.SummarySpec):
-                If there is no summary spec provided, there
-                will be no summary in the search response.
         """
 
         class SnippetSpec(proto.Message):
@@ -269,35 +266,10 @@ class SearchRequest(proto.Message):
                 number=2,
             )
 
-        class SummarySpec(proto.Message):
-            r"""The specification that configs the summary in the search
-            response.
-
-            Attributes:
-                summary_result_count (int):
-                    The number of top results the summary should be generated
-                    from. If the number of returned results is less than
-                    summary_result_count, then the summary would be derived from
-                    all the results; otherwise, the summary would be derived
-                    from the top results.
-
-                    At most 5 results can be used for generating summary.
-            """
-
-            summary_result_count: int = proto.Field(
-                proto.INT32,
-                number=1,
-            )
-
         snippet_spec: "SearchRequest.ContentSearchSpec.SnippetSpec" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="SearchRequest.ContentSearchSpec.SnippetSpec",
-        )
-        summary_spec: "SearchRequest.ContentSearchSpec.SummarySpec" = proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message="SearchRequest.ContentSearchSpec.SummarySpec",
         )
 
     serving_config: str = proto.Field(
@@ -396,11 +368,6 @@ class SearchResponse(proto.Message):
             correction type is AUTOMATIC, then the search results are
             based on corrected_query. Otherwise the original query is
             used for search.
-        summary (google.cloud.discoveryengine_v1.types.SearchResponse.Summary):
-            A summary as part of the search results. This field is only
-            returned if
-            [SearchRequest.ContentSearchSpec.summary_spec][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.summary_spec]
-            is set.
     """
 
     class SearchResult(proto.Message):
@@ -427,20 +394,6 @@ class SearchResponse(proto.Message):
             message=gcd_document.Document,
         )
 
-    class Summary(proto.Message):
-        r"""Summary of the top N search result specified by the summary
-        spec.
-
-        Attributes:
-            summary_text (str):
-                The summary content.
-        """
-
-        summary_text: str = proto.Field(
-            proto.STRING,
-            number=1,
-        )
-
     @property
     def raw_page(self):
         return self
@@ -465,11 +418,6 @@ class SearchResponse(proto.Message):
     corrected_query: str = proto.Field(
         proto.STRING,
         number=7,
-    )
-    summary: Summary = proto.Field(
-        proto.MESSAGE,
-        number=9,
-        message=Summary,
     )
 
 

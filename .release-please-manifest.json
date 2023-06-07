@@ -39,7 +39,7 @@
     "packages/google-cloud-dataproc-metastore": "1.11.0",
     "packages/google-cloud-datastream": "1.6.0",
     "packages/google-cloud-deploy": "1.9.0",
-    "packages/google-cloud-discoveryengine": "0.8.0",
+    "packages/google-cloud-discoveryengine": "0.8.1",
     "packages/google-cloud-dms": "1.7.0",
     "packages/google-cloud-documentai": "2.15.0",
     "packages/google-cloud-domains": "1.5.1",
