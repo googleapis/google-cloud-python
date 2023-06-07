@@ -540,6 +540,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-life-sciences": {
+            "component": "google-cloud-life-sciences",
+            "extra-files": [
+                "google/cloud/lifesciences/gapic_version.py",
+                "google/cloud/lifesciences_v2beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.lifesciences.v2beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-media-translation": {
             "component": "google-cloud-media-translation",
             "extra-files": [
