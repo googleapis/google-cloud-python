@@ -20,9 +20,9 @@ deep-remove-regex:
 
 deep-copy-regex:
   - source: /google/cloud/workflows/executions/(v.*)/.*-py/(.*)
-    dest: /owl-bot-staging/executions/$1/$2
+    dest: /owl-bot-staging/$1/$2
   - source: /google/cloud/workflows/(v.*)/.*-py/(.*)
-    dest: /owl-bot-staging/workflows/$1/$2
+    dest: /owl-bot-staging/$1/$2
 
 begin-after-commit-hash: acb4b773a6df45f9303067ffcb21387a7b6ad40d
 
