@@ -503,6 +503,22 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-gke-multicloud": {
+            "component": "google-cloud-gke-multicloud",
+            "extra-files": [
+                "google/cloud/gke_multicloud/gapic_version.py",
+                "google/cloud/gke_multicloud_v1/gapic_version.py"
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-iam-logging": {
+            "component": "google-cloud-iam-logging",
+            "extra-files": [
+                "google/cloud/iam_logging/gapic_version.py",
+                "google/cloud/iam_logging_v1/gapic_version.py"
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-iap": {
             "component": "google-cloud-iap",
             "extra-files": [
@@ -516,6 +532,22 @@
             "extra-files": [
                 "google/cloud/ids/gapic_version.py",
                 "google/cloud/ids_v1/gapic_version.py"
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-life-sciences": {
+            "component": "google-cloud-life-sciences",
+            "extra-files": [
+                "google/cloud/lifesciences/gapic_version.py",
+                "google/cloud/lifesciences_v2beta/gapic_version.py"
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-managed-identities": {
+            "component": "google-cloud-managed-identities",
+            "extra-files": [
+                "google/cloud/managedidentities/gapic_version.py",
+                "google/cloud/managedidentities_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
