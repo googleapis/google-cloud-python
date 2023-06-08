@@ -192,6 +192,11 @@ class MutationsBatcher(object):
     :type flush_interval: float
     :param flush_interval: (Optional) The interval (in seconds) between asynchronous flush.
         Default is 1 second.
+
+    :type batch_completed_callback: Callable[list:[`~google.rpc.status_pb2.Status`]] = None
+    :param batch_completed_callback: (Optional) A callable for handling responses
+        after the current batch is sent. The callable function expect a list of grpc
+        Status.
     """
 
     def __init__(
@@ -200,6 +205,7 @@ class MutationsBatcher(object):
         flush_count=FLUSH_COUNT,
         max_row_bytes=MAX_MUTATION_SIZE,
         flush_interval=1,
+        batch_completed_callback=None,
     ):
         self._rows = _MutationsBatchQueue(
             max_mutation_bytes=max_row_bytes, flush_count=flush_count
@@ -215,6 +221,7 @@ class MutationsBatcher(object):
         )
         self.futures_mapping = {}
         self.exceptions = queue.Queue()
+        self._user_batch_completed_callback = batch_completed_callback
 
     @property
     def flush_count(self):
@@ -337,7 +344,8 @@ class MutationsBatcher(object):
                 batch_info = _BatchInfo()
 
     def _batch_completed_callback(self, future):
-        """Callback for when the mutation has finished.
+        """Callback for when the mutation has finished to clean up the current batch
+        and release items from the flow controller.
 
         Raise exceptions if there's any.
         Release the resources locked by the flow control and allow enqueued tasks to be run.
@@ -356,6 +364,9 @@ class MutationsBatcher(object):
         responses = []
         if len(rows_to_flush) > 0:
             response = self.table.mutate_rows(rows_to_flush)
+
+            if self._user_batch_completed_callback:
+                self._user_batch_completed_callback(response)
 
             for result in response:
                 if result.code != 0:

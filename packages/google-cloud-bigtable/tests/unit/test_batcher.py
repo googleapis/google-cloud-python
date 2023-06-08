@@ -35,6 +35,27 @@ def test_mutation_batcher_constructor():
         assert table is mutation_batcher.table
 
 
+def test_mutation_batcher_w_user_callback():
+    table = _Table(TABLE_NAME)
+
+    def callback_fn(response):
+        callback_fn.count = len(response)
+
+    with MutationsBatcher(
+        table, flush_count=1, batch_completed_callback=callback_fn
+    ) as mutation_batcher:
+        rows = [
+            DirectRow(row_key=b"row_key"),
+            DirectRow(row_key=b"row_key_2"),
+            DirectRow(row_key=b"row_key_3"),
+            DirectRow(row_key=b"row_key_4"),
+        ]
+
+        mutation_batcher.mutate_rows(rows)
+
+    assert callback_fn.count == 4
+
+
 def test_mutation_batcher_mutate_row():
     table = _Table(TABLE_NAME)
     with MutationsBatcher(table=table) as mutation_batcher:
