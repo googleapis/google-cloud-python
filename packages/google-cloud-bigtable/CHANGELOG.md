@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.19.0](https://github.com/googleapis/python-bigtable/compare/v2.18.1...v2.19.0) (2023-06-08)
+
+
+### Features
+
+* Add ChangeStreamConfig to CreateTable and UpdateTable ([#786](https://github.com/googleapis/python-bigtable/issues/786)) ([cef70f2](https://github.com/googleapis/python-bigtable/commit/cef70f243541820225f86a520e0b2abd3a7354f7))
+
+
+### Bug Fixes
+
+* Add a callback function on flush_rows ([#796](https://github.com/googleapis/python-bigtable/issues/796)) ([589aa5d](https://github.com/googleapis/python-bigtable/commit/589aa5d04f6b5a2bd310d0bf06aeb7058fb6fcd2))
+
+
+### Documentation
+
+* **samples:** Add region tags ([#788](https://github.com/googleapis/python-bigtable/issues/788)) ([ecf539c](https://github.com/googleapis/python-bigtable/commit/ecf539c4c976fd9e5505b8abf0b697b218f09fef))
+
 ## [2.18.1](https://github.com/googleapis/python-bigtable/compare/v2.18.0...v2.18.1) (2023-05-11)
 
 
