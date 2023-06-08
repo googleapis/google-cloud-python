@@ -58,6 +58,7 @@
     "packages/google-cloud-managed-identities": "1.7.1",
     "packages/google-cloud-media-translation": "0.11.2",
     "packages/google-cloud-memcache": "1.7.1",
+    "packages/google-cloud-migrationcenter": "0.0.0",
     "packages/google-cloud-monitoring-metrics-scopes": "1.4.2",
     "packages/google-cloud-network-connectivity": "2.0.1",
     "packages/google-cloud-network-management": "1.8.2",
