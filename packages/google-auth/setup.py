@@ -31,9 +31,9 @@ DEPENDENCIES = (
 )
 
 extras = {
-    "aiohttp": ["aiohttp >= 3.6.2, < 4.0.0dev", "requests >= 2.20.0, < 3.0.0dev"],
+    "aiohttp": ["aiohttp >= 3.6.2, < 4.0.0.dev0", "requests >= 2.20.0, < 3.0.0.dev0"],
     "pyopenssl": ["pyopenssl>=20.0.0", "cryptography>=38.0.3"],
-    "requests": "requests >= 2.20.0, < 3.0.0dev",
+    "requests": "requests >= 2.20.0, < 3.0.0.dev0",
     "reauth": "pyu2f>=0.1.5",
     # Enterprise cert only works for OpenSSL 1.1.1. Newer versions of these
     # dependencies are built with OpenSSL 3.0 so we need to fix the version.
