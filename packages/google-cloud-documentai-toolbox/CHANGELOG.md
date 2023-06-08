@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.7.0-alpha...v0.8.0-alpha) (2023-06-07)
+
+
+### Features
+
+* Add convert_document_to_annotate_file_json ([#124](https://github.com/googleapis/python-documentai-toolbox/issues/124)) ([a6b75fc](https://github.com/googleapis/python-documentai-toolbox/commit/a6b75fc11f07a71e436c65b8b2d6f357f18fc6a5))
+
 ## [0.7.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.6.0-alpha...v0.7.0-alpha) (2023-05-31)
 
 
