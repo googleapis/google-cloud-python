@@ -770,7 +770,7 @@ class TestIDTokenCredentials(object):
         }
 
         assert cred.token == SAMPLE_ID_TOKEN
-        assert cred.expiry == datetime.datetime.fromtimestamp(SAMPLE_ID_TOKEN_EXP)
+        assert cred.expiry == datetime.datetime.utcfromtimestamp(SAMPLE_ID_TOKEN_EXP)
         assert cred._use_metadata_identity_endpoint
         assert cred._signer is None
         assert cred._token_uri is None
