@@ -454,4 +454,6 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
 
         id_token = response.json()["token"]
         self.token = id_token
-        self.expiry = datetime.fromtimestamp(jwt.decode(id_token, verify=False)["exp"])
+        self.expiry = datetime.utcfromtimestamp(
+            jwt.decode(id_token, verify=False)["exp"]
+        )
