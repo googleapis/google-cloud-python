@@ -34,30 +34,35 @@ class Kubernetes(proto.Message):
 
     Attributes:
         pods (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.Pod]):
-            Kubernetes Pods associated with the finding.
-            This field will contain Pod records for each
-            container that is owned by a Pod.
+            Kubernetes
+            `Pods <https://cloud.google.com/kubernetes-engine/docs/concepts/pod>`__
+            associated with the finding. This field contains Pod records
+            for each container that is owned by a Pod.
         nodes (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.Node]):
-            Provides Kubernetes Node information.
+            Provides Kubernetes
+            `node <https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture#nodes>`__
+            information.
         node_pools (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.NodePool]):
-            GKE Node Pools associated with the finding.
-            This field will contain NodePool information for
-            each Node, when it is available.
+            GKE `node
+            pools <https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools>`__
+            associated with the finding. This field contains node pool
+            information for each node, when it is available.
         roles (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.Role]):
-            Provides Kubernetes role information for
-            findings that involve Roles or ClusterRoles.
+            Provides Kubernetes role information for findings that
+            involve `Roles or
+            ClusterRoles <https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control>`__.
         bindings (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.Binding]):
-            Provides Kubernetes role binding information
-            for findings that involve RoleBindings or
-            ClusterRoleBindings.
+            Provides Kubernetes role binding information for findings
+            that involve `RoleBindings or
+            ClusterRoleBindings <https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control>`__.
         access_reviews (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.AccessReview]):
             Provides information on any Kubernetes access
-            reviews (i.e. privilege checks) relevant to the
+            reviews (privilege checks) relevant to the
             finding.
     """
 
     class Pod(proto.Message):
-        r"""Kubernetes Pod.
+        r"""A Kubernetes Pod.
 
         Attributes:
             ns (str):
@@ -92,12 +97,13 @@ class Kubernetes(proto.Message):
         )
 
     class Node(proto.Message):
-        r"""Kubernetes Nodes associated with the finding.
+        r"""Kubernetes nodes associated with the finding.
 
         Attributes:
             name (str):
-                Full Resource name of the Compute Engine VM
-                running the cluster node.
+                `Full resource
+                name <https://google.aip.dev/122#full-resource-names>`__ of
+                the Compute Engine VM running the cluster node.
         """
 
         name: str = proto.Field(
@@ -106,11 +112,11 @@ class Kubernetes(proto.Message):
         )
 
     class NodePool(proto.Message):
-        r"""Provides GKE Node Pool information.
+        r"""Provides GKE node pool information.
 
         Attributes:
             name (str):
-                Kubernetes Node pool name.
+                Kubernetes node pool name.
             nodes (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.Node]):
                 Nodes associated with the finding.
         """
@@ -171,9 +177,9 @@ class Kubernetes(proto.Message):
 
         Attributes:
             ns (str):
-                Namespace for binding.
+                Namespace for the binding.
             name (str):
-                Name for binding.
+                Name for the binding.
             role (google.cloud.securitycenter_v1.types.Kubernetes.Role):
                 The Role or ClusterRole referenced by the
                 binding.
@@ -203,19 +209,19 @@ class Kubernetes(proto.Message):
         )
 
     class Subject(proto.Message):
-        r"""Represents a Kubernetes Subject.
+        r"""Represents a Kubernetes subject.
 
         Attributes:
             kind (google.cloud.securitycenter_v1.types.Kubernetes.Subject.AuthType):
-                Authentication type for subject.
+                Authentication type for the subject.
             ns (str):
-                Namespace for subject.
+                Namespace for the subject.
             name (str):
-                Name for subject.
+                Name for the subject.
         """
 
         class AuthType(proto.Enum):
-            r"""Auth types that can be used for Subject's kind field.
+            r"""Auth types that can be used for the subject's kind field.
 
             Values:
                 AUTH_TYPE_UNSPECIFIED (0):
@@ -224,7 +230,7 @@ class Kubernetes(proto.Message):
                     User with valid certificate.
                 SERVICEACCOUNT (2):
                     Users managed by Kubernetes API with
-                    credentials stored as Secrets.
+                    credentials stored as secrets.
                 GROUP (3):
                     Collection of users.
             """
@@ -248,30 +254,31 @@ class Kubernetes(proto.Message):
         )
 
     class AccessReview(proto.Message):
-        r"""Conveys information about a Kubernetes access review (e.g.
-        kubectl auth can-i ...) that was involved in a finding.
+        r"""Conveys information about a Kubernetes access review (such as one
+        returned by a
+        ```kubectl auth can-i`` <https://kubernetes.io/docs/reference/access-authn-authz/authorization/#checking-api-access>`__
+        command) that was involved in a finding.
 
         Attributes:
             group (str):
-                Group is the API Group of the Resource. "*" means all.
+                The API group of the resource. "*" means all.
             ns (str):
                 Namespace of the action being requested.
                 Currently, there is no distinction between no
                 namespace and all namespaces.  Both are
                 represented by "" (empty).
             name (str):
-                Name is the name of the resource being
-                requested. Empty means all.
+                The name of the resource being requested.
+                Empty means all.
             resource (str):
-                Resource is the optional resource type requested. "*" means
-                all.
+                The optional resource type requested. "*" means all.
             subresource (str):
-                Subresource is the optional subresource type.
+                The optional subresource type.
             verb (str):
-                Verb is a Kubernetes resource API verb, like: get, list,
-                watch, create, update, delete, proxy. "*" means all.
+                A Kubernetes resource API verb, like get, list, watch,
+                create, update, delete, proxy. "*" means all.
             version (str):
-                Version is the API Version of the Resource. "*" means all.
+                The API version of the resource. "*" means all.
         """
 
         group: str = proto.Field(

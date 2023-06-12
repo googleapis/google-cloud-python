@@ -37,8 +37,8 @@ class CloudDlpInspection(proto.Message):
             Name of the inspection job, for example,
             ``projects/123/locations/europe/dlpJobs/i-8383929``.
         info_type (str):
-            The `type of
-            information <https://cloud.google.com/dlp/docs/infotypes-reference>`__
+            The type of information (or
+            `infoType <https://cloud.google.com/dlp/docs/infotypes-reference>`__)
             found, for example, ``EMAIL_ADDRESS`` or ``STREET_ADDRESS``.
         info_type_count (int):
             The number of times Cloud DLP found this

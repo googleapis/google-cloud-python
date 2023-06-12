@@ -29,7 +29,7 @@ __protobuf__ = proto.module(
 
 
 class ContactDetails(proto.Message):
-    r"""The details pertaining to specific contacts
+    r"""Details about specific contacts
 
     Attributes:
         contacts (MutableSequence[google.cloud.securitycenter_v1.types.Contact]):
