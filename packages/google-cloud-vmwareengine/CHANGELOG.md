@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v1.0.1...google-cloud-vmwareengine-v1.1.0) (2023-06-12)
+
+
+### Features
+
+* Adding private connection CRUD, updating management subnets and time-limited PC features ([#11386](https://github.com/googleapis/google-cloud-python/issues/11386)) ([aa5942d](https://github.com/googleapis/google-cloud-python/commit/aa5942d7b3259310d6bd546c2d39a6344b89a7b3))
+
 ## [1.0.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v1.0.0...google-cloud-vmwareengine-v1.0.1) (2023-03-25)
 
 

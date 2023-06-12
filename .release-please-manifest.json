@@ -89,7 +89,7 @@
     "packages/google-cloud-talent": "2.11.0",
     "packages/google-cloud-tpu": "1.11.0",
     "packages/google-cloud-vm-migration": "1.6.1",
-    "packages/google-cloud-vmwareengine": "1.0.1",
+    "packages/google-cloud-vmwareengine": "1.1.0",
     "packages/google-cloud-vpc-access": "1.8.1",
     "packages/google-cloud-webrisk": "1.12.0",
     "packages/google-cloud-websecurityscanner": "1.12.1",
