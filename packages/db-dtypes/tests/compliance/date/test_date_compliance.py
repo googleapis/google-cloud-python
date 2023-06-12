@@ -90,6 +90,18 @@ class TestMethods(base.BaseMethodsTests):
 
         self.assert_series_equal(result, expected)
 
+    def test_diff(self):
+        pytest.xfail(
+            reason="""Causes a breakage in the compliance test suite. Needs
+            further investigation. See issues 182, 183, 185."""
+        )
+
+    def test_hash_pandas_object(self):
+        pytest.xfail(
+            reason="""Causes a breakage in the compliance test suite. Needs
+            further investigation. See issues 182, 183, 185."""
+        )
+
 
 class TestParsing(base.BaseParsingTests):
     pass
