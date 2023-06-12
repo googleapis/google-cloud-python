@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.59.1](https://github.com/googleapis/python-api-common-protos/compare/v1.59.0...v1.59.1) (2023-06-06)
+
+
+### Bug Fixes
+
+* Invalid `dev` version identifiers in `setup.py` ([#166](https://github.com/googleapis/python-api-common-protos/issues/166)) ([c38e03a](https://github.com/googleapis/python-api-common-protos/commit/c38e03aa06eedf65373c283f16e7bbbd5622f37b)), closes [#165](https://github.com/googleapis/python-api-common-protos/issues/165)
+
 ## [1.59.0](https://github.com/googleapis/python-api-common-protos/compare/v1.58.0...v1.59.0) (2023-03-20)
 
 
