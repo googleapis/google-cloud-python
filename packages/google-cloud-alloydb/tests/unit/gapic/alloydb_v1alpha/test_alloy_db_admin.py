@@ -4821,6 +4821,242 @@ async def test_failover_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        service.InjectFaultRequest,
+        dict,
+    ],
+)
+def test_inject_fault(request_type, transport: str = "grpc"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.inject_fault), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.inject_fault(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.InjectFaultRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_inject_fault_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.inject_fault), "__call__") as call:
+        client.inject_fault()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.InjectFaultRequest()
+
+
+@pytest.mark.asyncio
+async def test_inject_fault_async(
+    transport: str = "grpc_asyncio", request_type=service.InjectFaultRequest
+):
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.inject_fault), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.inject_fault(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.InjectFaultRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_inject_fault_async_from_dict():
+    await test_inject_fault_async(request_type=dict)
+
+
+def test_inject_fault_field_headers():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.InjectFaultRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.inject_fault), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.inject_fault(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_inject_fault_field_headers_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.InjectFaultRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.inject_fault), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.inject_fault(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_inject_fault_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.inject_fault), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.inject_fault(
+            fault_type=service.InjectFaultRequest.FaultType.STOP_VM,
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].fault_type
+        mock_val = service.InjectFaultRequest.FaultType.STOP_VM
+        assert arg == mock_val
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_inject_fault_flattened_error():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.inject_fault(
+            service.InjectFaultRequest(),
+            fault_type=service.InjectFaultRequest.FaultType.STOP_VM,
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_inject_fault_flattened_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.inject_fault), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.inject_fault(
+            fault_type=service.InjectFaultRequest.FaultType.STOP_VM,
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].fault_type
+        mock_val = service.InjectFaultRequest.FaultType.STOP_VM
+        assert arg == mock_val
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_inject_fault_flattened_error_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.inject_fault(
+            service.InjectFaultRequest(),
+            fault_type=service.InjectFaultRequest.FaultType.STOP_VM,
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         service.RestartInstanceRequest,
         dict,
     ],
@@ -6912,6 +7148,7 @@ def test_generate_client_certificate(request_type, transport: str = "grpc"):
         call.return_value = service.GenerateClientCertificateResponse(
             pem_certificate="pem_certificate_value",
             pem_certificate_chain=["pem_certificate_chain_value"],
+            ca_cert="ca_cert_value",
         )
         response = client.generate_client_certificate(request)
 
@@ -6924,6 +7161,7 @@ def test_generate_client_certificate(request_type, transport: str = "grpc"):
     assert isinstance(response, service.GenerateClientCertificateResponse)
     assert response.pem_certificate == "pem_certificate_value"
     assert response.pem_certificate_chain == ["pem_certificate_chain_value"]
+    assert response.ca_cert == "ca_cert_value"
 
 
 def test_generate_client_certificate_empty_call():
@@ -6967,6 +7205,7 @@ async def test_generate_client_certificate_async(
             service.GenerateClientCertificateResponse(
                 pem_certificate="pem_certificate_value",
                 pem_certificate_chain=["pem_certificate_chain_value"],
+                ca_cert="ca_cert_value",
             )
         )
         response = await client.generate_client_certificate(request)
@@ -6980,6 +7219,7 @@ async def test_generate_client_certificate_async(
     assert isinstance(response, service.GenerateClientCertificateResponse)
     assert response.pem_certificate == "pem_certificate_value"
     assert response.pem_certificate_chain == ["pem_certificate_chain_value"]
+    assert response.ca_cert == "ca_cert_value"
 
 
 @pytest.mark.asyncio
@@ -7393,6 +7633,1400 @@ async def test_get_connection_info_flattened_error_async():
         await client.get_connection_info(
             service.GetConnectionInfoRequest(),
             parent="parent_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListUsersRequest,
+        dict,
+    ],
+)
+def test_list_users(request_type, transport: str = "grpc"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_users), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListUsersResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_users(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListUsersRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListUsersPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_users_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_users), "__call__") as call:
+        client.list_users()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListUsersRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_users_async(
+    transport: str = "grpc_asyncio", request_type=service.ListUsersRequest
+):
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_users), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListUsersResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_users(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListUsersRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListUsersAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_users_async_from_dict():
+    await test_list_users_async(request_type=dict)
+
+
+def test_list_users_field_headers():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ListUsersRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_users), "__call__") as call:
+        call.return_value = service.ListUsersResponse()
+        client.list_users(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_users_field_headers_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ListUsersRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_users), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListUsersResponse()
+        )
+        await client.list_users(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_users_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_users), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListUsersResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_users(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_users_flattened_error():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_users(
+            service.ListUsersRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_users_flattened_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_users), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListUsersResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListUsersResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_users(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_users_flattened_error_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_users(
+            service.ListUsersRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_users_pager(transport_name: str = "grpc"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_users), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListUsersResponse(
+                users=[
+                    resources.User(),
+                    resources.User(),
+                    resources.User(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListUsersResponse(
+                users=[],
+                next_page_token="def",
+            ),
+            service.ListUsersResponse(
+                users=[
+                    resources.User(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListUsersResponse(
+                users=[
+                    resources.User(),
+                    resources.User(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_users(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.User) for i in results)
+
+
+def test_list_users_pages(transport_name: str = "grpc"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_users), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListUsersResponse(
+                users=[
+                    resources.User(),
+                    resources.User(),
+                    resources.User(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListUsersResponse(
+                users=[],
+                next_page_token="def",
+            ),
+            service.ListUsersResponse(
+                users=[
+                    resources.User(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListUsersResponse(
+                users=[
+                    resources.User(),
+                    resources.User(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_users(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_users_async_pager():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_users), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListUsersResponse(
+                users=[
+                    resources.User(),
+                    resources.User(),
+                    resources.User(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListUsersResponse(
+                users=[],
+                next_page_token="def",
+            ),
+            service.ListUsersResponse(
+                users=[
+                    resources.User(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListUsersResponse(
+                users=[
+                    resources.User(),
+                    resources.User(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_users(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, resources.User) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_users_async_pages():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_users), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListUsersResponse(
+                users=[
+                    resources.User(),
+                    resources.User(),
+                    resources.User(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListUsersResponse(
+                users=[],
+                next_page_token="def",
+            ),
+            service.ListUsersResponse(
+                users=[
+                    resources.User(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListUsersResponse(
+                users=[
+                    resources.User(),
+                    resources.User(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_users(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetUserRequest,
+        dict,
+    ],
+)
+def test_get_user(request_type, transport: str = "grpc"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_user), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.User(
+            name="name_value",
+            password="password_value",
+            database_roles=["database_roles_value"],
+            user_type=resources.User.UserType.ALLOYDB_BUILT_IN,
+        )
+        response = client.get_user(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetUserRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.User)
+    assert response.name == "name_value"
+    assert response.password == "password_value"
+    assert response.database_roles == ["database_roles_value"]
+    assert response.user_type == resources.User.UserType.ALLOYDB_BUILT_IN
+
+
+def test_get_user_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_user), "__call__") as call:
+        client.get_user()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetUserRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_user_async(
+    transport: str = "grpc_asyncio", request_type=service.GetUserRequest
+):
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_user), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.User(
+                name="name_value",
+                password="password_value",
+                database_roles=["database_roles_value"],
+                user_type=resources.User.UserType.ALLOYDB_BUILT_IN,
+            )
+        )
+        response = await client.get_user(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetUserRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.User)
+    assert response.name == "name_value"
+    assert response.password == "password_value"
+    assert response.database_roles == ["database_roles_value"]
+    assert response.user_type == resources.User.UserType.ALLOYDB_BUILT_IN
+
+
+@pytest.mark.asyncio
+async def test_get_user_async_from_dict():
+    await test_get_user_async(request_type=dict)
+
+
+def test_get_user_field_headers():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.GetUserRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_user), "__call__") as call:
+        call.return_value = resources.User()
+        client.get_user(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_user_field_headers_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.GetUserRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_user), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.User())
+        await client.get_user(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_user_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_user), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.User()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_user(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_user_flattened_error():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_user(
+            service.GetUserRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_user_flattened_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_user), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.User()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.User())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_user(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_user_flattened_error_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_user(
+            service.GetUserRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateUserRequest,
+        dict,
+    ],
+)
+def test_create_user(request_type, transport: str = "grpc"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_user), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.User(
+            name="name_value",
+            password="password_value",
+            database_roles=["database_roles_value"],
+            user_type=resources.User.UserType.ALLOYDB_BUILT_IN,
+        )
+        response = client.create_user(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateUserRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.User)
+    assert response.name == "name_value"
+    assert response.password == "password_value"
+    assert response.database_roles == ["database_roles_value"]
+    assert response.user_type == resources.User.UserType.ALLOYDB_BUILT_IN
+
+
+def test_create_user_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_user), "__call__") as call:
+        client.create_user()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateUserRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_user_async(
+    transport: str = "grpc_asyncio", request_type=service.CreateUserRequest
+):
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_user), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.User(
+                name="name_value",
+                password="password_value",
+                database_roles=["database_roles_value"],
+                user_type=resources.User.UserType.ALLOYDB_BUILT_IN,
+            )
+        )
+        response = await client.create_user(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateUserRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.User)
+    assert response.name == "name_value"
+    assert response.password == "password_value"
+    assert response.database_roles == ["database_roles_value"]
+    assert response.user_type == resources.User.UserType.ALLOYDB_BUILT_IN
+
+
+@pytest.mark.asyncio
+async def test_create_user_async_from_dict():
+    await test_create_user_async(request_type=dict)
+
+
+def test_create_user_field_headers():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.CreateUserRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_user), "__call__") as call:
+        call.return_value = resources.User()
+        client.create_user(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_user_field_headers_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.CreateUserRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_user), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.User())
+        await client.create_user(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_user_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_user), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.User()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_user(
+            parent="parent_value",
+            user=resources.User(name="name_value"),
+            user_id="user_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].user
+        mock_val = resources.User(name="name_value")
+        assert arg == mock_val
+        arg = args[0].user_id
+        mock_val = "user_id_value"
+        assert arg == mock_val
+
+
+def test_create_user_flattened_error():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_user(
+            service.CreateUserRequest(),
+            parent="parent_value",
+            user=resources.User(name="name_value"),
+            user_id="user_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_user_flattened_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_user), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.User()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.User())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_user(
+            parent="parent_value",
+            user=resources.User(name="name_value"),
+            user_id="user_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].user
+        mock_val = resources.User(name="name_value")
+        assert arg == mock_val
+        arg = args[0].user_id
+        mock_val = "user_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_user_flattened_error_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_user(
+            service.CreateUserRequest(),
+            parent="parent_value",
+            user=resources.User(name="name_value"),
+            user_id="user_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateUserRequest,
+        dict,
+    ],
+)
+def test_update_user(request_type, transport: str = "grpc"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_user), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.User(
+            name="name_value",
+            password="password_value",
+            database_roles=["database_roles_value"],
+            user_type=resources.User.UserType.ALLOYDB_BUILT_IN,
+        )
+        response = client.update_user(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateUserRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.User)
+    assert response.name == "name_value"
+    assert response.password == "password_value"
+    assert response.database_roles == ["database_roles_value"]
+    assert response.user_type == resources.User.UserType.ALLOYDB_BUILT_IN
+
+
+def test_update_user_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_user), "__call__") as call:
+        client.update_user()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateUserRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_user_async(
+    transport: str = "grpc_asyncio", request_type=service.UpdateUserRequest
+):
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_user), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.User(
+                name="name_value",
+                password="password_value",
+                database_roles=["database_roles_value"],
+                user_type=resources.User.UserType.ALLOYDB_BUILT_IN,
+            )
+        )
+        response = await client.update_user(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateUserRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.User)
+    assert response.name == "name_value"
+    assert response.password == "password_value"
+    assert response.database_roles == ["database_roles_value"]
+    assert response.user_type == resources.User.UserType.ALLOYDB_BUILT_IN
+
+
+@pytest.mark.asyncio
+async def test_update_user_async_from_dict():
+    await test_update_user_async(request_type=dict)
+
+
+def test_update_user_field_headers():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.UpdateUserRequest()
+
+    request.user.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_user), "__call__") as call:
+        call.return_value = resources.User()
+        client.update_user(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "user.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_user_field_headers_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.UpdateUserRequest()
+
+    request.user.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_user), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.User())
+        await client.update_user(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "user.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_user_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_user), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.User()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_user(
+            user=resources.User(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].user
+        mock_val = resources.User(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_user_flattened_error():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_user(
+            service.UpdateUserRequest(),
+            user=resources.User(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_user_flattened_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_user), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.User()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.User())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_user(
+            user=resources.User(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].user
+        mock_val = resources.User(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_user_flattened_error_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_user(
+            service.UpdateUserRequest(),
+            user=resources.User(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteUserRequest,
+        dict,
+    ],
+)
+def test_delete_user(request_type, transport: str = "grpc"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_user), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_user(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteUserRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_user_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_user), "__call__") as call:
+        client.delete_user()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteUserRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_user_async(
+    transport: str = "grpc_asyncio", request_type=service.DeleteUserRequest
+):
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_user), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_user(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteUserRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_user_async_from_dict():
+    await test_delete_user_async(request_type=dict)
+
+
+def test_delete_user_field_headers():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.DeleteUserRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_user), "__call__") as call:
+        call.return_value = None
+        client.delete_user(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_user_field_headers_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.DeleteUserRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_user), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_user(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_user_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_user), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_user(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_user_flattened_error():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_user(
+            service.DeleteUserRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_user_flattened_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_user), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_user(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_user_flattened_error_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_user(
+            service.DeleteUserRequest(),
+            name="name_value",
         )
 
 
@@ -7821,6 +9455,8 @@ def test_get_cluster_rest_required_fields(request_type=service.GetClusterRequest
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).get_cluster._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("view",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -7873,7 +9509,7 @@ def test_get_cluster_rest_unset_required_fields():
     )
 
     unset_fields = transport.get_cluster._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    assert set(unset_fields) == (set(("view",)) & set(("name",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8050,6 +9686,10 @@ def test_create_cluster_rest(request_type):
         "state": 1,
         "cluster_type": 1,
         "database_version": 1,
+        "network_config": {
+            "network": "network_value",
+            "allocated_ip_range": "allocated_ip_range_value",
+        },
         "network": "network_value",
         "etag": "etag_value",
         "annotations": {},
@@ -8087,6 +9727,7 @@ def test_create_cluster_rest(request_type):
             "encryption_info": {},
             "enabled_time": {},
             "schedule": [1],
+            "earliest_restorable_time": {},
         },
         "secondary_config": {"primary_cluster_name": "primary_cluster_name_value"},
         "primary_config": {
@@ -8322,6 +9963,10 @@ def test_create_cluster_rest_bad_request(
         "state": 1,
         "cluster_type": 1,
         "database_version": 1,
+        "network_config": {
+            "network": "network_value",
+            "allocated_ip_range": "allocated_ip_range_value",
+        },
         "network": "network_value",
         "etag": "etag_value",
         "annotations": {},
@@ -8359,6 +10004,7 @@ def test_create_cluster_rest_bad_request(
             "encryption_info": {},
             "enabled_time": {},
             "schedule": [1],
+            "earliest_restorable_time": {},
         },
         "secondary_config": {"primary_cluster_name": "primary_cluster_name_value"},
         "primary_config": {
@@ -8488,6 +10134,10 @@ def test_update_cluster_rest(request_type):
         "state": 1,
         "cluster_type": 1,
         "database_version": 1,
+        "network_config": {
+            "network": "network_value",
+            "allocated_ip_range": "allocated_ip_range_value",
+        },
         "network": "network_value",
         "etag": "etag_value",
         "annotations": {},
@@ -8525,6 +10175,7 @@ def test_update_cluster_rest(request_type):
             "encryption_info": {},
             "enabled_time": {},
             "schedule": [1],
+            "earliest_restorable_time": {},
         },
         "secondary_config": {"primary_cluster_name": "primary_cluster_name_value"},
         "primary_config": {
@@ -8740,6 +10391,10 @@ def test_update_cluster_rest_bad_request(
         "state": 1,
         "cluster_type": 1,
         "database_version": 1,
+        "network_config": {
+            "network": "network_value",
+            "allocated_ip_range": "allocated_ip_range_value",
+        },
         "network": "network_value",
         "etag": "etag_value",
         "annotations": {},
@@ -8777,6 +10432,7 @@ def test_update_cluster_rest_bad_request(
             "encryption_info": {},
             "enabled_time": {},
             "schedule": [1],
+            "earliest_restorable_time": {},
         },
         "secondary_config": {"primary_cluster_name": "primary_cluster_name_value"},
         "primary_config": {
@@ -9664,6 +11320,10 @@ def test_create_secondary_cluster_rest(request_type):
         "state": 1,
         "cluster_type": 1,
         "database_version": 1,
+        "network_config": {
+            "network": "network_value",
+            "allocated_ip_range": "allocated_ip_range_value",
+        },
         "network": "network_value",
         "etag": "etag_value",
         "annotations": {},
@@ -9701,6 +11361,7 @@ def test_create_secondary_cluster_rest(request_type):
             "encryption_info": {},
             "enabled_time": {},
             "schedule": [1],
+            "earliest_restorable_time": {},
         },
         "secondary_config": {"primary_cluster_name": "primary_cluster_name_value"},
         "primary_config": {
@@ -9940,6 +11601,10 @@ def test_create_secondary_cluster_rest_bad_request(
         "state": 1,
         "cluster_type": 1,
         "database_version": 1,
+        "network_config": {
+            "network": "network_value",
+            "allocated_ip_range": "allocated_ip_range_value",
+        },
         "network": "network_value",
         "etag": "etag_value",
         "annotations": {},
@@ -9977,6 +11642,7 @@ def test_create_secondary_cluster_rest_bad_request(
             "encryption_info": {},
             "enabled_time": {},
             "schedule": [1],
+            "earliest_restorable_time": {},
         },
         "secondary_config": {"primary_cluster_name": "primary_cluster_name_value"},
         "primary_config": {
@@ -10748,6 +12414,7 @@ def test_create_instance_rest(request_type):
         "reconciling": True,
         "etag": "etag_value",
         "annotations": {},
+        "update_policy": {"mode": 1},
     }
     request = request_type(**request_init)
 
@@ -10989,6 +12656,7 @@ def test_create_instance_rest_bad_request(
         "reconciling": True,
         "etag": "etag_value",
         "annotations": {},
+        "update_policy": {"mode": 1},
     }
     request = request_type(**request_init)
 
@@ -11118,6 +12786,7 @@ def test_create_secondary_instance_rest(request_type):
         "reconciling": True,
         "etag": "etag_value",
         "annotations": {},
+        "update_policy": {"mode": 1},
     }
     request = request_type(**request_init)
 
@@ -11361,6 +13030,7 @@ def test_create_secondary_instance_rest_bad_request(
         "reconciling": True,
         "etag": "etag_value",
         "annotations": {},
+        "update_policy": {"mode": 1},
     }
     request = request_type(**request_init)
 
@@ -11495,6 +13165,7 @@ def test_batch_create_instances_rest(request_type):
                     "reconciling": True,
                     "etag": "etag_value",
                     "annotations": {},
+                    "update_policy": {"mode": 1},
                 },
                 "request_id": "request_id_value",
                 "validate_only": True,
@@ -11722,6 +13393,7 @@ def test_batch_create_instances_rest_bad_request(
                     "reconciling": True,
                     "etag": "etag_value",
                     "annotations": {},
+                    "update_policy": {"mode": 1},
                 },
                 "request_id": "request_id_value",
                 "validate_only": True,
@@ -11799,6 +13471,7 @@ def test_update_instance_rest(request_type):
         "reconciling": True,
         "etag": "etag_value",
         "annotations": {},
+        "update_policy": {"mode": 1},
     }
     request = request_type(**request_init)
 
@@ -12022,6 +13695,7 @@ def test_update_instance_rest_bad_request(
         "reconciling": True,
         "etag": "etag_value",
         "annotations": {},
+        "update_policy": {"mode": 1},
     }
     request = request_type(**request_init)
 
@@ -12653,6 +14327,282 @@ def test_failover_instance_rest_flattened_error(transport: str = "rest"):
 
 
 def test_failover_instance_rest_error():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.InjectFaultRequest,
+        dict,
+    ],
+)
+def test_inject_fault_rest(request_type):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/clusters/sample3/instances/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.inject_fault(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_inject_fault_rest_required_fields(request_type=service.InjectFaultRequest):
+    transport_class = transports.AlloyDBAdminRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).inject_fault._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).inject_fault._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.inject_fault(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_inject_fault_rest_unset_required_fields():
+    transport = transports.AlloyDBAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.inject_fault._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "faultType",
+                "name",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_inject_fault_rest_interceptors(null_interceptor):
+    transport = transports.AlloyDBAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AlloyDBAdminRestInterceptor(),
+    )
+    client = AlloyDBAdminClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_inject_fault"
+    ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "pre_inject_fault"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.InjectFaultRequest.pb(service.InjectFaultRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = service.InjectFaultRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.inject_fault(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_inject_fault_rest_bad_request(
+    transport: str = "rest", request_type=service.InjectFaultRequest
+):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/clusters/sample3/instances/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.inject_fault(request)
+
+
+def test_inject_fault_rest_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/clusters/sample3/instances/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            fault_type=service.InjectFaultRequest.FaultType.STOP_VM,
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.inject_fault(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/locations/*/clusters/*/instances/*}:injectFault"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_inject_fault_rest_flattened_error(transport: str = "rest"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.inject_fault(
+            service.InjectFaultRequest(),
+            fault_type=service.InjectFaultRequest.FaultType.STOP_VM,
+            name="name_value",
+        )
+
+
+def test_inject_fault_rest_error():
     client = AlloyDBAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -14869,6 +16819,7 @@ def test_generate_client_certificate_rest(request_type):
         return_value = service.GenerateClientCertificateResponse(
             pem_certificate="pem_certificate_value",
             pem_certificate_chain=["pem_certificate_chain_value"],
+            ca_cert="ca_cert_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -14885,6 +16836,7 @@ def test_generate_client_certificate_rest(request_type):
     assert isinstance(response, service.GenerateClientCertificateResponse)
     assert response.pem_certificate == "pem_certificate_value"
     assert response.pem_certificate_chain == ["pem_certificate_chain_value"]
+    assert response.ca_cert == "ca_cert_value"
 
 
 def test_generate_client_certificate_rest_required_fields(
@@ -15401,6 +17353,1526 @@ def test_get_connection_info_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListUsersRequest,
+        dict,
+    ],
+)
+def test_list_users_rest(request_type):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListUsersResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListUsersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_users(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListUsersPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_users_rest_required_fields(request_type=service.ListUsersRequest):
+    transport_class = transports.AlloyDBAdminRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_users._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_users._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.ListUsersResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.ListUsersResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_users(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_users_rest_unset_required_fields():
+    transport = transports.AlloyDBAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_users._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_users_rest_interceptors(null_interceptor):
+    transport = transports.AlloyDBAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AlloyDBAdminRestInterceptor(),
+    )
+    client = AlloyDBAdminClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_list_users"
+    ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "pre_list_users"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListUsersRequest.pb(service.ListUsersRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.ListUsersResponse.to_json(
+            service.ListUsersResponse()
+        )
+
+        request = service.ListUsersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListUsersResponse()
+
+        client.list_users(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_users_rest_bad_request(
+    transport: str = "rest", request_type=service.ListUsersRequest
+):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_users(request)
+
+
+def test_list_users_rest_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListUsersResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/clusters/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.ListUsersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_users(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=projects/*/locations/*/clusters/*}/users"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_users_rest_flattened_error(transport: str = "rest"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_users(
+            service.ListUsersRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_users_rest_pager(transport: str = "rest"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            service.ListUsersResponse(
+                users=[
+                    resources.User(),
+                    resources.User(),
+                    resources.User(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListUsersResponse(
+                users=[],
+                next_page_token="def",
+            ),
+            service.ListUsersResponse(
+                users=[
+                    resources.User(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListUsersResponse(
+                users=[
+                    resources.User(),
+                    resources.User(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(service.ListUsersResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/clusters/sample3"
+        }
+
+        pager = client.list_users(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.User) for i in results)
+
+        pages = list(client.list_users(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetUserRequest,
+        dict,
+    ],
+)
+def test_get_user_rest(request_type):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/clusters/sample3/users/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.User(
+            name="name_value",
+            password="password_value",
+            database_roles=["database_roles_value"],
+            user_type=resources.User.UserType.ALLOYDB_BUILT_IN,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.User.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_user(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.User)
+    assert response.name == "name_value"
+    assert response.password == "password_value"
+    assert response.database_roles == ["database_roles_value"]
+    assert response.user_type == resources.User.UserType.ALLOYDB_BUILT_IN
+
+
+def test_get_user_rest_required_fields(request_type=service.GetUserRequest):
+    transport_class = transports.AlloyDBAdminRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_user._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_user._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.User()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.User.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_user(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_user_rest_unset_required_fields():
+    transport = transports.AlloyDBAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_user._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_user_rest_interceptors(null_interceptor):
+    transport = transports.AlloyDBAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AlloyDBAdminRestInterceptor(),
+    )
+    client = AlloyDBAdminClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_get_user"
+    ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "pre_get_user"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetUserRequest.pb(service.GetUserRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.User.to_json(resources.User())
+
+        request = service.GetUserRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.User()
+
+        client.get_user(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_user_rest_bad_request(
+    transport: str = "rest", request_type=service.GetUserRequest
+):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/clusters/sample3/users/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_user(request)
+
+
+def test_get_user_rest_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.User()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/clusters/sample3/users/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.User.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_user(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/locations/*/clusters/*/users/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_user_rest_flattened_error(transport: str = "rest"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_user(
+            service.GetUserRequest(),
+            name="name_value",
+        )
+
+
+def test_get_user_rest_error():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateUserRequest,
+        dict,
+    ],
+)
+def test_create_user_rest(request_type):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/clusters/sample3"}
+    request_init["user"] = {
+        "name": "name_value",
+        "password": "password_value",
+        "database_roles": ["database_roles_value1", "database_roles_value2"],
+        "user_type": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.User(
+            name="name_value",
+            password="password_value",
+            database_roles=["database_roles_value"],
+            user_type=resources.User.UserType.ALLOYDB_BUILT_IN,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.User.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_user(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.User)
+    assert response.name == "name_value"
+    assert response.password == "password_value"
+    assert response.database_roles == ["database_roles_value"]
+    assert response.user_type == resources.User.UserType.ALLOYDB_BUILT_IN
+
+
+def test_create_user_rest_required_fields(request_type=service.CreateUserRequest):
+    transport_class = transports.AlloyDBAdminRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["user_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "userId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_user._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "userId" in jsonified_request
+    assert jsonified_request["userId"] == request_init["user_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["userId"] = "user_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_user._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "user_id",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "userId" in jsonified_request
+    assert jsonified_request["userId"] == "user_id_value"
+
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.User()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.User.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_user(request)
+
+            expected_params = [
+                (
+                    "userId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_user_rest_unset_required_fields():
+    transport = transports.AlloyDBAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_user._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "userId",
+                "validateOnly",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "userId",
+                "user",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_user_rest_interceptors(null_interceptor):
+    transport = transports.AlloyDBAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AlloyDBAdminRestInterceptor(),
+    )
+    client = AlloyDBAdminClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_create_user"
+    ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "pre_create_user"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.CreateUserRequest.pb(service.CreateUserRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.User.to_json(resources.User())
+
+        request = service.CreateUserRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.User()
+
+        client.create_user(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_user_rest_bad_request(
+    transport: str = "rest", request_type=service.CreateUserRequest
+):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/clusters/sample3"}
+    request_init["user"] = {
+        "name": "name_value",
+        "password": "password_value",
+        "database_roles": ["database_roles_value1", "database_roles_value2"],
+        "user_type": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_user(request)
+
+
+def test_create_user_rest_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.User()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/clusters/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            user=resources.User(name="name_value"),
+            user_id="user_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.User.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_user(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=projects/*/locations/*/clusters/*}/users"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_user_rest_flattened_error(transport: str = "rest"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_user(
+            service.CreateUserRequest(),
+            parent="parent_value",
+            user=resources.User(name="name_value"),
+            user_id="user_id_value",
+        )
+
+
+def test_create_user_rest_error():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateUserRequest,
+        dict,
+    ],
+)
+def test_update_user_rest(request_type):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "user": {
+            "name": "projects/sample1/locations/sample2/clusters/sample3/users/sample4"
+        }
+    }
+    request_init["user"] = {
+        "name": "projects/sample1/locations/sample2/clusters/sample3/users/sample4",
+        "password": "password_value",
+        "database_roles": ["database_roles_value1", "database_roles_value2"],
+        "user_type": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.User(
+            name="name_value",
+            password="password_value",
+            database_roles=["database_roles_value"],
+            user_type=resources.User.UserType.ALLOYDB_BUILT_IN,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.User.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_user(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.User)
+    assert response.name == "name_value"
+    assert response.password == "password_value"
+    assert response.database_roles == ["database_roles_value"]
+    assert response.user_type == resources.User.UserType.ALLOYDB_BUILT_IN
+
+
+def test_update_user_rest_required_fields(request_type=service.UpdateUserRequest):
+    transport_class = transports.AlloyDBAdminRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_user._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_user._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "allow_missing",
+            "request_id",
+            "update_mask",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.User()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.User.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_user(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_user_rest_unset_required_fields():
+    transport = transports.AlloyDBAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_user._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "allowMissing",
+                "requestId",
+                "updateMask",
+                "validateOnly",
+            )
+        )
+        & set(("user",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_user_rest_interceptors(null_interceptor):
+    transport = transports.AlloyDBAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AlloyDBAdminRestInterceptor(),
+    )
+    client = AlloyDBAdminClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_update_user"
+    ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "pre_update_user"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.UpdateUserRequest.pb(service.UpdateUserRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.User.to_json(resources.User())
+
+        request = service.UpdateUserRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.User()
+
+        client.update_user(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_user_rest_bad_request(
+    transport: str = "rest", request_type=service.UpdateUserRequest
+):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "user": {
+            "name": "projects/sample1/locations/sample2/clusters/sample3/users/sample4"
+        }
+    }
+    request_init["user"] = {
+        "name": "projects/sample1/locations/sample2/clusters/sample3/users/sample4",
+        "password": "password_value",
+        "database_roles": ["database_roles_value1", "database_roles_value2"],
+        "user_type": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_user(request)
+
+
+def test_update_user_rest_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.User()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "user": {
+                "name": "projects/sample1/locations/sample2/clusters/sample3/users/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            user=resources.User(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.User.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_user(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{user.name=projects/*/locations/*/clusters/*/users/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_user_rest_flattened_error(transport: str = "rest"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_user(
+            service.UpdateUserRequest(),
+            user=resources.User(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_user_rest_error():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteUserRequest,
+        dict,
+    ],
+)
+def test_delete_user_rest(request_type):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/clusters/sample3/users/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_user(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_user_rest_required_fields(request_type=service.DeleteUserRequest):
+    transport_class = transports.AlloyDBAdminRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_user._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_user._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "validate_only",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_user(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_user_rest_unset_required_fields():
+    transport = transports.AlloyDBAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_user._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "validateOnly",
+            )
+        )
+        & set(("name",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_user_rest_interceptors(null_interceptor):
+    transport = transports.AlloyDBAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AlloyDBAdminRestInterceptor(),
+    )
+    client = AlloyDBAdminClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "pre_delete_user"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = service.DeleteUserRequest.pb(service.DeleteUserRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = service.DeleteUserRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_user(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_user_rest_bad_request(
+    transport: str = "rest", request_type=service.DeleteUserRequest
+):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/clusters/sample3/users/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_user(request)
+
+
+def test_delete_user_rest_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/clusters/sample3/users/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_user(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/locations/*/clusters/*/users/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_user_rest_flattened_error(transport: str = "rest"):
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_user(
+            service.DeleteUserRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_user_rest_error():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AlloyDBAdminGrpcTransport(
@@ -15556,6 +19028,7 @@ def test_alloy_db_admin_base_transport():
         "update_instance",
         "delete_instance",
         "failover_instance",
+        "inject_fault",
         "restart_instance",
         "list_backups",
         "get_backup",
@@ -15565,6 +19038,11 @@ def test_alloy_db_admin_base_transport():
         "list_supported_database_flags",
         "generate_client_certificate",
         "get_connection_info",
+        "list_users",
+        "get_user",
+        "create_user",
+        "update_user",
+        "delete_user",
         "get_location",
         "list_locations",
         "get_operation",
@@ -15896,6 +19374,9 @@ def test_alloy_db_admin_client_transport_session_collision(transport_name):
     session1 = client1.transport.failover_instance._session
     session2 = client2.transport.failover_instance._session
     assert session1 != session2
+    session1 = client1.transport.inject_fault._session
+    session2 = client2.transport.inject_fault._session
+    assert session1 != session2
     session1 = client1.transport.restart_instance._session
     session2 = client2.transport.restart_instance._session
     assert session1 != session2
@@ -15922,6 +19403,21 @@ def test_alloy_db_admin_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.get_connection_info._session
     session2 = client2.transport.get_connection_info._session
+    assert session1 != session2
+    session1 = client1.transport.list_users._session
+    session2 = client2.transport.list_users._session
+    assert session1 != session2
+    session1 = client1.transport.get_user._session
+    session2 = client2.transport.get_user._session
+    assert session1 != session2
+    session1 = client1.transport.create_user._session
+    session2 = client2.transport.create_user._session
+    assert session1 != session2
+    session1 = client1.transport.update_user._session
+    session2 = client2.transport.update_user._session
+    assert session1 != session2
+    session1 = client1.transport.delete_user._session
+    session2 = client2.transport.delete_user._session
     assert session1 != session2
 
 
@@ -16272,8 +19768,37 @@ def test_parse_supported_database_flag_path():
     assert expected == actual
 
 
+def test_user_path():
+    project = "squid"
+    location = "clam"
+    cluster = "whelk"
+    user = "octopus"
+    expected = "projects/{project}/locations/{location}/clusters/{cluster}/users/{user}".format(
+        project=project,
+        location=location,
+        cluster=cluster,
+        user=user,
+    )
+    actual = AlloyDBAdminClient.user_path(project, location, cluster, user)
+    assert expected == actual
+
+
+def test_parse_user_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "cluster": "cuttlefish",
+        "user": "mussel",
+    }
+    path = AlloyDBAdminClient.user_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AlloyDBAdminClient.parse_user_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -16283,7 +19808,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "nautilus",
     }
     path = AlloyDBAdminClient.common_billing_account_path(**expected)
 
@@ -16293,7 +19818,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -16303,7 +19828,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "abalone",
     }
     path = AlloyDBAdminClient.common_folder_path(**expected)
 
@@ -16313,7 +19838,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -16323,7 +19848,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "clam",
     }
     path = AlloyDBAdminClient.common_organization_path(**expected)
 
@@ -16333,7 +19858,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -16343,7 +19868,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "octopus",
     }
     path = AlloyDBAdminClient.common_project_path(**expected)
 
@@ -16353,8 +19878,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -16365,8 +19890,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = AlloyDBAdminClient.common_location_path(**expected)
 
