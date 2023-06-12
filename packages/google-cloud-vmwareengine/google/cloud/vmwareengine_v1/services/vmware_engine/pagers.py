@@ -923,3 +923,265 @@ class ListVmwareEngineNetworksAsyncPager:
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListPrivateConnectionsPager:
+    """A pager for iterating through ``list_private_connections`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.ListPrivateConnectionsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``private_connections`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListPrivateConnections`` requests and continue to iterate
+    through the ``private_connections`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.ListPrivateConnectionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., vmwareengine.ListPrivateConnectionsResponse],
+        request: vmwareengine.ListPrivateConnectionsRequest,
+        response: vmwareengine.ListPrivateConnectionsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.ListPrivateConnectionsRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.ListPrivateConnectionsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.ListPrivateConnectionsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[vmwareengine.ListPrivateConnectionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[vmwareengine_resources.PrivateConnection]:
+        for page in self.pages:
+            yield from page.private_connections
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListPrivateConnectionsAsyncPager:
+    """A pager for iterating through ``list_private_connections`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.ListPrivateConnectionsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``private_connections`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListPrivateConnections`` requests and continue to iterate
+    through the ``private_connections`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.ListPrivateConnectionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[vmwareengine.ListPrivateConnectionsResponse]],
+        request: vmwareengine.ListPrivateConnectionsRequest,
+        response: vmwareengine.ListPrivateConnectionsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.ListPrivateConnectionsRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.ListPrivateConnectionsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.ListPrivateConnectionsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[vmwareengine.ListPrivateConnectionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[vmwareengine_resources.PrivateConnection]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.private_connections:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListPrivateConnectionPeeringRoutesPager:
+    """A pager for iterating through ``list_private_connection_peering_routes`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.ListPrivateConnectionPeeringRoutesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``peering_routes`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListPrivateConnectionPeeringRoutes`` requests and continue to iterate
+    through the ``peering_routes`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.ListPrivateConnectionPeeringRoutesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., vmwareengine.ListPrivateConnectionPeeringRoutesResponse],
+        request: vmwareengine.ListPrivateConnectionPeeringRoutesRequest,
+        response: vmwareengine.ListPrivateConnectionPeeringRoutesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.ListPrivateConnectionPeeringRoutesRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.ListPrivateConnectionPeeringRoutesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.ListPrivateConnectionPeeringRoutesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[vmwareengine.ListPrivateConnectionPeeringRoutesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[vmwareengine_resources.PeeringRoute]:
+        for page in self.pages:
+            yield from page.peering_routes
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListPrivateConnectionPeeringRoutesAsyncPager:
+    """A pager for iterating through ``list_private_connection_peering_routes`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.ListPrivateConnectionPeeringRoutesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``peering_routes`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListPrivateConnectionPeeringRoutes`` requests and continue to iterate
+    through the ``peering_routes`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.ListPrivateConnectionPeeringRoutesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[vmwareengine.ListPrivateConnectionPeeringRoutesResponse]
+        ],
+        request: vmwareengine.ListPrivateConnectionPeeringRoutesRequest,
+        response: vmwareengine.ListPrivateConnectionPeeringRoutesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.ListPrivateConnectionPeeringRoutesRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.ListPrivateConnectionPeeringRoutesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.ListPrivateConnectionPeeringRoutesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[vmwareengine.ListPrivateConnectionPeeringRoutesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[vmwareengine_resources.PeeringRoute]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.peering_routes:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

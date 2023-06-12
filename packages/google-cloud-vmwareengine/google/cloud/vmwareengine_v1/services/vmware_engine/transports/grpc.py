@@ -614,6 +614,63 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["list_subnets"]
 
     @property
+    def get_subnet(
+        self,
+    ) -> Callable[[vmwareengine.GetSubnetRequest], vmwareengine_resources.Subnet]:
+        r"""Return a callable for the get subnet method over gRPC.
+
+        Gets details of a single subnet.
+
+        Returns:
+            Callable[[~.GetSubnetRequest],
+                    ~.Subnet]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_subnet" not in self._stubs:
+            self._stubs["get_subnet"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/GetSubnet",
+                request_serializer=vmwareengine.GetSubnetRequest.serialize,
+                response_deserializer=vmwareengine_resources.Subnet.deserialize,
+            )
+        return self._stubs["get_subnet"]
+
+    @property
+    def update_subnet(
+        self,
+    ) -> Callable[[vmwareengine.UpdateSubnetRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update subnet method over gRPC.
+
+        Updates the parameters of a single subnet. Only fields specified
+        in ``update_mask`` are applied.
+
+        *Note*: This API is synchronous and always returns a successful
+        ``google.longrunning.Operation`` (LRO). The returned LRO will
+        only have ``done`` and ``response`` fields.
+
+        Returns:
+            Callable[[~.UpdateSubnetRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_subnet" not in self._stubs:
+            self._stubs["update_subnet"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateSubnet",
+                request_serializer=vmwareengine.UpdateSubnetRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_subnet"]
+
+    @property
     def list_node_types(
         self,
     ) -> Callable[
@@ -1169,6 +1226,189 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
                 response_deserializer=vmwareengine.ListVmwareEngineNetworksResponse.deserialize,
             )
         return self._stubs["list_vmware_engine_networks"]
+
+    @property
+    def create_private_connection(
+        self,
+    ) -> Callable[
+        [vmwareengine.CreatePrivateConnectionRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the create private connection method over gRPC.
+
+        Creates a new private connection that can be used for
+        accessing private Clouds.
+
+        Returns:
+            Callable[[~.CreatePrivateConnectionRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_private_connection" not in self._stubs:
+            self._stubs["create_private_connection"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/CreatePrivateConnection",
+                request_serializer=vmwareengine.CreatePrivateConnectionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_private_connection"]
+
+    @property
+    def get_private_connection(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetPrivateConnectionRequest],
+        vmwareengine_resources.PrivateConnection,
+    ]:
+        r"""Return a callable for the get private connection method over gRPC.
+
+        Retrieves a ``PrivateConnection`` resource by its resource name.
+        The resource contains details of the private connection, such as
+        connected network, routing mode and state.
+
+        Returns:
+            Callable[[~.GetPrivateConnectionRequest],
+                    ~.PrivateConnection]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_private_connection" not in self._stubs:
+            self._stubs["get_private_connection"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/GetPrivateConnection",
+                request_serializer=vmwareengine.GetPrivateConnectionRequest.serialize,
+                response_deserializer=vmwareengine_resources.PrivateConnection.deserialize,
+            )
+        return self._stubs["get_private_connection"]
+
+    @property
+    def list_private_connections(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListPrivateConnectionsRequest],
+        vmwareengine.ListPrivateConnectionsResponse,
+    ]:
+        r"""Return a callable for the list private connections method over gRPC.
+
+        Lists ``PrivateConnection`` resources in a given project and
+        location.
+
+        Returns:
+            Callable[[~.ListPrivateConnectionsRequest],
+                    ~.ListPrivateConnectionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_private_connections" not in self._stubs:
+            self._stubs["list_private_connections"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/ListPrivateConnections",
+                request_serializer=vmwareengine.ListPrivateConnectionsRequest.serialize,
+                response_deserializer=vmwareengine.ListPrivateConnectionsResponse.deserialize,
+            )
+        return self._stubs["list_private_connections"]
+
+    @property
+    def update_private_connection(
+        self,
+    ) -> Callable[
+        [vmwareengine.UpdatePrivateConnectionRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update private connection method over gRPC.
+
+        Modifies a ``PrivateConnection`` resource. Only ``description``
+        and ``routing_mode`` fields can be updated. Only fields
+        specified in ``updateMask`` are applied.
+
+        Returns:
+            Callable[[~.UpdatePrivateConnectionRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_private_connection" not in self._stubs:
+            self._stubs["update_private_connection"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/UpdatePrivateConnection",
+                request_serializer=vmwareengine.UpdatePrivateConnectionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_private_connection"]
+
+    @property
+    def delete_private_connection(
+        self,
+    ) -> Callable[
+        [vmwareengine.DeletePrivateConnectionRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the delete private connection method over gRPC.
+
+        Deletes a ``PrivateConnection`` resource. When a private
+        connection is deleted for a VMware Engine network, the connected
+        network becomes inaccessible to that VMware Engine network.
+
+        Returns:
+            Callable[[~.DeletePrivateConnectionRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_private_connection" not in self._stubs:
+            self._stubs["delete_private_connection"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/DeletePrivateConnection",
+                request_serializer=vmwareengine.DeletePrivateConnectionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_private_connection"]
+
+    @property
+    def list_private_connection_peering_routes(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListPrivateConnectionPeeringRoutesRequest],
+        vmwareengine.ListPrivateConnectionPeeringRoutesResponse,
+    ]:
+        r"""Return a callable for the list private connection
+        peering routes method over gRPC.
+
+        Lists the private connection routes exchanged over a
+        peering connection.
+
+        Returns:
+            Callable[[~.ListPrivateConnectionPeeringRoutesRequest],
+                    ~.ListPrivateConnectionPeeringRoutesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_private_connection_peering_routes" not in self._stubs:
+            self._stubs[
+                "list_private_connection_peering_routes"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/ListPrivateConnectionPeeringRoutes",
+                request_serializer=vmwareengine.ListPrivateConnectionPeeringRoutesRequest.serialize,
+                response_deserializer=vmwareengine.ListPrivateConnectionPeeringRoutesResponse.deserialize,
+            )
+        return self._stubs["list_private_connection_peering_routes"]
 
     def close(self):
         self.grpc_channel.close()
