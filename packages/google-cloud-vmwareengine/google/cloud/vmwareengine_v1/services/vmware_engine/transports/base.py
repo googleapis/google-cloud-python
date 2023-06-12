@@ -231,6 +231,25 @@ class VmwareEngineTransport(abc.ABC):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
+            self.get_subnet: gapic_v1.method.wrap_method(
+                self.get_subnet,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.update_subnet: gapic_v1.method.wrap_method(
+                self.update_subnet,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.list_node_types: gapic_v1.method.wrap_method(
                 self.list_node_types,
                 default_retry=retries.Retry(
@@ -416,6 +435,63 @@ class VmwareEngineTransport(abc.ABC):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
+            self.create_private_connection: gapic_v1.method.wrap_method(
+                self.create_private_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_private_connection: gapic_v1.method.wrap_method(
+                self.get_private_connection,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.list_private_connections: gapic_v1.method.wrap_method(
+                self.list_private_connections,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.update_private_connection: gapic_v1.method.wrap_method(
+                self.update_private_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_private_connection: gapic_v1.method.wrap_method(
+                self.delete_private_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_private_connection_peering_routes: gapic_v1.method.wrap_method(
+                self.list_private_connection_peering_routes,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -551,6 +627,24 @@ class VmwareEngineTransport(abc.ABC):
             vmwareengine.ListSubnetsResponse,
             Awaitable[vmwareengine.ListSubnetsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_subnet(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetSubnetRequest],
+        Union[vmwareengine_resources.Subnet, Awaitable[vmwareengine_resources.Subnet]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_subnet(
+        self,
+    ) -> Callable[
+        [vmwareengine.UpdateSubnetRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -750,6 +844,69 @@ class VmwareEngineTransport(abc.ABC):
         Union[
             vmwareengine.ListVmwareEngineNetworksResponse,
             Awaitable[vmwareengine.ListVmwareEngineNetworksResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_private_connection(
+        self,
+    ) -> Callable[
+        [vmwareengine.CreatePrivateConnectionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_private_connection(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetPrivateConnectionRequest],
+        Union[
+            vmwareengine_resources.PrivateConnection,
+            Awaitable[vmwareengine_resources.PrivateConnection],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_private_connections(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListPrivateConnectionsRequest],
+        Union[
+            vmwareengine.ListPrivateConnectionsResponse,
+            Awaitable[vmwareengine.ListPrivateConnectionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_private_connection(
+        self,
+    ) -> Callable[
+        [vmwareengine.UpdatePrivateConnectionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_private_connection(
+        self,
+    ) -> Callable[
+        [vmwareengine.DeletePrivateConnectionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_private_connection_peering_routes(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListPrivateConnectionPeeringRoutesRequest],
+        Union[
+            vmwareengine.ListPrivateConnectionPeeringRoutesResponse,
+            Awaitable[vmwareengine.ListPrivateConnectionPeeringRoutesResponse],
         ],
     ]:
         raise NotImplementedError()
