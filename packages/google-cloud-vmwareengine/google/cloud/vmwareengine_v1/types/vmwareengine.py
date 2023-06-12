@@ -41,6 +41,8 @@ __protobuf__ = proto.module(
         "DeleteClusterRequest",
         "ListSubnetsRequest",
         "ListSubnetsResponse",
+        "GetSubnetRequest",
+        "UpdateSubnetRequest",
         "OperationMetadata",
         "ListNodeTypesRequest",
         "ListNodeTypesResponse",
@@ -65,6 +67,14 @@ __protobuf__ = proto.module(
         "GetVmwareEngineNetworkRequest",
         "ListVmwareEngineNetworksRequest",
         "ListVmwareEngineNetworksResponse",
+        "CreatePrivateConnectionRequest",
+        "GetPrivateConnectionRequest",
+        "ListPrivateConnectionsRequest",
+        "ListPrivateConnectionsResponse",
+        "UpdatePrivateConnectionRequest",
+        "DeletePrivateConnectionRequest",
+        "ListPrivateConnectionPeeringRoutesRequest",
+        "ListPrivateConnectionPeeringRoutesResponse",
     },
 )
 
@@ -716,6 +726,9 @@ class ListSubnetsResponse(proto.Message):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached when
+            making an aggregated query using wildcards.
     """
 
     @property
@@ -730,6 +743,58 @@ class ListSubnetsResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetSubnetRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.GetSubnet][google.cloud.vmwareengine.v1.VmwareEngine.GetSubnet]
+
+    Attributes:
+        name (str):
+            Required. The resource name of the subnet to retrieve.
+            Resource names are schemeless URIs that follow the
+            conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/subnets/my-subnet``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateSubnetRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.UpdateSubnet][google.cloud.vmwareengine.v1.VmwareEngine.UpdateSubnet]
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. Field mask is used to specify the fields to be
+            overwritten in the ``Subnet`` resource by the update. The
+            fields specified in the ``update_mask`` are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
+        subnet (google.cloud.vmwareengine_v1.types.Subnet):
+            Required. Subnet description.
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    subnet: vmwareengine_resources.Subnet = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=vmwareengine_resources.Subnet,
     )
 
 
@@ -1842,6 +1907,382 @@ class ListVmwareEngineNetworksResponse(proto.Message):
     unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+
+
+class CreatePrivateConnectionRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.CreatePrivateConnection][google.cloud.vmwareengine.v1.VmwareEngine.CreatePrivateConnection]
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the location to create the
+            new private connection in. Private connection is a regional
+            resource. Resource names are schemeless URIs that follow the
+            conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example: ``projects/my-project/locations/us-central1``
+        private_connection_id (str):
+            Required. The user-provided identifier of the new private
+            connection. This identifier must be unique among private
+            connection resources within the parent and becomes the final
+            token in the name URI. The identifier must meet the
+            following requirements:
+
+            -  Only contains 1-63 alphanumeric characters and hyphens
+            -  Begins with an alphabetical character
+            -  Ends with a non-hyphen character
+            -  Not formatted as a UUID
+            -  Complies with `RFC
+               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+               (section 3.5)
+        private_connection (google.cloud.vmwareengine_v1.types.PrivateConnection):
+            Required. The initial description of the new
+            private connection.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    private_connection_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    private_connection: vmwareengine_resources.PrivateConnection = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=vmwareengine_resources.PrivateConnection,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class GetPrivateConnectionRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.GetPrivateConnection][google.cloud.vmwareengine.v1.VmwareEngine.GetPrivateConnection]
+
+    Attributes:
+        name (str):
+            Required. The resource name of the private connection to
+            retrieve. Resource names are schemeless URIs that follow the
+            conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1/privateConnections/my-connection``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListPrivateConnectionsRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.ListPrivateConnections][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateConnections]
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the location to query for
+            private connections. Resource names are schemeless URIs that
+            follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example: ``projects/my-project/locations/us-central1``
+        page_size (int):
+            The maximum number of private connections to
+            return in one page. The maximum value is coerced
+            to 1000. The default value of this field is 500.
+        page_token (str):
+            A page token, received from a previous
+            ``ListPrivateConnections`` call. Provide this to retrieve
+            the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListPrivateConnections`` must match the call that provided
+            the page token.
+        filter (str):
+            A filter expression that matches resources returned in the
+            response. The expression must specify the field name, a
+            comparison operator, and the value that you want to use for
+            filtering. The value must be a string, a number, or a
+            boolean. The comparison operator must be ``=``, ``!=``,
+            ``>``, or ``<``.
+
+            For example, if you are filtering a list of private
+            connections, you can exclude the ones named
+            ``example-connection`` by specifying
+            ``name != "example-connection"``.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+
+            ::
+
+               (name = "example-connection")
+               (createTime > "2022-09-22T08:15:10.40Z")
+
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+
+            ::
+
+               (name = "example-connection-1") AND
+               (createTime > "2021-04-12T08:15:10.40Z") OR
+               (name = "example-connection-2")
+        order_by (str):
+            Sorts list results by a certain order. By default, returned
+            results are ordered by ``name`` in ascending order. You can
+            also sort results in descending order based on the ``name``
+            value using ``orderBy="name desc"``. Currently, only
+            ordering by ``name`` is supported.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListPrivateConnectionsResponse(proto.Message):
+    r"""Response message for
+    [VmwareEngine.ListPrivateConnections][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateConnections]
+
+    Attributes:
+        private_connections (MutableSequence[google.cloud.vmwareengine_v1.types.PrivateConnection]):
+            A list of private connections.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        unreachable (MutableSequence[str]):
+            Unreachable resources.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    private_connections: MutableSequence[
+        vmwareengine_resources.PrivateConnection
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=vmwareengine_resources.PrivateConnection,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class UpdatePrivateConnectionRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.UpdatePrivateConnection][google.cloud.vmwareengine.v1.VmwareEngine.UpdatePrivateConnection]
+
+    Attributes:
+        private_connection (google.cloud.vmwareengine_v1.types.PrivateConnection):
+            Required. Private connection description.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. Field mask is used to specify the fields to be
+            overwritten in the ``PrivateConnection`` resource by the
+            update. The fields specified in the ``update_mask`` are
+            relative to the resource, not the full request. A field will
+            be overwritten if it is in the mask. If the user does not
+            provide a mask then all fields will be overwritten.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    private_connection: vmwareengine_resources.PrivateConnection = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=vmwareengine_resources.PrivateConnection,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class DeletePrivateConnectionRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.DeletePrivateConnection][google.cloud.vmwareengine.v1.VmwareEngine.DeletePrivateConnection]
+
+    Attributes:
+        name (str):
+            Required. The resource name of the private connection to be
+            deleted. Resource names are schemeless URIs that follow the
+            conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1/privateConnections/my-connection``
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListPrivateConnectionPeeringRoutesRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.ListPrivateConnectionPeeringRoutes][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateConnectionPeeringRoutes]
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the private connection to
+            retrieve peering routes from. Resource names are schemeless
+            URIs that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-west1/privateConnections/my-connection``
+        page_size (int):
+            The maximum number of peering routes to
+            return in one page. The service may return fewer
+            than this value. The maximum value is coerced to
+            1000.
+            The default value of this field is 500.
+        page_token (str):
+            A page token, received from a previous
+            ``ListPrivateConnectionPeeringRoutes`` call. Provide this to
+            retrieve the subsequent page. When paginating, all other
+            parameters provided to
+            ``ListPrivateConnectionPeeringRoutes`` must match the call
+            that provided the page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListPrivateConnectionPeeringRoutesResponse(proto.Message):
+    r"""Response message for
+    [VmwareEngine.ListPrivateConnectionPeeringRoutes][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateConnectionPeeringRoutes]
+
+    Attributes:
+        peering_routes (MutableSequence[google.cloud.vmwareengine_v1.types.PeeringRoute]):
+            A list of peering routes.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    peering_routes: MutableSequence[
+        vmwareengine_resources.PeeringRoute
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=vmwareengine_resources.PeeringRoute,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

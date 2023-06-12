@@ -34,8 +34,10 @@ __protobuf__ = proto.module(
         "Hcx",
         "Nsx",
         "Vcenter",
+        "PeeringRoute",
         "NetworkPolicy",
         "VmwareEngineNetwork",
+        "PrivateConnection",
     },
 )
 
@@ -167,6 +169,9 @@ class PrivateCloud(proto.Message):
         uid (str):
             Output only. System-generated unique
             identifier for the resource.
+        type_ (google.cloud.vmwareengine_v1.types.PrivateCloud.Type):
+            Optional. Type of the private cloud. Defaults
+            to STANDARD.
     """
 
     class State(proto.Enum):
@@ -199,6 +204,23 @@ class PrivateCloud(proto.Message):
         FAILED = 5
         DELETED = 6
         PURGING = 7
+
+    class Type(proto.Enum):
+        r"""Enum Type defines private cloud type.
+
+        Values:
+            STANDARD (0):
+                Standard private is a zonal resource, with 3+
+                nodes. Default type.
+            TIME_LIMITED (1):
+                Time limited private cloud is a zonal
+                resource, can have only 1 node and has limited
+                life span. Will be deleted after defined period
+                of time, can be converted into standard private
+                cloud by expanding it up to 3 or more nodes.
+        """
+        STANDARD = 0
+        TIME_LIMITED = 1
 
     class ManagementCluster(proto.Message):
         r"""Management cluster configuration.
@@ -294,6 +316,11 @@ class PrivateCloud(proto.Message):
     uid: str = proto.Field(
         proto.STRING,
         number=20,
+    )
+    type_: Type = proto.Field(
+        proto.ENUM,
+        number=22,
+        enum=Type,
     )
 
 
@@ -431,12 +458,21 @@ class Subnet(proto.Message):
                 The subnet is being updated.
             DELETING (4):
                 The subnet is being deleted.
+            RECONCILING (5):
+                Changes requested in the last operation are
+                being propagated.
+            FAILED (6):
+                Last operation on the subnet did not succeed.
+                Subnet's payload is reverted back to its most
+                recent working state.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 2
         UPDATING = 3
         DELETING = 4
+        RECONCILING = 5
+        FAILED = 6
 
     name: str = proto.Field(
         proto.STRING,
@@ -767,6 +803,106 @@ class Vcenter(proto.Message):
     )
 
 
+class PeeringRoute(proto.Message):
+    r"""Exchanged network peering route.
+
+    Attributes:
+        dest_range (str):
+            Output only. Destination range of the peering
+            route in CIDR notation.
+        type_ (google.cloud.vmwareengine_v1.types.PeeringRoute.Type):
+            Output only. Type of the route in the peer
+            VPC network.
+        next_hop_region (str):
+            Output only. Region containing the next hop
+            of the peering route. This field only applies to
+            dynamic routes in the peer VPC network.
+        priority (int):
+            Output only. The priority of the peering
+            route.
+        imported (bool):
+            Output only. True if the peering route has been imported
+            from a peered VPC network; false otherwise. The import
+            happens if the field ``NetworkPeering.importCustomRoutes``
+            is true for this network,
+            ``NetworkPeering.exportCustomRoutes`` is true for the peer
+            VPC network, and the import does not result in a route
+            conflict.
+        direction (google.cloud.vmwareengine_v1.types.PeeringRoute.Direction):
+            Output only. Direction of the routes exchanged with the peer
+            network, from the VMware Engine network perspective:
+
+            -  Routes of direction ``INCOMING`` are imported from the
+               peer network.
+            -  Routes of direction ``OUTGOING`` are exported from the
+               intranet VPC network of the VMware Engine network.
+    """
+
+    class Type(proto.Enum):
+        r"""The type of the peering route.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unspecified peering route type. This is the
+                default value.
+            DYNAMIC_PEERING_ROUTE (1):
+                Dynamic routes in the peer network.
+            STATIC_PEERING_ROUTE (2):
+                Static routes in the peer network.
+            SUBNET_PEERING_ROUTE (3):
+                Created, updated, and removed automatically
+                by Google Cloud when subnets are created,
+                modified, or deleted in the peer network.
+        """
+        TYPE_UNSPECIFIED = 0
+        DYNAMIC_PEERING_ROUTE = 1
+        STATIC_PEERING_ROUTE = 2
+        SUBNET_PEERING_ROUTE = 3
+
+    class Direction(proto.Enum):
+        r"""The direction of the exchanged routes.
+
+        Values:
+            DIRECTION_UNSPECIFIED (0):
+                Unspecified exchanged routes direction. This
+                is default.
+            INCOMING (1):
+                Routes imported from the peer network.
+            OUTGOING (2):
+                Routes exported to the peer network.
+        """
+        DIRECTION_UNSPECIFIED = 0
+        INCOMING = 1
+        OUTGOING = 2
+
+    dest_range: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_: Type = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Type,
+    )
+    next_hop_region: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    priority: int = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+    imported: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    direction: Direction = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=Direction,
+    )
+
+
 class NetworkPolicy(proto.Message):
     r"""Represents a network policy resource. Network policies are
     regional resources. You can use a network policy to enable or
@@ -1085,6 +1221,226 @@ class VmwareEngineNetwork(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=10,
+    )
+
+
+class PrivateConnection(proto.Message):
+    r"""Private connection resource that provides connectivity for
+    VMware Engine private clouds.
+
+    Attributes:
+        name (str):
+            Output only. The resource name of the private connection.
+            Resource names are schemeless URIs that follow the
+            conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1/privateConnections/my-connection``
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Creation time of this resource.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Last update time of this
+            resource.
+        description (str):
+            Optional. User-provided description for this
+            private connection.
+        state (google.cloud.vmwareengine_v1.types.PrivateConnection.State):
+            Output only. State of the private connection.
+        vmware_engine_network (str):
+            Required. The relative resource name of Legacy VMware Engine
+            network. Specify the name in the following form:
+            ``projects/{project}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}``
+            where ``{project}``, ``{location}`` will be same as
+            specified in private connection resource name and
+            ``{vmware_engine_network_id}`` will be in the form of
+            ``{location}``-default e.g.
+            projects/project/locations/us-central1/vmwareEngineNetworks/us-central1-default.
+        vmware_engine_network_canonical (str):
+            Output only. The canonical name of the VMware Engine network
+            in the form:
+            ``projects/{project_number}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}``
+        type_ (google.cloud.vmwareengine_v1.types.PrivateConnection.Type):
+            Required. Private connection type.
+        peering_id (str):
+            Output only. VPC network peering id between
+            given network VPC and VMwareEngineNetwork.
+        routing_mode (google.cloud.vmwareengine_v1.types.PrivateConnection.RoutingMode):
+            Optional. Routing Mode. Default value is set to GLOBAL. For
+            type = PRIVATE_SERVICE_ACCESS, this field can be set to
+            GLOBAL or REGIONAL, for other types only GLOBAL is
+            supported.
+        uid (str):
+            Output only. System-generated unique
+            identifier for the resource.
+        service_network (str):
+            Required. Service network to create private connection.
+            Specify the name in the following form:
+            ``projects/{project}/global/networks/{network_id}`` For type
+            = PRIVATE_SERVICE_ACCESS, this field represents
+            servicenetworking VPC, e.g.
+            projects/project-tp/global/networks/servicenetworking. For
+            type = NETAPP_CLOUD_VOLUME, this field represents NetApp
+            service VPC, e.g.
+            projects/project-tp/global/networks/netapp-tenant-vpc. For
+            type = DELL_POWERSCALE, this field represent Dell service
+            VPC, e.g.
+            projects/project-tp/global/networks/dell-tenant-vpc. For
+            type= THIRD_PARTY_SERVICE, this field could represent a
+            consumer VPC or any other producer VPC to which the VMware
+            Engine Network needs to be connected, e.g.
+            projects/project/global/networks/vpc.
+        peering_state (google.cloud.vmwareengine_v1.types.PrivateConnection.PeeringState):
+            Output only. Peering state between service
+            network and VMware Engine network.
+    """
+
+    class State(proto.Enum):
+        r"""Enum State defines possible states of private connection.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value is used if the
+                state is omitted.
+            CREATING (1):
+                The private connection is being created.
+            ACTIVE (2):
+                The private connection is ready.
+            UPDATING (3):
+                The private connection is being updated.
+            DELETING (4):
+                The private connection is being deleted.
+            UNPROVISIONED (5):
+                The private connection is not provisioned,
+                since no private cloud is present for which this
+                private connection is needed.
+            FAILED (6):
+                The private connection is in failed state.
+        """
+        STATE_UNSPECIFIED = 0
+        CREATING = 1
+        ACTIVE = 2
+        UPDATING = 3
+        DELETING = 4
+        UNPROVISIONED = 5
+        FAILED = 6
+
+    class Type(proto.Enum):
+        r"""Enum Type defines possible types of private connection.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                The default value. This value should never be
+                used.
+            PRIVATE_SERVICE_ACCESS (1):
+                Connection used for establishing `private services
+                access <https://cloud.google.com/vpc/docs/private-services-access>`__.
+            NETAPP_CLOUD_VOLUMES (2):
+                Connection used for connecting to NetApp
+                Cloud Volumes.
+            DELL_POWERSCALE (3):
+                Connection used for connecting to Dell
+                PowerScale.
+            THIRD_PARTY_SERVICE (4):
+                Connection used for connecting to third-party
+                services.
+        """
+        TYPE_UNSPECIFIED = 0
+        PRIVATE_SERVICE_ACCESS = 1
+        NETAPP_CLOUD_VOLUMES = 2
+        DELL_POWERSCALE = 3
+        THIRD_PARTY_SERVICE = 4
+
+    class RoutingMode(proto.Enum):
+        r"""Possible types for RoutingMode
+
+        Values:
+            ROUTING_MODE_UNSPECIFIED (0):
+                The default value. This value should never be
+                used.
+            GLOBAL (1):
+                Global Routing Mode
+            REGIONAL (2):
+                Regional Routing Mode
+        """
+        ROUTING_MODE_UNSPECIFIED = 0
+        GLOBAL = 1
+        REGIONAL = 2
+
+    class PeeringState(proto.Enum):
+        r"""Enum PeeringState defines the possible states of peering
+        between service network and the vpc network peered to service
+        network
+
+        Values:
+            PEERING_STATE_UNSPECIFIED (0):
+                The default value. This value is used if the
+                peering state is omitted or unknown.
+            PEERING_ACTIVE (1):
+                The peering is in active state.
+            PEERING_INACTIVE (2):
+                The peering is in inactive state.
+        """
+        PEERING_STATE_UNSPECIFIED = 0
+        PEERING_ACTIVE = 1
+        PEERING_INACTIVE = 2
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=State,
+    )
+    vmware_engine_network: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    vmware_engine_network_canonical: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    type_: Type = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=Type,
+    )
+    peering_id: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    routing_mode: RoutingMode = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum=RoutingMode,
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    service_network: str = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    peering_state: PeeringState = proto.Field(
+        proto.ENUM,
+        number=17,
+        enum=PeeringState,
     )
 
 

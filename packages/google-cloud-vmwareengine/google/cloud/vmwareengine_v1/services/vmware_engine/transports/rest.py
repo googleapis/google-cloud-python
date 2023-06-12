@@ -107,6 +107,14 @@ class VmwareEngineRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_private_connection(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_private_connection(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_vmware_engine_network(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -136,6 +144,14 @@ class VmwareEngineRestInterceptor:
                 return request, metadata
 
             def post_delete_private_cloud(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_private_connection(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_private_connection(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -187,6 +203,22 @@ class VmwareEngineRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_private_connection(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_private_connection(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_subnet(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_subnet(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_vmware_engine_network(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -232,6 +264,22 @@ class VmwareEngineRestInterceptor:
                 return request, metadata
 
             def post_list_private_clouds(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_private_connection_peering_routes(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_private_connection_peering_routes(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_private_connections(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_private_connections(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -312,6 +360,22 @@ class VmwareEngineRestInterceptor:
                 return request, metadata
 
             def post_update_private_cloud(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_private_connection(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_private_connection(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_subnet(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_subnet(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -421,6 +485,29 @@ class VmwareEngineRestInterceptor:
         """
         return response
 
+    def pre_create_private_connection(
+        self,
+        request: vmwareengine.CreatePrivateConnectionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[vmwareengine.CreatePrivateConnectionRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_private_connection
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the VmwareEngine server.
+        """
+        return request, metadata
+
+    def post_create_private_connection(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_private_connection
+
+        Override in a subclass to manipulate the response
+        after it is returned by the VmwareEngine server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_vmware_engine_network(
         self,
         request: vmwareengine.CreateVmwareEngineNetworkRequest,
@@ -508,6 +595,29 @@ class VmwareEngineRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_private_cloud
+
+        Override in a subclass to manipulate the response
+        after it is returned by the VmwareEngine server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_private_connection(
+        self,
+        request: vmwareengine.DeletePrivateConnectionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[vmwareengine.DeletePrivateConnectionRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_private_connection
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the VmwareEngine server.
+        """
+        return request, metadata
+
+    def post_delete_private_connection(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_private_connection
 
         Override in a subclass to manipulate the response
         after it is returned by the VmwareEngine server but before
@@ -655,6 +765,52 @@ class VmwareEngineRestInterceptor:
         """
         return response
 
+    def pre_get_private_connection(
+        self,
+        request: vmwareengine.GetPrivateConnectionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[vmwareengine.GetPrivateConnectionRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_private_connection
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the VmwareEngine server.
+        """
+        return request, metadata
+
+    def post_get_private_connection(
+        self, response: vmwareengine_resources.PrivateConnection
+    ) -> vmwareengine_resources.PrivateConnection:
+        """Post-rpc interceptor for get_private_connection
+
+        Override in a subclass to manipulate the response
+        after it is returned by the VmwareEngine server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_subnet(
+        self,
+        request: vmwareengine.GetSubnetRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[vmwareengine.GetSubnetRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_subnet
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the VmwareEngine server.
+        """
+        return request, metadata
+
+    def post_get_subnet(
+        self, response: vmwareengine_resources.Subnet
+    ) -> vmwareengine_resources.Subnet:
+        """Post-rpc interceptor for get_subnet
+
+        Override in a subclass to manipulate the response
+        after it is returned by the VmwareEngine server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_vmware_engine_network(
         self,
         request: vmwareengine.GetVmwareEngineNetworkRequest,
@@ -786,6 +942,55 @@ class VmwareEngineRestInterceptor:
         self, response: vmwareengine.ListPrivateCloudsResponse
     ) -> vmwareengine.ListPrivateCloudsResponse:
         """Post-rpc interceptor for list_private_clouds
+
+        Override in a subclass to manipulate the response
+        after it is returned by the VmwareEngine server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_private_connection_peering_routes(
+        self,
+        request: vmwareengine.ListPrivateConnectionPeeringRoutesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        vmwareengine.ListPrivateConnectionPeeringRoutesRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for list_private_connection_peering_routes
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the VmwareEngine server.
+        """
+        return request, metadata
+
+    def post_list_private_connection_peering_routes(
+        self, response: vmwareengine.ListPrivateConnectionPeeringRoutesResponse
+    ) -> vmwareengine.ListPrivateConnectionPeeringRoutesResponse:
+        """Post-rpc interceptor for list_private_connection_peering_routes
+
+        Override in a subclass to manipulate the response
+        after it is returned by the VmwareEngine server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_private_connections(
+        self,
+        request: vmwareengine.ListPrivateConnectionsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[vmwareengine.ListPrivateConnectionsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_private_connections
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the VmwareEngine server.
+        """
+        return request, metadata
+
+    def post_list_private_connections(
+        self, response: vmwareengine.ListPrivateConnectionsResponse
+    ) -> vmwareengine.ListPrivateConnectionsResponse:
+        """Post-rpc interceptor for list_private_connections
 
         Override in a subclass to manipulate the response
         after it is returned by the VmwareEngine server but before
@@ -1016,6 +1221,52 @@ class VmwareEngineRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_private_cloud
+
+        Override in a subclass to manipulate the response
+        after it is returned by the VmwareEngine server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_private_connection(
+        self,
+        request: vmwareengine.UpdatePrivateConnectionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[vmwareengine.UpdatePrivateConnectionRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_private_connection
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the VmwareEngine server.
+        """
+        return request, metadata
+
+    def post_update_private_connection(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_private_connection
+
+        Override in a subclass to manipulate the response
+        after it is returned by the VmwareEngine server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_subnet(
+        self,
+        request: vmwareengine.UpdateSubnetRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[vmwareengine.UpdateSubnetRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_subnet
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the VmwareEngine server.
+        """
+        return request, metadata
+
+    def post_update_subnet(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_subnet
 
         Override in a subclass to manipulate the response
         after it is returned by the VmwareEngine server but before
@@ -1772,6 +2023,107 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_create_private_cloud(resp)
             return resp
 
+    class _CreatePrivateConnection(VmwareEngineRestStub):
+        def __hash__(self):
+            return hash("CreatePrivateConnection")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "privateConnectionId": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: vmwareengine.CreatePrivateConnectionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create private connection method over HTTP.
+
+            Args:
+                request (~.vmwareengine.CreatePrivateConnectionRequest):
+                    The request object. Request message for
+                [VmwareEngine.CreatePrivateConnection][google.cloud.vmwareengine.v1.VmwareEngine.CreatePrivateConnection]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/privateConnections",
+                    "body": "private_connection",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_private_connection(
+                request, metadata
+            )
+            pb_request = vmwareengine.CreatePrivateConnectionRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_private_connection(resp)
+            return resp
+
     class _CreateVmwareEngineNetwork(VmwareEngineRestStub):
         def __hash__(self):
             return hash("CreateVmwareEngineNetwork")
@@ -2140,6 +2492,96 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_private_cloud(resp)
+            return resp
+
+    class _DeletePrivateConnection(VmwareEngineRestStub):
+        def __hash__(self):
+            return hash("DeletePrivateConnection")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: vmwareengine.DeletePrivateConnectionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete private connection method over HTTP.
+
+            Args:
+                request (~.vmwareengine.DeletePrivateConnectionRequest):
+                    The request object. Request message for
+                [VmwareEngine.DeletePrivateConnection][google.cloud.vmwareengine.v1.VmwareEngine.DeletePrivateConnection]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/privateConnections/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_private_connection(
+                request, metadata
+            )
+            pb_request = vmwareengine.DeletePrivateConnectionRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_private_connection(resp)
             return resp
 
     class _DeleteVmwareEngineNetwork(VmwareEngineRestStub):
@@ -2694,6 +3136,188 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_get_private_cloud(resp)
             return resp
 
+    class _GetPrivateConnection(VmwareEngineRestStub):
+        def __hash__(self):
+            return hash("GetPrivateConnection")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: vmwareengine.GetPrivateConnectionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> vmwareengine_resources.PrivateConnection:
+            r"""Call the get private connection method over HTTP.
+
+            Args:
+                request (~.vmwareengine.GetPrivateConnectionRequest):
+                    The request object. Request message for
+                [VmwareEngine.GetPrivateConnection][google.cloud.vmwareengine.v1.VmwareEngine.GetPrivateConnection]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.vmwareengine_resources.PrivateConnection:
+                    Private connection resource that
+                provides connectivity for VMware Engine
+                private clouds.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/privateConnections/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_private_connection(
+                request, metadata
+            )
+            pb_request = vmwareengine.GetPrivateConnectionRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = vmwareengine_resources.PrivateConnection()
+            pb_resp = vmwareengine_resources.PrivateConnection.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_private_connection(resp)
+            return resp
+
+    class _GetSubnet(VmwareEngineRestStub):
+        def __hash__(self):
+            return hash("GetSubnet")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: vmwareengine.GetSubnetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> vmwareengine_resources.Subnet:
+            r"""Call the get subnet method over HTTP.
+
+            Args:
+                request (~.vmwareengine.GetSubnetRequest):
+                    The request object. Request message for
+                [VmwareEngine.GetSubnet][google.cloud.vmwareengine.v1.VmwareEngine.GetSubnet]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.vmwareengine_resources.Subnet:
+                    Subnet in a private cloud. Either ``management`` subnets
+                (such as vMotion) that are read-only, or
+                ``userDefined``, which can also be updated.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/privateClouds/*/subnets/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_subnet(request, metadata)
+            pb_request = vmwareengine.GetSubnetRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = vmwareengine_resources.Subnet()
+            pb_resp = vmwareengine_resources.Subnet.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_subnet(resp)
+            return resp
+
     class _GetVmwareEngineNetwork(VmwareEngineRestStub):
         def __hash__(self):
             return hash("GetVmwareEngineNetwork")
@@ -3235,6 +3859,194 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_private_clouds(resp)
+            return resp
+
+    class _ListPrivateConnectionPeeringRoutes(VmwareEngineRestStub):
+        def __hash__(self):
+            return hash("ListPrivateConnectionPeeringRoutes")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: vmwareengine.ListPrivateConnectionPeeringRoutesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> vmwareengine.ListPrivateConnectionPeeringRoutesResponse:
+            r"""Call the list private connection
+            peering routes method over HTTP.
+
+                Args:
+                    request (~.vmwareengine.ListPrivateConnectionPeeringRoutesRequest):
+                        The request object. Request message for
+                    [VmwareEngine.ListPrivateConnectionPeeringRoutes][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateConnectionPeeringRoutes]
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.vmwareengine.ListPrivateConnectionPeeringRoutesResponse:
+                        Response message for
+                    [VmwareEngine.ListPrivateConnectionPeeringRoutes][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateConnectionPeeringRoutes]
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/privateConnections/*}/peeringRoutes",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_list_private_connection_peering_routes(
+                request, metadata
+            )
+            pb_request = vmwareengine.ListPrivateConnectionPeeringRoutesRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = vmwareengine.ListPrivateConnectionPeeringRoutesResponse()
+            pb_resp = vmwareengine.ListPrivateConnectionPeeringRoutesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_private_connection_peering_routes(resp)
+            return resp
+
+    class _ListPrivateConnections(VmwareEngineRestStub):
+        def __hash__(self):
+            return hash("ListPrivateConnections")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: vmwareengine.ListPrivateConnectionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> vmwareengine.ListPrivateConnectionsResponse:
+            r"""Call the list private connections method over HTTP.
+
+            Args:
+                request (~.vmwareengine.ListPrivateConnectionsRequest):
+                    The request object. Request message for
+                [VmwareEngine.ListPrivateConnections][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateConnections]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.vmwareengine.ListPrivateConnectionsResponse:
+                    Response message for
+                [VmwareEngine.ListPrivateConnections][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateConnections]
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/privateConnections",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_private_connections(
+                request, metadata
+            )
+            pb_request = vmwareengine.ListPrivateConnectionsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = vmwareengine.ListPrivateConnectionsResponse()
+            pb_resp = vmwareengine.ListPrivateConnectionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_private_connections(resp)
             return resp
 
     class _ListSubnets(VmwareEngineRestStub):
@@ -4194,6 +5006,206 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_update_private_cloud(resp)
             return resp
 
+    class _UpdatePrivateConnection(VmwareEngineRestStub):
+        def __hash__(self):
+            return hash("UpdatePrivateConnection")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: vmwareengine.UpdatePrivateConnectionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update private connection method over HTTP.
+
+            Args:
+                request (~.vmwareengine.UpdatePrivateConnectionRequest):
+                    The request object. Request message for
+                [VmwareEngine.UpdatePrivateConnection][google.cloud.vmwareengine.v1.VmwareEngine.UpdatePrivateConnection]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{private_connection.name=projects/*/locations/*/privateConnections/*}",
+                    "body": "private_connection",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_private_connection(
+                request, metadata
+            )
+            pb_request = vmwareengine.UpdatePrivateConnectionRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_private_connection(resp)
+            return resp
+
+    class _UpdateSubnet(VmwareEngineRestStub):
+        def __hash__(self):
+            return hash("UpdateSubnet")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: vmwareengine.UpdateSubnetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update subnet method over HTTP.
+
+            Args:
+                request (~.vmwareengine.UpdateSubnetRequest):
+                    The request object. Request message for
+                [VmwareEngine.UpdateSubnet][google.cloud.vmwareengine.v1.VmwareEngine.UpdateSubnet]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{subnet.name=projects/*/locations/*/privateClouds/*/subnets/*}",
+                    "body": "subnet",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_subnet(request, metadata)
+            pb_request = vmwareengine.UpdateSubnetRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_subnet(resp)
+            return resp
+
     class _UpdateVmwareEngineNetwork(VmwareEngineRestStub):
         def __hash__(self):
             return hash("UpdateVmwareEngineNetwork")
@@ -4331,6 +5343,16 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         return self._CreatePrivateCloud(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_private_connection(
+        self,
+    ) -> Callable[
+        [vmwareengine.CreatePrivateConnectionRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreatePrivateConnection(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_vmware_engine_network(
         self,
     ) -> Callable[
@@ -4363,6 +5385,16 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePrivateCloud(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_private_connection(
+        self,
+    ) -> Callable[
+        [vmwareengine.DeletePrivateConnectionRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeletePrivateConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_vmware_engine_network(
@@ -4420,6 +5452,25 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPrivateCloud(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_private_connection(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetPrivateConnectionRequest],
+        vmwareengine_resources.PrivateConnection,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetPrivateConnection(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_subnet(
+        self,
+    ) -> Callable[[vmwareengine.GetSubnetRequest], vmwareengine_resources.Subnet]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetSubnet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_vmware_engine_network(
@@ -4483,6 +5534,28 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPrivateClouds(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_private_connection_peering_routes(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListPrivateConnectionPeeringRoutesRequest],
+        vmwareengine.ListPrivateConnectionPeeringRoutesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListPrivateConnectionPeeringRoutes(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_private_connections(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListPrivateConnectionsRequest],
+        vmwareengine.ListPrivateConnectionsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListPrivateConnections(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_subnets(
@@ -4572,6 +5645,24 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePrivateCloud(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_private_connection(
+        self,
+    ) -> Callable[
+        [vmwareengine.UpdatePrivateConnectionRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdatePrivateConnection(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_subnet(
+        self,
+    ) -> Callable[[vmwareengine.UpdateSubnetRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateSubnet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_vmware_engine_network(
