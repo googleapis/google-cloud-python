@@ -279,30 +279,28 @@ class RestoreConfig(proto.Message):
     """
 
     class VolumeDataRestorePolicy(proto.Enum):
-        r"""Defines how volume data should be restored
+        r"""Defines how volume data should be restored.
 
         Values:
             VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED (0):
                 Unspecified (illegal).
             RESTORE_VOLUME_DATA_FROM_BACKUP (1):
-                For each PVC to be restored, will create a
-                new underlying volume (and PV) from the
-                corresponding VolumeBackup contained within the
-                Backup.
+                For each PVC to be restored, create a new
+                underlying volume and PV from the corresponding
+                VolumeBackup contained within the Backup.
             REUSE_VOLUME_HANDLE_FROM_BACKUP (2):
                 For each PVC to be restored, attempt to reuse
                 the original PV contained in the Backup (with
-                its original underlying volume).  Note that
-                option is likely only usable when restoring a
-                workload to its original cluster.
+                its original underlying volume). This option is
+                likely only usable when restoring a workload to
+                its original cluster.
             NO_VOLUME_DATA_RESTORATION (3):
-                For each PVC to be restored, PVCs will be
-                created without any particular action to restore
-                data.  In this case, the normal Kubernetes
-                provisioning logic would kick in, and this would
-                likely result in either dynamically provisioning
-                blank PVs or binding to statically provisioned
-                PVs.
+                For each PVC to be restored, create PVC
+                without any particular action to restore data.
+                In this case, the normal Kubernetes provisioning
+                logic would kick in, and this would likely
+                result in either dynamically provisioning blank
+                PVs or binding to statically provisioned PVs.
         """
         VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED = 0
         RESTORE_VOLUME_DATA_FROM_BACKUP = 1
@@ -323,11 +321,11 @@ class RestoreConfig(proto.Message):
                 resource.
             USE_BACKUP_VERSION (2):
                 Delete the existing version before
-                re-creating it from the Backup. Note that this
-                is a dangerous option which could cause
-                unintentional data loss if used inappropriately
-                - for example, deleting a CRD will cause
-                Kubernetes to delete all CRs of that type.
+                re-creating it from the Backup. This is a
+                dangerous option which could cause unintentional
+                data loss if used inappropriately. For example,
+                deleting a CRD will cause Kubernetes to delete
+                all CRs of that type.
         """
         CLUSTER_RESOURCE_CONFLICT_POLICY_UNSPECIFIED = 0
         USE_EXISTING_VERSION = 1
@@ -393,17 +391,31 @@ class RestoreConfig(proto.Message):
         )
 
     class ClusterResourceRestoreScope(proto.Message):
-        r"""Identifies the cluster-scoped resources to restore from the
-        Backup.
+        r"""Defines the scope of cluster-scoped resources to restore.
+        Some group kinds are not reasonable choices for a restore, and
+        will cause an error if selected here. Any scope selection that
+        would restore "all valid" resources automatically excludes these
+        group kinds. - gkebackup.gke.io/BackupJob
+        - gkebackup.gke.io/RestoreJob
+        - metrics.k8s.io/NodeMetrics
+        - migration.k8s.io/StorageState
+        - migration.k8s.io/StorageVersionMigration
+        - Node
+        - snapshot.storage.k8s.io/VolumeSnapshotContent
+        - storage.k8s.io/CSINode
+
+        Some group kinds are driven by restore configuration elsewhere,
+        and will cause an error if selected here.
+        - Namespace
+        - PersistentVolume
 
         Attributes:
             selected_group_kinds (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.GroupKind]):
-                A list of "types" of cluster-scoped resources
-                to be restored from the Backup.  An empty list
-                means that NO cluster-scoped resources will be
-                restored. Note that Namespaces and
-                PersistentVolume restoration is handled
-                separately and is not governed by this field.
+                A list of cluster-scoped resource group kinds
+                to restore from the backup. If specified, only
+                the selected resources will be restored.
+                Mutually exclusive to any other field in the
+                message.
         """
 
         selected_group_kinds: MutableSequence[
@@ -457,7 +469,7 @@ class RestoreConfig(proto.Message):
                 value does not match this expression. If this field is NOT
                 specified, then ALL fields matched by the target_json_path
                 expression will undergo substitution. Note that an empty
-                (e.g., "", rather than unspecified) value for for this field
+                (e.g., "", rather than unspecified) value for this field
                 will only match empty fields.
             new_value (str):
                 This is the new value to set for any fields

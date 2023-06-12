@@ -214,7 +214,7 @@ class VolumeRestore(proto.Message):
         name (str):
             Output only. Full name of the VolumeRestore resource.
             Format:
-            ``projects/*/locations/*/restorePlans/*/restores/*/volumeRestores/*``.
+            ``projects/*/locations/*/restorePlans/*/restores/*/volumeRestores/*``
         uid (str):
             Output only. Server generated global unique identifier of
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__

@@ -86,7 +86,8 @@ class Backup(proto.Message):
 
             -  If 0, no automatic deletion will occur for this Backup.
             -  If not 0, this must be >=
-               [delete_lock_days][google.cloud.gkebackup.v1.Backup.delete_lock_days].
+               [delete_lock_days][google.cloud.gkebackup.v1.Backup.delete_lock_days]
+               and <= 365.
 
             Once a Backup is created, this value may only be increased.
 
