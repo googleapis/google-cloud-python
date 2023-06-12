@@ -1,7 +1,6 @@
 alembic==1.11.1
 certifi==2023.5.7
 charset-normalizer==3.1.0
-future==0.18.2
 geoalchemy2==0.13.3
 google-api-core[grpc]==2.11.0
 google-auth==2.19.1

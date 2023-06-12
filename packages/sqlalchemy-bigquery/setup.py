@@ -102,7 +102,6 @@ setup(
         "google-cloud-bigquery>=2.25.2,<4.0.0dev",
         "packaging",
         "sqlalchemy>=1.2.0,<2.0.0dev",
-        "future",
     ],
     extras_require=extras,
     python_requires=">=3.7, <3.12",
