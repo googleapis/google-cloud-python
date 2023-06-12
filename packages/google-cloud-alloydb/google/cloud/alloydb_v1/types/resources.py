@@ -27,38 +27,26 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.alloydb.v1",
     manifest={
-        "DatabaseVersion",
         "InstanceView",
+        "ClusterView",
+        "DatabaseVersion",
         "UserPassword",
         "MigrationSource",
         "EncryptionConfig",
         "EncryptionInfo",
         "SslConfig",
         "AutomatedBackupPolicy",
+        "ContinuousBackupConfig",
+        "ContinuousBackupInfo",
         "BackupSource",
+        "ContinuousBackupSource",
         "Cluster",
         "Instance",
         "Backup",
         "SupportedDatabaseFlag",
+        "User",
     },
 )
-
-
-class DatabaseVersion(proto.Enum):
-    r"""The supported database engine versions.
-
-    Values:
-        DATABASE_VERSION_UNSPECIFIED (0):
-            This is an unknown database version.
-        POSTGRES_13 (1):
-            DEPRECATED - The database version is Postgres
-            13.
-        POSTGRES_14 (2):
-            The database version is Postgres 14.
-    """
-    DATABASE_VERSION_UNSPECIFIED = 0
-    POSTGRES_13 = 1
-    POSTGRES_14 = 2
 
 
 class InstanceView(proto.Enum):
@@ -83,6 +71,46 @@ class InstanceView(proto.Enum):
     INSTANCE_VIEW_UNSPECIFIED = 0
     INSTANCE_VIEW_BASIC = 1
     INSTANCE_VIEW_FULL = 2
+
+
+class ClusterView(proto.Enum):
+    r"""View on Cluster. Pass this enum to rpcs that returns a
+    cluster message to control which subsets of fields to get.
+
+    Values:
+        CLUSTER_VIEW_UNSPECIFIED (0):
+            CLUSTER_VIEW_UNSPECIFIED Not specified, equivalent to BASIC.
+        CLUSTER_VIEW_BASIC (1):
+            BASIC server responses include all the
+            relevant cluster details, excluding
+            Cluster.ContinuousBackupInfo.EarliestRestorableTime
+            and other view-specific fields. The default
+            value.
+        CLUSTER_VIEW_CONTINUOUS_BACKUP (2):
+            CONTINUOUS_BACKUP response returns all the fields from BASIC
+            plus the earliest restorable time if continuous backups are
+            enabled. May increase latency.
+    """
+    CLUSTER_VIEW_UNSPECIFIED = 0
+    CLUSTER_VIEW_BASIC = 1
+    CLUSTER_VIEW_CONTINUOUS_BACKUP = 2
+
+
+class DatabaseVersion(proto.Enum):
+    r"""The supported database engine versions.
+
+    Values:
+        DATABASE_VERSION_UNSPECIFIED (0):
+            This is an unknown database version.
+        POSTGRES_13 (1):
+            DEPRECATED - The database version is Postgres
+            13.
+        POSTGRES_14 (2):
+            The database version is Postgres 14.
+    """
+    DATABASE_VERSION_UNSPECIFIED = 0
+    POSTGRES_13 = 1
+    POSTGRES_14 = 2
 
 
 class UserPassword(proto.Message):
@@ -214,7 +242,7 @@ class EncryptionInfo(proto.Message):
 
 
 class SslConfig(proto.Message):
-    r"""SSL configuration for an AlloyDB Cluster.
+    r"""SSL configuration.
 
     Attributes:
         ssl_mode (google.cloud.alloydb_v1.types.SslConfig.SslMode):
@@ -231,7 +259,7 @@ class SslConfig(proto.Message):
 
         Values:
             SSL_MODE_UNSPECIFIED (0):
-                SSL mode not specified. Defaults to SSL_MODE_ALLOW.
+                SSL mode not specified. Defaults to ENCRYPTED_ONLY.
             SSL_MODE_ALLOW (1):
                 SSL connections are optional. CA verification
                 not enforced.
@@ -245,11 +273,19 @@ class SslConfig(proto.Message):
                 enforced. Clients must have certificates signed
                 by a Cluster CA, e.g. via
                 GenerateClientCertificate.
+            ALLOW_UNENCRYPTED_AND_ENCRYPTED (4):
+                SSL connections are optional. CA verification
+                not enforced.
+            ENCRYPTED_ONLY (5):
+                SSL connections are required. CA verification
+                not enforced.
         """
         SSL_MODE_UNSPECIFIED = 0
         SSL_MODE_ALLOW = 1
         SSL_MODE_REQUIRE = 2
         SSL_MODE_VERIFY_CA = 3
+        ALLOW_UNENCRYPTED_AND_ENCRYPTED = 4
+        ENCRYPTED_ONLY = 5
 
     class CaSource(proto.Enum):
         r"""Certificate Authority (CA) source for SSL/TLS certificates.
@@ -442,6 +478,91 @@ class AutomatedBackupPolicy(proto.Message):
     )
 
 
+class ContinuousBackupConfig(proto.Message):
+    r"""ContinuousBackupConfig describes the continuous backups
+    recovery configurations of a cluster.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        enabled (bool):
+            Whether ContinuousBackup is enabled.
+
+            This field is a member of `oneof`_ ``_enabled``.
+        recovery_window_days (int):
+            The number of days backups and logs will be
+            retained, which determines the window of time
+            that data is recoverable for. If not set, it
+            defaults to 14 days.
+        encryption_config (google.cloud.alloydb_v1.types.EncryptionConfig):
+            The encryption config can be specified to
+            encrypt the backups with a customer-managed
+            encryption key (CMEK). When this field is not
+            specified, the backup will then use default
+            encryption scheme to protect the user data.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+        optional=True,
+    )
+    recovery_window_days: int = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    encryption_config: "EncryptionConfig" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="EncryptionConfig",
+    )
+
+
+class ContinuousBackupInfo(proto.Message):
+    r"""ContinuousBackupInfo describes the continuous backup
+    properties of a cluster.
+
+    Attributes:
+        encryption_info (google.cloud.alloydb_v1.types.EncryptionInfo):
+            Output only. The encryption information for
+            the WALs and backups required for
+            ContinuousBackup.
+        enabled_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. When ContinuousBackup was most
+            recently enabled. Set to null if
+            ContinuousBackup is not enabled.
+        schedule (MutableSequence[google.type.dayofweek_pb2.DayOfWeek]):
+            Output only. Days of the week on which a
+            continuous backup is taken. Output only field.
+            Ignored if passed into the request.
+        earliest_restorable_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The earliest restorable time
+            that can be restored to. Output only field.
+    """
+
+    encryption_info: "EncryptionInfo" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="EncryptionInfo",
+    )
+    enabled_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    schedule: MutableSequence[dayofweek_pb2.DayOfWeek] = proto.RepeatedField(
+        proto.ENUM,
+        number=3,
+        enum=dayofweek_pb2.DayOfWeek,
+    )
+    earliest_restorable_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
 class BackupSource(proto.Message):
     r"""Message describing a BackupSource.
 
@@ -464,6 +585,31 @@ class BackupSource(proto.Message):
     backup_name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class ContinuousBackupSource(proto.Message):
+    r"""Message describing a ContinuousBackupSource.
+
+    Attributes:
+        cluster (str):
+            Required. The source cluster from which to
+            restore. This cluster must have continuous
+            backup enabled for this operation to succeed.
+            For the required format, see the comment on the
+            Cluster.name field.
+        point_in_time (google.protobuf.timestamp_pb2.Timestamp):
+            Required. The point in time to restore to.
+    """
+
+    cluster: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    point_in_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -567,7 +713,7 @@ class Cluster(proto.Message):
             defaults, consult the documentation for the
             message type.
         ssl_config (google.cloud.alloydb_v1.types.SslConfig):
-            SSL configuration for this AlloyDB Cluster.
+            SSL configuration for this AlloyDB cluster.
         encryption_config (google.cloud.alloydb_v1.types.EncryptionConfig):
             Optional. The encryption config can be
             specified to encrypt the data disks and other
@@ -579,6 +725,12 @@ class Cluster(proto.Message):
         encryption_info (google.cloud.alloydb_v1.types.EncryptionInfo):
             Output only. The encryption information for
             the cluster.
+        continuous_backup_config (google.cloud.alloydb_v1.types.ContinuousBackupConfig):
+            Optional. Continuous backup configuration for
+            this cluster.
+        continuous_backup_info (google.cloud.alloydb_v1.types.ContinuousBackupInfo):
+            Output only. Continuous backup properties for
+            this cluster.
         secondary_config (google.cloud.alloydb_v1.types.Cluster.SecondaryConfig):
             Cross Region replication config specific to
             SECONDARY cluster.
@@ -787,6 +939,16 @@ class Cluster(proto.Message):
         number=20,
         message="EncryptionInfo",
     )
+    continuous_backup_config: "ContinuousBackupConfig" = proto.Field(
+        proto.MESSAGE,
+        number=27,
+        message="ContinuousBackupConfig",
+    )
+    continuous_backup_info: "ContinuousBackupInfo" = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        message="ContinuousBackupInfo",
+    )
     secondary_config: SecondaryConfig = proto.Field(
         proto.MESSAGE,
         number=22,
@@ -844,10 +1006,12 @@ class Instance(proto.Message):
             Configurations for the machines that host the
             underlying database engine.
         availability_type (google.cloud.alloydb_v1.types.Instance.AvailabilityType):
-            Availability type of an Instance.
-            Defaults to REGIONAL for both primary and read
-            instances. Note that primary and read instances
-            can have different availability types.
+            Availability type of an Instance. If empty, defaults to
+            REGIONAL for primary instances. For read pools,
+            availability_type is always UNSPECIFIED. Instances in the
+            read pools are evenly distributed across available zones
+            within the region (i.e. read pools with more than one node
+            will have a node in at least two zones).
         gce_zone (str):
             The Compute Engine zone that the instance
             should serve from, per
@@ -979,9 +1143,9 @@ class Instance(proto.Message):
     class AvailabilityType(proto.Enum):
         r"""The Availability type of an instance. Potential values:
         - ZONAL: The instance serves data from only one zone. Outages in
-        that zone affect instance availability.
+        that     zone affect instance availability.
         - REGIONAL: The instance can serve data from more than one zone
-        in a region (it is highly available).
+        in a     region (it is highly available).
 
         Values:
             AVAILABILITY_TYPE_UNSPECIFIED (0):
@@ -1258,7 +1422,8 @@ class Backup(proto.Message):
             cluster which was used to create this resource.
         cluster_name (str):
             Required. The full resource name of the backup source
-            cluster (e.g., projects//locations//clusters/<cluster_id>).
+            cluster (e.g.,
+            projects/{project}/locations/{region}/clusters/{cluster_id}).
         reconciling (bool):
             Output only. Reconciling
             (https://google.aip.dev/128#reconciliation), if
@@ -1574,6 +1739,60 @@ class SupportedDatabaseFlag(proto.Message):
     requires_db_restart: bool = proto.Field(
         proto.BOOL,
         number=6,
+    )
+
+
+class User(proto.Message):
+    r"""Message describing User object.
+
+    Attributes:
+        name (str):
+            Output only. Name of the resource in the form
+            of
+            projects/{project}/locations/{location}/cluster/{cluster}/users/{user}.
+        password (str):
+            Input only. Password for the user.
+        database_roles (MutableSequence[str]):
+            Optional. List of database roles this user
+            has. The database role strings are subject to
+            the PostgreSQL naming conventions.
+        user_type (google.cloud.alloydb_v1.types.User.UserType):
+            Optional. Type of this user.
+    """
+
+    class UserType(proto.Enum):
+        r"""Enum that details the user type.
+
+        Values:
+            USER_TYPE_UNSPECIFIED (0):
+                Unspecified user type.
+            ALLOYDB_BUILT_IN (1):
+                The default user type that authenticates via
+                password-based authentication.
+            ALLOYDB_IAM_USER (2):
+                Database user that can authenticate via
+                IAM-Based authentication.
+        """
+        USER_TYPE_UNSPECIFIED = 0
+        ALLOYDB_BUILT_IN = 1
+        ALLOYDB_IAM_USER = 2
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    password: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    database_roles: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    user_type: UserType = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=UserType,
     )
 
 
