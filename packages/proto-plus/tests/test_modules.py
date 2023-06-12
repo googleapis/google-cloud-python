@@ -36,6 +36,38 @@ def test_module_package():
         del sys.modules[__name__].__protobuf__
 
 
+def test_module_package_cross_api():
+    sys.modules[__name__].__protobuf__ = proto.module(package="spam.eggs.v1")
+    try:
+
+        class Baz(proto.Message):
+            foo = proto.RepeatedField(proto.INT64, number=1)
+
+        marshal = proto.Marshal(name="spam.eggs.v1")
+
+        assert Baz.meta.package == "spam.eggs.v1"
+        assert Baz.pb() in marshal._rules
+
+        sys.modules[__name__].__protobuf__ = proto.module(package="ham.pancakes.v1")
+
+        class AnotherMessage(proto.Message):
+            qux = proto.Field(proto.MESSAGE, number=1, message=Baz)
+
+        marshal = proto.Marshal(name="ham.pancakes.v1")
+
+        assert AnotherMessage.meta.package == "ham.pancakes.v1"
+        assert AnotherMessage.pb() in marshal._rules
+        # Confirm that Baz.pb() is no longer present in marshal._rules
+        assert Baz.pb() not in marshal._rules
+
+        # Test using multiple packages together
+        # See https://github.com/googleapis/proto-plus-python/issues/349.
+        msg = AnotherMessage(qux=Baz())
+        assert type(msg) == AnotherMessage
+    finally:
+        del sys.modules[__name__].__protobuf__
+
+
 def test_module_package_explicit_marshal():
     sys.modules[__name__].__protobuf__ = proto.module(
         package="spam.eggs.v1",

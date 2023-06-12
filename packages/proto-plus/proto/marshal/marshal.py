@@ -159,6 +159,22 @@ class BaseMarshal:
         for rule_class in stringy_numbers.STRINGY_NUMBER_RULES:
             self.register(rule_class._proto_type, rule_class())
 
+    def get_rule(self, proto_type):
+        # Rules are needed to convert values between proto-plus and pb.
+        # Retrieve the rule for the specified proto type.
+        # The NoopRule will be used when a rule is not found.
+        rule = self._rules.get(proto_type, self._noop)
+
+        # If we don't find a rule, also check under `_instances`
+        # in case there is a rule in another package.
+        # See https://github.com/googleapis/proto-plus-python/issues/349
+        if rule == self._noop and hasattr(self, "_instances"):
+            for _, instance in self._instances.items():
+                rule = instance._rules.get(proto_type, self._noop)
+                if rule != self._noop:
+                    break
+        return rule
+
     def to_python(self, proto_type, value, *, absent: bool = None):
         # Internal protobuf has its own special type for lists of values.
         # Return a view around it that implements MutableSequence.
@@ -174,10 +190,7 @@ class BaseMarshal:
         # Same thing for maps of messages.
         if value_type in compat.map_composite_types:
             return MapComposite(value, marshal=self)
-
-        # Convert ordinary values.
-        rule = self._rules.get(proto_type, self._noop)
-        return rule.to_python(value, absent=absent)
+        return self.get_rule(proto_type=proto_type).to_python(value, absent=absent)
 
     def to_proto(self, proto_type, value, *, strict: bool = False):
         # The protos in google/protobuf/struct.proto are exceptional cases,
@@ -212,9 +225,7 @@ class BaseMarshal:
             recursive_type = type(proto_type().value)
             return {k: self.to_proto(recursive_type, v) for k, v in value.items()}
 
-        # Convert ordinary values.
-        rule = self._rules.get(proto_type, self._noop)
-        pb_value = rule.to_proto(value)
+        pb_value = self.get_rule(proto_type=proto_type).to_proto(value)
 
         # Sanity check: If we are in strict mode, did we get the value we want?
         if strict and not isinstance(pb_value, proto_type):
