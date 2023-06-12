@@ -142,10 +142,21 @@ class GoogleAPICallError(GoogleAPIError, metaclass=_GoogleAPICallErrorMeta):
         self._error_info = error_info
 
     def __str__(self):
+        error_msg = "{} {}".format(self.code, self.message)
         if self.details:
-            return "{} {} {}".format(self.code, self.message, self.details)
+            error_msg = "{} {}".format(error_msg, self.details)
+        # Note: This else condition can be removed once proposal A from
+        # b/284179390 is implemented.
         else:
-            return "{} {}".format(self.code, self.message)
+            if self.errors:
+                errors = [
+                    f"{error.code}: {error.message}"
+                    for error in self.errors
+                    if hasattr(error, "code") and hasattr(error, "message")
+                ]
+                if errors:
+                    error_msg = "{} {}".format(error_msg, "\n".join(errors))
+        return error_msg
 
     @property
     def reason(self):
