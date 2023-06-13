@@ -34,13 +34,13 @@ class Container(proto.Message):
 
     Attributes:
         name (str):
-            Container name.
+            Name of the container.
         uri (str):
             Container image URI provided when configuring
-            a pod/container. May identify a container image
-            version using mutable tags.
+            a pod or container. This string can identify a
+            container image version using mutable tags.
         image_id (str):
-            Optional container image id, when provided by
+            Optional container image ID, if provided by
             the container runtime. Uniquely identifies the
             container image launched using a container image
             digest.

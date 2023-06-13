@@ -28,33 +28,40 @@ __protobuf__ = proto.module(
 
 
 class Database(proto.Message):
-    r"""Represents database access information, such as queries.
-    A database may be a sub-resource of an instance (as in the case
-    of CloudSQL instances or Cloud Spanner instances), or the
-    database instance itself. Some database resources may not have
-    the full resource name populated because these resource types
-    are not yet supported by Cloud Asset Inventory (e.g. CloudSQL
-    databases). In these cases only the display name will be
-    provided.
+    r"""Represents database access information, such as queries. A database
+    may be a sub-resource of an instance (as in the case of Cloud SQL
+    instances or Cloud Spanner instances), or the database instance
+    itself. Some database resources might not have the `full resource
+    name <https://google.aip.dev/122#full-resource-names>`__ populated
+    because these resource types, such as Cloud SQL databases, are not
+    yet supported by Cloud Asset Inventory. In these cases only the
+    display name is provided. Some database resources may not have the
+    `full resource
+    name <https://google.aip.dev/122#full-resource-names>`__ populated
+    because these resource types are not yet supported by Cloud Asset
+    Inventory (e.g. Cloud SQL databases). In these cases only the
+    display name will be provided.
 
     Attributes:
         name (str):
-            The full resource name of the database the
-            user connected to, if it is supported by CAI.
-            (https://google.aip.dev/122#full-resource-names)
+            The `full resource
+            name <https://google.aip.dev/122#full-resource-names>`__ of
+            the database that the user connected to, if it is supported
+            by Cloud Asset Inventory.
         display_name (str):
-            The human readable name of the database the
-            user connected to.
+            The human-readable name of the database that
+            the user connected to.
         user_name (str):
-            The username used to connect to the DB. This
-            may not necessarily be an IAM principal, and has
-            no required format.
+            The username used to connect to the database.
+            The username might not be an IAM principal and
+            does not have a set format.
         query (str):
-            The SQL statement associated with the
-            relevant access.
+            The SQL statement that is associated with the
+            database access.
         grantees (MutableSequence[str]):
-            The target usernames/roles/groups of a SQL
-            privilege grant (not an IAM policy change).
+            The target usernames, roles, or groups of an
+            SQL privilege grant, which is not an IAM policy
+            change.
     """
 
     name: str = proto.Field(

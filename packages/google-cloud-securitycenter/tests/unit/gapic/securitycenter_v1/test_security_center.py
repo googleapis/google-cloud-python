@@ -15405,6 +15405,7 @@ def test_create_finding_rest(request_type):
             "caller_ip": "caller_ip_value",
             "caller_ip_geo": {"region_code": "region_code_value"},
             "user_agent_family": "user_agent_family_value",
+            "user_agent": "user_agent_value",
             "service_name": "service_name_value",
             "method_name": "method_name_value",
             "principal_subject": "principal_subject_value",
@@ -15519,7 +15520,10 @@ def test_create_finding_rest(request_type):
             "info_type_count": 1621,
             "full_scan": True,
         },
-        "cloud_dlp_data_profile": {"data_profile": "data_profile_value"},
+        "cloud_dlp_data_profile": {
+            "data_profile": "data_profile_value",
+            "parent_type": 1,
+        },
         "kernel_rootkit": {
             "name": "name_value",
             "unexpected_code_modification": True,
@@ -15827,6 +15831,7 @@ def test_create_finding_rest_bad_request(
             "caller_ip": "caller_ip_value",
             "caller_ip_geo": {"region_code": "region_code_value"},
             "user_agent_family": "user_agent_family_value",
+            "user_agent": "user_agent_value",
             "service_name": "service_name_value",
             "method_name": "method_name_value",
             "principal_subject": "principal_subject_value",
@@ -15941,7 +15946,10 @@ def test_create_finding_rest_bad_request(
             "info_type_count": 1621,
             "full_scan": True,
         },
-        "cloud_dlp_data_profile": {"data_profile": "data_profile_value"},
+        "cloud_dlp_data_profile": {
+            "data_profile": "data_profile_value",
+            "parent_type": 1,
+        },
         "kernel_rootkit": {
             "name": "name_value",
             "unexpected_code_modification": True,
@@ -25011,6 +25019,7 @@ def test_update_finding_rest(request_type):
             "caller_ip": "caller_ip_value",
             "caller_ip_geo": {"region_code": "region_code_value"},
             "user_agent_family": "user_agent_family_value",
+            "user_agent": "user_agent_value",
             "service_name": "service_name_value",
             "method_name": "method_name_value",
             "principal_subject": "principal_subject_value",
@@ -25125,7 +25134,10 @@ def test_update_finding_rest(request_type):
             "info_type_count": 1621,
             "full_scan": True,
         },
-        "cloud_dlp_data_profile": {"data_profile": "data_profile_value"},
+        "cloud_dlp_data_profile": {
+            "data_profile": "data_profile_value",
+            "parent_type": 1,
+        },
         "kernel_rootkit": {
             "name": "name_value",
             "unexpected_code_modification": True,
@@ -25408,6 +25420,7 @@ def test_update_finding_rest_bad_request(
             "caller_ip": "caller_ip_value",
             "caller_ip_geo": {"region_code": "region_code_value"},
             "user_agent_family": "user_agent_family_value",
+            "user_agent": "user_agent_value",
             "service_name": "service_name_value",
             "method_name": "method_name_value",
             "principal_subject": "principal_subject_value",
@@ -25522,7 +25535,10 @@ def test_update_finding_rest_bad_request(
             "info_type_count": 1621,
             "full_scan": True,
         },
-        "cloud_dlp_data_profile": {"data_profile": "data_profile_value"},
+        "cloud_dlp_data_profile": {
+            "data_profile": "data_profile_value",
+            "parent_type": 1,
+        },
         "kernel_rootkit": {
             "name": "name_value",
             "unexpected_code_modification": True,
