@@ -65,6 +65,7 @@ from .cluster_service import (
     GetOperationRequest,
     GetServerConfigRequest,
     GkeBackupAgentConfig,
+    GPUDriverInstallationConfig,
     GPUSharingConfig,
     HorizontalPodAutoscaling,
     HttpLoadBalancing,
@@ -134,6 +135,7 @@ from .cluster_service import (
     RollbackNodePoolUpgradeRequest,
     SandboxConfig,
     SecurityBulletinEvent,
+    SecurityPostureConfig,
     ServerConfig,
     ServiceExternalIPsConfig,
     SetAddonsConfigRequest,
@@ -168,6 +170,7 @@ from .cluster_service import (
     WindowsNodeConfig,
     WorkloadIdentityConfig,
     WorkloadMetadataConfig,
+    WorkloadPolicyConfig,
 )
 
 __all__ = (
@@ -221,6 +224,7 @@ __all__ = (
     "GetOperationRequest",
     "GetServerConfigRequest",
     "GkeBackupAgentConfig",
+    "GPUDriverInstallationConfig",
     "GPUSharingConfig",
     "HorizontalPodAutoscaling",
     "HttpLoadBalancing",
@@ -287,6 +291,7 @@ __all__ = (
     "RollbackNodePoolUpgradeRequest",
     "SandboxConfig",
     "SecurityBulletinEvent",
+    "SecurityPostureConfig",
     "ServerConfig",
     "ServiceExternalIPsConfig",
     "SetAddonsConfigRequest",
@@ -319,6 +324,7 @@ __all__ = (
     "WindowsNodeConfig",
     "WorkloadIdentityConfig",
     "WorkloadMetadataConfig",
+    "WorkloadPolicyConfig",
     "DatapathProvider",
     "IPv6AccessType",
     "NodePoolUpdateStrategy",

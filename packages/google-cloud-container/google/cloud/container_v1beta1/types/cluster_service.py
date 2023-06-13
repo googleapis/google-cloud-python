@@ -83,6 +83,7 @@ __protobuf__ = proto.module(
         "K8sBetaAPIConfig",
         "WorkloadConfig",
         "ProtectConfig",
+        "SecurityPostureConfig",
         "NodePoolDefaults",
         "NodeConfigDefaults",
         "NodePoolAutoConfig",
@@ -141,6 +142,7 @@ __protobuf__ = proto.module(
         "CompleteIPRotationRequest",
         "AcceleratorConfig",
         "GPUSharingConfig",
+        "GPUDriverInstallationConfig",
         "ManagedPrometheusConfig",
         "WorkloadMetadataConfig",
         "SetNetworkPolicyRequest",
@@ -184,6 +186,7 @@ __protobuf__ = proto.module(
         "TpuConfig",
         "Master",
         "Autopilot",
+        "WorkloadPolicyConfig",
         "NotificationConfig",
         "ConfidentialNodes",
         "UpgradeEvent",
@@ -2827,6 +2830,9 @@ class Cluster(proto.Message):
             up-to-date value before proceeding.
         fleet (google.cloud.container_v1beta1.types.Fleet):
             Fleet information for the cluster.
+        security_posture_config (google.cloud.container_v1beta1.types.SecurityPostureConfig):
+            Enable/Disable Security Posture API features
+            for the cluster.
     """
 
     class Status(proto.Enum):
@@ -3206,6 +3212,11 @@ class Cluster(proto.Message):
         number=140,
         message="Fleet",
     )
+    security_posture_config: "SecurityPostureConfig" = proto.Field(
+        proto.MESSAGE,
+        number=145,
+        message="SecurityPostureConfig",
+    )
 
 
 class K8sBetaAPIConfig(proto.Message):
@@ -3323,6 +3334,76 @@ class ProtectConfig(proto.Message):
         number=2,
         optional=True,
         enum=WorkloadVulnerabilityMode,
+    )
+
+
+class SecurityPostureConfig(proto.Message):
+    r"""SecurityPostureConfig defines the flags needed to
+    enable/disable features for the Security Posture API.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        mode (google.cloud.container_v1beta1.types.SecurityPostureConfig.Mode):
+            Sets which mode to use for Security Posture
+            features.
+
+            This field is a member of `oneof`_ ``_mode``.
+        vulnerability_mode (google.cloud.container_v1beta1.types.SecurityPostureConfig.VulnerabilityMode):
+            Sets which mode to use for vulnerability
+            scanning.
+
+            This field is a member of `oneof`_ ``_vulnerability_mode``.
+    """
+
+    class Mode(proto.Enum):
+        r"""Mode defines enablement mode for GKE Security posture
+        features.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                Default value not specified.
+            DISABLED (1):
+                Disables Security Posture features on the
+                cluster.
+            BASIC (2):
+                Applies Security Posture features on the
+                cluster.
+        """
+        MODE_UNSPECIFIED = 0
+        DISABLED = 1
+        BASIC = 2
+
+    class VulnerabilityMode(proto.Enum):
+        r"""VulnerabilityMode defines enablement mode for vulnerability
+        scanning.
+
+        Values:
+            VULNERABILITY_MODE_UNSPECIFIED (0):
+                Default value not specified.
+            VULNERABILITY_DISABLED (1):
+                Disables vulnerability scanning on the
+                cluster.
+            VULNERABILITY_BASIC (2):
+                Applies basic vulnerability scanning on the
+                cluster.
+        """
+        VULNERABILITY_MODE_UNSPECIFIED = 0
+        VULNERABILITY_DISABLED = 1
+        VULNERABILITY_BASIC = 2
+
+    mode: Mode = proto.Field(
+        proto.ENUM,
+        number=1,
+        optional=True,
+        enum=Mode,
+    )
+    vulnerability_mode: VulnerabilityMode = proto.Field(
+        proto.ENUM,
+        number=2,
+        optional=True,
+        enum=VulnerabilityMode,
     )
 
 
@@ -3607,11 +3688,17 @@ class ClusterUpdate(proto.Message):
         enable_k8s_beta_apis (google.cloud.container_v1beta1.types.K8sBetaAPIConfig):
             Kubernetes open source beta apis enabled on
             the cluster. Only beta apis
+        desired_security_posture_config (google.cloud.container_v1beta1.types.SecurityPostureConfig):
+            Enable/Disable Security Posture API features
+            for the cluster.
         desired_enable_fqdn_network_policy (bool):
             Enable/Disable FQDN Network Policy for the
             cluster.
 
             This field is a member of `oneof`_ ``_desired_enable_fqdn_network_policy``.
+        desired_autopilot_workload_policy_config (google.cloud.container_v1beta1.types.WorkloadPolicyConfig):
+            The desired workload policy configuration for
+            the autopilot cluster.
         desired_k8s_beta_apis (google.cloud.container_v1beta1.types.K8sBetaAPIConfig):
             Beta APIs enabled for cluster.
     """
@@ -3866,10 +3953,20 @@ class ClusterUpdate(proto.Message):
         number=122,
         message="K8sBetaAPIConfig",
     )
+    desired_security_posture_config: "SecurityPostureConfig" = proto.Field(
+        proto.MESSAGE,
+        number=124,
+        message="SecurityPostureConfig",
+    )
     desired_enable_fqdn_network_policy: bool = proto.Field(
         proto.BOOL,
         number=126,
         optional=True,
+    )
+    desired_autopilot_workload_policy_config: "WorkloadPolicyConfig" = proto.Field(
+        proto.MESSAGE,
+        number=128,
+        message="WorkloadPolicyConfig",
     )
     desired_k8s_beta_apis: "K8sBetaAPIConfig" = proto.Field(
         proto.MESSAGE,
@@ -7273,6 +7370,11 @@ class AcceleratorConfig(proto.Message):
             The configuration for GPU sharing options.
 
             This field is a member of `oneof`_ ``_gpu_sharing_config``.
+        gpu_driver_installation_config (google.cloud.container_v1beta1.types.GPUDriverInstallationConfig):
+            The configuration for auto installation of
+            GPU driver.
+
+            This field is a member of `oneof`_ ``_gpu_driver_installation_config``.
     """
 
     accelerator_count: int = proto.Field(
@@ -7296,6 +7398,12 @@ class AcceleratorConfig(proto.Message):
         number=5,
         optional=True,
         message="GPUSharingConfig",
+    )
+    gpu_driver_installation_config: "GPUDriverInstallationConfig" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        optional=True,
+        message="GPUDriverInstallationConfig",
     )
 
 
@@ -7338,6 +7446,48 @@ class GPUSharingConfig(proto.Message):
         number=2,
         optional=True,
         enum=GPUSharingStrategy,
+    )
+
+
+class GPUDriverInstallationConfig(proto.Message):
+    r"""GPUDriverInstallationConfig specifies the version of GPU
+    driver to be auto installed.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gpu_driver_version (google.cloud.container_v1beta1.types.GPUDriverInstallationConfig.GPUDriverVersion):
+            Mode for how the GPU driver is installed.
+
+            This field is a member of `oneof`_ ``_gpu_driver_version``.
+    """
+
+    class GPUDriverVersion(proto.Enum):
+        r"""The GPU driver version to install.
+
+        Values:
+            GPU_DRIVER_VERSION_UNSPECIFIED (0):
+                Default value is to not install any GPU
+                driver.
+            INSTALLATION_DISABLED (1):
+                Disable GPU driver auto installation and
+                needs manual installation
+            DEFAULT (2):
+                "Default" GPU driver in COS and Ubuntu.
+            LATEST (3):
+                "Latest" GPU driver in COS.
+        """
+        GPU_DRIVER_VERSION_UNSPECIFIED = 0
+        INSTALLATION_DISABLED = 1
+        DEFAULT = 2
+        LATEST = 3
+
+    gpu_driver_version: GPUDriverVersion = proto.Field(
+        proto.ENUM,
+        number=1,
+        optional=True,
+        enum=GPUDriverVersion,
     )
 
 
@@ -8826,11 +8976,39 @@ class Autopilot(proto.Message):
     Attributes:
         enabled (bool):
             Enable Autopilot
+        workload_policy_config (google.cloud.container_v1beta1.types.WorkloadPolicyConfig):
+            Workload policy configuration for Autopilot.
     """
 
     enabled: bool = proto.Field(
         proto.BOOL,
         number=1,
+    )
+    workload_policy_config: "WorkloadPolicyConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="WorkloadPolicyConfig",
+    )
+
+
+class WorkloadPolicyConfig(proto.Message):
+    r"""WorkloadPolicyConfig is the configuration of workload policy
+    for autopilot clusters.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        allow_net_admin (bool):
+            If true, workloads can use NET_ADMIN capability.
+
+            This field is a member of `oneof`_ ``_allow_net_admin``.
+    """
+
+    allow_net_admin: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+        optional=True,
     )
 
 
