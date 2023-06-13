@@ -3966,6 +3966,10 @@ def test_create_environment_rest(request_type):
                             b"allowed_ca_certs_blob1",
                             b"allowed_ca_certs_blob2",
                         ],
+                        "webhook_type": 1,
+                        "http_method": 1,
+                        "request_body": "request_body_value",
+                        "parameter_mapping": {},
                     },
                     "service_directory": {
                         "service": "service_value",
@@ -4184,6 +4188,10 @@ def test_create_environment_rest_bad_request(
                             b"allowed_ca_certs_blob1",
                             b"allowed_ca_certs_blob2",
                         ],
+                        "webhook_type": 1,
+                        "http_method": 1,
+                        "request_body": "request_body_value",
+                        "parameter_mapping": {},
                     },
                     "service_directory": {
                         "service": "service_value",
@@ -4316,6 +4324,10 @@ def test_update_environment_rest(request_type):
                             b"allowed_ca_certs_blob1",
                             b"allowed_ca_certs_blob2",
                         ],
+                        "webhook_type": 1,
+                        "http_method": 1,
+                        "request_body": "request_body_value",
+                        "parameter_mapping": {},
                     },
                     "service_directory": {
                         "service": "service_value",
@@ -4535,6 +4547,10 @@ def test_update_environment_rest_bad_request(
                             b"allowed_ca_certs_blob1",
                             b"allowed_ca_certs_blob2",
                         ],
+                        "webhook_type": 1,
+                        "http_method": 1,
+                        "request_body": "request_body_value",
+                        "parameter_mapping": {},
                     },
                     "service_directory": {
                         "service": "service_value",

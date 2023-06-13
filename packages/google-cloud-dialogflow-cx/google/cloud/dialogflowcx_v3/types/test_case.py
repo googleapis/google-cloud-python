@@ -395,8 +395,8 @@ class TestRunDifference(proto.Message):
         type_ (google.cloud.dialogflowcx_v3.types.TestRunDifference.DiffType):
             The type of diff.
         description (str):
-            A description of the diff, showing the actual
-            output vs expected output.
+            A human readable description of the diff,
+            showing the actual output vs expected output.
     """
 
     class DiffType(proto.Enum):

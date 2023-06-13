@@ -117,7 +117,67 @@ class Webhook(proto.Message):
                         -signkey example.com.key \
                         -out example.com.crt \
                         -extfile <(printf "\nsubjectAltName='DNS:www.example.com'")
+            webhook_type (google.cloud.dialogflowcx_v3.types.Webhook.GenericWebService.WebhookType):
+                Optional. Type of the webhook.
+            http_method (google.cloud.dialogflowcx_v3.types.Webhook.GenericWebService.HttpMethod):
+                Optional. HTTP method for the flexible
+                webhook calls. Standard webhook always uses
+                POST.
+            request_body (str):
+                Optional. Defines a custom JSON object as
+                request body to send to flexible webhook.
+            parameter_mapping (MutableMapping[str, str]):
+                Optional. Maps the values extracted from
+                specific fields of the flexible webhook response
+                into session parameters.  - Key: session
+                parameter name
+                 - Value: field path in the webhook response
         """
+
+        class WebhookType(proto.Enum):
+            r"""Represents the type of webhook configuration.
+
+            Values:
+                WEBHOOK_TYPE_UNSPECIFIED (0):
+                    Default value. This value is unused.
+                STANDARD (1):
+                    Represents a standard webhook.
+                FLEXIBLE (2):
+                    Represents a flexible webhook.
+            """
+            WEBHOOK_TYPE_UNSPECIFIED = 0
+            STANDARD = 1
+            FLEXIBLE = 2
+
+        class HttpMethod(proto.Enum):
+            r"""HTTP method to use when calling webhooks.
+
+            Values:
+                HTTP_METHOD_UNSPECIFIED (0):
+                    HTTP method not specified.
+                POST (1):
+                    HTTP POST Method.
+                GET (2):
+                    HTTP GET Method.
+                HEAD (3):
+                    HTTP HEAD Method.
+                PUT (4):
+                    HTTP PUT Method.
+                DELETE (5):
+                    HTTP DELETE Method.
+                PATCH (6):
+                    HTTP PATCH Method.
+                OPTIONS (7):
+                    HTTP OPTIONS Method.
+            """
+            HTTP_METHOD_UNSPECIFIED = 0
+            POST = 1
+            GET = 2
+            HEAD = 3
+            PUT = 4
+            DELETE = 5
+            PATCH = 6
+            OPTIONS = 7
 
         uri: str = proto.Field(
             proto.STRING,
@@ -139,6 +199,25 @@ class Webhook(proto.Message):
         allowed_ca_certs: MutableSequence[bytes] = proto.RepeatedField(
             proto.BYTES,
             number=5,
+        )
+        webhook_type: "Webhook.GenericWebService.WebhookType" = proto.Field(
+            proto.ENUM,
+            number=6,
+            enum="Webhook.GenericWebService.WebhookType",
+        )
+        http_method: "Webhook.GenericWebService.HttpMethod" = proto.Field(
+            proto.ENUM,
+            number=7,
+            enum="Webhook.GenericWebService.HttpMethod",
+        )
+        request_body: str = proto.Field(
+            proto.STRING,
+            number=8,
+        )
+        parameter_mapping: MutableMapping[str, str] = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=9,
         )
 
     class ServiceDirectoryConfig(proto.Message):
