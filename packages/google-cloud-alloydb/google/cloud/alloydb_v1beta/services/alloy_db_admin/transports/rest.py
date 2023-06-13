@@ -47,6 +47,7 @@ except AttributeError:  # pragma: NO COVER
 
 
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.alloydb_v1beta.types import resources, service
 
@@ -123,6 +124,14 @@ class AlloyDBAdminRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_user(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_user(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_backup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -146,6 +155,10 @@ class AlloyDBAdminRestInterceptor:
             def post_delete_instance(self, response):
                 logging.log(f"Received response: {response}")
                 return response
+
+            def pre_delete_user(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
 
             def pre_failover_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -195,6 +208,22 @@ class AlloyDBAdminRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_user(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_user(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_inject_fault(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_inject_fault(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_backups(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -224,6 +253,14 @@ class AlloyDBAdminRestInterceptor:
                 return request, metadata
 
             def post_list_supported_database_flags(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_users(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_users(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -272,6 +309,14 @@ class AlloyDBAdminRestInterceptor:
                 return request, metadata
 
             def post_update_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_user(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_user(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -415,6 +460,25 @@ class AlloyDBAdminRestInterceptor:
         """
         return response
 
+    def pre_create_user(
+        self, request: service.CreateUserRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.CreateUserRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_user
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AlloyDBAdmin server.
+        """
+        return request, metadata
+
+    def post_create_user(self, response: resources.User) -> resources.User:
+        """Post-rpc interceptor for create_user
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AlloyDBAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_delete_backup(
         self, request: service.DeleteBackupRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[service.DeleteBackupRequest, Sequence[Tuple[str, str]]]:
@@ -479,6 +543,16 @@ class AlloyDBAdminRestInterceptor:
         it is returned to user code.
         """
         return response
+
+    def pre_delete_user(
+        self, request: service.DeleteUserRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.DeleteUserRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_user
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AlloyDBAdmin server.
+        """
+        return request, metadata
 
     def pre_failover_instance(
         self,
@@ -606,6 +680,46 @@ class AlloyDBAdminRestInterceptor:
         """
         return response
 
+    def pre_get_user(
+        self, request: service.GetUserRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.GetUserRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_user
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AlloyDBAdmin server.
+        """
+        return request, metadata
+
+    def post_get_user(self, response: resources.User) -> resources.User:
+        """Post-rpc interceptor for get_user
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AlloyDBAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_inject_fault(
+        self, request: service.InjectFaultRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.InjectFaultRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for inject_fault
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AlloyDBAdmin server.
+        """
+        return request, metadata
+
+    def post_inject_fault(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for inject_fault
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AlloyDBAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_backups(
         self, request: service.ListBackupsRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[service.ListBackupsRequest, Sequence[Tuple[str, str]]]:
@@ -685,6 +799,27 @@ class AlloyDBAdminRestInterceptor:
         self, response: service.ListSupportedDatabaseFlagsResponse
     ) -> service.ListSupportedDatabaseFlagsResponse:
         """Post-rpc interceptor for list_supported_database_flags
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AlloyDBAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_users(
+        self, request: service.ListUsersRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.ListUsersRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_users
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AlloyDBAdmin server.
+        """
+        return request, metadata
+
+    def post_list_users(
+        self, response: service.ListUsersResponse
+    ) -> service.ListUsersResponse:
+        """Post-rpc interceptor for list_users
 
         Override in a subclass to manipulate the response
         after it is returned by the AlloyDBAdmin server but before
@@ -819,6 +954,25 @@ class AlloyDBAdminRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_instance
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AlloyDBAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_user(
+        self, request: service.UpdateUserRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.UpdateUserRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_user
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AlloyDBAdmin server.
+        """
+        return request, metadata
+
+    def post_update_user(self, response: resources.User) -> resources.User:
+        """Post-rpc interceptor for update_user
 
         Override in a subclass to manipulate the response
         after it is returned by the AlloyDBAdmin server but before
@@ -1704,6 +1858,103 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_create_secondary_instance(resp)
             return resp
 
+    class _CreateUser(AlloyDBAdminRestStub):
+        def __hash__(self):
+            return hash("CreateUser")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "userId": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.CreateUserRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.User:
+            r"""Call the create user method over HTTP.
+
+            Args:
+                request (~.service.CreateUserRequest):
+                    The request object. Message for creating a User
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.User:
+                    Message describing User object.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/clusters/*}/users",
+                    "body": "user",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_user(request, metadata)
+            pb_request = service.CreateUserRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.User()
+            pb_resp = resources.User.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_user(resp)
+            return resp
+
     class _DeleteBackup(AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("DeleteBackup")
@@ -1964,6 +2215,80 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_instance(resp)
             return resp
+
+    class _DeleteUser(AlloyDBAdminRestStub):
+        def __hash__(self):
+            return hash("DeleteUser")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.DeleteUserRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete user method over HTTP.
+
+            Args:
+                request (~.service.DeleteUserRequest):
+                    The request object. Message for deleting a User
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1beta/{name=projects/*/locations/*/clusters/*/users/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_user(request, metadata)
+            pb_request = service.DeleteUserRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
 
     class _FailoverInstance(AlloyDBAdminRestStub):
         def __hash__(self):
@@ -2525,6 +2850,189 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_get_instance(resp)
             return resp
 
+    class _GetUser(AlloyDBAdminRestStub):
+        def __hash__(self):
+            return hash("GetUser")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.GetUserRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.User:
+            r"""Call the get user method over HTTP.
+
+            Args:
+                request (~.service.GetUserRequest):
+                    The request object. Message for getting a User
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.User:
+                    Message describing User object.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/clusters/*/users/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_user(request, metadata)
+            pb_request = service.GetUserRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.User()
+            pb_resp = resources.User.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_user(resp)
+            return resp
+
+    class _InjectFault(AlloyDBAdminRestStub):
+        def __hash__(self):
+            return hash("InjectFault")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.InjectFaultRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the inject fault method over HTTP.
+
+            Args:
+                request (~.service.InjectFaultRequest):
+                    The request object. Message for triggering fault
+                injection on an instance
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{name=projects/*/locations/*/clusters/*/instances/*}:injectFault",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_inject_fault(request, metadata)
+            pb_request = service.InjectFaultRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_inject_fault(resp)
+            return resp
+
     class _ListBackups(AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("ListBackups")
@@ -2882,6 +3390,92 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_supported_database_flags(resp)
+            return resp
+
+    class _ListUsers(AlloyDBAdminRestStub):
+        def __hash__(self):
+            return hash("ListUsers")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.ListUsersRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> service.ListUsersResponse:
+            r"""Call the list users method over HTTP.
+
+            Args:
+                request (~.service.ListUsersRequest):
+                    The request object. Message for requesting list of Users
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.service.ListUsersResponse:
+                    Message for response to listing Users
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/clusters/*}/users",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_users(request, metadata)
+            pb_request = service.ListUsersRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = service.ListUsersResponse()
+            pb_resp = service.ListUsersResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_users(resp)
             return resp
 
     class _PromoteCluster(AlloyDBAdminRestStub):
@@ -3464,6 +4058,101 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_update_instance(resp)
             return resp
 
+    class _UpdateUser(AlloyDBAdminRestStub):
+        def __hash__(self):
+            return hash("UpdateUser")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.UpdateUserRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.User:
+            r"""Call the update user method over HTTP.
+
+            Args:
+                request (~.service.UpdateUserRequest):
+                    The request object. Message for updating a User
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.User:
+                    Message describing User object.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1beta/{user.name=projects/*/locations/*/clusters/*/users/*}",
+                    "body": "user",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_user(request, metadata)
+            pb_request = service.UpdateUserRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.User()
+            pb_resp = resources.User.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_user(resp)
+            return resp
+
     @property
     def batch_create_instances(
         self,
@@ -3513,6 +4202,12 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
         return self._CreateSecondaryInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_user(self) -> Callable[[service.CreateUserRequest], resources.User]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateUser(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_backup(
         self,
     ) -> Callable[[service.DeleteBackupRequest], operations_pb2.Operation]:
@@ -3535,6 +4230,12 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInstance(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_user(self) -> Callable[[service.DeleteUserRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteUser(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def failover_instance(
@@ -3584,6 +4285,20 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
         return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_user(self) -> Callable[[service.GetUserRequest], resources.User]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetUser(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def inject_fault(
+        self,
+    ) -> Callable[[service.InjectFaultRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._InjectFault(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_backups(
         self,
     ) -> Callable[[service.ListBackupsRequest], service.ListBackupsResponse]:
@@ -3617,6 +4332,14 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSupportedDatabaseFlags(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_users(
+        self,
+    ) -> Callable[[service.ListUsersRequest], service.ListUsersResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListUsers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def promote_cluster(
@@ -3665,6 +4388,12 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInstance(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_user(self) -> Callable[[service.UpdateUserRequest], resources.User]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateUser(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_location(self):

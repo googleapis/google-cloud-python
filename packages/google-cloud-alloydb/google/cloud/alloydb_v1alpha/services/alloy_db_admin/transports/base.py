@@ -27,6 +27,7 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.alloydb_v1alpha import gapic_version as package_version
 from google.cloud.alloydb_v1alpha.types import resources, service
@@ -242,6 +243,11 @@ class AlloyDBAdminTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.inject_fault: gapic_v1.method.wrap_method(
+                self.inject_fault,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.restart_instance: gapic_v1.method.wrap_method(
                 self.restart_instance,
                 default_timeout=None,
@@ -330,6 +336,49 @@ class AlloyDBAdminTransport(abc.ABC):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_users: gapic_v1.method.wrap_method(
+                self.list_users,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_user: gapic_v1.method.wrap_method(
+                self.get_user,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_user: gapic_v1.method.wrap_method(
+                self.create_user,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_user: gapic_v1.method.wrap_method(
+                self.update_user,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_user: gapic_v1.method.wrap_method(
+                self.delete_user,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }
@@ -493,6 +542,15 @@ class AlloyDBAdminTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def inject_fault(
+        self,
+    ) -> Callable[
+        [service.InjectFaultRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def restart_instance(
         self,
     ) -> Callable[
@@ -575,6 +633,47 @@ class AlloyDBAdminTransport(abc.ABC):
     ) -> Callable[
         [service.GetConnectionInfoRequest],
         Union[resources.ConnectionInfo, Awaitable[resources.ConnectionInfo]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_users(
+        self,
+    ) -> Callable[
+        [service.ListUsersRequest],
+        Union[service.ListUsersResponse, Awaitable[service.ListUsersResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_user(
+        self,
+    ) -> Callable[
+        [service.GetUserRequest], Union[resources.User, Awaitable[resources.User]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_user(
+        self,
+    ) -> Callable[
+        [service.CreateUserRequest], Union[resources.User, Awaitable[resources.User]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_user(
+        self,
+    ) -> Callable[
+        [service.UpdateUserRequest], Union[resources.User, Awaitable[resources.User]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_user(
+        self,
+    ) -> Callable[
+        [service.DeleteUserRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
     ]:
         raise NotImplementedError()
 
