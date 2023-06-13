@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.20.0](https://github.com/googleapis/google-auth-library-python/compare/v2.19.1...v2.20.0) (2023-06-12)
+
+
+### Features
+
+* Add public API load_credentials_from_dict ([#1326](https://github.com/googleapis/google-auth-library-python/issues/1326)) ([5467ad7](https://github.com/googleapis/google-auth-library-python/commit/5467ad75334ee0b5e23522679171cda5fd4edb8a))
+
+
+### Bug Fixes
+
+* Expiry in compute_engine.IDTokenCredentials ([#1327](https://github.com/googleapis/google-auth-library-python/issues/1327)) ([56a6159](https://github.com/googleapis/google-auth-library-python/commit/56a6159444467717f5a5e3c04aa678bd0a5881da)), closes [#1323](https://github.com/googleapis/google-auth-library-python/issues/1323)
+* Expiry in impersonated_credentials.IDTokenCredentials ([#1330](https://github.com/googleapis/google-auth-library-python/issues/1330)) ([d1b887c](https://github.com/googleapis/google-auth-library-python/commit/d1b887c4bebbe4ad0df6d8f7eb6a6d50355a135d))
+* Invalid `dev` version identifiers in `setup.py` ([#1322](https://github.com/googleapis/google-auth-library-python/issues/1322)) ([a9b8f12](https://github.com/googleapis/google-auth-library-python/commit/a9b8f12db0c3ff4f84939646ba0777d21e68f572)), closes [#1321](https://github.com/googleapis/google-auth-library-python/issues/1321)
+
 ## [2.19.1](https://github.com/googleapis/google-auth-library-python/compare/v2.19.0...v2.19.1) (2023-06-01)
 
 
