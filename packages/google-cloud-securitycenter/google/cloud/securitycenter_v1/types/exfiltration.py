@@ -29,10 +29,10 @@ __protobuf__ = proto.module(
 
 
 class Exfiltration(proto.Message):
-    r"""Exfiltration represents a data exfiltration attempt of one or
-    more sources to one or more targets. Sources represent the
-    source of data that is exfiltrated, and Targets represents the
-    destination the data was copied to.
+    r"""Exfiltration represents a data exfiltration attempt from one or more
+    sources to one or more targets. The ``sources`` attribute lists the
+    sources of the exfiltrated data. The ``targets`` attribute lists the
+    destinations the data was copied to.
 
     Attributes:
         sources (MutableSequence[google.cloud.securitycenter_v1.types.ExfilResource]):
@@ -59,20 +59,20 @@ class Exfiltration(proto.Message):
 
 
 class ExfilResource(proto.Message):
-    r"""Resource that has been exfiltrated or exfiltrated_to.
+    r"""Resource where data was exfiltrated from or exfiltrated to.
 
     Attributes:
         name (str):
-            Resource's URI
-            (https://google.aip.dev/122#full-resource-names)
+            The resource's `full resource
+            name <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__.
         components (MutableSequence[str]):
-            Subcomponents of the asset that is
-            exfiltrated - these could be URIs used during
-            exfiltration, table names, databases, filenames,
-            etc. For example, multiple tables may be
-            exfiltrated from the same CloudSQL instance, or
-            multiple files from the same Cloud Storage
-            bucket.
+            Subcomponents of the asset that was
+            exfiltrated, like URIs used during exfiltration,
+            table names, databases, and filenames. For
+            example, multiple tables might have been
+            exfiltrated from the same Cloud SQL instance, or
+            multiple files might have been exfiltrated from
+            the same Cloud Storage bucket.
     """
 
     name: str = proto.Field(

@@ -40,7 +40,7 @@ class OrganizationSettings(proto.Message):
         enable_asset_discovery (bool):
             A flag that indicates if Asset Discovery should be enabled.
             If the flag is set to ``true``, then discovery of assets
-            will occur. If it is set to \`false, all historical assets
+            will occur. If it is set to ``false``, all historical assets
             will remain, but discovery of future assets will not occur.
         asset_discovery_config (google.cloud.securitycenter_v1.types.OrganizationSettings.AssetDiscoveryConfig):
             The configuration used for Asset Discovery

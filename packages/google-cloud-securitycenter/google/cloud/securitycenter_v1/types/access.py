@@ -53,6 +53,9 @@ class Access(proto.Message):
             Type of user agent associated with the
             finding. For example, an operating system shell
             or an embedded or standalone application.
+        user_agent (str):
+            The caller's user agent string associated
+            with the finding.
         service_name (str):
             This is the API service that the service
             account made a call to, e.g.
@@ -111,6 +114,10 @@ class Access(proto.Message):
     user_agent_family: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    user_agent: str = proto.Field(
+        proto.STRING,
+        number=12,
     )
     service_name: str = proto.Field(
         proto.STRING,

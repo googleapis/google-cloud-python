@@ -921,10 +921,11 @@ class SecurityCenterAsyncClient:
             mute_config_id (:class:`str`):
                 Required. Unique identifier provided
                 by the client within the parent scope.
-                It must consist of lower case letters,
-                numbers, and hyphen, with the first
-                character a letter, the last a letter or
-                a number, and a 63 character maximum.
+                It must consist of only lowercase
+                letters, numbers, and hyphens, must
+                start with a letter, must end with
+                either a letter or a number, and must be
+                63 characters or less.
 
                 This corresponds to the ``mute_config_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5411,10 +5412,11 @@ class SecurityCenterAsyncClient:
             big_query_export_id (:class:`str`):
                 Required. Unique identifier provided
                 by the client within the parent scope.
-                It must consist of lower case letters,
-                numbers, and hyphen, with the first
-                character a letter, the last a letter or
-                a number, and a 63 character maximum.
+                It must consist of only lowercase
+                letters, numbers, and hyphens, must
+                start with a letter, must end with
+                either a letter or a number, and must be
+                63 characters or less.
 
                 This corresponds to the ``big_query_export_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

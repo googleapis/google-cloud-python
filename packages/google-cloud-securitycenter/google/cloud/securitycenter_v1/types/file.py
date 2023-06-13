@@ -49,9 +49,8 @@ class File(proto.Message):
             True when the hash covers only a prefix of
             the file.
         contents (str):
-            Prefix of the file contents as a JSON encoded
-            string. (Currently only populated for Malicious
-            Script Executed findings.)
+            Prefix of the file contents as a JSON-encoded
+            string.
     """
 
     path: str = proto.Field(
