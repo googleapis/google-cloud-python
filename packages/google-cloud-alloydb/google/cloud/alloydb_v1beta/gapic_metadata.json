@@ -40,6 +40,11 @@
                 "create_secondary_instance"
               ]
             },
+            "CreateUser": {
+              "methods": [
+                "create_user"
+              ]
+            },
             "DeleteBackup": {
               "methods": [
                 "delete_backup"
@@ -53,6 +58,11 @@
             "DeleteInstance": {
               "methods": [
                 "delete_instance"
+              ]
+            },
+            "DeleteUser": {
+              "methods": [
+                "delete_user"
               ]
             },
             "FailoverInstance": {
@@ -85,6 +95,16 @@
                 "get_instance"
               ]
             },
+            "GetUser": {
+              "methods": [
+                "get_user"
+              ]
+            },
+            "InjectFault": {
+              "methods": [
+                "inject_fault"
+              ]
+            },
             "ListBackups": {
               "methods": [
                 "list_backups"
@@ -103,6 +123,11 @@
             "ListSupportedDatabaseFlags": {
               "methods": [
                 "list_supported_database_flags"
+              ]
+            },
+            "ListUsers": {
+              "methods": [
+                "list_users"
               ]
             },
             "PromoteCluster": {
@@ -133,6 +158,11 @@
             "UpdateInstance": {
               "methods": [
                 "update_instance"
+              ]
+            },
+            "UpdateUser": {
+              "methods": [
+                "update_user"
               ]
             }
           }
@@ -170,6 +200,11 @@
                 "create_secondary_instance"
               ]
             },
+            "CreateUser": {
+              "methods": [
+                "create_user"
+              ]
+            },
             "DeleteBackup": {
               "methods": [
                 "delete_backup"
@@ -183,6 +218,11 @@
             "DeleteInstance": {
               "methods": [
                 "delete_instance"
+              ]
+            },
+            "DeleteUser": {
+              "methods": [
+                "delete_user"
               ]
             },
             "FailoverInstance": {
@@ -215,6 +255,16 @@
                 "get_instance"
               ]
             },
+            "GetUser": {
+              "methods": [
+                "get_user"
+              ]
+            },
+            "InjectFault": {
+              "methods": [
+                "inject_fault"
+              ]
+            },
             "ListBackups": {
               "methods": [
                 "list_backups"
@@ -233,6 +283,11 @@
             "ListSupportedDatabaseFlags": {
               "methods": [
                 "list_supported_database_flags"
+              ]
+            },
+            "ListUsers": {
+              "methods": [
+                "list_users"
               ]
             },
             "PromoteCluster": {
@@ -263,6 +318,11 @@
             "UpdateInstance": {
               "methods": [
                 "update_instance"
+              ]
+            },
+            "UpdateUser": {
+              "methods": [
+                "update_user"
               ]
             }
           }
@@ -300,6 +360,11 @@
                 "create_secondary_instance"
               ]
             },
+            "CreateUser": {
+              "methods": [
+                "create_user"
+              ]
+            },
             "DeleteBackup": {
               "methods": [
                 "delete_backup"
@@ -313,6 +378,11 @@
             "DeleteInstance": {
               "methods": [
                 "delete_instance"
+              ]
+            },
+            "DeleteUser": {
+              "methods": [
+                "delete_user"
               ]
             },
             "FailoverInstance": {
@@ -345,6 +415,16 @@
                 "get_instance"
               ]
             },
+            "GetUser": {
+              "methods": [
+                "get_user"
+              ]
+            },
+            "InjectFault": {
+              "methods": [
+                "inject_fault"
+              ]
+            },
             "ListBackups": {
               "methods": [
                 "list_backups"
@@ -363,6 +443,11 @@
             "ListSupportedDatabaseFlags": {
               "methods": [
                 "list_supported_database_flags"
+              ]
+            },
+            "ListUsers": {
+              "methods": [
+                "list_users"
               ]
             },
             "PromoteCluster": {
@@ -393,6 +478,11 @@
             "UpdateInstance": {
               "methods": [
                 "update_instance"
+              ]
+            },
+            "UpdateUser": {
+              "methods": [
+                "update_user"
               ]
             }
           }

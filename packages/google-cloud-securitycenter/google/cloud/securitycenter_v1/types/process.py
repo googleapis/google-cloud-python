@@ -35,9 +35,10 @@ class Process(proto.Message):
 
     Attributes:
         name (str):
-            The process name visible in utilities like ``top`` and
-            ``ps``; it can be accessed via ``/proc/[pid]/comm`` and
-            changed with ``prctl(PR_SET_NAME)``.
+            The process name, as displayed in utilities like ``top`` and
+            ``ps``. This name can be accessed through
+            ``/proc/[pid]/comm`` and changed with
+            ``prctl(PR_SET_NAME)``.
         binary (google.cloud.securitycenter_v1.types.File):
             File information for the process executable.
         libraries (MutableSequence[google.cloud.securitycenter_v1.types.File]):
@@ -45,7 +46,7 @@ class Process(proto.Message):
             process.
         script (google.cloud.securitycenter_v1.types.File):
             When the process represents the invocation of a script,
-            ``binary`` provides information about the interpreter while
+            ``binary`` provides information about the interpreter, while
             ``script`` provides information about the script file
             provided to the interpreter.
         args (MutableSequence[str]):
@@ -57,9 +58,9 @@ class Process(proto.Message):
         env_variables_truncated (bool):
             True if ``env_variables`` is incomplete.
         pid (int):
-            The process id.
+            The process ID.
         parent_pid (int):
-            The parent process id.
+            The parent process ID.
     """
 
     name: str = proto.Field(
@@ -109,8 +110,8 @@ class Process(proto.Message):
 
 
 class EnvironmentVariable(proto.Message):
-    r"""EnvironmentVariable is a name-value pair to store environment
-    variables for Process.
+    r"""A name-value pair representing an environment variable used
+    in an operating system process.
 
     Attributes:
         name (str):

@@ -36,11 +36,35 @@ class CloudDlpDataProfile(proto.Message):
         data_profile (str):
             Name of the data profile, for example,
             ``projects/123/locations/europe/tableProfiles/8383929``.
+        parent_type (google.cloud.securitycenter_v1.types.CloudDlpDataProfile.ParentType):
+            The resource hierarchy level at which the
+            data profile was generated.
     """
+
+    class ParentType(proto.Enum):
+        r"""Parents for configurations that produce data profile
+        findings.
+
+        Values:
+            PARENT_TYPE_UNSPECIFIED (0):
+                Unspecified parent type.
+            ORGANIZATION (1):
+                Organization-level configurations.
+            PROJECT (2):
+                Project-level configurations.
+        """
+        PARENT_TYPE_UNSPECIFIED = 0
+        ORGANIZATION = 1
+        PROJECT = 2
 
     data_profile: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    parent_type: ParentType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=ParentType,
     )
 
 

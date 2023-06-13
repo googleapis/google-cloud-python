@@ -50,6 +50,7 @@ __protobuf__ = proto.module(
         "UpdateInstanceRequest",
         "DeleteInstanceRequest",
         "FailoverInstanceRequest",
+        "InjectFaultRequest",
         "RestartInstanceRequest",
         "ListBackupsRequest",
         "ListBackupsResponse",
@@ -63,6 +64,12 @@ __protobuf__ = proto.module(
         "GenerateClientCertificateResponse",
         "GetConnectionInfoRequest",
         "OperationMetadata",
+        "ListUsersRequest",
+        "ListUsersResponse",
+        "GetUserRequest",
+        "CreateUserRequest",
+        "UpdateUserRequest",
+        "DeleteUserRequest",
     },
 )
 
@@ -154,11 +161,19 @@ class GetClusterRequest(proto.Message):
             Required. The name of the resource. For the
             required format, see the comment on the
             Cluster.name field.
+        view (google.cloud.alloydb_v1beta.types.ClusterView):
+            Optional. The view of the cluster to return.
+            Returns all default fields if not set.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    view: resources.ClusterView = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=resources.ClusterView,
     )
 
 
@@ -167,9 +182,9 @@ class CreateSecondaryClusterRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the parent resource
-            (the primary cluster). For the required format,
-            see the comment on the Cluster.name field.
+            Required. The location of the new cluster.
+            For the required format, see the comment on the
+            Cluster.name field.
         cluster_id (str):
             Required. ID of the requesting object (the
             secondary cluster).
@@ -229,7 +244,7 @@ class CreateClusterRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the parent resource.
+            Required. The location of the new cluster.
             For the required format, see the comment on the
             Cluster.name field.
         cluster_id (str):
@@ -860,8 +875,8 @@ class BatchCreateInstancesResponse(proto.Message):
 
 
 class BatchCreateInstancesMetadata(proto.Message):
-    r"""Message for metadata that is specific to BatchCreateInstances
-    API.
+    r"""Message for metadata that is specific to BatchCreateInstances API.
+    NEXT_ID: 3
 
     Attributes:
         instance_targets (MutableSequence[str]):
@@ -906,10 +921,12 @@ class BatchCreateInstanceStatus(proto.Message):
     1. Instance1 = ROLLED_BACK
     2. Instance2 = ROLLED_BACK
     3. Instance3 = FAILED
-    4. Instance4 = FAILED However, while the operation is running, the
-       instance might be in other states including PENDING_CREATE,
-       ACTIVE, DELETING and CREATING. The states / do not get further
-       updated once the operation is done.
+    4. Instance4 = FAILED
+
+    However, while the operation is running, the instance might be in
+    other states including PENDING_CREATE, ACTIVE, DELETING and
+    CREATING. The states / do not get further updated once the operation
+    is done.
 
     Attributes:
         state (google.cloud.alloydb_v1beta.types.BatchCreateInstanceStatus.State):
@@ -1157,6 +1174,74 @@ class FailoverInstanceRequest(proto.Message):
     validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+
+
+class InjectFaultRequest(proto.Message):
+    r"""Message for triggering fault injection on an instance
+
+    Attributes:
+        fault_type (google.cloud.alloydb_v1beta.types.InjectFaultRequest.FaultType):
+            Required. The type of fault to be injected in
+            an instance.
+        name (str):
+            Required. The name of the resource. For the
+            required format, see the comment on the
+            Instance.name field.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes after the first request.
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        validate_only (bool):
+            Optional. If set, performs request validation
+            (e.g. permission checks and any other type of
+            validation), but do not actually execute the
+            fault injection.
+    """
+
+    class FaultType(proto.Enum):
+        r"""FaultType contains all valid types of faults that can be
+        injected to an instance.
+
+        Values:
+            FAULT_TYPE_UNSPECIFIED (0):
+                The fault type is unknown.
+            STOP_VM (1):
+                Stop the VM
+        """
+        FAULT_TYPE_UNSPECIFIED = 0
+        STOP_VM = 1
+
+    fault_type: FaultType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=FaultType,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
     )
 
 
@@ -1573,6 +1658,8 @@ class GenerateClientCertificateRequest(proto.Message):
             honor the hint. If the hint is left unspecified
             or is not honored, then the endpoint will pick
             an appropriate default duration.
+        public_key (str):
+            Optional. The public key from the client.
     """
 
     parent: str = proto.Field(
@@ -1592,6 +1679,10 @@ class GenerateClientCertificateRequest(proto.Message):
         number=4,
         message=duration_pb2.Duration,
     )
+    public_key: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class GenerateClientCertificateResponse(proto.Message):
@@ -1606,6 +1697,9 @@ class GenerateClientCertificateResponse(proto.Message):
             be used to verify the X.509 certificate.
             Expected to be in issuer-to-root order according
             to RFC 5246.
+        ca_cert (str):
+            Optional. The pem-encoded cluster ca X.509
+            certificate.
     """
 
     pem_certificate: str = proto.Field(
@@ -1615,6 +1709,10 @@ class GenerateClientCertificateResponse(proto.Message):
     pem_certificate_chain: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
+    )
+    ca_cert: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -1728,6 +1826,260 @@ class OperationMetadata(proto.Message):
     api_version: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+
+
+class ListUsersRequest(proto.Message):
+    r"""Message for requesting list of Users
+
+    Attributes:
+        parent (str):
+            Required. Parent value for ListUsersRequest
+        page_size (int):
+            Optional. Requested page size. Server may
+            return fewer items than requested. If
+            unspecified, server will pick an appropriate
+            default.
+        page_token (str):
+            Optional. A token identifying a page of
+            results the server should return.
+        filter (str):
+            Optional. Filtering results
+        order_by (str):
+            Optional. Hint for how to order the results
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListUsersResponse(proto.Message):
+    r"""Message for response to listing Users
+
+    Attributes:
+        users (MutableSequence[google.cloud.alloydb_v1beta.types.User]):
+            The list of User
+        next_page_token (str):
+            A token identifying a page of results the
+            server should return.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    users: MutableSequence[resources.User] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.User,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetUserRequest(proto.Message):
+    r"""Message for getting a User
+
+    Attributes:
+        name (str):
+            Required. The name of the resource. For the
+            required format, see the comment on the
+            User.name field.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateUserRequest(proto.Message):
+    r"""Message for creating a User
+
+    Attributes:
+        parent (str):
+            Required. Value for parent.
+        user_id (str):
+            Required. ID of the requesting object.
+        user (google.cloud.alloydb_v1beta.types.User):
+            Required. The resource being created
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes since the first request.
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        validate_only (bool):
+            Optional. If set, the backend validates the
+            request, but doesn't actually execute it.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    user_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    user: resources.User = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=resources.User,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+
+
+class UpdateUserRequest(proto.Message):
+    r"""Message for updating a User
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the User resource by the update. The fields
+            specified in the update_mask are relative to the resource,
+            not the full request. A field will be overwritten if it is
+            in the mask. If the user does not provide a mask then all
+            fields will be overwritten.
+        user (google.cloud.alloydb_v1beta.types.User):
+            Required. The resource being updated
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes since the first request.
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        validate_only (bool):
+            Optional. If set, the backend validates the
+            request, but doesn't actually execute it.
+        allow_missing (bool):
+            Optional. Allow missing fields in the update
+            mask.
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    user: resources.User = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.User,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    allow_missing: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+
+
+class DeleteUserRequest(proto.Message):
+    r"""Message for deleting a User
+
+    Attributes:
+        name (str):
+            Required. The name of the resource. For the
+            required format, see the comment on the
+            User.name field.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes after the first request.
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        validate_only (bool):
+            Optional. If set, the backend validates the
+            request, but doesn't actually execute it.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 

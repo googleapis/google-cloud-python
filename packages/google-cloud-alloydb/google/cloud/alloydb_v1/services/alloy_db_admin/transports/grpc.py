@@ -24,6 +24,7 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 
 from google.cloud.alloydb_v1.types import resources, service
@@ -377,6 +378,35 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["delete_cluster"]
 
     @property
+    def promote_cluster(
+        self,
+    ) -> Callable[[service.PromoteClusterRequest], operations_pb2.Operation]:
+        r"""Return a callable for the promote cluster method over gRPC.
+
+        Promotes a SECONDARY cluster. This turns down
+        replication from the PRIMARY cluster and promotes a
+        secondary cluster into its own standalone cluster.
+        Imperative only.
+
+        Returns:
+            Callable[[~.PromoteClusterRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "promote_cluster" not in self._stubs:
+            self._stubs["promote_cluster"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/PromoteCluster",
+                request_serializer=service.PromoteClusterRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["promote_cluster"]
+
+    @property
     def restore_cluster(
         self,
     ) -> Callable[[service.RestoreClusterRequest], operations_pb2.Operation]:
@@ -404,6 +434,33 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["restore_cluster"]
+
+    @property
+    def create_secondary_cluster(
+        self,
+    ) -> Callable[[service.CreateSecondaryClusterRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create secondary cluster method over gRPC.
+
+        Creates a cluster of type SECONDARY in the given
+        location using the primary cluster as the source.
+
+        Returns:
+            Callable[[~.CreateSecondaryClusterRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_secondary_cluster" not in self._stubs:
+            self._stubs["create_secondary_cluster"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/CreateSecondaryCluster",
+                request_serializer=service.CreateSecondaryClusterRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_secondary_cluster"]
 
     @property
     def list_instances(
@@ -483,6 +540,33 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_instance"]
+
+    @property
+    def create_secondary_instance(
+        self,
+    ) -> Callable[[service.CreateSecondaryInstanceRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create secondary instance method over gRPC.
+
+        Creates a new SECONDARY Instance in a given project
+        and location.
+
+        Returns:
+            Callable[[~.CreateSecondaryInstanceRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_secondary_instance" not in self._stubs:
+            self._stubs["create_secondary_instance"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/CreateSecondaryInstance",
+                request_serializer=service.CreateSecondaryInstanceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_secondary_instance"]
 
     @property
     def batch_create_instances(
@@ -601,6 +685,33 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["failover_instance"]
+
+    @property
+    def inject_fault(
+        self,
+    ) -> Callable[[service.InjectFaultRequest], operations_pb2.Operation]:
+        r"""Return a callable for the inject fault method over gRPC.
+
+        Injects fault in an instance.
+        Imperative only.
+
+        Returns:
+            Callable[[~.InjectFaultRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "inject_fault" not in self._stubs:
+            self._stubs["inject_fault"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/InjectFault",
+                request_serializer=service.InjectFaultRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["inject_fault"]
 
     @property
     def restart_instance(
@@ -788,6 +899,129 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
                 response_deserializer=service.ListSupportedDatabaseFlagsResponse.deserialize,
             )
         return self._stubs["list_supported_database_flags"]
+
+    @property
+    def list_users(
+        self,
+    ) -> Callable[[service.ListUsersRequest], service.ListUsersResponse]:
+        r"""Return a callable for the list users method over gRPC.
+
+        Lists Users in a given project and location.
+
+        Returns:
+            Callable[[~.ListUsersRequest],
+                    ~.ListUsersResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_users" not in self._stubs:
+            self._stubs["list_users"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/ListUsers",
+                request_serializer=service.ListUsersRequest.serialize,
+                response_deserializer=service.ListUsersResponse.deserialize,
+            )
+        return self._stubs["list_users"]
+
+    @property
+    def get_user(self) -> Callable[[service.GetUserRequest], resources.User]:
+        r"""Return a callable for the get user method over gRPC.
+
+        Gets details of a single User.
+
+        Returns:
+            Callable[[~.GetUserRequest],
+                    ~.User]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_user" not in self._stubs:
+            self._stubs["get_user"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/GetUser",
+                request_serializer=service.GetUserRequest.serialize,
+                response_deserializer=resources.User.deserialize,
+            )
+        return self._stubs["get_user"]
+
+    @property
+    def create_user(self) -> Callable[[service.CreateUserRequest], resources.User]:
+        r"""Return a callable for the create user method over gRPC.
+
+        Creates a new User in a given project, location, and
+        cluster.
+
+        Returns:
+            Callable[[~.CreateUserRequest],
+                    ~.User]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_user" not in self._stubs:
+            self._stubs["create_user"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/CreateUser",
+                request_serializer=service.CreateUserRequest.serialize,
+                response_deserializer=resources.User.deserialize,
+            )
+        return self._stubs["create_user"]
+
+    @property
+    def update_user(self) -> Callable[[service.UpdateUserRequest], resources.User]:
+        r"""Return a callable for the update user method over gRPC.
+
+        Updates the parameters of a single User.
+
+        Returns:
+            Callable[[~.UpdateUserRequest],
+                    ~.User]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_user" not in self._stubs:
+            self._stubs["update_user"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/UpdateUser",
+                request_serializer=service.UpdateUserRequest.serialize,
+                response_deserializer=resources.User.deserialize,
+            )
+        return self._stubs["update_user"]
+
+    @property
+    def delete_user(self) -> Callable[[service.DeleteUserRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete user method over gRPC.
+
+        Deletes a single User.
+
+        Returns:
+            Callable[[~.DeleteUserRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_user" not in self._stubs:
+            self._stubs["delete_user"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/DeleteUser",
+                request_serializer=service.DeleteUserRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_user"]
 
     def close(self):
         self.grpc_channel.close()

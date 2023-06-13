@@ -90,6 +90,8 @@ class AlloyDBAdminAsyncClient:
     parse_supported_database_flag_path = staticmethod(
         AlloyDBAdminClient.parse_supported_database_flag_path
     )
+    user_path = staticmethod(AlloyDBAdminClient.user_path)
+    parse_user_path = staticmethod(AlloyDBAdminClient.parse_user_path)
     common_billing_account_path = staticmethod(
         AlloyDBAdminClient.common_billing_account_path
     )
@@ -538,8 +540,8 @@ class AlloyDBAdminAsyncClient:
             request (Optional[Union[google.cloud.alloydb_v1beta.types.CreateClusterRequest, dict]]):
                 The request object. Message for creating a Cluster
             parent (:class:`str`):
-                Required. The name of the parent
-                resource. For the required format, see
+                Required. The location of the new
+                cluster. For the required format, see
                 the comment on the Cluster.name field.
 
                 This corresponds to the ``parent`` field
@@ -1171,10 +1173,9 @@ class AlloyDBAdminAsyncClient:
             request (Optional[Union[google.cloud.alloydb_v1beta.types.CreateSecondaryClusterRequest, dict]]):
                 The request object.
             parent (:class:`str`):
-                Required. The name of the parent
-                resource (the primary cluster). For the
-                required format, see the comment on the
-                Cluster.name field.
+                Required. The location of the new
+                cluster. For the required format, see
+                the comment on the Cluster.name field.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2247,6 +2248,135 @@ class AlloyDBAdminAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.failover_instance,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            resources.Instance,
+            metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def inject_fault(
+        self,
+        request: Optional[Union[service.InjectFaultRequest, dict]] = None,
+        *,
+        fault_type: Optional[service.InjectFaultRequest.FaultType] = None,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Injects fault in an instance.
+        Imperative only.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import alloydb_v1beta
+
+            async def sample_inject_fault():
+                # Create a client
+                client = alloydb_v1beta.AlloyDBAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = alloydb_v1beta.InjectFaultRequest(
+                    fault_type="STOP_VM",
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.inject_fault(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.alloydb_v1beta.types.InjectFaultRequest, dict]]):
+                The request object. Message for triggering fault
+                injection on an instance
+            fault_type (:class:`google.cloud.alloydb_v1beta.types.InjectFaultRequest.FaultType`):
+                Required. The type of fault to be
+                injected in an instance.
+
+                This corresponds to the ``fault_type`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            name (:class:`str`):
+                Required. The name of the resource.
+                For the required format, see the comment
+                on the Instance.name field.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.alloydb_v1beta.types.Instance` An Instance is a computing unit that an end customer can connect to.
+                   It's the main unit of computing resources in AlloyDB.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([fault_type, name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.InjectFaultRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if fault_type is not None:
+            request.fault_type = fault_type
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.inject_fault,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
@@ -3381,6 +3511,556 @@ class AlloyDBAdminAsyncClient:
 
         # Done; return the response.
         return response
+
+    async def list_users(
+        self,
+        request: Optional[Union[service.ListUsersRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListUsersAsyncPager:
+        r"""Lists Users in a given project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import alloydb_v1beta
+
+            async def sample_list_users():
+                # Create a client
+                client = alloydb_v1beta.AlloyDBAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = alloydb_v1beta.ListUsersRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_users(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.alloydb_v1beta.types.ListUsersRequest, dict]]):
+                The request object. Message for requesting list of Users
+            parent (:class:`str`):
+                Required. Parent value for
+                ListUsersRequest
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.alloydb_v1beta.services.alloy_db_admin.pagers.ListUsersAsyncPager:
+                Message for response to listing Users
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.ListUsersRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_users,
+            default_retry=retries.Retry(
+                initial=1.0,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListUsersAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_user(
+        self,
+        request: Optional[Union[service.GetUserRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.User:
+        r"""Gets details of a single User.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import alloydb_v1beta
+
+            async def sample_get_user():
+                # Create a client
+                client = alloydb_v1beta.AlloyDBAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = alloydb_v1beta.GetUserRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_user(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.alloydb_v1beta.types.GetUserRequest, dict]]):
+                The request object. Message for getting a User
+            name (:class:`str`):
+                Required. The name of the resource.
+                For the required format, see the comment
+                on the User.name field.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.alloydb_v1beta.types.User:
+                Message describing User object.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.GetUserRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_user,
+            default_retry=retries.Retry(
+                initial=1.0,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_user(
+        self,
+        request: Optional[Union[service.CreateUserRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        user: Optional[resources.User] = None,
+        user_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.User:
+        r"""Creates a new User in a given project, location, and
+        cluster.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import alloydb_v1beta
+
+            async def sample_create_user():
+                # Create a client
+                client = alloydb_v1beta.AlloyDBAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = alloydb_v1beta.CreateUserRequest(
+                    parent="parent_value",
+                    user_id="user_id_value",
+                )
+
+                # Make the request
+                response = await client.create_user(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.alloydb_v1beta.types.CreateUserRequest, dict]]):
+                The request object. Message for creating a User
+            parent (:class:`str`):
+                Required. Value for parent.
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            user (:class:`google.cloud.alloydb_v1beta.types.User`):
+                Required. The resource being created
+                This corresponds to the ``user`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            user_id (:class:`str`):
+                Required. ID of the requesting
+                object.
+
+                This corresponds to the ``user_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.alloydb_v1beta.types.User:
+                Message describing User object.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, user, user_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.CreateUserRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if user is not None:
+            request.user = user
+        if user_id is not None:
+            request.user_id = user_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_user,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_user(
+        self,
+        request: Optional[Union[service.UpdateUserRequest, dict]] = None,
+        *,
+        user: Optional[resources.User] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.User:
+        r"""Updates the parameters of a single User.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import alloydb_v1beta
+
+            async def sample_update_user():
+                # Create a client
+                client = alloydb_v1beta.AlloyDBAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = alloydb_v1beta.UpdateUserRequest(
+                )
+
+                # Make the request
+                response = await client.update_user(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.alloydb_v1beta.types.UpdateUserRequest, dict]]):
+                The request object. Message for updating a User
+            user (:class:`google.cloud.alloydb_v1beta.types.User`):
+                Required. The resource being updated
+                This corresponds to the ``user`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the User resource by the update. The
+                fields specified in the update_mask are relative to the
+                resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.alloydb_v1beta.types.User:
+                Message describing User object.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([user, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.UpdateUserRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if user is not None:
+            request.user = user
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_user,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("user.name", request.user.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_user(
+        self,
+        request: Optional[Union[service.DeleteUserRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a single User.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import alloydb_v1beta
+
+            async def sample_delete_user():
+                # Create a client
+                client = alloydb_v1beta.AlloyDBAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = alloydb_v1beta.DeleteUserRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_user(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.alloydb_v1beta.types.DeleteUserRequest, dict]]):
+                The request object. Message for deleting a User
+            name (:class:`str`):
+                Required. The name of the resource.
+                For the required format, see the comment
+                on the User.name field.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.DeleteUserRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_user,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     async def list_operations(
         self,

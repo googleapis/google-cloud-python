@@ -703,6 +703,537 @@
           "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient",
           "shortName": "AlloyDBAdminAsyncClient"
         },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient.create_secondary_cluster",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.CreateSecondaryCluster",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "CreateSecondaryCluster"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.CreateSecondaryClusterRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "cluster",
+            "type": "google.cloud.alloydb_v1.types.Cluster"
+          },
+          {
+            "name": "cluster_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_secondary_cluster"
+      },
+      "description": "Sample for CreateSecondaryCluster",
+      "file": "alloydb_v1_generated_alloy_db_admin_create_secondary_cluster_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_CreateSecondaryCluster_async",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 58,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 59,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_create_secondary_cluster_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient",
+          "shortName": "AlloyDBAdminClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient.create_secondary_cluster",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.CreateSecondaryCluster",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "CreateSecondaryCluster"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.CreateSecondaryClusterRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "cluster",
+            "type": "google.cloud.alloydb_v1.types.Cluster"
+          },
+          {
+            "name": "cluster_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_secondary_cluster"
+      },
+      "description": "Sample for CreateSecondaryCluster",
+      "file": "alloydb_v1_generated_alloy_db_admin_create_secondary_cluster_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_CreateSecondaryCluster_sync",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 58,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 59,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_create_secondary_cluster_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient",
+          "shortName": "AlloyDBAdminAsyncClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient.create_secondary_instance",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.CreateSecondaryInstance",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "CreateSecondaryInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.CreateSecondaryInstanceRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "instance",
+            "type": "google.cloud.alloydb_v1.types.Instance"
+          },
+          {
+            "name": "instance_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_secondary_instance"
+      },
+      "description": "Sample for CreateSecondaryInstance",
+      "file": "alloydb_v1_generated_alloy_db_admin_create_secondary_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_CreateSecondaryInstance_async",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_create_secondary_instance_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient",
+          "shortName": "AlloyDBAdminClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient.create_secondary_instance",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.CreateSecondaryInstance",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "CreateSecondaryInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.CreateSecondaryInstanceRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "instance",
+            "type": "google.cloud.alloydb_v1.types.Instance"
+          },
+          {
+            "name": "instance_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_secondary_instance"
+      },
+      "description": "Sample for CreateSecondaryInstance",
+      "file": "alloydb_v1_generated_alloy_db_admin_create_secondary_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_CreateSecondaryInstance_sync",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_create_secondary_instance_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient",
+          "shortName": "AlloyDBAdminAsyncClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient.create_user",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.CreateUser",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "CreateUser"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.CreateUserRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "user",
+            "type": "google.cloud.alloydb_v1.types.User"
+          },
+          {
+            "name": "user_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.alloydb_v1.types.User",
+        "shortName": "create_user"
+      },
+      "description": "Sample for CreateUser",
+      "file": "alloydb_v1_generated_alloy_db_admin_create_user_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_CreateUser_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_create_user_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient",
+          "shortName": "AlloyDBAdminClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient.create_user",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.CreateUser",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "CreateUser"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.CreateUserRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "user",
+            "type": "google.cloud.alloydb_v1.types.User"
+          },
+          {
+            "name": "user_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.alloydb_v1.types.User",
+        "shortName": "create_user"
+      },
+      "description": "Sample for CreateUser",
+      "file": "alloydb_v1_generated_alloy_db_admin_create_user_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_CreateUser_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_create_user_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient",
+          "shortName": "AlloyDBAdminAsyncClient"
+        },
         "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient.delete_backup",
         "method": {
           "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.DeleteBackup",
@@ -1177,6 +1708,161 @@
         }
       ],
       "title": "alloydb_v1_generated_alloy_db_admin_delete_instance_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient",
+          "shortName": "AlloyDBAdminAsyncClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient.delete_user",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.DeleteUser",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "DeleteUser"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.DeleteUserRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_user"
+      },
+      "description": "Sample for DeleteUser",
+      "file": "alloydb_v1_generated_alloy_db_admin_delete_user_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_DeleteUser_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_delete_user_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient",
+          "shortName": "AlloyDBAdminClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient.delete_user",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.DeleteUser",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "DeleteUser"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.DeleteUserRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_user"
+      },
+      "description": "Sample for DeleteUser",
+      "file": "alloydb_v1_generated_alloy_db_admin_delete_user_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_DeleteUser_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_delete_user_sync.py"
     },
     {
       "canonical": true,
@@ -1830,6 +2516,336 @@
           "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient",
           "shortName": "AlloyDBAdminAsyncClient"
         },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient.get_user",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.GetUser",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "GetUser"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.GetUserRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.alloydb_v1.types.User",
+        "shortName": "get_user"
+      },
+      "description": "Sample for GetUser",
+      "file": "alloydb_v1_generated_alloy_db_admin_get_user_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_GetUser_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_get_user_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient",
+          "shortName": "AlloyDBAdminClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient.get_user",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.GetUser",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "GetUser"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.GetUserRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.alloydb_v1.types.User",
+        "shortName": "get_user"
+      },
+      "description": "Sample for GetUser",
+      "file": "alloydb_v1_generated_alloy_db_admin_get_user_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_GetUser_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_get_user_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient",
+          "shortName": "AlloyDBAdminAsyncClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient.inject_fault",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.InjectFault",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "InjectFault"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.InjectFaultRequest"
+          },
+          {
+            "name": "fault_type",
+            "type": "google.cloud.alloydb_v1.types.InjectFaultRequest.FaultType"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "inject_fault"
+      },
+      "description": "Sample for InjectFault",
+      "file": "alloydb_v1_generated_alloy_db_admin_inject_fault_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_InjectFault_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_inject_fault_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient",
+          "shortName": "AlloyDBAdminClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient.inject_fault",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.InjectFault",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "InjectFault"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.InjectFaultRequest"
+          },
+          {
+            "name": "fault_type",
+            "type": "google.cloud.alloydb_v1.types.InjectFaultRequest.FaultType"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "inject_fault"
+      },
+      "description": "Sample for InjectFault",
+      "file": "alloydb_v1_generated_alloy_db_admin_inject_fault_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_InjectFault_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_inject_fault_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient",
+          "shortName": "AlloyDBAdminAsyncClient"
+        },
         "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient.list_backups",
         "method": {
           "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.ListBackups",
@@ -2465,6 +3481,328 @@
         }
       ],
       "title": "alloydb_v1_generated_alloy_db_admin_list_supported_database_flags_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient",
+          "shortName": "AlloyDBAdminAsyncClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient.list_users",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.ListUsers",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "ListUsers"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.ListUsersRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.alloydb_v1.services.alloy_db_admin.pagers.ListUsersAsyncPager",
+        "shortName": "list_users"
+      },
+      "description": "Sample for ListUsers",
+      "file": "alloydb_v1_generated_alloy_db_admin_list_users_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_ListUsers_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_list_users_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient",
+          "shortName": "AlloyDBAdminClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient.list_users",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.ListUsers",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "ListUsers"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.ListUsersRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.alloydb_v1.services.alloy_db_admin.pagers.ListUsersPager",
+        "shortName": "list_users"
+      },
+      "description": "Sample for ListUsers",
+      "file": "alloydb_v1_generated_alloy_db_admin_list_users_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_ListUsers_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_list_users_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient",
+          "shortName": "AlloyDBAdminAsyncClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient.promote_cluster",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.PromoteCluster",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "PromoteCluster"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.PromoteClusterRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "promote_cluster"
+      },
+      "description": "Sample for PromoteCluster",
+      "file": "alloydb_v1_generated_alloy_db_admin_promote_cluster_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_PromoteCluster_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_promote_cluster_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient",
+          "shortName": "AlloyDBAdminClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient.promote_cluster",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.PromoteCluster",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "PromoteCluster"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.PromoteClusterRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "promote_cluster"
+      },
+      "description": "Sample for PromoteCluster",
+      "file": "alloydb_v1_generated_alloy_db_admin_promote_cluster_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_PromoteCluster_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_promote_cluster_sync.py"
     },
     {
       "canonical": true,
@@ -3286,6 +4624,175 @@
         }
       ],
       "title": "alloydb_v1_generated_alloy_db_admin_update_instance_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient",
+          "shortName": "AlloyDBAdminAsyncClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient.update_user",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.UpdateUser",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "UpdateUser"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.UpdateUserRequest"
+          },
+          {
+            "name": "user",
+            "type": "google.cloud.alloydb_v1.types.User"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.alloydb_v1.types.User",
+        "shortName": "update_user"
+      },
+      "description": "Sample for UpdateUser",
+      "file": "alloydb_v1_generated_alloy_db_admin_update_user_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_UpdateUser_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_update_user_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient",
+          "shortName": "AlloyDBAdminClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient.update_user",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.UpdateUser",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "UpdateUser"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.UpdateUserRequest"
+          },
+          {
+            "name": "user",
+            "type": "google.cloud.alloydb_v1.types.User"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.alloydb_v1.types.User",
+        "shortName": "update_user"
+      },
+      "description": "Sample for UpdateUser",
+      "file": "alloydb_v1_generated_alloy_db_admin_update_user_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_UpdateUser_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_update_user_sync.py"
     }
   ]
 }

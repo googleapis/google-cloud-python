@@ -40,7 +40,8 @@ class IamBinding(proto.Message):
             "roles/owner".
         member (str):
             A single identity requesting access for a
-            Cloud Platform resource, e.g. "foo@google.com".
+            Cloud Platform resource, for example,
+            "foo@google.com".
     """
 
     class Action(proto.Enum):
