@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.21.0...google-cloud-securitycenter-v1.22.0) (2023-06-13)
+
+
+### Features
+
+* Add user agent and DLP parent type fields to finding's list of attributes ([#11390](https://github.com/googleapis/google-cloud-python/issues/11390)) ([8a5784b](https://github.com/googleapis/google-cloud-python/commit/8a5784b16bd8493e2c5e831e4ed62c0407f776c3))
+
 ## [1.21.0](https://github.com/googleapis/python-securitycenter/compare/v1.20.0...v1.21.0) (2023-04-21)
 
 
