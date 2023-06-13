@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.24.0](https://github.com/googleapis/python-container/compare/v2.23.0...v2.24.0) (2023-06-13)
+
+
+### Features
+
+* Add API for GPU driver installation config ([d6da309](https://github.com/googleapis/python-container/commit/d6da30922e76d8c56b8ec3c78b0cb8ffbb5bd82a))
+* Add SecurityPostureConfig API field to allow customers to enable GKE Security Posture capabilities for their clusters ([d6da309](https://github.com/googleapis/python-container/commit/d6da30922e76d8c56b8ec3c78b0cb8ffbb5bd82a))
+* Add workloadPolicyConfig API field to allow customer enable NET_ADMIN capability for their autopilot clusters ([d6da309](https://github.com/googleapis/python-container/commit/d6da30922e76d8c56b8ec3c78b0cb8ffbb5bd82a))
+
 ## [2.23.0](https://github.com/googleapis/python-container/compare/v2.22.0...v2.23.0) (2023-06-06)
 
 
