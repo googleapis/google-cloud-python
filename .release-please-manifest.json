@@ -4,7 +4,7 @@
     "packages/google-area120-tables": "0.11.2",
     "packages/google-cloud-access-approval": "1.11.1",
     "packages/google-cloud-advisorynotifications": "0.2.0",
-    "packages/google-cloud-alloydb": "0.1.1",
+    "packages/google-cloud-alloydb": "0.2.0",
     "packages/google-cloud-api-gateway": "1.7.1",
     "packages/google-cloud-api-keys": "0.5.2",
     "packages/google-cloud-apigee-connect": "1.7.1",
