@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.11.1](https://github.com/googleapis/python-bigquery/compare/v3.11.0...v3.11.1) (2023-06-09)
+
+
+### Documentation
+
+* Add/reformat return types for cloud RAD docs ([#1582](https://github.com/googleapis/python-bigquery/issues/1582)) ([6efdce1](https://github.com/googleapis/python-bigquery/commit/6efdce13cc3b25d37d22a856f2308daed569e637))
+
 ## [3.11.0](https://github.com/googleapis/python-bigquery/compare/v3.10.0...v3.11.0) (2023-06-01)
 
 
