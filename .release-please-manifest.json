@@ -78,7 +78,7 @@
     "packages/google-cloud-resource-manager": "1.10.1",
     "packages/google-cloud-resource-settings": "1.7.0",
     "packages/google-cloud-secret-manager": "2.16.1",
-    "packages/google-cloud-securitycenter": "1.21.0",
+    "packages/google-cloud-securitycenter": "1.22.0",
     "packages/google-cloud-service-control": "1.9.0",
     "packages/google-cloud-service-directory": "1.8.1",
     "packages/google-cloud-service-usage": "1.7.1",
