@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.4](https://github.com/googleapis/python-gke-backup/compare/v0.4.3...v0.4.4) (2023-06-12)
+
+
+### Documentation
+
+* Minor documentation fixes ([#66](https://github.com/googleapis/python-gke-backup/issues/66)) ([4ff9cb7](https://github.com/googleapis/python-gke-backup/commit/4ff9cb7c2fdfdf53e9a9b61f615b27b6517fec2c))
+
 ## [0.4.3](https://github.com/googleapis/python-gke-backup/compare/v0.4.2...v0.4.3) (2023-03-23)
 
 
