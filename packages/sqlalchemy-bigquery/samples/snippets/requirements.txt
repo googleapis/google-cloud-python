@@ -8,7 +8,7 @@ google-cloud-bigquery==3.11.0
 google-cloud-core==2.3.2
 google-crc32c==1.5.0
 google-resumable-media==2.5.0
-googleapis-common-protos==1.59.0
+googleapis-common-protos==1.59.1
 greenlet==2.0.2
 grpcio==1.54.2
 grpcio-status==1.54.2
