@@ -64,12 +64,12 @@
                 "google/cloud/alloydb_v1beta/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1beta.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1alpha.json",
                     "type": "json"
                 },
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1alpha.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.alloydb.v1beta.json",
                     "type": "json"
                 },
                 {
@@ -245,12 +245,12 @@
                 "google/cloud/billing/budgets_v1beta1/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.billing.budgets.v1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.billing.budgets.v1beta1.json",
                     "type": "json"
                 },
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.billing.budgets.v1beta1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.billing.budgets.v1.json",
                     "type": "json"
                 }
             ],
@@ -752,7 +752,22 @@
                 "google/cloud/securitycenter/gapic_version.py",
                 "google/cloud/securitycenter_v1/gapic_version.py",
                 "google/cloud/securitycenter_v1beta1/gapic_version.py",
-                "google/cloud/securitycenter_v1p1beta1/gapic_version.py"
+                "google/cloud/securitycenter_v1p1beta1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.securitycenter.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.securitycenter.v1p1beta1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.securitycenter.v1beta1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
@@ -899,12 +914,12 @@
                 "google/cloud/workstations_v1beta/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.workstations.v1beta.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.workstations.v1.json",
                     "type": "json"
                 },
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.workstations.v1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.workstations.v1beta.json",
                     "type": "json"
                 }
             ],
@@ -938,12 +953,12 @@
                 "google/maps/mapsplatformdatasets_v1alpha/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.maps.mapsplatformdatasets.v1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.maps.mapsplatformdatasets.v1alpha.json",
                     "type": "json"
                 },
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.maps.mapsplatformdatasets.v1alpha.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.maps.mapsplatformdatasets.v1.json",
                     "type": "json"
                 }
             ],
