@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.11.1](https://github.com/googleapis/python-api-core/compare/v2.11.0...v2.11.1) (2023-06-12)
+
+
+### Bug Fixes
+
+* Add actionable errors for GCE long running operations ([#498](https://github.com/googleapis/python-api-core/issues/498)) ([7dfc3a7](https://github.com/googleapis/python-api-core/commit/7dfc3a7a439243f05238a11b68a31720fde1769e))
+* Invalid `dev` version identifiers in `setup.py` ([#505](https://github.com/googleapis/python-api-core/issues/505)) ([8844edb](https://github.com/googleapis/python-api-core/commit/8844edb1e802040810918a12bc9ff89104da38d4))
+
 ## [2.11.0](https://github.com/googleapis/python-api-core/compare/v2.10.2...v2.11.0) (2022-11-10)
 
 
