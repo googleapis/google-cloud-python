@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-bigquery-biglake",
-    "version": "0.3.0"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -16,10 +16,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.check_lock",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.check_lock",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.CheckLock",
           "service": {
@@ -31,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.CheckLockRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.CheckLockRequest"
           },
           {
             "name": "name",
@@ -50,7 +50,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Lock",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Lock",
         "shortName": "check_lock"
       },
       "description": "Sample for CheckLock",
@@ -96,10 +96,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.check_lock",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.check_lock",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.CheckLock",
           "service": {
@@ -111,7 +111,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.CheckLockRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.CheckLockRequest"
           },
           {
             "name": "name",
@@ -130,7 +130,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Lock",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Lock",
         "shortName": "check_lock"
       },
       "description": "Sample for CheckLock",
@@ -177,10 +177,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.create_catalog",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.create_catalog",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.CreateCatalog",
           "service": {
@@ -192,7 +192,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.CreateCatalogRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.CreateCatalogRequest"
           },
           {
             "name": "parent",
@@ -200,7 +200,7 @@
           },
           {
             "name": "catalog",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.Catalog"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.Catalog"
           },
           {
             "name": "catalog_id",
@@ -219,7 +219,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Catalog",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Catalog",
         "shortName": "create_catalog"
       },
       "description": "Sample for CreateCatalog",
@@ -265,10 +265,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.create_catalog",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.create_catalog",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.CreateCatalog",
           "service": {
@@ -280,7 +280,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.CreateCatalogRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.CreateCatalogRequest"
           },
           {
             "name": "parent",
@@ -288,7 +288,7 @@
           },
           {
             "name": "catalog",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.Catalog"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.Catalog"
           },
           {
             "name": "catalog_id",
@@ -307,7 +307,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Catalog",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Catalog",
         "shortName": "create_catalog"
       },
       "description": "Sample for CreateCatalog",
@@ -354,10 +354,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.create_database",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.create_database",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.CreateDatabase",
           "service": {
@@ -369,7 +369,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.CreateDatabaseRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.CreateDatabaseRequest"
           },
           {
             "name": "parent",
@@ -377,7 +377,7 @@
           },
           {
             "name": "database",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.Database"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.Database"
           },
           {
             "name": "database_id",
@@ -396,7 +396,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Database",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Database",
         "shortName": "create_database"
       },
       "description": "Sample for CreateDatabase",
@@ -442,10 +442,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.create_database",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.create_database",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.CreateDatabase",
           "service": {
@@ -457,7 +457,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.CreateDatabaseRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.CreateDatabaseRequest"
           },
           {
             "name": "parent",
@@ -465,7 +465,7 @@
           },
           {
             "name": "database",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.Database"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.Database"
           },
           {
             "name": "database_id",
@@ -484,7 +484,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Database",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Database",
         "shortName": "create_database"
       },
       "description": "Sample for CreateDatabase",
@@ -531,10 +531,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.create_lock",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.create_lock",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.CreateLock",
           "service": {
@@ -546,7 +546,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.CreateLockRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.CreateLockRequest"
           },
           {
             "name": "parent",
@@ -554,7 +554,7 @@
           },
           {
             "name": "lock",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.Lock"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.Lock"
           },
           {
             "name": "retry",
@@ -569,7 +569,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Lock",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Lock",
         "shortName": "create_lock"
       },
       "description": "Sample for CreateLock",
@@ -615,10 +615,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.create_lock",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.create_lock",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.CreateLock",
           "service": {
@@ -630,7 +630,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.CreateLockRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.CreateLockRequest"
           },
           {
             "name": "parent",
@@ -638,7 +638,7 @@
           },
           {
             "name": "lock",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.Lock"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.Lock"
           },
           {
             "name": "retry",
@@ -653,7 +653,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Lock",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Lock",
         "shortName": "create_lock"
       },
       "description": "Sample for CreateLock",
@@ -700,10 +700,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.create_table",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.create_table",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.CreateTable",
           "service": {
@@ -715,7 +715,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.CreateTableRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.CreateTableRequest"
           },
           {
             "name": "parent",
@@ -723,7 +723,7 @@
           },
           {
             "name": "table",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.Table"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.Table"
           },
           {
             "name": "table_id",
@@ -742,7 +742,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Table",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Table",
         "shortName": "create_table"
       },
       "description": "Sample for CreateTable",
@@ -788,10 +788,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.create_table",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.create_table",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.CreateTable",
           "service": {
@@ -803,7 +803,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.CreateTableRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.CreateTableRequest"
           },
           {
             "name": "parent",
@@ -811,7 +811,7 @@
           },
           {
             "name": "table",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.Table"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.Table"
           },
           {
             "name": "table_id",
@@ -830,7 +830,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Table",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Table",
         "shortName": "create_table"
       },
       "description": "Sample for CreateTable",
@@ -877,10 +877,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.delete_catalog",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.delete_catalog",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.DeleteCatalog",
           "service": {
@@ -892,7 +892,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.DeleteCatalogRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.DeleteCatalogRequest"
           },
           {
             "name": "name",
@@ -911,7 +911,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Catalog",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Catalog",
         "shortName": "delete_catalog"
       },
       "description": "Sample for DeleteCatalog",
@@ -957,10 +957,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.delete_catalog",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.delete_catalog",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.DeleteCatalog",
           "service": {
@@ -972,7 +972,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.DeleteCatalogRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.DeleteCatalogRequest"
           },
           {
             "name": "name",
@@ -991,7 +991,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Catalog",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Catalog",
         "shortName": "delete_catalog"
       },
       "description": "Sample for DeleteCatalog",
@@ -1038,10 +1038,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.delete_database",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.delete_database",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.DeleteDatabase",
           "service": {
@@ -1053,7 +1053,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.DeleteDatabaseRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.DeleteDatabaseRequest"
           },
           {
             "name": "name",
@@ -1072,7 +1072,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Database",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Database",
         "shortName": "delete_database"
       },
       "description": "Sample for DeleteDatabase",
@@ -1118,10 +1118,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.delete_database",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.delete_database",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.DeleteDatabase",
           "service": {
@@ -1133,7 +1133,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.DeleteDatabaseRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.DeleteDatabaseRequest"
           },
           {
             "name": "name",
@@ -1152,7 +1152,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Database",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Database",
         "shortName": "delete_database"
       },
       "description": "Sample for DeleteDatabase",
@@ -1199,10 +1199,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.delete_lock",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.delete_lock",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.DeleteLock",
           "service": {
@@ -1214,7 +1214,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.DeleteLockRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.DeleteLockRequest"
           },
           {
             "name": "name",
@@ -1276,10 +1276,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.delete_lock",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.delete_lock",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.DeleteLock",
           "service": {
@@ -1291,7 +1291,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.DeleteLockRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.DeleteLockRequest"
           },
           {
             "name": "name",
@@ -1354,10 +1354,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.delete_table",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.delete_table",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.DeleteTable",
           "service": {
@@ -1369,7 +1369,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.DeleteTableRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.DeleteTableRequest"
           },
           {
             "name": "name",
@@ -1388,7 +1388,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Table",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Table",
         "shortName": "delete_table"
       },
       "description": "Sample for DeleteTable",
@@ -1434,10 +1434,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.delete_table",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.delete_table",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.DeleteTable",
           "service": {
@@ -1449,7 +1449,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.DeleteTableRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.DeleteTableRequest"
           },
           {
             "name": "name",
@@ -1468,7 +1468,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Table",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Table",
         "shortName": "delete_table"
       },
       "description": "Sample for DeleteTable",
@@ -1515,10 +1515,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.get_catalog",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.get_catalog",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.GetCatalog",
           "service": {
@@ -1530,7 +1530,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.GetCatalogRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.GetCatalogRequest"
           },
           {
             "name": "name",
@@ -1549,7 +1549,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Catalog",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Catalog",
         "shortName": "get_catalog"
       },
       "description": "Sample for GetCatalog",
@@ -1595,10 +1595,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.get_catalog",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.get_catalog",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.GetCatalog",
           "service": {
@@ -1610,7 +1610,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.GetCatalogRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.GetCatalogRequest"
           },
           {
             "name": "name",
@@ -1629,7 +1629,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Catalog",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Catalog",
         "shortName": "get_catalog"
       },
       "description": "Sample for GetCatalog",
@@ -1676,10 +1676,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.get_database",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.get_database",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.GetDatabase",
           "service": {
@@ -1691,7 +1691,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.GetDatabaseRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.GetDatabaseRequest"
           },
           {
             "name": "name",
@@ -1710,7 +1710,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Database",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Database",
         "shortName": "get_database"
       },
       "description": "Sample for GetDatabase",
@@ -1756,10 +1756,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.get_database",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.get_database",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.GetDatabase",
           "service": {
@@ -1771,7 +1771,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.GetDatabaseRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.GetDatabaseRequest"
           },
           {
             "name": "name",
@@ -1790,7 +1790,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Database",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Database",
         "shortName": "get_database"
       },
       "description": "Sample for GetDatabase",
@@ -1837,10 +1837,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.get_table",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.get_table",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.GetTable",
           "service": {
@@ -1852,7 +1852,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.GetTableRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.GetTableRequest"
           },
           {
             "name": "name",
@@ -1871,7 +1871,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Table",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Table",
         "shortName": "get_table"
       },
       "description": "Sample for GetTable",
@@ -1917,10 +1917,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.get_table",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.get_table",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.GetTable",
           "service": {
@@ -1932,7 +1932,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.GetTableRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.GetTableRequest"
           },
           {
             "name": "name",
@@ -1951,7 +1951,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Table",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Table",
         "shortName": "get_table"
       },
       "description": "Sample for GetTable",
@@ -1998,10 +1998,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.list_catalogs",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.list_catalogs",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.ListCatalogs",
           "service": {
@@ -2013,7 +2013,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.ListCatalogsRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.ListCatalogsRequest"
           },
           {
             "name": "parent",
@@ -2032,7 +2032,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.services.metastore_service.pagers.ListCatalogsAsyncPager",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.services.metastore_service.pagers.ListCatalogsAsyncPager",
         "shortName": "list_catalogs"
       },
       "description": "Sample for ListCatalogs",
@@ -2078,10 +2078,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.list_catalogs",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.list_catalogs",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.ListCatalogs",
           "service": {
@@ -2093,7 +2093,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.ListCatalogsRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.ListCatalogsRequest"
           },
           {
             "name": "parent",
@@ -2112,7 +2112,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.services.metastore_service.pagers.ListCatalogsPager",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.services.metastore_service.pagers.ListCatalogsPager",
         "shortName": "list_catalogs"
       },
       "description": "Sample for ListCatalogs",
@@ -2159,10 +2159,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.list_databases",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.list_databases",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.ListDatabases",
           "service": {
@@ -2174,7 +2174,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.ListDatabasesRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.ListDatabasesRequest"
           },
           {
             "name": "parent",
@@ -2193,7 +2193,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.services.metastore_service.pagers.ListDatabasesAsyncPager",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.services.metastore_service.pagers.ListDatabasesAsyncPager",
         "shortName": "list_databases"
       },
       "description": "Sample for ListDatabases",
@@ -2239,10 +2239,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.list_databases",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.list_databases",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.ListDatabases",
           "service": {
@@ -2254,7 +2254,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.ListDatabasesRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.ListDatabasesRequest"
           },
           {
             "name": "parent",
@@ -2273,7 +2273,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.services.metastore_service.pagers.ListDatabasesPager",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.services.metastore_service.pagers.ListDatabasesPager",
         "shortName": "list_databases"
       },
       "description": "Sample for ListDatabases",
@@ -2320,10 +2320,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.list_locks",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.list_locks",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.ListLocks",
           "service": {
@@ -2335,7 +2335,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.ListLocksRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.ListLocksRequest"
           },
           {
             "name": "parent",
@@ -2354,7 +2354,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.services.metastore_service.pagers.ListLocksAsyncPager",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.services.metastore_service.pagers.ListLocksAsyncPager",
         "shortName": "list_locks"
       },
       "description": "Sample for ListLocks",
@@ -2400,10 +2400,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.list_locks",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.list_locks",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.ListLocks",
           "service": {
@@ -2415,7 +2415,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.ListLocksRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.ListLocksRequest"
           },
           {
             "name": "parent",
@@ -2434,7 +2434,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.services.metastore_service.pagers.ListLocksPager",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.services.metastore_service.pagers.ListLocksPager",
         "shortName": "list_locks"
       },
       "description": "Sample for ListLocks",
@@ -2481,10 +2481,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.list_tables",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.list_tables",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.ListTables",
           "service": {
@@ -2496,7 +2496,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.ListTablesRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.ListTablesRequest"
           },
           {
             "name": "parent",
@@ -2515,7 +2515,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.services.metastore_service.pagers.ListTablesAsyncPager",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.services.metastore_service.pagers.ListTablesAsyncPager",
         "shortName": "list_tables"
       },
       "description": "Sample for ListTables",
@@ -2561,10 +2561,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.list_tables",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.list_tables",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.ListTables",
           "service": {
@@ -2576,7 +2576,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.ListTablesRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.ListTablesRequest"
           },
           {
             "name": "parent",
@@ -2595,7 +2595,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.services.metastore_service.pagers.ListTablesPager",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.services.metastore_service.pagers.ListTablesPager",
         "shortName": "list_tables"
       },
       "description": "Sample for ListTables",
@@ -2642,10 +2642,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.rename_table",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.rename_table",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.RenameTable",
           "service": {
@@ -2657,7 +2657,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.RenameTableRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.RenameTableRequest"
           },
           {
             "name": "name",
@@ -2680,7 +2680,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Table",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Table",
         "shortName": "rename_table"
       },
       "description": "Sample for RenameTable",
@@ -2726,10 +2726,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.rename_table",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.rename_table",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.RenameTable",
           "service": {
@@ -2741,7 +2741,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.RenameTableRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.RenameTableRequest"
           },
           {
             "name": "name",
@@ -2764,7 +2764,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Table",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Table",
         "shortName": "rename_table"
       },
       "description": "Sample for RenameTable",
@@ -2811,10 +2811,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.update_database",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.update_database",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.UpdateDatabase",
           "service": {
@@ -2826,11 +2826,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.UpdateDatabaseRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.UpdateDatabaseRequest"
           },
           {
             "name": "database",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.Database"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.Database"
           },
           {
             "name": "update_mask",
@@ -2849,7 +2849,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Database",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Database",
         "shortName": "update_database"
       },
       "description": "Sample for UpdateDatabase",
@@ -2895,10 +2895,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.update_database",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.update_database",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.UpdateDatabase",
           "service": {
@@ -2910,11 +2910,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.UpdateDatabaseRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.UpdateDatabaseRequest"
           },
           {
             "name": "database",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.Database"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.Database"
           },
           {
             "name": "update_mask",
@@ -2933,7 +2933,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Database",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Database",
         "shortName": "update_database"
       },
       "description": "Sample for UpdateDatabase",
@@ -2980,10 +2980,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient",
           "shortName": "MetastoreServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceAsyncClient.update_table",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceAsyncClient.update_table",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.UpdateTable",
           "service": {
@@ -2995,11 +2995,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.UpdateTableRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.UpdateTableRequest"
           },
           {
             "name": "table",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.Table"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.Table"
           },
           {
             "name": "update_mask",
@@ -3018,7 +3018,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Table",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Table",
         "shortName": "update_table"
       },
       "description": "Sample for UpdateTable",
@@ -3064,10 +3064,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient",
+          "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient",
           "shortName": "MetastoreServiceClient"
         },
-        "fullName": "google.cloud.bigquery.biglake_v1alpha1.MetastoreServiceClient.update_table",
+        "fullName": "google.cloud.bigquery_biglake_v1alpha1.MetastoreServiceClient.update_table",
         "method": {
           "fullName": "google.cloud.bigquery.biglake.v1alpha1.MetastoreService.UpdateTable",
           "service": {
@@ -3079,11 +3079,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.UpdateTableRequest"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.UpdateTableRequest"
           },
           {
             "name": "table",
-            "type": "google.cloud.bigquery.biglake_v1alpha1.types.Table"
+            "type": "google.cloud.bigquery_biglake_v1alpha1.types.Table"
           },
           {
             "name": "update_mask",
@@ -3102,7 +3102,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.bigquery.biglake_v1alpha1.types.Table",
+        "resultType": "google.cloud.bigquery_biglake_v1alpha1.types.Table",
         "shortName": "update_table"
       },
       "description": "Sample for UpdateTable",
