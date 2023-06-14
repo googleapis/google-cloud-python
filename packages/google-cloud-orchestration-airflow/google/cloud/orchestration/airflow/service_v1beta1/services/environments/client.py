@@ -1462,6 +1462,251 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         # Done; return the response.
         return response
 
+    def execute_airflow_command(
+        self,
+        request: Optional[
+            Union[environments.ExecuteAirflowCommandRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> environments.ExecuteAirflowCommandResponse:
+        r"""Executes Airflow CLI command.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1beta1
+
+            def sample_execute_airflow_command():
+                # Create a client
+                client = service_v1beta1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1beta1.ExecuteAirflowCommandRequest(
+                )
+
+                # Make the request
+                response = client.execute_airflow_command(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.ExecuteAirflowCommandRequest, dict]):
+                The request object. Execute Airflow Command request.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.orchestration.airflow.service_v1beta1.types.ExecuteAirflowCommandResponse:
+                Response to
+                ExecuteAirflowCommandRequest.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environments.ExecuteAirflowCommandRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environments.ExecuteAirflowCommandRequest):
+            request = environments.ExecuteAirflowCommandRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.execute_airflow_command]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("environment", request.environment),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def stop_airflow_command(
+        self,
+        request: Optional[Union[environments.StopAirflowCommandRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> environments.StopAirflowCommandResponse:
+        r"""Stops Airflow CLI command execution.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1beta1
+
+            def sample_stop_airflow_command():
+                # Create a client
+                client = service_v1beta1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1beta1.StopAirflowCommandRequest(
+                )
+
+                # Make the request
+                response = client.stop_airflow_command(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.StopAirflowCommandRequest, dict]):
+                The request object. Stop Airflow Command request.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.orchestration.airflow.service_v1beta1.types.StopAirflowCommandResponse:
+                Response to
+                StopAirflowCommandRequest.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environments.StopAirflowCommandRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environments.StopAirflowCommandRequest):
+            request = environments.StopAirflowCommandRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.stop_airflow_command]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("environment", request.environment),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def poll_airflow_command(
+        self,
+        request: Optional[Union[environments.PollAirflowCommandRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> environments.PollAirflowCommandResponse:
+        r"""Polls Airflow CLI command execution and fetches logs.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1beta1
+
+            def sample_poll_airflow_command():
+                # Create a client
+                client = service_v1beta1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1beta1.PollAirflowCommandRequest(
+                )
+
+                # Make the request
+                response = client.poll_airflow_command(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.PollAirflowCommandRequest, dict]):
+                The request object. Poll Airflow Command request.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.orchestration.airflow.service_v1beta1.types.PollAirflowCommandResponse:
+                Response to
+                PollAirflowCommandRequest.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environments.PollAirflowCommandRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environments.PollAirflowCommandRequest):
+            request = environments.PollAirflowCommandRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.poll_airflow_command]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("environment", request.environment),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def save_snapshot(
         self,
         request: Optional[Union[environments.SaveSnapshotRequest, dict]] = None,
@@ -1657,6 +1902,192 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
             self._transport.operations_client,
             environments.LoadSnapshotResponse,
             metadata_type=operations.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def database_failover(
+        self,
+        request: Optional[Union[environments.DatabaseFailoverRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Triggers database failover (only for highly resilient
+        environments).
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1beta1
+
+            def sample_database_failover():
+                # Create a client
+                client = service_v1beta1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1beta1.DatabaseFailoverRequest(
+                )
+
+                # Make the request
+                operation = client.database_failover(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.DatabaseFailoverRequest, dict]):
+                The request object. Request to trigger database failover
+                (only for highly resilient
+                environments).
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.orchestration.airflow.service_v1beta1.types.DatabaseFailoverResponse`
+                Response for DatabaseFailoverRequest.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environments.DatabaseFailoverRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environments.DatabaseFailoverRequest):
+            request = environments.DatabaseFailoverRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.database_failover]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("environment", request.environment),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            environments.DatabaseFailoverResponse,
+            metadata_type=operations.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def fetch_database_properties(
+        self,
+        request: Optional[
+            Union[environments.FetchDatabasePropertiesRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> environments.FetchDatabasePropertiesResponse:
+        r"""Fetches database properties.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1beta1
+
+            def sample_fetch_database_properties():
+                # Create a client
+                client = service_v1beta1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1beta1.FetchDatabasePropertiesRequest(
+                    environment="environment_value",
+                )
+
+                # Make the request
+                response = client.fetch_database_properties(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.FetchDatabasePropertiesRequest, dict]):
+                The request object. Request to fetch properties of
+                environment's database.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.orchestration.airflow.service_v1beta1.types.FetchDatabasePropertiesResponse:
+                Response for
+                FetchDatabasePropertiesRequest.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environments.FetchDatabasePropertiesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environments.FetchDatabasePropertiesRequest):
+            request = environments.FetchDatabasePropertiesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.fetch_database_properties
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("environment", request.environment),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.

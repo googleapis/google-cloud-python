@@ -432,6 +432,93 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         return self._stubs["check_upgrade"]
 
     @property
+    def execute_airflow_command(
+        self,
+    ) -> Callable[
+        [environments.ExecuteAirflowCommandRequest],
+        environments.ExecuteAirflowCommandResponse,
+    ]:
+        r"""Return a callable for the execute airflow command method over gRPC.
+
+        Executes Airflow CLI command.
+
+        Returns:
+            Callable[[~.ExecuteAirflowCommandRequest],
+                    ~.ExecuteAirflowCommandResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "execute_airflow_command" not in self._stubs:
+            self._stubs["execute_airflow_command"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/ExecuteAirflowCommand",
+                request_serializer=environments.ExecuteAirflowCommandRequest.serialize,
+                response_deserializer=environments.ExecuteAirflowCommandResponse.deserialize,
+            )
+        return self._stubs["execute_airflow_command"]
+
+    @property
+    def stop_airflow_command(
+        self,
+    ) -> Callable[
+        [environments.StopAirflowCommandRequest],
+        environments.StopAirflowCommandResponse,
+    ]:
+        r"""Return a callable for the stop airflow command method over gRPC.
+
+        Stops Airflow CLI command execution.
+
+        Returns:
+            Callable[[~.StopAirflowCommandRequest],
+                    ~.StopAirflowCommandResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "stop_airflow_command" not in self._stubs:
+            self._stubs["stop_airflow_command"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/StopAirflowCommand",
+                request_serializer=environments.StopAirflowCommandRequest.serialize,
+                response_deserializer=environments.StopAirflowCommandResponse.deserialize,
+            )
+        return self._stubs["stop_airflow_command"]
+
+    @property
+    def poll_airflow_command(
+        self,
+    ) -> Callable[
+        [environments.PollAirflowCommandRequest],
+        environments.PollAirflowCommandResponse,
+    ]:
+        r"""Return a callable for the poll airflow command method over gRPC.
+
+        Polls Airflow CLI command execution and fetches logs.
+
+        Returns:
+            Callable[[~.PollAirflowCommandRequest],
+                    ~.PollAirflowCommandResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "poll_airflow_command" not in self._stubs:
+            self._stubs["poll_airflow_command"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/PollAirflowCommand",
+                request_serializer=environments.PollAirflowCommandRequest.serialize,
+                response_deserializer=environments.PollAirflowCommandResponse.deserialize,
+            )
+        return self._stubs["poll_airflow_command"]
+
+    @property
     def save_snapshot(
         self,
     ) -> Callable[[environments.SaveSnapshotRequest], operations_pb2.Operation]:
@@ -488,6 +575,62 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["load_snapshot"]
+
+    @property
+    def database_failover(
+        self,
+    ) -> Callable[[environments.DatabaseFailoverRequest], operations_pb2.Operation]:
+        r"""Return a callable for the database failover method over gRPC.
+
+        Triggers database failover (only for highly resilient
+        environments).
+
+        Returns:
+            Callable[[~.DatabaseFailoverRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "database_failover" not in self._stubs:
+            self._stubs["database_failover"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/DatabaseFailover",
+                request_serializer=environments.DatabaseFailoverRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["database_failover"]
+
+    @property
+    def fetch_database_properties(
+        self,
+    ) -> Callable[
+        [environments.FetchDatabasePropertiesRequest],
+        environments.FetchDatabasePropertiesResponse,
+    ]:
+        r"""Return a callable for the fetch database properties method over gRPC.
+
+        Fetches database properties.
+
+        Returns:
+            Callable[[~.FetchDatabasePropertiesRequest],
+                    ~.FetchDatabasePropertiesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_database_properties" not in self._stubs:
+            self._stubs["fetch_database_properties"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/FetchDatabaseProperties",
+                request_serializer=environments.FetchDatabasePropertiesRequest.serialize,
+                response_deserializer=environments.FetchDatabasePropertiesResponse.deserialize,
+            )
+        return self._stubs["fetch_database_properties"]
 
     def close(self):
         self.grpc_channel.close()

@@ -95,6 +95,10 @@ class OperationMetadata(proto.Message):
                 Saves snapshot of the resource operation.
             LOAD_SNAPSHOT (6):
                 Loads snapshot of the resource operation.
+            DATABASE_FAILOVER (7):
+                Triggers failover of environment's Cloud SQL
+                instance (only for highly resilient
+                environments).
         """
         TYPE_UNSPECIFIED = 0
         CREATE = 1
@@ -103,6 +107,7 @@ class OperationMetadata(proto.Message):
         CHECK = 4
         SAVE_SNAPSHOT = 5
         LOAD_SNAPSHOT = 6
+        DATABASE_FAILOVER = 7
 
     state: State = proto.Field(
         proto.ENUM,

@@ -88,11 +88,35 @@ class EnvironmentsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_database_failover(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_database_failover(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_environment(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_delete_environment(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_execute_airflow_command(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_execute_airflow_command(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_fetch_database_properties(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_database_properties(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -120,6 +144,14 @@ class EnvironmentsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_poll_airflow_command(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_poll_airflow_command(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_restart_web_server(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -133,6 +165,14 @@ class EnvironmentsRestInterceptor:
                 return request, metadata
 
             def post_save_snapshot(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_stop_airflow_command(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_stop_airflow_command(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -196,6 +236,29 @@ class EnvironmentsRestInterceptor:
         """
         return response
 
+    def pre_database_failover(
+        self,
+        request: environments.DatabaseFailoverRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[environments.DatabaseFailoverRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for database_failover
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Environments server.
+        """
+        return request, metadata
+
+    def post_database_failover(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for database_failover
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Environments server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_delete_environment(
         self,
         request: environments.DeleteEnvironmentRequest,
@@ -212,6 +275,52 @@ class EnvironmentsRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_environment
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Environments server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_execute_airflow_command(
+        self,
+        request: environments.ExecuteAirflowCommandRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[environments.ExecuteAirflowCommandRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for execute_airflow_command
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Environments server.
+        """
+        return request, metadata
+
+    def post_execute_airflow_command(
+        self, response: environments.ExecuteAirflowCommandResponse
+    ) -> environments.ExecuteAirflowCommandResponse:
+        """Post-rpc interceptor for execute_airflow_command
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Environments server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_fetch_database_properties(
+        self,
+        request: environments.FetchDatabasePropertiesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[environments.FetchDatabasePropertiesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for fetch_database_properties
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Environments server.
+        """
+        return request, metadata
+
+    def post_fetch_database_properties(
+        self, response: environments.FetchDatabasePropertiesResponse
+    ) -> environments.FetchDatabasePropertiesResponse:
+        """Post-rpc interceptor for fetch_database_properties
 
         Override in a subclass to manipulate the response
         after it is returned by the Environments server but before
@@ -288,6 +397,29 @@ class EnvironmentsRestInterceptor:
         """
         return response
 
+    def pre_poll_airflow_command(
+        self,
+        request: environments.PollAirflowCommandRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[environments.PollAirflowCommandRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for poll_airflow_command
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Environments server.
+        """
+        return request, metadata
+
+    def post_poll_airflow_command(
+        self, response: environments.PollAirflowCommandResponse
+    ) -> environments.PollAirflowCommandResponse:
+        """Post-rpc interceptor for poll_airflow_command
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Environments server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_restart_web_server(
         self,
         request: environments.RestartWebServerRequest,
@@ -327,6 +459,29 @@ class EnvironmentsRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for save_snapshot
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Environments server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_stop_airflow_command(
+        self,
+        request: environments.StopAirflowCommandRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[environments.StopAirflowCommandRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for stop_airflow_command
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Environments server.
+        """
+        return request, metadata
+
+    def post_stop_airflow_command(
+        self, response: environments.StopAirflowCommandResponse
+    ) -> environments.StopAirflowCommandResponse:
+        """Post-rpc interceptor for stop_airflow_command
 
         Override in a subclass to manipulate the response
         after it is returned by the Environments server but before
@@ -741,6 +896,95 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
             resp = self._interceptor.post_create_environment(resp)
             return resp
 
+    class _DatabaseFailover(EnvironmentsRestStub):
+        def __hash__(self):
+            return hash("DatabaseFailover")
+
+        def __call__(
+            self,
+            request: environments.DatabaseFailoverRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the database failover method over HTTP.
+
+            Args:
+                request (~.environments.DatabaseFailoverRequest):
+                    The request object. Request to trigger database failover
+                (only for highly resilient
+                environments).
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{environment=projects/*/locations/*/environments/*}:databaseFailover",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_database_failover(
+                request, metadata
+            )
+            pb_request = environments.DatabaseFailoverRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_database_failover(resp)
+            return resp
+
     class _DeleteEnvironment(EnvironmentsRestStub):
         def __hash__(self):
             return hash("DeleteEnvironment")
@@ -817,6 +1061,185 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_environment(resp)
+            return resp
+
+    class _ExecuteAirflowCommand(EnvironmentsRestStub):
+        def __hash__(self):
+            return hash("ExecuteAirflowCommand")
+
+        def __call__(
+            self,
+            request: environments.ExecuteAirflowCommandRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> environments.ExecuteAirflowCommandResponse:
+            r"""Call the execute airflow command method over HTTP.
+
+            Args:
+                request (~.environments.ExecuteAirflowCommandRequest):
+                    The request object. Execute Airflow Command request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.environments.ExecuteAirflowCommandResponse:
+                    Response to
+                ExecuteAirflowCommandRequest.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{environment=projects/*/locations/*/environments/*}:executeAirflowCommand",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_execute_airflow_command(
+                request, metadata
+            )
+            pb_request = environments.ExecuteAirflowCommandRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = environments.ExecuteAirflowCommandResponse()
+            pb_resp = environments.ExecuteAirflowCommandResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_execute_airflow_command(resp)
+            return resp
+
+    class _FetchDatabaseProperties(EnvironmentsRestStub):
+        def __hash__(self):
+            return hash("FetchDatabaseProperties")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: environments.FetchDatabasePropertiesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> environments.FetchDatabasePropertiesResponse:
+            r"""Call the fetch database properties method over HTTP.
+
+            Args:
+                request (~.environments.FetchDatabasePropertiesRequest):
+                    The request object. Request to fetch properties of
+                environment's database.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.environments.FetchDatabasePropertiesResponse:
+                    Response for
+                FetchDatabasePropertiesRequest.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta1/{environment=projects/*/locations/*/environments/*}:fetchDatabaseProperties",
+                },
+            ]
+            request, metadata = self._interceptor.pre_fetch_database_properties(
+                request, metadata
+            )
+            pb_request = environments.FetchDatabasePropertiesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = environments.FetchDatabasePropertiesResponse()
+            pb_resp = environments.FetchDatabasePropertiesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_fetch_database_properties(resp)
             return resp
 
     class _GetEnvironment(EnvironmentsRestStub):
@@ -1062,6 +1485,94 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
             resp = self._interceptor.post_load_snapshot(resp)
             return resp
 
+    class _PollAirflowCommand(EnvironmentsRestStub):
+        def __hash__(self):
+            return hash("PollAirflowCommand")
+
+        def __call__(
+            self,
+            request: environments.PollAirflowCommandRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> environments.PollAirflowCommandResponse:
+            r"""Call the poll airflow command method over HTTP.
+
+            Args:
+                request (~.environments.PollAirflowCommandRequest):
+                    The request object. Poll Airflow Command request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.environments.PollAirflowCommandResponse:
+                    Response to
+                PollAirflowCommandRequest.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{environment=projects/*/locations/*/environments/*}:pollAirflowCommand",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_poll_airflow_command(
+                request, metadata
+            )
+            pb_request = environments.PollAirflowCommandRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = environments.PollAirflowCommandResponse()
+            pb_resp = environments.PollAirflowCommandResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_poll_airflow_command(resp)
+            return resp
+
     class _RestartWebServer(EnvironmentsRestStub):
         def __hash__(self):
             return hash("RestartWebServer")
@@ -1235,6 +1746,94 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
             resp = self._interceptor.post_save_snapshot(resp)
             return resp
 
+    class _StopAirflowCommand(EnvironmentsRestStub):
+        def __hash__(self):
+            return hash("StopAirflowCommand")
+
+        def __call__(
+            self,
+            request: environments.StopAirflowCommandRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> environments.StopAirflowCommandResponse:
+            r"""Call the stop airflow command method over HTTP.
+
+            Args:
+                request (~.environments.StopAirflowCommandRequest):
+                    The request object. Stop Airflow Command request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.environments.StopAirflowCommandResponse:
+                    Response to
+                StopAirflowCommandRequest.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta1/{environment=projects/*/locations/*/environments/*}:stopAirflowCommand",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_stop_airflow_command(
+                request, metadata
+            )
+            pb_request = environments.StopAirflowCommandRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = environments.StopAirflowCommandResponse()
+            pb_resp = environments.StopAirflowCommandResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_stop_airflow_command(resp)
+            return resp
+
     class _UpdateEnvironment(EnvironmentsRestStub):
         def __hash__(self):
             return hash("UpdateEnvironment")
@@ -1352,12 +1951,42 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
         return self._CreateEnvironment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def database_failover(
+        self,
+    ) -> Callable[[environments.DatabaseFailoverRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DatabaseFailover(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_environment(
         self,
     ) -> Callable[[environments.DeleteEnvironmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEnvironment(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def execute_airflow_command(
+        self,
+    ) -> Callable[
+        [environments.ExecuteAirflowCommandRequest],
+        environments.ExecuteAirflowCommandResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ExecuteAirflowCommand(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def fetch_database_properties(
+        self,
+    ) -> Callable[
+        [environments.FetchDatabasePropertiesRequest],
+        environments.FetchDatabasePropertiesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchDatabaseProperties(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_environment(
@@ -1386,6 +2015,17 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
         return self._LoadSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def poll_airflow_command(
+        self,
+    ) -> Callable[
+        [environments.PollAirflowCommandRequest],
+        environments.PollAirflowCommandResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._PollAirflowCommand(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def restart_web_server(
         self,
     ) -> Callable[[environments.RestartWebServerRequest], operations_pb2.Operation]:
@@ -1400,6 +2040,17 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SaveSnapshot(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def stop_airflow_command(
+        self,
+    ) -> Callable[
+        [environments.StopAirflowCommandRequest],
+        environments.StopAirflowCommandResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StopAirflowCommand(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_environment(

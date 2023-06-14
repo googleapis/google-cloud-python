@@ -160,6 +160,21 @@ class EnvironmentsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.execute_airflow_command: gapic_v1.method.wrap_method(
+                self.execute_airflow_command,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.stop_airflow_command: gapic_v1.method.wrap_method(
+                self.stop_airflow_command,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.poll_airflow_command: gapic_v1.method.wrap_method(
+                self.poll_airflow_command,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.save_snapshot: gapic_v1.method.wrap_method(
                 self.save_snapshot,
                 default_timeout=None,
@@ -167,6 +182,16 @@ class EnvironmentsTransport(abc.ABC):
             ),
             self.load_snapshot: gapic_v1.method.wrap_method(
                 self.load_snapshot,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.database_failover: gapic_v1.method.wrap_method(
+                self.database_failover,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.fetch_database_properties: gapic_v1.method.wrap_method(
+                self.fetch_database_properties,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -253,6 +278,42 @@ class EnvironmentsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def execute_airflow_command(
+        self,
+    ) -> Callable[
+        [environments.ExecuteAirflowCommandRequest],
+        Union[
+            environments.ExecuteAirflowCommandResponse,
+            Awaitable[environments.ExecuteAirflowCommandResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def stop_airflow_command(
+        self,
+    ) -> Callable[
+        [environments.StopAirflowCommandRequest],
+        Union[
+            environments.StopAirflowCommandResponse,
+            Awaitable[environments.StopAirflowCommandResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def poll_airflow_command(
+        self,
+    ) -> Callable[
+        [environments.PollAirflowCommandRequest],
+        Union[
+            environments.PollAirflowCommandResponse,
+            Awaitable[environments.PollAirflowCommandResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def save_snapshot(
         self,
     ) -> Callable[
@@ -267,6 +328,27 @@ class EnvironmentsTransport(abc.ABC):
     ) -> Callable[
         [environments.LoadSnapshotRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def database_failover(
+        self,
+    ) -> Callable[
+        [environments.DatabaseFailoverRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_database_properties(
+        self,
+    ) -> Callable[
+        [environments.FetchDatabasePropertiesRequest],
+        Union[
+            environments.FetchDatabasePropertiesResponse,
+            Awaitable[environments.FetchDatabasePropertiesResponse],
+        ],
     ]:
         raise NotImplementedError()
 
