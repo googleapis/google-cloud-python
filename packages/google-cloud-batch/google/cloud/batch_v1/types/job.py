@@ -622,7 +622,6 @@ class AllocationPolicy(proto.Message):
                 The minimum CPU platform.
                 See
                 https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform.
-                Not yet implemented.
             provisioning_model (google.cloud.batch_v1.types.AllocationPolicy.ProvisioningModel):
                 The provisioning model.
             accelerators (MutableSequence[google.cloud.batch_v1.types.AllocationPolicy.Accelerator]):
@@ -841,8 +840,8 @@ class AllocationPolicy(proto.Message):
 
 
 class TaskGroup(proto.Message):
-    r"""A TaskGroup contains one or multiple Tasks that share the
-    same Runnable but with different runtime parameters.
+    r"""A TaskGroup defines one or more Tasks that all share the same
+    TaskSpec.
 
     Attributes:
         name (str):
@@ -860,6 +859,9 @@ class TaskGroup(proto.Message):
             Max number of tasks that can run in parallel. Default to
             min(task_count, 1000). Field parallelism must be 1 if the
             scheduling_policy is IN_ORDER.
+        scheduling_policy (google.cloud.batch_v1.types.TaskGroup.SchedulingPolicy):
+            Scheduling policy for Tasks in the TaskGroup. The default
+            value is AS_SOON_AS_POSSIBLE.
         task_environments (MutableSequence[google.cloud.batch_v1.types.Environment]):
             An array of environment variable mappings, which are passed
             to Tasks with matching indices. If task_environments is used
@@ -873,8 +875,6 @@ class TaskGroup(proto.Message):
             Tasks in the Task's parent TaskGroup, and the specific
             Task's index in the TaskGroup (0 through BATCH_TASK_COUNT -
             1).
-
-            task_environments supports up to 200 entries.
         task_count_per_node (int):
             Max number of tasks that can be run on a VM
             at the same time. If not specified, the system
@@ -890,6 +890,26 @@ class TaskGroup(proto.Message):
             passwordless login between VMs running the Batch
             tasks in the same TaskGroup.
     """
+
+    class SchedulingPolicy(proto.Enum):
+        r"""How Tasks in the TaskGroup should be scheduled relative to
+        each other.
+
+        Values:
+            SCHEDULING_POLICY_UNSPECIFIED (0):
+                Unspecified.
+            AS_SOON_AS_POSSIBLE (1):
+                Run Tasks as soon as resources are available.
+
+                Tasks might be executed in parallel depending on parallelism
+                and task_count values.
+            IN_ORDER (2):
+                Run Tasks sequentially with increased task
+                index.
+        """
+        SCHEDULING_POLICY_UNSPECIFIED = 0
+        AS_SOON_AS_POSSIBLE = 1
+        IN_ORDER = 2
 
     name: str = proto.Field(
         proto.STRING,
@@ -907,6 +927,11 @@ class TaskGroup(proto.Message):
     parallelism: int = proto.Field(
         proto.INT64,
         number=5,
+    )
+    scheduling_policy: SchedulingPolicy = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=SchedulingPolicy,
     )
     task_environments: MutableSequence[task.Environment] = proto.RepeatedField(
         proto.MESSAGE,

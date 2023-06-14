@@ -743,7 +743,6 @@ class AllocationPolicy(proto.Message):
                 The minimum CPU platform.
                 See
                 https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform.
-                Not yet implemented.
             provisioning_model (google.cloud.batch_v1alpha.types.AllocationPolicy.ProvisioningModel):
                 The provisioning model.
             accelerators (MutableSequence[google.cloud.batch_v1alpha.types.AllocationPolicy.Accelerator]):
@@ -993,8 +992,8 @@ class AllocationPolicy(proto.Message):
 
 
 class TaskGroup(proto.Message):
-    r"""A TaskGroup contains one or multiple Tasks that share the
-    same Runnable but with different runtime parameters.
+    r"""A TaskGroup defines one or more Tasks that all share the same
+    TaskSpec.
 
     Attributes:
         name (str):
@@ -1039,8 +1038,6 @@ class TaskGroup(proto.Message):
             Tasks in the Task's parent TaskGroup, and the specific
             Task's index in the TaskGroup (0 through BATCH_TASK_COUNT -
             1).
-
-            task_environments supports up to 200 entries.
         task_count_per_node (int):
             Max number of tasks that can be run on a VM
             at the same time. If not specified, the system
@@ -1072,7 +1069,6 @@ class TaskGroup(proto.Message):
             IN_ORDER (2):
                 Run Tasks sequentially with increased task
                 index.
-                Not yet implemented.
         """
         SCHEDULING_POLICY_UNSPECIFIED = 0
         AS_SOON_AS_POSSIBLE = 1
