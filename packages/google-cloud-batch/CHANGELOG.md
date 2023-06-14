@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.12.0](https://github.com/googleapis/python-batch/compare/v0.11.0...v0.12.0) (2023-06-14)
+
+
+### Features
+
+* **v1:** Add support for scheduling_policy ([23d3a5e](https://github.com/googleapis/python-batch/commit/23d3a5ebe524426507283087b7f2529ad9de65dd))
+
+
+### Documentation
+
+* Minor clarifications for TaskGroup and min_cpu_platform ([23d3a5e](https://github.com/googleapis/python-batch/commit/23d3a5ebe524426507283087b7f2529ad9de65dd))
+
 ## [0.11.0](https://github.com/googleapis/python-batch/compare/v0.10.0...v0.11.0) (2023-05-25)
 
 
