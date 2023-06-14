@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.8.0...google-cloud-orchestration-airflow-v1.9.0) (2023-06-14)
+
+
+### Features
+
+* added RPCs StopAirflowCommand, ExecuteAirflowCommand, PollAirflowCommand, DatabaseFailover, FetchDatabaseProperties ([#11400](https://github.com/googleapis/google-cloud-python/issues/11400)) ([b2dc3e5](https://github.com/googleapis/google-cloud-python/commit/b2dc3e585c8f942aac1c4db204792378a5ea72e8))
+
 ## [1.8.0](https://github.com/googleapis/python-orchestration-airflow/compare/v1.7.1...v1.8.0) (2023-05-25)
 
 
