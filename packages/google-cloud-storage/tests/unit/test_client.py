@@ -1928,6 +1928,7 @@ class TestClient(unittest.TestCase):
         page_token = "ABCD"
         prefix = "subfolder"
         delimiter = "/"
+        match_glob = "**txt"
         start_offset = "c"
         end_offset = "g"
         include_trailing_delimiter = True
@@ -1962,6 +1963,7 @@ class TestClient(unittest.TestCase):
             page_size=page_size,
             timeout=timeout,
             retry=retry,
+            match_glob=match_glob,
         )
 
         self.assertIs(iterator, client._list_resource.return_value)
@@ -1976,6 +1978,7 @@ class TestClient(unittest.TestCase):
             "projection": projection,
             "prefix": prefix,
             "delimiter": delimiter,
+            "matchGlob": match_glob,
             "startOffset": start_offset,
             "endOffset": end_offset,
             "includeTrailingDelimiter": include_trailing_delimiter,

@@ -1143,6 +1143,7 @@ class Test_Bucket(unittest.TestCase):
         expected_max_results = None
         expected_prefix = None
         expected_delimiter = None
+        expected_match_glob = None
         expected_start_offset = None
         expected_end_offset = None
         expected_include_trailing_delimiter = None
@@ -1163,6 +1164,7 @@ class Test_Bucket(unittest.TestCase):
             fields=expected_fields,
             timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY,
+            match_glob=expected_match_glob,
         )
 
     def test_list_blobs_w_explicit(self):
@@ -1171,6 +1173,7 @@ class Test_Bucket(unittest.TestCase):
         page_token = "ABCD"
         prefix = "subfolder"
         delimiter = "/"
+        match_glob = "**txt"
         start_offset = "c"
         end_offset = "g"
         include_trailing_delimiter = True
@@ -1197,6 +1200,7 @@ class Test_Bucket(unittest.TestCase):
             client=other_client,
             timeout=timeout,
             retry=retry,
+            match_glob=match_glob,
         )
 
         self.assertIs(iterator, other_client.list_blobs.return_value)
@@ -1205,6 +1209,7 @@ class Test_Bucket(unittest.TestCase):
         expected_max_results = max_results
         expected_prefix = prefix
         expected_delimiter = delimiter
+        expected_match_glob = match_glob
         expected_start_offset = start_offset
         expected_end_offset = end_offset
         expected_include_trailing_delimiter = include_trailing_delimiter
@@ -1225,6 +1230,7 @@ class Test_Bucket(unittest.TestCase):
             fields=expected_fields,
             timeout=timeout,
             retry=retry,
+            match_glob=expected_match_glob,
         )
 
     def test_list_notifications_w_defaults(self):

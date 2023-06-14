@@ -1290,6 +1290,7 @@ class Bucket(_PropertyMixin):
         client=None,
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
+        match_glob=None,
     ):
         """Return an iterator used to find blobs in the bucket.
 
@@ -1365,6 +1366,12 @@ class Bucket(_PropertyMixin):
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
 
+        :type match_glob: str
+        :param match_glob:
+            (Optional) A glob pattern used to filter results (for example, foo*bar).
+            The string value must be UTF-8 encoded. See:
+            https://cloud.google.com/storage/docs/json_api/v1/objects/list#list-object-glob
+
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
                   in this bucket matching the arguments.
@@ -1384,6 +1391,7 @@ class Bucket(_PropertyMixin):
             fields=fields,
             timeout=timeout,
             retry=retry,
+            match_glob=match_glob,
         )
 
     def list_notifications(

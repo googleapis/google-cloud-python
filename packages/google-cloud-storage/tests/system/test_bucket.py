@@ -621,6 +621,38 @@ def test_bucket_list_blobs_hierarchy_w_include_trailing_delimiter(
     assert iterator.prefixes == expected_prefixes
 
 
+@_helpers.retry_failures
+def test_bucket_list_blobs_w_match_glob(
+    storage_client,
+    buckets_to_delete,
+    blobs_to_delete,
+):
+    bucket_name = _helpers.unique_name("w-matchglob")
+    bucket = _helpers.retry_429_503(storage_client.create_bucket)(bucket_name)
+    buckets_to_delete.append(bucket)
+
+    payload = b"helloworld"
+    blob_names = ["foo/bar", "foo/baz", "foo/foobar", "foobar"]
+    for name in blob_names:
+        blob = bucket.blob(name)
+        blob.upload_from_string(payload)
+        blobs_to_delete.append(blob)
+
+    match_glob_results = {
+        "foo*bar": ["foobar"],
+        "foo**bar": ["foo/bar", "foo/foobar", "foobar"],
+        "**/foobar": ["foo/foobar", "foobar"],
+        "*/ba[rz]": ["foo/bar", "foo/baz"],
+        "*/ba[!a-y]": ["foo/baz"],
+        "**/{foobar,baz}": ["foo/baz", "foo/foobar", "foobar"],
+        "foo/{foo*,*baz}": ["foo/baz", "foo/foobar"],
+    }
+    for match_glob, expected_names in match_glob_results.items():
+        blob_iter = bucket.list_blobs(match_glob=match_glob)
+        blobs = list(blob_iter)
+        assert [blob.name for blob in blobs] == expected_names
+
+
 def test_bucket_w_retention_period(
     storage_client,
     buckets_to_delete,
