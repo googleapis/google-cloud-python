@@ -545,11 +545,15 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
           {% if not field.oneof or field.proto3_optional %}
             {{ field.name }}={{ field.mock_value }},
             {% endif %}{% endfor %}
-            {# This is a hack to only pick one field  #}
+            {# This is a hack to only pick one field #}
             {% for oneof_fields in method.output.oneof_fields().values() %}
-            {% with field = oneof_fields[0] %}
+            {# Take the first non-message oneof field. In the corner case when all the fields of a oneof are messages, the oneof will not be populated #}
+            {# Use an outer if-statement here because `first` raises an error if called on an empty sequence #}
+            {% if (oneof_fields | rejectattr('message') | list) %}
+            {% with field = (oneof_fields | rejectattr('message') | first) %}
             {{ field.name }}={{ field.mock_value }},
             {% endwith %}
+            {% endif %}
             {% endfor %}
         )
         {% endif %}
@@ -959,11 +963,13 @@ def test_{{ method_name }}_rest(request_type, transport: str = 'rest'):
             {% if not field.oneof or field.proto3_optional %}
               {{ field.name }}={{ field.mock_value }},
               {% endif %}{% endfor %}
-              {# This is a hack to only pick one field  #}
+              {# This is a hack to only pick one field #}
               {% for oneof_fields in method.output.oneof_fields().values() %}
-              {% with field = oneof_fields[0] %}
+              {% if (oneof_fields | rejectattr('message') | list) %}
+              {% with field = (oneof_fields | rejectattr('message') | first) %}
               {{ field.name }}={{ field.mock_value }},
               {% endwith %}
+              {% endif %}
               {% endfor %}
         )
         {% endif %}
@@ -1029,11 +1035,13 @@ def test_{{ method.name|snake_case }}_rest(request_type):
             {% if not field.oneof or field.proto3_optional %}
               {{ field.name }}={{ field.mock_value }},
               {% endif %}{% endfor %}
-              {# This is a hack to only pick one field  #}
+              {# This is a hack to only pick one field #}
               {% for oneof_fields in method.output.oneof_fields().values() %}
-              {% with field = oneof_fields[0] %}
+              {% if (oneof_fields | rejectattr('message') | list) %}
+              {% with field = (oneof_fields | rejectattr('message') | first) %}
               {{ field.name }}={{ field.mock_value }},
               {% endwith %}
+              {% endif %}
               {% endfor %}
         )
         {% endif %}
