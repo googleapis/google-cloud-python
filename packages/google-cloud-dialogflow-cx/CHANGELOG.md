@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.22.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.21.0...v1.22.0) (2023-06-13)
+
+
+### Features
+
+* Add support for flexible webhook ([ba8d7d3](https://github.com/googleapis/python-dialogflow-cx/commit/ba8d7d341063fcd2ed1591ea84efb395340bc960))
+
+
+### Documentation
+
+* Update synthesize speech configs's documentation ([ba8d7d3](https://github.com/googleapis/python-dialogflow-cx/commit/ba8d7d341063fcd2ed1591ea84efb395340bc960))
+
 ## [1.21.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.20.1...v1.21.0) (2023-05-25)
 
 
