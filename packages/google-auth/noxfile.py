@@ -145,7 +145,7 @@ def docs(session):
 
 @nox.session(python="pypy")
 def pypy(session):
-    session.install("-r", "test/requirements.txt")
+    session.install("-r", "testing/requirements.txt")
     session.install("-e", ".")
     session.run(
         "pytest",
