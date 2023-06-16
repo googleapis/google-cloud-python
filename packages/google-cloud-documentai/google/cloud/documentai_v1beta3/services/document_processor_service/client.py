@@ -109,11 +109,11 @@ class DocumentProcessorServiceClientMeta(type):
 
 
 class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMeta):
-    """Service to call Cloud DocumentAI to process documents
-    according to the processor's definition. Processors are built
-    using state-of-the-art Google AI such as natural language,
-    computer vision, and translation to extract structured
-    information from unstructured or semi-structured documents.
+    """Service to call Document AI to process documents according to
+    the processor's definition. Processors are built using
+    state-of-the-art Google AI such as natural language, computer
+    vision, and translation to extract structured information from
+    unstructured or semi-structured documents.
     """
 
     @staticmethod
@@ -603,8 +603,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.ProcessRequest, dict]):
-                The request object. Request message for the process
-                document method.
+                The request object. Request message for the
+                [ProcessDocument][google.cloud.documentai.v1beta3.DocumentProcessorService.ProcessDocument]
+                method.
             name (str):
                 Required. The resource name of the
                 [Processor][google.cloud.documentai.v1beta3.Processor]
@@ -630,8 +631,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Returns:
             google.cloud.documentai_v1beta3.types.ProcessResponse:
-                Response message for the process
-                document method.
+                Response message for the
+                   [ProcessDocument][google.cloud.documentai.v1beta3.DocumentProcessorService.ProcessDocument]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
@@ -722,8 +724,8 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.BatchProcessRequest, dict]):
-                The request object. Request message for batch process
-                document method.
+                The request object. Request message for
+                [BatchProcessDocuments][google.cloud.documentai.v1beta3.DocumentProcessorService.BatchProcessDocuments].
             name (str):
                 Required. The resource name of
                 [Processor][google.cloud.documentai.v1beta3.Processor]
@@ -747,9 +749,8 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.documentai_v1beta3.types.BatchProcessResponse`
-                Response message for batch process document method.
+                The result type for the operation will be :class:`google.cloud.documentai_v1beta3.types.BatchProcessResponse` Response message for
+                   [BatchProcessDocuments][google.cloud.documentai.v1beta3.DocumentProcessorService.BatchProcessDocuments].
 
         """
         # Create or coerce a protobuf request object.
@@ -813,8 +814,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_processor_service.FetchProcessorTypesResponse:
-        r"""Fetches processor types. Note that we do not use
-        ListProcessorTypes here because it is not paginated.
+        r"""Fetches processor types. Note that we don't use
+        [ListProcessorTypes][google.cloud.documentai.v1beta3.DocumentProcessorService.ListProcessorTypes]
+        here, because it isn't paginated.
 
         .. code-block:: python
 
@@ -844,13 +846,13 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.FetchProcessorTypesRequest, dict]):
-                The request object. Request message for fetch processor
-                types.
+                The request object. Request message for the
+                [FetchProcessorTypes][google.cloud.documentai.v1beta3.DocumentProcessorService.FetchProcessorTypes]
+                method. Some processor types may require the project be
+                added to an allowlist.
             parent (str):
-                Required. The project of processor type to list. The
-                available processor types may depend on the
-                allow-listing on projects. Format:
-                ``projects/{project}/locations/{location}``
+                Required. The location of processor types to list.
+                Format: ``projects/{project}/locations/{location}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -863,8 +865,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Returns:
             google.cloud.documentai_v1beta3.types.FetchProcessorTypesResponse:
-                Response message for fetch processor
-                types.
+                Response message for the
+                   [FetchProcessorTypes][google.cloud.documentai.v1beta3.DocumentProcessorService.FetchProcessorTypes]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
@@ -953,13 +956,13 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.ListProcessorTypesRequest, dict]):
-                The request object. Request message for list processor
-                types.
+                The request object. Request message for the
+                [ListProcessorTypes][google.cloud.documentai.v1beta3.DocumentProcessorService.ListProcessorTypes]
+                method. Some processor types may require the project be
+                added to an allowlist.
             parent (str):
-                Required. The location of processor type to list. The
-                available processor types may depend on the
-                allow-listing on projects. Format:
-                ``projects/{project}/locations/{location}``
+                Required. The location of processor types to list.
+                Format: ``projects/{project}/locations/{location}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -972,11 +975,12 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Returns:
             google.cloud.documentai_v1beta3.services.document_processor_service.pagers.ListProcessorTypesPager:
-                Response message for list processor
-                types.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
+                Response message for the
+                   [ListProcessorTypes][google.cloud.documentai.v1beta3.DocumentProcessorService.ListProcessorTypes]
+                   method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1073,7 +1077,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.GetProcessorTypeRequest, dict]):
-                The request object. Request message for get processor.
+                The request object. Request message for the
+                [GetProcessorType][google.cloud.documentai.v1beta3.DocumentProcessorService.GetProcessorType]
+                method.
             name (str):
                 Required. The processor type resource
                 name.
@@ -1197,10 +1203,12 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Returns:
             google.cloud.documentai_v1beta3.services.document_processor_service.pagers.ListProcessorsPager:
-                Response message for list processors.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
+                Response message for the
+                   [ListProcessors][google.cloud.documentai.v1beta3.DocumentProcessorService.ListProcessors]
+                   method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1295,7 +1303,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.GetProcessorRequest, dict]):
-                The request object. Request message for get processor.
+                The request object. Request message for the
+                [GetProcessor][google.cloud.documentai.v1beta3.DocumentProcessorService.GetProcessor]
+                method.
             name (str):
                 Required. The processor resource
                 name.
@@ -1372,7 +1382,8 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Trains a new processor version. Operation metadata is returned
-        as cloud_documentai_core.TrainProcessorVersionMetadata.
+        as
+        [TrainProcessorVersionMetadata][google.cloud.documentai.v1beta3.TrainProcessorVersionMetadata].
 
         .. code-block:: python
 
@@ -1406,8 +1417,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.TrainProcessorVersionRequest, dict]):
-                The request object. Request message for the create
-                processor version method.
+                The request object. Request message for the
+                [TrainProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.TrainProcessorVersion]
+                method.
             parent (str):
                 Required. The parent (project, location and processor)
                 to create the new version for. Format:
@@ -1433,9 +1445,8 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.documentai_v1beta3.types.TrainProcessorVersionResponse`
-                The response for the TrainProcessorVersion method.
+                The result type for the operation will be :class:`google.cloud.documentai_v1beta3.types.TrainProcessorVersionResponse` The response for
+                   [TrainProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.TrainProcessorVersion].
 
         """
         # Create or coerce a protobuf request object.
@@ -1533,8 +1544,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.GetProcessorVersionRequest, dict]):
-                The request object. Request message for get processor
-                version.
+                The request object. Request message for the
+                [GetProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.GetProcessorVersion]
+                method.
             name (str):
                 Required. The processor resource
                 name.
@@ -1553,12 +1565,11 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
                 A processor version is an
                 implementation of a processor. Each
                 processor can have multiple versions,
-                pre-trained by Google internally or
-                up-trained by the customer. At a time, a
-                processor can only have one default
-                version version. So the processor's
-                behavior (when processing documents) is
-                defined by a default version
+                pretrained by Google internally or
+                uptrained by the customer. A processor
+                can only have one default version at a
+                time. Its document-processing behavior
+                is defined by that version.
 
         """
         # Create or coerce a protobuf request object.
@@ -1666,10 +1677,12 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Returns:
             google.cloud.documentai_v1beta3.services.document_processor_service.pagers.ListProcessorVersionsPager:
-                Response message for list processors.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
+                Response message for the
+                   [ListProcessorVersions][google.cloud.documentai.v1beta3.DocumentProcessorService.ListProcessorVersions]
+                   method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1771,8 +1784,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.DeleteProcessorVersionRequest, dict]):
-                The request object. Request message for the delete
-                processor version method.
+                The request object. Request message for the
+                [DeleteProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.DeleteProcessorVersion]
+                method.
             name (str):
                 Required. The processor version
                 resource name to be deleted.
@@ -1899,8 +1913,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.DeployProcessorVersionRequest, dict]):
-                The request object. Request message for the deploy
-                processor version method.
+                The request object. Request message for the
+                [DeployProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.DeployProcessorVersion]
+                method.
             name (str):
                 Required. The processor version
                 resource name to be deployed.
@@ -1918,10 +1933,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.documentai_v1beta3.types.DeployProcessorVersionResponse`
-                Response message for the deploy processor version
-                method.
+                The result type for the operation will be :class:`google.cloud.documentai_v1beta3.types.DeployProcessorVersionResponse` Response message for the
+                   [DeployProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.DeployProcessorVersion]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
@@ -2021,8 +2035,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.UndeployProcessorVersionRequest, dict]):
-                The request object. Request message for the undeploy
-                processor version method.
+                The request object. Request message for the
+                [UndeployProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.UndeployProcessorVersion]
+                method.
             name (str):
                 Required. The processor version
                 resource name to be undeployed.
@@ -2040,10 +2055,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.documentai_v1beta3.types.UndeployProcessorVersionResponse`
-                Response message for the undeploy processor version
-                method.
+                The result type for the operation will be :class:`google.cloud.documentai_v1beta3.types.UndeployProcessorVersionResponse` Response message for the
+                   [UndeployProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.UndeployProcessorVersion]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
@@ -2114,9 +2128,10 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_processor.Processor:
-        r"""Creates a processor from the type processor that the
-        user chose. The processor will be at "ENABLED" state by
-        default after its creation.
+        r"""Creates a processor from the
+        [ProcessorType][google.cloud.documentai.v1beta3.ProcessorType]
+        provided. The processor will be at ``ENABLED`` state by default
+        after its creation.
 
         .. code-block:: python
 
@@ -2146,11 +2161,12 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.CreateProcessorRequest, dict]):
-                The request object. Request message for create a
-                processor. Notice this request is sent
-                to a regionalized backend service, and
-                if the processor type is not available
-                on that region, the creation will fail.
+                The request object. Request message for the
+                [CreateProcessor][google.cloud.documentai.v1beta3.DocumentProcessorService.CreateProcessor]
+                method. Notice this request is sent to a regionalized
+                backend service. If the
+                [ProcessorType][google.cloud.documentai.v1beta3.ProcessorType]
+                isn't available in that region, the creation fails.
             parent (str):
                 Required. The parent (project and location) under which
                 to create the processor. Format:
@@ -2161,8 +2177,10 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
                 should not be set.
             processor (google.cloud.documentai_v1beta3.types.Processor):
                 Required. The processor to be created, requires
-                [processor_type] and [display_name] to be set. Also, the
-                processor is under CMEK if CMEK fields are set.
+                [Processor.type][google.cloud.documentai.v1beta3.Processor.type]
+                and [Processor.display_name]][] to be set. Also, the
+                [Processor.kms_key_name][google.cloud.documentai.v1beta3.Processor.kms_key_name]
+                field must be set if the processor is under CMEK.
 
                 This corresponds to the ``processor`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2272,8 +2290,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.DeleteProcessorRequest, dict]):
-                The request object. Request message for the delete
-                processor method.
+                The request object. Request message for the
+                [DeleteProcessor][google.cloud.documentai.v1beta3.DocumentProcessorService.DeleteProcessor]
+                method.
             name (str):
                 Required. The processor resource name
                 to be deleted.
@@ -2397,8 +2416,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.EnableProcessorRequest, dict]):
-                The request object. Request message for the enable
-                processor method.
+                The request object. Request message for the
+                [EnableProcessor][google.cloud.documentai.v1beta3.DocumentProcessorService.EnableProcessor]
+                method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2409,9 +2429,10 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.documentai_v1beta3.types.EnableProcessorResponse` Response message for the enable processor method.
-                   Intentionally empty proto for adding fields in
-                   future.
+                The result type for the operation will be :class:`google.cloud.documentai_v1beta3.types.EnableProcessorResponse` Response message for the
+                   [EnableProcessor][google.cloud.documentai.v1beta3.DocumentProcessorService.EnableProcessor]
+                   method. Intentionally empty proto for adding fields
+                   in future.
 
         """
         # Create or coerce a protobuf request object.
@@ -2495,8 +2516,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.DisableProcessorRequest, dict]):
-                The request object. Request message for the disable
-                processor method.
+                The request object. Request message for the
+                [DisableProcessor][google.cloud.documentai.v1beta3.DocumentProcessorService.DisableProcessor]
+                method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2507,9 +2529,10 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.documentai_v1beta3.types.DisableProcessorResponse` Response message for the disable processor method.
-                   Intentionally empty proto for adding fields in
-                   future.
+                The result type for the operation will be :class:`google.cloud.documentai_v1beta3.types.DisableProcessorResponse` Response message for the
+                   [DisableProcessor][google.cloud.documentai.v1beta3.DocumentProcessorService.DisableProcessor]
+                   method. Intentionally empty proto for adding fields
+                   in future.
 
         """
         # Create or coerce a protobuf request object.
@@ -2599,8 +2622,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.SetDefaultProcessorVersionRequest, dict]):
-                The request object. Request message for the set default
-                processor version method.
+                The request object. Request message for the
+                [SetDefaultProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.SetDefaultProcessorVersion]
+                method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2611,10 +2635,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.documentai_v1beta3.types.SetDefaultProcessorVersionResponse`
-                Response message for set default processor version
-                method.
+                The result type for the operation will be :class:`google.cloud.documentai_v1beta3.types.SetDefaultProcessorVersionResponse` Response message for the
+                   [SetDefaultProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.SetDefaultProcessorVersion]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
@@ -2712,12 +2735,13 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.ReviewDocumentRequest, dict]):
-                The request object. Request message for review document
+                The request object. Request message for the
+                [ReviewDocument][google.cloud.documentai.v1beta3.DocumentProcessorService.ReviewDocument]
                 method.
             human_review_config (str):
                 Required. The resource name of the
-                HumanReviewConfig that the document will
-                be reviewed with.
+                [HumanReviewConfig][google.cloud.documentai.v1beta3.HumanReviewConfig]
+                that the document will be reviewed with.
 
                 This corresponds to the ``human_review_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2732,9 +2756,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.documentai_v1beta3.types.ReviewDocumentResponse`
-                Response message for review document method.
+                The result type for the operation will be :class:`google.cloud.documentai_v1beta3.types.ReviewDocumentResponse` Response message for the
+                   [ReviewDocument][google.cloud.documentai.v1beta3.DocumentProcessorService.ReviewDocument]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
@@ -2835,7 +2859,8 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.EvaluateProcessorVersionRequest, dict]):
-                The request object. Evaluates the given ProcessorVersion
+                The request object. Evaluates the given
+                [ProcessorVersion][google.cloud.documentai.v1beta3.ProcessorVersion]
                 against the supplied documents.
             processor_version (str):
                 Required. The resource name of the
@@ -2856,9 +2881,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.documentai_v1beta3.types.EvaluateProcessorVersionResponse`
-                Metadata of the EvaluateProcessorVersion method.
+                The result type for the operation will be :class:`google.cloud.documentai_v1beta3.types.EvaluateProcessorVersionResponse` Response of the
+                   [EvaluateProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.EvaluateProcessorVersion]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
@@ -3067,8 +3092,8 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.ListEvaluationsRequest, dict]):
-                The request object. Retrieves a list of evaluations for a
-                given ProcessorVersion.
+                The request object. Retrieves a list of evaluations for a given
+                [ProcessorVersion][google.cloud.documentai.v1beta3.ProcessorVersion].
             parent (str):
                 Required. The resource name of the
                 [ProcessorVersion][google.cloud.documentai.v1beta3.ProcessorVersion]
@@ -3087,9 +3112,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         Returns:
             google.cloud.documentai_v1beta3.services.document_processor_service.pagers.ListEvaluationsPager:
                 The response from ListEvaluations.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -3190,18 +3215,24 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.ImportProcessorVersionRequest, dict]):
-                The request object. The request message for the ImportProcessorVersion
-                method. This method requires Document AI Service Agent
-                of the destination project in the source project's IAM
-                with `Document AI Editor
-                role <https://cloud.google.com/document-ai/docs/access-control/iam-roles>`__.
+                The request object. The request message for the
+                [ImportProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.ImportProcessorVersion]
+                method. Requirements:
+
+                -  The source processor version and destination
+                   processor must be in the same location.
+                -  The Document AI `Service
+                   Agent <https://cloud.google.com/iam/docs/service-agents>`__
+                   of the destination project must have `Document AI
+                   Editor
+                   role <https://cloud.google.com/document-ai/docs/access-control/iam-roles>`__
+                   on the source project.
 
                 The destination project is specified as part of the
-                ``parent`` field. The source project is specified as
-                part of ``source`` field.
-
-                The Service Agent for Document AI can be found in
-                https://cloud.google.com/iam/docs/service-agents.
+                [parent][google.cloud.documentai.v1beta3.ImportProcessorVersionRequest.parent]
+                field. The source project is specified as part of the
+                [source][google.cloud.documentai.v1beta3.ImportProcessorVersionRequest.processor_version_source]
+                field.
             parent (str):
                 Required. The destination processor name to create the
                 processor version in. Format:
@@ -3220,10 +3251,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.documentai_v1beta3.types.ImportProcessorVersionResponse`
-                The response message for the ImportProcessorVersion
-                method.
+                The result type for the operation will be :class:`google.cloud.documentai_v1beta3.types.ImportProcessorVersionResponse` The response message for the
+                   [ImportProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.ImportProcessorVersion]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
