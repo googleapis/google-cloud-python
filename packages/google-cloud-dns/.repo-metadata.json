@@ -6,7 +6,7 @@
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559772",
     "release_level": "preview",
     "language": "python",
-    "library_type": "GAPIC_MANUAL",
+    "library_type": "REST",
     "repo": "googleapis/python-dns",
     "distribution_name": "google-cloud-dns",
     "requires_billing": true,
