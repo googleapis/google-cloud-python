@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    analyticshub_v1/services
-    analyticshub_v1/types
+    bigquery_analyticshub_v1/services
+    bigquery_analyticshub_v1/types
 
 
 Changelog

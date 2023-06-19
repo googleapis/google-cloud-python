@@ -181,6 +181,21 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         return self._transport
 
     @staticmethod
+    def project_billing_info_path(
+        project: str,
+    ) -> str:
+        """Returns a fully-qualified project_billing_info string."""
+        return "projects/{project}/billingInfo".format(
+            project=project,
+        )
+
+    @staticmethod
+    def parse_project_billing_info_path(path: str) -> Dict[str, str]:
+        """Parses a project_billing_info path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/billingInfo$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:

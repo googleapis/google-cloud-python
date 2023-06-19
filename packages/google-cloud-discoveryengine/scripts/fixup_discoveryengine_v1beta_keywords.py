@@ -48,7 +48,7 @@ class discoveryengineCallTransformer(cst.CSTTransformer):
         'get_document': ('name', ),
         'get_schema': ('name', ),
         'import_documents': ('parent', 'inline_source', 'gcs_source', 'bigquery_source', 'error_config', 'reconciliation_mode', 'auto_generate_ids', 'id_field', ),
-        'import_user_events': ('inline_source', 'gcs_source', 'bigquery_source', 'parent', 'error_config', ),
+        'import_user_events': ('parent', 'inline_source', 'gcs_source', 'bigquery_source', 'error_config', ),
         'list_documents': ('parent', 'page_size', 'page_token', ),
         'list_schemas': ('parent', 'page_size', 'page_token', ),
         'purge_documents': ('parent', 'filter', 'force', ),

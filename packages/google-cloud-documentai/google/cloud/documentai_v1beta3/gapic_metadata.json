@@ -368,6 +368,70 @@
           }
         }
       }
+    },
+    "DocumentService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "DocumentServiceClient",
+          "rpcs": {
+            "GetDatasetSchema": {
+              "methods": [
+                "get_dataset_schema"
+              ]
+            },
+            "UpdateDataset": {
+              "methods": [
+                "update_dataset"
+              ]
+            },
+            "UpdateDatasetSchema": {
+              "methods": [
+                "update_dataset_schema"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "DocumentServiceAsyncClient",
+          "rpcs": {
+            "GetDatasetSchema": {
+              "methods": [
+                "get_dataset_schema"
+              ]
+            },
+            "UpdateDataset": {
+              "methods": [
+                "update_dataset"
+              ]
+            },
+            "UpdateDatasetSchema": {
+              "methods": [
+                "update_dataset_schema"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "DocumentServiceClient",
+          "rpcs": {
+            "GetDatasetSchema": {
+              "methods": [
+                "get_dataset_schema"
+              ]
+            },
+            "UpdateDataset": {
+              "methods": [
+                "update_dataset"
+              ]
+            },
+            "UpdateDatasetSchema": {
+              "methods": [
+                "update_dataset_schema"
+              ]
+            }
+          }
+        }
+      }
     }
   }
 }

@@ -22,7 +22,9 @@ from .services.document_processor_service import (
     DocumentProcessorServiceAsyncClient,
     DocumentProcessorServiceClient,
 )
+from .services.document_service import DocumentServiceAsyncClient, DocumentServiceClient
 from .types.barcode import Barcode
+from .types.dataset import Dataset, DatasetSchema
 from .types.document import Document
 from .types.document_io import (
     BatchDocumentsInputConfig,
@@ -88,7 +90,13 @@ from .types.document_processor_service import (
     UndeployProcessorVersionRequest,
     UndeployProcessorVersionResponse,
 )
-from .types.document_schema import DocumentSchema
+from .types.document_schema import DocumentSchema, EntityTypeMetadata, PropertyMetadata
+from .types.document_service import (
+    GetDatasetSchemaRequest,
+    UpdateDatasetOperationMetadata,
+    UpdateDatasetRequest,
+    UpdateDatasetSchemaRequest,
+)
 from .types.evaluation import Evaluation, EvaluationReference
 from .types.geometry import BoundingPoly, NormalizedVertex, Vertex
 from .types.operation_metadata import CommonOperationMetadata
@@ -97,6 +105,7 @@ from .types.processor_type import ProcessorType
 
 __all__ = (
     "DocumentProcessorServiceAsyncClient",
+    "DocumentServiceAsyncClient",
     "Barcode",
     "BatchDocumentsInputConfig",
     "BatchProcessMetadata",
@@ -105,6 +114,8 @@ __all__ = (
     "BoundingPoly",
     "CommonOperationMetadata",
     "CreateProcessorRequest",
+    "Dataset",
+    "DatasetSchema",
     "DeleteProcessorMetadata",
     "DeleteProcessorRequest",
     "DeleteProcessorVersionMetadata",
@@ -119,9 +130,11 @@ __all__ = (
     "DocumentOutputConfig",
     "DocumentProcessorServiceClient",
     "DocumentSchema",
+    "DocumentServiceClient",
     "EnableProcessorMetadata",
     "EnableProcessorRequest",
     "EnableProcessorResponse",
+    "EntityTypeMetadata",
     "EvaluateProcessorVersionMetadata",
     "EvaluateProcessorVersionRequest",
     "EvaluateProcessorVersionResponse",
@@ -132,6 +145,7 @@ __all__ = (
     "GcsDocument",
     "GcsDocuments",
     "GcsPrefix",
+    "GetDatasetSchemaRequest",
     "GetEvaluationRequest",
     "GetProcessorRequest",
     "GetProcessorTypeRequest",
@@ -156,6 +170,7 @@ __all__ = (
     "Processor",
     "ProcessorType",
     "ProcessorVersion",
+    "PropertyMetadata",
     "RawDocument",
     "ReviewDocumentOperationMetadata",
     "ReviewDocumentRequest",
@@ -169,5 +184,8 @@ __all__ = (
     "UndeployProcessorVersionMetadata",
     "UndeployProcessorVersionRequest",
     "UndeployProcessorVersionResponse",
+    "UpdateDatasetOperationMetadata",
+    "UpdateDatasetRequest",
+    "UpdateDatasetSchemaRequest",
     "Vertex",
 )

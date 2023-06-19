@@ -311,6 +311,16 @@ class CloudChannelServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_sku_groups: gapic_v1.method.wrap_method(
+                self.list_sku_groups,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_sku_group_billable_skus: gapic_v1.method.wrap_method(
+                self.list_sku_group_billable_skus,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.lookup_offer: gapic_v1.method.wrap_method(
                 self.lookup_offer,
                 default_timeout=None,
@@ -746,6 +756,27 @@ class CloudChannelServiceTransport(abc.ABC):
     ) -> Callable[
         [service.DeleteChannelPartnerRepricingConfigRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_sku_groups(
+        self,
+    ) -> Callable[
+        [service.ListSkuGroupsRequest],
+        Union[service.ListSkuGroupsResponse, Awaitable[service.ListSkuGroupsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_sku_group_billable_skus(
+        self,
+    ) -> Callable[
+        [service.ListSkuGroupBillableSkusRequest],
+        Union[
+            service.ListSkuGroupBillableSkusResponse,
+            Awaitable[service.ListSkuGroupBillableSkusResponse],
+        ],
     ]:
         raise NotImplementedError()
 
