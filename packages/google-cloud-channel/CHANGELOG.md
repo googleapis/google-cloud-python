@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.14.0...google-cloud-channel-v1.15.0) (2023-06-19)
+
+
+### Features
+
+* Add support for ListSkuGroups and ListSkuGroupBillableSkus APIs in Cloud Channel APIs ([#11406](https://github.com/googleapis/google-cloud-python/issues/11406)) ([7f6b607](https://github.com/googleapis/google-cloud-python/commit/7f6b60708e9c7c8ac4df9ab6d7ce292cde01ad9b))
+
 ## [1.14.0](https://github.com/googleapis/python-channel/compare/v1.13.0...v1.14.0) (2023-05-25)
 
 
