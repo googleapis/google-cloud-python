@@ -371,6 +371,23 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def sku_group_path(
+        account: str,
+        sku_group: str,
+    ) -> str:
+        """Returns a fully-qualified sku_group string."""
+        return "accounts/{account}/skuGroups/{sku_group}".format(
+            account=account,
+            sku_group=sku_group,
+        )
+
+    @staticmethod
+    def parse_sku_group_path(path: str) -> Dict[str, str]:
+        """Parses a sku_group path into its component segments."""
+        m = re.match(r"^accounts/(?P<account>.+?)/skuGroups/(?P<sku_group>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:
@@ -5017,6 +5034,274 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+    def list_sku_groups(
+        self,
+        request: Optional[Union[service.ListSkuGroupsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListSkuGroupsPager:
+        r"""Lists the Rebilling supported SKU groups the account is
+        authorized to sell. Reference:
+        https://cloud.google.com/skus/sku-groups
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the account making the request and the
+           account being queried are different, or the account doesn't
+           exist.
+        -  INTERNAL: Any non-user error related to technical issues in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: If successful, the
+        [SkuGroup][google.cloud.channel.v1.SkuGroup] resources. The data
+        for each resource is displayed in the alphabetical order of SKU
+        group display name. The data for each resource is displayed in
+        the ascending order of
+        [SkuGroup.display_name][google.cloud.channel.v1.SkuGroup.display_name]
+
+        If unsuccessful, returns an error.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import channel_v1
+
+            def sample_list_sku_groups():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ListSkuGroupsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_sku_groups(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.channel_v1.types.ListSkuGroupsRequest, dict]):
+                The request object. Request message for ListSkuGroups.
+            parent (str):
+                Required. The resource name of the
+                account from which to list SKU groups.
+                Parent uses the format:
+                accounts/{account}.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.channel_v1.services.cloud_channel_service.pagers.ListSkuGroupsPager:
+                Response message for ListSkuGroups.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.ListSkuGroupsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.ListSkuGroupsRequest):
+            request = service.ListSkuGroupsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_sku_groups]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListSkuGroupsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_sku_group_billable_skus(
+        self,
+        request: Optional[Union[service.ListSkuGroupBillableSkusRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListSkuGroupBillableSkusPager:
+        r"""Lists the Billable SKUs in a given SKU group.
+
+        Possible error codes: PERMISSION_DENIED: If the account making
+        the request and the account being queried for are different, or
+        the account doesn't exist. INVALID_ARGUMENT: Missing or invalid
+        required parameters in the request. INTERNAL: Any non-user error
+        related to technical issue in the backend. In this case, contact
+        cloud channel support.
+
+        Return Value: If successful, the
+        [BillableSku][google.cloud.channel.v1.BillableSku] resources.
+        The data for each resource is displayed in the ascending order
+        of:
+
+        -  [BillableSku.service_display_name][google.cloud.channel.v1.BillableSku.service_display_name]
+        -  [BillableSku.sku_display_name][google.cloud.channel.v1.BillableSku.sku_display_name]
+
+        If unsuccessful, returns an error.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import channel_v1
+
+            def sample_list_sku_group_billable_skus():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ListSkuGroupBillableSkusRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_sku_group_billable_skus(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.channel_v1.types.ListSkuGroupBillableSkusRequest, dict]):
+                The request object. Request message for
+                ListSkuGroupBillableSkus.
+            parent (str):
+                Required. Resource name of the SKU group. Format:
+                accounts/{account}/skuGroups/{sku_group}.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.channel_v1.services.cloud_channel_service.pagers.ListSkuGroupBillableSkusPager:
+                Response message for
+                ListSkuGroupBillableSkus.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.ListSkuGroupBillableSkusRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.ListSkuGroupBillableSkusRequest):
+            request = service.ListSkuGroupBillableSkusRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_sku_group_billable_skus
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListSkuGroupBillableSkusPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
     def lookup_offer(
         self,

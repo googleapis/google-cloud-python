@@ -938,6 +938,262 @@ class ListChannelPartnerRepricingConfigsAsyncPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
+class ListSkuGroupsPager:
+    """A pager for iterating through ``list_sku_groups`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.channel_v1.types.ListSkuGroupsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``sku_groups`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListSkuGroups`` requests and continue to iterate
+    through the ``sku_groups`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.channel_v1.types.ListSkuGroupsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., service.ListSkuGroupsResponse],
+        request: service.ListSkuGroupsRequest,
+        response: service.ListSkuGroupsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.channel_v1.types.ListSkuGroupsRequest):
+                The initial request object.
+            response (google.cloud.channel_v1.types.ListSkuGroupsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListSkuGroupsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[service.ListSkuGroupsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[service.SkuGroup]:
+        for page in self.pages:
+            yield from page.sku_groups
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListSkuGroupsAsyncPager:
+    """A pager for iterating through ``list_sku_groups`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.channel_v1.types.ListSkuGroupsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``sku_groups`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListSkuGroups`` requests and continue to iterate
+    through the ``sku_groups`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.channel_v1.types.ListSkuGroupsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[service.ListSkuGroupsResponse]],
+        request: service.ListSkuGroupsRequest,
+        response: service.ListSkuGroupsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.channel_v1.types.ListSkuGroupsRequest):
+                The initial request object.
+            response (google.cloud.channel_v1.types.ListSkuGroupsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListSkuGroupsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[service.ListSkuGroupsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[service.SkuGroup]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.sku_groups:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListSkuGroupBillableSkusPager:
+    """A pager for iterating through ``list_sku_group_billable_skus`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.channel_v1.types.ListSkuGroupBillableSkusResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``billable_skus`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListSkuGroupBillableSkus`` requests and continue to iterate
+    through the ``billable_skus`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.channel_v1.types.ListSkuGroupBillableSkusResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., service.ListSkuGroupBillableSkusResponse],
+        request: service.ListSkuGroupBillableSkusRequest,
+        response: service.ListSkuGroupBillableSkusResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.channel_v1.types.ListSkuGroupBillableSkusRequest):
+                The initial request object.
+            response (google.cloud.channel_v1.types.ListSkuGroupBillableSkusResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListSkuGroupBillableSkusRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[service.ListSkuGroupBillableSkusResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[service.BillableSku]:
+        for page in self.pages:
+            yield from page.billable_skus
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListSkuGroupBillableSkusAsyncPager:
+    """A pager for iterating through ``list_sku_group_billable_skus`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.channel_v1.types.ListSkuGroupBillableSkusResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``billable_skus`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListSkuGroupBillableSkus`` requests and continue to iterate
+    through the ``billable_skus`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.channel_v1.types.ListSkuGroupBillableSkusResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[service.ListSkuGroupBillableSkusResponse]],
+        request: service.ListSkuGroupBillableSkusRequest,
+        response: service.ListSkuGroupBillableSkusResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.channel_v1.types.ListSkuGroupBillableSkusRequest):
+                The initial request object.
+            response (google.cloud.channel_v1.types.ListSkuGroupBillableSkusResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListSkuGroupBillableSkusRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[service.ListSkuGroupBillableSkusResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[service.BillableSku]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.billable_skus:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListProductsPager:
     """A pager for iterating through ``list_products`` requests.
 

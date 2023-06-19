@@ -8950,6 +8950,869 @@ async def test_delete_channel_partner_repricing_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        service.ListSkuGroupsRequest,
+        dict,
+    ],
+)
+def test_list_sku_groups(request_type, transport: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sku_groups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListSkuGroupsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_sku_groups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListSkuGroupsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSkuGroupsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_sku_groups_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sku_groups), "__call__") as call:
+        client.list_sku_groups()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListSkuGroupsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_sku_groups_async(
+    transport: str = "grpc_asyncio", request_type=service.ListSkuGroupsRequest
+):
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sku_groups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListSkuGroupsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_sku_groups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListSkuGroupsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSkuGroupsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_sku_groups_async_from_dict():
+    await test_list_sku_groups_async(request_type=dict)
+
+
+def test_list_sku_groups_field_headers():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ListSkuGroupsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sku_groups), "__call__") as call:
+        call.return_value = service.ListSkuGroupsResponse()
+        client.list_sku_groups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_sku_groups_field_headers_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ListSkuGroupsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sku_groups), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListSkuGroupsResponse()
+        )
+        await client.list_sku_groups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_sku_groups_flattened():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sku_groups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListSkuGroupsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_sku_groups(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_sku_groups_flattened_error():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_sku_groups(
+            service.ListSkuGroupsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_sku_groups_flattened_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sku_groups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListSkuGroupsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListSkuGroupsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_sku_groups(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_sku_groups_flattened_error_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_sku_groups(
+            service.ListSkuGroupsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_sku_groups_pager(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sku_groups), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListSkuGroupsResponse(
+                sku_groups=[
+                    service.SkuGroup(),
+                    service.SkuGroup(),
+                    service.SkuGroup(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListSkuGroupsResponse(
+                sku_groups=[],
+                next_page_token="def",
+            ),
+            service.ListSkuGroupsResponse(
+                sku_groups=[
+                    service.SkuGroup(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListSkuGroupsResponse(
+                sku_groups=[
+                    service.SkuGroup(),
+                    service.SkuGroup(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_sku_groups(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, service.SkuGroup) for i in results)
+
+
+def test_list_sku_groups_pages(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sku_groups), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListSkuGroupsResponse(
+                sku_groups=[
+                    service.SkuGroup(),
+                    service.SkuGroup(),
+                    service.SkuGroup(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListSkuGroupsResponse(
+                sku_groups=[],
+                next_page_token="def",
+            ),
+            service.ListSkuGroupsResponse(
+                sku_groups=[
+                    service.SkuGroup(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListSkuGroupsResponse(
+                sku_groups=[
+                    service.SkuGroup(),
+                    service.SkuGroup(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_sku_groups(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_sku_groups_async_pager():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sku_groups), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListSkuGroupsResponse(
+                sku_groups=[
+                    service.SkuGroup(),
+                    service.SkuGroup(),
+                    service.SkuGroup(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListSkuGroupsResponse(
+                sku_groups=[],
+                next_page_token="def",
+            ),
+            service.ListSkuGroupsResponse(
+                sku_groups=[
+                    service.SkuGroup(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListSkuGroupsResponse(
+                sku_groups=[
+                    service.SkuGroup(),
+                    service.SkuGroup(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_sku_groups(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, service.SkuGroup) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_sku_groups_async_pages():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sku_groups), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListSkuGroupsResponse(
+                sku_groups=[
+                    service.SkuGroup(),
+                    service.SkuGroup(),
+                    service.SkuGroup(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListSkuGroupsResponse(
+                sku_groups=[],
+                next_page_token="def",
+            ),
+            service.ListSkuGroupsResponse(
+                sku_groups=[
+                    service.SkuGroup(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListSkuGroupsResponse(
+                sku_groups=[
+                    service.SkuGroup(),
+                    service.SkuGroup(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_sku_groups(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListSkuGroupBillableSkusRequest,
+        dict,
+    ],
+)
+def test_list_sku_group_billable_skus(request_type, transport: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sku_group_billable_skus), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListSkuGroupBillableSkusResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_sku_group_billable_skus(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListSkuGroupBillableSkusRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSkuGroupBillableSkusPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_sku_group_billable_skus_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sku_group_billable_skus), "__call__"
+    ) as call:
+        client.list_sku_group_billable_skus()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListSkuGroupBillableSkusRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_sku_group_billable_skus_async(
+    transport: str = "grpc_asyncio",
+    request_type=service.ListSkuGroupBillableSkusRequest,
+):
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sku_group_billable_skus), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListSkuGroupBillableSkusResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_sku_group_billable_skus(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListSkuGroupBillableSkusRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSkuGroupBillableSkusAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_sku_group_billable_skus_async_from_dict():
+    await test_list_sku_group_billable_skus_async(request_type=dict)
+
+
+def test_list_sku_group_billable_skus_field_headers():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ListSkuGroupBillableSkusRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sku_group_billable_skus), "__call__"
+    ) as call:
+        call.return_value = service.ListSkuGroupBillableSkusResponse()
+        client.list_sku_group_billable_skus(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_sku_group_billable_skus_field_headers_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ListSkuGroupBillableSkusRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sku_group_billable_skus), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListSkuGroupBillableSkusResponse()
+        )
+        await client.list_sku_group_billable_skus(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_sku_group_billable_skus_flattened():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sku_group_billable_skus), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListSkuGroupBillableSkusResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_sku_group_billable_skus(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_sku_group_billable_skus_flattened_error():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_sku_group_billable_skus(
+            service.ListSkuGroupBillableSkusRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_sku_group_billable_skus_flattened_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sku_group_billable_skus), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListSkuGroupBillableSkusResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListSkuGroupBillableSkusResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_sku_group_billable_skus(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_sku_group_billable_skus_flattened_error_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_sku_group_billable_skus(
+            service.ListSkuGroupBillableSkusRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_sku_group_billable_skus_pager(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sku_group_billable_skus), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListSkuGroupBillableSkusResponse(
+                billable_skus=[
+                    service.BillableSku(),
+                    service.BillableSku(),
+                    service.BillableSku(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListSkuGroupBillableSkusResponse(
+                billable_skus=[],
+                next_page_token="def",
+            ),
+            service.ListSkuGroupBillableSkusResponse(
+                billable_skus=[
+                    service.BillableSku(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListSkuGroupBillableSkusResponse(
+                billable_skus=[
+                    service.BillableSku(),
+                    service.BillableSku(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_sku_group_billable_skus(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, service.BillableSku) for i in results)
+
+
+def test_list_sku_group_billable_skus_pages(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sku_group_billable_skus), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListSkuGroupBillableSkusResponse(
+                billable_skus=[
+                    service.BillableSku(),
+                    service.BillableSku(),
+                    service.BillableSku(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListSkuGroupBillableSkusResponse(
+                billable_skus=[],
+                next_page_token="def",
+            ),
+            service.ListSkuGroupBillableSkusResponse(
+                billable_skus=[
+                    service.BillableSku(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListSkuGroupBillableSkusResponse(
+                billable_skus=[
+                    service.BillableSku(),
+                    service.BillableSku(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_sku_group_billable_skus(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_sku_group_billable_skus_async_pager():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sku_group_billable_skus),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListSkuGroupBillableSkusResponse(
+                billable_skus=[
+                    service.BillableSku(),
+                    service.BillableSku(),
+                    service.BillableSku(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListSkuGroupBillableSkusResponse(
+                billable_skus=[],
+                next_page_token="def",
+            ),
+            service.ListSkuGroupBillableSkusResponse(
+                billable_skus=[
+                    service.BillableSku(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListSkuGroupBillableSkusResponse(
+                billable_skus=[
+                    service.BillableSku(),
+                    service.BillableSku(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_sku_group_billable_skus(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, service.BillableSku) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_sku_group_billable_skus_async_pages():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sku_group_billable_skus),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListSkuGroupBillableSkusResponse(
+                billable_skus=[
+                    service.BillableSku(),
+                    service.BillableSku(),
+                    service.BillableSku(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListSkuGroupBillableSkusResponse(
+                billable_skus=[],
+                next_page_token="def",
+            ),
+            service.ListSkuGroupBillableSkusResponse(
+                billable_skus=[
+                    service.BillableSku(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListSkuGroupBillableSkusResponse(
+                billable_skus=[
+                    service.BillableSku(),
+                    service.BillableSku(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_sku_group_billable_skus(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         service.LookupOfferRequest,
         dict,
     ],
@@ -12046,6 +12909,8 @@ def test_cloud_channel_service_base_transport():
         "create_channel_partner_repricing_config",
         "update_channel_partner_repricing_config",
         "delete_channel_partner_repricing_config",
+        "list_sku_groups",
+        "list_sku_group_billable_skus",
         "lookup_offer",
         "list_products",
         "list_skus",
@@ -12644,8 +13509,31 @@ def test_parse_sku_path():
     assert expected == actual
 
 
+def test_sku_group_path():
+    account = "squid"
+    sku_group = "clam"
+    expected = "accounts/{account}/skuGroups/{sku_group}".format(
+        account=account,
+        sku_group=sku_group,
+    )
+    actual = CloudChannelServiceClient.sku_group_path(account, sku_group)
+    assert expected == actual
+
+
+def test_parse_sku_group_path():
+    expected = {
+        "account": "whelk",
+        "sku_group": "octopus",
+    }
+    path = CloudChannelServiceClient.sku_group_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudChannelServiceClient.parse_sku_group_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -12655,7 +13543,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "nudibranch",
     }
     path = CloudChannelServiceClient.common_billing_account_path(**expected)
 
@@ -12665,7 +13553,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -12675,7 +13563,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "mussel",
     }
     path = CloudChannelServiceClient.common_folder_path(**expected)
 
@@ -12685,7 +13573,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -12695,7 +13583,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "nautilus",
     }
     path = CloudChannelServiceClient.common_organization_path(**expected)
 
@@ -12705,7 +13593,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -12715,7 +13603,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "abalone",
     }
     path = CloudChannelServiceClient.common_project_path(**expected)
 
@@ -12725,8 +13613,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -12737,8 +13625,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = CloudChannelServiceClient.common_location_path(**expected)
 
