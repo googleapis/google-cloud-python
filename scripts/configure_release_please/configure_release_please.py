@@ -4,8 +4,8 @@ from typing import Union, Dict, List, Tuple
 import re
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-PACKAGES_DIR = Path(SCRIPT_DIR / ".." / ".." / "packages").resolve()
 ROOT_DIR = Path(SCRIPT_DIR / ".." / "..").resolve()
+PACKAGES_DIR = ROOT_DIR / "packages"
 
 
 def get_version_for_package(version_path: Path) -> Tuple[int]:
