@@ -969,11 +969,11 @@ class DocumentProcessorServiceRestStub:
 class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
     """REST backend transport for DocumentProcessorService.
 
-    Service to call Cloud DocumentAI to process documents
-    according to the processor's definition. Processors are built
-    using state-of-the-art Google AI such as natural language,
-    computer vision, and translation to extract structured
-    information from unstructured or semi-structured documents.
+    Service to call Document AI to process documents according to
+    the processor's definition. Processors are built using
+    state-of-the-art Google AI such as natural language, computer
+    vision, and translation to extract structured information from
+    unstructured or semi-structured documents.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -1144,8 +1144,8 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Args:
                 request (~.document_processor_service.BatchProcessRequest):
-                    The request object. Request message for batch process
-                document method.
+                    The request object. Request message for
+                [BatchProcessDocuments][google.cloud.documentai.v1beta3.DocumentProcessorService.BatchProcessDocuments].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1248,11 +1248,12 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Args:
                 request (~.document_processor_service.CreateProcessorRequest):
-                    The request object. Request message for create a
-                processor. Notice this request is sent
-                to a regionalized backend service, and
-                if the processor type is not available
-                on that region, the creation will fail.
+                    The request object. Request message for the
+                [CreateProcessor][google.cloud.documentai.v1beta3.DocumentProcessorService.CreateProcessor]
+                method. Notice this request is sent to a regionalized
+                backend service. If the
+                [ProcessorType][google.cloud.documentai.v1beta3.ProcessorType]
+                isn't available in that region, the creation fails.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1353,8 +1354,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Args:
                 request (~.document_processor_service.DeleteProcessorRequest):
-                    The request object. Request message for the delete
-                processor method.
+                    The request object. Request message for the
+                [DeleteProcessor][google.cloud.documentai.v1beta3.DocumentProcessorService.DeleteProcessor]
+                method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1443,8 +1445,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Args:
                 request (~.document_processor_service.DeleteProcessorVersionRequest):
-                    The request object. Request message for the delete
-                processor version method.
+                    The request object. Request message for the
+                [DeleteProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.DeleteProcessorVersion]
+                method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1535,8 +1538,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Args:
                 request (~.document_processor_service.DeployProcessorVersionRequest):
-                    The request object. Request message for the deploy
-                processor version method.
+                    The request object. Request message for the
+                [DeployProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.DeployProcessorVersion]
+                method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1636,8 +1640,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Args:
                 request (~.document_processor_service.DisableProcessorRequest):
-                    The request object. Request message for the disable
-                processor method.
+                    The request object. Request message for the
+                [DisableProcessor][google.cloud.documentai.v1beta3.DocumentProcessorService.DisableProcessor]
+                method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1735,8 +1740,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Args:
                 request (~.document_processor_service.EnableProcessorRequest):
-                    The request object. Request message for the enable
-                processor method.
+                    The request object. Request message for the
+                [EnableProcessor][google.cloud.documentai.v1beta3.DocumentProcessorService.EnableProcessor]
+                method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1835,7 +1841,8 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
                 Args:
                     request (~.document_processor_service.EvaluateProcessorVersionRequest):
-                        The request object. Evaluates the given ProcessorVersion
+                        The request object. Evaluates the given
+                    [ProcessorVersion][google.cloud.documentai.v1beta3.ProcessorVersion]
                     against the supplied documents.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -1936,8 +1943,10 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Args:
                 request (~.document_processor_service.FetchProcessorTypesRequest):
-                    The request object. Request message for fetch processor
-                types.
+                    The request object. Request message for the
+                [FetchProcessorTypes][google.cloud.documentai.v1beta3.DocumentProcessorService.FetchProcessorTypes]
+                method. Some processor types may require the project be
+                added to an allowlist.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1946,8 +1955,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Returns:
                 ~.document_processor_service.FetchProcessorTypesResponse:
-                    Response message for fetch processor
-                types.
+                    Response message for the
+                [FetchProcessorTypes][google.cloud.documentai.v1beta3.DocumentProcessorService.FetchProcessorTypes]
+                method.
 
             """
 
@@ -2117,7 +2127,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Args:
                 request (~.document_processor_service.GetProcessorRequest):
-                    The request object. Request message for get processor.
+                    The request object. Request message for the
+                [GetProcessor][google.cloud.documentai.v1beta3.DocumentProcessorService.GetProcessor]
+                method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2207,7 +2219,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Args:
                 request (~.document_processor_service.GetProcessorTypeRequest):
-                    The request object. Request message for get processor.
+                    The request object. Request message for the
+                [GetProcessorType][google.cloud.documentai.v1beta3.DocumentProcessorService.GetProcessorType]
+                method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2299,8 +2313,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Args:
                 request (~.document_processor_service.GetProcessorVersionRequest):
-                    The request object. Request message for get processor
-                version.
+                    The request object. Request message for the
+                [GetProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.GetProcessorVersion]
+                method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2312,12 +2327,11 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                     A processor version is an
                 implementation of a processor. Each
                 processor can have multiple versions,
-                pre-trained by Google internally or
-                up-trained by the customer. At a time, a
-                processor can only have one default
-                version version. So the processor's
-                behavior (when processing documents) is
-                defined by a default version
+                pretrained by Google internally or
+                uptrained by the customer. A processor
+                can only have one default version at a
+                time. Its document-processing behavior
+                is defined by that version.
 
             """
 
@@ -2399,18 +2413,24 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Args:
                 request (~.document_processor_service.ImportProcessorVersionRequest):
-                    The request object. The request message for the ImportProcessorVersion
-                method. This method requires Document AI Service Agent
-                of the destination project in the source project's IAM
-                with `Document AI Editor
-                role <https://cloud.google.com/document-ai/docs/access-control/iam-roles>`__.
+                    The request object. The request message for the
+                [ImportProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.ImportProcessorVersion]
+                method. Requirements:
+
+                -  The source processor version and destination
+                   processor must be in the same location.
+                -  The Document AI `Service
+                   Agent <https://cloud.google.com/iam/docs/service-agents>`__
+                   of the destination project must have `Document AI
+                   Editor
+                   role <https://cloud.google.com/document-ai/docs/access-control/iam-roles>`__
+                   on the source project.
 
                 The destination project is specified as part of the
-                ``parent`` field. The source project is specified as
-                part of ``source`` field.
-
-                The Service Agent for Document AI can be found in
-                https://cloud.google.com/iam/docs/service-agents.
+                [parent][google.cloud.documentai.v1beta3.ImportProcessorVersionRequest.parent]
+                field. The source project is specified as part of the
+                [source][google.cloud.documentai.v1beta3.ImportProcessorVersionRequest.processor_version_source]
+                field.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2510,8 +2530,8 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Args:
                 request (~.document_processor_service.ListEvaluationsRequest):
-                    The request object. Retrieves a list of evaluations for a
-                given ProcessorVersion.
+                    The request object. Retrieves a list of evaluations for a given
+                [ProcessorVersion][google.cloud.documentai.v1beta3.ProcessorVersion].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2520,7 +2540,7 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Returns:
                 ~.document_processor_service.ListEvaluationsResponse:
-                    The response from ListEvaluations.
+                    The response from ``ListEvaluations``.
             """
 
             http_options: List[Dict[str, str]] = [
@@ -2609,7 +2629,10 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Returns:
                 ~.document_processor_service.ListProcessorsResponse:
-                    Response message for list processors.
+                    Response message for the
+                [ListProcessors][google.cloud.documentai.v1beta3.DocumentProcessorService.ListProcessors]
+                method.
+
             """
 
             http_options: List[Dict[str, str]] = [
@@ -2686,8 +2709,10 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Args:
                 request (~.document_processor_service.ListProcessorTypesRequest):
-                    The request object. Request message for list processor
-                types.
+                    The request object. Request message for the
+                [ListProcessorTypes][google.cloud.documentai.v1beta3.DocumentProcessorService.ListProcessorTypes]
+                method. Some processor types may require the project be
+                added to an allowlist.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2696,8 +2721,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Returns:
                 ~.document_processor_service.ListProcessorTypesResponse:
-                    Response message for list processor
-                types.
+                    Response message for the
+                [ListProcessorTypes][google.cloud.documentai.v1beta3.DocumentProcessorService.ListProcessorTypes]
+                method.
 
             """
 
@@ -2790,7 +2816,10 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Returns:
                 ~.document_processor_service.ListProcessorVersionsResponse:
-                    Response message for list processors.
+                    Response message for the
+                [ListProcessorVersions][google.cloud.documentai.v1beta3.DocumentProcessorService.ListProcessorVersions]
+                method.
+
             """
 
             http_options: List[Dict[str, str]] = [
@@ -2871,8 +2900,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Args:
                 request (~.document_processor_service.ProcessRequest):
-                    The request object. Request message for the process
-                document method.
+                    The request object. Request message for the
+                [ProcessDocument][google.cloud.documentai.v1beta3.DocumentProcessorService.ProcessDocument]
+                method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2881,8 +2911,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Returns:
                 ~.document_processor_service.ProcessResponse:
-                    Response message for the process
-                document method.
+                    Response message for the
+                [ProcessDocument][google.cloud.documentai.v1beta3.DocumentProcessorService.ProcessDocument]
+                method.
 
             """
 
@@ -2976,7 +3007,8 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Args:
                 request (~.document_processor_service.ReviewDocumentRequest):
-                    The request object. Request message for review document
+                    The request object. Request message for the
+                [ReviewDocument][google.cloud.documentai.v1beta3.DocumentProcessorService.ReviewDocument]
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -3074,8 +3106,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
                 Args:
                     request (~.document_processor_service.SetDefaultProcessorVersionRequest):
-                        The request object. Request message for the set default
-                    processor version method.
+                        The request object. Request message for the
+                    [SetDefaultProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.SetDefaultProcessorVersion]
+                    method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3175,8 +3208,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             Args:
                 request (~.document_processor_service.TrainProcessorVersionRequest):
-                    The request object. Request message for the create
-                processor version method.
+                    The request object. Request message for the
+                [TrainProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.TrainProcessorVersion]
+                method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3277,8 +3311,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
                 Args:
                     request (~.document_processor_service.UndeployProcessorVersionRequest):
-                        The request object. Request message for the undeploy
-                    processor version method.
+                        The request object. Request message for the
+                    [UndeployProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.UndeployProcessorVersion]
+                    method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

@@ -727,6 +727,7 @@ def test_search(request_type, transport: str = "grpc"):
         call.return_value = search_service.SearchResponse(
             total_size=1086,
             attribution_token="attribution_token_value",
+            redirect_uri="redirect_uri_value",
             next_page_token="next_page_token_value",
             corrected_query="corrected_query_value",
             applied_controls=["applied_controls_value"],
@@ -742,6 +743,7 @@ def test_search(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.SearchPager)
     assert response.total_size == 1086
     assert response.attribution_token == "attribution_token_value"
+    assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
     assert response.applied_controls == ["applied_controls_value"]
@@ -783,6 +785,7 @@ async def test_search_async(
             search_service.SearchResponse(
                 total_size=1086,
                 attribution_token="attribution_token_value",
+                redirect_uri="redirect_uri_value",
                 next_page_token="next_page_token_value",
                 corrected_query="corrected_query_value",
                 applied_controls=["applied_controls_value"],
@@ -799,6 +802,7 @@ async def test_search_async(
     assert isinstance(response, pagers.SearchAsyncPager)
     assert response.total_size == 1086
     assert response.attribution_token == "attribution_token_value"
+    assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
     assert response.applied_controls == ["applied_controls_value"]
@@ -1085,6 +1089,7 @@ def test_search_rest(request_type):
         return_value = search_service.SearchResponse(
             total_size=1086,
             attribution_token="attribution_token_value",
+            redirect_uri="redirect_uri_value",
             next_page_token="next_page_token_value",
             corrected_query="corrected_query_value",
             applied_controls=["applied_controls_value"],
@@ -1104,6 +1109,7 @@ def test_search_rest(request_type):
     assert isinstance(response, pagers.SearchPager)
     assert response.total_size == 1086
     assert response.attribution_token == "attribution_token_value"
+    assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
     assert response.applied_controls == ["applied_controls_value"]

@@ -54,6 +54,9 @@ class CompleteQueryRequest(proto.Message):
                Search API.
             -  ``user-event`` - Using suggestions generated from
                user-imported search events.
+            -  ``document-completable`` - Using suggestions taken
+               directly from user-imported document fields marked as
+               completable.
 
             Default values:
 

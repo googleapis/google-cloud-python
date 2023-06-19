@@ -1,0 +1,201 @@
+# -*- coding: utf-8 -*-
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+from __future__ import annotations
+
+from typing import MutableMapping, MutableSequence
+
+import proto  # type: ignore
+
+from google.cloud.documentai_v1beta3.types import document_schema as gcd_document_schema
+from google.cloud.documentai_v1beta3.types import document_io
+
+__protobuf__ = proto.module(
+    package="google.cloud.documentai.v1beta3",
+    manifest={
+        "Dataset",
+        "DatasetSchema",
+    },
+)
+
+
+class Dataset(proto.Message):
+    r"""A singleton resource under a
+    [Processor][google.cloud.documentai.v1beta3.Processor] which
+    configures a collection of documents.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_managed_config (google.cloud.documentai_v1beta3.types.Dataset.GCSManagedConfig):
+            Optional. User-managed Cloud Storage dataset
+            configuration. Use this configuration if the
+            dataset documents are stored under a
+            user-managed Cloud Storage location.
+
+            This field is a member of `oneof`_ ``storage_source``.
+        document_warehouse_config (google.cloud.documentai_v1beta3.types.Dataset.DocumentWarehouseConfig):
+            Optional. Document AI Warehouse-based dataset
+            configuration.
+
+            This field is a member of `oneof`_ ``storage_source``.
+        unmanaged_dataset_config (google.cloud.documentai_v1beta3.types.Dataset.UnmanagedDatasetConfig):
+            Optional. Unmanaged dataset configuration.
+            Use this configuration if the dataset documents
+            are managed by the document service internally
+            (not user-managed).
+
+            This field is a member of `oneof`_ ``storage_source``.
+        spanner_indexing_config (google.cloud.documentai_v1beta3.types.Dataset.SpannerIndexingConfig):
+            Optional. A lightweight indexing source with
+            low latency and high reliability, but lacking
+            advanced features like CMEK and content-based
+            search.
+
+            This field is a member of `oneof`_ ``indexing_source``.
+        name (str):
+            Dataset resource name. Format:
+            ``projects/{project}/locations/{location}/processors/{processor}/dataset``
+        state (google.cloud.documentai_v1beta3.types.Dataset.State):
+            Required. State of the dataset. Ignored when
+            updating dataset.
+    """
+
+    class State(proto.Enum):
+        r"""Different states of a dataset.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default unspecified enum, should not be used.
+            UNINITIALIZED (1):
+                Dataset has not been initialized.
+            INITIALIZING (2):
+                Dataset is being initialized.
+            INITIALIZED (3):
+                Dataset has been initialized.
+        """
+        STATE_UNSPECIFIED = 0
+        UNINITIALIZED = 1
+        INITIALIZING = 2
+        INITIALIZED = 3
+
+    class GCSManagedConfig(proto.Message):
+        r"""Configuration specific to the Cloud Storage-based
+        implementation.
+
+        Attributes:
+            gcs_prefix (google.cloud.documentai_v1beta3.types.GcsPrefix):
+                Required. The Cloud Storage URI (a directory)
+                where the documents belonging to the dataset
+                must be stored.
+        """
+
+        gcs_prefix: document_io.GcsPrefix = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=document_io.GcsPrefix,
+        )
+
+    class DocumentWarehouseConfig(proto.Message):
+        r"""Configuration specific to the Document AI Warehouse-based
+        implementation.
+
+        Attributes:
+            collection (str):
+                Output only. The collection in Document AI
+                Warehouse associated with the dataset.
+            schema (str):
+                Output only. The schema in Document AI
+                Warehouse associated with the dataset.
+        """
+
+        collection: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        schema: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class UnmanagedDatasetConfig(proto.Message):
+        r"""Configuration specific to an unmanaged dataset."""
+
+    class SpannerIndexingConfig(proto.Message):
+        r"""Configuration specific to spanner-based indexing."""
+
+    gcs_managed_config: GCSManagedConfig = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="storage_source",
+        message=GCSManagedConfig,
+    )
+    document_warehouse_config: DocumentWarehouseConfig = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="storage_source",
+        message=DocumentWarehouseConfig,
+    )
+    unmanaged_dataset_config: UnmanagedDatasetConfig = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="storage_source",
+        message=UnmanagedDatasetConfig,
+    )
+    spanner_indexing_config: SpannerIndexingConfig = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="indexing_source",
+        message=SpannerIndexingConfig,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=State,
+    )
+
+
+class DatasetSchema(proto.Message):
+    r"""Dataset Schema.
+
+    Attributes:
+        name (str):
+            Dataset schema resource name. Format:
+            ``projects/{project}/locations/{location}/processors/{processor}/dataset/datasetSchema``
+        document_schema (google.cloud.documentai_v1beta3.types.DocumentSchema):
+            Optional. Schema of the dataset.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    document_schema: gcd_document_schema.DocumentSchema = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcd_document_schema.DocumentSchema,
+    )
+
+
+__all__ = tuple(sorted(__protobuf__.manifest))

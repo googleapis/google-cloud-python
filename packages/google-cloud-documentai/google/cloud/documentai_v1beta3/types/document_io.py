@@ -238,11 +238,20 @@ class OcrConfig(proto.Message):
             Adds additional latency comparable to regular
             OCR to the process call.
         advanced_ocr_options (MutableSequence[str]):
-            A list of advanced OCR options to further
-            fine-tune OCR behavior.
+            A list of advanced OCR options to further fine-tune OCR
+            behavior. Current valid values are:
+
+            -  ``legacy_layout``: a heuristics layout detection
+               algorithm, which serves as an alternative to the current
+               ML-based layout detection algorithm. Customers can choose
+               the best suitable layout algorithm based on their
+               situation.
         enable_symbol (bool):
             Includes symbol level OCR information if set
             to true.
+        compute_style_info (bool):
+            Turn on font id model and returns font style
+            information.
     """
 
     class Hints(proto.Message):
@@ -286,6 +295,10 @@ class OcrConfig(proto.Message):
     enable_symbol: bool = proto.Field(
         proto.BOOL,
         number=6,
+    )
+    compute_style_info: bool = proto.Field(
+        proto.BOOL,
+        number=8,
     )
 
 

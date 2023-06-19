@@ -87,7 +87,9 @@ __protobuf__ = proto.module(
 
 
 class ProcessRequest(proto.Message):
-    r"""Request message for the process document method.
+    r"""Request message for the
+    [ProcessDocument][google.cloud.documentai.v1.DocumentProcessorService.ProcessDocument]
+    method.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -118,12 +120,13 @@ class ProcessRequest(proto.Message):
             or
             ``projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}``
         skip_human_review (bool):
-            Whether Human Review feature should be
-            skipped for this request. Default to false.
+            Whether human review should be skipped for this request.
+            Default to ``false``.
         field_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Specifies which fields to include in ProcessResponse's
-            document. Only supports top level document and pages field
-            so it must be in the form of ``{document_field_name}`` or
+            Specifies which fields to include in the
+            [ProcessResponse.document][google.cloud.documentai.v1.ProcessResponse.document]
+            output. Only supports top-level document and pages field, so
+            it must be in the form of ``{document_field_name}`` or
             ``pages.{page_field_name}``.
     """
 
@@ -166,10 +169,11 @@ class HumanReviewStatus(proto.Message):
             human review state.
         human_review_operation (str):
             The name of the operation triggered by the processed
-            document. This field is populated only when the [state] is
-            [HUMAN_REVIEW_IN_PROGRESS]. It has the same response type
-            and metadata as the long running operation returned by
-            [ReviewDocument] method.
+            document. This field is populated only when the
+            [state][google.cloud.documentai.v1.HumanReviewStatus.state]
+            is ``HUMAN_REVIEW_IN_PROGRESS``. It has the same response
+            type and metadata as the long-running operation returned by
+            [ReviewDocument][google.cloud.documentai.v1.DocumentProcessorService.ReviewDocument].
     """
 
     class State(proto.Enum):
@@ -181,7 +185,7 @@ class HumanReviewStatus(proto.Message):
                 likely due to an internal error.
             SKIPPED (1):
                 Human review is skipped for the document.
-                This can happen because human review is not
+                This can happen because human review isn't
                 enabled on the processor or the processing
                 request has been set to skip this document.
             VALIDATION_PASSED (2):
@@ -192,7 +196,8 @@ class HumanReviewStatus(proto.Message):
                 document is under review.
             ERROR (4):
                 Some error happened during triggering human review, see the
-                [state_message] for details.
+                [state_message][google.cloud.documentai.v1.HumanReviewStatus.state_message]
+                for details.
         """
         STATE_UNSPECIFIED = 0
         SKIPPED = 1
@@ -216,7 +221,9 @@ class HumanReviewStatus(proto.Message):
 
 
 class ProcessResponse(proto.Message):
-    r"""Response message for the process document method.
+    r"""Response message for the
+    [ProcessDocument][google.cloud.documentai.v1.DocumentProcessorService.ProcessDocument]
+    method.
 
     Attributes:
         document (google.cloud.documentai_v1.types.Document):
@@ -240,7 +247,8 @@ class ProcessResponse(proto.Message):
 
 
 class BatchProcessRequest(proto.Message):
-    r"""Request message for batch process document method.
+    r"""Request message for
+    [BatchProcessDocuments][google.cloud.documentai.v1.DocumentProcessorService.BatchProcessDocuments].
 
     Attributes:
         name (str):
@@ -252,12 +260,16 @@ class BatchProcessRequest(proto.Message):
             or
             ``projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}``
         input_documents (google.cloud.documentai_v1.types.BatchDocumentsInputConfig):
-            The input documents for batch process.
+            The input documents for the
+            [BatchProcessDocuments][google.cloud.documentai.v1.DocumentProcessorService.BatchProcessDocuments]
+            method.
         document_output_config (google.cloud.documentai_v1.types.DocumentOutputConfig):
-            The overall output config for batch process.
+            The output configuration for the
+            [BatchProcessDocuments][google.cloud.documentai.v1.DocumentProcessorService.BatchProcessDocuments]
+            method.
         skip_human_review (bool):
-            Whether Human Review feature should be
-            skipped for this request. Default to false.
+            Whether human review should be skipped for this request.
+            Default to ``false``.
     """
 
     name: str = proto.Field(
@@ -281,11 +293,15 @@ class BatchProcessRequest(proto.Message):
 
 
 class BatchProcessResponse(proto.Message):
-    r"""Response message for batch process document method."""
+    r"""Response message for
+    [BatchProcessDocuments][google.cloud.documentai.v1.DocumentProcessorService.BatchProcessDocuments].
+
+    """
 
 
 class BatchProcessMetadata(proto.Message):
-    r"""The long running operation metadata for batch process method.
+    r"""The long-running operation metadata for
+    [BatchProcessDocuments][google.cloud.documentai.v1.DocumentProcessorService.BatchProcessDocuments].
 
     Attributes:
         state (google.cloud.documentai_v1.types.BatchProcessMetadata.State):
@@ -337,17 +353,16 @@ class BatchProcessMetadata(proto.Message):
 
         Attributes:
             input_gcs_source (str):
-                The source of the document, same as the [input_gcs_source]
-                field in the request when the batch process started. The
-                batch process is started by take snapshot of that document,
-                since a user can move or change that document during the
-                process.
+                The source of the document, same as the
+                [input_gcs_source][google.cloud.documentai.v1.BatchProcessMetadata.IndividualProcessStatus.input_gcs_source]
+                field in the request when the batch process started.
             status (google.rpc.status_pb2.Status):
                 The status processing the document.
             output_gcs_destination (str):
-                The output_gcs_destination (in the request as
-                ``output_gcs_destination``) of the processed document if it
-                was successful, otherwise empty.
+                The Cloud Storage output destination (in the request as
+                [DocumentOutputConfig.GcsOutputConfig.gcs_uri][google.cloud.documentai.v1.DocumentOutputConfig.GcsOutputConfig.gcs_uri])
+                of the processed document if it was successful, otherwise
+                empty.
             human_review_status (google.cloud.documentai_v1.types.HumanReviewStatus):
                 The status of human review on the processed
                 document.
@@ -401,14 +416,15 @@ class BatchProcessMetadata(proto.Message):
 
 
 class FetchProcessorTypesRequest(proto.Message):
-    r"""Request message for fetch processor types.
+    r"""Request message for the
+    [FetchProcessorTypes][google.cloud.documentai.v1.DocumentProcessorService.FetchProcessorTypes]
+    method. Some processor types may require the project be added to an
+    allowlist.
 
     Attributes:
         parent (str):
-            Required. The project of processor type to list. The
-            available processor types may depend on the allow-listing on
-            projects. Format:
-            ``projects/{project}/locations/{location}``
+            Required. The location of processor types to list. Format:
+            ``projects/{project}/locations/{location}``.
     """
 
     parent: str = proto.Field(
@@ -418,7 +434,9 @@ class FetchProcessorTypesRequest(proto.Message):
 
 
 class FetchProcessorTypesResponse(proto.Message):
-    r"""Response message for fetch processor types.
+    r"""Response message for the
+    [FetchProcessorTypes][google.cloud.documentai.v1.DocumentProcessorService.FetchProcessorTypes]
+    method.
 
     Attributes:
         processor_types (MutableSequence[google.cloud.documentai_v1.types.ProcessorType]):
@@ -435,19 +453,20 @@ class FetchProcessorTypesResponse(proto.Message):
 
 
 class ListProcessorTypesRequest(proto.Message):
-    r"""Request message for list processor types.
+    r"""Request message for the
+    [ListProcessorTypes][google.cloud.documentai.v1.DocumentProcessorService.ListProcessorTypes]
+    method. Some processor types may require the project be added to an
+    allowlist.
 
     Attributes:
         parent (str):
-            Required. The location of processor type to list. The
-            available processor types may depend on the allow-listing on
-            projects. Format:
-            ``projects/{project}/locations/{location}``
+            Required. The location of processor types to list. Format:
+            ``projects/{project}/locations/{location}``.
         page_size (int):
-            The maximum number of processor types to
-            return. If unspecified, at most 100 processor
-            types will be returned. The maximum value is
-            500; values above 500 will be coerced to 500.
+            The maximum number of processor types to return. If
+            unspecified, at most ``100`` processor types will be
+            returned. The maximum value is ``500``. Values above ``500``
+            will be coerced to ``500``.
         page_token (str):
             Used to retrieve the next page of results,
             empty if at the end of the list.
@@ -468,7 +487,9 @@ class ListProcessorTypesRequest(proto.Message):
 
 
 class ListProcessorTypesResponse(proto.Message):
-    r"""Response message for list processor types.
+    r"""Response message for the
+    [ListProcessorTypes][google.cloud.documentai.v1.DocumentProcessorService.ListProcessorTypes]
+    method.
 
     Attributes:
         processor_types (MutableSequence[google.cloud.documentai_v1.types.ProcessorType]):
@@ -503,10 +524,10 @@ class ListProcessorsRequest(proto.Message):
             collection of Processors. Format:
             ``projects/{project}/locations/{location}``
         page_size (int):
-            The maximum number of processors to return.
-            If unspecified, at most 50 processors will be
-            returned. The maximum value is 100; values above
-            100 will be coerced to 100.
+            The maximum number of processors to return. If unspecified,
+            at most ``50`` processors will be returned. The maximum
+            value is ``100``. Values above ``100`` will be coerced to
+            ``100``.
         page_token (str):
             We will return the processors sorted by
             creation time. The page token will point to the
@@ -528,7 +549,9 @@ class ListProcessorsRequest(proto.Message):
 
 
 class ListProcessorsResponse(proto.Message):
-    r"""Response message for list processors.
+    r"""Response message for the
+    [ListProcessors][google.cloud.documentai.v1.DocumentProcessorService.ListProcessors]
+    method.
 
     Attributes:
         processors (MutableSequence[google.cloud.documentai_v1.types.Processor]):
@@ -554,7 +577,9 @@ class ListProcessorsResponse(proto.Message):
 
 
 class GetProcessorTypeRequest(proto.Message):
-    r"""Request message for get processor.
+    r"""Request message for the
+    [GetProcessorType][google.cloud.documentai.v1.DocumentProcessorService.GetProcessorType]
+    method.
 
     Attributes:
         name (str):
@@ -568,7 +593,9 @@ class GetProcessorTypeRequest(proto.Message):
 
 
 class GetProcessorRequest(proto.Message):
-    r"""Request message for get processor.
+    r"""Request message for the
+    [GetProcessor][google.cloud.documentai.v1.DocumentProcessorService.GetProcessor]
+    method.
 
     Attributes:
         name (str):
@@ -582,7 +609,9 @@ class GetProcessorRequest(proto.Message):
 
 
 class GetProcessorVersionRequest(proto.Message):
-    r"""Request message for get processor version.
+    r"""Request message for the
+    [GetProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.GetProcessorVersion]
+    method.
 
     Attributes:
         name (str):
@@ -605,10 +634,10 @@ class ListProcessorVersionsRequest(proto.Message):
             list all versions. Format:
             ``projects/{project}/locations/{location}/processors/{processor}``
         page_size (int):
-            The maximum number of processor versions to
-            return. If unspecified, at most 10 processor
-            versions will be returned. The maximum value is
-            20; values above 20 will be coerced to 20.
+            The maximum number of processor versions to return. If
+            unspecified, at most ``10`` processor versions will be
+            returned. The maximum value is ``20``. Values above ``20``
+            will be coerced to ``20``.
         page_token (str):
             We will return the processor versions sorted
             by creation time. The page token will point to
@@ -630,7 +659,9 @@ class ListProcessorVersionsRequest(proto.Message):
 
 
 class ListProcessorVersionsResponse(proto.Message):
-    r"""Response message for list processors.
+    r"""Response message for the
+    [ListProcessorVersions][google.cloud.documentai.v1.DocumentProcessorService.ListProcessorVersions]
+    method.
 
     Attributes:
         processor_versions (MutableSequence[google.cloud.documentai_v1.types.ProcessorVersion]):
@@ -658,7 +689,9 @@ class ListProcessorVersionsResponse(proto.Message):
 
 
 class DeleteProcessorVersionRequest(proto.Message):
-    r"""Request message for the delete processor version method.
+    r"""Request message for the
+    [DeleteProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.DeleteProcessorVersion]
+    method.
 
     Attributes:
         name (str):
@@ -673,12 +706,13 @@ class DeleteProcessorVersionRequest(proto.Message):
 
 
 class DeleteProcessorVersionMetadata(proto.Message):
-    r"""The long running operation metadata for delete processor
-    version method.
+    r"""The long-running operation metadata for the
+    [DeleteProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.DeleteProcessorVersion]
+    method.
 
     Attributes:
         common_metadata (google.cloud.documentai_v1.types.CommonOperationMetadata):
-            The basic metadata of the long running
+            The basic metadata of the long-running
             operation.
     """
 
@@ -690,7 +724,9 @@ class DeleteProcessorVersionMetadata(proto.Message):
 
 
 class DeployProcessorVersionRequest(proto.Message):
-    r"""Request message for the deploy processor version method.
+    r"""Request message for the
+    [DeployProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.DeployProcessorVersion]
+    method.
 
     Attributes:
         name (str):
@@ -705,16 +741,21 @@ class DeployProcessorVersionRequest(proto.Message):
 
 
 class DeployProcessorVersionResponse(proto.Message):
-    r"""Response message for the deploy processor version method."""
+    r"""Response message for the
+    [DeployProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.DeployProcessorVersion]
+    method.
+
+    """
 
 
 class DeployProcessorVersionMetadata(proto.Message):
-    r"""The long running operation metadata for deploy processor
-    version method.
+    r"""The long-running operation metadata for the
+    [DeployProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.DeployProcessorVersion]
+    method.
 
     Attributes:
         common_metadata (google.cloud.documentai_v1.types.CommonOperationMetadata):
-            The basic metadata of the long running
+            The basic metadata of the long-running
             operation.
     """
 
@@ -726,7 +767,9 @@ class DeployProcessorVersionMetadata(proto.Message):
 
 
 class UndeployProcessorVersionRequest(proto.Message):
-    r"""Request message for the undeploy processor version method.
+    r"""Request message for the
+    [UndeployProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.UndeployProcessorVersion]
+    method.
 
     Attributes:
         name (str):
@@ -741,16 +784,21 @@ class UndeployProcessorVersionRequest(proto.Message):
 
 
 class UndeployProcessorVersionResponse(proto.Message):
-    r"""Response message for the undeploy processor version method."""
+    r"""Response message for the
+    [UndeployProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.UndeployProcessorVersion]
+    method.
+
+    """
 
 
 class UndeployProcessorVersionMetadata(proto.Message):
-    r"""The long running operation metadata for the undeploy
-    processor version method.
+    r"""The long-running operation metadata for the
+    [UndeployProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.UndeployProcessorVersion]
+    method.
 
     Attributes:
         common_metadata (google.cloud.documentai_v1.types.CommonOperationMetadata):
-            The basic metadata of the long running
+            The basic metadata of the long-running
             operation.
     """
 
@@ -762,9 +810,12 @@ class UndeployProcessorVersionMetadata(proto.Message):
 
 
 class CreateProcessorRequest(proto.Message):
-    r"""Request message for create a processor. Notice this request
-    is sent to a regionalized backend service, and if the processor
-    type is not available on that region, the creation will fail.
+    r"""Request message for the
+    [CreateProcessor][google.cloud.documentai.v1.DocumentProcessorService.CreateProcessor]
+    method. Notice this request is sent to a regionalized backend
+    service. If the
+    [ProcessorType][google.cloud.documentai.v1.ProcessorType] isn't
+    available in that region, the creation fails.
 
     Attributes:
         parent (str):
@@ -773,8 +824,10 @@ class CreateProcessorRequest(proto.Message):
             ``projects/{project}/locations/{location}``
         processor (google.cloud.documentai_v1.types.Processor):
             Required. The processor to be created, requires
-            [processor_type] and [display_name] to be set. Also, the
-            processor is under CMEK if CMEK fields are set.
+            [Processor.type][google.cloud.documentai.v1.Processor.type]
+            and [Processor.display_name]][] to be set. Also, the
+            [Processor.kms_key_name][google.cloud.documentai.v1.Processor.kms_key_name]
+            field must be set if the processor is under CMEK.
     """
 
     parent: str = proto.Field(
@@ -789,7 +842,9 @@ class CreateProcessorRequest(proto.Message):
 
 
 class DeleteProcessorRequest(proto.Message):
-    r"""Request message for the delete processor method.
+    r"""Request message for the
+    [DeleteProcessor][google.cloud.documentai.v1.DocumentProcessorService.DeleteProcessor]
+    method.
 
     Attributes:
         name (str):
@@ -804,12 +859,13 @@ class DeleteProcessorRequest(proto.Message):
 
 
 class DeleteProcessorMetadata(proto.Message):
-    r"""The long running operation metadata for delete processor
+    r"""The long-running operation metadata for the
+    [DeleteProcessor][google.cloud.documentai.v1.DocumentProcessorService.DeleteProcessor]
     method.
 
     Attributes:
         common_metadata (google.cloud.documentai_v1.types.CommonOperationMetadata):
-            The basic metadata of the long running
+            The basic metadata of the long-running
             operation.
     """
 
@@ -821,7 +877,9 @@ class DeleteProcessorMetadata(proto.Message):
 
 
 class EnableProcessorRequest(proto.Message):
-    r"""Request message for the enable processor method.
+    r"""Request message for the
+    [EnableProcessor][google.cloud.documentai.v1.DocumentProcessorService.EnableProcessor]
+    method.
 
     Attributes:
         name (str):
@@ -836,19 +894,21 @@ class EnableProcessorRequest(proto.Message):
 
 
 class EnableProcessorResponse(proto.Message):
-    r"""Response message for the enable processor method.
-    Intentionally empty proto for adding fields in future.
+    r"""Response message for the
+    [EnableProcessor][google.cloud.documentai.v1.DocumentProcessorService.EnableProcessor]
+    method. Intentionally empty proto for adding fields in future.
 
     """
 
 
 class EnableProcessorMetadata(proto.Message):
-    r"""The long running operation metadata for enable processor
+    r"""The long-running operation metadata for the
+    [EnableProcessor][google.cloud.documentai.v1.DocumentProcessorService.EnableProcessor]
     method.
 
     Attributes:
         common_metadata (google.cloud.documentai_v1.types.CommonOperationMetadata):
-            The basic metadata of the long running
+            The basic metadata of the long-running
             operation.
     """
 
@@ -860,7 +920,9 @@ class EnableProcessorMetadata(proto.Message):
 
 
 class DisableProcessorRequest(proto.Message):
-    r"""Request message for the disable processor method.
+    r"""Request message for the
+    [DisableProcessor][google.cloud.documentai.v1.DocumentProcessorService.DisableProcessor]
+    method.
 
     Attributes:
         name (str):
@@ -875,19 +937,21 @@ class DisableProcessorRequest(proto.Message):
 
 
 class DisableProcessorResponse(proto.Message):
-    r"""Response message for the disable processor method.
-    Intentionally empty proto for adding fields in future.
+    r"""Response message for the
+    [DisableProcessor][google.cloud.documentai.v1.DocumentProcessorService.DisableProcessor]
+    method. Intentionally empty proto for adding fields in future.
 
     """
 
 
 class DisableProcessorMetadata(proto.Message):
-    r"""The long running operation metadata for disable processor
+    r"""The long-running operation metadata for the
+    [DisableProcessor][google.cloud.documentai.v1.DocumentProcessorService.DisableProcessor]
     method.
 
     Attributes:
         common_metadata (google.cloud.documentai_v1.types.CommonOperationMetadata):
-            The basic metadata of the long running
+            The basic metadata of the long-running
             operation.
     """
 
@@ -899,7 +963,9 @@ class DisableProcessorMetadata(proto.Message):
 
 
 class SetDefaultProcessorVersionRequest(proto.Message):
-    r"""Request message for the set default processor version method.
+    r"""Request message for the
+    [SetDefaultProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.SetDefaultProcessorVersion]
+    method.
 
     Attributes:
         processor (str):
@@ -924,16 +990,21 @@ class SetDefaultProcessorVersionRequest(proto.Message):
 
 
 class SetDefaultProcessorVersionResponse(proto.Message):
-    r"""Response message for set default processor version method."""
+    r"""Response message for the
+    [SetDefaultProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.SetDefaultProcessorVersion]
+    method.
+
+    """
 
 
 class SetDefaultProcessorVersionMetadata(proto.Message):
-    r"""The long running operation metadata for set default processor
-    version method.
+    r"""The long-running operation metadata for the
+    [SetDefaultProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.SetDefaultProcessorVersion]
+    method.
 
     Attributes:
         common_metadata (google.cloud.documentai_v1.types.CommonOperationMetadata):
-            The basic metadata of the long running
+            The basic metadata of the long-running
             operation.
     """
 
@@ -945,7 +1016,9 @@ class SetDefaultProcessorVersionMetadata(proto.Message):
 
 
 class TrainProcessorVersionRequest(proto.Message):
-    r"""Request message for the create processor version method.
+    r"""Request message for the
+    [TrainProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.TrainProcessorVersion]
+    method.
 
     Attributes:
         parent (str):
@@ -960,7 +1033,7 @@ class TrainProcessorVersionRequest(proto.Message):
             will be trained with.
         input_data (google.cloud.documentai_v1.types.TrainProcessorVersionRequest.InputData):
             Optional. The input data used to train the
-            ``ProcessorVersion``.
+            [ProcessorVersion][google.cloud.documentai.v1.ProcessorVersion].
         base_processor_version (str):
             Optional. The processor version to use as a base for
             training. This processor version must be a child of
@@ -969,7 +1042,8 @@ class TrainProcessorVersionRequest(proto.Message):
     """
 
     class InputData(proto.Message):
-        r"""The input data used to train a new ``ProcessorVersion``.
+        r"""The input data used to train a new
+        [ProcessorVersion][google.cloud.documentai.v1.ProcessorVersion].
 
         Attributes:
             training_documents (google.cloud.documentai_v1.types.BatchDocumentsInputConfig):
@@ -1017,7 +1091,8 @@ class TrainProcessorVersionRequest(proto.Message):
 
 
 class TrainProcessorVersionResponse(proto.Message):
-    r"""The response for the TrainProcessorVersion method.
+    r"""The response for
+    [TrainProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.TrainProcessorVersion].
 
     Attributes:
         processor_version (str):
@@ -1037,7 +1112,7 @@ class TrainProcessorVersionMetadata(proto.Message):
 
     Attributes:
         common_metadata (google.cloud.documentai_v1.types.CommonOperationMetadata):
-            The basic metadata of the long running
+            The basic metadata of the long-running
             operation.
         training_dataset_validation (google.cloud.documentai_v1.types.TrainProcessorVersionMetadata.DatasetValidation):
             The training dataset validation information.
@@ -1102,7 +1177,10 @@ class TrainProcessorVersionMetadata(proto.Message):
 
 
 class ReviewDocumentRequest(proto.Message):
-    r"""Request message for review document method.
+    r"""Request message for the
+    [ReviewDocument][google.cloud.documentai.v1.DocumentProcessorService.ReviewDocument]
+    method.
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -1113,8 +1191,8 @@ class ReviewDocumentRequest(proto.Message):
             This field is a member of `oneof`_ ``source``.
         human_review_config (str):
             Required. The resource name of the
-            HumanReviewConfig that the document will be
-            reviewed with.
+            [HumanReviewConfig][google.cloud.documentai.v1.HumanReviewConfig]
+            that the document will be reviewed with.
         enable_schema_validation (bool):
             Whether the validation should be performed on
             the ad-hoc review request.
@@ -1166,7 +1244,9 @@ class ReviewDocumentRequest(proto.Message):
 
 
 class ReviewDocumentResponse(proto.Message):
-    r"""Response message for review document method.
+    r"""Response message for the
+    [ReviewDocument][google.cloud.documentai.v1.DocumentProcessorService.ReviewDocument]
+    method.
 
     Attributes:
         gcs_destination (str):
@@ -1212,12 +1292,13 @@ class ReviewDocumentResponse(proto.Message):
 
 
 class ReviewDocumentOperationMetadata(proto.Message):
-    r"""The long running operation metadata for review document
+    r"""The long-running operation metadata for the
+    [ReviewDocument][google.cloud.documentai.v1.DocumentProcessorService.ReviewDocument]
     method.
 
     Attributes:
         common_metadata (google.cloud.documentai_v1.types.CommonOperationMetadata):
-            The basic metadata of the long running
+            The basic metadata of the long-running
             operation.
         question_id (str):
             The Crowd Compute question ID.
@@ -1235,8 +1316,9 @@ class ReviewDocumentOperationMetadata(proto.Message):
 
 
 class EvaluateProcessorVersionRequest(proto.Message):
-    r"""Evaluates the given ProcessorVersion against the supplied
-    documents.
+    r"""Evaluates the given
+    [ProcessorVersion][google.cloud.documentai.v1.ProcessorVersion]
+    against the supplied documents.
 
     Attributes:
         processor_version (str):
@@ -1262,11 +1344,13 @@ class EvaluateProcessorVersionRequest(proto.Message):
 
 
 class EvaluateProcessorVersionMetadata(proto.Message):
-    r"""Metadata of the EvaluateProcessorVersion method.
+    r"""Metadata of the
+    [EvaluateProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.EvaluateProcessorVersion]
+    method.
 
     Attributes:
         common_metadata (google.cloud.documentai_v1.types.CommonOperationMetadata):
-            The basic metadata of the long running
+            The basic metadata of the long-running
             operation.
     """
 
@@ -1278,7 +1362,9 @@ class EvaluateProcessorVersionMetadata(proto.Message):
 
 
 class EvaluateProcessorVersionResponse(proto.Message):
-    r"""Metadata of the EvaluateProcessorVersion method.
+    r"""Response of the
+    [EvaluateProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.EvaluateProcessorVersion]
+    method.
 
     Attributes:
         evaluation (str):
@@ -1308,7 +1394,8 @@ class GetEvaluationRequest(proto.Message):
 
 
 class ListEvaluationsRequest(proto.Message):
-    r"""Retrieves a list of evaluations for a given ProcessorVersion.
+    r"""Retrieves a list of evaluations for a given
+    [ProcessorVersion][google.cloud.documentai.v1.ProcessorVersion].
 
     Attributes:
         parent (str):
@@ -1317,10 +1404,9 @@ class ListEvaluationsRequest(proto.Message):
             to list evaluations for.
             ``projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}``
         page_size (int):
-            The standard list page size.
-            If unspecified, at most 5 evaluations will be
-            returned. The maximum value is 100; values above
-            100 will be coerced to 100.
+            The standard list page size. If unspecified, at most ``5``
+            evaluations are returned. The maximum value is ``100``.
+            Values above ``100`` are coerced to ``100``.
         page_token (str):
             A page token, received from a previous ``ListEvaluations``
             call. Provide this to retrieve the subsequent page.
@@ -1341,7 +1427,7 @@ class ListEvaluationsRequest(proto.Message):
 
 
 class ListEvaluationsResponse(proto.Message):
-    r"""The response from ListEvaluations.
+    r"""The response from ``ListEvaluations``.
 
     Attributes:
         evaluations (MutableSequence[google.cloud.documentai_v1.types.Evaluation]):
