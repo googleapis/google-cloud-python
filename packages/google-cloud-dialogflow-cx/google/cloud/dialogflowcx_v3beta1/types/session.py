@@ -779,6 +779,12 @@ class QueryParameters(proto.Message):
             If unspecified, the
             [ResponseMessage][google.cloud.dialogflow.cx.v3beta1.ResponseMessage]
             with unspecified channel will be returned.
+        session_ttl (google.protobuf.duration_pb2.Duration):
+            Optional. Sets Dialogflow session life time.
+            By default, a Dialogflow session remains active
+            and its data is stored for 30 minutes after the
+            last request is sent for the session. This value
+            should be no longer than 1 day.
     """
 
     time_zone: str = proto.Field(
@@ -831,6 +837,11 @@ class QueryParameters(proto.Message):
     channel: str = proto.Field(
         proto.STRING,
         number=15,
+    )
+    session_ttl: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message=duration_pb2.Duration,
     )
 
 

@@ -379,6 +379,9 @@ class ExportAgentRequest(proto.Message):
             Optional. Environment name. If not set, draft environment is
             assumed. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+        include_bigquery_export_settings (bool):
+            Optional. Whether to include BigQuery Export
+            setting.
     """
 
     class DataFormat(proto.Enum):
@@ -413,6 +416,10 @@ class ExportAgentRequest(proto.Message):
     environment: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    include_bigquery_export_settings: bool = proto.Field(
+        proto.BOOL,
+        number=7,
     )
 
 
