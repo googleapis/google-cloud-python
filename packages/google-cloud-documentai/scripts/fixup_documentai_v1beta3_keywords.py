@@ -48,6 +48,7 @@ class documentaiCallTransformer(cst.CSTTransformer):
         'enable_processor': ('name', ),
         'evaluate_processor_version': ('processor_version', 'evaluation_documents', ),
         'fetch_processor_types': ('parent', ),
+        'get_dataset_schema': ('name', 'visible_fields_only', ),
         'get_evaluation': ('name', ),
         'get_processor': ('name', ),
         'get_processor_type': ('name', ),
@@ -60,8 +61,10 @@ class documentaiCallTransformer(cst.CSTTransformer):
         'process_document': ('name', 'inline_document', 'raw_document', 'document', 'skip_human_review', 'field_mask', 'process_options', ),
         'review_document': ('human_review_config', 'inline_document', 'document', 'enable_schema_validation', 'priority', 'document_schema', ),
         'set_default_processor_version': ('processor', 'default_processor_version', ),
-        'train_processor_version': ('parent', 'processor_version', 'document_schema', 'input_data', 'base_processor_version', ),
+        'train_processor_version': ('parent', 'processor_version', 'custom_document_extraction_options', 'document_schema', 'input_data', 'base_processor_version', ),
         'undeploy_processor_version': ('name', ),
+        'update_dataset': ('dataset', 'update_mask', ),
+        'update_dataset_schema': ('dataset_schema', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

@@ -63,6 +63,12 @@ class CloudBillingAsyncClient:
     DEFAULT_ENDPOINT = CloudBillingClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = CloudBillingClient.DEFAULT_MTLS_ENDPOINT
 
+    project_billing_info_path = staticmethod(
+        CloudBillingClient.project_billing_info_path
+    )
+    parse_project_billing_info_path = staticmethod(
+        CloudBillingClient.parse_project_billing_info_path
+    )
     common_billing_account_path = staticmethod(
         CloudBillingClient.common_billing_account_path
     )

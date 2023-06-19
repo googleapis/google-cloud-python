@@ -64,16 +64,16 @@ class DocumentSchema(proto.Message):
                 User defined name for the type.
             name (str):
                 Name of the type. It must be unique within the schema file
-                and cannot be a 'Common Type'. Besides that we use the
-                following naming conventions:
+                and cannot be a "Common Type". The following naming
+                conventions are used:
 
-                -  *use ``snake_casing``*
-                -  name matching is case-sensitive
+                -  Use ``snake_casing``.
+                -  Name matching is case-sensitive.
                 -  Maximum 64 characters.
                 -  Must start with a letter.
                 -  Allowed characters: ASCII letters ``[a-z0-9_-]``. (For
                    backward compatibility internal infrastructure and
-                   tooling can handle any ascii character)
+                   tooling can handle any ascii character.)
                 -  The ``/`` is sometimes used to denote a property of a
                    type. For example ``line_item/amount``. This convention
                    is deprecated, but will still be honored for backward
@@ -200,7 +200,7 @@ class DocumentSchema(proto.Message):
         Attributes:
             document_splitter (bool):
                 If true, a ``document`` entity type can be applied to
-                subdocument ( splitting). Otherwise, it can only be applied
+                subdocument (splitting). Otherwise, it can only be applied
                 to the entire document (classification).
             document_allow_multiple_labels (bool):
                 If true, on a given page, there can be multiple ``document``

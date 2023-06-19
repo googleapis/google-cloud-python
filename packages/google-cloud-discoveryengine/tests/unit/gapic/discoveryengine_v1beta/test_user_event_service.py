@@ -1954,17 +1954,7 @@ def test_import_user_events_rest_unset_required_fields():
     )
 
     unset_fields = transport.import_user_events._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "inlineSource",
-                "gcsSource",
-                "bigquerySource",
-                "parent",
-            )
-        )
-    )
+    assert set(unset_fields) == (set(()) & set(("parent",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

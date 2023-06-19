@@ -6779,8 +6779,28 @@ def test_cloud_billing_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
+def test_project_billing_info_path():
+    project = "squid"
+    expected = "projects/{project}/billingInfo".format(
+        project=project,
+    )
+    actual = CloudBillingClient.project_billing_info_path(project)
+    assert expected == actual
+
+
+def test_parse_project_billing_info_path():
+    expected = {
+        "project": "clam",
+    }
+    path = CloudBillingClient.project_billing_info_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudBillingClient.parse_project_billing_info_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -6790,7 +6810,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "octopus",
     }
     path = CloudBillingClient.common_billing_account_path(**expected)
 
@@ -6800,7 +6820,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -6810,7 +6830,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "nudibranch",
     }
     path = CloudBillingClient.common_folder_path(**expected)
 
@@ -6820,7 +6840,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -6830,7 +6850,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "mussel",
     }
     path = CloudBillingClient.common_organization_path(**expected)
 
@@ -6840,7 +6860,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -6850,7 +6870,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "nautilus",
     }
     path = CloudBillingClient.common_project_path(**expected)
 
@@ -6860,8 +6880,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -6872,8 +6892,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "squid",
+        "location": "clam",
     }
     path = CloudBillingClient.common_location_path(**expected)
 

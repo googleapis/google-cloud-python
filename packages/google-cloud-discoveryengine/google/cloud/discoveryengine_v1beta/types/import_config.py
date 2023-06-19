@@ -72,6 +72,11 @@ class GcsSource(proto.Message):
                [Schema][google.cloud.discoveryengine.v1beta.Schema] of
                the data store. This can only be used by the GENERIC Data
                Store vertical.
+            -  ``csv``: A CSV file with header conforming the defined
+               [Schema][google.cloud.discoveryengine.v1beta.Schema] of
+               the data store. Each entry after the header will be
+               imported as a Document. This can only be used by the
+               GENERIC Data Store vertical.
 
             Supported values for user even imports:
 
@@ -207,17 +212,16 @@ class ImportUserEventsRequest(proto.Message):
 
     Attributes:
         inline_source (google.cloud.discoveryengine_v1beta.types.ImportUserEventsRequest.InlineSource):
-            Required. The Inline source for the input
-            content for UserEvents.
+            The Inline source for the input content for
+            UserEvents.
 
             This field is a member of `oneof`_ ``source``.
         gcs_source (google.cloud.discoveryengine_v1beta.types.GcsSource):
-            Required. Cloud Storage location for the
-            input content.
+            Cloud Storage location for the input content.
 
             This field is a member of `oneof`_ ``source``.
         bigquery_source (google.cloud.discoveryengine_v1beta.types.BigQuerySource):
-            Required. BigQuery input source.
+            BigQuery input source.
 
             This field is a member of `oneof`_ ``source``.
         parent (str):
@@ -454,8 +458,8 @@ class ImportDocumentsRequest(proto.Message):
             [GcsSource.data_schema][google.cloud.discoveryengine.v1beta.GcsSource.data_schema]
             or
             [BigQuerySource.data_schema][google.cloud.discoveryengine.v1beta.BigQuerySource.data_schema]
-            is ``custom``. Otherwise, an INVALID_ARGUMENT error is
-            thrown.
+            is ``custom`` or ``csv``. Otherwise, an INVALID_ARGUMENT
+            error is thrown.
         id_field (str):
             The field in the Cloud Storage and BigQuery sources that
             indicates the unique IDs of the documents.
