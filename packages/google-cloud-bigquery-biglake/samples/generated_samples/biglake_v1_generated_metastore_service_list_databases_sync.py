@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud.bigquery import biglake_v1
+from google.cloud import bigquery_biglake_v1
 
 
 def sample_list_databases():
     # Create a client
-    client = biglake_v1.MetastoreServiceClient()
+    client = bigquery_biglake_v1.MetastoreServiceClient()
 
     # Initialize request argument(s)
-    request = biglake_v1.ListDatabasesRequest(
+    request = bigquery_biglake_v1.ListDatabasesRequest(
         parent="parent_value",
     )
 

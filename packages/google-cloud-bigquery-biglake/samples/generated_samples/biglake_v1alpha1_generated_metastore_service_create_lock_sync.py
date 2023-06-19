@@ -31,18 +31,18 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud.bigquery import biglake_v1alpha1
+from google.cloud import bigquery_biglake_v1alpha1
 
 
 def sample_create_lock():
     # Create a client
-    client = biglake_v1alpha1.MetastoreServiceClient()
+    client = bigquery_biglake_v1alpha1.MetastoreServiceClient()
 
     # Initialize request argument(s)
-    lock = biglake_v1alpha1.Lock()
+    lock = bigquery_biglake_v1alpha1.Lock()
     lock.table_id = "table_id_value"
 
-    request = biglake_v1alpha1.CreateLockRequest(
+    request = bigquery_biglake_v1alpha1.CreateLockRequest(
         parent="parent_value",
         lock=lock,
     )

@@ -27,7 +27,7 @@ description = "Google Cloud Bigquery Biglake API client library"
 
 version = {}
 with open(
-    os.path.join(package_root, "google/cloud/bigquery/biglake/gapic_version.py")
+    os.path.join(package_root, "google/cloud/bigquery_biglake/gapic_version.py")
 ) as fp:
     exec(fp.read(), version)
 version = version["__version__"]
@@ -57,7 +57,7 @@ packages = [
     if package.startswith("google")
 ]
 
-namespaces = ["google", "google.cloud", "google.cloud.bigquery"]
+namespaces = ["google", "google.cloud"]
 
 setuptools.setup(
     name=name,
