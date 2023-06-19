@@ -2109,6 +2109,97 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
         return self._stubs["delete_channel_partner_repricing_config"]
 
     @property
+    def list_sku_groups(
+        self,
+    ) -> Callable[[service.ListSkuGroupsRequest], service.ListSkuGroupsResponse]:
+        r"""Return a callable for the list sku groups method over gRPC.
+
+        Lists the Rebilling supported SKU groups the account is
+        authorized to sell. Reference:
+        https://cloud.google.com/skus/sku-groups
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the account making the request and the
+           account being queried are different, or the account doesn't
+           exist.
+        -  INTERNAL: Any non-user error related to technical issues in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: If successful, the
+        [SkuGroup][google.cloud.channel.v1.SkuGroup] resources. The data
+        for each resource is displayed in the alphabetical order of SKU
+        group display name. The data for each resource is displayed in
+        the ascending order of
+        [SkuGroup.display_name][google.cloud.channel.v1.SkuGroup.display_name]
+
+        If unsuccessful, returns an error.
+
+        Returns:
+            Callable[[~.ListSkuGroupsRequest],
+                    ~.ListSkuGroupsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_sku_groups" not in self._stubs:
+            self._stubs["list_sku_groups"] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/ListSkuGroups",
+                request_serializer=service.ListSkuGroupsRequest.serialize,
+                response_deserializer=service.ListSkuGroupsResponse.deserialize,
+            )
+        return self._stubs["list_sku_groups"]
+
+    @property
+    def list_sku_group_billable_skus(
+        self,
+    ) -> Callable[
+        [service.ListSkuGroupBillableSkusRequest],
+        service.ListSkuGroupBillableSkusResponse,
+    ]:
+        r"""Return a callable for the list sku group billable skus method over gRPC.
+
+        Lists the Billable SKUs in a given SKU group.
+
+        Possible error codes: PERMISSION_DENIED: If the account making
+        the request and the account being queried for are different, or
+        the account doesn't exist. INVALID_ARGUMENT: Missing or invalid
+        required parameters in the request. INTERNAL: Any non-user error
+        related to technical issue in the backend. In this case, contact
+        cloud channel support.
+
+        Return Value: If successful, the
+        [BillableSku][google.cloud.channel.v1.BillableSku] resources.
+        The data for each resource is displayed in the ascending order
+        of:
+
+        -  [BillableSku.service_display_name][google.cloud.channel.v1.BillableSku.service_display_name]
+        -  [BillableSku.sku_display_name][google.cloud.channel.v1.BillableSku.sku_display_name]
+
+        If unsuccessful, returns an error.
+
+        Returns:
+            Callable[[~.ListSkuGroupBillableSkusRequest],
+                    ~.ListSkuGroupBillableSkusResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_sku_group_billable_skus" not in self._stubs:
+            self._stubs["list_sku_group_billable_skus"] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/ListSkuGroupBillableSkus",
+                request_serializer=service.ListSkuGroupBillableSkusRequest.serialize,
+                response_deserializer=service.ListSkuGroupBillableSkusResponse.deserialize,
+            )
+        return self._stubs["list_sku_group_billable_skus"]
+
+    @property
     def lookup_offer(self) -> Callable[[service.LookupOfferRequest], offers.Offer]:
         r"""Return a callable for the lookup offer method over gRPC.
 

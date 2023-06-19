@@ -41,13 +41,18 @@ class serviceCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'check_upgrade': ('environment', 'image_version', ),
         'create_environment': ('parent', 'environment', ),
+        'database_failover': ('environment', ),
         'delete_environment': ('name', ),
+        'execute_airflow_command': ('environment', 'command', 'subcommand', 'parameters', ),
+        'fetch_database_properties': ('environment', ),
         'get_environment': ('name', ),
         'list_environments': ('parent', 'page_size', 'page_token', ),
         'list_image_versions': ('parent', 'page_size', 'page_token', 'include_past_releases', ),
         'load_snapshot': ('environment', 'snapshot_path', 'skip_pypi_packages_installation', 'skip_environment_variables_setting', 'skip_airflow_overrides_setting', 'skip_gcs_data_copying', ),
+        'poll_airflow_command': ('environment', 'execution_id', 'pod', 'pod_namespace', 'next_line_number', ),
         'restart_web_server': ('name', ),
         'save_snapshot': ('environment', 'snapshot_location', ),
+        'stop_airflow_command': ('environment', 'execution_id', 'pod', 'pod_namespace', 'force', ),
         'update_environment': ('update_mask', 'name', 'environment', ),
     }
 

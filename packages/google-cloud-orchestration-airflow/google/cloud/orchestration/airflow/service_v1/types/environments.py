@@ -30,10 +30,20 @@ __protobuf__ = proto.module(
         "ListEnvironmentsResponse",
         "DeleteEnvironmentRequest",
         "UpdateEnvironmentRequest",
+        "ExecuteAirflowCommandRequest",
+        "ExecuteAirflowCommandResponse",
+        "StopAirflowCommandRequest",
+        "StopAirflowCommandResponse",
+        "PollAirflowCommandRequest",
+        "PollAirflowCommandResponse",
         "SaveSnapshotRequest",
         "SaveSnapshotResponse",
         "LoadSnapshotRequest",
         "LoadSnapshotResponse",
+        "DatabaseFailoverRequest",
+        "DatabaseFailoverResponse",
+        "FetchDatabasePropertiesRequest",
+        "FetchDatabasePropertiesResponse",
         "EnvironmentConfig",
         "WebServerNetworkAccessControl",
         "DatabaseConfig",
@@ -364,6 +374,256 @@ class UpdateEnvironmentRequest(proto.Message):
     )
 
 
+class ExecuteAirflowCommandRequest(proto.Message):
+    r"""Execute Airflow Command request.
+
+    Attributes:
+        environment (str):
+            The resource name of the environment in the
+            form:
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
+        command (str):
+            Airflow command.
+        subcommand (str):
+            Airflow subcommand.
+        parameters (MutableSequence[str]):
+            Parameters for the Airflow command/subcommand as an array of
+            arguments. It may contain positional arguments like
+            ``["my-dag-id"]``, key-value parameters like
+            ``["--foo=bar"]`` or ``["--foo","bar"]``, or other flags
+            like ``["-f"]``.
+    """
+
+    environment: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    command: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    subcommand: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    parameters: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ExecuteAirflowCommandResponse(proto.Message):
+    r"""Response to ExecuteAirflowCommandRequest.
+
+    Attributes:
+        execution_id (str):
+            The unique ID of the command execution for
+            polling.
+        pod (str):
+            The name of the pod where the command is
+            executed.
+        pod_namespace (str):
+            The namespace of the pod where the command is
+            executed.
+        error (str):
+            Error message. Empty if there was no error.
+    """
+
+    execution_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    pod: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    pod_namespace: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    error: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class StopAirflowCommandRequest(proto.Message):
+    r"""Stop Airflow Command request.
+
+    Attributes:
+        environment (str):
+            The resource name of the environment in the
+            form:
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
+        execution_id (str):
+            The unique ID of the command execution.
+        pod (str):
+            The name of the pod where the command is
+            executed.
+        pod_namespace (str):
+            The namespace of the pod where the command is
+            executed.
+        force (bool):
+            If true, the execution is terminated
+            forcefully (SIGKILL). If false, the execution is
+            stopped gracefully, giving it time for cleanup.
+    """
+
+    environment: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    execution_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    pod: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    pod_namespace: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+
+
+class StopAirflowCommandResponse(proto.Message):
+    r"""Response to StopAirflowCommandRequest.
+
+    Attributes:
+        is_done (bool):
+            Whether the execution is still running.
+        output (MutableSequence[str]):
+            Output message from stopping execution
+            request.
+    """
+
+    is_done: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    output: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class PollAirflowCommandRequest(proto.Message):
+    r"""Poll Airflow Command request.
+
+    Attributes:
+        environment (str):
+            The resource name of the environment in the
+            form:
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
+        execution_id (str):
+            The unique ID of the command execution.
+        pod (str):
+            The name of the pod where the command is
+            executed.
+        pod_namespace (str):
+            The namespace of the pod where the command is
+            executed.
+        next_line_number (int):
+            Line number from which new logs should be
+            fetched.
+    """
+
+    environment: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    execution_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    pod: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    pod_namespace: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    next_line_number: int = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+
+
+class PollAirflowCommandResponse(proto.Message):
+    r"""Response to PollAirflowCommandRequest.
+
+    Attributes:
+        output (MutableSequence[google.cloud.orchestration.airflow.service_v1.types.PollAirflowCommandResponse.Line]):
+            Output from the command execution. It may not
+            contain the full output and the caller may need
+            to poll for more lines.
+        output_end (bool):
+            Whether the command execution has finished
+            and there is no more output.
+        exit_info (google.cloud.orchestration.airflow.service_v1.types.PollAirflowCommandResponse.ExitInfo):
+            The result exit status of the command.
+    """
+
+    class Line(proto.Message):
+        r"""Contains information about a single line from logs.
+
+        Attributes:
+            line_number (int):
+                Number of the line.
+            content (str):
+                Text content of the log line.
+        """
+
+        line_number: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        content: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class ExitInfo(proto.Message):
+        r"""Information about how a command ended.
+
+        Attributes:
+            exit_code (int):
+                The exit code from the command execution.
+            error (str):
+                Error message. Empty if there was no error.
+        """
+
+        exit_code: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        error: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    output: MutableSequence[Line] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=Line,
+    )
+    output_end: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    exit_info: ExitInfo = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=ExitInfo,
+    )
+
+
 class SaveSnapshotRequest(proto.Message):
     r"""Request to create a snapshot of a Cloud Composer environment.
 
@@ -459,6 +719,75 @@ class LoadSnapshotRequest(proto.Message):
 
 class LoadSnapshotResponse(proto.Message):
     r"""Response to LoadSnapshotRequest."""
+
+
+class DatabaseFailoverRequest(proto.Message):
+    r"""Request to trigger database failover (only for highly
+    resilient environments).
+
+    Attributes:
+        environment (str):
+            Target environment:
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
+    """
+
+    environment: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DatabaseFailoverResponse(proto.Message):
+    r"""Response for DatabaseFailoverRequest."""
+
+
+class FetchDatabasePropertiesRequest(proto.Message):
+    r"""Request to fetch properties of environment's database.
+
+    Attributes:
+        environment (str):
+            Required. The resource name of the
+            environment, in the form:
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
+    """
+
+    environment: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class FetchDatabasePropertiesResponse(proto.Message):
+    r"""Response for FetchDatabasePropertiesRequest.
+
+    Attributes:
+        primary_gce_zone (str):
+            The Compute Engine zone that the instance is
+            currently serving from.
+        secondary_gce_zone (str):
+            The Compute Engine zone that the failover
+            instance is currently serving from for a
+            regional Cloud SQL instance.
+        is_failover_replica_available (bool):
+            The availability status of the failover
+            replica. A false status indicates that the
+            failover replica is out of sync. The primary
+            instance can only fail over to the failover
+            replica when the status is true.
+    """
+
+    primary_gce_zone: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    secondary_gce_zone: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    is_failover_replica_available: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class EnvironmentConfig(proto.Message):
@@ -563,6 +892,11 @@ class EnvironmentConfig(proto.Message):
 
             This field is supported for Cloud Composer environments in
             versions composer-2.\ *.*-airflow-*.*.\* and newer.
+        resilience_mode (google.cloud.orchestration.airflow.service_v1.types.EnvironmentConfig.ResilienceMode):
+            Optional. Resilience mode of the Cloud Composer Environment.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-2.2.0-airflow-\ *.*.\* and newer.
     """
 
     class EnvironmentSize(proto.Enum):
@@ -582,6 +916,20 @@ class EnvironmentConfig(proto.Message):
         ENVIRONMENT_SIZE_SMALL = 1
         ENVIRONMENT_SIZE_MEDIUM = 2
         ENVIRONMENT_SIZE_LARGE = 3
+
+    class ResilienceMode(proto.Enum):
+        r"""Resilience mode of the Cloud Composer Environment.
+
+        Values:
+            RESILIENCE_MODE_UNSPECIFIED (0):
+                Default mode doesn't change environment
+                parameters.
+            HIGH_RESILIENCE (1):
+                Enabled High Resilience mode, including Cloud
+                SQL HA.
+        """
+        RESILIENCE_MODE_UNSPECIFIED = 0
+        HIGH_RESILIENCE = 1
 
     gke_cluster: str = proto.Field(
         proto.STRING,
@@ -662,6 +1010,11 @@ class EnvironmentConfig(proto.Message):
         proto.MESSAGE,
         number=18,
         message="RecoveryConfig",
+    )
+    resilience_mode: ResilienceMode = proto.Field(
+        proto.ENUM,
+        number=19,
+        enum=ResilienceMode,
     )
 
 

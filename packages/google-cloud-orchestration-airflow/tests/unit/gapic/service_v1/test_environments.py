@@ -2137,6 +2137,503 @@ async def test_delete_environment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        environments.ExecuteAirflowCommandRequest,
+        dict,
+    ],
+)
+def test_execute_airflow_command(request_type, transport: str = "grpc"):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_airflow_command), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = environments.ExecuteAirflowCommandResponse(
+            execution_id="execution_id_value",
+            pod="pod_value",
+            pod_namespace="pod_namespace_value",
+            error="error_value",
+        )
+        response = client.execute_airflow_command(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environments.ExecuteAirflowCommandRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, environments.ExecuteAirflowCommandResponse)
+    assert response.execution_id == "execution_id_value"
+    assert response.pod == "pod_value"
+    assert response.pod_namespace == "pod_namespace_value"
+    assert response.error == "error_value"
+
+
+def test_execute_airflow_command_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_airflow_command), "__call__"
+    ) as call:
+        client.execute_airflow_command()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environments.ExecuteAirflowCommandRequest()
+
+
+@pytest.mark.asyncio
+async def test_execute_airflow_command_async(
+    transport: str = "grpc_asyncio",
+    request_type=environments.ExecuteAirflowCommandRequest,
+):
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_airflow_command), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            environments.ExecuteAirflowCommandResponse(
+                execution_id="execution_id_value",
+                pod="pod_value",
+                pod_namespace="pod_namespace_value",
+                error="error_value",
+            )
+        )
+        response = await client.execute_airflow_command(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environments.ExecuteAirflowCommandRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, environments.ExecuteAirflowCommandResponse)
+    assert response.execution_id == "execution_id_value"
+    assert response.pod == "pod_value"
+    assert response.pod_namespace == "pod_namespace_value"
+    assert response.error == "error_value"
+
+
+@pytest.mark.asyncio
+async def test_execute_airflow_command_async_from_dict():
+    await test_execute_airflow_command_async(request_type=dict)
+
+
+def test_execute_airflow_command_field_headers():
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = environments.ExecuteAirflowCommandRequest()
+
+    request.environment = "environment_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_airflow_command), "__call__"
+    ) as call:
+        call.return_value = environments.ExecuteAirflowCommandResponse()
+        client.execute_airflow_command(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "environment=environment_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_execute_airflow_command_field_headers_async():
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = environments.ExecuteAirflowCommandRequest()
+
+    request.environment = "environment_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_airflow_command), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            environments.ExecuteAirflowCommandResponse()
+        )
+        await client.execute_airflow_command(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "environment=environment_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        environments.StopAirflowCommandRequest,
+        dict,
+    ],
+)
+def test_stop_airflow_command(request_type, transport: str = "grpc"):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stop_airflow_command), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = environments.StopAirflowCommandResponse(
+            is_done=True,
+            output=["output_value"],
+        )
+        response = client.stop_airflow_command(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environments.StopAirflowCommandRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, environments.StopAirflowCommandResponse)
+    assert response.is_done is True
+    assert response.output == ["output_value"]
+
+
+def test_stop_airflow_command_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stop_airflow_command), "__call__"
+    ) as call:
+        client.stop_airflow_command()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environments.StopAirflowCommandRequest()
+
+
+@pytest.mark.asyncio
+async def test_stop_airflow_command_async(
+    transport: str = "grpc_asyncio", request_type=environments.StopAirflowCommandRequest
+):
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stop_airflow_command), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            environments.StopAirflowCommandResponse(
+                is_done=True,
+                output=["output_value"],
+            )
+        )
+        response = await client.stop_airflow_command(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environments.StopAirflowCommandRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, environments.StopAirflowCommandResponse)
+    assert response.is_done is True
+    assert response.output == ["output_value"]
+
+
+@pytest.mark.asyncio
+async def test_stop_airflow_command_async_from_dict():
+    await test_stop_airflow_command_async(request_type=dict)
+
+
+def test_stop_airflow_command_field_headers():
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = environments.StopAirflowCommandRequest()
+
+    request.environment = "environment_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stop_airflow_command), "__call__"
+    ) as call:
+        call.return_value = environments.StopAirflowCommandResponse()
+        client.stop_airflow_command(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "environment=environment_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_stop_airflow_command_field_headers_async():
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = environments.StopAirflowCommandRequest()
+
+    request.environment = "environment_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stop_airflow_command), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            environments.StopAirflowCommandResponse()
+        )
+        await client.stop_airflow_command(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "environment=environment_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        environments.PollAirflowCommandRequest,
+        dict,
+    ],
+)
+def test_poll_airflow_command(request_type, transport: str = "grpc"):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.poll_airflow_command), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = environments.PollAirflowCommandResponse(
+            output_end=True,
+        )
+        response = client.poll_airflow_command(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environments.PollAirflowCommandRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, environments.PollAirflowCommandResponse)
+    assert response.output_end is True
+
+
+def test_poll_airflow_command_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.poll_airflow_command), "__call__"
+    ) as call:
+        client.poll_airflow_command()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environments.PollAirflowCommandRequest()
+
+
+@pytest.mark.asyncio
+async def test_poll_airflow_command_async(
+    transport: str = "grpc_asyncio", request_type=environments.PollAirflowCommandRequest
+):
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.poll_airflow_command), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            environments.PollAirflowCommandResponse(
+                output_end=True,
+            )
+        )
+        response = await client.poll_airflow_command(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environments.PollAirflowCommandRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, environments.PollAirflowCommandResponse)
+    assert response.output_end is True
+
+
+@pytest.mark.asyncio
+async def test_poll_airflow_command_async_from_dict():
+    await test_poll_airflow_command_async(request_type=dict)
+
+
+def test_poll_airflow_command_field_headers():
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = environments.PollAirflowCommandRequest()
+
+    request.environment = "environment_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.poll_airflow_command), "__call__"
+    ) as call:
+        call.return_value = environments.PollAirflowCommandResponse()
+        client.poll_airflow_command(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "environment=environment_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_poll_airflow_command_field_headers_async():
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = environments.PollAirflowCommandRequest()
+
+    request.environment = "environment_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.poll_airflow_command), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            environments.PollAirflowCommandResponse()
+        )
+        await client.poll_airflow_command(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "environment=environment_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         environments.SaveSnapshotRequest,
         dict,
     ],
@@ -2425,6 +2922,329 @@ async def test_load_snapshot_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        environments.DatabaseFailoverRequest,
+        dict,
+    ],
+)
+def test_database_failover(request_type, transport: str = "grpc"):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.database_failover), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.database_failover(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environments.DatabaseFailoverRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_database_failover_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.database_failover), "__call__"
+    ) as call:
+        client.database_failover()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environments.DatabaseFailoverRequest()
+
+
+@pytest.mark.asyncio
+async def test_database_failover_async(
+    transport: str = "grpc_asyncio", request_type=environments.DatabaseFailoverRequest
+):
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.database_failover), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.database_failover(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environments.DatabaseFailoverRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_database_failover_async_from_dict():
+    await test_database_failover_async(request_type=dict)
+
+
+def test_database_failover_field_headers():
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = environments.DatabaseFailoverRequest()
+
+    request.environment = "environment_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.database_failover), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.database_failover(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "environment=environment_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_database_failover_field_headers_async():
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = environments.DatabaseFailoverRequest()
+
+    request.environment = "environment_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.database_failover), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.database_failover(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "environment=environment_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        environments.FetchDatabasePropertiesRequest,
+        dict,
+    ],
+)
+def test_fetch_database_properties(request_type, transport: str = "grpc"):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_database_properties), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = environments.FetchDatabasePropertiesResponse(
+            primary_gce_zone="primary_gce_zone_value",
+            secondary_gce_zone="secondary_gce_zone_value",
+            is_failover_replica_available=True,
+        )
+        response = client.fetch_database_properties(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environments.FetchDatabasePropertiesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, environments.FetchDatabasePropertiesResponse)
+    assert response.primary_gce_zone == "primary_gce_zone_value"
+    assert response.secondary_gce_zone == "secondary_gce_zone_value"
+    assert response.is_failover_replica_available is True
+
+
+def test_fetch_database_properties_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_database_properties), "__call__"
+    ) as call:
+        client.fetch_database_properties()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environments.FetchDatabasePropertiesRequest()
+
+
+@pytest.mark.asyncio
+async def test_fetch_database_properties_async(
+    transport: str = "grpc_asyncio",
+    request_type=environments.FetchDatabasePropertiesRequest,
+):
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_database_properties), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            environments.FetchDatabasePropertiesResponse(
+                primary_gce_zone="primary_gce_zone_value",
+                secondary_gce_zone="secondary_gce_zone_value",
+                is_failover_replica_available=True,
+            )
+        )
+        response = await client.fetch_database_properties(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environments.FetchDatabasePropertiesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, environments.FetchDatabasePropertiesResponse)
+    assert response.primary_gce_zone == "primary_gce_zone_value"
+    assert response.secondary_gce_zone == "secondary_gce_zone_value"
+    assert response.is_failover_replica_available is True
+
+
+@pytest.mark.asyncio
+async def test_fetch_database_properties_async_from_dict():
+    await test_fetch_database_properties_async(request_type=dict)
+
+
+def test_fetch_database_properties_field_headers():
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = environments.FetchDatabasePropertiesRequest()
+
+    request.environment = "environment_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_database_properties), "__call__"
+    ) as call:
+        call.return_value = environments.FetchDatabasePropertiesResponse()
+        client.fetch_database_properties(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "environment=environment_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_fetch_database_properties_field_headers_async():
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = environments.FetchDatabasePropertiesRequest()
+
+    request.environment = "environment_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_database_properties), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            environments.FetchDatabasePropertiesResponse()
+        )
+        await client.fetch_database_properties(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "environment=environment_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         environments.CreateEnvironmentRequest,
         dict,
     ],
@@ -2534,6 +3354,7 @@ def test_create_environment_rest(request_type):
                     "time_zone": "time_zone_value",
                 }
             },
+            "resilience_mode": 1,
         },
         "uuid": "uuid_value",
         "state": 1,
@@ -2727,6 +3548,7 @@ def test_create_environment_rest_bad_request(
                     "time_zone": "time_zone_value",
                 }
             },
+            "resilience_mode": 1,
         },
         "uuid": "uuid_value",
         "state": 1,
@@ -3350,6 +4172,7 @@ def test_update_environment_rest(request_type):
                     "time_zone": "time_zone_value",
                 }
             },
+            "resilience_mode": 1,
         },
         "uuid": "uuid_value",
         "state": 1,
@@ -3543,6 +4366,7 @@ def test_update_environment_rest_bad_request(
                     "time_zone": "time_zone_value",
                 }
             },
+            "resilience_mode": 1,
         },
         "uuid": "uuid_value",
         "state": 1,
@@ -3815,6 +4639,404 @@ def test_delete_environment_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        environments.ExecuteAirflowCommandRequest,
+        dict,
+    ],
+)
+def test_execute_airflow_command_rest(request_type):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "environment": "projects/sample1/locations/sample2/environments/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = environments.ExecuteAirflowCommandResponse(
+            execution_id="execution_id_value",
+            pod="pod_value",
+            pod_namespace="pod_namespace_value",
+            error="error_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = environments.ExecuteAirflowCommandResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.execute_airflow_command(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, environments.ExecuteAirflowCommandResponse)
+    assert response.execution_id == "execution_id_value"
+    assert response.pod == "pod_value"
+    assert response.pod_namespace == "pod_namespace_value"
+    assert response.error == "error_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_execute_airflow_command_rest_interceptors(null_interceptor):
+    transport = transports.EnvironmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EnvironmentsRestInterceptor(),
+    )
+    client = EnvironmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_execute_airflow_command"
+    ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "pre_execute_airflow_command"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = environments.ExecuteAirflowCommandRequest.pb(
+            environments.ExecuteAirflowCommandRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = environments.ExecuteAirflowCommandResponse.to_json(
+            environments.ExecuteAirflowCommandResponse()
+        )
+
+        request = environments.ExecuteAirflowCommandRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = environments.ExecuteAirflowCommandResponse()
+
+        client.execute_airflow_command(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_execute_airflow_command_rest_bad_request(
+    transport: str = "rest", request_type=environments.ExecuteAirflowCommandRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "environment": "projects/sample1/locations/sample2/environments/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.execute_airflow_command(request)
+
+
+def test_execute_airflow_command_rest_error():
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        environments.StopAirflowCommandRequest,
+        dict,
+    ],
+)
+def test_stop_airflow_command_rest(request_type):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "environment": "projects/sample1/locations/sample2/environments/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = environments.StopAirflowCommandResponse(
+            is_done=True,
+            output=["output_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = environments.StopAirflowCommandResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.stop_airflow_command(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, environments.StopAirflowCommandResponse)
+    assert response.is_done is True
+    assert response.output == ["output_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_stop_airflow_command_rest_interceptors(null_interceptor):
+    transport = transports.EnvironmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EnvironmentsRestInterceptor(),
+    )
+    client = EnvironmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_stop_airflow_command"
+    ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "pre_stop_airflow_command"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = environments.StopAirflowCommandRequest.pb(
+            environments.StopAirflowCommandRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = environments.StopAirflowCommandResponse.to_json(
+            environments.StopAirflowCommandResponse()
+        )
+
+        request = environments.StopAirflowCommandRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = environments.StopAirflowCommandResponse()
+
+        client.stop_airflow_command(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_stop_airflow_command_rest_bad_request(
+    transport: str = "rest", request_type=environments.StopAirflowCommandRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "environment": "projects/sample1/locations/sample2/environments/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.stop_airflow_command(request)
+
+
+def test_stop_airflow_command_rest_error():
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        environments.PollAirflowCommandRequest,
+        dict,
+    ],
+)
+def test_poll_airflow_command_rest(request_type):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "environment": "projects/sample1/locations/sample2/environments/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = environments.PollAirflowCommandResponse(
+            output_end=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = environments.PollAirflowCommandResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.poll_airflow_command(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, environments.PollAirflowCommandResponse)
+    assert response.output_end is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_poll_airflow_command_rest_interceptors(null_interceptor):
+    transport = transports.EnvironmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EnvironmentsRestInterceptor(),
+    )
+    client = EnvironmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_poll_airflow_command"
+    ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "pre_poll_airflow_command"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = environments.PollAirflowCommandRequest.pb(
+            environments.PollAirflowCommandRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = environments.PollAirflowCommandResponse.to_json(
+            environments.PollAirflowCommandResponse()
+        )
+
+        request = environments.PollAirflowCommandRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = environments.PollAirflowCommandResponse()
+
+        client.poll_airflow_command(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_poll_airflow_command_rest_bad_request(
+    transport: str = "rest", request_type=environments.PollAirflowCommandRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "environment": "projects/sample1/locations/sample2/environments/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.poll_airflow_command(request)
+
+
+def test_poll_airflow_command_rest_error():
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         environments.SaveSnapshotRequest,
         dict,
     ],
@@ -4068,6 +5290,358 @@ def test_load_snapshot_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        environments.DatabaseFailoverRequest,
+        dict,
+    ],
+)
+def test_database_failover_rest(request_type):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "environment": "projects/sample1/locations/sample2/environments/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.database_failover(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_database_failover_rest_interceptors(null_interceptor):
+    transport = transports.EnvironmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EnvironmentsRestInterceptor(),
+    )
+    client = EnvironmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_database_failover"
+    ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "pre_database_failover"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = environments.DatabaseFailoverRequest.pb(
+            environments.DatabaseFailoverRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = environments.DatabaseFailoverRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.database_failover(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_database_failover_rest_bad_request(
+    transport: str = "rest", request_type=environments.DatabaseFailoverRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "environment": "projects/sample1/locations/sample2/environments/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.database_failover(request)
+
+
+def test_database_failover_rest_error():
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        environments.FetchDatabasePropertiesRequest,
+        dict,
+    ],
+)
+def test_fetch_database_properties_rest(request_type):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "environment": "projects/sample1/locations/sample2/environments/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = environments.FetchDatabasePropertiesResponse(
+            primary_gce_zone="primary_gce_zone_value",
+            secondary_gce_zone="secondary_gce_zone_value",
+            is_failover_replica_available=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = environments.FetchDatabasePropertiesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.fetch_database_properties(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, environments.FetchDatabasePropertiesResponse)
+    assert response.primary_gce_zone == "primary_gce_zone_value"
+    assert response.secondary_gce_zone == "secondary_gce_zone_value"
+    assert response.is_failover_replica_available is True
+
+
+def test_fetch_database_properties_rest_required_fields(
+    request_type=environments.FetchDatabasePropertiesRequest,
+):
+    transport_class = transports.EnvironmentsRestTransport
+
+    request_init = {}
+    request_init["environment"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_database_properties._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["environment"] = "environment_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_database_properties._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "environment" in jsonified_request
+    assert jsonified_request["environment"] == "environment_value"
+
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = environments.FetchDatabasePropertiesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = environments.FetchDatabasePropertiesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.fetch_database_properties(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_fetch_database_properties_rest_unset_required_fields():
+    transport = transports.EnvironmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.fetch_database_properties._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("environment",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_fetch_database_properties_rest_interceptors(null_interceptor):
+    transport = transports.EnvironmentsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EnvironmentsRestInterceptor(),
+    )
+    client = EnvironmentsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_fetch_database_properties"
+    ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "pre_fetch_database_properties"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = environments.FetchDatabasePropertiesRequest.pb(
+            environments.FetchDatabasePropertiesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            environments.FetchDatabasePropertiesResponse.to_json(
+                environments.FetchDatabasePropertiesResponse()
+            )
+        )
+
+        request = environments.FetchDatabasePropertiesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = environments.FetchDatabasePropertiesResponse()
+
+        client.fetch_database_properties(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_fetch_database_properties_rest_bad_request(
+    transport: str = "rest", request_type=environments.FetchDatabasePropertiesRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "environment": "projects/sample1/locations/sample2/environments/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.fetch_database_properties(request)
+
+
+def test_fetch_database_properties_rest_error():
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.EnvironmentsGrpcTransport(
@@ -4212,8 +5786,13 @@ def test_environments_base_transport():
         "list_environments",
         "update_environment",
         "delete_environment",
+        "execute_airflow_command",
+        "stop_airflow_command",
+        "poll_airflow_command",
         "save_snapshot",
         "load_snapshot",
+        "database_failover",
+        "fetch_database_properties",
         "get_operation",
         "delete_operation",
         "list_operations",
@@ -4509,11 +6088,26 @@ def test_environments_client_transport_session_collision(transport_name):
     session1 = client1.transport.delete_environment._session
     session2 = client2.transport.delete_environment._session
     assert session1 != session2
+    session1 = client1.transport.execute_airflow_command._session
+    session2 = client2.transport.execute_airflow_command._session
+    assert session1 != session2
+    session1 = client1.transport.stop_airflow_command._session
+    session2 = client2.transport.stop_airflow_command._session
+    assert session1 != session2
+    session1 = client1.transport.poll_airflow_command._session
+    session2 = client2.transport.poll_airflow_command._session
+    assert session1 != session2
     session1 = client1.transport.save_snapshot._session
     session2 = client2.transport.save_snapshot._session
     assert session1 != session2
     session1 = client1.transport.load_snapshot._session
     session2 = client2.transport.load_snapshot._session
+    assert session1 != session2
+    session1 = client1.transport.database_failover._session
+    session2 = client2.transport.database_failover._session
+    assert session1 != session2
+    session1 = client1.transport.fetch_database_properties._session
+    session2 = client2.transport.fetch_database_properties._session
     assert session1 != session2
 
 

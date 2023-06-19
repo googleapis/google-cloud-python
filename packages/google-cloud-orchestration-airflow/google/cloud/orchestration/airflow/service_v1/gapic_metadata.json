@@ -15,9 +15,24 @@
                 "create_environment"
               ]
             },
+            "DatabaseFailover": {
+              "methods": [
+                "database_failover"
+              ]
+            },
             "DeleteEnvironment": {
               "methods": [
                 "delete_environment"
+              ]
+            },
+            "ExecuteAirflowCommand": {
+              "methods": [
+                "execute_airflow_command"
+              ]
+            },
+            "FetchDatabaseProperties": {
+              "methods": [
+                "fetch_database_properties"
               ]
             },
             "GetEnvironment": {
@@ -35,9 +50,19 @@
                 "load_snapshot"
               ]
             },
+            "PollAirflowCommand": {
+              "methods": [
+                "poll_airflow_command"
+              ]
+            },
             "SaveSnapshot": {
               "methods": [
                 "save_snapshot"
+              ]
+            },
+            "StopAirflowCommand": {
+              "methods": [
+                "stop_airflow_command"
               ]
             },
             "UpdateEnvironment": {
@@ -55,9 +80,24 @@
                 "create_environment"
               ]
             },
+            "DatabaseFailover": {
+              "methods": [
+                "database_failover"
+              ]
+            },
             "DeleteEnvironment": {
               "methods": [
                 "delete_environment"
+              ]
+            },
+            "ExecuteAirflowCommand": {
+              "methods": [
+                "execute_airflow_command"
+              ]
+            },
+            "FetchDatabaseProperties": {
+              "methods": [
+                "fetch_database_properties"
               ]
             },
             "GetEnvironment": {
@@ -75,9 +115,19 @@
                 "load_snapshot"
               ]
             },
+            "PollAirflowCommand": {
+              "methods": [
+                "poll_airflow_command"
+              ]
+            },
             "SaveSnapshot": {
               "methods": [
                 "save_snapshot"
+              ]
+            },
+            "StopAirflowCommand": {
+              "methods": [
+                "stop_airflow_command"
               ]
             },
             "UpdateEnvironment": {
@@ -95,9 +145,24 @@
                 "create_environment"
               ]
             },
+            "DatabaseFailover": {
+              "methods": [
+                "database_failover"
+              ]
+            },
             "DeleteEnvironment": {
               "methods": [
                 "delete_environment"
+              ]
+            },
+            "ExecuteAirflowCommand": {
+              "methods": [
+                "execute_airflow_command"
+              ]
+            },
+            "FetchDatabaseProperties": {
+              "methods": [
+                "fetch_database_properties"
               ]
             },
             "GetEnvironment": {
@@ -115,9 +180,19 @@
                 "load_snapshot"
               ]
             },
+            "PollAirflowCommand": {
+              "methods": [
+                "poll_airflow_command"
+              ]
+            },
             "SaveSnapshot": {
               "methods": [
                 "save_snapshot"
+              ]
+            },
+            "StopAirflowCommand": {
+              "methods": [
+                "stop_airflow_command"
               ]
             },
             "UpdateEnvironment": {
