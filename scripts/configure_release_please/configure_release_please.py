@@ -111,7 +111,7 @@ def configure_release_please_config(
         ]
         if len(extra_files) < 1:
             raise Exception("Failed to find gapic_version.py")
-        for json_file in package_dir.glob("samples/**/*.json"):
+        for json_file in sorted(package_dir.glob("samples/**/*.json")):
             sample_json = {}
             sample_json["jsonpath"] = "$.clientLibrary.version"
             sample_json["path"] = str(json_file.relative_to(package_dir))
