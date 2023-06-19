@@ -672,7 +672,7 @@ class {{ service.async_client_name }}:
         return response
     {% endif %}
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "{{ service.async_client_name }}":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):

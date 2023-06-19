@@ -799,7 +799,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             metadata=metadata,
         )
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "MetricsServiceV2AsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
