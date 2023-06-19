@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from .barcode import Barcode
+from .dataset import Dataset, DatasetSchema
 from .document import Document
 from .document_io import (
     BatchDocumentsInputConfig,
@@ -79,7 +80,13 @@ from .document_processor_service import (
     UndeployProcessorVersionRequest,
     UndeployProcessorVersionResponse,
 )
-from .document_schema import DocumentSchema
+from .document_schema import DocumentSchema, EntityTypeMetadata, PropertyMetadata
+from .document_service import (
+    GetDatasetSchemaRequest,
+    UpdateDatasetOperationMetadata,
+    UpdateDatasetRequest,
+    UpdateDatasetSchemaRequest,
+)
 from .evaluation import Evaluation, EvaluationReference
 from .geometry import BoundingPoly, NormalizedVertex, Vertex
 from .operation_metadata import CommonOperationMetadata
@@ -88,6 +95,8 @@ from .processor_type import ProcessorType
 
 __all__ = (
     "Barcode",
+    "Dataset",
+    "DatasetSchema",
     "Document",
     "BatchDocumentsInputConfig",
     "DocumentOutputConfig",
@@ -150,6 +159,12 @@ __all__ = (
     "UndeployProcessorVersionRequest",
     "UndeployProcessorVersionResponse",
     "DocumentSchema",
+    "EntityTypeMetadata",
+    "PropertyMetadata",
+    "GetDatasetSchemaRequest",
+    "UpdateDatasetOperationMetadata",
+    "UpdateDatasetRequest",
+    "UpdateDatasetSchemaRequest",
     "Evaluation",
     "EvaluationReference",
     "BoundingPoly",

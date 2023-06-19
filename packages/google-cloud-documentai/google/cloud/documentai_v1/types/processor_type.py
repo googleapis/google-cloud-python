@@ -37,8 +37,8 @@ class ProcessorType(proto.Message):
             The resource name of the processor type. Format:
             ``projects/{project}/processorTypes/{processor_type}``
         type_ (str):
-            The processor type, e.g., ``OCR_PROCESSOR``,
-            ``INVOICE_PROCESSOR``, etc.
+            The processor type, such as: ``OCR_PROCESSOR``,
+            ``INVOICE_PROCESSOR``.
         category (str):
             The processor category, used by UI to group
             processor types.
@@ -63,7 +63,8 @@ class ProcessorType(proto.Message):
 
         Attributes:
             location_id (str):
-                The location id, currently must be one of [us, eu].
+                The location ID. For supported locations, refer to `regional
+                and multi-regional support </document-ai/docs/regions>`__.
         """
 
         location_id: str = proto.Field(

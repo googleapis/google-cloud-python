@@ -22,9 +22,41 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.documentai.v1beta3",
     manifest={
+        "PropertyMetadata",
+        "EntityTypeMetadata",
         "DocumentSchema",
     },
 )
+
+
+class PropertyMetadata(proto.Message):
+    r"""Metadata about a property.
+
+    Attributes:
+        inactive (bool):
+            Whether the property should be considered as
+            "inactive".
+    """
+
+    inactive: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class EntityTypeMetadata(proto.Message):
+    r"""Metadata about an entity type.
+
+    Attributes:
+        inactive (bool):
+            Whether the entity type should be considered
+            inactive.
+    """
+
+    inactive: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class DocumentSchema(proto.Message):
@@ -64,16 +96,16 @@ class DocumentSchema(proto.Message):
                 User defined name for the type.
             name (str):
                 Name of the type. It must be unique within the schema file
-                and cannot be a 'Common Type'. Besides that we use the
-                following naming conventions:
+                and cannot be a "Common Type". The following naming
+                conventions are used:
 
-                -  *use ``snake_casing``*
-                -  name matching is case-sensitive
+                -  Use ``snake_casing``.
+                -  Name matching is case-sensitive.
                 -  Maximum 64 characters.
                 -  Must start with a letter.
                 -  Allowed characters: ASCII letters ``[a-z0-9_-]``. (For
                    backward compatibility internal infrastructure and
-                   tooling can handle any ascii character)
+                   tooling can handle any ascii character.)
                 -  The ``/`` is sometimes used to denote a property of a
                    type. For example ``line_item/amount``. This convention
                    is deprecated, but will still be honored for backward
@@ -82,8 +114,10 @@ class DocumentSchema(proto.Message):
                 The entity type that this type is derived
                 from.  For now, one and only one should be set.
             properties (MutableSequence[google.cloud.documentai_v1beta3.types.DocumentSchema.EntityType.Property]):
-                Describing the nested structure, or
+                Description the nested structure, or
                 composition of an entity.
+            entity_type_metadata (google.cloud.documentai_v1beta3.types.EntityTypeMetadata):
+                Metadata for the entity type.
         """
 
         class EnumValues(proto.Message):
@@ -115,25 +149,36 @@ class DocumentSchema(proto.Message):
                     Occurrence type limits the number of
                     instances an entity type appears in the
                     document.
+                property_metadata (google.cloud.documentai_v1beta3.types.PropertyMetadata):
+                    Any additional metadata about the property
+                    can be added here.
             """
 
             class OccurrenceType(proto.Enum):
-                r"""Types of occurrences of the entity type in the document.
-                Note: this represents the number of instances of an entity
-                types, not number of mentions of a given entity instance.
+                r"""Types of occurrences of the entity type in the document. This
+                represents the number of instances of instances of an entity, not
+                number of mentions of an entity. For example, a bank statement may
+                only have one ``account_number``, but this account number may be
+                mentioned in several places on the document. In this case the
+                'account_number' would be considered a ``REQUIRED_ONCE`` entity
+                type. If, on the other hand, we expect a bank statement to contain
+                the status of multiple different accounts for the customers, the
+                occurrence type will be set to ``REQUIRED_MULTIPLE``.
 
                 Values:
                     OCCURRENCE_TYPE_UNSPECIFIED (0):
                         Unspecified occurrence type.
                     OPTIONAL_ONCE (1):
                         There will be zero or one instance of this
-                        entity type.
+                        entity type.  The same entity instance may be
+                        mentioned multiple times.
                     OPTIONAL_MULTIPLE (2):
                         The entity type will appear zero or multiple
                         times.
                     REQUIRED_ONCE (3):
                         The entity type will only appear exactly
-                        once.
+                        once.  The same entity instance may be mentioned
+                        multiple times.
                     REQUIRED_MULTIPLE (4):
                         The entity type will appear once or more
                         times.
@@ -158,6 +203,11 @@ class DocumentSchema(proto.Message):
                     number=3,
                     enum="DocumentSchema.EntityType.Property.OccurrenceType",
                 )
+            )
+            property_metadata: "PropertyMetadata" = proto.Field(
+                proto.MESSAGE,
+                number=5,
+                message="PropertyMetadata",
             )
 
         enum_values: "DocumentSchema.EntityType.EnumValues" = proto.Field(
@@ -185,6 +235,11 @@ class DocumentSchema(proto.Message):
             number=6,
             message="DocumentSchema.EntityType.Property",
         )
+        entity_type_metadata: "EntityTypeMetadata" = proto.Field(
+            proto.MESSAGE,
+            number=11,
+            message="EntityTypeMetadata",
+        )
 
     class Metadata(proto.Message):
         r"""Metadata for global schema behavior.
@@ -192,7 +247,7 @@ class DocumentSchema(proto.Message):
         Attributes:
             document_splitter (bool):
                 If true, a ``document`` entity type can be applied to
-                subdocument ( splitting). Otherwise, it can only be applied
+                subdocument (splitting). Otherwise, it can only be applied
                 to the entire document (classification).
             document_allow_multiple_labels (bool):
                 If true, on a given page, there can be multiple ``document``
