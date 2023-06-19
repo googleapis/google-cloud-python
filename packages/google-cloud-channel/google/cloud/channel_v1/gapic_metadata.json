@@ -204,6 +204,16 @@
                 "list_purchasable_skus"
               ]
             },
+            "ListSkuGroupBillableSkus": {
+              "methods": [
+                "list_sku_group_billable_skus"
+              ]
+            },
+            "ListSkuGroups": {
+              "methods": [
+                "list_sku_groups"
+              ]
+            },
             "ListSkus": {
               "methods": [
                 "list_skus"
@@ -437,6 +447,16 @@
             "ListPurchasableSkus": {
               "methods": [
                 "list_purchasable_skus"
+              ]
+            },
+            "ListSkuGroupBillableSkus": {
+              "methods": [
+                "list_sku_group_billable_skus"
+              ]
+            },
+            "ListSkuGroups": {
+              "methods": [
+                "list_sku_groups"
               ]
             },
             "ListSkus": {

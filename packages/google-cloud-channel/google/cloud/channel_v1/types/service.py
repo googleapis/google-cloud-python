@@ -70,6 +70,12 @@ __protobuf__ = proto.module(
         "CreateChannelPartnerRepricingConfigRequest",
         "UpdateChannelPartnerRepricingConfigRequest",
         "DeleteChannelPartnerRepricingConfigRequest",
+        "ListSkuGroupsRequest",
+        "ListSkuGroupBillableSkusRequest",
+        "ListSkuGroupsResponse",
+        "ListSkuGroupBillableSkusResponse",
+        "SkuGroup",
+        "BillableSku",
         "CreateEntitlementRequest",
         "TransferEntitlementsRequest",
         "TransferEntitlementsResponse",
@@ -1270,6 +1276,191 @@ class DeleteChannelPartnerRepricingConfigRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class ListSkuGroupsRequest(proto.Message):
+    r"""Request message for ListSkuGroups.
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the account
+            from which to list SKU groups. Parent uses the
+            format: accounts/{account}.
+        page_size (int):
+            Optional. The maximum number of SKU groups to
+            return. The service may return fewer than this
+            value. If unspecified, returns a maximum of 1000
+            SKU groups. The maximum value is 1000; values
+            above 1000 will be coerced to 1000.
+        page_token (str):
+            Optional. A token identifying a page of results beyond the
+            first page. Obtained through
+            [ListSkuGroups.next_page_token][] of the previous
+            [CloudChannelService.ListSkuGroups][google.cloud.channel.v1.CloudChannelService.ListSkuGroups]
+            call.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListSkuGroupBillableSkusRequest(proto.Message):
+    r"""Request message for ListSkuGroupBillableSkus.
+
+    Attributes:
+        parent (str):
+            Required. Resource name of the SKU group. Format:
+            accounts/{account}/skuGroups/{sku_group}.
+        page_size (int):
+            Optional. The maximum number of SKUs to
+            return. The service may return fewer than this
+            value. If unspecified, returns a maximum of
+            100000 SKUs. The maximum value is 100000; values
+            above 100000 will be coerced to 100000.
+        page_token (str):
+            Optional. A token identifying a page of results beyond the
+            first page. Obtained through
+            [ListSkuGroupBillableSkus.next_page_token][] of the previous
+            [CloudChannelService.ListSkuGroupBillableSkus][google.cloud.channel.v1.CloudChannelService.ListSkuGroupBillableSkus]
+            call.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListSkuGroupsResponse(proto.Message):
+    r"""Response message for ListSkuGroups.
+
+    Attributes:
+        sku_groups (MutableSequence[google.cloud.channel_v1.types.SkuGroup]):
+            The list of SKU groups requested.
+        next_page_token (str):
+            A token to retrieve the next page of results. Pass to
+            [ListSkuGroups.page_token][] to obtain that page.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    sku_groups: MutableSequence["SkuGroup"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="SkuGroup",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListSkuGroupBillableSkusResponse(proto.Message):
+    r"""Response message for ListSkuGroupBillableSkus.
+
+    Attributes:
+        billable_skus (MutableSequence[google.cloud.channel_v1.types.BillableSku]):
+            The list of billable SKUs in the requested
+            SKU group.
+        next_page_token (str):
+            A token to retrieve the next page of results. Pass to
+            [ListSkuGroupBillableSkus.page_token][] to obtain that page.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    billable_skus: MutableSequence["BillableSku"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="BillableSku",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class SkuGroup(proto.Message):
+    r"""Represents the SKU group information.
+
+    Attributes:
+        name (str):
+            Resource name of SKU group. Format:
+            accounts/{account}/skuGroups/{sku_group}. Example:
+            "accounts/C01234/skuGroups/3d50fd57-3157-4577-a5a9-a219b8490041".
+        display_name (str):
+            Unique human readable identifier for the SKU
+            group.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BillableSku(proto.Message):
+    r"""Represents the Billable SKU information.
+
+    Attributes:
+        sku (str):
+            Resource name of Billable SKU. Format:
+            billableSkus/{sku}.
+            Example:
+            billableSkus/6E1B-6634-470F".
+        sku_display_name (str):
+            Unique human readable name for the SKU.
+        service (str):
+            Resource name of Service which contains
+            Repricing SKU. Format: services/{service}.
+            Example:
+            "services/B7D9-FDCB-15D8".
+        service_display_name (str):
+            Unique human readable name for the Service.
+    """
+
+    sku: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    sku_display_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    service: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    service_display_name: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
