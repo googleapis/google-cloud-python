@@ -95,7 +95,7 @@ def configure_release_please_config(
         `root_dir`. If `root_dir` is not provided, `google-cloud-python` will be used as the root.
 
         Args:
-            package_dirs(List[pathlib.Path]): A list of paths for each package in the packages folder.
+        package_dirs(List[pathlib.Path]): A list of Paths, one for each package in the `packages/` folder whose entry will be updated in the release-please config.
             root_dir(pathlib.Path): The directory to update the `release-please-config.json`
 
         Returns:
