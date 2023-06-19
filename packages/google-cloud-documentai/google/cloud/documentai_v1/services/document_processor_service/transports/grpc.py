@@ -35,11 +35,11 @@ from .base import DEFAULT_CLIENT_INFO, DocumentProcessorServiceTransport
 class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
     """gRPC backend transport for DocumentProcessorService.
 
-    Service to call Cloud DocumentAI to process documents
-    according to the processor's definition. Processors are built
-    using state-of-the-art Google AI such as natural language,
-    computer vision, and translation to extract structured
-    information from unstructured or semi-structured documents.
+    Service to call Document AI to process documents according to
+    the processor's definition. Processors are built using
+    state-of-the-art Google AI such as natural language, computer
+    vision, and translation to extract structured information from
+    unstructured or semi-structured documents.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -319,8 +319,9 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
     ]:
         r"""Return a callable for the fetch processor types method over gRPC.
 
-        Fetches processor types. Note that we do not use
-        ListProcessorTypes here because it is not paginated.
+        Fetches processor types. Note that we don't use
+        [ListProcessorTypes][google.cloud.documentai.v1.DocumentProcessorService.ListProcessorTypes]
+        here, because it isn't paginated.
 
         Returns:
             Callable[[~.FetchProcessorTypesRequest],
@@ -465,7 +466,8 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         r"""Return a callable for the train processor version method over gRPC.
 
         Trains a new processor version. Operation metadata is returned
-        as cloud_documentai_core.TrainProcessorVersionMetadata.
+        as
+        [TrainProcessorVersionMetadata][google.cloud.documentai.v1.TrainProcessorVersionMetadata].
 
         Returns:
             Callable[[~.TrainProcessorVersionRequest],
@@ -639,9 +641,10 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
     ]:
         r"""Return a callable for the create processor method over gRPC.
 
-        Creates a processor from the type processor that the
-        user chose. The processor will be at "ENABLED" state by
-        default after its creation.
+        Creates a processor from the
+        [ProcessorType][google.cloud.documentai.v1.ProcessorType]
+        provided. The processor will be at ``ENABLED`` state by default
+        after its creation.
 
         Returns:
             Callable[[~.CreateProcessorRequest],

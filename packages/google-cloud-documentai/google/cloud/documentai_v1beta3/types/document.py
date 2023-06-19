@@ -54,9 +54,9 @@ class Document(proto.Message):
         uri (str):
             Optional. Currently supports Google Cloud Storage URI of the
             form ``gs://bucket_name/object_name``. Object versioning is
-            not supported. See `Google Cloud Storage Request
-            URIs <https://cloud.google.com/storage/docs/reference-uris>`__
-            for more info.
+            not supported. For more information, refer to `Google Cloud
+            Storage Request
+            URIs <https://cloud.google.com/storage/docs/reference-uris>`__.
 
             This field is a member of `oneof`_ ``source``.
         content (bytes):
@@ -67,9 +67,8 @@ class Document(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         mime_type (str):
-            An IANA published MIME type (also referred to
-            as media type). For more information, see
-            https://www.iana.org/assignments/media-types/media-types.xhtml.
+            An IANA published `media type (MIME
+            type) <https://www.iana.org/assignments/media-types/media-types.xhtml>`__.
         text (str):
             Optional. UTF-8 encoded text in reading order
             from the document.
@@ -148,14 +147,18 @@ class Document(proto.Message):
             background_color (google.type.color_pb2.Color):
                 Text background color.
             font_weight (str):
-                Font weight. Possible values are normal, bold, bolder, and
-                lighter. https://www.w3schools.com/cssref/pr_font_weight.asp
+                `Font
+                weight <https://www.w3schools.com/cssref/pr_font_weight.asp>`__.
+                Possible values are ``normal``, ``bold``, ``bolder``, and
+                ``lighter``.
             text_style (str):
-                Text style. Possible values are normal, italic, and oblique.
-                https://www.w3schools.com/cssref/pr_font_font-style.asp
+                `Text
+                style <https://www.w3schools.com/cssref/pr_font_font-style.asp>`__.
+                Possible values are ``normal``, ``italic``, and ``oblique``.
             text_decoration (str):
-                Text decoration. Follows CSS standard.
-                https://www.w3schools.com/cssref/pr_text_text-decoration.asp
+                `Text
+                decoration <https://www.w3schools.com/cssref/pr_text_text-decoration.asp>`__.
+                Follows CSS standard.
             font_size (google.cloud.documentai_v1beta3.types.Document.Style.FontSize):
                 Font size.
             font_family (str):
@@ -170,8 +173,8 @@ class Document(proto.Message):
                 size (float):
                     Font size for the text.
                 unit (str):
-                    Unit for the font size. Follows CSS naming
-                    (in, px, pt, etc.).
+                    Unit for the font size. Follows CSS naming (such as ``in``,
+                    ``px``, and ``pt``).
             """
 
             size: float = proto.Field(
@@ -279,7 +282,7 @@ class Document(proto.Message):
             detected_barcodes (MutableSequence[google.cloud.documentai_v1beta3.types.Document.Page.DetectedBarcode]):
                 A list of detected barcodes.
             image_quality_scores (google.cloud.documentai_v1beta3.types.Document.Page.ImageQualityScores):
-                Image Quality Scores.
+                Image quality scores.
             provenance (google.cloud.documentai_v1beta3.types.Document.Provenance):
                 The history of this page.
         """
@@ -316,7 +319,9 @@ class Document(proto.Message):
                 content (bytes):
                     Raw byte content of the image.
                 mime_type (str):
-                    Encoding mime type for the image.
+                    Encoding `media type (MIME
+                    type) <https://www.iana.org/assignments/media-types/media-types.xhtml>`__
+                    for the image.
                 width (int):
                     Width of the image in pixels.
                 height (int):
@@ -562,6 +567,8 @@ class Document(proto.Message):
                     confidence.
                 provenance (google.cloud.documentai_v1beta3.types.Document.Provenance):
                     The history of this annotation.
+                style_info (google.cloud.documentai_v1beta3.types.Document.Page.Token.StyleInfo):
+                    Text style attributes.
             """
 
             class DetectedBreak(proto.Message):
@@ -598,6 +605,111 @@ class Document(proto.Message):
                     enum="Document.Page.Token.DetectedBreak.Type",
                 )
 
+            class StyleInfo(proto.Message):
+                r"""Font and other text style attributes.
+
+                Attributes:
+                    font_size (int):
+                        Font size in points (``1`` point is ``¹⁄₇₂`` inches).
+                    pixel_font_size (float):
+                        Font size in pixels, equal to *unrounded
+                        [font_size][google.cloud.documentai.v1beta3.Document.Page.Token.StyleInfo.font_size]*
+
+                        -  *resolution* ÷ ``72.0``.
+                    letter_spacing (float):
+                        Letter spacing in points.
+                    font_type (str):
+                        Name or style of the font.
+                    bold (bool):
+                        Whether the text is bold (equivalent to
+                        [font_weight][google.cloud.documentai.v1beta3.Document.Page.Token.StyleInfo.font_weight]
+                        is at least ``700``).
+                    italic (bool):
+                        Whether the text is italic.
+                    underlined (bool):
+                        Whether the text is underlined.
+                    strikeout (bool):
+                        Whether the text is strikethrough.
+                    subscript (bool):
+                        Whether the text is a subscript.
+                    superscript (bool):
+                        Whether the text is a superscript.
+                    smallcaps (bool):
+                        Whether the text is in small caps.
+                    font_weight (int):
+                        TrueType weight on a scale ``100`` (thin) to ``1000``
+                        (ultra-heavy). Normal is ``400``, bold is ``700``.
+                    handwritten (bool):
+                        Whether the text is handwritten.
+                    text_color (google.type.color_pb2.Color):
+                        Color of the text.
+                    background_color (google.type.color_pb2.Color):
+                        Color of the background.
+                """
+
+                font_size: int = proto.Field(
+                    proto.INT32,
+                    number=1,
+                )
+                pixel_font_size: float = proto.Field(
+                    proto.DOUBLE,
+                    number=2,
+                )
+                letter_spacing: float = proto.Field(
+                    proto.DOUBLE,
+                    number=3,
+                )
+                font_type: str = proto.Field(
+                    proto.STRING,
+                    number=4,
+                )
+                bold: bool = proto.Field(
+                    proto.BOOL,
+                    number=5,
+                )
+                italic: bool = proto.Field(
+                    proto.BOOL,
+                    number=6,
+                )
+                underlined: bool = proto.Field(
+                    proto.BOOL,
+                    number=7,
+                )
+                strikeout: bool = proto.Field(
+                    proto.BOOL,
+                    number=8,
+                )
+                subscript: bool = proto.Field(
+                    proto.BOOL,
+                    number=9,
+                )
+                superscript: bool = proto.Field(
+                    proto.BOOL,
+                    number=10,
+                )
+                smallcaps: bool = proto.Field(
+                    proto.BOOL,
+                    number=11,
+                )
+                font_weight: int = proto.Field(
+                    proto.INT32,
+                    number=12,
+                )
+                handwritten: bool = proto.Field(
+                    proto.BOOL,
+                    number=13,
+                )
+                text_color: color_pb2.Color = proto.Field(
+                    proto.MESSAGE,
+                    number=14,
+                    message=color_pb2.Color,
+                )
+                background_color: color_pb2.Color = proto.Field(
+                    proto.MESSAGE,
+                    number=15,
+                    message=color_pb2.Color,
+                )
+
             layout: "Document.Page.Layout" = proto.Field(
                 proto.MESSAGE,
                 number=1,
@@ -619,6 +731,11 @@ class Document(proto.Message):
                 proto.MESSAGE,
                 number=4,
                 message="Document.Provenance",
+            )
+            style_info: "Document.Page.Token.StyleInfo" = proto.Field(
+                proto.MESSAGE,
+                number=5,
+                message="Document.Page.Token.StyleInfo",
             )
 
         class Symbol(proto.Message):
@@ -899,9 +1016,9 @@ class Document(proto.Message):
 
             Attributes:
                 language_code (str):
-                    The BCP-47 language code, such as ``en-US`` or ``sr-Latn``.
-                    For more information, see
-                    https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+                    The `BCP-47 language
+                    code <https://www.unicode.org/reports/tr35/#Unicode_locale_identifier>`__,
+                    such as ``en-US`` or ``sr-Latn``.
                 confidence (float):
                     Confidence of detected language. Range ``[0, 1]``.
             """
@@ -916,11 +1033,11 @@ class Document(proto.Message):
             )
 
         class ImageQualityScores(proto.Message):
-            r"""Image Quality Scores for the page image
+            r"""Image quality scores for the page image.
 
             Attributes:
                 quality_score (float):
-                    The overall quality score. Range ``[0, 1]`` where 1 is
+                    The overall quality score. Range ``[0, 1]`` where ``1`` is
                     perfect quality.
                 detected_defects (MutableSequence[google.cloud.documentai_v1beta3.types.Document.Page.ImageQualityScores.DetectedDefect]):
                     A list of detected defects.
@@ -942,8 +1059,8 @@ class Document(proto.Message):
                         -  ``quality/defect_text_cutoff``
                         -  ``quality/defect_glare``
                     confidence (float):
-                        Confidence of detected defect. Range ``[0, 1]`` where 1
-                        indicates strong confidence of that the defect exists.
+                        Confidence of detected defect. Range ``[0, 1]`` where ``1``
+                        indicates strong confidence that the defect exists.
                 """
 
                 type_: str = proto.Field(
@@ -1485,11 +1602,11 @@ class Document(proto.Message):
                     Remove an element identified by ``parent``.
                 UPDATE (7):
                     Updates any fields within the given
-                    provenance scope of the message. It 'overwrites'
-                    the fields rather than replacing them.  This is
-                    especially relevant when we just want to update
-                    a field value of an entity without also
-                    affecting all the child properties.
+                    provenance scope of the message. It overwrites
+                    the fields rather than replacing them.  Use this
+                    when you want to update a field value of an
+                    entity without also updating all the child
+                    properties.
                 REPLACE (3):
                     Currently unused. Replace an element identified by
                     ``parent``.

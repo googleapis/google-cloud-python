@@ -137,9 +137,9 @@ class DocumentProcessorServiceTransport(abc.ABC):
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=120.0,
+                    deadline=300.0,
                 ),
-                default_timeout=120.0,
+                default_timeout=300.0,
                 client_info=client_info,
             ),
             self.batch_process_documents: gapic_v1.method.wrap_method(

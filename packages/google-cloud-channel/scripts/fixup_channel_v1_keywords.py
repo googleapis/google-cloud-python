@@ -71,6 +71,8 @@ class channelCallTransformer(cst.CSTTransformer):
         'list_purchasable_offers': ('customer', 'create_entitlement_purchase', 'change_offer_purchase', 'page_size', 'page_token', 'language_code', ),
         'list_purchasable_skus': ('customer', 'create_entitlement_purchase', 'change_offer_purchase', 'page_size', 'page_token', 'language_code', ),
         'list_reports': ('parent', 'page_size', 'page_token', 'language_code', ),
+        'list_sku_group_billable_skus': ('parent', 'page_size', 'page_token', ),
+        'list_sku_groups': ('parent', 'page_size', 'page_token', ),
         'list_skus': ('parent', 'account', 'page_size', 'page_token', 'language_code', ),
         'list_subscribers': ('account', 'page_size', 'page_token', ),
         'list_transferable_offers': ('parent', 'sku', 'cloud_identity_id', 'customer_name', 'page_size', 'page_token', 'language_code', ),

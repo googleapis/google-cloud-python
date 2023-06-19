@@ -526,6 +526,9 @@ class SearchRequest(proto.Message):
             summary_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.ContentSearchSpec.SummarySpec):
                 If there is no summary spec provided, there
                 will be no summary in the search response.
+            extractive_content_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.ContentSearchSpec.ExtractiveContentSpec):
+                If there is no extractive_content_spec provided, there will
+                be no extractive answer in the search response.
         """
 
         class SnippetSpec(proto.Message):
@@ -534,8 +537,12 @@ class SearchRequest(proto.Message):
 
             Attributes:
                 max_snippet_count (int):
-                    Max number of snippets returned in each search result. If
-                    the matching snippets is less than the max_snippet_count,
+                    Max number of snippets returned in each search result.
+
+                    A snippet is an infomartive summary of a content with
+                    highlighting for UI rendering.
+
+                    If the matching snippets is less than the max_snippet_count,
                     return all of the snippets; otherwise, return the
                     max_snippet_count.
 
@@ -573,6 +580,51 @@ class SearchRequest(proto.Message):
                 number=1,
             )
 
+        class ExtractiveContentSpec(proto.Message):
+            r"""The specification that configs the extractive content in
+            search results.
+
+            Attributes:
+                max_extractive_answer_count (int):
+                    The max number of extractive answers returned in each search
+                    result.
+
+                    An extractive answer is a verbatim answer extracted from the
+                    original document, which provides precise and contextually
+                    relevant answer to the search query.
+
+                    If the number of matching answers is less than the
+                    extractive_answer_count, return all of the answers;
+                    otherwise, return the extractive_answer_count.
+
+                    At most 5 answers will be returned for each SearchResult.
+                max_extractive_segment_count (int):
+                    The max number of extractive segments returned in each
+                    search result.
+
+                    An extractive segment is a text segment extracted from the
+                    original document which is relevant to the search query and
+                    in general more verbose than an extrative answer. The
+                    segment could then be used as input for LLMs to generate
+                    summaries and answers.
+
+                    If the number of matching segments is less than the
+                    max_extractive_segment_count, return all of the segments;
+                    otherwise, return the max_extractive_segment_count.
+
+                    Currently one segment will be returned for each
+                    SearchResult.
+            """
+
+            max_extractive_answer_count: int = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            max_extractive_segment_count: int = proto.Field(
+                proto.INT32,
+                number=2,
+            )
+
         snippet_spec: "SearchRequest.ContentSearchSpec.SnippetSpec" = proto.Field(
             proto.MESSAGE,
             number=1,
@@ -582,6 +634,11 @@ class SearchRequest(proto.Message):
             proto.MESSAGE,
             number=2,
             message="SearchRequest.ContentSearchSpec.SummarySpec",
+        )
+        extractive_content_spec: "SearchRequest.ContentSearchSpec.ExtractiveContentSpec" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="SearchRequest.ContentSearchSpec.ExtractiveContentSpec",
         )
 
     serving_config: str = proto.Field(
@@ -692,6 +749,13 @@ class SearchResponse(proto.Message):
             [UserEvent][google.cloud.discoveryengine.v1beta.UserEvent]
             logs resulting from this search, which enables accurate
             attribution of search model performance.
+        redirect_uri (str):
+            The URI of a customer-defined redirect page. If redirect
+            action is triggered, no search is performed, and only
+            [redirect_uri][google.cloud.discoveryengine.v1beta.SearchResponse.redirect_uri]
+            and
+            [attribution_token][google.cloud.discoveryengine.v1beta.SearchResponse.attribution_token]
+            are set in the response.
         next_page_token (str):
             A token that can be sent as
             [SearchRequest.page_token][google.cloud.discoveryengine.v1beta.SearchRequest.page_token]
@@ -886,6 +950,10 @@ class SearchResponse(proto.Message):
     attribution_token: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    redirect_uri: str = proto.Field(
+        proto.STRING,
+        number=12,
     )
     next_page_token: str = proto.Field(
         proto.STRING,
