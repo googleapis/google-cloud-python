@@ -38,7 +38,6 @@ def get_version_for_package(version_path: Path) -> Tuple[int]:
 def walk_through_owlbot_dirs(packages_dir: Path = PACKAGES_DIR) -> List[Path]:
     """
     Walks through all API packages in the specified `packages_dir` path. 
-    If `packages_dir` is not provided, google-cloud-python/package will be used.
 
     Args:
         packages_dir(pathlib.Path): Path to the directory which contains packages.
@@ -57,7 +56,7 @@ def configure_release_please_manifest(
 ) -> None:
     """
     This method updates the `.release-please-manifest.json` file in the directory
-    `root_dir`. If `root_dir` is not provided, `google-cloud-python` will be used as the root.
+    `root_dir`.
 
     Args:
         package_dirs(List[pathlib.Path]): A list of paths for each package in the packages folder.
