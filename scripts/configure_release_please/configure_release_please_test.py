@@ -5,7 +5,8 @@ import unittest
 import configure_release_please
 
 SCRIPT_DIR = Path(__file__).parent.resolve()
-PACKAGES_DIR = SCRIPT_DIR / "test_resources" / "packages"
+TEST_RESOURCES_DIR = SCRIPT_DIR / "test_resources"
+PACKAGES_DIR = TEST_RESOURCES_DIR / "packages"
 
 
 class TestChangeSummary(unittest.TestCase):
@@ -39,10 +40,10 @@ class TestChangeSummary(unittest.TestCase):
 }\n"""
         package_dirs = configure_release_please.walk_through_owlbot_dirs(PACKAGES_DIR)
         configure_release_please.configure_release_please_manifest(
-            package_dirs=package_dirs, root_dir=SCRIPT_DIR
+            package_dirs=package_dirs, root_dir=TEST_RESOURCES_DIR
         )
         self.assertEqual(
-            (SCRIPT_DIR / ".release-please-manifest.json").read_text(), expected_result
+            (TEST_RESOURCES_DIR / ".release-please-manifest.json").read_text(), expected_result
         )
 
     def test_configure_release_please_config(self):
@@ -60,8 +61,8 @@ class TestChangeSummary(unittest.TestCase):
 }\n"""
         package_dirs = configure_release_please.walk_through_owlbot_dirs(PACKAGES_DIR)
         configure_release_please.configure_release_please_config(
-            package_dirs=package_dirs, root_dir=SCRIPT_DIR
+            package_dirs=package_dirs, root_dir=TEST_RESOURCES_DIR
         )
         self.assertEqual(
-            (SCRIPT_DIR / "release-please-config.json").read_text(), expected_result
+            (TEST_RESOURCES_DIR / "release-please-config.json").read_text(), expected_result
         )
