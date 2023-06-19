@@ -71,7 +71,7 @@ The last version of this library compatible with Python 2.7 is google-cloud-visi
 
 RaspberryPi ARM devices 
 ^^^^^^^^^^^^^^^^^^^^^^^
-Note: Raspberry Pi ARMv6 is not supported because there is an internal binary google that does not comply with armv6 processors.
+Note: Raspberry Pi ARMv6 is not supported.
 
 Mac/Linux
 ^^^^^^^^^
