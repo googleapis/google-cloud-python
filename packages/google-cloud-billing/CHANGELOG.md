@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-v1.10.1...google-cloud-billing-v1.11.0) (2023-06-19)
+
+
+### Features
+
+* added resource_reference for name in GetProjectBillingInfoRequest message ([#11409](https://github.com/googleapis/google-cloud-python/issues/11409)) ([1ec86ce](https://github.com/googleapis/google-cloud-python/commit/1ec86ce40ad760d2229acfefc85b2c8a0c1ddd05))
+
 ## [1.10.1](https://github.com/googleapis/python-billing/compare/v1.10.0...v1.10.1) (2023-03-23)
 
 

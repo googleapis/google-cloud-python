@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-biglake-v0.3.0...google-cloud-bigquery-biglake-v0.4.0) (2023-06-19)
+
+
+### Bug Fixes
+
+* Use `google.cloud.bigquery_biglake` to avoid conflict with `google.cloud.bigquery` ([20f83e0](https://github.com/googleapis/google-cloud-python/commit/20f83e0e374d8cb6bb315336c928aa9a964e3f15))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-biglake-v0.2.0...google-cloud-bigquery-biglake-v0.3.0) (2023-04-12)
 
 
