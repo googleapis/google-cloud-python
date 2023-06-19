@@ -59,7 +59,7 @@ def configure_release_please_manifest(
     `root_dir`.
 
     Args:
-        package_dirs(List[pathlib.Path]): A list of paths for each package in the packages folder.
+        package_dirs(List[pathlib.Path]): A list of Paths, one for each package in the `packages/` folder whose entry will be updated in the release-please manifest.
         root_dir(pathlib.Path): The directory to update the `.release-please-manifest.json`
 
     Returns:
