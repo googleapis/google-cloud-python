@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [3.4.3](https://github.com/googleapis/python-vision/compare/v3.4.2...v3.4.3) (2023-06-19)
+
+
+### Documentation
+
+* Update README.rst ([#535](https://github.com/googleapis/python-vision/issues/535)) ([b562310](https://github.com/googleapis/python-vision/commit/b56231035e353d3a3db208d1eff35eb6aae37bbc))
+
 ## [3.4.2](https://github.com/googleapis/python-vision/compare/v3.4.1...v3.4.2) (2023-05-25)
 
 
