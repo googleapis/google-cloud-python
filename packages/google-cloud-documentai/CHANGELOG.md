@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.15.0...google-cloud-documentai-v2.16.0) (2023-06-19)
+
+
+### Features
+
+* add IMPORTING enum to State in processor.proto ([d402fd5](https://github.com/googleapis/google-cloud-python/commit/d402fd5781e4acfce6b5656d4c2012c732d01ba8))
+* add PropertyMetadata and EntityTypeMetadata to document_schema.proto ([d402fd5](https://github.com/googleapis/google-cloud-python/commit/d402fd5781e4acfce6b5656d4c2012c732d01ba8))
+* add REPLACE enum to OperationType in document.proto ([d402fd5](https://github.com/googleapis/google-cloud-python/commit/d402fd5781e4acfce6b5656d4c2012c732d01ba8))
+* add StyleInfo to document.proto  ([d402fd5](https://github.com/googleapis/google-cloud-python/commit/d402fd5781e4acfce6b5656d4c2012c732d01ba8))
+
 ## [2.15.0](https://github.com/googleapis/python-documentai/compare/v2.14.0...v2.15.0) (2023-03-24)
 
 
