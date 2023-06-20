@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.23.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.22.0...v1.23.0) (2023-06-19)
+
+
+### Features
+
+* Added include_bigquery_export_settings to ExportAgentRequest ([9878beb](https://github.com/googleapis/python-dialogflow-cx/commit/9878beb7644c52032a906e89d7de1524d71b5197))
+* Added session_ttl to SessionProto ([9878beb](https://github.com/googleapis/python-dialogflow-cx/commit/9878beb7644c52032a906e89d7de1524d71b5197))
+
 ## [1.22.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.21.0...v1.22.0) (2023-06-13)
 
 
