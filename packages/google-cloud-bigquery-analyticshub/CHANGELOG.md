@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.3.2...google-cloud-bigquery-analyticshub-v0.4.0) (2023-06-19)
+
+
+### Bug Fixes
+
+* Use `google.cloud.bigquery_analyticshub` to avoid conflict with `google.cloud.bigquery` ([fe65e8b](https://github.com/googleapis/google-cloud-python/commit/fe65e8b71b187b0825afcd6a7697280302b7d2fe))
+
 ## [0.3.2](https://github.com/googleapis/python-bigquery-analyticshub/compare/v0.3.1...v0.3.2) (2023-03-23)
 
 

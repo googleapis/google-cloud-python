@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "DeliveryPipeline",
         "SerialPipeline",
         "Stage",
+        "DeployParameters",
         "Strategy",
         "Standard",
         "Canary",
@@ -288,6 +289,9 @@ class Stage(proto.Message):
         strategy (google.cloud.deploy_v1.types.Strategy):
             Optional. The strategy to use for a ``Rollout`` to this
             stage.
+        deploy_parameters (MutableSequence[google.cloud.deploy_v1.types.DeployParameters]):
+            Optional. The deploy parameters to use for
+            the target in this stage.
     """
 
     target_id: str = proto.Field(
@@ -302,6 +306,37 @@ class Stage(proto.Message):
         proto.MESSAGE,
         number=5,
         message="Strategy",
+    )
+    deploy_parameters: MutableSequence["DeployParameters"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="DeployParameters",
+    )
+
+
+class DeployParameters(proto.Message):
+    r"""DeployParameters contains deploy parameters information.
+
+    Attributes:
+        values (MutableMapping[str, str]):
+            Required. Values are deploy parameters in
+            key-value pairs.
+        match_target_labels (MutableMapping[str, str]):
+            Optional. Deploy parameters are applied to
+            targets with match labels. If unspecified,
+            deploy parameters are applied to all targets
+            (including child targets of a multi-target).
+    """
+
+    values: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=1,
+    )
+    match_target_labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
     )
 
 
@@ -552,6 +587,13 @@ class KubernetesConfig(proto.Message):
                 Required. Name of the Kubernetes Deployment
                 whose traffic is managed by the specified
                 Service.
+            disable_pod_overprovisioning (bool):
+                Optional. Whether to disable Pod
+                overprovisioning. If Pod overprovisioning is
+                disabled then Cloud Deploy will limit the number
+                of total Pods used for the deployment strategy
+                to the number of Pods the Deployment has on the
+                cluster.
         """
 
         service: str = proto.Field(
@@ -561,6 +603,10 @@ class KubernetesConfig(proto.Message):
         deployment: str = proto.Field(
             proto.STRING,
             number=2,
+        )
+        disable_pod_overprovisioning: bool = proto.Field(
+            proto.BOOL,
+            number=3,
         )
 
     gateway_service_mesh: GatewayServiceMesh = proto.Field(
@@ -1123,6 +1169,9 @@ class Target(proto.Message):
             ``DEPLOY`` ``ExecutionEnvironmentUsage`` values. When no
             configurations are specified, execution will use the default
             specified in ``DefaultPool``.
+        deploy_parameters (MutableMapping[str, str]):
+            Optional. The deploy parameters to use for
+            this target.
     """
 
     name: str = proto.Field(
@@ -1197,6 +1246,11 @@ class Target(proto.Message):
         proto.MESSAGE,
         number=16,
         message="ExecutionConfig",
+    )
+    deploy_parameters: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=20,
     )
 
 
@@ -1690,9 +1744,8 @@ class DeleteTargetRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         allow_missing (bool):
-            Optional. If set to true, then deleting an
-            already deleted or non-existing DeliveryPipeline
-            will succeed.
+            Optional. If set to true, then deleting an already deleted
+            or non-existing ``Target`` will succeed.
         validate_only (bool):
             Optional. If set, validate the request and
             preview the review, but do not actually post it.
@@ -1814,6 +1867,9 @@ class Release(proto.Message):
         condition (google.cloud.deploy_v1.types.Release.ReleaseCondition):
             Output only. Information around the state of
             the Release.
+        deploy_parameters (MutableMapping[str, str]):
+            Optional. The deploy parameters to use for
+            all targets in this release.
     """
 
     class RenderState(proto.Enum):
@@ -2102,6 +2158,11 @@ class Release(proto.Message):
         proto.MESSAGE,
         number=24,
         message=ReleaseCondition,
+    )
+    deploy_parameters: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=25,
     )
 
 

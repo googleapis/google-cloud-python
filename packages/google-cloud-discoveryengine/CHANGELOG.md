@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.8.1...google-cloud-discoveryengine-v0.9.0) (2023-06-19)
+
+
+### Features
+
+* add `redirect_uri` in search response ([7c48e6a](https://github.com/googleapis/google-cloud-python/commit/7c48e6aabe63630b3bc23e5168a99df7757bd2a5))
+* support docx/pptx/txt/csv in allowed data format ([7c48e6a](https://github.com/googleapis/google-cloud-python/commit/7c48e6aabe63630b3bc23e5168a99df7757bd2a5))
+* support extractive content in search ([7c48e6a](https://github.com/googleapis/google-cloud-python/commit/7c48e6aabe63630b3bc23e5168a99df7757bd2a5))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([7c48e6a](https://github.com/googleapis/google-cloud-python/commit/7c48e6aabe63630b3bc23e5168a99df7757bd2a5))
+
 ## [0.8.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.8.0...google-cloud-discoveryengine-v0.8.1) (2023-06-07)
 
 

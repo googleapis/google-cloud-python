@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.4.0...google-cloud-bigquery-datapolicies-v0.5.0) (2023-06-19)
+
+
+### Bug Fixes
+
+* Use `google.cloud.bigquery_datapolicies` to avoid conflict with `google.cloud.bigquery` ([87c64c1](https://github.com/googleapis/google-cloud-python/commit/87c64c1ecc29d981a170e4690db4b20021c5c999))
+
 ## [0.4.0](https://github.com/googleapis/python-bigquery-datapolicies/compare/v0.3.2...v0.4.0) (2023-04-15)
 
 
