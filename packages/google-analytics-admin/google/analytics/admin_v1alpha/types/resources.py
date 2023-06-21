@@ -667,17 +667,15 @@ class DataStream(proto.Message):
 
         Attributes:
             measurement_id (str):
-                Output only. Analytics "Measurement ID",
-                without the "G-" prefix. Example: "G-1A2BCD345E"
-                would just be "1A2BCD345E".
+                Output only. Analytics Measurement ID.
+                Example: "G-1A2BCD345E".
             firebase_app_id (str):
                 Output only. ID of the corresponding web app
                 in Firebase, if any. This ID can change if the
                 web app is deleted and recreated.
             default_uri (str):
-                Immutable. Domain name of the web app being
-                measured, or empty. Example:
-                "http://www.google.com",
+                Domain name of the web app being measured, or
+                empty. Example: "http://www.google.com",
                 "https://www.google.com".
         """
 
@@ -2189,6 +2187,9 @@ class AttributionSettings(proto.Message):
             will be reflected in reports with conversion and
             revenue data. User and session data will be
             unaffected.
+        ads_web_conversion_data_export_scope (google.analytics.admin_v1alpha.types.AttributionSettings.AdsWebConversionDataExportScope):
+            Required. The Conversion Export Scope for
+            data exported to linked Ads Accounts.
     """
 
     class AcquisitionConversionEventLookbackWindow(proto.Enum):
@@ -2247,22 +2248,44 @@ class AttributionSettings(proto.Message):
                 the customer clicked through (or engaged view
                 through for YouTube) before converting.
             CROSS_CHANNEL_FIRST_CLICK (3):
-                Gives all credit for the conversion to the
-                first channel that a customer clicked (or
-                engaged view through for YouTube) before
-                converting.
+                Starting in June 2023, new properties can no longer use this
+                model. See `Analytics
+                Help <https://support.google.com/analytics/answer/9164320?hl=en#040623>`__
+                for more details. Starting in September 2023, we will sunset
+                this model for all properties.
+
+                Gives all credit for the conversion to the first channel
+                that a customer clicked (or engaged view through for
+                YouTube) before converting.
             CROSS_CHANNEL_LINEAR (4):
-                Distributes the credit for the conversion
-                equally across all the channels a customer
-                clicked (or engaged view through for YouTube)
-                before converting.
+                Starting in June 2023, new properties can no longer use this
+                model. See `Analytics
+                Help <https://support.google.com/analytics/answer/9164320?hl=en#040623>`__
+                for more details. Starting in September 2023, we will sunset
+                this model for all properties.
+
+                Distributes the credit for the conversion equally across all
+                the channels a customer clicked (or engaged view through for
+                YouTube) before converting.
             CROSS_CHANNEL_POSITION_BASED (5):
-                Attributes 40% credit to the first and last
-                interaction, and the remaining 20% credit is
-                distributed evenly to the middle interactions.
+                Starting in June 2023, new properties can no longer use this
+                model. See `Analytics
+                Help <https://support.google.com/analytics/answer/9164320?hl=en#040623>`__
+                for more details. Starting in September 2023, we will sunset
+                this model for all properties.
+
+                Attributes 40% credit to the first and last interaction, and
+                the remaining 20% credit is distributed evenly to the middle
+                interactions.
             CROSS_CHANNEL_TIME_DECAY (6):
-                Gives more credit to the touchpoints that
-                happened closer in time to the conversion.
+                Starting in June 2023, new properties can no longer use this
+                model. See `Analytics
+                Help <https://support.google.com/analytics/answer/9164320?hl=en#040623>`__
+                for more details. Starting in September 2023, we will sunset
+                this model for all properties.
+
+                Gives more credit to the touchpoints that happened closer in
+                time to the conversion.
             ADS_PREFERRED_LAST_CLICK (7):
                 Attributes 100% of the conversion value to
                 the last Google Ads channel that the customer
@@ -2276,6 +2299,29 @@ class AttributionSettings(proto.Message):
         CROSS_CHANNEL_POSITION_BASED = 5
         CROSS_CHANNEL_TIME_DECAY = 6
         ADS_PREFERRED_LAST_CLICK = 7
+
+    class AdsWebConversionDataExportScope(proto.Enum):
+        r"""The Conversion Export Scope for data exported to linked Ads
+        Accounts.
+
+        Values:
+            ADS_WEB_CONVERSION_DATA_EXPORT_SCOPE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            NOT_SELECTED_YET (1):
+                No data export scope selected yet.
+                Export scope can never be changed back to this
+                value.
+            CROSS_CHANNEL (2):
+                The Ads Web Conversion Data export scope is
+                Cross Channel.
+            ADS_PREFERRED (3):
+                The Ads Web Conversion Data export scope is
+                Ads Preferred.
+        """
+        ADS_WEB_CONVERSION_DATA_EXPORT_SCOPE_UNSPECIFIED = 0
+        NOT_SELECTED_YET = 1
+        CROSS_CHANNEL = 2
+        ADS_PREFERRED = 3
 
     name: str = proto.Field(
         proto.STRING,
@@ -2297,6 +2343,11 @@ class AttributionSettings(proto.Message):
         proto.ENUM,
         number=4,
         enum=ReportingAttributionModel,
+    )
+    ads_web_conversion_data_export_scope: AdsWebConversionDataExportScope = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=AdsWebConversionDataExportScope,
     )
 
 
@@ -2429,7 +2480,7 @@ class BigQueryLink(proto.Message):
 
 
 class EnhancedMeasurementSettings(proto.Message):
-    r"""Singleton resource under a WebDataStream, configuring
+    r"""Singleton resource under a web DataStream, configuring
     measurement of additional site interactions and content.
 
     Attributes:

@@ -23187,6 +23187,7 @@ def test_get_attribution_settings(request_type, transport: str = "grpc"):
             acquisition_conversion_event_lookback_window=resources.AttributionSettings.AcquisitionConversionEventLookbackWindow.ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_7_DAYS,
             other_conversion_event_lookback_window=resources.AttributionSettings.OtherConversionEventLookbackWindow.OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS,
             reporting_attribution_model=resources.AttributionSettings.ReportingAttributionModel.CROSS_CHANNEL_DATA_DRIVEN,
+            ads_web_conversion_data_export_scope=resources.AttributionSettings.AdsWebConversionDataExportScope.NOT_SELECTED_YET,
         )
         response = client.get_attribution_settings(request)
 
@@ -23209,6 +23210,10 @@ def test_get_attribution_settings(request_type, transport: str = "grpc"):
     assert (
         response.reporting_attribution_model
         == resources.AttributionSettings.ReportingAttributionModel.CROSS_CHANNEL_DATA_DRIVEN
+    )
+    assert (
+        response.ads_web_conversion_data_export_scope
+        == resources.AttributionSettings.AdsWebConversionDataExportScope.NOT_SELECTED_YET
     )
 
 
@@ -23255,6 +23260,7 @@ async def test_get_attribution_settings_async(
                 acquisition_conversion_event_lookback_window=resources.AttributionSettings.AcquisitionConversionEventLookbackWindow.ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_7_DAYS,
                 other_conversion_event_lookback_window=resources.AttributionSettings.OtherConversionEventLookbackWindow.OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS,
                 reporting_attribution_model=resources.AttributionSettings.ReportingAttributionModel.CROSS_CHANNEL_DATA_DRIVEN,
+                ads_web_conversion_data_export_scope=resources.AttributionSettings.AdsWebConversionDataExportScope.NOT_SELECTED_YET,
             )
         )
         response = await client.get_attribution_settings(request)
@@ -23278,6 +23284,10 @@ async def test_get_attribution_settings_async(
     assert (
         response.reporting_attribution_model
         == resources.AttributionSettings.ReportingAttributionModel.CROSS_CHANNEL_DATA_DRIVEN
+    )
+    assert (
+        response.ads_web_conversion_data_export_scope
+        == resources.AttributionSettings.AdsWebConversionDataExportScope.NOT_SELECTED_YET
     )
 
 
@@ -23464,6 +23474,7 @@ def test_update_attribution_settings(request_type, transport: str = "grpc"):
             acquisition_conversion_event_lookback_window=resources.AttributionSettings.AcquisitionConversionEventLookbackWindow.ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_7_DAYS,
             other_conversion_event_lookback_window=resources.AttributionSettings.OtherConversionEventLookbackWindow.OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS,
             reporting_attribution_model=resources.AttributionSettings.ReportingAttributionModel.CROSS_CHANNEL_DATA_DRIVEN,
+            ads_web_conversion_data_export_scope=resources.AttributionSettings.AdsWebConversionDataExportScope.NOT_SELECTED_YET,
         )
         response = client.update_attribution_settings(request)
 
@@ -23486,6 +23497,10 @@ def test_update_attribution_settings(request_type, transport: str = "grpc"):
     assert (
         response.reporting_attribution_model
         == resources.AttributionSettings.ReportingAttributionModel.CROSS_CHANNEL_DATA_DRIVEN
+    )
+    assert (
+        response.ads_web_conversion_data_export_scope
+        == resources.AttributionSettings.AdsWebConversionDataExportScope.NOT_SELECTED_YET
     )
 
 
@@ -23532,6 +23547,7 @@ async def test_update_attribution_settings_async(
                 acquisition_conversion_event_lookback_window=resources.AttributionSettings.AcquisitionConversionEventLookbackWindow.ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_7_DAYS,
                 other_conversion_event_lookback_window=resources.AttributionSettings.OtherConversionEventLookbackWindow.OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS,
                 reporting_attribution_model=resources.AttributionSettings.ReportingAttributionModel.CROSS_CHANNEL_DATA_DRIVEN,
+                ads_web_conversion_data_export_scope=resources.AttributionSettings.AdsWebConversionDataExportScope.NOT_SELECTED_YET,
             )
         )
         response = await client.update_attribution_settings(request)
@@ -23555,6 +23571,10 @@ async def test_update_attribution_settings_async(
     assert (
         response.reporting_attribution_model
         == resources.AttributionSettings.ReportingAttributionModel.CROSS_CHANNEL_DATA_DRIVEN
+    )
+    assert (
+        response.ads_web_conversion_data_export_scope
+        == resources.AttributionSettings.AdsWebConversionDataExportScope.NOT_SELECTED_YET
     )
 
 
@@ -56749,6 +56769,7 @@ def test_get_attribution_settings_rest(request_type):
             acquisition_conversion_event_lookback_window=resources.AttributionSettings.AcquisitionConversionEventLookbackWindow.ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_7_DAYS,
             other_conversion_event_lookback_window=resources.AttributionSettings.OtherConversionEventLookbackWindow.OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS,
             reporting_attribution_model=resources.AttributionSettings.ReportingAttributionModel.CROSS_CHANNEL_DATA_DRIVEN,
+            ads_web_conversion_data_export_scope=resources.AttributionSettings.AdsWebConversionDataExportScope.NOT_SELECTED_YET,
         )
 
         # Wrap the value into a proper Response obj
@@ -56775,6 +56796,10 @@ def test_get_attribution_settings_rest(request_type):
     assert (
         response.reporting_attribution_model
         == resources.AttributionSettings.ReportingAttributionModel.CROSS_CHANNEL_DATA_DRIVEN
+    )
+    assert (
+        response.ads_web_conversion_data_export_scope
+        == resources.AttributionSettings.AdsWebConversionDataExportScope.NOT_SELECTED_YET
     )
 
 
@@ -57029,6 +57054,7 @@ def test_update_attribution_settings_rest(request_type):
         "acquisition_conversion_event_lookback_window": 1,
         "other_conversion_event_lookback_window": 1,
         "reporting_attribution_model": 1,
+        "ads_web_conversion_data_export_scope": 1,
     }
     request = request_type(**request_init)
 
@@ -57040,6 +57066,7 @@ def test_update_attribution_settings_rest(request_type):
             acquisition_conversion_event_lookback_window=resources.AttributionSettings.AcquisitionConversionEventLookbackWindow.ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_7_DAYS,
             other_conversion_event_lookback_window=resources.AttributionSettings.OtherConversionEventLookbackWindow.OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS,
             reporting_attribution_model=resources.AttributionSettings.ReportingAttributionModel.CROSS_CHANNEL_DATA_DRIVEN,
+            ads_web_conversion_data_export_scope=resources.AttributionSettings.AdsWebConversionDataExportScope.NOT_SELECTED_YET,
         )
 
         # Wrap the value into a proper Response obj
@@ -57066,6 +57093,10 @@ def test_update_attribution_settings_rest(request_type):
     assert (
         response.reporting_attribution_model
         == resources.AttributionSettings.ReportingAttributionModel.CROSS_CHANNEL_DATA_DRIVEN
+    )
+    assert (
+        response.ads_web_conversion_data_export_scope
+        == resources.AttributionSettings.AdsWebConversionDataExportScope.NOT_SELECTED_YET
     )
 
 
@@ -57238,6 +57269,7 @@ def test_update_attribution_settings_rest_bad_request(
         "acquisition_conversion_event_lookback_window": 1,
         "other_conversion_event_lookback_window": 1,
         "reporting_attribution_model": 1,
+        "ads_web_conversion_data_export_scope": 1,
     }
     request = request_type(**request_init)
 

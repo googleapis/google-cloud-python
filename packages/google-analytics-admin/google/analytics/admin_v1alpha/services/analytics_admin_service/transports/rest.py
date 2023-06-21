@@ -10158,9 +10158,9 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
                 Returns:
                     ~.resources.EnhancedMeasurementSettings:
-                        Singleton resource under a
-                    WebDataStream, configuring measurement
-                    of additional site interactions and
+                        Singleton resource under a web
+                    DataStream, configuring measurement of
+                    additional site interactions and
                     content.
 
             """
@@ -14422,9 +14422,9 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
                 Returns:
                     ~.resources.EnhancedMeasurementSettings:
-                        Singleton resource under a
-                    WebDataStream, configuring measurement
-                    of additional site interactions and
+                        Singleton resource under a web
+                    DataStream, configuring measurement of
+                    additional site interactions and
                     content.
 
             """
