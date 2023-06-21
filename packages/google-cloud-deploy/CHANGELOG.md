@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.9.0...google-cloud-deploy-v1.10.0) (2023-06-21)
+
+
+### Features
+
+* Add deploy parameters for cloud deploy ([1fcd772](https://github.com/googleapis/google-cloud-python/commit/1fcd7721b34232b07eb69e92ec13f20f103b224f))
+* Add support for disabling Pod overprovisioning in the progressive deployment strategy configuration for a Kubernetes Target ([1fcd772](https://github.com/googleapis/google-cloud-python/commit/1fcd7721b34232b07eb69e92ec13f20f103b224f))
+
 ## [1.9.0](https://github.com/googleapis/python-deploy/compare/v1.8.0...v1.9.0) (2023-05-25)
 
 
