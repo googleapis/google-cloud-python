@@ -740,8 +740,8 @@ def test_load_table_from_dataframe_w_explicit_schema_source_format_csv_floats(
 
 def test_query_results_to_dataframe(bigquery_client):
     QUERY = """
-    SELECT id, author, time_ts, dead
-    FROM `bigquery-public-data.hacker_news.comments`
+    SELECT id, `by`, timestamp, dead
+    FROM `bigquery-public-data.hacker_news.full`
     LIMIT 10
     """
 
@@ -749,12 +749,12 @@ def test_query_results_to_dataframe(bigquery_client):
 
     assert isinstance(df, pandas.DataFrame)
     assert len(df) == 10  # verify the number of rows
-    column_names = ["id", "author", "time_ts", "dead"]
+    column_names = ["id", "by", "timestamp", "dead"]
     assert list(df) == column_names  # verify the column names
     exp_datatypes = {
         "id": int,
-        "author": str,
-        "time_ts": pandas.Timestamp,
+        "by": str,
+        "timestamp": pandas.Timestamp,
         "dead": bool,
     }
     for _, row in df.iterrows():
@@ -766,8 +766,8 @@ def test_query_results_to_dataframe(bigquery_client):
 
 def test_query_results_to_dataframe_w_bqstorage(bigquery_client):
     query = """
-    SELECT id, author, time_ts, dead
-    FROM `bigquery-public-data.hacker_news.comments`
+    SELECT id, `by`, timestamp, dead
+    FROM `bigquery-public-data.hacker_news.full`
     LIMIT 10
     """
 
@@ -779,12 +779,12 @@ def test_query_results_to_dataframe_w_bqstorage(bigquery_client):
 
     assert isinstance(df, pandas.DataFrame)
     assert len(df) == 10  # verify the number of rows
-    column_names = ["id", "author", "time_ts", "dead"]
+    column_names = ["id", "by", "timestamp", "dead"]
     assert list(df) == column_names
     exp_datatypes = {
         "id": int,
-        "author": str,
-        "time_ts": pandas.Timestamp,
+        "by": str,
+        "timestamp": pandas.Timestamp,
         "dead": bool,
     }
     for index, row in df.iterrows():
