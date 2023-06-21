@@ -8651,6 +8651,7 @@ def test_create_delivery_pipeline_rest(request_type):
                                     "service_networking": {
                                         "service": "service_value",
                                         "deployment": "deployment_value",
+                                        "disable_pod_overprovisioning": True,
                                     },
                                 },
                                 "cloud_run": {"automatic_traffic_control": True},
@@ -8674,6 +8675,7 @@ def test_create_delivery_pipeline_rest(request_type):
                             },
                         },
                     },
+                    "deploy_parameters": [{"values": {}, "match_target_labels": {}}],
                 }
             ]
         },
@@ -8930,6 +8932,7 @@ def test_create_delivery_pipeline_rest_bad_request(
                                     "service_networking": {
                                         "service": "service_value",
                                         "deployment": "deployment_value",
+                                        "disable_pod_overprovisioning": True,
                                     },
                                 },
                                 "cloud_run": {"automatic_traffic_control": True},
@@ -8953,6 +8956,7 @@ def test_create_delivery_pipeline_rest_bad_request(
                             },
                         },
                     },
+                    "deploy_parameters": [{"values": {}, "match_target_labels": {}}],
                 }
             ]
         },
@@ -9095,6 +9099,7 @@ def test_update_delivery_pipeline_rest(request_type):
                                     "service_networking": {
                                         "service": "service_value",
                                         "deployment": "deployment_value",
+                                        "disable_pod_overprovisioning": True,
                                     },
                                 },
                                 "cloud_run": {"automatic_traffic_control": True},
@@ -9118,6 +9123,7 @@ def test_update_delivery_pipeline_rest(request_type):
                             },
                         },
                     },
+                    "deploy_parameters": [{"values": {}, "match_target_labels": {}}],
                 }
             ]
         },
@@ -9359,6 +9365,7 @@ def test_update_delivery_pipeline_rest_bad_request(
                                     "service_networking": {
                                         "service": "service_value",
                                         "deployment": "deployment_value",
+                                        "disable_pod_overprovisioning": True,
                                     },
                                 },
                                 "cloud_run": {"automatic_traffic_control": True},
@@ -9382,6 +9389,7 @@ def test_update_delivery_pipeline_rest_bad_request(
                             },
                         },
                     },
+                    "deploy_parameters": [{"values": {}, "match_target_labels": {}}],
                 }
             ]
         },
@@ -10434,6 +10442,7 @@ def test_create_target_rest(request_type):
                 "execution_timeout": {"seconds": 751, "nanos": 543},
             }
         ],
+        "deploy_parameters": {},
     }
     request = request_type(**request_init)
 
@@ -10678,6 +10687,7 @@ def test_create_target_rest_bad_request(
                 "execution_timeout": {"seconds": 751, "nanos": 543},
             }
         ],
+        "deploy_parameters": {},
     }
     request = request_type(**request_init)
 
@@ -10807,6 +10817,7 @@ def test_update_target_rest(request_type):
                 "execution_timeout": {"seconds": 751, "nanos": 543},
             }
         ],
+        "deploy_parameters": {},
     }
     request = request_type(**request_init)
 
@@ -11036,6 +11047,7 @@ def test_update_target_rest_bad_request(
                 "execution_timeout": {"seconds": 751, "nanos": 543},
             }
         ],
+        "deploy_parameters": {},
     }
     request = request_type(**request_init)
 
@@ -12089,6 +12101,7 @@ def test_create_release_rest(request_type):
                                         "service_networking": {
                                             "service": "service_value",
                                             "deployment": "deployment_value",
+                                            "disable_pod_overprovisioning": True,
                                         },
                                     },
                                     "cloud_run": {"automatic_traffic_control": True},
@@ -12112,6 +12125,9 @@ def test_create_release_rest(request_type):
                                 },
                             },
                         },
+                        "deploy_parameters": [
+                            {"values": {}, "match_target_labels": {}}
+                        ],
                     }
                 ]
             },
@@ -12169,6 +12185,7 @@ def test_create_release_rest(request_type):
                         "execution_timeout": {"seconds": 751, "nanos": 543},
                     }
                 ],
+                "deploy_parameters": {},
             }
         ],
         "render_state": 1,
@@ -12185,6 +12202,7 @@ def test_create_release_rest(request_type):
                 "support_expiration_time": {},
             },
         },
+        "deploy_parameters": {},
     }
     request = request_type(**request_init)
 
@@ -12437,6 +12455,7 @@ def test_create_release_rest_bad_request(
                                         "service_networking": {
                                             "service": "service_value",
                                             "deployment": "deployment_value",
+                                            "disable_pod_overprovisioning": True,
                                         },
                                     },
                                     "cloud_run": {"automatic_traffic_control": True},
@@ -12460,6 +12479,9 @@ def test_create_release_rest_bad_request(
                                 },
                             },
                         },
+                        "deploy_parameters": [
+                            {"values": {}, "match_target_labels": {}}
+                        ],
                     }
                 ]
             },
@@ -12517,6 +12539,7 @@ def test_create_release_rest_bad_request(
                         "execution_timeout": {"seconds": 751, "nanos": 543},
                     }
                 ],
+                "deploy_parameters": {},
             }
         ],
         "render_state": 1,
@@ -12533,6 +12556,7 @@ def test_create_release_rest_bad_request(
                 "support_expiration_time": {},
             },
         },
+        "deploy_parameters": {},
     }
     request = request_type(**request_init)
 
