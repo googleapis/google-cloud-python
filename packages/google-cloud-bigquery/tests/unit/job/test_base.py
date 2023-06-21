@@ -18,6 +18,7 @@ import unittest
 
 from google.api_core import exceptions
 import google.api_core.retry
+from google.api_core.future import polling
 import mock
 import pytest
 
@@ -970,7 +971,7 @@ class Test_AsyncJob(unittest.TestCase):
         client = _make_client(project=self.PROJECT, connection=conn)
         job = self._make_one(self.JOB_ID, client)
 
-        self.assertIs(job.result(), job)
+        self.assertIs(job.result(retry=polling.DEFAULT_RETRY), job)
 
         begin_call = mock.call(
             method="POST",
