@@ -39,7 +39,7 @@ def partition(
 class dialogflowCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'analyze_content': ('participant', 'text_input', 'audio_input', 'event_input', 'reply_audio_config', 'query_params', 'assist_query_params', 'cx_parameters', 'cx_current_page', 'message_send_time', 'request_id', ),
+        'analyze_content': ('participant', 'text_input', 'audio_input', 'event_input', 'suggestion_input', 'reply_audio_config', 'query_params', 'assist_query_params', 'cx_parameters', 'cx_current_page', 'message_send_time', 'request_id', ),
         'batch_create_entities': ('parent', 'entities', 'language_code', ),
         'batch_create_messages': ('parent', 'requests', ),
         'batch_delete_entities': ('parent', 'entity_values', 'language_code', ),

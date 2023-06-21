@@ -39,6 +39,8 @@ __protobuf__ = proto.module(
         "AudioInput",
         "OutputAudio",
         "AutomatedAgentReply",
+        "SuggestionInput",
+        "IntentInput",
         "SuggestionFeature",
         "AssistQueryParameters",
         "AnalyzeContentRequest",
@@ -52,6 +54,8 @@ __protobuf__ = proto.module(
         "ArticleAnswer",
         "FaqAnswer",
         "SmartReplyAnswer",
+        "IntentSuggestion",
+        "DialogflowAssistAnswer",
         "SuggestionResult",
         "SuggestArticlesRequest",
         "SuggestArticlesResponse",
@@ -59,6 +63,7 @@ __protobuf__ = proto.module(
         "SuggestFaqAnswersResponse",
         "SuggestSmartRepliesRequest",
         "SuggestSmartRepliesResponse",
+        "SuggestDialogflowAssistsResponse",
         "Suggestion",
         "ListSuggestionsRequest",
         "ListSuggestionsResponse",
@@ -101,14 +106,15 @@ class Participant(proto.Message):
                Dialogflow will update
                [Participant.obfuscated_external_user_id][google.cloud.dialogflow.v2beta1.Participant.obfuscated_external_user_id].
 
-            Dialogflow uses this user id for following purposes:
+            Dialogflow uses this user id for billing and measurement. If
+            a user with the same obfuscated_external_user_id is created
+            in a later conversation, Dialogflow will know it's the same
+            user.
 
-            1) Billing and measurement. If user with the same
-               obfuscated_external_user_id is created in a later
-               conversation, dialogflow will know it's the same user. 2)
-               Agent assist suggestion personalization. For example,
-               Dialogflow can use it to provide personalized smart reply
-               suggestions for this user.
+            Dialogflow also uses this user id for Agent Assist
+            suggestion personalization. For example, Dialogflow can use
+            it to provide personalized smart reply suggestions for this
+            user.
 
             Note:
 
@@ -558,6 +564,105 @@ class AutomatedAgentReply(proto.Message):
     )
 
 
+class SuggestionInput(proto.Message):
+    r"""Represents the selection of a suggestion.
+
+    Attributes:
+        answer_record (str):
+            Required. The ID of a suggestion selected by the human
+            agent. The suggestion(s) were generated in a previous call
+            to request Dialogflow assist. The format is:
+            ``projects/<Project ID>/locations/<Location ID>/answerRecords/<Answer Record ID>``
+            where is an alphanumeric string.
+        text_override (google.cloud.dialogflow_v2beta1.types.TextInput):
+            Optional. If the customer edited the
+            suggestion before using it, include the revised
+            text here.
+        parameters (google.protobuf.struct_pb2.Struct):
+            In Dialogflow assist for v3, the user can submit a form by
+            sending a
+            [SuggestionInput][google.cloud.dialogflow.v2beta1.SuggestionInput].
+            The form is uniquely determined by the
+            [answer_record][google.cloud.dialogflow.v2beta1.SuggestionInput.answer_record]
+            field, which identifies a v3
+            [QueryResult][google.cloud.dialogflow.v3alpha1.QueryResult]
+            containing the current
+            [page][google.cloud.dialogflow.v3alpha1.Page]. The form
+            parameters are specified via the
+            [parameters][google.cloud.dialogflow.v2beta1.SuggestionInput.parameters]
+            field.
+
+            Depending on your protocol or client library language, this
+            is a map, associative array, symbol table, dictionary, or
+            JSON object composed of a collection of (MapKey, MapValue)
+            pairs:
+
+            -  MapKey type: string
+            -  MapKey value: parameter name
+            -  MapValue type:
+
+               -  If parameter's entity type is a composite entity: map
+               -  Else: depending on parameter value type, could be one
+                  of string, number, boolean, null, list or map
+
+            -  MapValue value:
+
+               -  If parameter's entity type is a composite entity: map
+                  from composite entity property names to property
+                  values
+               -  Else: parameter value
+        intent_input (google.cloud.dialogflow_v2beta1.types.IntentInput):
+            The intent to be triggered on V3 agent.
+    """
+
+    answer_record: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    text_override: session.TextInput = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=session.TextInput,
+    )
+    parameters: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=struct_pb2.Struct,
+    )
+    intent_input: "IntentInput" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="IntentInput",
+    )
+
+
+class IntentInput(proto.Message):
+    r"""Represents the intent to trigger programmatically rather than
+    as a result of natural language processing. The intent input is
+    only used for V3 agent.
+
+    Attributes:
+        intent (str):
+            Required. The unique identifier of the intent in V3 agent.
+            Format:
+            ``projects/<Project ID>/locations/<Location ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+        language_code (str):
+            Required. The language of this conversational query. See
+            `Language
+            Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            for a list of the currently supported language codes.
+    """
+
+    intent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
 class SuggestionFeature(proto.Message):
     r"""The type of Human Agent Assistant API suggestion to perform, and the
     maximum number of results to return for that type. Multiple
@@ -581,6 +686,10 @@ class SuggestionFeature(proto.Message):
                 Run FAQ model.
             SMART_REPLY (3):
                 Run smart reply model for chat.
+            DIALOGFLOW_ASSIST (4):
+                Run Dialogflow assist model for chat, which
+                will return automated agent response as
+                suggestion.
             CONVERSATION_SUMMARIZATION (8):
                 Run conversation summarization model for
                 chat.
@@ -589,6 +698,7 @@ class SuggestionFeature(proto.Message):
         ARTICLE_SUGGESTION = 1
         FAQ = 2
         SMART_REPLY = 3
+        DIALOGFLOW_ASSIST = 4
         CONVERSATION_SUMMARIZATION = 8
 
     type_: Type = proto.Field(
@@ -658,6 +768,11 @@ class AnalyzeContentRequest(proto.Message):
             This field is a member of `oneof`_ ``input``.
         event_input (google.cloud.dialogflow_v2beta1.types.EventInput):
             An input event to send to Dialogflow.
+
+            This field is a member of `oneof`_ ``input``.
+        suggestion_input (google.cloud.dialogflow_v2beta1.types.SuggestionInput):
+            An input representing the selection of a
+            suggestion.
 
             This field is a member of `oneof`_ ``input``.
         reply_audio_config (google.cloud.dialogflow_v2beta1.types.OutputAudioConfig):
@@ -739,6 +854,12 @@ class AnalyzeContentRequest(proto.Message):
         number=8,
         oneof="input",
         message=session.EventInput,
+    )
+    suggestion_input: "SuggestionInput" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="input",
+        message="SuggestionInput",
     )
     reply_audio_config: gcd_audio_config.OutputAudioConfig = proto.Field(
         proto.MESSAGE,
@@ -1430,6 +1551,86 @@ class SmartReplyAnswer(proto.Message):
     )
 
 
+class IntentSuggestion(proto.Message):
+    r"""Represents an intent suggestion.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        display_name (str):
+            The display name of the intent.
+        intent_v2 (str):
+            The unique identifier of this
+            [intent][google.cloud.dialogflow.v2beta1.Intent]. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agent/intents/<Intent ID>``.
+
+            This field is a member of `oneof`_ ``intent``.
+        description (str):
+            Human readable description for better
+            understanding an intent like its scope, content,
+            result etc. Maximum character limit: 140
+            characters.
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    intent_v2: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="intent",
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class DialogflowAssistAnswer(proto.Message):
+    r"""Represents a Dialogflow assist answer.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        query_result (google.cloud.dialogflow_v2beta1.types.QueryResult):
+            Result from v2 agent.
+
+            This field is a member of `oneof`_ ``result``.
+        intent_suggestion (google.cloud.dialogflow_v2beta1.types.IntentSuggestion):
+            An intent suggestion generated from
+            conversation.
+
+            This field is a member of `oneof`_ ``result``.
+        answer_record (str):
+            The name of answer record, in the format of
+            "projects/<Project ID>/locations/<Location
+            ID>/answerRecords/<Answer Record ID>".
+    """
+
+    query_result: session.QueryResult = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="result",
+        message=session.QueryResult,
+    )
+    intent_suggestion: "IntentSuggestion" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="result",
+        message="IntentSuggestion",
+    )
+    answer_record: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class SuggestionResult(proto.Message):
     r"""One response of different type of suggestion response which is used
     in the response of
@@ -1464,6 +1665,16 @@ class SuggestionResult(proto.Message):
             SuggestSmartRepliesResponse if request is for SMART_REPLY.
 
             This field is a member of `oneof`_ ``suggestion_response``.
+        suggest_dialogflow_assists_response (google.cloud.dialogflow_v2beta1.types.SuggestDialogflowAssistsResponse):
+            SuggestDialogflowAssistsResponse if request is for
+            DIALOGFLOW_ASSIST.
+
+            This field is a member of `oneof`_ ``suggestion_response``.
+        suggest_entity_extraction_response (google.cloud.dialogflow_v2beta1.types.SuggestDialogflowAssistsResponse):
+            SuggestDialogflowAssistsResponse if request is for
+            ENTITY_EXTRACTION.
+
+            This field is a member of `oneof`_ ``suggestion_response``.
     """
 
     error: status_pb2.Status = proto.Field(
@@ -1489,6 +1700,22 @@ class SuggestionResult(proto.Message):
         number=4,
         oneof="suggestion_response",
         message="SuggestSmartRepliesResponse",
+    )
+    suggest_dialogflow_assists_response: "SuggestDialogflowAssistsResponse" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=5,
+            oneof="suggestion_response",
+            message="SuggestDialogflowAssistsResponse",
+        )
+    )
+    suggest_entity_extraction_response: "SuggestDialogflowAssistsResponse" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=7,
+            oneof="suggestion_response",
+            message="SuggestDialogflowAssistsResponse",
+        )
     )
 
 
@@ -1734,6 +1961,47 @@ class SuggestSmartRepliesResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message="SmartReplyAnswer",
+    )
+    latest_message: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    context_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+
+
+class SuggestDialogflowAssistsResponse(proto.Message):
+    r"""The response message for
+    [Participants.SuggestDialogflowAssists][google.cloud.dialogflow.v2beta1.Participants.SuggestDialogflowAssists].
+
+    Attributes:
+        dialogflow_assist_answers (MutableSequence[google.cloud.dialogflow_v2beta1.types.DialogflowAssistAnswer]):
+            Output only. Multiple reply options provided
+            by Dialogflow assist service. The order is based
+            on the rank of the model prediction.
+        latest_message (str):
+            The name of the latest conversation message used to suggest
+            answer.
+
+            Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
+        context_size (int):
+            Number of messages prior to and including
+            [latest_message][google.cloud.dialogflow.v2beta1.SuggestDialogflowAssistsResponse.latest_message]
+            to compile the suggestion. It may be smaller than the
+            [SuggestDialogflowAssistsRequest.context_size][google.cloud.dialogflow.v2beta1.SuggestDialogflowAssistsRequest.context_size]
+            field in the request if there aren't that many messages in
+            the conversation.
+    """
+
+    dialogflow_assist_answers: MutableSequence[
+        "DialogflowAssistAnswer"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="DialogflowAssistAnswer",
     )
     latest_message: str = proto.Field(
         proto.STRING,

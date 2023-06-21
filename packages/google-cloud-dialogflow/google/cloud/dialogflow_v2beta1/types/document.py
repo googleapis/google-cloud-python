@@ -423,8 +423,8 @@ class ImportDocumentsRequest(proto.Message):
             Format:
             ``projects/<Project ID>/locations/<Location ID>/knowledgeBases/<Knowledge Base ID>``.
         gcs_source (google.cloud.dialogflow_v2beta1.types.GcsSources):
-            The Google Cloud Storage location for the documents. The
-            path can include a wildcard.
+            Optional. The Google Cloud Storage location for the
+            documents. The path can include a wildcard.
 
             These URIs may have the forms
             ``gs://<bucket-name>/<object-name>``.

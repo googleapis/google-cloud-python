@@ -37,6 +37,7 @@ from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
@@ -52,9 +53,9 @@ from google.cloud.dialogflow_v2beta1.services.answer_records import (
     pagers,
     transports,
 )
+from google.cloud.dialogflow_v2beta1.types import context, intent, participant, session
 from google.cloud.dialogflow_v2beta1.types import answer_record as gcd_answer_record
 from google.cloud.dialogflow_v2beta1.types import answer_record
-from google.cloud.dialogflow_v2beta1.types import participant
 
 
 def client_cert_source_callback():
@@ -1993,6 +1994,275 @@ def test_update_answer_record_rest(request_type):
                 "metadata": {},
                 "answer_record": "answer_record_value",
             },
+            "dialogflow_assist_answer": {
+                "query_result": {
+                    "query_text": "query_text_value",
+                    "language_code": "language_code_value",
+                    "speech_recognition_confidence": 0.3045,
+                    "action": "action_value",
+                    "parameters": {"fields": {}},
+                    "all_required_params_present": True,
+                    "cancels_slot_filling": True,
+                    "fulfillment_text": "fulfillment_text_value",
+                    "fulfillment_messages": [
+                        {
+                            "text": {"text": ["text_value1", "text_value2"]},
+                            "image": {
+                                "image_uri": "image_uri_value",
+                                "accessibility_text": "accessibility_text_value",
+                            },
+                            "quick_replies": {
+                                "title": "title_value",
+                                "quick_replies": [
+                                    "quick_replies_value1",
+                                    "quick_replies_value2",
+                                ],
+                            },
+                            "card": {
+                                "title": "title_value",
+                                "subtitle": "subtitle_value",
+                                "image_uri": "image_uri_value",
+                                "buttons": [
+                                    {"text": "text_value", "postback": "postback_value"}
+                                ],
+                            },
+                            "payload": {},
+                            "simple_responses": {
+                                "simple_responses": [
+                                    {
+                                        "text_to_speech": "text_to_speech_value",
+                                        "ssml": "ssml_value",
+                                        "display_text": "display_text_value",
+                                    }
+                                ]
+                            },
+                            "basic_card": {
+                                "title": "title_value",
+                                "subtitle": "subtitle_value",
+                                "formatted_text": "formatted_text_value",
+                                "image": {},
+                                "buttons": [
+                                    {
+                                        "title": "title_value",
+                                        "open_uri_action": {"uri": "uri_value"},
+                                    }
+                                ],
+                            },
+                            "suggestions": {"suggestions": [{"title": "title_value"}]},
+                            "link_out_suggestion": {
+                                "destination_name": "destination_name_value",
+                                "uri": "uri_value",
+                            },
+                            "list_select": {
+                                "title": "title_value",
+                                "items": [
+                                    {
+                                        "info": {
+                                            "key": "key_value",
+                                            "synonyms": [
+                                                "synonyms_value1",
+                                                "synonyms_value2",
+                                            ],
+                                        },
+                                        "title": "title_value",
+                                        "description": "description_value",
+                                        "image": {},
+                                    }
+                                ],
+                                "subtitle": "subtitle_value",
+                            },
+                            "carousel_select": {
+                                "items": [
+                                    {
+                                        "info": {},
+                                        "title": "title_value",
+                                        "description": "description_value",
+                                        "image": {},
+                                    }
+                                ]
+                            },
+                            "telephony_play_audio": {"audio_uri": "audio_uri_value"},
+                            "telephony_synthesize_speech": {
+                                "text": "text_value",
+                                "ssml": "ssml_value",
+                            },
+                            "telephony_transfer_call": {
+                                "phone_number": "phone_number_value"
+                            },
+                            "rbm_text": {
+                                "text": "text_value",
+                                "rbm_suggestion": [
+                                    {
+                                        "reply": {
+                                            "text": "text_value",
+                                            "postback_data": "postback_data_value",
+                                        },
+                                        "action": {
+                                            "text": "text_value",
+                                            "postback_data": "postback_data_value",
+                                            "dial": {
+                                                "phone_number": "phone_number_value"
+                                            },
+                                            "open_url": {"uri": "uri_value"},
+                                            "share_location": {},
+                                        },
+                                    }
+                                ],
+                            },
+                            "rbm_standalone_rich_card": {
+                                "card_orientation": 1,
+                                "thumbnail_image_alignment": 1,
+                                "card_content": {
+                                    "title": "title_value",
+                                    "description": "description_value",
+                                    "media": {
+                                        "file_uri": "file_uri_value",
+                                        "thumbnail_uri": "thumbnail_uri_value",
+                                        "height": 1,
+                                    },
+                                    "suggestions": {},
+                                },
+                            },
+                            "rbm_carousel_rich_card": {
+                                "card_width": 1,
+                                "card_contents": {},
+                            },
+                            "browse_carousel_card": {
+                                "items": [
+                                    {
+                                        "open_uri_action": {
+                                            "url": "url_value",
+                                            "url_type_hint": 1,
+                                        },
+                                        "title": "title_value",
+                                        "description": "description_value",
+                                        "image": {},
+                                        "footer": "footer_value",
+                                    }
+                                ],
+                                "image_display_options": 1,
+                            },
+                            "table_card": {
+                                "title": "title_value",
+                                "subtitle": "subtitle_value",
+                                "image": {},
+                                "column_properties": [
+                                    {
+                                        "header": "header_value",
+                                        "horizontal_alignment": 1,
+                                    }
+                                ],
+                                "rows": [
+                                    {
+                                        "cells": [{"text": "text_value"}],
+                                        "divider_after": True,
+                                    }
+                                ],
+                                "buttons": {},
+                            },
+                            "media_content": {
+                                "media_type": 1,
+                                "media_objects": [
+                                    {
+                                        "name": "name_value",
+                                        "description": "description_value",
+                                        "large_image": {},
+                                        "icon": {},
+                                        "content_url": "content_url_value",
+                                    }
+                                ],
+                            },
+                            "platform": 1,
+                        }
+                    ],
+                    "webhook_source": "webhook_source_value",
+                    "webhook_payload": {},
+                    "output_contexts": [
+                        {"name": "name_value", "lifespan_count": 1498, "parameters": {}}
+                    ],
+                    "intent": {
+                        "name": "name_value",
+                        "display_name": "display_name_value",
+                        "webhook_state": 1,
+                        "priority": 898,
+                        "is_fallback": True,
+                        "ml_enabled": True,
+                        "ml_disabled": True,
+                        "live_agent_handoff": True,
+                        "end_interaction": True,
+                        "input_context_names": [
+                            "input_context_names_value1",
+                            "input_context_names_value2",
+                        ],
+                        "events": ["events_value1", "events_value2"],
+                        "training_phrases": [
+                            {
+                                "name": "name_value",
+                                "type_": 1,
+                                "parts": [
+                                    {
+                                        "text": "text_value",
+                                        "entity_type": "entity_type_value",
+                                        "alias": "alias_value",
+                                        "user_defined": True,
+                                    }
+                                ],
+                                "times_added_count": 1787,
+                            }
+                        ],
+                        "action": "action_value",
+                        "output_contexts": {},
+                        "reset_contexts": True,
+                        "parameters": [
+                            {
+                                "name": "name_value",
+                                "display_name": "display_name_value",
+                                "value": "value_value",
+                                "default_value": "default_value_value",
+                                "entity_type_display_name": "entity_type_display_name_value",
+                                "mandatory": True,
+                                "prompts": ["prompts_value1", "prompts_value2"],
+                                "is_list": True,
+                            }
+                        ],
+                        "messages": {},
+                        "default_response_platforms": [1],
+                        "root_followup_intent_name": "root_followup_intent_name_value",
+                        "parent_followup_intent_name": "parent_followup_intent_name_value",
+                        "followup_intent_info": [
+                            {
+                                "followup_intent_name": "followup_intent_name_value",
+                                "parent_followup_intent_name": "parent_followup_intent_name_value",
+                            }
+                        ],
+                    },
+                    "intent_detection_confidence": 0.28450000000000003,
+                    "diagnostic_info": {},
+                    "sentiment_analysis_result": {
+                        "query_text_sentiment": {
+                            "score": 0.54,
+                            "magnitude": 0.9580000000000001,
+                        }
+                    },
+                    "knowledge_answers": {
+                        "answers": [
+                            {
+                                "source": "source_value",
+                                "faq_question": "faq_question_value",
+                                "answer": "answer_value",
+                                "match_confidence_level": 1,
+                                "match_confidence": 0.1658,
+                            }
+                        ]
+                    },
+                },
+                "intent_suggestion": {
+                    "display_name": "display_name_value",
+                    "intent_v2": "intent_v2_value",
+                    "description": "description_value",
+                },
+                "answer_record": "answer_record_value",
+            },
         },
     }
     request = request_type(**request_init)
@@ -2206,6 +2476,275 @@ def test_update_answer_record_rest_bad_request(
                 "question": "question_value",
                 "source": "source_value",
                 "metadata": {},
+                "answer_record": "answer_record_value",
+            },
+            "dialogflow_assist_answer": {
+                "query_result": {
+                    "query_text": "query_text_value",
+                    "language_code": "language_code_value",
+                    "speech_recognition_confidence": 0.3045,
+                    "action": "action_value",
+                    "parameters": {"fields": {}},
+                    "all_required_params_present": True,
+                    "cancels_slot_filling": True,
+                    "fulfillment_text": "fulfillment_text_value",
+                    "fulfillment_messages": [
+                        {
+                            "text": {"text": ["text_value1", "text_value2"]},
+                            "image": {
+                                "image_uri": "image_uri_value",
+                                "accessibility_text": "accessibility_text_value",
+                            },
+                            "quick_replies": {
+                                "title": "title_value",
+                                "quick_replies": [
+                                    "quick_replies_value1",
+                                    "quick_replies_value2",
+                                ],
+                            },
+                            "card": {
+                                "title": "title_value",
+                                "subtitle": "subtitle_value",
+                                "image_uri": "image_uri_value",
+                                "buttons": [
+                                    {"text": "text_value", "postback": "postback_value"}
+                                ],
+                            },
+                            "payload": {},
+                            "simple_responses": {
+                                "simple_responses": [
+                                    {
+                                        "text_to_speech": "text_to_speech_value",
+                                        "ssml": "ssml_value",
+                                        "display_text": "display_text_value",
+                                    }
+                                ]
+                            },
+                            "basic_card": {
+                                "title": "title_value",
+                                "subtitle": "subtitle_value",
+                                "formatted_text": "formatted_text_value",
+                                "image": {},
+                                "buttons": [
+                                    {
+                                        "title": "title_value",
+                                        "open_uri_action": {"uri": "uri_value"},
+                                    }
+                                ],
+                            },
+                            "suggestions": {"suggestions": [{"title": "title_value"}]},
+                            "link_out_suggestion": {
+                                "destination_name": "destination_name_value",
+                                "uri": "uri_value",
+                            },
+                            "list_select": {
+                                "title": "title_value",
+                                "items": [
+                                    {
+                                        "info": {
+                                            "key": "key_value",
+                                            "synonyms": [
+                                                "synonyms_value1",
+                                                "synonyms_value2",
+                                            ],
+                                        },
+                                        "title": "title_value",
+                                        "description": "description_value",
+                                        "image": {},
+                                    }
+                                ],
+                                "subtitle": "subtitle_value",
+                            },
+                            "carousel_select": {
+                                "items": [
+                                    {
+                                        "info": {},
+                                        "title": "title_value",
+                                        "description": "description_value",
+                                        "image": {},
+                                    }
+                                ]
+                            },
+                            "telephony_play_audio": {"audio_uri": "audio_uri_value"},
+                            "telephony_synthesize_speech": {
+                                "text": "text_value",
+                                "ssml": "ssml_value",
+                            },
+                            "telephony_transfer_call": {
+                                "phone_number": "phone_number_value"
+                            },
+                            "rbm_text": {
+                                "text": "text_value",
+                                "rbm_suggestion": [
+                                    {
+                                        "reply": {
+                                            "text": "text_value",
+                                            "postback_data": "postback_data_value",
+                                        },
+                                        "action": {
+                                            "text": "text_value",
+                                            "postback_data": "postback_data_value",
+                                            "dial": {
+                                                "phone_number": "phone_number_value"
+                                            },
+                                            "open_url": {"uri": "uri_value"},
+                                            "share_location": {},
+                                        },
+                                    }
+                                ],
+                            },
+                            "rbm_standalone_rich_card": {
+                                "card_orientation": 1,
+                                "thumbnail_image_alignment": 1,
+                                "card_content": {
+                                    "title": "title_value",
+                                    "description": "description_value",
+                                    "media": {
+                                        "file_uri": "file_uri_value",
+                                        "thumbnail_uri": "thumbnail_uri_value",
+                                        "height": 1,
+                                    },
+                                    "suggestions": {},
+                                },
+                            },
+                            "rbm_carousel_rich_card": {
+                                "card_width": 1,
+                                "card_contents": {},
+                            },
+                            "browse_carousel_card": {
+                                "items": [
+                                    {
+                                        "open_uri_action": {
+                                            "url": "url_value",
+                                            "url_type_hint": 1,
+                                        },
+                                        "title": "title_value",
+                                        "description": "description_value",
+                                        "image": {},
+                                        "footer": "footer_value",
+                                    }
+                                ],
+                                "image_display_options": 1,
+                            },
+                            "table_card": {
+                                "title": "title_value",
+                                "subtitle": "subtitle_value",
+                                "image": {},
+                                "column_properties": [
+                                    {
+                                        "header": "header_value",
+                                        "horizontal_alignment": 1,
+                                    }
+                                ],
+                                "rows": [
+                                    {
+                                        "cells": [{"text": "text_value"}],
+                                        "divider_after": True,
+                                    }
+                                ],
+                                "buttons": {},
+                            },
+                            "media_content": {
+                                "media_type": 1,
+                                "media_objects": [
+                                    {
+                                        "name": "name_value",
+                                        "description": "description_value",
+                                        "large_image": {},
+                                        "icon": {},
+                                        "content_url": "content_url_value",
+                                    }
+                                ],
+                            },
+                            "platform": 1,
+                        }
+                    ],
+                    "webhook_source": "webhook_source_value",
+                    "webhook_payload": {},
+                    "output_contexts": [
+                        {"name": "name_value", "lifespan_count": 1498, "parameters": {}}
+                    ],
+                    "intent": {
+                        "name": "name_value",
+                        "display_name": "display_name_value",
+                        "webhook_state": 1,
+                        "priority": 898,
+                        "is_fallback": True,
+                        "ml_enabled": True,
+                        "ml_disabled": True,
+                        "live_agent_handoff": True,
+                        "end_interaction": True,
+                        "input_context_names": [
+                            "input_context_names_value1",
+                            "input_context_names_value2",
+                        ],
+                        "events": ["events_value1", "events_value2"],
+                        "training_phrases": [
+                            {
+                                "name": "name_value",
+                                "type_": 1,
+                                "parts": [
+                                    {
+                                        "text": "text_value",
+                                        "entity_type": "entity_type_value",
+                                        "alias": "alias_value",
+                                        "user_defined": True,
+                                    }
+                                ],
+                                "times_added_count": 1787,
+                            }
+                        ],
+                        "action": "action_value",
+                        "output_contexts": {},
+                        "reset_contexts": True,
+                        "parameters": [
+                            {
+                                "name": "name_value",
+                                "display_name": "display_name_value",
+                                "value": "value_value",
+                                "default_value": "default_value_value",
+                                "entity_type_display_name": "entity_type_display_name_value",
+                                "mandatory": True,
+                                "prompts": ["prompts_value1", "prompts_value2"],
+                                "is_list": True,
+                            }
+                        ],
+                        "messages": {},
+                        "default_response_platforms": [1],
+                        "root_followup_intent_name": "root_followup_intent_name_value",
+                        "parent_followup_intent_name": "parent_followup_intent_name_value",
+                        "followup_intent_info": [
+                            {
+                                "followup_intent_name": "followup_intent_name_value",
+                                "parent_followup_intent_name": "parent_followup_intent_name_value",
+                            }
+                        ],
+                    },
+                    "intent_detection_confidence": 0.28450000000000003,
+                    "diagnostic_info": {},
+                    "sentiment_analysis_result": {
+                        "query_text_sentiment": {
+                            "score": 0.54,
+                            "magnitude": 0.9580000000000001,
+                        }
+                    },
+                    "knowledge_answers": {
+                        "answers": [
+                            {
+                                "source": "source_value",
+                                "faq_question": "faq_question_value",
+                                "answer": "answer_value",
+                                "match_confidence_level": 1,
+                                "match_confidence": 0.1658,
+                            }
+                        ]
+                    },
+                },
+                "intent_suggestion": {
+                    "display_name": "display_name_value",
+                    "intent_v2": "intent_v2_value",
+                    "description": "description_value",
+                },
                 "answer_record": "answer_record_value",
             },
         },
@@ -2865,8 +3404,83 @@ def test_parse_answer_record_path():
     assert expected == actual
 
 
+def test_context_path():
+    project = "oyster"
+    session = "nudibranch"
+    context = "cuttlefish"
+    expected = "projects/{project}/agent/sessions/{session}/contexts/{context}".format(
+        project=project,
+        session=session,
+        context=context,
+    )
+    actual = AnswerRecordsClient.context_path(project, session, context)
+    assert expected == actual
+
+
+def test_parse_context_path():
+    expected = {
+        "project": "mussel",
+        "session": "winkle",
+        "context": "nautilus",
+    }
+    path = AnswerRecordsClient.context_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AnswerRecordsClient.parse_context_path(path)
+    assert expected == actual
+
+
+def test_document_path():
+    project = "scallop"
+    knowledge_base = "abalone"
+    document = "squid"
+    expected = "projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}".format(
+        project=project,
+        knowledge_base=knowledge_base,
+        document=document,
+    )
+    actual = AnswerRecordsClient.document_path(project, knowledge_base, document)
+    assert expected == actual
+
+
+def test_parse_document_path():
+    expected = {
+        "project": "clam",
+        "knowledge_base": "whelk",
+        "document": "octopus",
+    }
+    path = AnswerRecordsClient.document_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AnswerRecordsClient.parse_document_path(path)
+    assert expected == actual
+
+
+def test_intent_path():
+    project = "oyster"
+    intent = "nudibranch"
+    expected = "projects/{project}/agent/intents/{intent}".format(
+        project=project,
+        intent=intent,
+    )
+    actual = AnswerRecordsClient.intent_path(project, intent)
+    assert expected == actual
+
+
+def test_parse_intent_path():
+    expected = {
+        "project": "cuttlefish",
+        "intent": "mussel",
+    }
+    path = AnswerRecordsClient.intent_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AnswerRecordsClient.parse_intent_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -2876,7 +3490,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "nautilus",
     }
     path = AnswerRecordsClient.common_billing_account_path(**expected)
 
@@ -2886,7 +3500,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -2896,7 +3510,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "abalone",
     }
     path = AnswerRecordsClient.common_folder_path(**expected)
 
@@ -2906,7 +3520,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -2916,7 +3530,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "clam",
     }
     path = AnswerRecordsClient.common_organization_path(**expected)
 
@@ -2926,7 +3540,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -2936,7 +3550,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "octopus",
     }
     path = AnswerRecordsClient.common_project_path(**expected)
 
@@ -2946,8 +3560,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -2958,8 +3572,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = AnswerRecordsClient.common_location_path(**expected)
 

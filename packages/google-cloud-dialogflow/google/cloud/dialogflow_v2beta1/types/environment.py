@@ -67,8 +67,8 @@ class Environment(proto.Message):
             Output only. The unique identifier of this agent
             environment. Supported formats:
 
-            -  ``projects/<Project Number / ID>/agent/environments/<Environment ID>``
-            -  ``projects/<Project Number / ID>/locations/<Location ID>/agent/environments/<Environment ID>``
+            -  ``projects/<Project ID>/agent/environments/<Environment ID>``
+            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>``
         description (str):
             Optional. The developer-provided description
             for this environment. The maximum length is 500
@@ -212,8 +212,8 @@ class ListEnvironmentsRequest(proto.Message):
         parent (str):
             Required. The agent to list all environments from. Format:
 
-            -  ``projects/<Project Number / ID>/agent``
-            -  ``projects/<Project Number / ID>/locations/<Location ID>/agent``
+            -  ``projects/<Project ID>/agent``
+            -  ``projects/<Project ID>/locations/<Location ID>/agent``
         page_size (int):
             Optional. The maximum number of items to
             return in a single page. By default 100 and at
@@ -275,8 +275,8 @@ class GetEnvironmentRequest(proto.Message):
         name (str):
             Required. The name of the environment. Supported formats:
 
-            -  ``projects/<Project Number / ID>/agent/environments/<Environment ID>``
-            -  ``projects/<Project Number / ID>/locations/<Location ID>/agent/environments/<Environment ID>``
+            -  ``projects/<Project ID>/agent/environments/<Environment ID>``
+            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>``
     """
 
     name: str = proto.Field(
@@ -294,8 +294,8 @@ class CreateEnvironmentRequest(proto.Message):
             Required. The agent to create an environment for. Supported
             formats:
 
-            -  ``projects/<Project Number / ID>/agent``
-            -  ``projects/<Project Number / ID>/locations/<Location ID>/agent``
+            -  ``projects/<Project ID>/agent``
+            -  ``projects/<Project ID>/locations/<Location ID>/agent``
         environment (google.cloud.dialogflow_v2beta1.types.Environment):
             Required. The environment to create.
         environment_id (str):
@@ -360,8 +360,8 @@ class DeleteEnvironmentRequest(proto.Message):
         name (str):
             Required. The name of the environment to delete. / Format:
 
-            -  ``projects/<Project Number / ID>/agent/environments/<Environment ID>``
-            -  ``projects/<Project Number / ID>/locations/<Location ID>/agent/environments/<Environment ID>``
+            -  ``projects/<Project ID>/agent/environments/<Environment ID>``
+            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>``
     """
 
     name: str = proto.Field(
@@ -379,8 +379,8 @@ class GetEnvironmentHistoryRequest(proto.Message):
             Required. The name of the environment to retrieve history
             for. Supported formats:
 
-            -  ``projects/<Project Number / ID>/agent/environments/<Environment ID>``
-            -  ``projects/<Project Number / ID>/locations/<Location ID>/agent/environments/<Environment ID>``
+            -  ``projects/<Project ID>/agent/environments/<Environment ID>``
+            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>``
         page_size (int):
             Optional. The maximum number of items to
             return in a single page. By default 100 and at
@@ -413,8 +413,8 @@ class EnvironmentHistory(proto.Message):
             Output only. The name of the environment this history is
             for. Supported formats:
 
-            -  ``projects/<Project Number / ID>/agent/environments/<Environment ID>``
-            -  ``projects/<Project Number / ID>/locations/<Location ID>/agent/environments/<Environment ID>``
+            -  ``projects/<Project ID>/agent/environments/<Environment ID>``
+            -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>``
         entries (MutableSequence[google.cloud.dialogflow_v2beta1.types.EnvironmentHistory.Entry]):
             Output only. The list of agent environments. There will be a
             maximum number of items returned based on the page_size

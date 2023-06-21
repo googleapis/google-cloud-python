@@ -125,6 +125,10 @@ class AgentAssistantRecord(proto.Message):
             Output only. The FAQ answer.
 
             This field is a member of `oneof`_ ``answer``.
+        dialogflow_assist_answer (google.cloud.dialogflow_v2beta1.types.DialogflowAssistAnswer):
+            Output only. The Dialogflow assist answer.
+
+            This field is a member of `oneof`_ ``answer``.
     """
 
     article_suggestion_answer: participant.ArticleAnswer = proto.Field(
@@ -138,6 +142,12 @@ class AgentAssistantRecord(proto.Message):
         number=6,
         oneof="answer",
         message=participant.FaqAnswer,
+    )
+    dialogflow_assist_answer: participant.DialogflowAssistAnswer = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="answer",
+        message=participant.DialogflowAssistAnswer,
     )
 
 

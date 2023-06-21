@@ -438,7 +438,8 @@ class SuggestConversationSummaryRequest(proto.Message):
             [latest_message] to use as context when compiling the
             suggestion. By default 500 and at most 1000.
         assist_query_params (google.cloud.dialogflow_v2.types.AssistQueryParameters):
-            Parameters for a human assist query.
+            Parameters for a human assist query. Only
+            used for POC/demo purpose.
     """
 
     conversation: str = proto.Field(

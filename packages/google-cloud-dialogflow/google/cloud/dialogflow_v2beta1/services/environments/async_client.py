@@ -267,8 +267,8 @@ class EnvironmentsAsyncClient:
                 Required. The agent to list all environments from.
                 Format:
 
-                -  ``projects/<Project Number / ID>/agent``
-                -  ``projects/<Project Number / ID>/locations/<Location ID>/agent``
+                -  ``projects/<Project ID>/agent``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

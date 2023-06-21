@@ -203,6 +203,67 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def context_path(
+        project: str,
+        session: str,
+        context: str,
+    ) -> str:
+        """Returns a fully-qualified context string."""
+        return "projects/{project}/agent/sessions/{session}/contexts/{context}".format(
+            project=project,
+            session=session,
+            context=context,
+        )
+
+    @staticmethod
+    def parse_context_path(path: str) -> Dict[str, str]:
+        """Parses a context path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/agent/sessions/(?P<session>.+?)/contexts/(?P<context>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def document_path(
+        project: str,
+        knowledge_base: str,
+        document: str,
+    ) -> str:
+        """Returns a fully-qualified document string."""
+        return "projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}".format(
+            project=project,
+            knowledge_base=knowledge_base,
+            document=document,
+        )
+
+    @staticmethod
+    def parse_document_path(path: str) -> Dict[str, str]:
+        """Parses a document path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/knowledgeBases/(?P<knowledge_base>.+?)/documents/(?P<document>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def intent_path(
+        project: str,
+        intent: str,
+    ) -> str:
+        """Returns a fully-qualified intent string."""
+        return "projects/{project}/agent/intents/{intent}".format(
+            project=project,
+            intent=intent,
+        )
+
+    @staticmethod
+    def parse_intent_path(path: str) -> Dict[str, str]:
+        """Parses a intent path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/agent/intents/(?P<intent>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:

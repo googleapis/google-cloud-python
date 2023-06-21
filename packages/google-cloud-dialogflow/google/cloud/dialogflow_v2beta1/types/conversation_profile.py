@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -205,11 +206,23 @@ class AutomatedAgentConfig(proto.Message):
                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID or '-'>``.
                If environment is not specified, the default ``draft``
                environment is used.
+        session_ttl (google.protobuf.duration_pb2.Duration):
+            Optional. Sets Dialogflow CX session life
+            time. By default, a Dialogflow CX session
+            remains active and its data is stored for 30
+            minutes after the last request is sent for the
+            session. This value should be no longer than 1
+            day.
     """
 
     agent: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    session_ttl: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=duration_pb2.Duration,
     )
 
 
@@ -394,7 +407,8 @@ class HumanAgentAssistantConfig(proto.Message):
                 that all suggestions are returned.
 
                 Supported features: ARTICLE_SUGGESTION, FAQ, SMART_REPLY,
-                SMART_COMPOSE.
+                SMART_COMPOSE, KNOWLEDGE_SEARCH, KNOWLEDGE_ASSIST,
+                ENTITY_EXTRACTION.
             context_filter_settings (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionQueryConfig.ContextFilterSettings):
                 Determines how recent conversation context is
                 filtered when generating suggestions. If
@@ -444,14 +458,39 @@ class HumanAgentAssistantConfig(proto.Message):
                 agent (str):
                     Required. The name of a dialogflow virtual agent used for
                     end user side intent detection and suggestion. Format:
-                    ``projects/<Project Number / ID>/locations/<Location ID>/agent``.
+                    ``projects/<Project ID>/locations/<Location ID>/agent``.
                     When multiple agents are allowed in the same Dialogflow
                     project.
+                human_agent_side_config (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionQueryConfig.DialogflowQuerySource.HumanAgentSideConfig):
+                    The Dialogflow assist configuration for human
+                    agent.
             """
+
+            class HumanAgentSideConfig(proto.Message):
+                r"""The configuration used for human agent side Dialogflow assist
+                suggestion.
+
+                Attributes:
+                    agent (str):
+                        Optional. The name of a dialogflow virtual agent used for
+                        intent detection and suggestion triggered by human agent.
+                        Format:
+                        ``projects/<Project ID>/locations/<Location ID>/agent``.
+                """
+
+                agent: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
 
             agent: str = proto.Field(
                 proto.STRING,
                 number=1,
+            )
+            human_agent_side_config: "HumanAgentAssistantConfig.SuggestionQueryConfig.DialogflowQuerySource.HumanAgentSideConfig" = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message="HumanAgentAssistantConfig.SuggestionQueryConfig.DialogflowQuerySource.HumanAgentSideConfig",
             )
 
         class ContextFilterSettings(proto.Message):

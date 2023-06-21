@@ -44,6 +44,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -3476,7 +3477,10 @@ def test_create_conversation_profile_rest(request_type):
         "display_name": "display_name_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
-        "automated_agent_config": {"agent": "agent_value"},
+        "automated_agent_config": {
+            "agent": "agent_value",
+            "session_ttl": {"seconds": 751, "nanos": 543},
+        },
         "human_agent_assistant_config": {
             "notification_config": {"topic": "topic_value", "message_format": 1},
             "human_agent_suggestion_config": {
@@ -3498,7 +3502,10 @@ def test_create_conversation_profile_rest(request_type):
                             "document_query_source": {
                                 "documents": ["documents_value1", "documents_value2"]
                             },
-                            "dialogflow_query_source": {"agent": "agent_value"},
+                            "dialogflow_query_source": {
+                                "agent": "agent_value",
+                                "human_agent_side_config": {"agent": "agent_value"},
+                            },
                             "max_results": 1207,
                             "confidence_threshold": 0.2106,
                             "context_filter_settings": {
@@ -3755,7 +3762,10 @@ def test_create_conversation_profile_rest_bad_request(
         "display_name": "display_name_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
-        "automated_agent_config": {"agent": "agent_value"},
+        "automated_agent_config": {
+            "agent": "agent_value",
+            "session_ttl": {"seconds": 751, "nanos": 543},
+        },
         "human_agent_assistant_config": {
             "notification_config": {"topic": "topic_value", "message_format": 1},
             "human_agent_suggestion_config": {
@@ -3777,7 +3787,10 @@ def test_create_conversation_profile_rest_bad_request(
                             "document_query_source": {
                                 "documents": ["documents_value1", "documents_value2"]
                             },
-                            "dialogflow_query_source": {"agent": "agent_value"},
+                            "dialogflow_query_source": {
+                                "agent": "agent_value",
+                                "human_agent_side_config": {"agent": "agent_value"},
+                            },
                             "max_results": 1207,
                             "confidence_threshold": 0.2106,
                             "context_filter_settings": {
@@ -3934,7 +3947,10 @@ def test_update_conversation_profile_rest(request_type):
         "display_name": "display_name_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
-        "automated_agent_config": {"agent": "agent_value"},
+        "automated_agent_config": {
+            "agent": "agent_value",
+            "session_ttl": {"seconds": 751, "nanos": 543},
+        },
         "human_agent_assistant_config": {
             "notification_config": {"topic": "topic_value", "message_format": 1},
             "human_agent_suggestion_config": {
@@ -3956,7 +3972,10 @@ def test_update_conversation_profile_rest(request_type):
                             "document_query_source": {
                                 "documents": ["documents_value1", "documents_value2"]
                             },
-                            "dialogflow_query_source": {"agent": "agent_value"},
+                            "dialogflow_query_source": {
+                                "agent": "agent_value",
+                                "human_agent_side_config": {"agent": "agent_value"},
+                            },
                             "max_results": 1207,
                             "confidence_threshold": 0.2106,
                             "context_filter_settings": {
@@ -4214,7 +4233,10 @@ def test_update_conversation_profile_rest_bad_request(
         "display_name": "display_name_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
-        "automated_agent_config": {"agent": "agent_value"},
+        "automated_agent_config": {
+            "agent": "agent_value",
+            "session_ttl": {"seconds": 751, "nanos": 543},
+        },
         "human_agent_assistant_config": {
             "notification_config": {"topic": "topic_value", "message_format": 1},
             "human_agent_suggestion_config": {
@@ -4236,7 +4258,10 @@ def test_update_conversation_profile_rest_bad_request(
                             "document_query_source": {
                                 "documents": ["documents_value1", "documents_value2"]
                             },
-                            "dialogflow_query_source": {"agent": "agent_value"},
+                            "dialogflow_query_source": {
+                                "agent": "agent_value",
+                                "human_agent_side_config": {"agent": "agent_value"},
+                            },
                             "max_results": 1207,
                             "confidence_threshold": 0.2106,
                             "context_filter_settings": {

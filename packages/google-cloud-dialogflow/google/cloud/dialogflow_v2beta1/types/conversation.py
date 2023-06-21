@@ -380,7 +380,7 @@ class BatchCreateMessagesRequest(proto.Message):
             message. Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
         requests (MutableSequence[google.cloud.dialogflow_v2beta1.types.CreateMessageRequest]):
-            Required. A maximum of 1000 Messages can be created in a
+            Required. A maximum of 300 messages can be created in a
             batch. [CreateMessageRequest.message.send_time][] is
             required. All created messages will have identical
             [Message.create_time][google.cloud.dialogflow.v2beta1.Message.create_time].
@@ -510,7 +510,8 @@ class SuggestConversationSummaryRequest(proto.Message):
             [latest_message] to use as context when compiling the
             suggestion. By default 500 and at most 1000.
         assist_query_params (google.cloud.dialogflow_v2beta1.types.AssistQueryParameters):
-            Parameters for a human assist query.
+            Parameters for a human assist query. Only
+            used for POC/demo purpose.
     """
 
     conversation: str = proto.Field(
