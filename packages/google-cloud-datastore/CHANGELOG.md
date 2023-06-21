@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.16.0](https://github.com/googleapis/python-datastore/compare/v2.15.2...v2.16.0) (2023-06-21)
+
+
+### Features
+
+* Named database support ([#439](https://github.com/googleapis/python-datastore/issues/439)) ([abf0060](https://github.com/googleapis/python-datastore/commit/abf0060980b2e444f4ec66e9779900658572317e))
+
 ## [2.15.2](https://github.com/googleapis/python-datastore/compare/v2.15.1...v2.15.2) (2023-05-04)
 
 
