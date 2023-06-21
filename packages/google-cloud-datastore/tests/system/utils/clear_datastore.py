@@ -36,6 +36,10 @@ TRANSACTION_MAX_GROUPS = 5
 MAX_DEL_ENTITIES = 500
 
 
+def get_system_test_db():
+    return os.getenv("SYSTEM_TESTS_DATABASE") or "system-tests-named-db"
+
+
 def print_func(message):
     if os.getenv("GOOGLE_CLOUD_NO_PRINT") != "true":
         print(message)
@@ -85,14 +89,18 @@ def remove_all_entities(client):
     client.delete_multi(keys)
 
 
-def main():
-    client = datastore.Client()
+def run(database):
+    client = datastore.Client(database=database)
     kinds = sys.argv[1:]
 
     if len(kinds) == 0:
         kinds = ALL_KINDS
 
-    print_func("This command will remove all entities for " "the following kinds:")
+    print_func(
+        "This command will remove all entities from the database "
+        + database
+        + " for the following kinds:"
+    )
     print_func("\n".join("- " + val for val in kinds))
     response = input("Is this OK [y/n]? ")
 
@@ -103,6 +111,11 @@ def main():
 
     else:
         print_func("Doing nothing.")
+
+
+def main():
+    for database in ["", get_system_test_db()]:
+        run(database)
 
 
 if __name__ == "__main__":

@@ -18,7 +18,10 @@ from typing import Any
 import mock
 import pytest
 
+from google.cloud.datastore.helpers import set_database_id_to_request
+
 PROJECT = "dummy-project-123"
+DATABASE = "dummy-database-123"
 
 
 def test__get_gcd_project_wo_value_set():
@@ -98,11 +101,13 @@ def _make_client(
     client_options=None,
     _http=None,
     _use_grpc=None,
+    database="",
 ):
     from google.cloud.datastore.client import Client
 
     return Client(
         project=project,
+        database=database,
         namespace=namespace,
         credentials=credentials,
         client_info=client_info,
@@ -123,7 +128,8 @@ def test_client_ctor_w_project_no_environ():
             _make_client(project=None)
 
 
-def test_client_ctor_w_implicit_inputs():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_ctor_w_implicit_inputs(database_id):
     from google.cloud.datastore.client import Client
     from google.cloud.datastore.client import _CLIENT_INFO
     from google.cloud.datastore.client import _DATASTORE_BASE_URL
@@ -139,9 +145,10 @@ def test_client_ctor_w_implicit_inputs():
 
     with patch1 as _determine_default_project:
         with patch2 as default:
-            client = Client()
+            client = Client(database=database_id)
 
     assert client.project == other
+    assert client.database == database_id
     assert client.namespace is None
     assert client._credentials is creds
     assert client._client_info is _CLIENT_INFO
@@ -158,10 +165,12 @@ def test_client_ctor_w_implicit_inputs():
     _determine_default_project.assert_called_once_with(None)
 
 
-def test_client_ctor_w_explicit_inputs():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_ctor_w_explicit_inputs(database_id):
     from google.api_core.client_options import ClientOptions
 
     other = "other"
+    database = "database"
     namespace = "namespace"
     creds = _make_credentials()
     client_info = mock.Mock()
@@ -169,6 +178,7 @@ def test_client_ctor_w_explicit_inputs():
     http = object()
     client = _make_client(
         project=other,
+        database=database,
         namespace=namespace,
         credentials=creds,
         client_info=client_info,
@@ -176,6 +186,7 @@ def test_client_ctor_w_explicit_inputs():
         _http=http,
     )
     assert client.project == other
+    assert client.database == database
     assert client.namespace == namespace
     assert client._credentials is creds
     assert client._client_info is client_info
@@ -185,7 +196,8 @@ def test_client_ctor_w_explicit_inputs():
     assert list(client._batch_stack) == []
 
 
-def test_client_ctor_use_grpc_default():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_ctor_use_grpc_default(database_id):
     import google.cloud.datastore.client as MUT
 
     project = "PROJECT"
@@ -193,20 +205,32 @@ def test_client_ctor_use_grpc_default():
     http = object()
 
     with mock.patch.object(MUT, "_USE_GRPC", new=True):
-        client1 = _make_client(project=PROJECT, credentials=creds, _http=http)
+        client1 = _make_client(
+            project=PROJECT, credentials=creds, _http=http, database=database_id
+        )
         assert client1._use_grpc
         # Explicitly over-ride the environment.
         client2 = _make_client(
-            project=project, credentials=creds, _http=http, _use_grpc=False
+            project=project,
+            credentials=creds,
+            _http=http,
+            _use_grpc=False,
+            database=database_id,
         )
         assert not client2._use_grpc
 
     with mock.patch.object(MUT, "_USE_GRPC", new=False):
-        client3 = _make_client(project=PROJECT, credentials=creds, _http=http)
+        client3 = _make_client(
+            project=PROJECT, credentials=creds, _http=http, database=database_id
+        )
         assert not client3._use_grpc
         # Explicitly over-ride the environment.
         client4 = _make_client(
-            project=project, credentials=creds, _http=http, _use_grpc=True
+            project=project,
+            credentials=creds,
+            _http=http,
+            _use_grpc=True,
+            database=database_id,
         )
         assert client4._use_grpc
 
@@ -407,12 +431,13 @@ def test_client_get_multi_no_keys():
     ds_api.lookup.assert_not_called()
 
 
-def test_client_get_multi_miss():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_get_multi_miss(database_id):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore.key import Key
 
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     ds_api = _make_datastore_api()
     client._datastore_api_internal = ds_api
 
@@ -421,16 +446,17 @@ def test_client_get_multi_miss():
     assert results == []
 
     read_options = datastore_pb2.ReadOptions()
-    ds_api.lookup.assert_called_once_with(
-        request={
-            "project_id": PROJECT,
-            "keys": [key.to_protobuf()],
-            "read_options": read_options,
-        }
-    )
+    expected_request = {
+        "project_id": PROJECT,
+        "keys": [key.to_protobuf()],
+        "read_options": read_options,
+    }
+    set_database_id_to_request(expected_request, database_id)
+    ds_api.lookup.assert_called_once_with(request=expected_request)
 
 
-def test_client_get_multi_miss_w_missing():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_get_multi_miss_w_missing(database_id):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.key import Key
@@ -441,18 +467,19 @@ def test_client_get_multi_miss_w_missing():
     # Make a missing entity pb to be returned from mock backend.
     missed = entity_pb2.Entity()
     missed.key.partition_id.project_id = PROJECT
+    missed.key.partition_id.database_id = database_id
     path_element = missed._pb.key.path.add()
     path_element.kind = KIND
     path_element.id = ID
 
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     # Set missing entity on mock connection.
     lookup_response = _make_lookup_response(missing=[missed._pb])
     ds_api = _make_datastore_api(lookup_response=lookup_response)
     client._datastore_api_internal = ds_api
 
-    key = Key(KIND, ID, project=PROJECT)
+    key = Key(KIND, ID, project=PROJECT, database=database_id)
     missing = []
     entities = client.get_multi([key], missing=missing)
     assert entities == []
@@ -460,9 +487,13 @@ def test_client_get_multi_miss_w_missing():
     assert [missed.key.to_protobuf() for missed in missing] == [key_pb._pb]
 
     read_options = datastore_pb2.ReadOptions()
-    ds_api.lookup.assert_called_once_with(
-        request={"project_id": PROJECT, "keys": [key_pb], "read_options": read_options}
-    )
+    expected_request = {
+        "project_id": PROJECT,
+        "keys": [key_pb],
+        "read_options": read_options,
+    }
+    set_database_id_to_request(expected_request, database_id)
+    ds_api.lookup.assert_called_once_with(request=expected_request)
 
 
 def test_client_get_multi_w_missing_non_empty():
@@ -489,16 +520,17 @@ def test_client_get_multi_w_deferred_non_empty():
         client.get_multi([key], deferred=deferred)
 
 
-def test_client_get_multi_miss_w_deferred():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_get_multi_miss_w_deferred(database_id):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore.key import Key
 
-    key = Key("Kind", 1234, project=PROJECT)
+    key = Key("Kind", 1234, project=PROJECT, database=database_id)
     key_pb = key.to_protobuf()
 
     # Set deferred entity on mock connection.
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     lookup_response = _make_lookup_response(deferred=[key_pb])
     ds_api = _make_datastore_api(lookup_response=lookup_response)
     client._datastore_api_internal = ds_api
@@ -507,22 +539,27 @@ def test_client_get_multi_miss_w_deferred():
     entities = client.get_multi([key], deferred=deferred)
     assert entities == []
     assert [def_key.to_protobuf() for def_key in deferred] == [key_pb]
-
     read_options = datastore_pb2.ReadOptions()
-    ds_api.lookup.assert_called_once_with(
-        request={"project_id": PROJECT, "keys": [key_pb], "read_options": read_options}
-    )
+    expected_request = {
+        "project_id": PROJECT,
+        "keys": [key_pb],
+        "read_options": read_options,
+    }
+    set_database_id_to_request(expected_request, database_id)
+
+    ds_api.lookup.assert_called_once_with(request=expected_request)
 
 
-def test_client_get_multi_w_deferred_from_backend_but_not_passed():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_get_multi_w_deferred_from_backend_but_not_passed(database_id):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
     from google.cloud.datastore.key import Key
 
-    key1 = Key("Kind", project=PROJECT)
+    key1 = Key("Kind", project=PROJECT, database=database_id)
     key1_pb = key1.to_protobuf()
-    key2 = Key("Kind", 2345, project=PROJECT)
+    key2 = Key("Kind", 2345, project=PROJECT, database=database_id)
     key2_pb = key2.to_protobuf()
 
     entity1_pb = entity_pb2.Entity()
@@ -531,7 +568,7 @@ def test_client_get_multi_w_deferred_from_backend_but_not_passed():
     entity2_pb._pb.key.CopyFrom(key2_pb._pb)
 
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     # Mock up two separate requests. Using an iterable as side_effect
     # allows multiple return values.
     lookup_response1 = _make_lookup_response(results=[entity1_pb], deferred=[key2_pb])
@@ -549,32 +586,39 @@ def test_client_get_multi_w_deferred_from_backend_but_not_passed():
     assert isinstance(found[0], Entity)
     assert found[0].key.path == key1.path
     assert found[0].key.project == key1.project
+    assert found[0].key.database == key1.database
 
     assert isinstance(found[1], Entity)
     assert found[1].key.path == key2.path
     assert found[1].key.project == key2.project
+    assert found[1].key.database == key2.database
 
     assert ds_api.lookup.call_count == 2
     read_options = datastore_pb2.ReadOptions()
 
+    expected_request_1 = {
+        "project_id": PROJECT,
+        "keys": [key2_pb],
+        "read_options": read_options,
+    }
+    set_database_id_to_request(expected_request_1, database_id)
     ds_api.lookup.assert_any_call(
-        request={
-            "project_id": PROJECT,
-            "keys": [key2_pb],
-            "read_options": read_options,
-        },
+        request=expected_request_1,
     )
 
+    expected_request_2 = {
+        "project_id": PROJECT,
+        "keys": [key1_pb, key2_pb],
+        "read_options": read_options,
+    }
+    set_database_id_to_request(expected_request_2, database_id)
     ds_api.lookup.assert_any_call(
-        request={
-            "project_id": PROJECT,
-            "keys": [key1_pb, key2_pb],
-            "read_options": read_options,
-        },
+        request=expected_request_2,
     )
 
 
-def test_client_get_multi_hit_w_retry_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_get_multi_hit_w_retry_w_timeout(database_id):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore.key import Key
 
@@ -585,7 +629,7 @@ def test_client_get_multi_hit_w_retry_w_timeout():
     timeout = 100000
 
     # Make a found entity pb to be returned from mock backend.
-    entity_pb = _make_entity_pb(PROJECT, kind, id_, "foo", "Foo")
+    entity_pb = _make_entity_pb(PROJECT, kind, id_, "foo", "Foo", database=database_id)
 
     # Make a connection to return the entity pb.
     creds = _make_credentials()
@@ -610,6 +654,7 @@ def test_client_get_multi_hit_w_retry_w_timeout():
     ds_api.lookup.assert_called_once_with(
         request={
             "project_id": PROJECT,
+            "database_id": "",
             "keys": [key.to_protobuf()],
             "read_options": read_options,
         },
@@ -618,7 +663,8 @@ def test_client_get_multi_hit_w_retry_w_timeout():
     )
 
 
-def test_client_get_multi_hit_w_transaction():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_get_multi_hit_w_transaction(database_id):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore.key import Key
 
@@ -628,16 +674,16 @@ def test_client_get_multi_hit_w_transaction():
     path = [{"kind": kind, "id": id_}]
 
     # Make a found entity pb to be returned from mock backend.
-    entity_pb = _make_entity_pb(PROJECT, kind, id_, "foo", "Foo")
+    entity_pb = _make_entity_pb(PROJECT, kind, id_, "foo", "Foo", database=database_id)
 
     # Make a connection to return the entity pb.
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     lookup_response = _make_lookup_response(results=[entity_pb])
     ds_api = _make_datastore_api(lookup_response=lookup_response)
     client._datastore_api_internal = ds_api
 
-    key = Key(kind, id_, project=PROJECT)
+    key = Key(kind, id_, project=PROJECT, database=database_id)
     txn = client.transaction()
     txn._id = txn_id
     (result,) = client.get_multi([key], transaction=txn)
@@ -651,16 +697,17 @@ def test_client_get_multi_hit_w_transaction():
     assert result["foo"] == "Foo"
 
     read_options = datastore_pb2.ReadOptions(transaction=txn_id)
-    ds_api.lookup.assert_called_once_with(
-        request={
-            "project_id": PROJECT,
-            "keys": [key.to_protobuf()],
-            "read_options": read_options,
-        }
-    )
+    expected_request = {
+        "project_id": PROJECT,
+        "keys": [key.to_protobuf()],
+        "read_options": read_options,
+    }
+    set_database_id_to_request(expected_request, database_id)
+    ds_api.lookup.assert_called_once_with(request=expected_request)
 
 
-def test_client_get_multi_hit_w_read_time():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_get_multi_hit_w_read_time(database_id):
     from datetime import datetime
 
     from google.cloud.datastore.key import Key
@@ -674,16 +721,16 @@ def test_client_get_multi_hit_w_read_time():
     path = [{"kind": kind, "id": id_}]
 
     # Make a found entity pb to be returned from mock backend.
-    entity_pb = _make_entity_pb(PROJECT, kind, id_, "foo", "Foo")
+    entity_pb = _make_entity_pb(PROJECT, kind, id_, "foo", "Foo", database=database_id)
 
     # Make a connection to return the entity pb.
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     lookup_response = _make_lookup_response(results=[entity_pb])
     ds_api = _make_datastore_api(lookup_response=lookup_response)
     client._datastore_api_internal = ds_api
 
-    key = Key(kind, id_, project=PROJECT)
+    key = Key(kind, id_, project=PROJECT, database=database_id)
     (result,) = client.get_multi([key], read_time=read_time)
     new_key = result.key
 
@@ -695,16 +742,17 @@ def test_client_get_multi_hit_w_read_time():
     assert result["foo"] == "Foo"
 
     read_options = datastore_pb2.ReadOptions(read_time=read_time_pb)
-    ds_api.lookup.assert_called_once_with(
-        request={
-            "project_id": PROJECT,
-            "keys": [key.to_protobuf()],
-            "read_options": read_options,
-        }
-    )
+    expected_request = {
+        "project_id": PROJECT,
+        "keys": [key.to_protobuf()],
+        "read_options": read_options,
+    }
+    set_database_id_to_request(expected_request, database_id)
+    ds_api.lookup.assert_called_once_with(request=expected_request)
 
 
-def test_client_get_multi_hit_multiple_keys_same_project():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_get_multi_hit_multiple_keys_same_project(database_id):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore.key import Key
 
@@ -713,18 +761,18 @@ def test_client_get_multi_hit_multiple_keys_same_project():
     id2 = 2345
 
     # Make a found entity pb to be returned from mock backend.
-    entity_pb1 = _make_entity_pb(PROJECT, kind, id1)
-    entity_pb2 = _make_entity_pb(PROJECT, kind, id2)
+    entity_pb1 = _make_entity_pb(PROJECT, kind, id1, database=database_id)
+    entity_pb2 = _make_entity_pb(PROJECT, kind, id2, database=database_id)
 
     # Make a connection to return the entity pbs.
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     lookup_response = _make_lookup_response(results=[entity_pb1, entity_pb2])
     ds_api = _make_datastore_api(lookup_response=lookup_response)
     client._datastore_api_internal = ds_api
 
-    key1 = Key(kind, id1, project=PROJECT)
-    key2 = Key(kind, id2, project=PROJECT)
+    key1 = Key(kind, id1, project=PROJECT, database=database_id)
+    key2 = Key(kind, id2, project=PROJECT, database=database_id)
     retrieved1, retrieved2 = client.get_multi([key1, key2])
 
     # Check values match.
@@ -734,48 +782,50 @@ def test_client_get_multi_hit_multiple_keys_same_project():
     assert dict(retrieved2) == {}
 
     read_options = datastore_pb2.ReadOptions()
-    ds_api.lookup.assert_called_once_with(
-        request={
-            "project_id": PROJECT,
-            "keys": [key1.to_protobuf(), key2.to_protobuf()],
-            "read_options": read_options,
-        }
-    )
+    expected_request = {
+        "project_id": PROJECT,
+        "keys": [key1.to_protobuf(), key2.to_protobuf()],
+        "read_options": read_options,
+    }
+    set_database_id_to_request(expected_request, database_id)
+    ds_api.lookup.assert_called_once_with(request=expected_request)
 
 
-def test_client_get_multi_hit_multiple_keys_different_project():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_get_multi_hit_multiple_keys_different_project(database_id):
     from google.cloud.datastore.key import Key
 
     PROJECT1 = "PROJECT"
     PROJECT2 = "PROJECT-ALT"
 
-    key1 = Key("KIND", 1234, project=PROJECT1)
-    key2 = Key("KIND", 1234, project=PROJECT2)
+    key1 = Key("KIND", 1234, project=PROJECT1, database=database_id)
+    key2 = Key("KIND", 1234, project=PROJECT2, database=database_id)
 
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
 
     with pytest.raises(ValueError):
         client.get_multi([key1, key2])
 
 
-def test_client_get_multi_max_loops():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_get_multi_max_loops(database_id):
     from google.cloud.datastore.key import Key
 
     kind = "Kind"
     id_ = 1234
 
     # Make a found entity pb to be returned from mock backend.
-    entity_pb = _make_entity_pb(PROJECT, kind, id_, "foo", "Foo")
+    entity_pb = _make_entity_pb(PROJECT, kind, id_, "foo", "Foo", database=database_id)
 
     # Make a connection to return the entity pb.
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     lookup_response = _make_lookup_response(results=[entity_pb])
     ds_api = _make_datastore_api(lookup_response=lookup_response)
     client._datastore_api_internal = ds_api
 
-    key = Key(kind, id_, project=PROJECT)
+    key = Key(kind, id_, project=PROJECT, database=database_id)
     deferred = []
     missing = []
 
@@ -791,10 +841,11 @@ def test_client_get_multi_max_loops():
     ds_api.lookup.assert_not_called()
 
 
-def test_client_put():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_put(database_id):
 
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     put_multi = client.put_multi = mock.Mock()
     entity = mock.Mock()
 
@@ -803,10 +854,11 @@ def test_client_put():
     put_multi.assert_called_once_with(entities=[entity], retry=None, timeout=None)
 
 
-def test_client_put_w_retry_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_put_w_retry_w_timeout(database_id):
 
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     put_multi = client.put_multi = mock.Mock()
     entity = mock.Mock()
     retry = mock.Mock()
@@ -817,32 +869,35 @@ def test_client_put_w_retry_w_timeout():
     put_multi.assert_called_once_with(entities=[entity], retry=retry, timeout=timeout)
 
 
-def test_client_put_multi_no_entities():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_put_multi_no_entities(database_id):
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     assert client.put_multi([]) is None
 
 
-def test_client_put_multi_w_single_empty_entity():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_put_multi_w_single_empty_entity(database_id):
     # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/649
     from google.cloud.datastore.entity import Entity
 
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     with pytest.raises(ValueError):
         client.put_multi(Entity())
 
 
-def test_client_put_multi_no_batch_w_partial_key_w_retry_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_put_multi_no_batch_w_partial_key_w_retry_w_timeout(database_id):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     entity = _Entity(foo="bar")
-    key = entity.key = _Key(_Key.kind, None)
+    key = entity.key = _Key(_Key.kind, None, database=database_id)
     retry = mock.Mock()
     timeout = 100000
 
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     key_pb = _make_key(234)
     ds_api = _make_datastore_api(key_pb)
     client._datastore_api_internal = ds_api
@@ -850,13 +905,15 @@ def test_client_put_multi_no_batch_w_partial_key_w_retry_w_timeout():
     result = client.put_multi([entity], retry=retry, timeout=timeout)
     assert result is None
 
+    expected_request = {
+        "project_id": PROJECT,
+        "mode": datastore_pb2.CommitRequest.Mode.NON_TRANSACTIONAL,
+        "mutations": mock.ANY,
+        "transaction": None,
+    }
+    set_database_id_to_request(expected_request, database_id)
     ds_api.commit.assert_called_once_with(
-        request={
-            "project_id": PROJECT,
-            "mode": datastore_pb2.CommitRequest.Mode.NON_TRANSACTIONAL,
-            "mutations": mock.ANY,
-            "transaction": None,
-        },
+        request=expected_request,
         retry=retry,
         timeout=timeout,
     )
@@ -872,11 +929,12 @@ def test_client_put_multi_no_batch_w_partial_key_w_retry_w_timeout():
     assert value_pb.string_value == "bar"
 
 
-def test_client_put_multi_existing_batch_w_completed_key():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_put_multi_existing_batch_w_completed_key(database_id):
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     entity = _Entity(foo="bar")
-    key = entity.key = _Key()
+    key = entity.key = _Key(database=database_id)
 
     with _NoCommitBatch(client) as CURR_BATCH:
         result = client.put_multi([entity])
@@ -916,9 +974,10 @@ def test_client_delete_w_retry_w_timeout():
     delete_multi.assert_called_once_with(keys=[key], retry=retry, timeout=timeout)
 
 
-def test_client_delete_multi_no_keys():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_delete_multi_no_keys(database_id):
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     client._datastore_api_internal = _make_datastore_api()
 
     result = client.delete_multi([])
@@ -926,28 +985,31 @@ def test_client_delete_multi_no_keys():
     client._datastore_api_internal.commit.assert_not_called()
 
 
-def test_client_delete_multi_no_batch_w_retry_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_delete_multi_no_batch_w_retry_w_timeout(database_id):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
-    key = _Key()
+    key = _Key(database=database_id)
     retry = mock.Mock()
     timeout = 100000
 
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     ds_api = _make_datastore_api()
     client._datastore_api_internal = ds_api
 
     result = client.delete_multi([key], retry=retry, timeout=timeout)
     assert result is None
 
+    expected_request = {
+        "project_id": PROJECT,
+        "mode": datastore_pb2.CommitRequest.Mode.NON_TRANSACTIONAL,
+        "mutations": mock.ANY,
+        "transaction": None,
+    }
+    set_database_id_to_request(expected_request, database_id)
     ds_api.commit.assert_called_once_with(
-        request={
-            "project_id": PROJECT,
-            "mode": datastore_pb2.CommitRequest.Mode.NON_TRANSACTIONAL,
-            "mutations": mock.ANY,
-            "transaction": None,
-        },
+        request=expected_request,
         retry=retry,
         timeout=timeout,
     )
@@ -957,12 +1019,13 @@ def test_client_delete_multi_no_batch_w_retry_w_timeout():
     assert mutated_key == key.to_protobuf()
 
 
-def test_client_delete_multi_w_existing_batch():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_delete_multi_w_existing_batch(database_id):
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     client._datastore_api_internal = _make_datastore_api()
 
-    key = _Key()
+    key = _Key(database=database_id)
 
     with _NoCommitBatch(client) as CURR_BATCH:
         result = client.delete_multi([key])
@@ -973,12 +1036,13 @@ def test_client_delete_multi_w_existing_batch():
     client._datastore_api_internal.commit.assert_not_called()
 
 
-def test_client_delete_multi_w_existing_transaction():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_delete_multi_w_existing_transaction(database_id):
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     client._datastore_api_internal = _make_datastore_api()
 
-    key = _Key()
+    key = _Key(database=database_id)
 
     with _NoCommitTransaction(client) as CURR_XACT:
         result = client.delete_multi([key])
@@ -989,14 +1053,15 @@ def test_client_delete_multi_w_existing_transaction():
     client._datastore_api_internal.commit.assert_not_called()
 
 
-def test_client_delete_multi_w_existing_transaction_entity():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_delete_multi_w_existing_transaction_entity(database_id):
     from google.cloud.datastore.entity import Entity
 
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     client._datastore_api_internal = _make_datastore_api()
 
-    key = _Key()
+    key = _Key(database=database_id)
     entity = Entity(key=key)
 
     with _NoCommitTransaction(client) as CURR_XACT:
@@ -1008,22 +1073,24 @@ def test_client_delete_multi_w_existing_transaction_entity():
     client._datastore_api_internal.commit.assert_not_called()
 
 
-def test_client_allocate_ids_w_completed_key():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_allocate_ids_w_completed_key(database_id):
     creds = _make_credentials()
     client = _make_client(credentials=creds)
 
-    complete_key = _Key()
+    complete_key = _Key(database=database_id)
     with pytest.raises(ValueError):
         client.allocate_ids(complete_key, 2)
 
 
-def test_client_allocate_ids_w_partial_key():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_allocate_ids_w_partial_key(database_id):
     num_ids = 2
 
-    incomplete_key = _Key(_Key.kind, None)
+    incomplete_key = _Key(_Key.kind, None, database=database_id)
 
     creds = _make_credentials()
-    client = _make_client(credentials=creds, _use_grpc=False)
+    client = _make_client(credentials=creds, _use_grpc=False, database=database_id)
     allocated = mock.Mock(keys=[_KeyPB(i) for i in range(num_ids)], spec=["keys"])
     alloc_ids = mock.Mock(return_value=allocated, spec=[])
     ds_api = mock.Mock(allocate_ids=alloc_ids, spec=["allocate_ids"])
@@ -1035,20 +1102,21 @@ def test_client_allocate_ids_w_partial_key():
     assert [key.id for key in result] == list(range(num_ids))
 
     expected_keys = [incomplete_key.to_protobuf()] * num_ids
-    alloc_ids.assert_called_once_with(
-        request={"project_id": PROJECT, "keys": expected_keys}
-    )
+    expected_request = {"project_id": PROJECT, "keys": expected_keys}
+    set_database_id_to_request(expected_request, database_id)
+    alloc_ids.assert_called_once_with(request=expected_request)
 
 
-def test_client_allocate_ids_w_partial_key_w_retry_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_allocate_ids_w_partial_key_w_retry_w_timeout(database_id):
     num_ids = 2
 
-    incomplete_key = _Key(_Key.kind, None)
+    incomplete_key = _Key(_Key.kind, None, database=database_id)
     retry = mock.Mock()
     timeout = 100000
 
     creds = _make_credentials()
-    client = _make_client(credentials=creds, _use_grpc=False)
+    client = _make_client(credentials=creds, _use_grpc=False, database=database_id)
     allocated = mock.Mock(keys=[_KeyPB(i) for i in range(num_ids)], spec=["keys"])
     alloc_ids = mock.Mock(return_value=allocated, spec=[])
     ds_api = mock.Mock(allocate_ids=alloc_ids, spec=["allocate_ids"])
@@ -1060,17 +1128,20 @@ def test_client_allocate_ids_w_partial_key_w_retry_w_timeout():
     assert [key.id for key in result] == list(range(num_ids))
 
     expected_keys = [incomplete_key.to_protobuf()] * num_ids
+    expected_request = {"project_id": PROJECT, "keys": expected_keys}
+    set_database_id_to_request(expected_request, database_id)
     alloc_ids.assert_called_once_with(
-        request={"project_id": PROJECT, "keys": expected_keys},
+        request=expected_request,
         retry=retry,
         timeout=timeout,
     )
 
 
-def test_client_reserve_ids_sequential_w_completed_key():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_reserve_ids_sequential_w_completed_key(database_id):
     num_ids = 2
     creds = _make_credentials()
-    client = _make_client(credentials=creds, _use_grpc=False)
+    client = _make_client(credentials=creds, _use_grpc=False, database=database_id)
     complete_key = _Key()
     reserve_ids = mock.Mock()
     ds_api = mock.Mock(reserve_ids=reserve_ids, spec=["reserve_ids"])
@@ -1083,19 +1154,20 @@ def test_client_reserve_ids_sequential_w_completed_key():
         _Key(_Key.kind, id) for id in range(complete_key.id, complete_key.id + num_ids)
     )
     expected_keys = [key.to_protobuf() for key in reserved_keys]
-    reserve_ids.assert_called_once_with(
-        request={"project_id": PROJECT, "keys": expected_keys}
-    )
+    expected_request = {"project_id": PROJECT, "keys": expected_keys}
+    set_database_id_to_request(expected_request, database_id)
+    reserve_ids.assert_called_once_with(request=expected_request)
 
 
-def test_client_reserve_ids_sequential_w_completed_key_w_retry_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_reserve_ids_sequential_w_completed_key_w_retry_w_timeout(database_id):
     num_ids = 2
     retry = mock.Mock()
     timeout = 100000
 
     creds = _make_credentials()
-    client = _make_client(credentials=creds, _use_grpc=False)
-    complete_key = _Key()
+    client = _make_client(credentials=creds, _use_grpc=False, database=database_id)
+    complete_key = _Key(database=database_id)
     assert not complete_key.is_partial
     reserve_ids = mock.Mock()
     ds_api = mock.Mock(reserve_ids=reserve_ids, spec=["reserve_ids"])
@@ -1107,17 +1179,20 @@ def test_client_reserve_ids_sequential_w_completed_key_w_retry_w_timeout():
         _Key(_Key.kind, id) for id in range(complete_key.id, complete_key.id + num_ids)
     )
     expected_keys = [key.to_protobuf() for key in reserved_keys]
+    expected_request = {"project_id": PROJECT, "keys": expected_keys}
+    set_database_id_to_request(expected_request, database_id)
     reserve_ids.assert_called_once_with(
-        request={"project_id": PROJECT, "keys": expected_keys},
+        request=expected_request,
         retry=retry,
         timeout=timeout,
     )
 
 
-def test_client_reserve_ids_sequential_w_completed_key_w_ancestor():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_reserve_ids_sequential_w_completed_key_w_ancestor(database_id):
     num_ids = 2
     creds = _make_credentials()
-    client = _make_client(credentials=creds, _use_grpc=False)
+    client = _make_client(credentials=creds, _use_grpc=False, database=database_id)
     complete_key = _Key("PARENT", "SINGLETON", _Key.kind, 1234)
     reserve_ids = mock.Mock()
     ds_api = mock.Mock(reserve_ids=reserve_ids, spec=["reserve_ids"])
@@ -1127,38 +1202,41 @@ def test_client_reserve_ids_sequential_w_completed_key_w_ancestor():
     client.reserve_ids_sequential(complete_key, num_ids)
 
     reserved_keys = (
-        _Key("PARENT", "SINGLETON", _Key.kind, id)
+        _Key("PARENT", "SINGLETON", _Key.kind, id, database=database_id)
         for id in range(complete_key.id, complete_key.id + num_ids)
     )
     expected_keys = [key.to_protobuf() for key in reserved_keys]
-    reserve_ids.assert_called_once_with(
-        request={"project_id": PROJECT, "keys": expected_keys}
-    )
+    expected_request = {"project_id": PROJECT, "keys": expected_keys}
+    set_database_id_to_request(expected_request, database_id)
+    reserve_ids.assert_called_once_with(request=expected_request)
 
 
-def test_client_reserve_ids_sequential_w_partial_key():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_reserve_ids_sequential_w_partial_key(database_id):
     num_ids = 2
-    incomplete_key = _Key(_Key.kind, None)
+    incomplete_key = _Key(_Key.kind, None, database=database_id)
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     with pytest.raises(ValueError):
         client.reserve_ids_sequential(incomplete_key, num_ids)
 
 
-def test_client_reserve_ids_sequential_w_wrong_num_ids():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_reserve_ids_sequential_w_wrong_num_ids(database_id):
     num_ids = "2"
-    complete_key = _Key()
+    complete_key = _Key(database=database_id)
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     with pytest.raises(ValueError):
         client.reserve_ids_sequential(complete_key, num_ids)
 
 
-def test_client_reserve_ids_sequential_w_non_numeric_key_name():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_reserve_ids_sequential_w_non_numeric_key_name(database_id):
     num_ids = 2
-    complete_key = _Key(_Key.kind, "batman")
+    complete_key = _Key(_Key.kind, "batman", database=database_id)
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     with pytest.raises(ValueError):
         client.reserve_ids_sequential(complete_key, num_ids)
 
@@ -1168,13 +1246,14 @@ def _assert_reserve_ids_warning(warned):
     assert "Client.reserve_ids is deprecated." in str(warned[0].message)
 
 
-def test_client_reserve_ids_w_partial_key():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_reserve_ids_w_partial_key(database_id):
     import warnings
 
     num_ids = 2
     incomplete_key = _Key(_Key.kind, None)
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     with pytest.raises(ValueError):
         with warnings.catch_warnings(record=True) as warned:
             client.reserve_ids(incomplete_key, num_ids)
@@ -1182,13 +1261,14 @@ def test_client_reserve_ids_w_partial_key():
     _assert_reserve_ids_warning(warned)
 
 
-def test_client_reserve_ids_w_wrong_num_ids():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_reserve_ids_w_wrong_num_ids(database_id):
     import warnings
 
     num_ids = "2"
-    complete_key = _Key()
+    complete_key = _Key(database=database_id)
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     with pytest.raises(ValueError):
         with warnings.catch_warnings(record=True) as warned:
             client.reserve_ids(complete_key, num_ids)
@@ -1196,13 +1276,14 @@ def test_client_reserve_ids_w_wrong_num_ids():
     _assert_reserve_ids_warning(warned)
 
 
-def test_client_reserve_ids_w_non_numeric_key_name():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_reserve_ids_w_non_numeric_key_name(database_id):
     import warnings
 
     num_ids = 2
-    complete_key = _Key(_Key.kind, "batman")
+    complete_key = _Key(_Key.kind, "batman", database=database_id)
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     with pytest.raises(ValueError):
         with warnings.catch_warnings(record=True) as warned:
             client.reserve_ids(complete_key, num_ids)
@@ -1210,13 +1291,14 @@ def test_client_reserve_ids_w_non_numeric_key_name():
     _assert_reserve_ids_warning(warned)
 
 
-def test_client_reserve_ids_w_completed_key():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_reserve_ids_w_completed_key(database_id):
     import warnings
 
     num_ids = 2
     creds = _make_credentials()
-    client = _make_client(credentials=creds, _use_grpc=False)
-    complete_key = _Key()
+    client = _make_client(credentials=creds, _use_grpc=False, database=database_id)
+    complete_key = _Key(database=database_id)
     reserve_ids = mock.Mock()
     ds_api = mock.Mock(reserve_ids=reserve_ids, spec=["reserve_ids"])
     client._datastore_api_internal = ds_api
@@ -1226,16 +1308,18 @@ def test_client_reserve_ids_w_completed_key():
         client.reserve_ids(complete_key, num_ids)
 
     reserved_keys = (
-        _Key(_Key.kind, id) for id in range(complete_key.id, complete_key.id + num_ids)
+        _Key(_Key.kind, id, database=database_id)
+        for id in range(complete_key.id, complete_key.id + num_ids)
     )
     expected_keys = [key.to_protobuf() for key in reserved_keys]
-    reserve_ids.assert_called_once_with(
-        request={"project_id": PROJECT, "keys": expected_keys}
-    )
+    expected_request = {"project_id": PROJECT, "keys": expected_keys}
+    set_database_id_to_request(expected_request, database_id)
+    reserve_ids.assert_called_once_with(request=expected_request)
     _assert_reserve_ids_warning(warned)
 
 
-def test_client_reserve_ids_w_completed_key_w_retry_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_reserve_ids_w_completed_key_w_retry_w_timeout(database_id):
     import warnings
 
     num_ids = 2
@@ -1243,8 +1327,8 @@ def test_client_reserve_ids_w_completed_key_w_retry_w_timeout():
     timeout = 100000
 
     creds = _make_credentials()
-    client = _make_client(credentials=creds, _use_grpc=False)
-    complete_key = _Key()
+    client = _make_client(credentials=creds, _use_grpc=False, database=database_id)
+    complete_key = _Key(database=database_id)
     assert not complete_key.is_partial
     reserve_ids = mock.Mock()
     ds_api = mock.Mock(reserve_ids=reserve_ids, spec=["reserve_ids"])
@@ -1254,24 +1338,28 @@ def test_client_reserve_ids_w_completed_key_w_retry_w_timeout():
         client.reserve_ids(complete_key, num_ids, retry=retry, timeout=timeout)
 
     reserved_keys = (
-        _Key(_Key.kind, id) for id in range(complete_key.id, complete_key.id + num_ids)
+        _Key(_Key.kind, id, database=database_id)
+        for id in range(complete_key.id, complete_key.id + num_ids)
     )
     expected_keys = [key.to_protobuf() for key in reserved_keys]
+    expected_request = {"project_id": PROJECT, "keys": expected_keys}
+    set_database_id_to_request(expected_request, database_id)
     reserve_ids.assert_called_once_with(
-        request={"project_id": PROJECT, "keys": expected_keys},
+        request=expected_request,
         retry=retry,
         timeout=timeout,
     )
     _assert_reserve_ids_warning(warned)
 
 
-def test_client_reserve_ids_w_completed_key_w_ancestor():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_reserve_ids_w_completed_key_w_ancestor(database_id):
     import warnings
 
     num_ids = 2
     creds = _make_credentials()
-    client = _make_client(credentials=creds, _use_grpc=False)
-    complete_key = _Key("PARENT", "SINGLETON", _Key.kind, 1234)
+    client = _make_client(credentials=creds, _use_grpc=False, database=database_id)
+    complete_key = _Key("PARENT", "SINGLETON", _Key.kind, 1234, database=database_id)
     reserve_ids = mock.Mock()
     ds_api = mock.Mock(reserve_ids=reserve_ids, spec=["reserve_ids"])
     client._datastore_api_internal = ds_api
@@ -1281,18 +1369,48 @@ def test_client_reserve_ids_w_completed_key_w_ancestor():
         client.reserve_ids(complete_key, num_ids)
 
     reserved_keys = (
-        _Key("PARENT", "SINGLETON", _Key.kind, id)
+        _Key("PARENT", "SINGLETON", _Key.kind, id, database=database_id)
         for id in range(complete_key.id, complete_key.id + num_ids)
     )
     expected_keys = [key.to_protobuf() for key in reserved_keys]
-    reserve_ids.assert_called_once_with(
-        request={"project_id": PROJECT, "keys": expected_keys}
-    )
+    expected_request = {"project_id": PROJECT, "keys": expected_keys}
+    set_database_id_to_request(expected_request, database_id)
+
+    reserve_ids.assert_called_once_with(request=expected_request)
 
     _assert_reserve_ids_warning(warned)
 
 
-def test_client_key_w_project():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_key_w_project(database_id):
+    KIND = "KIND"
+    ID = 1234
+
+    creds = _make_credentials()
+    client = _make_client(credentials=creds, database=database_id)
+
+    with pytest.raises(TypeError):
+        client.key(KIND, ID, project=PROJECT, database=database_id)
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_key_wo_project(database_id):
+    kind = "KIND"
+    id_ = 1234
+
+    creds = _make_credentials()
+    client = _make_client(credentials=creds, database=database_id)
+
+    patch = mock.patch("google.cloud.datastore.client.Key", spec=["__call__"])
+    with patch as mock_klass:
+        key = client.key(kind, id_)
+        assert key is mock_klass.return_value
+        mock_klass.assert_called_once_with(
+            kind, id_, project=PROJECT, namespace=None, database=database_id
+        )
+
+
+def test_client_key_w_database():
     KIND = "KIND"
     ID = 1234
 
@@ -1300,61 +1418,67 @@ def test_client_key_w_project():
     client = _make_client(credentials=creds)
 
     with pytest.raises(TypeError):
-        client.key(KIND, ID, project=PROJECT)
+        client.key(KIND, ID, database="somedb")
 
 
-def test_client_key_wo_project():
+def test_client_key_wo_database():
     kind = "KIND"
     id_ = 1234
+    database = "DATABASE"
 
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
-
-    patch = mock.patch("google.cloud.datastore.client.Key", spec=["__call__"])
-    with patch as mock_klass:
-        key = client.key(kind, id_)
-        assert key is mock_klass.return_value
-        mock_klass.assert_called_once_with(kind, id_, project=PROJECT, namespace=None)
-
-
-def test_client_key_w_namespace():
-    kind = "KIND"
-    id_ = 1234
-    namespace = object()
-
-    creds = _make_credentials()
-    client = _make_client(namespace=namespace, credentials=creds)
+    client = _make_client(database=database, credentials=creds)
 
     patch = mock.patch("google.cloud.datastore.client.Key", spec=["__call__"])
     with patch as mock_klass:
         key = client.key(kind, id_)
         assert key is mock_klass.return_value
         mock_klass.assert_called_once_with(
-            kind, id_, project=PROJECT, namespace=namespace
+            kind, id_, project=PROJECT, namespace=None, database=database
         )
 
 
-def test_client_key_w_namespace_collision():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_key_w_namespace(database_id):
+    kind = "KIND"
+    id_ = 1234
+    namespace = object()
+
+    creds = _make_credentials()
+    client = _make_client(namespace=namespace, credentials=creds, database=database_id)
+
+    patch = mock.patch("google.cloud.datastore.client.Key", spec=["__call__"])
+    with patch as mock_klass:
+        key = client.key(kind, id_)
+        assert key is mock_klass.return_value
+        mock_klass.assert_called_once_with(
+            kind, id_, project=PROJECT, namespace=namespace, database=database_id
+        )
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_key_w_namespace_collision(database_id):
     kind = "KIND"
     id_ = 1234
     namespace1 = object()
     namespace2 = object()
 
     creds = _make_credentials()
-    client = _make_client(namespace=namespace1, credentials=creds)
+    client = _make_client(namespace=namespace1, credentials=creds, database=database_id)
 
     patch = mock.patch("google.cloud.datastore.client.Key", spec=["__call__"])
     with patch as mock_klass:
         key = client.key(kind, id_, namespace=namespace2)
         assert key is mock_klass.return_value
         mock_klass.assert_called_once_with(
-            kind, id_, project=PROJECT, namespace=namespace2
+            kind, id_, project=PROJECT, namespace=namespace2, database=database_id
         )
 
 
-def test_client_entity_w_defaults():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_entity_w_defaults(database_id):
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
 
     patch = mock.patch("google.cloud.datastore.client.Entity", spec=["__call__"])
     with patch as mock_klass:
@@ -1424,19 +1548,21 @@ def test_client_query_w_other_client():
         client.query(kind=KIND, client=other)
 
 
-def test_client_query_w_project():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_query_w_project(database_id):
     KIND = "KIND"
 
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
 
     with pytest.raises(TypeError):
         client.query(kind=KIND, project=PROJECT)
 
 
-def test_client_query_w_defaults():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_query_w_defaults(database_id):
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
 
     patch = mock.patch("google.cloud.datastore.client.Query", spec=["__call__"])
     with patch as mock_klass:
@@ -1445,7 +1571,8 @@ def test_client_query_w_defaults():
         mock_klass.assert_called_once_with(client, project=PROJECT, namespace=None)
 
 
-def test_client_query_w_explicit():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_query_w_explicit(database_id):
     kind = "KIND"
     namespace = "NAMESPACE"
     ancestor = object()
@@ -1455,7 +1582,7 @@ def test_client_query_w_explicit():
     distinct_on = ["DISTINCT_ON"]
 
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
 
     patch = mock.patch("google.cloud.datastore.client.Query", spec=["__call__"])
     with patch as mock_klass:
@@ -1482,12 +1609,13 @@ def test_client_query_w_explicit():
         )
 
 
-def test_client_query_w_namespace():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_query_w_namespace(database_id):
     kind = "KIND"
     namespace = object()
 
     creds = _make_credentials()
-    client = _make_client(namespace=namespace, credentials=creds)
+    client = _make_client(namespace=namespace, credentials=creds, database=database_id)
 
     patch = mock.patch("google.cloud.datastore.client.Query", spec=["__call__"])
     with patch as mock_klass:
@@ -1498,13 +1626,14 @@ def test_client_query_w_namespace():
         )
 
 
-def test_client_query_w_namespace_collision():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_query_w_namespace_collision(database_id):
     kind = "KIND"
     namespace1 = object()
     namespace2 = object()
 
     creds = _make_credentials()
-    client = _make_client(namespace=namespace1, credentials=creds)
+    client = _make_client(namespace=namespace1, credentials=creds, database=database_id)
 
     patch = mock.patch("google.cloud.datastore.client.Query", spec=["__call__"])
     with patch as mock_klass:
@@ -1515,9 +1644,10 @@ def test_client_query_w_namespace_collision():
         )
 
 
-def test_client_aggregation_query_w_defaults():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_aggregation_query_w_defaults(database_id):
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     query = client.query()
     patch = mock.patch(
         "google.cloud.datastore.client.AggregationQuery", spec=["__call__"]
@@ -1528,42 +1658,46 @@ def test_client_aggregation_query_w_defaults():
         mock_klass.assert_called_once_with(client, query)
 
 
-def test_client_aggregation_query_w_namespace():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_aggregation_query_w_namespace(database_id):
     namespace = object()
 
     creds = _make_credentials()
-    client = _make_client(namespace=namespace, credentials=creds)
+    client = _make_client(namespace=namespace, credentials=creds, database=database_id)
     query = client.query()
 
     aggregation_query = client.aggregation_query(query=query)
     assert aggregation_query.namespace == namespace
 
 
-def test_client_aggregation_query_w_namespace_collision():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_aggregation_query_w_namespace_collision(database_id):
     namespace1 = object()
     namespace2 = object()
 
     creds = _make_credentials()
-    client = _make_client(namespace=namespace1, credentials=creds)
+    client = _make_client(namespace=namespace1, credentials=creds, database=database_id)
     query = client.query(namespace=namespace2)
 
     aggregation_query = client.aggregation_query(query=query)
     assert aggregation_query.namespace == namespace2
 
 
-def test_client_reserve_ids_multi_w_partial_key():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_reserve_ids_multi_w_partial_key(database_id):
     incomplete_key = _Key(_Key.kind, None)
     creds = _make_credentials()
-    client = _make_client(credentials=creds)
+    client = _make_client(credentials=creds, database=database_id)
     with pytest.raises(ValueError):
         client.reserve_ids_multi([incomplete_key])
 
 
-def test_client_reserve_ids_multi():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_client_reserve_ids_multi(database_id):
     creds = _make_credentials()
-    client = _make_client(credentials=creds, _use_grpc=False)
-    key1 = _Key(_Key.kind, "one")
-    key2 = _Key(_Key.kind, "two")
+    client = _make_client(credentials=creds, _use_grpc=False, database=database_id)
+    key1 = _Key(_Key.kind, "one", database=database_id)
+    key2 = _Key(_Key.kind, "two", database=database_id)
     reserve_ids = mock.Mock()
     ds_api = mock.Mock(reserve_ids=reserve_ids, spec=["reserve_ids"])
     client._datastore_api_internal = ds_api
@@ -1571,9 +1705,9 @@ def test_client_reserve_ids_multi():
     client.reserve_ids_multi([key1, key2])
 
     expected_keys = [key1.to_protobuf(), key2.to_protobuf()]
-    reserve_ids.assert_called_once_with(
-        request={"project_id": PROJECT, "keys": expected_keys}
-    )
+    expected_request = {"project_id": PROJECT, "keys": expected_keys}
+    set_database_id_to_request(expected_request, database_id)
+    reserve_ids.assert_called_once_with(request=expected_request)
 
 
 class _NoCommitBatch(object):
@@ -1621,6 +1755,7 @@ class _Key(object):
     id = 1234
     name = None
     _project = project = PROJECT
+    _database = database = None
     _namespace = None
 
     _key = "KEY"
@@ -1745,12 +1880,13 @@ def _make_credentials():
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
-def _make_entity_pb(project, kind, integer_id, name=None, str_val=None):
+def _make_entity_pb(project, kind, integer_id, name=None, str_val=None, database=None):
     from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import _new_value_pb
 
     entity_pb = entity_pb2.Entity()
     entity_pb.key.partition_id.project_id = project
+    entity_pb.key.partition_id.database_id = database
     path_element = entity_pb._pb.key.path.add()
     path_element.kind = kind
     path_element.id = integer_id

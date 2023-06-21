@@ -40,8 +40,8 @@ def _do_fetch(aggregation_query, **kw):
 
 
 @pytest.fixture(scope="session")
-def aggregation_query_client(datastore_client):
-    return _helpers.clone_client(datastore_client, namespace=None)
+def aggregation_query_client(datastore_client, database_id=None):
+    return _helpers.clone_client(datastore_client, namespace=None, database=database_id)
 
 
 @pytest.fixture(scope="session")
@@ -69,7 +69,8 @@ def nested_query(aggregation_query_client, ancestor_key):
     return _make_query(aggregation_query_client, ancestor_key)
 
 
-def test_aggregation_query_default(aggregation_query_client, nested_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_aggregation_query_default(aggregation_query_client, nested_query, database_id):
     query = nested_query
 
     aggregation_query = aggregation_query_client.aggregation_query(query)
@@ -81,7 +82,10 @@ def test_aggregation_query_default(aggregation_query_client, nested_query):
         assert r.value == 8
 
 
-def test_aggregation_query_with_alias(aggregation_query_client, nested_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_aggregation_query_with_alias(
+    aggregation_query_client, nested_query, database_id
+):
     query = nested_query
 
     aggregation_query = aggregation_query_client.aggregation_query(query)
@@ -93,7 +97,10 @@ def test_aggregation_query_with_alias(aggregation_query_client, nested_query):
         assert r.value > 0
 
 
-def test_aggregation_query_with_limit(aggregation_query_client, nested_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_aggregation_query_with_limit(
+    aggregation_query_client, nested_query, database_id
+):
     query = nested_query
 
     aggregation_query = aggregation_query_client.aggregation_query(query)
@@ -113,8 +120,9 @@ def test_aggregation_query_with_limit(aggregation_query_client, nested_query):
         assert r.value == 2
 
 
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
 def test_aggregation_query_multiple_aggregations(
-    aggregation_query_client, nested_query
+    aggregation_query_client, nested_query, database_id
 ):
     query = nested_query
 
@@ -128,7 +136,10 @@ def test_aggregation_query_multiple_aggregations(
         assert r.value > 0
 
 
-def test_aggregation_query_add_aggregation(aggregation_query_client, nested_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_aggregation_query_add_aggregation(
+    aggregation_query_client, nested_query, database_id
+):
     from google.cloud.datastore.aggregation import CountAggregation
 
     query = nested_query
@@ -143,7 +154,10 @@ def test_aggregation_query_add_aggregation(aggregation_query_client, nested_quer
         assert r.value > 0
 
 
-def test_aggregation_query_add_aggregations(aggregation_query_client, nested_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_aggregation_query_add_aggregations(
+    aggregation_query_client, nested_query, database_id
+):
     from google.cloud.datastore.aggregation import CountAggregation
 
     query = nested_query
@@ -159,8 +173,9 @@ def test_aggregation_query_add_aggregations(aggregation_query_client, nested_que
         assert r.value > 0
 
 
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
 def test_aggregation_query_add_aggregations_duplicated_alias(
-    aggregation_query_client, nested_query
+    aggregation_query_client, nested_query, database_id
 ):
     from google.cloud.datastore.aggregation import CountAggregation
     from google.api_core.exceptions import BadRequest
@@ -187,8 +202,9 @@ def test_aggregation_query_add_aggregations_duplicated_alias(
         _do_fetch(aggregation_query)
 
 
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
 def test_aggregation_query_with_nested_query_filtered(
-    aggregation_query_client, nested_query
+    aggregation_query_client, nested_query, database_id
 ):
     query = nested_query
 
@@ -210,8 +226,9 @@ def test_aggregation_query_with_nested_query_filtered(
         assert r.value == 6
 
 
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
 def test_aggregation_query_with_nested_query_multiple_filters(
-    aggregation_query_client, nested_query
+    aggregation_query_client, nested_query, database_id
 ):
     query = nested_query
 

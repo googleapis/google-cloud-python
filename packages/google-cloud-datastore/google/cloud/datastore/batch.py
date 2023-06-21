@@ -123,6 +123,15 @@ class Batch(object):
         return self._client.project
 
     @property
+    def database(self):
+        """Getter for database in which the batch will run.
+
+        :rtype: :class:`str`
+        :returns: The database in which the batch will run.
+        """
+        return self._client.database
+
+    @property
     def namespace(self):
         """Getter for namespace in which the batch will run.
 
@@ -218,6 +227,9 @@ class Batch(object):
         if self.project != entity.key.project:
             raise ValueError("Key must be from same project as batch")
 
+        if self.database != entity.key.database:
+            raise ValueError("Key must be from same database as batch")
+
         if entity.key.is_partial:
             entity_pb = self._add_partial_key_entity_pb()
             self._partial_key_entities.append(entity)
@@ -244,6 +256,9 @@ class Batch(object):
 
         if self.project != key.project:
             raise ValueError("Key must be from same project as batch")
+
+        if self.database != key.database:
+            raise ValueError("Key must be from same database as batch")
 
         key_pb = key.to_protobuf()
         self._add_delete_key_pb()._pb.CopyFrom(key_pb._pb)
@@ -281,13 +296,17 @@ class Batch(object):
         if timeout is not None:
             kwargs["timeout"] = timeout
 
+        request = {
+            "project_id": self.project,
+            "mode": mode,
+            "transaction": self._id,
+            "mutations": self._mutations,
+        }
+
+        helpers.set_database_id_to_request(request, self._client.database)
+
         commit_response_pb = self._client._datastore_api.commit(
-            request={
-                "project_id": self.project,
-                "mode": mode,
-                "transaction": self._id,
-                "mutations": self._mutations,
-            },
+            request=request,
             **kwargs,
         )
 

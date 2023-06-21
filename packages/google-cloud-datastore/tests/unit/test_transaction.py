@@ -15,16 +15,20 @@
 import mock
 import pytest
 
+from google.cloud.datastore.helpers import set_database_id_to_request
 
-def test_transaction_ctor_defaults():
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_ctor_defaults(database_id):
     from google.cloud.datastore.transaction import Transaction
 
     project = "PROJECT"
-    client = _Client(project)
+    client = _Client(project, database=database_id)
 
     xact = _make_transaction(client)
 
     assert xact.project == project
+    assert xact.database == database_id
     assert xact._client is client
     assert xact.id is None
     assert xact._status == Transaction._INITIAL
@@ -32,53 +36,59 @@ def test_transaction_ctor_defaults():
     assert len(xact._partial_key_entities) == 0
 
 
-def test_transaction_constructor_read_only():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_constructor_read_only(database_id):
     project = "PROJECT"
     id_ = 850302
     ds_api = _make_datastore_api(xact=id_)
-    client = _Client(project, datastore_api=ds_api)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
     options = _make_options(read_only=True)
 
     xact = _make_transaction(client, read_only=True)
 
     assert xact._options == options
+    assert xact.database == database_id
 
 
-def test_transaction_constructor_w_read_time():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_constructor_w_read_time(database_id):
     from datetime import datetime
 
     project = "PROJECT"
     id_ = 850302
     read_time = datetime.utcfromtimestamp(1641058200.123456)
     ds_api = _make_datastore_api(xact=id_)
-    client = _Client(project, datastore_api=ds_api)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
     options = _make_options(read_only=True, read_time=read_time)
 
     xact = _make_transaction(client, read_only=True, read_time=read_time)
 
     assert xact._options == options
+    assert xact.database == database_id
 
 
-def test_transaction_constructor_read_write_w_read_time():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_constructor_read_write_w_read_time(database_id):
     from datetime import datetime
 
     project = "PROJECT"
     id_ = 850302
     read_time = datetime.utcfromtimestamp(1641058200.123456)
     ds_api = _make_datastore_api(xact=id_)
-    client = _Client(project, datastore_api=ds_api)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
 
     with pytest.raises(ValueError):
         _make_transaction(client, read_only=False, read_time=read_time)
 
 
-def test_transaction_current():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_current(database_id):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     project = "PROJECT"
     id_ = 678
     ds_api = _make_datastore_api(xact_id=id_)
-    client = _Client(project, datastore_api=ds_api)
+    client = _Client(project, database=database_id, datastore_api=ds_api)
     xact1 = _make_transaction(client)
     xact2 = _make_transaction(client)
     assert xact1.current() is None
@@ -108,87 +118,97 @@ def test_transaction_current():
 
     begin_txn = ds_api.begin_transaction
     assert begin_txn.call_count == 2
-    expected_request = _make_begin_request(project)
+    expected_request = _make_begin_request(project, database=database_id)
     begin_txn.assert_called_with(request=expected_request)
 
     commit_method = ds_api.commit
     assert commit_method.call_count == 2
     mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
-    commit_method.assert_called_with(
-        request={
-            "project_id": project,
-            "mode": mode,
-            "mutations": [],
-            "transaction": id_,
-        }
-    )
+    expected_request = {
+        "project_id": project,
+        "mode": mode,
+        "mutations": [],
+        "transaction": id_,
+    }
+    set_database_id_to_request(expected_request, database_id)
+
+    commit_method.assert_called_with(request=expected_request)
 
     ds_api.rollback.assert_not_called()
 
 
-def test_transaction_begin():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_begin(database_id):
     project = "PROJECT"
     id_ = 889
     ds_api = _make_datastore_api(xact_id=id_)
-    client = _Client(project, datastore_api=ds_api)
+    client = _Client(project, database=database_id, datastore_api=ds_api)
     xact = _make_transaction(client)
 
     xact.begin()
 
     assert xact.id == id_
 
-    expected_request = _make_begin_request(project)
+    expected_request = _make_begin_request(project, database=database_id)
+
     ds_api.begin_transaction.assert_called_once_with(request=expected_request)
 
 
-def test_transaction_begin_w_readonly():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_begin_w_readonly(database_id):
     project = "PROJECT"
     id_ = 889
     ds_api = _make_datastore_api(xact_id=id_)
-    client = _Client(project, datastore_api=ds_api)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
     xact = _make_transaction(client, read_only=True)
 
     xact.begin()
 
     assert xact.id == id_
 
-    expected_request = _make_begin_request(project, read_only=True)
+    expected_request = _make_begin_request(
+        project, read_only=True, database=database_id
+    )
     ds_api.begin_transaction.assert_called_once_with(request=expected_request)
 
 
-def test_transaction_begin_w_read_time():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_begin_w_read_time(database_id):
     from datetime import datetime
 
     project = "PROJECT"
     id_ = 889
     read_time = datetime.utcfromtimestamp(1641058200.123456)
     ds_api = _make_datastore_api(xact_id=id_)
-    client = _Client(project, datastore_api=ds_api)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
     xact = _make_transaction(client, read_only=True, read_time=read_time)
 
     xact.begin()
 
     assert xact.id == id_
 
-    expected_request = _make_begin_request(project, read_only=True, read_time=read_time)
+    expected_request = _make_begin_request(
+        project, read_only=True, read_time=read_time, database=database_id
+    )
     ds_api.begin_transaction.assert_called_once_with(request=expected_request)
 
 
-def test_transaction_begin_w_retry_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_begin_w_retry_w_timeout(database_id):
     project = "PROJECT"
     id_ = 889
     retry = mock.Mock()
     timeout = 100000
 
     ds_api = _make_datastore_api(xact_id=id_)
-    client = _Client(project, datastore_api=ds_api)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
     xact = _make_transaction(client)
 
     xact.begin(retry=retry, timeout=timeout)
 
     assert xact.id == id_
 
-    expected_request = _make_begin_request(project)
+    expected_request = _make_begin_request(project, database=database_id)
     ds_api.begin_transaction.assert_called_once_with(
         request=expected_request,
         retry=retry,
@@ -196,37 +216,38 @@ def test_transaction_begin_w_retry_w_timeout():
     )
 
 
-def test_transaction_begin_tombstoned():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_begin_tombstoned(database_id):
     project = "PROJECT"
     id_ = 1094
     ds_api = _make_datastore_api(xact_id=id_)
-    client = _Client(project, datastore_api=ds_api)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
     xact = _make_transaction(client)
 
     xact.begin()
 
     assert xact.id == id_
 
-    expected_request = _make_begin_request(project)
+    expected_request = _make_begin_request(project, database=database_id)
     ds_api.begin_transaction.assert_called_once_with(request=expected_request)
 
     xact.rollback()
-
-    client._datastore_api.rollback.assert_called_once_with(
-        request={"project_id": project, "transaction": id_}
-    )
+    expected_request = {"project_id": project, "transaction": id_}
+    set_database_id_to_request(expected_request, database_id)
+    client._datastore_api.rollback.assert_called_once_with(request=expected_request)
     assert xact.id is None
 
     with pytest.raises(ValueError):
         xact.begin()
 
 
-def test_transaction_begin_w_begin_transaction_failure():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_begin_w_begin_transaction_failure(database_id):
     project = "PROJECT"
     id_ = 712
     ds_api = _make_datastore_api(xact_id=id_)
     ds_api.begin_transaction = mock.Mock(side_effect=RuntimeError, spec=[])
-    client = _Client(project, datastore_api=ds_api)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
     xact = _make_transaction(client)
 
     with pytest.raises(RuntimeError):
@@ -234,48 +255,54 @@ def test_transaction_begin_w_begin_transaction_failure():
 
     assert xact.id is None
 
-    expected_request = _make_begin_request(project)
+    expected_request = _make_begin_request(project, database=database_id)
     ds_api.begin_transaction.assert_called_once_with(request=expected_request)
 
 
-def test_transaction_rollback():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_rollback(database_id):
     project = "PROJECT"
     id_ = 239
     ds_api = _make_datastore_api(xact_id=id_)
-    client = _Client(project, datastore_api=ds_api)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
     xact = _make_transaction(client)
     xact.begin()
 
     xact.rollback()
 
     assert xact.id is None
-    ds_api.rollback.assert_called_once_with(
-        request={"project_id": project, "transaction": id_}
-    )
+    expected_request = {"project_id": project, "transaction": id_}
+    set_database_id_to_request(expected_request, database_id)
+    ds_api.rollback.assert_called_once_with(request=expected_request)
 
 
-def test_transaction_rollback_w_retry_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_rollback_w_retry_w_timeout(database_id):
     project = "PROJECT"
     id_ = 239
     retry = mock.Mock()
     timeout = 100000
 
     ds_api = _make_datastore_api(xact_id=id_)
-    client = _Client(project, datastore_api=ds_api)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
     xact = _make_transaction(client)
     xact.begin()
 
     xact.rollback(retry=retry, timeout=timeout)
 
     assert xact.id is None
+    expected_request = {"project_id": project, "transaction": id_}
+    set_database_id_to_request(expected_request, database_id)
+
     ds_api.rollback.assert_called_once_with(
-        request={"project_id": project, "transaction": id_},
+        request=expected_request,
         retry=retry,
         timeout=timeout,
     )
 
 
-def test_transaction_commit_no_partial_keys():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_commit_no_partial_keys(database_id):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     project = "PROJECT"
@@ -283,50 +310,53 @@ def test_transaction_commit_no_partial_keys():
     mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
 
     ds_api = _make_datastore_api(xact_id=id_)
-    client = _Client(project, datastore_api=ds_api)
+    client = _Client(project, database=database_id, datastore_api=ds_api)
     xact = _make_transaction(client)
     xact.begin()
     xact.commit()
 
-    ds_api.commit.assert_called_once_with(
-        request={
-            "project_id": project,
-            "mode": mode,
-            "mutations": [],
-            "transaction": id_,
-        }
-    )
+    expected_request = {
+        "project_id": project,
+        "mode": mode,
+        "mutations": [],
+        "transaction": id_,
+    }
+    set_database_id_to_request(expected_request, database_id)
+    ds_api.commit.assert_called_once_with(request=expected_request)
     assert xact.id is None
 
 
-def test_transaction_commit_w_partial_keys_w_retry_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_commit_w_partial_keys_w_retry_w_timeout(database_id):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     project = "PROJECT"
     kind = "KIND"
     id1 = 123
     mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
-    key = _make_key(kind, id1, project)
+    key = _make_key(kind, id1, project, database=database_id)
     id2 = 234
     retry = mock.Mock()
     timeout = 100000
 
     ds_api = _make_datastore_api(key, xact_id=id2)
-    client = _Client(project, datastore_api=ds_api)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
     xact = _make_transaction(client)
     xact.begin()
-    entity = _Entity()
+    entity = _Entity(database=database_id)
 
     xact.put(entity)
     xact.commit(retry=retry, timeout=timeout)
+    expected_request = {
+        "project_id": project,
+        "mode": mode,
+        "mutations": xact.mutations,
+        "transaction": id2,
+    }
+    set_database_id_to_request(expected_request, database_id)
 
     ds_api.commit.assert_called_once_with(
-        request={
-            "project_id": project,
-            "mode": mode,
-            "mutations": xact.mutations,
-            "transaction": id2,
-        },
+        request=expected_request,
         retry=retry,
         timeout=timeout,
     )
@@ -334,13 +364,14 @@ def test_transaction_commit_w_partial_keys_w_retry_w_timeout():
     assert entity.key.path == [{"kind": kind, "id": id1}]
 
 
-def test_transaction_context_manager_no_raise():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_context_manager_no_raise(database_id):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     project = "PROJECT"
     id_ = 912830
     ds_api = _make_datastore_api(xact_id=id_)
-    client = _Client(project, datastore_api=ds_api)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
     xact = _make_transaction(client)
 
     with xact:
@@ -349,28 +380,32 @@ def test_transaction_context_manager_no_raise():
 
     assert xact.id is None
 
-    expected_request = _make_begin_request(project)
+    expected_request = _make_begin_request(project, database=database_id)
     ds_api.begin_transaction.assert_called_once_with(request=expected_request)
 
     mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
+    expected_request = {
+        "project_id": project,
+        "mode": mode,
+        "mutations": [],
+        "transaction": id_,
+    }
+    set_database_id_to_request(expected_request, database_id)
+
     client._datastore_api.commit.assert_called_once_with(
-        request={
-            "project_id": project,
-            "mode": mode,
-            "mutations": [],
-            "transaction": id_,
-        },
+        request=expected_request,
     )
 
 
-def test_transaction_context_manager_w_raise():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_context_manager_w_raise(database_id):
     class Foo(Exception):
         pass
 
     project = "PROJECT"
     id_ = 614416
     ds_api = _make_datastore_api(xact_id=id_)
-    client = _Client(project, datastore_api=ds_api)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
     xact = _make_transaction(client)
     xact._mutation = object()
     try:
@@ -382,22 +417,23 @@ def test_transaction_context_manager_w_raise():
 
     assert xact.id is None
 
-    expected_request = _make_begin_request(project)
+    expected_request = _make_begin_request(project, database=database_id)
+    set_database_id_to_request(expected_request, database_id)
     ds_api.begin_transaction.assert_called_once_with(request=expected_request)
 
     client._datastore_api.commit.assert_not_called()
+    expected_request = {"project_id": project, "transaction": id_}
+    set_database_id_to_request(expected_request, database_id)
+    client._datastore_api.rollback.assert_called_once_with(request=expected_request)
 
-    client._datastore_api.rollback.assert_called_once_with(
-        request={"project_id": project, "transaction": id_}
-    )
 
-
-def test_transaction_put_read_only():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_transaction_put_read_only(database_id):
     project = "PROJECT"
     id_ = 943243
     ds_api = _make_datastore_api(xact_id=id_)
-    client = _Client(project, datastore_api=ds_api)
-    entity = _Entity()
+    client = _Client(project, datastore_api=ds_api, database=database_id)
+    entity = _Entity(database=database_id)
     xact = _make_transaction(client, read_only=True)
     xact.begin()
 
@@ -405,11 +441,12 @@ def test_transaction_put_read_only():
         xact.put(entity)
 
 
-def _make_key(kind, id_, project):
+def _make_key(kind, id_, project, database=None):
     from google.cloud.datastore_v1.types import entity as entity_pb2
 
     key = entity_pb2.Key()
     key.partition_id.project_id = project
+    key.partition_id.database_id = database
     elem = key._pb.path.add()
     elem.kind = kind
     elem.id = id_
@@ -417,20 +454,21 @@ def _make_key(kind, id_, project):
 
 
 class _Entity(dict):
-    def __init__(self):
+    def __init__(self, database=None):
         super(_Entity, self).__init__()
         from google.cloud.datastore.key import Key
 
-        self.key = Key("KIND", project="PROJECT")
+        self.key = Key("KIND", project="PROJECT", database=database)
 
 
 class _Client(object):
-    def __init__(self, project, datastore_api=None, namespace=None):
+    def __init__(self, project, datastore_api=None, namespace=None, database=None):
         self.project = project
         if datastore_api is None:
             datastore_api = _make_datastore_api()
         self._datastore_api = datastore_api
         self.namespace = namespace
+        self.database = database
         self._batches = []
 
     def _push_batch(self, batch):
@@ -483,12 +521,14 @@ def _make_transaction(client, **kw):
     return Transaction(client, **kw)
 
 
-def _make_begin_request(project, read_only=False, read_time=None):
+def _make_begin_request(project, read_only=False, read_time=None, database=None):
     expected_options = _make_options(read_only=read_only, read_time=read_time)
-    return {
+    request = {
         "project_id": project,
         "transaction_options": expected_options,
     }
+    set_database_id_to_request(request, database)
+    return request
 
 
 def _make_commit_response(*keys):

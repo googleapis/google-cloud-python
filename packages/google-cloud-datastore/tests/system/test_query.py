@@ -71,7 +71,8 @@ def ancestor_query(query_client, ancestor_key):
     return _make_ancestor_query(query_client, ancestor_key)
 
 
-def test_query_w_ancestor(ancestor_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_w_ancestor(ancestor_query, database_id):
     query = ancestor_query
     expected_matches = 8
 
@@ -81,7 +82,8 @@ def test_query_w_ancestor(ancestor_query):
     assert len(entities) == expected_matches
 
 
-def test_query_w_limit_paging(ancestor_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_w_limit_paging(ancestor_query, database_id):
     query = ancestor_query
     limit = 5
 
@@ -101,7 +103,8 @@ def test_query_w_limit_paging(ancestor_query):
     assert len(new_character_entities) == characters_remaining
 
 
-def test_query_w_simple_filter(ancestor_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_w_simple_filter(ancestor_query, database_id):
     query = ancestor_query
     query.add_filter(filter=PropertyFilter("appearances", ">=", 20))
     expected_matches = 6
@@ -112,7 +115,8 @@ def test_query_w_simple_filter(ancestor_query):
     assert len(entities) == expected_matches
 
 
-def test_query_w_multiple_filters(ancestor_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_w_multiple_filters(ancestor_query, database_id):
     query = ancestor_query
     query.add_filter(filter=PropertyFilter("appearances", ">=", 26))
     query = query.add_filter(filter=PropertyFilter("family", "=", "Stark"))
@@ -124,7 +128,8 @@ def test_query_w_multiple_filters(ancestor_query):
     assert len(entities) == expected_matches
 
 
-def test_query_key_filter(query_client, ancestor_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_key_filter(query_client, ancestor_query, database_id):
     # Use the client for this test instead of the global.
     query = ancestor_query
     rickard_key = query_client.key(*populate_datastore.RICKARD)
@@ -137,7 +142,8 @@ def test_query_key_filter(query_client, ancestor_query):
     assert len(entities) == expected_matches
 
 
-def test_query_w_order(ancestor_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_w_order(ancestor_query, database_id):
     query = ancestor_query
     query.order = "appearances"
     expected_matches = 8
@@ -152,7 +158,8 @@ def test_query_w_order(ancestor_query):
     assert entities[7]["name"] == populate_datastore.CHARACTERS[3]["name"]
 
 
-def test_query_w_projection(ancestor_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_w_projection(ancestor_query, database_id):
     filtered_query = ancestor_query
     filtered_query.projection = ["name", "family"]
     filtered_query.order = ["name", "family"]
@@ -181,7 +188,8 @@ def test_query_w_projection(ancestor_query):
     assert dict(sansa_entity) == {"name": "Sansa", "family": "Stark"}
 
 
-def test_query_w_paginate_simple_uuid_keys(query_client):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_w_paginate_simple_uuid_keys(query_client, database_id):
 
     # See issue #4264
     page_query = query_client.query(kind="uuid_key")
@@ -199,7 +207,8 @@ def test_query_w_paginate_simple_uuid_keys(query_client):
     assert page_count > 1
 
 
-def test_query_paginate_simple_timestamp_keys(query_client):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_paginate_simple_timestamp_keys(query_client, database_id):
 
     # See issue #4264
     page_query = query_client.query(kind="timestamp_key")
@@ -217,7 +226,8 @@ def test_query_paginate_simple_timestamp_keys(query_client):
     assert page_count > 1
 
 
-def test_query_w_offset_w_timestamp_keys(query_client):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_w_offset_w_timestamp_keys(query_client, database_id):
     # See issue #4675
     max_all = 10000
     offset = 1
@@ -231,7 +241,8 @@ def test_query_w_offset_w_timestamp_keys(query_client):
     assert offset_w_limit == all_w_limit[offset:]
 
 
-def test_query_paginate_with_offset(ancestor_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_paginate_with_offset(ancestor_query, database_id):
     page_query = ancestor_query
     page_query.order = "appearances"
     offset = 2
@@ -259,7 +270,8 @@ def test_query_paginate_with_offset(ancestor_query):
     assert entities[2]["name"] == "Arya"
 
 
-def test_query_paginate_with_start_cursor(query_client, ancestor_key):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_paginate_with_start_cursor(query_client, ancestor_key, database_id):
     # Don't use fixture, because we need to create a clean copy later.
     page_query = _make_ancestor_query(query_client, ancestor_key)
     page_query.order = "appearances"
@@ -287,7 +299,8 @@ def test_query_paginate_with_start_cursor(query_client, ancestor_key):
     assert new_entities[2]["name"] == "Arya"
 
 
-def test_query_distinct_on(ancestor_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_distinct_on(ancestor_query, database_id):
     query = ancestor_query
     query.distinct_on = ["alive"]
     expected_matches = 2
@@ -348,7 +361,8 @@ def large_query(large_query_client):
         (200, populate_datastore.LARGE_CHARACTER_TOTAL_OBJECTS + 1000, 0),
     ],
 )
-def test_large_query(large_query, limit, offset, expected):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_large_query(large_query, limit, offset, expected, database_id):
     page_query = large_query
     page_query.add_filter(filter=PropertyFilter("family", "=", "Stark"))
     page_query.add_filter(filter=PropertyFilter("alive", "=", False))
@@ -359,7 +373,8 @@ def test_large_query(large_query, limit, offset, expected):
     assert len(entities) == expected
 
 
-def test_query_add_property_filter(ancestor_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_add_property_filter(ancestor_query, database_id):
     query = ancestor_query
 
     query.add_filter(filter=PropertyFilter("appearances", ">=", 26))
@@ -372,7 +387,8 @@ def test_query_add_property_filter(ancestor_query):
         assert e["appearances"] >= 26
 
 
-def test_query_and_composite_filter(ancestor_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_and_composite_filter(ancestor_query, database_id):
     query = ancestor_query
 
     query.add_filter(
@@ -392,7 +408,8 @@ def test_query_and_composite_filter(ancestor_query):
     assert entities[0]["name"] == "Jon Snow"
 
 
-def test_query_or_composite_filter(ancestor_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_or_composite_filter(ancestor_query, database_id):
     query = ancestor_query
 
     # name = Arya or name = Jon Snow
@@ -414,7 +431,8 @@ def test_query_or_composite_filter(ancestor_query):
     assert entities[1]["name"] == "Jon Snow"
 
 
-def test_query_add_filters(ancestor_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_add_filters(ancestor_query, database_id):
     query = ancestor_query
 
     # family = Stark AND name = Jon Snow
@@ -430,7 +448,8 @@ def test_query_add_filters(ancestor_query):
     assert entities[0]["name"] == "Jon Snow"
 
 
-def test_query_add_complex_filters(ancestor_query):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_add_complex_filters(ancestor_query, database_id):
     query = ancestor_query
 
     # (alive = True OR appearances >= 26) AND (family = Stark)

@@ -18,6 +18,8 @@ from typing import Any
 import mock
 import pytest
 
+from google.cloud.datastore.helpers import set_database_id_to_request
+
 
 def _make_batch(client):
     from google.cloud.datastore.batch import Batch
@@ -25,14 +27,16 @@ def _make_batch(client):
     return Batch(client)
 
 
-def test_batch_ctor():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_ctor(database_id):
     project = "PROJECT"
     namespace = "NAMESPACE"
-    client = _Client(project, namespace=namespace)
+    client = _Client(project, database=database_id, namespace=namespace)
     batch = _make_batch(client)
 
     assert batch.project == project
     assert batch._client is client
+    assert batch.database == database_id
     assert batch.namespace == namespace
     assert batch._id is None
     assert batch._status == batch._INITIAL
@@ -40,11 +44,12 @@ def test_batch_ctor():
     assert batch._partial_key_entities == []
 
 
-def test_batch_current():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_current(database_id):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     project = "PROJECT"
-    client = _Client(project)
+    client = _Client(project, database=database_id)
     batch1 = _make_batch(client)
     batch2 = _make_batch(client)
 
@@ -68,19 +73,20 @@ def test_batch_current():
     commit_method = client._datastore_api.commit
     assert commit_method.call_count == 2
     mode = datastore_pb2.CommitRequest.Mode.NON_TRANSACTIONAL
-    commit_method.assert_called_with(
-        request={
-            "project_id": project,
-            "mode": mode,
-            "mutations": [],
-            "transaction": None,
-        }
-    )
+    expected_request = {
+        "project_id": project,
+        "mode": mode,
+        "mutations": [],
+        "transaction": None,
+    }
+    set_database_id_to_request(expected_request, database_id)
+    commit_method.assert_called_with(request=expected_request)
 
 
-def test_batch_put_w_entity_wo_key():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_put_w_entity_wo_key(database_id):
     project = "PROJECT"
-    client = _Client(project)
+    client = _Client(project, database=database_id)
     batch = _make_batch(client)
     entity = _Entity()
 
@@ -89,37 +95,52 @@ def test_batch_put_w_entity_wo_key():
         batch.put(entity)
 
 
-def test_batch_put_w_wrong_status():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_put_w_wrong_status(database_id):
     project = "PROJECT"
-    client = _Client(project)
+    client = _Client(project, database=database_id)
     batch = _make_batch(client)
     entity = _Entity()
-    entity.key = _Key(project=project)
+    entity.key = _Key(project=project, database=database_id)
 
     assert batch._status == batch._INITIAL
     with pytest.raises(ValueError):
         batch.put(entity)
 
 
-def test_batch_put_w_key_wrong_project():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_put_w_key_wrong_project(database_id):
     project = "PROJECT"
-    client = _Client(project)
+    client = _Client(project, database=database_id)
     batch = _make_batch(client)
     entity = _Entity()
-    entity.key = _Key(project="OTHER")
+    entity.key = _Key(project="OTHER", database=database_id)
 
     batch.begin()
     with pytest.raises(ValueError):
         batch.put(entity)
 
 
-def test_batch_put_w_entity_w_partial_key():
+def test_batch_put_w_key_wrong_database():
     project = "PROJECT"
-    properties = {"foo": "bar"}
     client = _Client(project)
     batch = _make_batch(client)
+    entity = _Entity()
+    entity.key = _Key(project=project, database="somedb")
+
+    batch.begin()
+    with pytest.raises(ValueError):
+        batch.put(entity)
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_put_w_entity_w_partial_key(database_id):
+    project = "PROJECT"
+    properties = {"foo": "bar"}
+    client = _Client(project, database=database_id)
+    batch = _make_batch(client)
     entity = _Entity(properties)
-    key = entity.key = _Key(project)
+    key = entity.key = _Key(project, database=database_id)
     key._id = None
 
     batch.begin()
@@ -130,14 +151,15 @@ def test_batch_put_w_entity_w_partial_key():
     assert batch._partial_key_entities == [entity]
 
 
-def test_batch_put_w_entity_w_completed_key():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_put_w_entity_w_completed_key(database_id):
     project = "PROJECT"
     properties = {"foo": "bar", "baz": "qux", "spam": [1, 2, 3], "frotz": []}
-    client = _Client(project)
+    client = _Client(project, database=database_id)
     batch = _make_batch(client)
     entity = _Entity(properties)
     entity.exclude_from_indexes = ("baz", "spam")
-    key = entity.key = _Key(project)
+    key = entity.key = _Key(project, database=database_id)
 
     batch.begin()
     batch.put(entity)
@@ -158,11 +180,12 @@ def test_batch_put_w_entity_w_completed_key():
     assert "frotz" in prop_dict
 
 
-def test_batch_delete_w_wrong_status():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_delete_w_wrong_status(database_id):
     project = "PROJECT"
-    client = _Client(project)
+    client = _Client(project, database=database_id)
     batch = _make_batch(client)
-    key = _Key(project=project)
+    key = _Key(project=project, database=database_id)
     key._id = None
 
     assert batch._status == batch._INITIAL
@@ -171,11 +194,12 @@ def test_batch_delete_w_wrong_status():
         batch.delete(key)
 
 
-def test_batch_delete_w_partial_key():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_delete_w_partial_key(database_id):
     project = "PROJECT"
-    client = _Client(project)
+    client = _Client(project, database=database_id)
     batch = _make_batch(client)
-    key = _Key(project=project)
+    key = _Key(project=project, database=database_id)
     key._id = None
 
     batch.begin()
@@ -184,23 +208,36 @@ def test_batch_delete_w_partial_key():
         batch.delete(key)
 
 
-def test_batch_delete_w_key_wrong_project():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_delete_w_key_wrong_project(database_id):
     project = "PROJECT"
-    client = _Client(project)
+    client = _Client(project, database=database_id)
     batch = _make_batch(client)
-    key = _Key(project="OTHER")
+    key = _Key(project="OTHER", database=database_id)
 
     batch.begin()
-
     with pytest.raises(ValueError):
         batch.delete(key)
 
 
-def test_batch_delete_w_completed_key():
+def test_batch_delete_w_key_wrong_database():
     project = "PROJECT"
-    client = _Client(project)
+    database = "DATABASE"
+    client = _Client(project, database=database)
     batch = _make_batch(client)
-    key = _Key(project)
+    key = _Key(project=project, database=None)
+
+    batch.begin()
+    with pytest.raises(ValueError):
+        batch.delete(key)
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_delete_w_completed_key(database_id):
+    project = "PROJECT"
+    client = _Client(project, database=database_id)
+    batch = _make_batch(client)
+    key = _Key(project, database=database_id)
 
     batch.begin()
     batch.delete(key)
@@ -209,9 +246,10 @@ def test_batch_delete_w_completed_key():
     assert mutated_key == key._key
 
 
-def test_batch_begin_w_wrong_status():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_begin_w_wrong_status(database_id):
     project = "PROJECT"
-    client = _Client(project, None)
+    client = _Client(project, database=database_id)
     batch = _make_batch(client)
     batch._status = batch._IN_PROGRESS
 
@@ -219,9 +257,10 @@ def test_batch_begin_w_wrong_status():
         batch.begin()
 
 
-def test_batch_begin():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_begin(database_id):
     project = "PROJECT"
-    client = _Client(project, None)
+    client = _Client(project, database=database_id)
     batch = _make_batch(client)
     assert batch._status == batch._INITIAL
 
@@ -230,9 +269,10 @@ def test_batch_begin():
     assert batch._status == batch._IN_PROGRESS
 
 
-def test_batch_rollback_w_wrong_status():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_rollback_w_wrong_status(database_id):
     project = "PROJECT"
-    client = _Client(project, None)
+    client = _Client(project, database=database_id)
     batch = _make_batch(client)
     assert batch._status == batch._INITIAL
 
@@ -240,9 +280,10 @@ def test_batch_rollback_w_wrong_status():
         batch.rollback()
 
 
-def test_batch_rollback():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_rollback(database_id):
     project = "PROJECT"
-    client = _Client(project, None)
+    client = _Client(project, database=database_id)
     batch = _make_batch(client)
     batch.begin()
     assert batch._status == batch._IN_PROGRESS
@@ -252,9 +293,10 @@ def test_batch_rollback():
     assert batch._status == batch._ABORTED
 
 
-def test_batch_commit_wrong_status():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_commit_wrong_status(database_id):
     project = "PROJECT"
-    client = _Client(project)
+    client = _Client(project, database=database_id)
     batch = _make_batch(client)
     assert batch._status == batch._INITIAL
 
@@ -262,11 +304,11 @@ def test_batch_commit_wrong_status():
         batch.commit()
 
 
-def _batch_commit_helper(timeout=None, retry=None):
+def _batch_commit_helper(timeout=None, retry=None, database=None):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     project = "PROJECT"
-    client = _Client(project)
+    client = _Client(project, database=database)
     batch = _make_batch(client)
     assert batch._status == batch._INITIAL
 
@@ -286,38 +328,41 @@ def _batch_commit_helper(timeout=None, retry=None):
 
     commit_method = client._datastore_api.commit
     mode = datastore_pb2.CommitRequest.Mode.NON_TRANSACTIONAL
-    commit_method.assert_called_with(
-        request={
-            "project_id": project,
-            "mode": mode,
-            "mutations": [],
-            "transaction": None,
-        },
-        **kwargs
-    )
+    expected_request = {
+        "project_id": project,
+        "mode": mode,
+        "mutations": [],
+        "transaction": None,
+    }
+    set_database_id_to_request(expected_request, database)
+    commit_method.assert_called_with(request=expected_request, **kwargs)
 
 
-def test_batch_commit():
-    _batch_commit_helper()
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_commit(database_id):
+    _batch_commit_helper(database=database_id)
 
 
-def test_batch_commit_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_commit_w_timeout(database_id):
     timeout = 100000
-    _batch_commit_helper(timeout=timeout)
+    _batch_commit_helper(timeout=timeout, database=database_id)
 
 
-def test_batch_commit_w_retry():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_commit_w_retry(database_id):
     retry = mock.Mock(spec=[])
-    _batch_commit_helper(retry=retry)
+    _batch_commit_helper(retry=retry, database=database_id)
 
 
-def test_batch_commit_w_partial_key_entity():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_commit_w_partial_key_entity(database_id):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     project = "PROJECT"
     new_id = 1234
     ds_api = _make_datastore_api(new_id)
-    client = _Client(project, datastore_api=ds_api)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
     batch = _make_batch(client)
     entity = _Entity({})
     key = entity.key = _Key(project)
@@ -332,27 +377,29 @@ def test_batch_commit_w_partial_key_entity():
     assert batch._status == batch._FINISHED
 
     mode = datastore_pb2.CommitRequest.Mode.NON_TRANSACTIONAL
-    ds_api.commit.assert_called_once_with(
-        request={
-            "project_id": project,
-            "mode": mode,
-            "mutations": [],
-            "transaction": None,
-        }
-    )
+    expected_request = {
+        "project_id": project,
+        "mode": mode,
+        "mutations": [],
+        "transaction": None,
+    }
+    set_database_id_to_request(expected_request, database_id)
+    ds_api.commit.assert_called_once_with(request=expected_request)
+
     assert not entity.key.is_partial
     assert entity.key._id == new_id
 
 
-def test_batch_as_context_mgr_wo_error():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_as_context_mgr_wo_error(database_id):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     project = "PROJECT"
     properties = {"foo": "bar"}
     entity = _Entity(properties)
-    key = entity.key = _Key(project)
+    key = entity.key = _Key(project, database=database_id)
 
-    client = _Client(project)
+    client = _Client(project, database=database_id)
     assert list(client._batches) == []
 
     with _make_batch(client) as batch:
@@ -366,27 +413,28 @@ def test_batch_as_context_mgr_wo_error():
 
     commit_method = client._datastore_api.commit
     mode = datastore_pb2.CommitRequest.Mode.NON_TRANSACTIONAL
-    commit_method.assert_called_with(
-        request={
-            "project_id": project,
-            "mode": mode,
-            "mutations": batch.mutations,
-            "transaction": None,
-        }
-    )
+    expected_request = {
+        "project_id": project,
+        "mode": mode,
+        "mutations": batch.mutations,
+        "transaction": None,
+    }
+    set_database_id_to_request(expected_request, database_id)
+    commit_method.assert_called_with(request=expected_request)
 
 
-def test_batch_as_context_mgr_nested():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_as_context_mgr_nested(database_id):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     project = "PROJECT"
     properties = {"foo": "bar"}
     entity1 = _Entity(properties)
-    key1 = entity1.key = _Key(project)
+    key1 = entity1.key = _Key(project, database=database_id)
     entity2 = _Entity(properties)
-    key2 = entity2.key = _Key(project)
+    key2 = entity2.key = _Key(project, database=database_id)
 
-    client = _Client(project)
+    client = _Client(project, database=database_id)
     assert list(client._batches) == []
 
     with _make_batch(client) as batch1:
@@ -411,31 +459,33 @@ def test_batch_as_context_mgr_nested():
     assert commit_method.call_count == 2
 
     mode = datastore_pb2.CommitRequest.Mode.NON_TRANSACTIONAL
-    commit_method.assert_called_with(
-        request={
-            "project_id": project,
-            "mode": mode,
-            "mutations": batch1.mutations,
-            "transaction": None,
-        }
-    )
-    commit_method.assert_called_with(
-        request={
-            "project_id": project,
-            "mode": mode,
-            "mutations": batch2.mutations,
-            "transaction": None,
-        }
-    )
+    expected_request_1 = {
+        "project_id": project,
+        "mode": mode,
+        "mutations": batch1.mutations,
+        "transaction": None,
+    }
+    expected_request_2 = {
+        "project_id": project,
+        "mode": mode,
+        "mutations": batch1.mutations,
+        "transaction": None,
+    }
+    set_database_id_to_request(expected_request_1, database_id)
+    set_database_id_to_request(expected_request_2, database_id)
+
+    commit_method.assert_called_with(request=expected_request_1)
+    commit_method.assert_called_with(request=expected_request_2)
 
 
-def test_batch_as_context_mgr_w_error():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_batch_as_context_mgr_w_error(database_id):
     project = "PROJECT"
     properties = {"foo": "bar"}
     entity = _Entity(properties)
-    key = entity.key = _Key(project)
+    key = entity.key = _Key(project, database=database_id)
 
-    client = _Client(project)
+    client = _Client(project, database=database_id)
     assert list(client._batches) == []
 
     try:
@@ -511,8 +561,9 @@ class _Key(object):
     _id = 1234
     _stored = None
 
-    def __init__(self, project):
+    def __init__(self, project, database=None):
         self.project = project
+        self.database = database
 
     @property
     def is_partial(self):
@@ -534,18 +585,19 @@ class _Key(object):
 
     def completed_key(self, new_id):
         assert self.is_partial
-        new_key = self.__class__(self.project)
+        new_key = self.__class__(self.project, self.database)
         new_key._id = new_id
         return new_key
 
 
 class _Client(object):
-    def __init__(self, project, datastore_api=None, namespace=None):
+    def __init__(self, project, datastore_api=None, namespace=None, database=None):
         self.project = project
         if datastore_api is None:
             datastore_api = _make_datastore_api()
         self._datastore_api = datastore_api
         self.namespace = namespace
+        self.database = database
         self._batches = []
 
     def _push_batch(self, batch):

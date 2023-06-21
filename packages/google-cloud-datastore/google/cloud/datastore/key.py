@@ -87,6 +87,13 @@ class Key(object):
        >>> client.key('Parent', 'foo', 'Child')
        <Key('Parent', 'foo', 'Child'), project=...>
 
+    To create a key from a non-default database:
+
+    .. doctest:: key-ctor
+
+       >>> Key('EntityKind', 1234, project=project, database='mydb')
+       <Key('EntityKind', 1234), project=my-special-pony, database=mydb>
+
     :type path_args: tuple of string and integer
     :param path_args: May represent a partial (odd length) or full (even
                       length) key path.
@@ -97,6 +104,7 @@ class Key(object):
 
     * namespace (string): A namespace identifier for the key.
     * project (string): The project associated with the key.
+    * database (string): The database associated with the key.
     * parent (:class:`~google.cloud.datastore.key.Key`): The parent of the key.
 
     The project argument is required unless it has been set implicitly.
@@ -106,10 +114,12 @@ class Key(object):
         self._flat_path = path_args
         parent = self._parent = kwargs.get("parent")
         self._namespace = kwargs.get("namespace")
+        self._database = kwargs.get("database")
+
         project = kwargs.get("project")
         self._project = _validate_project(project, parent)
-        # _flat_path, _parent, _namespace and _project must be set before
-        # _combine_args() is called.
+        # _flat_path, _parent, _database, _namespace, and _project must be set
+        # before _combine_args() is called.
         self._path = self._combine_args()
 
     def __eq__(self, other):
@@ -118,7 +128,9 @@ class Key(object):
         Incomplete keys never compare equal to any other key.
 
         Completed keys compare equal if they have the same path, project,
-        and namespace.
+        database, and namespace.
+
+        (Note that database=None is considered to refer to the default database.)
 
         :rtype: bool
         :returns: True if the keys compare equal, else False.
@@ -133,6 +145,7 @@ class Key(object):
             self.flat_path == other.flat_path
             and self.project == other.project
             and self.namespace == other.namespace
+            and self.database == other.database
         )
 
     def __ne__(self, other):
@@ -141,7 +154,9 @@ class Key(object):
         Incomplete keys never compare equal to any other key.
 
         Completed keys compare equal if they have the same path, project,
-        and namespace.
+        database, and namespace.
+
+        (Note that database=None is considered to refer to the default database.)
 
         :rtype: bool
         :returns: False if the keys compare equal, else True.
@@ -149,12 +164,15 @@ class Key(object):
         return not self == other
 
     def __hash__(self):
-        """Hash a keys for use in a dictionary lookp.
+        """Hash this key for use in a dictionary lookup.
 
         :rtype: int
         :returns: a hash of the key's state.
         """
-        return hash(self.flat_path) + hash(self.project) + hash(self.namespace)
+        hash_val = hash(self.flat_path) + hash(self.project) + hash(self.namespace)
+        if self.database:
+            hash_val = hash_val + hash(self.database)
+        return hash_val
 
     @staticmethod
     def _parse_path(path_args):
@@ -204,7 +222,7 @@ class Key(object):
         """Sets protected data by combining raw data set from the constructor.
 
         If a ``_parent`` is set, updates the ``_flat_path`` and sets the
-        ``_namespace`` and ``_project`` if not already set.
+        ``_namespace``, ``_database``, and ``_project`` if not already set.
 
         :rtype: :class:`list` of :class:`dict`
         :returns: A list of key parts with kind and ID or name set.
@@ -227,6 +245,9 @@ class Key(object):
             self._namespace = self._parent.namespace
             if self._project is not None and self._project != self._parent.project:
                 raise ValueError("Child project must agree with parent's.")
+            if self._database is not None and self._database != self._parent.database:
+                raise ValueError("Child database must agree with parent's.")
+            self._database = self._parent.database
             self._project = self._parent.project
 
         return child_path
@@ -241,7 +262,10 @@ class Key(object):
         :returns: A new ``Key`` instance with the same data as the current one.
         """
         cloned_self = self.__class__(
-            *self.flat_path, project=self.project, namespace=self.namespace
+            *self.flat_path,
+            project=self.project,
+            database=self.database,
+            namespace=self.namespace
         )
         # If the current parent has already been set, we re-use
         # the same instance
@@ -283,6 +307,8 @@ class Key(object):
         """
         key = _entity_pb2.Key()
         key.partition_id.project_id = self.project
+        if self.database:
+            key.partition_id.database_id = self.database
 
         if self.namespace:
             key.partition_id.namespace_id = self.namespace
@@ -314,6 +340,9 @@ class Key(object):
             prefix may need to be specified to obtain identical urlsafe
             keys.
 
+        .. note::
+            to_legacy_urlsafe only supports the default database
+
         :type location_prefix: str
         :param location_prefix: The location prefix of an App Engine project
                                 ID. Often this value is 's~', but may also be
@@ -323,6 +352,9 @@ class Key(object):
         :rtype: bytes
         :returns: A bytestring containing the key encoded as URL-safe base64.
         """
+        if self.database:
+            raise ValueError("to_legacy_urlsafe only supports the default database")
+
         if location_prefix is None:
             project_id = self.project
         else:
@@ -344,6 +376,9 @@ class Key(object):
         datastore "Key" used within Google App Engine (a so-called
         "Reference"). This assumes that ``urlsafe`` was created within an App
         Engine app via something like ``ndb.Key(...).urlsafe()``.
+
+        .. note::
+            from_legacy_urlsafe only supports the default database.
 
         :type urlsafe: bytes or unicode
         :param urlsafe: The base64 encoded (ASCII) string corresponding to a
@@ -375,6 +410,15 @@ class Key(object):
                   an ``id`` or a ``name``.
         """
         return self.id_or_name is None
+
+    @property
+    def database(self):
+        """Database getter.
+
+        :rtype: str
+        :returns: The database of the current key.
+        """
+        return self._database
 
     @property
     def namespace(self):
@@ -457,7 +501,7 @@ class Key(object):
         """Creates a parent key for the current path.
 
         Extracts all but the last element in the key path and creates a new
-        key, while still matching the namespace and the project.
+        key, while still matching the namespace, the database, and the project.
 
         :rtype: :class:`google.cloud.datastore.key.Key` or :class:`NoneType`
         :returns: A new ``Key`` instance, whose path consists of all but the
@@ -470,7 +514,10 @@ class Key(object):
             parent_args = self.flat_path[:-2]
         if parent_args:
             return self.__class__(
-                *parent_args, project=self.project, namespace=self.namespace
+                *parent_args,
+                project=self.project,
+                database=self.database,
+                namespace=self.namespace
             )
 
     @property
@@ -488,7 +535,15 @@ class Key(object):
         return self._parent
 
     def __repr__(self):
-        return "<Key%s, project=%s>" % (self._flat_path, self.project)
+        """String representation of this key.
+
+        Includes the project and database, but suppresses them if they are
+        equal to the default values.
+        """
+        repr = "<Key%s, project=%s" % (self._flat_path, self.project)
+        if self.database:
+            repr += ", database=%s" % self.database
+        return repr + ">"
 
 
 def _validate_project(project, parent):
@@ -549,12 +604,14 @@ def _get_empty(value, empty_value):
 def _check_database_id(database_id):
     """Make sure a "Reference" database ID is empty.
 
+    Here, "empty" means either ``None`` or ``""``.
+
     :type database_id: unicode
     :param database_id: The ``database_id`` field from a "Reference" protobuf.
 
     :raises: :exc:`ValueError` if the ``database_id`` is not empty.
     """
-    if database_id != "":
+    if database_id is not None and database_id != "":
         msg = _DATABASE_ID_TEMPLATE.format(database_id)
         raise ValueError(msg)
 

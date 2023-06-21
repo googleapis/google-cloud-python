@@ -126,6 +126,7 @@ def _extended_lookup(
     retry=None,
     timeout=None,
     read_time=None,
+    database=None,
 ):
     """Repeat lookup until all keys found (unless stop requested).
 
@@ -179,6 +180,10 @@ def _extended_lookup(
         ``eventual==True`` or ``transaction_id``.
         This feature is in private preview.
 
+    :type database: str
+    :param database:
+        (Optional) Database from which to fetch data. Defaults to the (default) database.
+
     :rtype: list of :class:`.entity_pb2.Entity`
     :returns: The requested entities.
     :raises: :class:`ValueError` if missing / deferred are not null or
@@ -198,12 +203,14 @@ def _extended_lookup(
     read_options = helpers.get_read_options(eventual, transaction_id, read_time)
     while loop_num < _MAX_LOOPS:  # loop against possible deferred.
         loop_num += 1
+        request = {
+            "project_id": project,
+            "keys": key_pbs,
+            "read_options": read_options,
+        }
+        helpers.set_database_id_to_request(request, database)
         lookup_response = datastore_api.lookup(
-            request={
-                "project_id": project,
-                "keys": key_pbs,
-                "read_options": read_options,
-            },
+            request=request,
             **kwargs,
         )
 
@@ -276,6 +283,9 @@ class Client(ClientWithProject):
                       environment variable.
                       This parameter should be considered private, and could
                       change in the future.
+
+    :type database: str
+    :param database: (Optional) database to pass to proxied API methods.
     """
 
     SCOPE = ("https://www.googleapis.com/auth/datastore",)
@@ -288,6 +298,7 @@ class Client(ClientWithProject):
         credentials=None,
         client_info=_CLIENT_INFO,
         client_options=None,
+        database=None,
         _http=None,
         _use_grpc=None,
     ):
@@ -311,6 +322,7 @@ class Client(ClientWithProject):
         self._client_options = client_options
         self._batch_stack = _LocalStack()
         self._datastore_api_internal = None
+        self._database = database
 
         if _use_grpc is None:
             self._use_grpc = _USE_GRPC
@@ -344,6 +356,11 @@ class Client(ClientWithProject):
     def base_url(self, value):
         """Setter for API base URL."""
         self._base_url = value
+
+    @property
+    def database(self):
+        """Getter for database"""
+        return self._database
 
     @property
     def _datastore_api(self):
@@ -557,6 +574,7 @@ class Client(ClientWithProject):
             retry=retry,
             timeout=timeout,
             read_time=read_time,
+            database=self.database,
         )
 
         if missing is not None:
@@ -739,8 +757,13 @@ class Client(ClientWithProject):
 
         kwargs = _make_retry_timeout_kwargs(retry, timeout)
 
+        request = {
+            "project_id": incomplete_key.project,
+            "keys": incomplete_key_pbs,
+        }
+        helpers.set_database_id_to_request(request, self.database)
         response_pb = self._datastore_api.allocate_ids(
-            request={"project_id": incomplete_key.project, "keys": incomplete_key_pbs},
+            request=request,
             **kwargs,
         )
         allocated_ids = [
@@ -753,11 +776,14 @@ class Client(ClientWithProject):
     def key(self, *path_args, **kwargs):
         """Proxy to :class:`google.cloud.datastore.key.Key`.
 
-        Passes our ``project``.
+        Passes our ``project`` and our ``database``.
         """
         if "project" in kwargs:
             raise TypeError("Cannot pass project")
         kwargs["project"] = self.project
+        if "database" in kwargs:
+            raise TypeError("Cannot pass database")
+        kwargs["database"] = self.database
         if "namespace" not in kwargs:
             kwargs["namespace"] = self.namespace
         return Key(*path_args, **kwargs)
@@ -963,18 +989,27 @@ class Client(ClientWithProject):
         key_class = type(complete_key)
         namespace = complete_key._namespace
         project = complete_key._project
+        database = complete_key._database
         flat_path = list(complete_key._flat_path[:-1])
         start_id = complete_key._flat_path[-1]
 
         key_pbs = []
         for id in range(start_id, start_id + num_ids):
             path = flat_path + [id]
-            key = key_class(*path, project=project, namespace=namespace)
+            key = key_class(
+                *path, project=project, database=database, namespace=namespace
+            )
             key_pbs.append(key.to_protobuf())
 
         kwargs = _make_retry_timeout_kwargs(retry, timeout)
+        request = {
+            "project_id": complete_key.project,
+            "keys": key_pbs,
+        }
+        helpers.set_database_id_to_request(request, self.database)
         self._datastore_api.reserve_ids(
-            request={"project_id": complete_key.project, "keys": key_pbs}, **kwargs
+            request=request,
+            **kwargs,
         )
         return None
 
@@ -1020,8 +1055,15 @@ class Client(ClientWithProject):
 
         kwargs = _make_retry_timeout_kwargs(retry, timeout)
         key_pbs = [key.to_protobuf() for key in complete_keys]
+        request = {
+            "project_id": complete_keys[0].project,
+            "keys": key_pbs,
+        }
+        helpers.set_database_id_to_request(request, complete_keys[0].database)
+
         self._datastore_api.reserve_ids(
-            request={"project_id": complete_keys[0].project, "keys": key_pbs}, **kwargs
+            request=request,
+            **kwargs,
         )
 
         return None

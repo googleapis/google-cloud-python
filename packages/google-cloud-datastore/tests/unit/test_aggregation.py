@@ -16,6 +16,7 @@ import mock
 import pytest
 
 from google.cloud.datastore.aggregation import CountAggregation, AggregationQuery
+from google.cloud.datastore.helpers import set_database_id_to_request
 
 from tests.unit.test_query import _make_query, _make_client
 
@@ -34,11 +35,44 @@ def test_count_aggregation_to_pb():
 
 
 @pytest.fixture
-def client():
-    return _make_client()
+def database_id(request):
+    return request.param
 
 
-def test_pb_over_query(client):
+@pytest.fixture
+def client(database_id):
+    return _make_client(database=database_id)
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"], indirect=True)
+def test_project(client, database_id):
+    # Fallback to client
+    query = _make_query(client)
+    aggregation_query = _make_aggregation_query(client=client, query=query)
+    assert aggregation_query.project == _PROJECT
+
+    # Fallback to query
+    query = _make_query(client, project="other-project")
+    aggregation_query = _make_aggregation_query(client=client, query=query)
+    assert aggregation_query.project == "other-project"
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"], indirect=True)
+def test_namespace(client, database_id):
+    # Fallback to client
+    client.namespace = "other-namespace"
+    query = _make_query(client)
+    aggregation_query = _make_aggregation_query(client=client, query=query)
+    assert aggregation_query.namespace == "other-namespace"
+
+    # Fallback to query
+    query = _make_query(client, namespace="third-namespace")
+    aggregation_query = _make_aggregation_query(client=client, query=query)
+    assert aggregation_query.namespace == "third-namespace"
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"], indirect=True)
+def test_pb_over_query(client, database_id):
     from google.cloud.datastore.query import _pb_from_query
 
     query = _make_query(client)
@@ -48,7 +82,8 @@ def test_pb_over_query(client):
     assert pb.aggregations == []
 
 
-def test_pb_over_query_with_count(client):
+@pytest.mark.parametrize("database_id", [None, "somedb"], indirect=True)
+def test_pb_over_query_with_count(client, database_id):
     from google.cloud.datastore.query import _pb_from_query
 
     query = _make_query(client)
@@ -61,7 +96,8 @@ def test_pb_over_query_with_count(client):
     assert pb.aggregations[0] == CountAggregation(alias="total")._to_pb()
 
 
-def test_pb_over_query_with_add_aggregation(client):
+@pytest.mark.parametrize("database_id", [None, "somedb"], indirect=True)
+def test_pb_over_query_with_add_aggregation(client, database_id):
     from google.cloud.datastore.query import _pb_from_query
 
     query = _make_query(client)
@@ -74,7 +110,8 @@ def test_pb_over_query_with_add_aggregation(client):
     assert pb.aggregations[0] == CountAggregation(alias="total")._to_pb()
 
 
-def test_pb_over_query_with_add_aggregations(client):
+@pytest.mark.parametrize("database_id", [None, "somedb"], indirect=True)
+def test_pb_over_query_with_add_aggregations(client, database_id):
     from google.cloud.datastore.query import _pb_from_query
 
     aggregations = [
@@ -93,7 +130,8 @@ def test_pb_over_query_with_add_aggregations(client):
     assert pb.aggregations[1] == CountAggregation(alias="all")._to_pb()
 
 
-def test_query_fetch_defaults_w_client_attr(client):
+@pytest.mark.parametrize("database_id", [None, "somedb"], indirect=True)
+def test_query_fetch_defaults_w_client_attr(client, database_id):
     from google.cloud.datastore.aggregation import AggregationResultIterator
 
     query = _make_query(client)
@@ -107,10 +145,11 @@ def test_query_fetch_defaults_w_client_attr(client):
     assert iterator._timeout is None
 
 
-def test_query_fetch_w_explicit_client_w_retry_w_timeout(client):
+@pytest.mark.parametrize("database_id", [None, "somedb"], indirect=True)
+def test_query_fetch_w_explicit_client_w_retry_w_timeout(client, database_id):
     from google.cloud.datastore.aggregation import AggregationResultIterator
 
-    other_client = _make_client()
+    other_client = _make_client(database=database_id)
     query = _make_query(client)
     aggregation_query = _make_aggregation_query(client=client, query=query)
     retry = mock.Mock()
@@ -127,10 +166,11 @@ def test_query_fetch_w_explicit_client_w_retry_w_timeout(client):
     assert iterator._timeout == timeout
 
 
-def test_query_fetch_w_explicit_client_w_limit(client):
+@pytest.mark.parametrize("database_id", [None, "somedb"], indirect=True)
+def test_query_fetch_w_explicit_client_w_limit(client, database_id):
     from google.cloud.datastore.aggregation import AggregationResultIterator
 
-    other_client = _make_client()
+    other_client = _make_client(database=database_id)
     query = _make_query(client)
     aggregation_query = _make_aggregation_query(client=client, query=query)
     limit = 2
@@ -300,7 +340,7 @@ def test_iterator__next_page_no_more():
     ds_api.run_aggregation_query.assert_not_called()
 
 
-def _next_page_helper(txn_id=None, retry=None, timeout=None):
+def _next_page_helper(txn_id=None, retry=None, timeout=None, database_id=None):
     from google.api_core import page_iterator
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import entity as entity_pb2
@@ -318,10 +358,12 @@ def _next_page_helper(txn_id=None, retry=None, timeout=None):
     project = "prujekt"
     ds_api = _make_datastore_api_for_aggregation(result_1, result_2)
     if txn_id is None:
-        client = _Client(project, datastore_api=ds_api)
+        client = _Client(project, datastore_api=ds_api, database=database_id)
     else:
         transaction = mock.Mock(id=txn_id, spec=["id"])
-        client = _Client(project, datastore_api=ds_api, transaction=transaction)
+        client = _Client(
+            project, datastore_api=ds_api, transaction=transaction, database=database_id
+        )
 
     query = _make_query(client)
     kwargs = {}
@@ -350,14 +392,16 @@ def _next_page_helper(txn_id=None, retry=None, timeout=None):
 
     aggregation_query = AggregationQuery(client=client, query=query)
     assert ds_api.run_aggregation_query.call_count == 2
+    expected_request = {
+        "project_id": project,
+        "partition_id": partition_id,
+        "read_options": read_options,
+        "aggregation_query": aggregation_query._to_pb(),
+    }
+    set_database_id_to_request(expected_request, database_id)
     expected_call = mock.call(
-        request={
-            "project_id": project,
-            "partition_id": partition_id,
-            "read_options": read_options,
-            "aggregation_query": aggregation_query._to_pb(),
-        },
-        **kwargs
+        request=expected_request,
+        **kwargs,
     )
     assert ds_api.run_aggregation_query.call_args_list == (
         [expected_call, expected_call]
@@ -383,8 +427,17 @@ def test__item_to_aggregation_result():
 
 
 class _Client(object):
-    def __init__(self, project, datastore_api=None, namespace=None, transaction=None):
+    def __init__(
+        self,
+        project,
+        datastore_api=None,
+        namespace=None,
+        transaction=None,
+        *,
+        database=None,
+    ):
         self.project = project
+        self.database = database
         self._datastore_api = datastore_api
         self.namespace = namespace
         self._transaction = transaction

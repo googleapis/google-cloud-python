@@ -11,12 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+import pytest
 import time
 
 from datetime import datetime, timezone
 
 from google.cloud import datastore
+from . import _helpers
 
 
 def _parent_key(datastore_client):
@@ -33,9 +34,9 @@ def _put_entity(datastore_client, entity_id):
     return entity
 
 
-def test_get_w_read_time(datastore_client, entities_to_delete):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_get_w_read_time(datastore_client, entities_to_delete, database_id):
     entity = _put_entity(datastore_client, 1)
-
     entities_to_delete.append(entity)
 
     # Add some sleep to accommodate server & client clock discrepancy.
@@ -62,7 +63,8 @@ def test_get_w_read_time(datastore_client, entities_to_delete):
         assert retrieved_entity_from_xact["field"] == "old_value"
 
 
-def test_query_w_read_time(datastore_client, entities_to_delete):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_w_read_time(datastore_client, entities_to_delete, database_id):
     entity0 = _put_entity(datastore_client, 1)
     entity1 = _put_entity(datastore_client, 2)
     entity2 = _put_entity(datastore_client, 3)

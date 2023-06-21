@@ -59,6 +59,10 @@ LARGE_CHARACTER_NAMESPACE = "LargeCharacterEntity"
 LARGE_CHARACTER_KIND = "LargeCharacter"
 
 
+def get_system_test_db():
+    return os.getenv("SYSTEM_TESTS_DATABASE") or "system-tests-named-db"
+
+
 def print_func(message):
     if os.getenv("GOOGLE_CLOUD_NO_PRINT") != "true":
         print(message)
@@ -119,7 +123,7 @@ def add_large_character_entities(client=None):
 def add_characters(client=None):
     if client is None:
         # Get a client that uses the test dataset.
-        client = datastore.Client()
+        client = datastore.Client(database_id="mw-other-db")
     with client.transaction() as xact:
         for key_path, character in zip(KEY_PATHS, CHARACTERS):
             if key_path[-1] != character["name"]:
@@ -135,7 +139,7 @@ def add_characters(client=None):
 def add_uid_keys(client=None):
     if client is None:
         # Get a client that uses the test dataset.
-        client = datastore.Client()
+        client = datastore.Client(database_id="mw-other-db")
 
     num_batches = 2
     batch_size = 500
@@ -175,8 +179,8 @@ def add_timestamp_keys(client=None):
                 batch.put(entity)
 
 
-def main():
-    client = datastore.Client()
+def run(database):
+    client = datastore.Client(database=database)
     flags = sys.argv[1:]
 
     if len(flags) == 0:
@@ -190,6 +194,11 @@ def main():
 
     if "--timestamps" in flags:
         add_timestamp_keys(client)
+
+
+def main():
+    for database in ["", get_system_test_db()]:
+        run(database)
 
 
 if __name__ == "__main__":

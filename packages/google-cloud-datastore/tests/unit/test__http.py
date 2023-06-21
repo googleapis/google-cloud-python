@@ -18,6 +18,8 @@ import mock
 import pytest
 import requests
 
+from google.cloud.datastore.helpers import set_database_id_to_request
+
 
 def test__make_retry_timeout_kwargs_w_empty():
     from google.cloud.datastore._http import _make_retry_timeout_kwargs
@@ -97,9 +99,9 @@ def test__make_request_pb_w_instance():
     assert foo is passed
 
 
-def _request_helper(retry=None, timeout=None):
+def _request_helper(retry=None, timeout=None, database=None):
     from google.cloud import _http as connection_module
-    from google.cloud.datastore._http import _request
+    from google.cloud.datastore._http import _request, _update_headers
 
     project = "PROJECT"
     method = "METHOD"
@@ -113,7 +115,9 @@ def _request_helper(retry=None, timeout=None):
 
     kwargs = _retry_timeout_kw(retry, timeout, http)
 
-    response = _request(http, project, method, data, base_url, client_info, **kwargs)
+    response = _request(
+        http, project, method, data, base_url, client_info, database=database, **kwargs
+    )
     assert response == response_data
 
     # Check that the mocks were called as expected.
@@ -122,8 +126,9 @@ def _request_helper(retry=None, timeout=None):
         "Content-Type": "application/x-protobuf",
         "User-Agent": user_agent,
         connection_module.CLIENT_INFO_HEADER: user_agent,
+        "x-goog-request-params": f"project_id={project}",
     }
-
+    _update_headers(expected_headers, project, database_id=database)
     if retry is not None:
         retry.assert_called_once_with(http.request)
 
@@ -133,18 +138,21 @@ def _request_helper(retry=None, timeout=None):
     )
 
 
-def test__request_defaults():
-    _request_helper()
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test__request_defaults(database_id):
+    _request_helper(database=database_id)
 
 
-def test__request_w_retry():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test__request_w_retry(database_id):
     retry = mock.MagicMock()
-    _request_helper(retry=retry)
+    _request_helper(retry=retry, database=database_id)
 
 
-def test__request_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test__request_w_timeout(database_id):
     timeout = 5.0
-    _request_helper(timeout=timeout)
+    _request_helper(timeout=timeout, database=database_id)
 
 
 def test__request_failure():
@@ -169,13 +177,13 @@ def test__request_failure():
     )
 
     with pytest.raises(BadRequest) as exc:
-        _request(session, project, method, data, uri, client_info)
+        _request(session, project, method, data, uri, client_info, None)
 
     expected_message = "400 Entity value is indexed."
     assert exc.match(expected_message)
 
 
-def _rpc_helper(retry=None, timeout=None):
+def _rpc_helper(retry=None, timeout=None, database=None):
     from google.cloud.datastore._http import _rpc
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
@@ -203,7 +211,8 @@ def _rpc_helper(retry=None, timeout=None):
             client_info,
             request_pb,
             datastore_pb2.BeginTransactionResponse,
-            **kwargs
+            database,
+            **kwargs,
         )
 
     assert result == response_pb._pb
@@ -215,22 +224,26 @@ def _rpc_helper(retry=None, timeout=None):
         request_pb._pb.SerializeToString(),
         base_url,
         client_info,
-        **kwargs
+        database,
+        **kwargs,
     )
 
 
-def test__rpc_defaults():
-    _rpc_helper()
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test__rpc_defaults(database_id):
+    _rpc_helper(database=database_id)
 
 
-def test__rpc_w_retry():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test__rpc_w_retry(database_id):
     retry = mock.MagicMock()
-    _rpc_helper(retry=retry)
+    _rpc_helper(retry=retry, database=database_id)
 
 
-def test__rpc_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test__rpc_w_timeout(database_id):
     timeout = 5.0
-    _rpc_helper(timeout=timeout)
+    _rpc_helper(timeout=timeout, database=database_id)
 
 
 def test_api_ctor():
@@ -245,6 +258,7 @@ def _lookup_single_helper(
     empty=True,
     retry=None,
     timeout=None,
+    database=None,
 ):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import entity as entity_pb2
@@ -283,6 +297,7 @@ def _lookup_single_helper(
         "keys": [key_pb],
         "read_options": read_options,
     }
+    set_database_id_to_request(request, database)
     kwargs = _retry_timeout_kw(retry, timeout, http)
 
     response = ds_api.lookup(request=request, **kwargs)
@@ -301,9 +316,11 @@ def _lookup_single_helper(
     request = _verify_protobuf_call(
         http,
         uri,
-        datastore_pb2.LookupRequest(),
+        datastore_pb2.LookupRequest(project_id=project),
         retry=retry,
         timeout=timeout,
+        project=project,
+        database=database,
     )
 
     if retry is not None:
@@ -344,11 +361,7 @@ def test_api_lookup_single_key_hit_w_timeout():
 
 
 def _lookup_multiple_helper(
-    found=0,
-    missing=0,
-    deferred=0,
-    retry=None,
-    timeout=None,
+    found=0, missing=0, deferred=0, retry=None, timeout=None, database=None
 ):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import entity as entity_pb2
@@ -413,9 +426,11 @@ def _lookup_multiple_helper(
     request = _verify_protobuf_call(
         http,
         uri,
-        datastore_pb2.LookupRequest(),
+        datastore_pb2.LookupRequest(project_id=project),
         retry=retry,
         timeout=timeout,
+        project=project,
+        database=database,
     )
     assert list(request.keys) == [key_pb1._pb, key_pb2._pb]
     assert request.read_options == read_options._pb
@@ -454,6 +469,7 @@ def _run_query_helper(
     found=0,
     retry=None,
     timeout=None,
+    database=None,
 ):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import entity as entity_pb2
@@ -517,9 +533,11 @@ def _run_query_helper(
     request = _verify_protobuf_call(
         http,
         uri,
-        datastore_pb2.RunQueryRequest(),
+        datastore_pb2.RunQueryRequest(project_id=project),
         retry=retry,
         timeout=timeout,
+        project=project,
+        database=database,
     )
     assert request.partition_id == partition_id._pb
     assert request.query == query_pb._pb
@@ -558,9 +576,7 @@ def test_api_run_query_w_namespace_nonempty_result():
 
 
 def _run_aggregation_query_helper(
-    transaction=None,
-    retry=None,
-    timeout=None,
+    transaction=None, retry=None, timeout=None, database=None
 ):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import entity as entity_pb2
@@ -620,9 +636,11 @@ def _run_aggregation_query_helper(
     request = _verify_protobuf_call(
         http,
         uri,
-        datastore_pb2.RunAggregationQueryRequest(),
+        datastore_pb2.RunAggregationQueryRequest(project_id=project),
         retry=retry,
         timeout=timeout,
+        project=project,
+        database=database,
     )
 
     assert request.partition_id == partition_id._pb
@@ -649,7 +667,7 @@ def test_api_run_aggregation_query_w_transaction():
     _run_aggregation_query_helper(transaction=transaction)
 
 
-def _begin_transaction_helper(options=None, retry=None, timeout=None):
+def _begin_transaction_helper(options=None, retry=None, timeout=None, database=None):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     project = "PROJECT"
@@ -672,7 +690,7 @@ def _begin_transaction_helper(options=None, retry=None, timeout=None):
     # Make request.
     ds_api = _make_http_datastore_api(client)
     request = {"project_id": project}
-
+    set_database_id_to_request(request, database)
     if options is not None:
         request["transaction_options"] = options
 
@@ -687,40 +705,46 @@ def _begin_transaction_helper(options=None, retry=None, timeout=None):
     request = _verify_protobuf_call(
         http,
         uri,
-        datastore_pb2.BeginTransactionRequest(),
+        datastore_pb2.BeginTransactionRequest(project_id=project),
         retry=retry,
         timeout=timeout,
+        project=project,
+        database=database,
     )
 
 
-def test_api_begin_transaction_wo_options():
-    _begin_transaction_helper()
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_begin_transaction_wo_options(database_id):
+    _begin_transaction_helper(database=database_id)
 
 
-def test_api_begin_transaction_w_options():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_begin_transaction_w_options(database_id):
     from google.cloud.datastore_v1.types import TransactionOptions
 
     read_only = TransactionOptions.ReadOnly._meta.pb()
     options = TransactionOptions(read_only=read_only)
-    _begin_transaction_helper(options=options)
+    _begin_transaction_helper(options=options, database=database_id)
 
 
-def test_api_begin_transaction_w_retry():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_begin_transaction_w_retry(database_id):
     retry = mock.MagicMock()
-    _begin_transaction_helper(retry=retry)
+    _begin_transaction_helper(retry=retry, database=database_id)
 
 
-def test_api_begin_transaction_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_begin_transaction_w_timeout(database_id):
     timeout = 5.0
-    _begin_transaction_helper(timeout=timeout)
+    _begin_transaction_helper(timeout=timeout, database=database_id)
 
 
-def _commit_helper(transaction=None, retry=None, timeout=None):
+def _commit_helper(transaction=None, retry=None, timeout=None, database=None):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore.helpers import _new_value_pb
 
     project = "PROJECT"
-    key_pb = _make_key_pb(project)
+    key_pb = _make_key_pb(project, database=database)
     rsp_pb = datastore_pb2.CommitResponse()
     req_pb = datastore_pb2.CommitRequest()
     mutation = req_pb._pb.mutations.add()
@@ -744,7 +768,7 @@ def _commit_helper(transaction=None, retry=None, timeout=None):
     ds_api = _make_http_datastore_api(client)
 
     request = {"project_id": project, "mutations": [mutation]}
-
+    set_database_id_to_request(request, database)
     if transaction is not None:
         request["transaction"] = transaction
         mode = request["mode"] = rq_class.Mode.TRANSACTIONAL
@@ -761,9 +785,11 @@ def _commit_helper(transaction=None, retry=None, timeout=None):
     request = _verify_protobuf_call(
         http,
         uri,
-        rq_class(),
+        rq_class(project_id=project),
         retry=retry,
         timeout=timeout,
+        project=project,
+        database=database,
     )
     assert list(request.mutations) == [mutation]
     assert request.mode == mode
@@ -774,27 +800,31 @@ def _commit_helper(transaction=None, retry=None, timeout=None):
         assert request.transaction == b""
 
 
-def test_api_commit_wo_transaction():
-    _commit_helper()
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_commit_wo_transaction(database_id):
+    _commit_helper(database=database_id)
 
 
-def test_api_commit_w_transaction():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_commit_w_transaction(database_id):
     transaction = b"xact"
 
-    _commit_helper(transaction=transaction)
+    _commit_helper(transaction=transaction, database=database_id)
 
 
-def test_api_commit_w_retry():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_commit_w_retry(database_id):
     retry = mock.MagicMock()
-    _commit_helper(retry=retry)
+    _commit_helper(retry=retry, database=database_id)
 
 
-def test_api_commit_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_commit_w_timeout(database_id):
     timeout = 5.0
-    _commit_helper(timeout=timeout)
+    _commit_helper(timeout=timeout, database=database_id)
 
 
-def _rollback_helper(retry=None, timeout=None):
+def _rollback_helper(retry=None, timeout=None, database=None):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     project = "PROJECT"
@@ -816,6 +846,7 @@ def _rollback_helper(retry=None, timeout=None):
     # Make request.
     ds_api = _make_http_datastore_api(client)
     request = {"project_id": project, "transaction": transaction}
+    set_database_id_to_request(request, database)
     kwargs = _retry_timeout_kw(retry, timeout, http)
 
     response = ds_api.rollback(request=request, **kwargs)
@@ -827,28 +858,33 @@ def _rollback_helper(retry=None, timeout=None):
     request = _verify_protobuf_call(
         http,
         uri,
-        datastore_pb2.RollbackRequest(),
+        datastore_pb2.RollbackRequest(project_id=project),
         retry=retry,
         timeout=timeout,
+        project=project,
+        database=database,
     )
     assert request.transaction == transaction
 
 
-def test_api_rollback_ok():
-    _rollback_helper()
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_rollback_ok(database_id):
+    _rollback_helper(database=database_id)
 
 
-def test_api_rollback_w_retry():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_rollback_w_retry(database_id):
     retry = mock.MagicMock()
-    _rollback_helper(retry=retry)
+    _rollback_helper(retry=retry, database=database_id)
 
 
-def test_api_rollback_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_rollback_w_timeout(database_id):
     timeout = 5.0
-    _rollback_helper(timeout=timeout)
+    _rollback_helper(timeout=timeout, database=database_id)
 
 
-def _allocate_ids_helper(count=0, retry=None, timeout=None):
+def _allocate_ids_helper(count=0, retry=None, timeout=None, database=None):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     project = "PROJECT"
@@ -857,9 +893,9 @@ def _allocate_ids_helper(count=0, retry=None, timeout=None):
     rsp_pb = datastore_pb2.AllocateIdsResponse()
 
     for i_count in range(count):
-        requested = _make_key_pb(project, id_=None)
+        requested = _make_key_pb(project, id_=None, database=database)
         before_key_pbs.append(requested)
-        allocated = _make_key_pb(project, id_=i_count)
+        allocated = _make_key_pb(project, id_=i_count, database=database)
         after_key_pbs.append(allocated)
         rsp_pb._pb.keys.add().CopyFrom(allocated._pb)
 
@@ -876,6 +912,7 @@ def _allocate_ids_helper(count=0, retry=None, timeout=None):
     ds_api = _make_http_datastore_api(client)
 
     request = {"project_id": project, "keys": before_key_pbs}
+    set_database_id_to_request(request, database)
     kwargs = _retry_timeout_kw(retry, timeout, http)
 
     response = ds_api.allocate_ids(request=request, **kwargs)
@@ -887,34 +924,40 @@ def _allocate_ids_helper(count=0, retry=None, timeout=None):
     request = _verify_protobuf_call(
         http,
         uri,
-        datastore_pb2.AllocateIdsRequest(),
+        datastore_pb2.AllocateIdsRequest(project_id=project),
         retry=retry,
         timeout=timeout,
+        project=project,
+        database=database,
     )
     assert len(request.keys) == len(before_key_pbs)
     for key_before, key_after in zip(before_key_pbs, request.keys):
         assert key_before == key_after
 
 
-def test_api_allocate_ids_empty():
-    _allocate_ids_helper()
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_allocate_ids_empty(database_id):
+    _allocate_ids_helper(database=database_id)
 
 
-def test_api_allocate_ids_non_empty():
-    _allocate_ids_helper(count=2)
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_allocate_ids_non_empty(database_id):
+    _allocate_ids_helper(count=2, database=database_id)
 
 
-def test_api_allocate_ids_w_retry():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_allocate_ids_w_retry(database_id):
     retry = mock.MagicMock()
-    _allocate_ids_helper(retry=retry)
+    _allocate_ids_helper(retry=retry, database=database_id)
 
 
-def test_api_allocate_ids_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_allocate_ids_w_timeout(database_id):
     timeout = 5.0
-    _allocate_ids_helper(timeout=timeout)
+    _allocate_ids_helper(timeout=timeout, database=database_id)
 
 
-def _reserve_ids_helper(count=0, retry=None, timeout=None):
+def _reserve_ids_helper(count=0, retry=None, timeout=None, database=None):
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     project = "PROJECT"
@@ -922,7 +965,7 @@ def _reserve_ids_helper(count=0, retry=None, timeout=None):
     rsp_pb = datastore_pb2.ReserveIdsResponse()
 
     for i_count in range(count):
-        requested = _make_key_pb(project, id_=i_count)
+        requested = _make_key_pb(project, id_=i_count, database=database)
         before_key_pbs.append(requested)
 
     http = _make_requests_session(
@@ -938,6 +981,7 @@ def _reserve_ids_helper(count=0, retry=None, timeout=None):
     ds_api = _make_http_datastore_api(client)
 
     request = {"project_id": project, "keys": before_key_pbs}
+    set_database_id_to_request(request, database)
     kwargs = _retry_timeout_kw(retry, timeout, http)
 
     response = ds_api.reserve_ids(request=request, **kwargs)
@@ -948,31 +992,59 @@ def _reserve_ids_helper(count=0, retry=None, timeout=None):
     request = _verify_protobuf_call(
         http,
         uri,
-        datastore_pb2.AllocateIdsRequest(),
+        datastore_pb2.AllocateIdsRequest(project_id=project),
         retry=retry,
         timeout=timeout,
+        project=project,
+        database=database,
     )
     assert len(request.keys) == len(before_key_pbs)
     for key_before, key_after in zip(before_key_pbs, request.keys):
         assert key_before == key_after
 
 
-def test_api_reserve_ids_empty():
-    _reserve_ids_helper()
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_reserve_ids_empty(database_id):
+    _reserve_ids_helper(database=database_id)
 
 
-def test_api_reserve_ids_non_empty():
-    _reserve_ids_helper(count=2)
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_reserve_ids_non_empty(database_id):
+    _reserve_ids_helper(count=2, database=database_id)
 
 
-def test_api_reserve_ids_w_retry():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_reserve_ids_w_retry(database_id):
     retry = mock.MagicMock()
-    _reserve_ids_helper(retry=retry)
+    _reserve_ids_helper(retry=retry, database=database_id)
 
 
-def test_api_reserve_ids_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_api_reserve_ids_w_timeout(database_id):
     timeout = 5.0
-    _reserve_ids_helper(timeout=timeout)
+    _reserve_ids_helper(timeout=timeout, database=database_id)
+
+
+def test_update_headers_without_database_id():
+    from google.cloud.datastore._http import _update_headers
+
+    headers = {}
+    project_id = "someproject"
+    _update_headers(headers, project_id)
+    assert headers["x-goog-request-params"] == f"project_id={project_id}"
+
+
+def test_update_headers_with_database_id():
+    from google.cloud.datastore._http import _update_headers
+
+    headers = {}
+    project_id = "someproject"
+    database_id = "somedb"
+    _update_headers(headers, project_id, database_id=database_id)
+    assert (
+        headers["x-goog-request-params"]
+        == f"project_id={project_id}&database_id={database_id}"
+    )
 
 
 def _make_http_datastore_api(*args, **kwargs):
@@ -1002,13 +1074,13 @@ def _build_expected_url(api_base_url, project, method):
     return "/".join([api_base_url, API_VERSION, "projects", project + ":" + method])
 
 
-def _make_key_pb(project, id_=1234):
+def _make_key_pb(project, id_=1234, database=None):
     from google.cloud.datastore.key import Key
 
     path_args = ("Kind",)
     if id_ is not None:
         path_args += (id_,)
-    return Key(*path_args, project=project).to_protobuf()
+    return Key(*path_args, project=project, database=database).to_protobuf()
 
 
 _USER_AGENT = "TESTING USER AGENT"
@@ -1022,15 +1094,19 @@ def _make_client_info(user_agent=_USER_AGENT):
     return client_info
 
 
-def _verify_protobuf_call(http, expected_url, pb, retry=None, timeout=None):
+def _verify_protobuf_call(
+    http, expected_url, pb, retry=None, timeout=None, project=None, database=None
+):
     from google.cloud import _http as connection_module
+    from google.cloud.datastore._http import _update_headers
 
     expected_headers = {
         "Content-Type": "application/x-protobuf",
         "User-Agent": _USER_AGENT,
         connection_module.CLIENT_INFO_HEADER: _USER_AGENT,
+        "x-goog-request-params": f"project_id={pb.project_id}",
     }
-
+    _update_headers(expected_headers, project, database_id=database)
     if retry is not None:
         retry.assert_called_once_with(http.request)
 

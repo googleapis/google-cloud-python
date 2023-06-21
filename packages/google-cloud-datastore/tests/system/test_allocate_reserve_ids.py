@@ -12,10 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
 import warnings
 
+from . import _helpers
 
-def test_client_allocate_ids(datastore_client):
+
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_client_allocate_ids(datastore_client, database_id):
     num_ids = 10
     allocated_keys = datastore_client.allocate_ids(
         datastore_client.key("Kind"),
@@ -32,7 +36,8 @@ def test_client_allocate_ids(datastore_client):
     assert len(unique_ids) == num_ids
 
 
-def test_client_reserve_ids_sequential(datastore_client):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_client_reserve_ids_sequential(datastore_client, database_id):
     num_ids = 10
     key = datastore_client.key("Kind", 1234)
 
@@ -41,7 +46,8 @@ def test_client_reserve_ids_sequential(datastore_client):
     datastore_client.reserve_ids_sequential(key, num_ids)
 
 
-def test_client_reserve_ids_deprecated(datastore_client):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_client_reserve_ids_deprecated(datastore_client, database_id):
     num_ids = 10
     key = datastore_client.key("Kind", 1234)
 
@@ -53,7 +59,8 @@ def test_client_reserve_ids_deprecated(datastore_client):
     assert "reserve_ids_sequential" in str(warned[0].message)
 
 
-def test_client_reserve_ids_multi(datastore_client):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_client_reserve_ids_multi(datastore_client, database_id):
     key1 = datastore_client.key("Kind", 1234)
     key2 = datastore_client.key("Kind", 1235)
 

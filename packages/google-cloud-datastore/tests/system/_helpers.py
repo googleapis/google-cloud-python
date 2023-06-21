@@ -18,6 +18,8 @@ from google.cloud import datastore
 from google.cloud.datastore.client import DATASTORE_DATASET
 from test_utils.system import unique_resource_id
 
+_DATASTORE_DATABASE = "SYSTEM_TESTS_DATABASE"
+TEST_DATABASE = os.getenv(_DATASTORE_DATABASE, "system-tests-named-db")
 EMULATOR_DATASET = os.getenv(DATASTORE_DATASET)
 
 
@@ -28,9 +30,12 @@ def unique_id(prefix, separator="-"):
 _SENTINEL = object()
 
 
-def clone_client(base_client, namespace=_SENTINEL):
+def clone_client(base_client, namespace=_SENTINEL, database=_SENTINEL):
     if namespace is _SENTINEL:
         namespace = base_client.namespace
+
+    if database is _SENTINEL:
+        database = base_client.database
 
     kwargs = {}
     if EMULATOR_DATASET is None:
@@ -38,6 +43,7 @@ def clone_client(base_client, namespace=_SENTINEL):
 
     return datastore.Client(
         project=base_client.project,
+        database=database,
         namespace=namespace,
         _http=base_client._http,
         **kwargs,

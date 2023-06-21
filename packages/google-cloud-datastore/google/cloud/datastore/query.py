@@ -789,7 +789,9 @@ class Iterator(page_iterator.Iterator):
         )
 
         partition_id = entity_pb2.PartitionId(
-            project_id=self._query.project, namespace_id=self._query.namespace
+            project_id=self._query.project,
+            database_id=self.client.database,
+            namespace_id=self._query.namespace,
         )
 
         kwargs = {}
@@ -800,13 +802,17 @@ class Iterator(page_iterator.Iterator):
         if self._timeout is not None:
             kwargs["timeout"] = self._timeout
 
+        request = {
+            "project_id": self._query.project,
+            "partition_id": partition_id,
+            "read_options": read_options,
+            "query": query_pb,
+        }
+
+        helpers.set_database_id_to_request(request, self.client.database)
+
         response_pb = self.client._datastore_api.run_query(
-            request={
-                "project_id": self._query.project,
-                "partition_id": partition_id,
-                "read_options": read_options,
-                "query": query_pb,
-            },
+            request=request,
             **kwargs,
         )
 
@@ -824,13 +830,16 @@ class Iterator(page_iterator.Iterator):
             query_pb.start_cursor = response_pb.batch.skipped_cursor
             query_pb.offset -= response_pb.batch.skipped_results
 
+            request = {
+                "project_id": self._query.project,
+                "partition_id": partition_id,
+                "read_options": read_options,
+                "query": query_pb,
+            }
+            helpers.set_database_id_to_request(request, self.client.database)
+
             response_pb = self.client._datastore_api.run_query(
-                request={
-                    "project_id": self._query.project,
-                    "partition_id": partition_id,
-                    "read_options": read_options,
-                    "query": query_pb,
-                },
+                request=request,
                 **kwargs,
             )
 

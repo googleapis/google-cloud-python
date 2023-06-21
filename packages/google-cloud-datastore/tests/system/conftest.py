@@ -25,21 +25,32 @@ def in_emulator():
 
 
 @pytest.fixture(scope="session")
+def database_id(request):
+    return request.param
+
+
+@pytest.fixture(scope="session")
 def test_namespace():
     return _helpers.unique_id("ns")
 
 
 @pytest.fixture(scope="session")
-def datastore_client(test_namespace):
+def datastore_client(test_namespace, database_id):
+    if _helpers.TEST_DATABASE is not None:
+        database_id = _helpers.TEST_DATABASE
     if _helpers.EMULATOR_DATASET is not None:
         http = requests.Session()  # Un-authorized.
-        return datastore.Client(
+        client = datastore.Client(
             project=_helpers.EMULATOR_DATASET,
+            database=database_id,
             namespace=test_namespace,
             _http=http,
         )
     else:
-        return datastore.Client(namespace=test_namespace)
+        client = datastore.Client(database=database_id, namespace=test_namespace)
+
+    assert client.database == database_id
+    return client
 
 
 @pytest.fixture(scope="function")

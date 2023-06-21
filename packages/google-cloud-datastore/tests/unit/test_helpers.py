@@ -435,12 +435,14 @@ def test_enity_to_protobf_w_dict_to_entity_recursive():
     assert entity_pb == expected_pb
 
 
-def _make_key_pb(project=None, namespace=None, path=()):
+def _make_key_pb(project=None, namespace=None, path=(), database=None):
     from google.cloud.datastore_v1.types import entity as entity_pb2
 
     pb = entity_pb2.Key()
     if project is not None:
         pb.partition_id.project_id = project
+    if database is not None:
+        pb.partition_id.database_id = database
     if namespace is not None:
         pb.partition_id.namespace_id = namespace
     for elem in path:
@@ -453,28 +455,38 @@ def _make_key_pb(project=None, namespace=None, path=()):
     return pb
 
 
-def test_key_from_protobuf_wo_namespace_in_pb():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_key_from_protobuf_wo_database_or_namespace_in_pb(database_id):
     from google.cloud.datastore.helpers import key_from_protobuf
 
     _PROJECT = "PROJECT"
-    pb = _make_key_pb(path=[{"kind": "KIND"}], project=_PROJECT)
+    pb = _make_key_pb(path=[{"kind": "KIND"}], project=_PROJECT, database=database_id)
     key = key_from_protobuf(pb)
     assert key.project == _PROJECT
+    assert key.database == database_id
     assert key.namespace is None
 
 
-def test_key_from_protobuf_w_namespace_in_pb():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_key_from_protobuf_w_namespace_in_pb(database_id):
     from google.cloud.datastore.helpers import key_from_protobuf
 
     _PROJECT = "PROJECT"
     _NAMESPACE = "NAMESPACE"
-    pb = _make_key_pb(path=[{"kind": "KIND"}], namespace=_NAMESPACE, project=_PROJECT)
+    pb = _make_key_pb(
+        path=[{"kind": "KIND"}],
+        namespace=_NAMESPACE,
+        project=_PROJECT,
+        database=database_id,
+    )
     key = key_from_protobuf(pb)
     assert key.project == _PROJECT
+    assert key.database == database_id
     assert key.namespace == _NAMESPACE
 
 
-def test_key_from_protobuf_w_nested_path_in_pb():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_key_from_protobuf_w_nested_path_in_pb(database_id):
     from google.cloud.datastore.helpers import key_from_protobuf
 
     _PATH = [
@@ -482,9 +494,10 @@ def test_key_from_protobuf_w_nested_path_in_pb():
         {"kind": "CHILD", "id": 1234},
         {"kind": "GRANDCHILD", "id": 5678},
     ]
-    pb = _make_key_pb(path=_PATH, project="PROJECT")
+    pb = _make_key_pb(path=_PATH, project="PROJECT", database=database_id)
     key = key_from_protobuf(pb)
     assert key.path == _PATH
+    assert key.database == database_id
 
 
 def test_w_nothing_in_pb():

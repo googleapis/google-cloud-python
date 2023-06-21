@@ -20,7 +20,10 @@ from google.cloud.exceptions import Conflict
 from . import _helpers
 
 
-def test_transaction_via_with_statement(datastore_client, entities_to_delete):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_transaction_via_with_statement(
+    datastore_client, entities_to_delete, database_id
+):
     key = datastore_client.key("Company", "Google")
     entity = datastore.Entity(key=key)
     entity["url"] = "www.google.com"
@@ -38,9 +41,9 @@ def test_transaction_via_with_statement(datastore_client, entities_to_delete):
     assert retrieved_entity == entity
 
 
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
 def test_transaction_via_explicit_begin_get_commit(
-    datastore_client,
-    entities_to_delete,
+    datastore_client, entities_to_delete, database_id
 ):
     # See
     # github.com/GoogleCloudPlatform/google-cloud-python/issues/1859
@@ -80,7 +83,8 @@ def test_transaction_via_explicit_begin_get_commit(
     assert after2["balance"] == before_2 + transfer_amount
 
 
-def test_failure_with_contention(datastore_client, entities_to_delete):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_failure_with_contention(datastore_client, entities_to_delete, database_id):
     contention_prop_name = "baz"
     local_client = _helpers.clone_client(datastore_client)
 

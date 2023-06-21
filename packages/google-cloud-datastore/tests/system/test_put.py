@@ -54,7 +54,8 @@ def _get_post(datastore_client, id_or_name=None, post_content=None):
 @pytest.mark.parametrize(
     "name,key_id", [(None, None), ("post1", None), (None, 123456789)]
 )
-def test_client_put(datastore_client, entities_to_delete, name, key_id):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_client_put(datastore_client, entities_to_delete, name, key_id, database_id):
     entity = _get_post(datastore_client, id_or_name=(name or key_id))
     datastore_client.put(entity)
     entities_to_delete.append(entity)
@@ -65,11 +66,14 @@ def test_client_put(datastore_client, entities_to_delete, name, key_id):
         assert entity.key.id == key_id
 
     retrieved_entity = datastore_client.get(entity.key)
-    # Check the given and retrieved are the the same.
+    # Check the given and retrieved are the same.
     assert retrieved_entity == entity
 
 
-def test_client_put_w_multiple_in_txn(datastore_client, entities_to_delete):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_client_put_w_multiple_in_txn(
+    datastore_client, entities_to_delete, database_id
+):
     with datastore_client.transaction() as xact:
         entity1 = _get_post(datastore_client)
         xact.put(entity1)
@@ -98,14 +102,18 @@ def test_client_put_w_multiple_in_txn(datastore_client, entities_to_delete):
     assert len(matches) == 2
 
 
-def test_client_query_w_empty_kind(datastore_client):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_client_query_w_empty_kind(datastore_client, database_id):
     query = datastore_client.query(kind="Post")
     query.ancestor = parent_key(datastore_client)
     posts = query.fetch(limit=2)
     assert list(posts) == []
 
 
-def test_client_put_w_all_value_types(datastore_client, entities_to_delete):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_client_put_w_all_value_types(
+    datastore_client, entities_to_delete, database_id
+):
     key = datastore_client.key("TestPanObject", 1234)
     entity = datastore.Entity(key=key)
     entity["timestamp"] = datetime.datetime(2014, 9, 9, tzinfo=UTC)
@@ -127,12 +135,15 @@ def test_client_put_w_all_value_types(datastore_client, entities_to_delete):
     datastore_client.put(entity)
     entities_to_delete.append(entity)
 
-    # Check the original and retrieved are the the same.
+    # Check the original and retrieved are the same.
     retrieved_entity = datastore_client.get(entity.key)
     assert retrieved_entity == entity
 
 
-def test_client_put_w_entity_w_self_reference(datastore_client, entities_to_delete):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_client_put_w_entity_w_self_reference(
+    datastore_client, entities_to_delete, database_id
+):
     parent_key = datastore_client.key("Residence", "NewYork")
     key = datastore_client.key("Person", "name", parent=parent_key)
     entity = datastore.Entity(key=key)
@@ -151,11 +162,12 @@ def test_client_put_w_entity_w_self_reference(datastore_client, entities_to_dele
     assert stored_persons == [entity]
 
 
-def test_client_put_w_empty_array(datastore_client, entities_to_delete):
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_client_put_w_empty_array(datastore_client, entities_to_delete, database_id):
     local_client = _helpers.clone_client(datastore_client)
 
     key = local_client.key("EmptyArray", 1234)
-    local_client = datastore.Client()
+    local_client = datastore.Client(database=local_client.database)
     entity = datastore.Entity(key=key)
     entity["children"] = []
     local_client.put(entity)

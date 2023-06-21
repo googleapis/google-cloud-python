@@ -300,11 +300,15 @@ def key_from_protobuf(pb):
     project = None
     if pb.partition_id.project_id:  # Simple field (string)
         project = pb.partition_id.project_id
+    database = None
+
+    if pb.partition_id.database_id:  # Simple field (string)
+        database = pb.partition_id.database_id
     namespace = None
     if pb.partition_id.namespace_id:  # Simple field (string)
         namespace = pb.partition_id.namespace_id
 
-    return Key(*path_args, namespace=namespace, project=project)
+    return Key(*path_args, namespace=namespace, project=project, database=database)
 
 
 def _pb_attr_value(val):
@@ -484,6 +488,14 @@ def _set_protobuf_value(value_pb, val):
         value_pb.geo_point_value.CopyFrom(val)
     else:  # scalar, just assign
         setattr(value_pb, attr, val)
+
+
+def set_database_id_to_request(request, database_id=None):
+    """
+    Set the "database_id" field to the request only if it was provided.
+    """
+    if database_id is not None:
+        request["database_id"] = database_id
 
 
 class GeoPoint(object):

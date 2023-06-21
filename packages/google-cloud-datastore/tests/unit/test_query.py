@@ -25,13 +25,17 @@ from google.cloud.datastore.query import (
     BaseCompositeFilter,
 )
 
+from google.cloud.datastore.helpers import set_database_id_to_request
+
 _PROJECT = "PROJECT"
 
 
-def test_query_ctor_defaults():
-    client = _make_client()
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_ctor_defaults(database_id):
+    client = _make_client(database=database_id)
     query = _make_query(client)
     assert query._client is client
+    assert query._client.database == client.database
     assert query.project == client.project
     assert query.kind is None
     assert query.namespace == client.namespace
@@ -51,14 +55,15 @@ def test_query_ctor_defaults():
         [Or([PropertyFilter("foo", "=", "Qux"), PropertyFilter("bar", "<", 17)])],
     ],
 )
-def test_query_ctor_explicit(filters):
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_ctor_explicit(filters, database_id):
     from google.cloud.datastore.key import Key
 
     _PROJECT = "OTHER_PROJECT"
     _KIND = "KIND"
     _NAMESPACE = "OTHER_NAMESPACE"
-    client = _make_client()
-    ancestor = Key("ANCESTOR", 123, project=_PROJECT)
+    client = _make_client(database=database_id)
+    ancestor = Key("ANCESTOR", 123, project=_PROJECT, database=database_id)
     FILTERS = filters
     PROJECTION = ["foo", "bar", "baz"]
     ORDER = ["foo", "bar"]
@@ -76,6 +81,7 @@ def test_query_ctor_explicit(filters):
         distinct_on=DISTINCT_ON,
     )
     assert query._client is client
+    assert query._client.database == database_id
     assert query.project == _PROJECT
     assert query.kind == _KIND
     assert query.namespace == _NAMESPACE
@@ -86,68 +92,91 @@ def test_query_ctor_explicit(filters):
     assert query.distinct_on == DISTINCT_ON
 
 
-def test_query_ctor_bad_projection():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_ctor_bad_projection(database_id):
     BAD_PROJECTION = object()
     with pytest.raises(TypeError):
-        _make_query(_make_client(), projection=BAD_PROJECTION)
+        _make_query(_make_client(database=database_id), projection=BAD_PROJECTION)
 
 
-def test_query_ctor_bad_order():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_ctor_bad_order(database_id):
     BAD_ORDER = object()
     with pytest.raises(TypeError):
-        _make_query(_make_client(), order=BAD_ORDER)
+        _make_query(_make_client(database=database_id), order=BAD_ORDER)
 
 
-def test_query_ctor_bad_distinct_on():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_ctor_bad_distinct_on(database_id):
     BAD_DISTINCT_ON = object()
     with pytest.raises(TypeError):
-        _make_query(_make_client(), distinct_on=BAD_DISTINCT_ON)
+        _make_query(_make_client(database=database_id), distinct_on=BAD_DISTINCT_ON)
 
 
-def test_query_ctor_bad_filters():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_ctor_bad_filters(database_id):
     FILTERS_CANT_UNPACK = [("one", "two")]
     with pytest.raises(ValueError):
-        _make_query(_make_client(), filters=FILTERS_CANT_UNPACK)
+        _make_query(_make_client(database=database_id), filters=FILTERS_CANT_UNPACK)
 
 
-def test_query_namespace_setter_w_non_string():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_project_getter(database_id):
+    PROJECT = "PROJECT"
+    query = _make_query(_make_client(database=database_id), project=PROJECT)
+    assert query.project == PROJECT
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_database_getter(database_id):
+    query = _make_query(_make_client(database=database_id))
+    assert query._client.database == database_id
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_namespace_setter_w_non_string(database_id):
+    query = _make_query(_make_client(database=database_id))
     with pytest.raises(ValueError):
         query.namespace = object()
 
 
-def test_query_namespace_setter():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_namespace_setter(database_id):
     _NAMESPACE = "OTHER_NAMESPACE"
-    query = _make_query(_make_client())
+    query = _make_query(_make_client(database=database_id))
     query.namespace = _NAMESPACE
     assert query.namespace == _NAMESPACE
 
 
-def test_query_kind_setter_w_non_string():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_kind_setter_w_non_string(database_id):
+    query = _make_query(_make_client(database=database_id))
     with pytest.raises(TypeError):
         query.kind = object()
 
 
-def test_query_kind_setter_wo_existing():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_kind_setter_wo_existing(database_id):
     _KIND = "KIND"
-    query = _make_query(_make_client())
+    query = _make_query(_make_client(database=database_id))
     query.kind = _KIND
     assert query.kind == _KIND
 
 
-def test_query_kind_setter_w_existing():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_kind_setter_w_existing(database_id):
     _KIND_BEFORE = "KIND_BEFORE"
     _KIND_AFTER = "KIND_AFTER"
-    query = _make_query(_make_client(), kind=_KIND_BEFORE)
+    query = _make_query(_make_client(database=database_id), kind=_KIND_BEFORE)
     assert query.kind == _KIND_BEFORE
     query.kind = _KIND_AFTER
     assert query.project == _PROJECT
     assert query.kind == _KIND_AFTER
 
 
-def test_query_ancestor_setter_w_non_key():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_ancestor_setter_w_non_key(database_id):
+    query = _make_query(_make_client(database=database_id))
 
     with pytest.raises(TypeError):
         query.ancestor = object()
@@ -156,68 +185,76 @@ def test_query_ancestor_setter_w_non_key():
         query.ancestor = ["KIND", "NAME"]
 
 
-def test_query_ancestor_setter_w_key():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_ancestor_setter_w_key(database_id):
     from google.cloud.datastore.key import Key
 
     _NAME = "NAME"
-    key = Key("KIND", 123, project=_PROJECT)
-    query = _make_query(_make_client())
+    key = Key("KIND", 123, project=_PROJECT, database=database_id)
+    query = _make_query(_make_client(database=database_id))
     query.add_filter("name", "=", _NAME)
     query.ancestor = key
     assert query.ancestor.path == key.path
 
 
-def test_query_ancestor_setter_w_key_property_filter():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_ancestor_setter_w_key_property_filter(database_id):
     from google.cloud.datastore.key import Key
 
     _NAME = "NAME"
-    key = Key("KIND", 123, project=_PROJECT)
-    query = _make_query(_make_client())
+    key = Key("KIND", 123, project=_PROJECT, database=database_id)
+    query = _make_query(_make_client(database=database_id))
     query.add_filter(filter=PropertyFilter("name", "=", _NAME))
     query.ancestor = key
     assert query.ancestor.path == key.path
 
 
-def test_query_ancestor_deleter_w_key():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_ancestor_deleter_w_key(database_id):
     from google.cloud.datastore.key import Key
 
-    key = Key("KIND", 123, project=_PROJECT)
-    query = _make_query(client=_make_client(), ancestor=key)
+    key = Key("KIND", 123, project=_PROJECT, database=database_id)
+    query = _make_query(client=_make_client(database=database_id), ancestor=key)
     del query.ancestor
     assert query.ancestor is None
 
 
-def test_query_add_filter_setter_w_unknown_operator():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_add_filter_setter_w_unknown_operator(database_id):
+    query = _make_query(_make_client(database=database_id))
     with pytest.raises(ValueError) as exc:
         query.add_filter("firstname", "~~", "John")
     assert "Invalid expression:" in str(exc.value)
     assert "Please use one of: =, <, <=, >, >=, !=, IN, NOT_IN." in str(exc.value)
 
 
-def test_query_add_property_filter_setter_w_unknown_operator():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_add_property_filter_setter_w_unknown_operator(database_id):
+    query = _make_query(_make_client(database=database_id))
     with pytest.raises(ValueError) as exc:
         query.add_filter(filter=PropertyFilter("firstname", "~~", "John"))
     assert "Invalid expression:" in str(exc.value)
     assert "Please use one of: =, <, <=, >, >=, !=, IN, NOT_IN." in str(exc.value)
 
 
-def test_query_add_filter_w_known_operator():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_add_filter_w_known_operator(database_id):
+    query = _make_query(_make_client(database=database_id))
     query.add_filter("firstname", "=", "John")
     assert query.filters == [("firstname", "=", "John")]
 
 
-def test_query_add_property_filter_w_known_operator():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_add_property_filter_w_known_operator(database_id):
+    query = _make_query(_make_client(database=database_id))
     property_filter = PropertyFilter("firstname", "=", "John")
     query.add_filter(filter=property_filter)
     assert query.filters == [property_filter]
 
 
-def test_query_add_filter_w_all_operators():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_add_filter_w_all_operators(database_id):
+    query = _make_query(_make_client(database=database_id))
     query.add_filter("leq_prop", "<=", "val1")
     query.add_filter("geq_prop", ">=", "val2")
     query.add_filter("lt_prop", "<", "val3")
@@ -237,8 +274,9 @@ def test_query_add_filter_w_all_operators():
     assert query.filters[7] == ("not_in_prop", "NOT_IN", ["val13"])
 
 
-def test_query_add_property_filter_w_all_operators():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_add_property_filter_w_all_operators(database_id):
+    query = _make_query(_make_client(database=database_id))
     filters = [
         ("leq_prop", "<=", "val1"),
         ("geq_prop", ">=", "val2"),
@@ -260,10 +298,11 @@ def test_query_add_property_filter_w_all_operators():
         assert query.filters[i] == property_filters[i]
 
 
-def test_query_add_filter_w_known_operator_and_entity():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_add_filter_w_known_operator_and_entity(database_id):
     from google.cloud.datastore.entity import Entity
 
-    query = _make_query(_make_client())
+    query = _make_query(_make_client(database=database_id))
     other = Entity()
     other["firstname"] = "John"
     other["lastname"] = "Smith"
@@ -271,10 +310,11 @@ def test_query_add_filter_w_known_operator_and_entity():
     assert query.filters == [("other", "=", other)]
 
 
-def test_query_add_property_filter_w_known_operator_and_entity():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_add_property_filter_w_known_operator_and_entity(database_id):
     from google.cloud.datastore.entity import Entity
 
-    query = _make_query(_make_client())
+    query = _make_query(_make_client(database=database_id))
     other = Entity()
     other["firstname"] = "John"
     other["lastname"] = "Smith"
@@ -283,52 +323,58 @@ def test_query_add_property_filter_w_known_operator_and_entity():
     assert query.filters == [property_filter]
 
 
-def test_query_add_filter_w_whitespace_property_name():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_add_filter_w_whitespace_property_name(database_id):
+    query = _make_query(_make_client(database=database_id))
     PROPERTY_NAME = "  property with lots of space "
     query.add_filter(PROPERTY_NAME, "=", "John")
     assert query.filters == [(PROPERTY_NAME, "=", "John")]
 
 
-def test_query_add_property_filter_w_whitespace_property_name():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_add_property_filter_w_whitespace_property_name(database_id):
+    query = _make_query(_make_client(database=database_id))
     PROPERTY_NAME = "  property with lots of space "
     property_filter = PropertyFilter(PROPERTY_NAME, "=", "John")
     query.add_filter(filter=property_filter)
     assert query.filters == [property_filter]
 
 
-def test_query_add_filter___key__valid_key():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_add_filter___key__valid_key(database_id):
     from google.cloud.datastore.key import Key
 
-    query = _make_query(_make_client())
-    key = Key("Foo", project=_PROJECT)
+    query = _make_query(_make_client(database=database_id))
+    key = Key("Foo", project=_PROJECT, database=database_id)
     query.add_filter("__key__", "=", key)
     assert query.filters == [("__key__", "=", key)]
 
 
-def test_query_add_property_filter___key__valid_key():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_add_property_filter___key__valid_key(database_id):
     from google.cloud.datastore.key import Key
 
-    query = _make_query(_make_client())
-    key = Key("Foo", project=_PROJECT)
+    query = _make_query(_make_client(database=database_id))
+    key = Key("Foo", project=_PROJECT, database=database_id)
     property_filter = PropertyFilter("__key__", "=", key)
     query.add_filter(filter=property_filter)
     assert query.filters == [property_filter]
 
 
-def test_query_add_filter_return_query_obj():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_add_filter_return_query_obj(database_id):
     from google.cloud.datastore.query import Query
 
-    query = _make_query(_make_client())
+    query = _make_query(_make_client(database=database_id))
     query_obj = query.add_filter("firstname", "=", "John")
     assert isinstance(query_obj, Query)
     assert query_obj.filters == [("firstname", "=", "John")]
 
 
-def test_query_add_property_filter_without_keyword_argument():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_add_property_filter_without_keyword_argument(database_id):
 
-    query = _make_query(_make_client())
+    query = _make_query(_make_client(database=database_id))
     property_filter = PropertyFilter("firstname", "=", "John")
     with pytest.raises(ValueError) as exc:
         query.add_filter(property_filter)
@@ -339,9 +385,10 @@ def test_query_add_property_filter_without_keyword_argument():
     )
 
 
-def test_query_add_composite_filter_without_keyword_argument():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_add_composite_filter_without_keyword_argument(database_id):
 
-    query = _make_query(_make_client())
+    query = _make_query(_make_client(database=database_id))
     and_filter = And(["firstname", "=", "John"])
     with pytest.raises(ValueError) as exc:
         query.add_filter(and_filter)
@@ -361,9 +408,10 @@ def test_query_add_composite_filter_without_keyword_argument():
     )
 
 
-def test_query_positional_args_and_property_filter():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_positional_args_and_property_filter(database_id):
 
-    query = _make_query(_make_client())
+    query = _make_query(_make_client(database=database_id))
     with pytest.raises(ValueError) as exc:
         query.add_filter("firstname", "=", "John", filter=("name", "=", "Blabla"))
 
@@ -373,9 +421,10 @@ def test_query_positional_args_and_property_filter():
     )
 
 
-def test_query_positional_args_and_composite_filter():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_positional_args_and_composite_filter(database_id):
 
-    query = _make_query(_make_client())
+    query = _make_query(_make_client(database=database_id))
     and_filter = And(["firstname", "=", "John"])
     with pytest.raises(ValueError) as exc:
         query.add_filter("firstname", "=", "John", filter=and_filter)
@@ -386,8 +435,9 @@ def test_query_positional_args_and_composite_filter():
     )
 
 
-def test_query_add_filter_with_positional_args_raises_user_warning():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_add_filter_with_positional_args_raises_user_warning(database_id):
+    query = _make_query(_make_client(database=database_id))
     with pytest.warns(
         UserWarning,
         match="Detected filter using positional arguments",
@@ -401,151 +451,171 @@ def test_query_add_filter_with_positional_args_raises_user_warning():
         _make_stub_query(filters=[("name", "=", "John")])
 
 
-def test_query_filter___key__not_equal_operator():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_filter___key__not_equal_operator(database_id):
     from google.cloud.datastore.key import Key
 
-    key = Key("Foo", project=_PROJECT)
-    query = _make_query(_make_client())
+    key = Key("Foo", project=_PROJECT, database=database_id)
+    query = _make_query(_make_client(database=database_id))
     query.add_filter("__key__", "<", key)
     assert query.filters == [("__key__", "<", key)]
 
 
-def test_query_property_filter___key__not_equal_operator():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_property_filter___key__not_equal_operator(database_id):
     from google.cloud.datastore.key import Key
 
-    key = Key("Foo", project=_PROJECT)
-    query = _make_query(_make_client())
+    key = Key("Foo", project=_PROJECT, database=database_id)
+    query = _make_query(_make_client(database=database_id))
     property_filter = PropertyFilter("__key__", "<", key)
     query.add_filter(filter=property_filter)
     assert query.filters == [property_filter]
 
 
-def test_query_filter___key__invalid_value():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_filter___key__invalid_value(database_id):
+    query = _make_query(_make_client(database=database_id))
     with pytest.raises(ValueError) as exc:
         query.add_filter("__key__", "=", None)
     assert "Invalid key:" in str(exc.value)
 
 
-def test_query_property_filter___key__invalid_value():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_property_filter___key__invalid_value(database_id):
+    query = _make_query(_make_client(database=database_id))
     with pytest.raises(ValueError) as exc:
         query.add_filter(filter=PropertyFilter("__key__", "=", None))
     assert "Invalid key:" in str(exc.value)
 
 
-def test_query_projection_setter_empty():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_projection_setter_empty(database_id):
+    query = _make_query(_make_client(database=database_id))
     query.projection = []
     assert query.projection == []
 
 
-def test_query_projection_setter_string():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_projection_setter_string(database_id):
+    query = _make_query(_make_client(database=database_id))
     query.projection = "field1"
     assert query.projection == ["field1"]
 
 
-def test_query_projection_setter_non_empty():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_projection_setter_non_empty(database_id):
+    query = _make_query(_make_client(database=database_id))
     query.projection = ["field1", "field2"]
     assert query.projection == ["field1", "field2"]
 
 
-def test_query_projection_setter_multiple_calls():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_projection_setter_multiple_calls(database_id):
     _PROJECTION1 = ["field1", "field2"]
     _PROJECTION2 = ["field3"]
-    query = _make_query(_make_client())
+    query = _make_query(_make_client(database=database_id))
     query.projection = _PROJECTION1
     assert query.projection == _PROJECTION1
     query.projection = _PROJECTION2
     assert query.projection == _PROJECTION2
 
 
-def test_query_keys_only():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_keys_only(database_id):
+    query = _make_query(_make_client(database=database_id))
     query.keys_only()
     assert query.projection == ["__key__"]
 
 
-def test_query_key_filter_defaults():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_key_filter_defaults(database_id):
     from google.cloud.datastore.key import Key
 
-    client = _make_client()
+    client = _make_client(database=database_id)
     query = _make_query(client)
     assert query.filters == []
-    key = Key("Kind", 1234, project="project")
+    key = Key("Kind", 1234, project="project", database=database_id)
     query.key_filter(key)
     assert query.filters == [("__key__", "=", key)]
 
 
-def test_query_key_filter_explicit():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_key_filter_explicit(database_id):
     from google.cloud.datastore.key import Key
 
-    client = _make_client()
+    client = _make_client(database=database_id)
     query = _make_query(client)
     assert query.filters == []
-    key = Key("Kind", 1234, project="project")
+    key = Key("Kind", 1234, project="project", database=database_id)
     query.key_filter(key, operator=">")
     assert query.filters == [("__key__", ">", key)]
 
 
-def test_query_order_setter_empty():
-    query = _make_query(_make_client(), order=["foo", "-bar"])
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_order_setter_empty(database_id):
+    query = _make_query(_make_client(database=database_id), order=["foo", "-bar"])
     query.order = []
     assert query.order == []
 
 
-def test_query_order_setter_string():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_order_setter_string(database_id):
+    query = _make_query(_make_client(database=database_id))
     query.order = "field"
     assert query.order == ["field"]
 
 
-def test_query_order_setter_single_item_list_desc():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_order_setter_single_item_list_desc(database_id):
+    query = _make_query(_make_client(database=database_id))
     query.order = ["-field"]
     assert query.order == ["-field"]
 
 
-def test_query_order_setter_multiple():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_order_setter_multiple(database_id):
+    query = _make_query(_make_client(database=database_id))
     query.order = ["foo", "-bar"]
     assert query.order == ["foo", "-bar"]
 
 
-def test_query_distinct_on_setter_empty():
-    query = _make_query(_make_client(), distinct_on=["foo", "bar"])
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_distinct_on_setter_empty(database_id):
+    query = _make_query(_make_client(database=database_id), distinct_on=["foo", "bar"])
     query.distinct_on = []
     assert query.distinct_on == []
 
 
-def test_query_distinct_on_setter_string():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_distinct_on_setter_string(database_id):
+    query = _make_query(_make_client(database=database_id))
     query.distinct_on = "field1"
     assert query.distinct_on == ["field1"]
 
 
-def test_query_distinct_on_setter_non_empty():
-    query = _make_query(_make_client())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_distinct_on_setter_non_empty(database_id):
+    query = _make_query(_make_client(database=database_id))
     query.distinct_on = ["field1", "field2"]
     assert query.distinct_on == ["field1", "field2"]
 
 
-def test_query_distinct_on_multiple_calls():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_distinct_on_multiple_calls(database_id):
     _DISTINCT_ON1 = ["field1", "field2"]
     _DISTINCT_ON2 = ["field3"]
-    query = _make_query(_make_client())
+    query = _make_query(_make_client(database=database_id))
     query.distinct_on = _DISTINCT_ON1
     assert query.distinct_on == _DISTINCT_ON1
     query.distinct_on = _DISTINCT_ON2
     assert query.distinct_on == _DISTINCT_ON2
 
 
-def test_query_fetch_defaults_w_client_attr():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_fetch_defaults_w_client_attr(database_id):
     from google.cloud.datastore.query import Iterator
 
-    client = _make_client()
+    client = _make_client(database=database_id)
     query = _make_query(client)
 
     iterator = query.fetch()
@@ -559,11 +629,12 @@ def test_query_fetch_defaults_w_client_attr():
     assert iterator._timeout is None
 
 
-def test_query_fetch_w_explicit_client_w_retry_w_timeout():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_query_fetch_w_explicit_client_w_retry_w_timeout(database_id):
     from google.cloud.datastore.query import Iterator
 
-    client = _make_client()
-    other_client = _make_client()
+    client = _make_client(database=database_id)
+    other_client = _make_client(database=database_id)
     query = _make_query(client)
     retry = mock.Mock()
     timeout = 100000
@@ -697,13 +768,14 @@ def test_iterator__build_protobuf_all_values_except_start_and_end_cursor():
     assert pb == expected_pb
 
 
-def test_iterator__process_query_results():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator__process_query_results(database_id):
     from google.cloud.datastore_v1.types import query as query_pb2
 
     iterator = _make_iterator(None, None, end_cursor="abcd")
     assert iterator._end_cursor is not None
 
-    entity_pbs = [_make_entity("Hello", 9998, "PRAHJEKT")]
+    entity_pbs = [_make_entity("Hello", 9998, "PRAHJEKT", database=database_id)]
     cursor_as_bytes = b"\x9ai\xe7"
     cursor = b"mmnn"
     skipped_results = 4
@@ -719,13 +791,14 @@ def test_iterator__process_query_results():
     assert iterator._more_results
 
 
-def test_iterator__process_query_results_done():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator__process_query_results_done(database_id):
     from google.cloud.datastore_v1.types import query as query_pb2
 
     iterator = _make_iterator(None, None, end_cursor="abcd")
     assert iterator._end_cursor is not None
 
-    entity_pbs = [_make_entity("World", 1234, "PROJECT")]
+    entity_pbs = [_make_entity("World", 1234, "PROJECT", database=database_id)]
     cursor_as_bytes = b"\x9ai\xe7"
     skipped_results = 44
     more_results_enum = query_pb2.QueryResultBatch.MoreResultsType.NO_MORE_RESULTS
@@ -749,7 +822,9 @@ def test_iterator__process_query_results_bad_enum():
         iterator._process_query_results(response_pb)
 
 
-def _next_page_helper(txn_id=None, retry=None, timeout=None, read_time=None):
+def _next_page_helper(
+    txn_id=None, retry=None, timeout=None, read_time=None, database=None
+):
     from google.api_core import page_iterator
     from google.cloud.datastore.query import Query
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
@@ -762,10 +837,12 @@ def _next_page_helper(txn_id=None, retry=None, timeout=None, read_time=None):
     project = "prujekt"
     ds_api = _make_datastore_api(result)
     if txn_id is None:
-        client = _Client(project, datastore_api=ds_api)
+        client = _Client(project, database=database, datastore_api=ds_api)
     else:
         transaction = mock.Mock(id=txn_id, spec=["id"])
-        client = _Client(project, datastore_api=ds_api, transaction=transaction)
+        client = _Client(
+            project, database=database, datastore_api=ds_api, transaction=transaction
+        )
 
     query = Query(client)
     kwargs = {}
@@ -787,7 +864,7 @@ def _next_page_helper(txn_id=None, retry=None, timeout=None, read_time=None):
     assert isinstance(page, page_iterator.Page)
     assert page._parent is iterator
 
-    partition_id = entity_pb2.PartitionId(project_id=project)
+    partition_id = entity_pb2.PartitionId(project_id=project, database_id=database)
     if txn_id is not None:
         read_options = datastore_pb2.ReadOptions(transaction=txn_id)
     elif read_time is not None:
@@ -797,40 +874,48 @@ def _next_page_helper(txn_id=None, retry=None, timeout=None, read_time=None):
     else:
         read_options = datastore_pb2.ReadOptions()
     empty_query = query_pb2.Query()
+    expected_request = {
+        "project_id": project,
+        "partition_id": partition_id,
+        "read_options": read_options,
+        "query": empty_query,
+    }
+    set_database_id_to_request(expected_request, database)
     ds_api.run_query.assert_called_once_with(
-        request={
-            "project_id": project,
-            "partition_id": partition_id,
-            "read_options": read_options,
-            "query": empty_query,
-        },
+        request=expected_request,
         **kwargs,
     )
 
 
-def test_iterator__next_page():
-    _next_page_helper()
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator__next_page(database_id):
+    _next_page_helper(database_id)
 
 
-def test_iterator__next_page_w_retry():
-    _next_page_helper(retry=mock.Mock())
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator__next_page_w_retry(database_id):
+    _next_page_helper(retry=mock.Mock(), database=database_id)
 
 
-def test_iterator__next_page_w_timeout():
-    _next_page_helper(timeout=100000)
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator__next_page_w_timeout(database_id):
+    _next_page_helper(timeout=100000, database=database_id)
 
 
-def test_iterator__next_page_in_transaction():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator__next_page_in_transaction(database_id):
     txn_id = b"1xo1md\xe2\x98\x83"
-    _next_page_helper(txn_id)
+    _next_page_helper(txn_id, database=database_id)
 
 
-def test_iterator__next_page_w_read_time():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator__next_page_w_read_time(database_id):
     read_time = datetime.datetime.utcfromtimestamp(1641058200.123456)
-    _next_page_helper(read_time=read_time)
+    _next_page_helper(read_time=read_time, database=database_id)
 
 
-def test_iterator__next_page_no_more():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator__next_page_no_more(database_id):
     from google.cloud.datastore.query import Query
 
     ds_api = _make_datastore_api()
@@ -844,7 +929,8 @@ def test_iterator__next_page_no_more():
     ds_api.run_query.assert_not_called()
 
 
-def test_iterator__next_page_w_skipped_lt_offset():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_iterator__next_page_w_skipped_lt_offset(database_id):
     from google.api_core import page_iterator
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import entity as entity_pb2
@@ -865,7 +951,7 @@ def test_iterator__next_page_w_skipped_lt_offset():
     result_2.batch.skipped_cursor = skipped_cursor_2
 
     ds_api = _make_datastore_api(result_1, result_2)
-    client = _Client(project, datastore_api=ds_api)
+    client = _Client(project, datastore_api=ds_api, database=database_id)
 
     query = Query(client)
     offset = 150
@@ -876,24 +962,24 @@ def test_iterator__next_page_w_skipped_lt_offset():
     assert isinstance(page, page_iterator.Page)
     assert page._parent is iterator
 
-    partition_id = entity_pb2.PartitionId(project_id=project)
+    partition_id = entity_pb2.PartitionId(project_id=project, database_id=database_id)
     read_options = datastore_pb2.ReadOptions()
 
     query_1 = query_pb2.Query(offset=offset)
     query_2 = query_pb2.Query(
         start_cursor=skipped_cursor_1, offset=(offset - skipped_1)
     )
-    expected_calls = [
-        mock.call(
-            request={
-                "project_id": project,
-                "partition_id": partition_id,
-                "read_options": read_options,
-                "query": query,
-            }
-        )
-        for query in [query_1, query_2]
-    ]
+    expected_calls = []
+    for query in [query_1, query_2]:
+        expected_request = {
+            "project_id": project,
+            "partition_id": partition_id,
+            "read_options": read_options,
+            "query": query,
+        }
+        set_database_id_to_request(expected_request, database_id)
+        expected_calls.append(mock.call(request=expected_request))
+
     assert ds_api.run_query.call_args_list == expected_calls
 
 
@@ -943,12 +1029,13 @@ def test_pb_from_query_kind():
     assert [item.name for item in pb.kind] == ["KIND"]
 
 
-def test_pb_from_query_ancestor():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_pb_from_query_ancestor(database_id):
     from google.cloud.datastore.key import Key
     from google.cloud.datastore_v1.types import query as query_pb2
     from google.cloud.datastore.query import _pb_from_query
 
-    ancestor = Key("Ancestor", 123, project="PROJECT")
+    ancestor = Key("Ancestor", 123, project="PROJECT", database=database_id)
     pb = _pb_from_query(_make_stub_query(ancestor=ancestor))
     cfilter = pb.filter.composite_filter
     assert cfilter.op == query_pb2.CompositeFilter.Operator.AND
@@ -974,12 +1061,13 @@ def test_pb_from_query_filter():
     assert pfilter.value.string_value == "John"
 
 
-def test_pb_from_query_filter_key():
+@pytest.mark.parametrize("database_id", [None, "somedb"])
+def test_pb_from_query_filter_key(database_id):
     from google.cloud.datastore.key import Key
     from google.cloud.datastore_v1.types import query as query_pb2
     from google.cloud.datastore.query import _pb_from_query
 
-    key = Key("Kind", 123, project="PROJECT")
+    key = Key("Kind", 123, project="PROJECT", database=database_id)
     query = _make_stub_query(filters=[("__key__", "=", key)])
     query.OPERATORS = {"=": query_pb2.PropertyFilter.Operator.EQUAL}
     pb = _pb_from_query(query)
@@ -1142,9 +1230,17 @@ def _make_stub_query(
 
 
 class _Client(object):
-    def __init__(self, project, datastore_api=None, namespace=None, transaction=None):
+    def __init__(
+        self,
+        project,
+        datastore_api=None,
+        namespace=None,
+        transaction=None,
+        database=None,
+    ):
         self.project = project
         self._datastore_api = datastore_api
+        self.database = database
         self.namespace = namespace
         self._transaction = transaction
 
@@ -1165,15 +1261,16 @@ def _make_iterator(*args, **kw):
     return Iterator(*args, **kw)
 
 
-def _make_client():
-    return _Client(_PROJECT)
+def _make_client(database=None):
+    return _Client(_PROJECT, database=database)
 
 
-def _make_entity(kind, id_, project):
+def _make_entity(kind, id_, project, database=None):
     from google.cloud.datastore_v1.types import entity as entity_pb2
 
     key = entity_pb2.Key()
     key.partition_id.project_id = project
+    key.partition_id.database_id = database
     elem = key.path._pb.add()
     elem.kind = kind
     elem.id = id_
