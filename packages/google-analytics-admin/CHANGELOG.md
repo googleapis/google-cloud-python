@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.18.0](https://github.com/googleapis/python-analytics-admin/compare/v0.17.0...v0.18.0) (2023-06-21)
+
+
+### Features
+
+* Add `AdsWebConversionDataExportScope` enum ([d3aeb71](https://github.com/googleapis/python-analytics-admin/commit/d3aeb7186c53a69b53f7d81dc23108cfd8c6ab78))
+* Add the `ads_web_conversion_data_export_scope` field to the `ReportingAttributionModel` type ([d3aeb71](https://github.com/googleapis/python-analytics-admin/commit/d3aeb7186c53a69b53f7d81dc23108cfd8c6ab78))
+* Update the `default_uri` field of the `WebStreamData` type to be mutable ([d3aeb71](https://github.com/googleapis/python-analytics-admin/commit/d3aeb7186c53a69b53f7d81dc23108cfd8c6ab78))
+
+
+### Documentation
+
+* Announce the deprecation of first-click, linear, time-decay and position-based attribution models  ([d3aeb71](https://github.com/googleapis/python-analytics-admin/commit/d3aeb7186c53a69b53f7d81dc23108cfd8c6ab78))
+
 ## [0.17.0](https://github.com/googleapis/python-analytics-admin/compare/v0.16.0...v0.17.0) (2023-05-31)
 
 
