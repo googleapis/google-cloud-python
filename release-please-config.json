@@ -585,6 +585,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-kms-inventory": {
+            "component": "google-cloud-kms-inventory",
+            "extra-files": [
+                "google/cloud/kms_inventory/gapic_version.py",
+                "google/cloud/kms_inventory_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.kms.inventory.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-life-sciences": {
             "component": "google-cloud-life-sciences",
             "extra-files": [
