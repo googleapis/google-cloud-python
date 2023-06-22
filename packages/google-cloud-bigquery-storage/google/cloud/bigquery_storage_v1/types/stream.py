@@ -134,6 +134,15 @@ class ReadSession(proto.Message):
             are completely consumed. This estimate is based
             on metadata from the table which might be
             incomplete or stale.
+        estimated_total_physical_file_size (int):
+            Output only. A pre-projected estimate of the
+            total physical size (in bytes) of files this
+            session will scan when all streams are
+            completely consumed. This estimate does not
+            depend on the selected columns and can be based
+            on metadata from the table which might be
+            incomplete or stale. Only set for BigLake
+            tables.
         estimated_row_count (int):
             Output only. An estimate on the number of
             rows present in this session's streams. This
@@ -233,11 +242,11 @@ class ReadSession(proto.Message):
             sample_percentage (float):
                 Optional. Specifies a table sampling percentage.
                 Specifically, the query planner will use TABLESAMPLE SYSTEM
-                (sample_percentage PERCENT). This samples at the file-level.
-                It will randomly choose for each file whether to include
-                that file in the sample returned. Note, that if the table
-                only has one file, then TABLESAMPLE SYSTEM will select that
-                file and return all returnable rows contained within.
+                (sample_percentage PERCENT). The sampling percentage is
+                applied at the data block granularity. It will randomly
+                choose for each data block whether to read the rows in that
+                data block. For more details, see
+                https://cloud.google.com/bigquery/docs/table-sampling)
 
                 This field is a member of `oneof`_ ``_sample_percentage``.
         """
@@ -316,6 +325,10 @@ class ReadSession(proto.Message):
     estimated_total_bytes_scanned: int = proto.Field(
         proto.INT64,
         number=12,
+    )
+    estimated_total_physical_file_size: int = proto.Field(
+        proto.INT64,
+        number=15,
     )
     estimated_row_count: int = proto.Field(
         proto.INT64,
