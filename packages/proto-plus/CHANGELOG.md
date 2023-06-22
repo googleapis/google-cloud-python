@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.3](https://github.com/googleapis/proto-plus-python/compare/v1.22.2...v1.22.3) (2023-06-22)
+
+
+### Bug Fixes
+
+* Resolve issue where marshal fails with cross api dependency ([#348](https://github.com/googleapis/proto-plus-python/issues/348)) ([0dcea18](https://github.com/googleapis/proto-plus-python/commit/0dcea18898cdc2170a945f3d96216bae6a37e60f))
+
 ## [1.22.2](https://github.com/googleapis/proto-plus-python/compare/v1.22.1...v1.22.2) (2023-01-05)
 
 
