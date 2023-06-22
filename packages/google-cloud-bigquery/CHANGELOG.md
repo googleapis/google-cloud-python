@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.11.2](https://github.com/googleapis/python-bigquery/compare/v3.11.1...v3.11.2) (2023-06-21)
+
+
+### Bug Fixes
+
+* Updates tests based on revised hacker_news tables ([#1591](https://github.com/googleapis/python-bigquery/issues/1591)) ([d73cf49](https://github.com/googleapis/python-bigquery/commit/d73cf495b8dfa032a43dc1d58599d0691aaa0efb))
+
 ## [3.11.1](https://github.com/googleapis/python-bigquery/compare/v3.11.0...v3.11.1) (2023-06-09)
 
 
