@@ -471,8 +471,14 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 client = essential_contacts_v1.EssentialContactsServiceClient()
 
                 # Initialize request argument(s)
+                contact = essential_contacts_v1.Contact()
+                contact.email = "email_value"
+                contact.notification_category_subscriptions = ['TECHNICAL_INCIDENTS']
+                contact.language_tag = "language_tag_value"
+
                 request = essential_contacts_v1.CreateContactRequest(
                     parent="parent_value",
+                    contact=contact,
                 )
 
                 # Make the request
@@ -586,7 +592,13 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 client = essential_contacts_v1.EssentialContactsServiceClient()
 
                 # Initialize request argument(s)
+                contact = essential_contacts_v1.Contact()
+                contact.email = "email_value"
+                contact.notification_category_subscriptions = ['TECHNICAL_INCIDENTS']
+                contact.language_tag = "language_tag_value"
+
                 request = essential_contacts_v1.UpdateContactRequest(
+                    contact=contact,
                 )
 
                 # Make the request
