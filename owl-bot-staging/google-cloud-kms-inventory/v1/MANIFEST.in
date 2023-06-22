@@ -1,2 +1,0 @@
-recursive-include google/cloud/kms/inventory *.py
-recursive-include google/cloud/kms/inventory_v1 *.py
