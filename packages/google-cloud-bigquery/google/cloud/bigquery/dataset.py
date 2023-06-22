@@ -139,7 +139,7 @@ class DatasetReference(object):
 
     @classmethod
     def from_string(
-        cls, dataset_id: str, default_project: str = None
+        cls, dataset_id: str, default_project: Optional[str] = None
     ) -> "DatasetReference":
         """Construct a dataset reference from dataset ID string.
 

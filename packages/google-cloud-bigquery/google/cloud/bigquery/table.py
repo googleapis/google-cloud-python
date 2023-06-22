@@ -228,7 +228,7 @@ class TableReference(_TableBase):
 
     @classmethod
     def from_string(
-        cls, table_id: str, default_project: str = None
+        cls, table_id: str, default_project: Optional[str] = None
     ) -> "TableReference":
         """Construct a table reference from table ID string.
 
@@ -1745,7 +1745,7 @@ class RowIterator(HTTPIterator):
     # changes to job.QueryJob.to_arrow()
     def to_arrow(
         self,
-        progress_bar_type: str = None,
+        progress_bar_type: Optional[str] = None,
         bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"] = None,
         create_bqstorage_client: bool = True,
     ) -> "pyarrow.Table":
@@ -1932,7 +1932,7 @@ class RowIterator(HTTPIterator):
         self,
         bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"] = None,
         dtypes: Dict[str, Any] = None,
-        progress_bar_type: str = None,
+        progress_bar_type: Optional[str] = None,
         create_bqstorage_client: bool = True,
         geography_as_object: bool = False,
         bool_dtype: Union[Any, None] = DefaultPandasDTypes.BOOL_DTYPE,
@@ -2230,7 +2230,7 @@ class RowIterator(HTTPIterator):
         self,
         bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"] = None,
         dtypes: Dict[str, Any] = None,
-        progress_bar_type: str = None,
+        progress_bar_type: Optional[str] = None,
         create_bqstorage_client: bool = True,
         geography_column: Optional[str] = None,
     ) -> "geopandas.GeoDataFrame":

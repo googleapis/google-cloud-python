@@ -537,7 +537,7 @@ class RoutineReference(object):
 
     @classmethod
     def from_string(
-        cls, routine_id: str, default_project: str = None
+        cls, routine_id: str, default_project: Optional[str] = None
     ) -> "RoutineReference":
         """Factory: construct a routine reference from routine ID string.
 

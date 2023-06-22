@@ -16,7 +16,7 @@
 
 import collections
 import enum
-from typing import Any, Dict, Iterable, Union
+from typing import Any, Dict, Iterable, Optional, Union
 
 from google.cloud.bigquery import standard_sql
 from google.cloud.bigquery.enums import StandardSqlTypeNames
@@ -124,7 +124,7 @@ class SchemaField(object):
         name: str,
         field_type: str,
         mode: str = "NULLABLE",
-        default_value_expression: str = None,
+        default_value_expression: Optional[str] = None,
         description: Union[str, _DefaultSentinel] = _DEFAULT_VALUE,
         fields: Iterable["SchemaField"] = (),
         policy_tags: Union["PolicyTagList", None, _DefaultSentinel] = _DEFAULT_VALUE,

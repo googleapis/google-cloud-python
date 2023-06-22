@@ -703,7 +703,10 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         self._set_properties(api_response)
 
     def exists(
-        self, client=None, retry: "retries.Retry" = DEFAULT_RETRY, timeout: float = None
+        self,
+        client=None,
+        retry: "retries.Retry" = DEFAULT_RETRY,
+        timeout: Optional[float] = None,
     ) -> bool:
         """API call:  test for the existence of the job via a GET request
 
@@ -748,7 +751,10 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             return True
 
     def reload(
-        self, client=None, retry: "retries.Retry" = DEFAULT_RETRY, timeout: float = None
+        self,
+        client=None,
+        retry: "retries.Retry" = DEFAULT_RETRY,
+        timeout: Optional[float] = None,
     ):
         """API call:  refresh job properties via a GET request.
 
@@ -785,7 +791,10 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         self._set_properties(api_response)
 
     def cancel(
-        self, client=None, retry: "retries.Retry" = DEFAULT_RETRY, timeout: float = None
+        self,
+        client=None,
+        retry: "retries.Retry" = DEFAULT_RETRY,
+        timeout: Optional[float] = None,
     ) -> bool:
         """API call:  cancel job via a POST request
 
@@ -855,7 +864,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def done(
         self,
         retry: "retries.Retry" = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         reload: bool = True,
     ) -> bool:
         """Checks if the job is complete.
@@ -881,7 +890,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         return self.state == _DONE_STATE
 
     def result(  # type: ignore  # (signature complaint)
-        self, retry: "retries.Retry" = DEFAULT_RETRY, timeout: float = None
+        self,
+        retry: "retries.Retry" = DEFAULT_RETRY,
+        timeout: Optional[float] = None,
     ) -> "_AsyncJob":
         """Start the job and wait for it to complete and get the result.
 
