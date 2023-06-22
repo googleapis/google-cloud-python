@@ -45,7 +45,7 @@
     "packages/google-cloud-domains": "1.5.1",
     "packages/google-cloud-edgecontainer": "0.5.1",
     "packages/google-cloud-enterpriseknowledgegraph": "0.3.2",
-    "packages/google-cloud-essential-contacts": "1.5.1",
+    "packages/google-cloud-essential-contacts": "1.5.2",
     "packages/google-cloud-eventarc": "1.9.1",
     "packages/google-cloud-eventarc-publishing": "0.6.2",
     "packages/google-cloud-functions": "1.13.0",

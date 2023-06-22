@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-essential-contacts-v1.5.1...google-cloud-essential-contacts-v1.5.2) (2023-06-22)
+
+
+### Documentation
+
+* mark fields in Contacts message as REQUIRED ([#11420](https://github.com/googleapis/google-cloud-python/issues/11420)) ([a83db2d](https://github.com/googleapis/google-cloud-python/commit/a83db2d4927470f22ccf82a8bcbb40d4e3b061f7))
+
 ## [1.5.1](https://github.com/googleapis/python-essential-contacts/compare/v1.5.0...v1.5.1) (2023-03-23)
 
 

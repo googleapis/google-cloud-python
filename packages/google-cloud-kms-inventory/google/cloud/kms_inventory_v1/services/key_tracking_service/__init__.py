@@ -13,4 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-__version__ = "1.5.2"  # {x-release-please-version}
+from .async_client import KeyTrackingServiceAsyncClient
+from .client import KeyTrackingServiceClient
+
+__all__ = (
+    "KeyTrackingServiceClient",
+    "KeyTrackingServiceAsyncClient",
+)
