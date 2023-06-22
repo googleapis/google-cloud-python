@@ -45,18 +45,19 @@ class Contact(proto.Message):
 
     Attributes:
         name (str):
-            The identifier for the contact. Format:
+            Output only. The identifier for the contact. Format:
             {resource_type}/{resource_id}/contacts/{contact_id}
         email (str):
             Required. The email address to send
-            notifications to. This does not need to be a
-            Google account.
+            notifications to. The email address does not
+            need to be a Google Account.
         notification_category_subscriptions (MutableSequence[google.cloud.essential_contacts_v1.types.NotificationCategory]):
-            The categories of notifications that the
-            contact will receive communications for.
+            Required. The categories of notifications
+            that the contact will receive communications
+            for.
         language_tag (str):
-            The preferred language for notifications, as a ISO 639-1
-            language code. See `Supported
+            Required. The preferred language for notifications, as a ISO
+            639-1 language code. See `Supported
             languages <https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages>`__
             for a list of supported languages.
         validation_state (google.cloud.essential_contacts_v1.types.ValidationState):
