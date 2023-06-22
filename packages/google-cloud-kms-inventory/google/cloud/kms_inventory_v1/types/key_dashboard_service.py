@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.cloud.kms.v1 import resources_pb2  # type: ignore
+from google.cloud.kms_v1.types import resources
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -67,7 +67,7 @@ class ListCryptoKeysResponse(proto.Message):
     [KeyDashboardService.ListCryptoKeys][google.cloud.kms.inventory.v1.KeyDashboardService.ListCryptoKeys].
 
     Attributes:
-        crypto_keys (MutableSequence[google.cloud.kms.v1.resources_pb2.CryptoKey]):
+        crypto_keys (MutableSequence[google.cloud.kms_v1.types.CryptoKey]):
             The list of [CryptoKeys][google.cloud.kms.v1.CryptoKey].
         next_page_token (str):
             The page token returned from the previous
@@ -78,10 +78,10 @@ class ListCryptoKeysResponse(proto.Message):
     def raw_page(self):
         return self
 
-    crypto_keys: MutableSequence[resources_pb2.CryptoKey] = proto.RepeatedField(
+    crypto_keys: MutableSequence[resources.CryptoKey] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message=resources_pb2.CryptoKey,
+        message=resources.CryptoKey,
     )
     next_page_token: str = proto.Field(
         proto.STRING,

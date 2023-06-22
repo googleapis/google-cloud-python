@@ -32,7 +32,7 @@ from google.api_core import exceptions as core_exceptions
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.kms.v1 import resources_pb2  # type: ignore
+from google.cloud.kms_v1.types import resources
 from google.oauth2 import service_account
 from google.protobuf import json_format
 import grpc
@@ -994,9 +994,9 @@ def test_list_crypto_keys_pager(transport_name: str = "grpc"):
         call.side_effect = (
             key_dashboard_service.ListCryptoKeysResponse(
                 crypto_keys=[
-                    resources_pb2.CryptoKey(),
-                    resources_pb2.CryptoKey(),
-                    resources_pb2.CryptoKey(),
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
                 ],
                 next_page_token="abc",
             ),
@@ -1006,14 +1006,14 @@ def test_list_crypto_keys_pager(transport_name: str = "grpc"):
             ),
             key_dashboard_service.ListCryptoKeysResponse(
                 crypto_keys=[
-                    resources_pb2.CryptoKey(),
+                    resources.CryptoKey(),
                 ],
                 next_page_token="ghi",
             ),
             key_dashboard_service.ListCryptoKeysResponse(
                 crypto_keys=[
-                    resources_pb2.CryptoKey(),
-                    resources_pb2.CryptoKey(),
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
                 ],
             ),
             RuntimeError,
@@ -1029,7 +1029,7 @@ def test_list_crypto_keys_pager(transport_name: str = "grpc"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, resources_pb2.CryptoKey) for i in results)
+        assert all(isinstance(i, resources.CryptoKey) for i in results)
 
 
 def test_list_crypto_keys_pages(transport_name: str = "grpc"):
@@ -1044,9 +1044,9 @@ def test_list_crypto_keys_pages(transport_name: str = "grpc"):
         call.side_effect = (
             key_dashboard_service.ListCryptoKeysResponse(
                 crypto_keys=[
-                    resources_pb2.CryptoKey(),
-                    resources_pb2.CryptoKey(),
-                    resources_pb2.CryptoKey(),
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
                 ],
                 next_page_token="abc",
             ),
@@ -1056,14 +1056,14 @@ def test_list_crypto_keys_pages(transport_name: str = "grpc"):
             ),
             key_dashboard_service.ListCryptoKeysResponse(
                 crypto_keys=[
-                    resources_pb2.CryptoKey(),
+                    resources.CryptoKey(),
                 ],
                 next_page_token="ghi",
             ),
             key_dashboard_service.ListCryptoKeysResponse(
                 crypto_keys=[
-                    resources_pb2.CryptoKey(),
-                    resources_pb2.CryptoKey(),
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
                 ],
             ),
             RuntimeError,
@@ -1087,9 +1087,9 @@ async def test_list_crypto_keys_async_pager():
         call.side_effect = (
             key_dashboard_service.ListCryptoKeysResponse(
                 crypto_keys=[
-                    resources_pb2.CryptoKey(),
-                    resources_pb2.CryptoKey(),
-                    resources_pb2.CryptoKey(),
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
                 ],
                 next_page_token="abc",
             ),
@@ -1099,14 +1099,14 @@ async def test_list_crypto_keys_async_pager():
             ),
             key_dashboard_service.ListCryptoKeysResponse(
                 crypto_keys=[
-                    resources_pb2.CryptoKey(),
+                    resources.CryptoKey(),
                 ],
                 next_page_token="ghi",
             ),
             key_dashboard_service.ListCryptoKeysResponse(
                 crypto_keys=[
-                    resources_pb2.CryptoKey(),
-                    resources_pb2.CryptoKey(),
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
                 ],
             ),
             RuntimeError,
@@ -1120,7 +1120,7 @@ async def test_list_crypto_keys_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(isinstance(i, resources_pb2.CryptoKey) for i in responses)
+        assert all(isinstance(i, resources.CryptoKey) for i in responses)
 
 
 @pytest.mark.asyncio
@@ -1137,9 +1137,9 @@ async def test_list_crypto_keys_async_pages():
         call.side_effect = (
             key_dashboard_service.ListCryptoKeysResponse(
                 crypto_keys=[
-                    resources_pb2.CryptoKey(),
-                    resources_pb2.CryptoKey(),
-                    resources_pb2.CryptoKey(),
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
                 ],
                 next_page_token="abc",
             ),
@@ -1149,14 +1149,14 @@ async def test_list_crypto_keys_async_pages():
             ),
             key_dashboard_service.ListCryptoKeysResponse(
                 crypto_keys=[
-                    resources_pb2.CryptoKey(),
+                    resources.CryptoKey(),
                 ],
                 next_page_token="ghi",
             ),
             key_dashboard_service.ListCryptoKeysResponse(
                 crypto_keys=[
-                    resources_pb2.CryptoKey(),
-                    resources_pb2.CryptoKey(),
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
                 ],
             ),
             RuntimeError,
@@ -1463,9 +1463,9 @@ def test_list_crypto_keys_rest_pager(transport: str = "rest"):
         response = (
             key_dashboard_service.ListCryptoKeysResponse(
                 crypto_keys=[
-                    resources_pb2.CryptoKey(),
-                    resources_pb2.CryptoKey(),
-                    resources_pb2.CryptoKey(),
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
                 ],
                 next_page_token="abc",
             ),
@@ -1475,14 +1475,14 @@ def test_list_crypto_keys_rest_pager(transport: str = "rest"):
             ),
             key_dashboard_service.ListCryptoKeysResponse(
                 crypto_keys=[
-                    resources_pb2.CryptoKey(),
+                    resources.CryptoKey(),
                 ],
                 next_page_token="ghi",
             ),
             key_dashboard_service.ListCryptoKeysResponse(
                 crypto_keys=[
-                    resources_pb2.CryptoKey(),
-                    resources_pb2.CryptoKey(),
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
                 ],
             ),
         )
@@ -1505,7 +1505,7 @@ def test_list_crypto_keys_rest_pager(transport: str = "rest"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, resources_pb2.CryptoKey) for i in results)
+        assert all(isinstance(i, resources.CryptoKey) for i in results)
 
         pages = list(client.list_crypto_keys(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
