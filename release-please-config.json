@@ -511,7 +511,12 @@
             "component": "google-cloud-essential-contacts",
             "extra-files": [
                 "google/cloud/essential_contacts/gapic_version.py",
-                "google/cloud/essential_contacts_v1/gapic_version.py"
+                "google/cloud/essential_contacts_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.essentialcontacts.v1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
