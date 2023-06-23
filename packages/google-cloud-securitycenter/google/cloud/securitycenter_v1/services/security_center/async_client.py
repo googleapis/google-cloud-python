@@ -27,6 +27,7 @@ from typing import (
     Type,
     Union,
 )
+import warnings
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -2496,6 +2497,10 @@ class SecurityCenterAsyncClient:
                 automatically.
 
         """
+        warnings.warn(
+            "SecurityCenterAsyncClient.group_assets is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         request = securitycenter_service.GroupAssetsRequest(request)
 
@@ -2762,6 +2767,10 @@ class SecurityCenterAsyncClient:
                 automatically.
 
         """
+        warnings.warn(
+            "SecurityCenterAsyncClient.list_assets is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         request = securitycenter_service.ListAssetsRequest(request)
 
@@ -3791,6 +3800,11 @@ class SecurityCenterAsyncClient:
                 Response of asset discovery run
 
         """
+        warnings.warn(
+            "SecurityCenterAsyncClient.run_asset_discovery is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
