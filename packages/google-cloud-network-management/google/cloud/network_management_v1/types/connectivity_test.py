@@ -187,6 +187,17 @@ class Endpoint(proto.Message):
             Only applicable when protocol is TCP or UDP.
         instance (str):
             A Compute Engine instance URI.
+        forwarding_rule (str):
+            A forwarding rule and its corresponding IP
+            address represent the frontend configuration of
+            a Google Cloud load balancer. Forwarding rules
+            are also used for protocol forwarding, Private
+            Service Connect and other network services to
+            provide forwarding information in the control
+            plane. Format:
+            projects/{project}/global/forwardingRules/{id}
+            or
+            projects/{project}/regions/{region}/forwardingRules/{id}
         gke_master_cluster (str):
             A cluster URI for `Google Kubernetes Engine
             master <https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture>`__.
@@ -245,6 +256,10 @@ class Endpoint(proto.Message):
     instance: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    forwarding_rule: str = proto.Field(
+        proto.STRING,
+        number=13,
     )
     gke_master_cluster: str = proto.Field(
         proto.STRING,
