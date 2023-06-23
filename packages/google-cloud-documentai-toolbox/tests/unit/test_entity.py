@@ -70,8 +70,37 @@ def test_Entity_splitter():
     assert wrapper_entity.end_page == 2
 
 
+def test_Entity_with_page_offset():
+    documentai_entity = documentai.Document.Entity(
+        type_="invoice_statement",
+        page_anchor=documentai.Document.PageAnchor(
+            page_refs=[
+                # page field is empty when its value is 0
+                documentai.Document.PageAnchor.PageRef(),
+                documentai.Document.PageAnchor.PageRef(page=1),
+                documentai.Document.PageAnchor.PageRef(page=2),
+            ]
+        ),
+    )
+
+    wrapper_entity = entity.Entity(documentai_entity, page_offset=10)
+    assert wrapper_entity.start_page == 10
+    assert wrapper_entity.end_page == 12
+
+
 def test_crop_image(docproto):
     doc = document.Document.from_documentai_document(docproto)
-    doc.entities[0].crop_image(documentai_document=docproto)
+    actual = doc.entities[0].crop_image(documentai_page=docproto.pages[0])
 
-    assert doc.entities[0].image
+    assert actual
+
+
+def test_crop_image_without_page_image(docproto):
+    doc = document.Document.from_documentai_document(docproto)
+    del docproto.pages[0].image
+
+    with pytest.raises(
+        ValueError,
+        match="Document does not contain images.",
+    ):
+        doc.entities[0].crop_image(documentai_page=docproto.pages[0])

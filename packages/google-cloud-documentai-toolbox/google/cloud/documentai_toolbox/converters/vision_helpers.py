@@ -30,6 +30,8 @@ from google.cloud.vision import (
     Paragraph,
     Block,
     Page,
+    AnnotateImageResponse,
+    ImageAnnotationContext,
 )
 from google.cloud import vision
 
@@ -377,7 +379,34 @@ def _convert_document_page(
         property=text_property,
     )
 
-    text_annotation = TextAnnotation()
-    text_annotation.pages = [page]
+    text_annotation = TextAnnotation(
+        pages=[page],
+        text=_get_text_anchor_substring(
+            page_info.text, page_info.page.layout.text_anchor
+        ),
+    )
 
     return text_annotation
+
+
+def convert_page_to_annotate_image_response(
+    docai_page: Document.Page, document_text: str
+) -> AnnotateImageResponse:
+    r"""Convert OCR data from `Document.proto` to `AnnotateImageResponse.proto` for Vision API.
+
+    Args:
+        docai_page (documentai.Document.Page): Document page to be converted.
+        document_text (str): Full text of the document to convert.
+    Returns:
+        AnnotateImageResponse:
+            Proto with `TextAnnotations`.
+    """
+    page_info = PageInfo(page=docai_page, text=document_text)
+
+    page_vision_annotation = _convert_document_page(page_info)
+    text_annotations = _generate_entity_annotations(page_info)
+    return AnnotateImageResponse(
+        full_text_annotation=page_vision_annotation,
+        text_annotations=text_annotations,
+        context=ImageAnnotationContext(page_number=docai_page.page_number),
+    )

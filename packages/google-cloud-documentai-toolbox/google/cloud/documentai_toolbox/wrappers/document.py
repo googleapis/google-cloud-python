@@ -18,7 +18,7 @@
 import dataclasses
 import os
 import re
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 from google.api_core.client_options import ClientOptions
 
@@ -27,25 +27,19 @@ from google.cloud import documentai
 
 from google.cloud.documentai_toolbox import constants
 
+from google.cloud.documentai_toolbox.converters import vision_helpers
+
 from google.cloud.documentai_toolbox.utilities import gcs_utilities
 
-from google.cloud.documentai_toolbox.wrappers.page import Page
-from google.cloud.documentai_toolbox.wrappers.page import FormField
 from google.cloud.documentai_toolbox.wrappers.entity import Entity
+from google.cloud.documentai_toolbox.wrappers.page import FormField
+from google.cloud.documentai_toolbox.wrappers.page import Page
 
-from google.cloud.vision import AnnotateFileResponse, ImageAnnotationContext
-from google.cloud.vision import AnnotateImageResponse
-
-from google.cloud.documentai_toolbox.wrappers import page
-
-from google.cloud.documentai_toolbox.converters.vision_helpers import (
-    _convert_document_page,
-    _generate_entity_annotations,
-    _get_text_anchor_substring,
-    PageInfo,
+from google.cloud.vision import (
+    AnnotateFileResponse,
 )
 
-from google.longrunning.operations_pb2 import Operation, GetOperationRequest
+from google.longrunning.operations_pb2 import GetOperationRequest, Operation
 
 from pikepdf import Pdf
 
@@ -64,15 +58,14 @@ def _entities_from_shards(
             a list of Entities.
     """
     result = []
+    # Needed to load the correct page index for sharded documents.
+    page_offset = 0
     for shard in shards:
-        for documentai_entity in shard.entities:
-            entity = Entity(documentai_entity=documentai_entity)
-            entity.crop_image(shard)
-            result.append(entity)
-            for documentai_prop in documentai_entity.properties:
-                prop = Entity(documentai_entity=documentai_prop)
-                prop.crop_image(shard)
-                result.append(prop)
+        for entity in shard.entities:
+            result.append(Entity(documentai_entity=entity, page_offset=page_offset))
+            for prop in entity.properties:
+                result.append(Entity(documentai_entity=prop, page_offset=page_offset))
+        page_offset += len(shard.pages)
 
     if len(result) > 1 and result[0].documentai_entity.id:
         result.sort(key=lambda x: int(x.documentai_entity.id))
@@ -92,10 +85,11 @@ def _pages_from_shards(shards: List[documentai.Document]) -> List[Page]:
     """
     result = []
     for shard in shards:
-        text = shard.text
         for shard_page in shard.pages:
-            result.append(Page(documentai_page=shard_page, text=text))
+            result.append(Page(documentai_page=shard_page, document_text=shard.text))
 
+    if len(result) > 1 and result[0].page_number:
+        result.sort(key=lambda x: x.page_number)
     return result
 
 
@@ -128,8 +122,22 @@ def _get_shards(gcs_bucket_name: str, gcs_prefix: str) -> List[documentai.Docume
     for byte in byte_array:
         shards.append(documentai.Document.from_json(byte, ignore_unknown_fields=True))
 
-    if len(shards) > 1:
-        shards.sort(key=lambda x: int(x.shard_info.shard_index))
+    if not shards:
+        raise ValueError("Incomplete Document - No JSON files found.")
+
+    total_shards = len(shards)
+
+    if total_shards == 1:
+        return shards
+
+    shards.sort(key=lambda x: int(x.shard_info.shard_index))
+
+    for shard in shards:
+        if int(shard.shard_info.shard_count) != total_shards:
+            raise ValueError(
+                f"Invalid Document - shardInfo.shardCount ({shard.shard_info.shard_count}) does not match number of shards ({total_shards})."
+            )
+
     return shards
 
 
@@ -151,44 +159,6 @@ def _text_from_shards(shards: List[documentai.Document]) -> str:
             total_text += shard.text
 
     return total_text
-
-
-def _convert_to_vision_annotate_file_response(text: str, pages: List[page.Page]):
-    r"""Convert OCR data from Document.proto to AnnotateFileResponse.proto for Vision API.
-
-    Args:
-        text (str):
-            Required. Contents of document.
-        pages (List[Page]):
-            Required. A list of pages.
-    Returns:
-        AnnotateFileResponse:
-            Proto with TextAnnotations.
-    """
-    responses = []
-    vision_file_response = AnnotateFileResponse()
-    page_idx = 0
-    while page_idx < len(pages):
-        page_info = PageInfo(pages[page_idx].documentai_page, text)
-
-        full_text_annotation = _convert_document_page(page_info)
-        full_text_annotation.text = _get_text_anchor_substring(
-            text, pages[page_idx].documentai_page.layout.text_anchor
-        )
-        text_annotations = _generate_entity_annotations(page_info)
-
-        responses.append(
-            AnnotateImageResponse(
-                full_text_annotation=full_text_annotation,
-                text_annotations=text_annotations,
-                context=ImageAnnotationContext(page_number=page_idx + 1),
-            )
-        )
-        page_idx += 1
-
-    vision_file_response.responses = responses
-
-    return vision_file_response
 
 
 def _get_batch_process_metadata(
@@ -239,11 +209,13 @@ def _get_batch_process_metadata(
     return metadata
 
 
-def _insert_into_dictionary_with_list(dic: Dict, key: str, value: str) -> Dict:
+def _insert_into_dictionary_with_list(
+    dic: Dict[str, Union[str, List[str]]], key: str, value: str
+) -> Dict[str, Union[str, List[str]]]:
     r"""Inserts value into a dictionary that can contain lists.
 
     Args:
-        dic (Dict):
+        dic (Dict[str, Union[str, List[str]]]):
             Required. The dictionary to insert into.
         key (str):
             Required. The key to be created or inserted into.
@@ -251,14 +223,14 @@ def _insert_into_dictionary_with_list(dic: Dict, key: str, value: str) -> Dict:
             Required. The value to be inserted.
 
     Returns:
-        Dict:
-            The dictionary after adding the key value pair.
+        Dict[str, Union[str, List[str]]]:
+            The dictionary after adding the key-value pair.
     """
     existing_value = dic.get(key)
 
     if existing_value:
-        # For duplicate keys,
-        # Change Type to a List if not already
+        # For duplicate keys.
+        # Change type to a List if not already.
         if not isinstance(existing_value, list):
             existing_value = [existing_value]
 
@@ -296,7 +268,7 @@ def _bigquery_column_name(input_string: str) -> str:
 
 
 def _dict_to_bigquery(
-    dic: Dict,
+    dic: Dict[str, Union[str, List[str]]],
     dataset_name: str,
     table_name: str,
     project_id: Optional[str],
@@ -304,7 +276,7 @@ def _dict_to_bigquery(
     r"""Loads dictionary to a BigQuery table.
 
     Args:
-        dic (Dict):
+        dic (Dict[str, Union[str, List[str]]]):
             Required: The dictionary to insert.
         dataset_name (str):
             Required. Name of the BigQuery dataset.
@@ -343,29 +315,35 @@ def _dict_to_bigquery(
 class Document:
     r"""Represents a wrapped `Document`.
 
-    This class hides away the complexities of using `Document` protobuf
+    This class hides away the complexities of using the `Document` protobuf
     response outputted by `BatchProcessDocuments` or `ProcessDocument`
     methods and implements convenient methods for searching and
     extracting information within the `Document`.
 
     Attributes:
-        shards: (List[google.cloud.documentai.Document]):
-            Optional. A list of documentai.Document shards of the same Document.
-            Each shard consists of a number of pages in the Document.
+        shards (List[google.cloud.documentai.Document]):
+            Optional. A list of `documentai.Document` shards of the same `Document`.
+            Each shard consists of a number of pages in the `Document`.
         gcs_bucket_name (Optional[str]):
             Optional. The name of the gcs bucket.
 
-            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_bucket_name=`bucket`.
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where `gcs_bucket_name=bucket`.
         gcs_prefix (Optional[str]):
             Optional. The prefix of the json files in the target_folder.
 
-            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_prefix=`{optional_folder}/{target_folder}`.
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where `gcs_prefix={optional_folder}/{target_folder}`.
 
-            For more information please take a look at https://cloud.google.com/storage/docs/json_api/v1/objects/list .
-        pages: (List[Page]):
-            A list of Pages in the Document.
-        entities: (List[Entity]):
-            A list of Entities in the Document.
+            For more information, refer to https://cloud.google.com/storage/docs/json_api/v1/objects/list
+        gcs_input_uri (str):
+            Optional. The gcs uri to the original input file.
+
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/{file_name}.pdf`
+        pages (List[Page]):
+            A list of `Pages` in the `Document`.
+        entities (List[Entity]):
+            A list of `Entities` in the `Document`.
+        text (str):
+            The full text of the `Document`.
     """
 
     shards: List[documentai.Document] = dataclasses.field(repr=False)
@@ -387,7 +365,7 @@ class Document:
         cls,
         document_path: str,
     ):
-        r"""Loads Document from local document_path.
+        r"""Loads `Document` from local `document_path`.
 
             .. code-block:: python
 
@@ -398,10 +376,10 @@ class Document:
 
         Args:
             document_path (str):
-                Required. The path to the document.json file.
+                Required. The path to the `document.json` file.
         Returns:
             Document:
-                A document from local document_path.
+                A document from local `document_path`.
         """
 
         with open(document_path, "r", encoding="utf-8") as f:
@@ -414,7 +392,7 @@ class Document:
         cls,
         documentai_document: documentai.Document,
     ):
-        r"""Loads Document from local documentai_document.
+        r"""Loads `Document` from local `documentai_document`.
 
             .. code-block:: python
 
@@ -426,10 +404,10 @@ class Document:
 
         Args:
             documentai_document (documentai.Document):
-                Optional. The Document.proto response.
+                Required. The `Document.proto` response.
         Returns:
             Document:
-                A document from local documentai_document.
+                A document from local `documentai_document`.
         """
 
         return cls(shards=[documentai_document])
@@ -442,11 +420,11 @@ class Document:
             gcs_bucket_name (str):
                 Required. The gcs bucket.
 
-                Format: Given `gs://{bucket_name}/{optional_folder}/{operation_id}/` where gcs_bucket_name=`{bucket_name}`.
+                Format: Given `gs://{bucket_name}/{optional_folder}/{operation_id}/` where `gcs_bucket_name={bucket_name}`.
             gcs_prefix (str):
                 Required. The prefix to the location of the target folder.
 
-                Format: Given `gs://{bucket_name}/{optional_folder}/{target_folder}` where gcs_prefix=`{optional_folder}/{target_folder}`.
+                Format: Given `gs://{bucket_name}/{optional_folder}/{target_folder}` where `gcs_prefix={optional_folder}/{target_folder}`.
             gcs_input_uri (str):
                 Optional. The gcs uri to the original input file.
 
@@ -520,6 +498,7 @@ class Document:
             operation_name (str):
                 Required. The fully qualified operation name for a `batch_process_documents()` operation.
 
+                Format: `projects/{project}/locations/{location}/operations/{operation}`
         Returns:
             List[Document]:
                 A list of wrapped documents from gcs. Each document corresponds to an input file.
@@ -562,7 +541,7 @@ class Document:
         return found_pages
 
     def get_form_field_by_name(self, target_field: str) -> List[FormField]:
-        r"""Returns the list of FormFields named target_field.
+        r"""Returns the list of `FormFields` named `target_field`.
 
         Args:
             target_field (str):
@@ -570,7 +549,7 @@ class Document:
 
         Returns:
             List[FormField]:
-                A list of FormField matching target_field.
+                A list of `FormField` matching `target_field`.
 
         """
         found_fields = []
@@ -581,15 +560,15 @@ class Document:
 
         return found_fields
 
-    def form_fields_to_dict(self) -> Dict:
-        r"""Returns Dictionary of form fields in document.
+    def form_fields_to_dict(self) -> Dict[str, Union[str, List[str]]]:
+        r"""Returns dictionary of form fields in document.
 
         Returns:
-            Dict:
+            Dict[str, Union[str, List[str]]]:
                 The Dict of the form fields indexed by type.
 
         """
-        form_fields_dict: Dict = {}
+        form_fields_dict: Dict[str, Union[str, List[str]]] = {}
         for p in self.pages:
             for form_field in p.form_fields:
                 field_name = _bigquery_column_name(form_field.field_name)
@@ -613,7 +592,7 @@ class Document:
                 Optional. Project ID containing the BigQuery table. If not passed, falls back to the default inferred from the environment.
         Returns:
             bigquery.job.LoadJob:
-                The BigQuery LoadJob for adding the form fields.
+                The BigQuery `LoadJob` for adding the form fields.
 
         """
 
@@ -625,20 +604,20 @@ class Document:
         )
 
     def get_entity_by_type(self, target_type: str) -> List[Entity]:
-        r"""Returns the list of Entities of target_type.
+        r"""Returns the list of `Entities` of `target_type`.
 
         Args:
             target_type (str):
-                Required. target_type.
+                Required. Target entity type.
 
         Returns:
             List[Entity]:
-                A list of Entity matching target_type.
+                A list of `Entity` matching `target_type`.
 
         """
         return [entity for entity in self.entities if entity.type_ == target_type]
 
-    def entities_to_dict(self) -> Dict:
+    def entities_to_dict(self) -> Dict[str, Union[str, List[str]]]:
         r"""Returns Dictionary of entities in document.
 
         Returns:
@@ -646,7 +625,7 @@ class Document:
                 The Dict of the entities indexed by type.
 
         """
-        entities_dict: Dict = {}
+        entities_dict: Dict[str, Union[str, List[str]]] = {}
         for entity in self.entities:
             entity_type = _bigquery_column_name(entity.type_)
             entities_dict = _insert_into_dictionary_with_list(
@@ -669,7 +648,7 @@ class Document:
                 Optional. Project ID containing the BigQuery table. If not passed, falls back to the default inferred from the environment.
         Returns:
             bigquery.job.LoadJob:
-                The BigQuery LoadJob for adding the entities.
+                The BigQuery `LoadJob` for adding the entities.
 
         """
 
@@ -722,33 +701,41 @@ class Document:
         return output_files
 
     def convert_document_to_annotate_file_response(self) -> AnnotateFileResponse:
-        r"""Convert OCR data from Document.proto to AnnotateFileResponse.proto for Vision API.
+        r"""Convert OCR data from `Document.proto` to `AnnotateFileResponse.proto` for Vision API.
 
         Args:
             None.
         Returns:
             AnnotateFileResponse:
-                Proto with TextAnnotations.
+                Proto with `TextAnnotations`.
         """
-        return _convert_to_vision_annotate_file_response(self.text, self.pages)
+        return AnnotateFileResponse(
+            responses=[
+                vision_helpers.convert_page_to_annotate_image_response(
+                    docai_page, self.text
+                )
+                for shard in self.shards
+                for docai_page in shard.pages
+            ]
+        )
 
     def convert_document_to_annotate_file_json_response(self) -> str:
-        r"""Convert OCR data from Document.proto to JSON str of AnnotateFileResponse for Vision API.
+        r"""Convert OCR data from `Document.proto` to JSON str of `AnnotateFileResponse` for Vision API.
 
         Args:
             None.
         Returns:
             str:
-                JSON string of TextAnnotations.
+                JSON string of `TextAnnotations`.
         """
         return AnnotateFileResponse.to_json(
-            _convert_to_vision_annotate_file_response(self.text, self.pages)
+            self.convert_document_to_annotate_file_response()
         )
 
     def export_images(
         self, output_path: str, output_file_prefix: str, output_file_extension: str
     ) -> List[str]:
-        r"""Exports images from `Document` to files.
+        r"""Exports images from `Document.entities` to files. Only exports `Portrait` entities.
 
         Args:
             output_path (str):
@@ -767,13 +754,15 @@ class Document:
         output_filenames: List[str] = []
         index = 0
         for entity in self.entities:
-            if not entity.image:
+            image = entity.crop_image(
+                documentai_page=self.pages[entity.start_page].documentai_page
+            )
+            if not image:
                 continue
-
             output_filename = (
                 f"{output_file_prefix}_{index}_{entity.type_}.{output_file_extension}"
             )
-            entity.image.save(os.path.join(output_path, output_filename))
+            image.save(os.path.join(output_path, output_filename))
             output_filenames.append(output_filename)
             index += 1
 

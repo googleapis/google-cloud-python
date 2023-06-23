@@ -31,6 +31,6 @@ def test_table_sample(capsys: pytest.CaptureFixture) -> None:
     assert "Tables in Document" in out
     assert "Item 1" in out
 
-    output_filename = f"{output_file_prefix}-0-0.csv"
+    output_filename = f"{output_file_prefix}-1-0.csv"
     assert os.path.exists(output_filename)
     os.remove(output_filename)
