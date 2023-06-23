@@ -39,11 +39,7 @@ def sample_import_documents():
     client = discoveryengine_v1beta.DocumentServiceClient()
 
     # Initialize request argument(s)
-    inline_source = discoveryengine_v1beta.InlineSource()
-    inline_source.documents.schema_id = "schema_id_value"
-
     request = discoveryengine_v1beta.ImportDocumentsRequest(
-        inline_source=inline_source,
         parent="parent_value",
     )
 

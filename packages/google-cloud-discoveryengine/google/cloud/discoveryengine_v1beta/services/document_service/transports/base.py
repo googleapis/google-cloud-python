@@ -27,7 +27,11 @@ from google.oauth2 import service_account  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.discoveryengine_v1beta import gapic_version as package_version
-from google.cloud.discoveryengine_v1beta.types import document_service, import_config
+from google.cloud.discoveryengine_v1beta.types import (
+    document_service,
+    import_config,
+    purge_config,
+)
 from google.cloud.discoveryengine_v1beta.types import document
 from google.cloud.discoveryengine_v1beta.types import document as gcd_document
 
@@ -165,6 +169,11 @@ class DocumentServiceTransport(abc.ABC):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
+            self.purge_documents: gapic_v1.method.wrap_method(
+                self.purge_documents,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -234,6 +243,15 @@ class DocumentServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [import_config.ImportDocumentsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def purge_documents(
+        self,
+    ) -> Callable[
+        [purge_config.PurgeDocumentsRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

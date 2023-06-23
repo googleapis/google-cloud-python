@@ -1954,17 +1954,7 @@ def test_import_user_events_rest_unset_required_fields():
     )
 
     unset_fields = transport.import_user_events._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "inlineSource",
-                "gcsSource",
-                "bigquerySource",
-                "parent",
-            )
-        )
-    )
+    assert set(unset_fields) == (set(()) & set(("parent",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -2862,7 +2852,7 @@ def test_get_operation_rest_bad_request(
     request = request_type()
     request = json_format.ParseDict(
         {
-            "name": "projects/sample1/locations/sample2/dataStores/sample3/branches/sample4/operations/sample5"
+            "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5/operations/sample6"
         },
         request,
     )
@@ -2892,7 +2882,7 @@ def test_get_operation_rest(request_type):
         transport="rest",
     )
     request_init = {
-        "name": "projects/sample1/locations/sample2/dataStores/sample3/branches/sample4/operations/sample5"
+        "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5/operations/sample6"
     }
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
@@ -2925,7 +2915,7 @@ def test_list_operations_rest_bad_request(
     request = request_type()
     request = json_format.ParseDict(
         {
-            "name": "projects/sample1/locations/sample2/dataStores/sample3/branches/sample4"
+            "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5"
         },
         request,
     )
@@ -2955,7 +2945,7 @@ def test_list_operations_rest(request_type):
         transport="rest",
     )
     request_init = {
-        "name": "projects/sample1/locations/sample2/dataStores/sample3/branches/sample4"
+        "name": "projects/sample1/locations/sample2/collections/sample3/dataStores/sample4/branches/sample5"
     }
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.

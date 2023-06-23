@@ -18,16 +18,23 @@ from google.cloud.discoveryengine_v1beta import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from .services.completion_service import (
+    CompletionServiceAsyncClient,
+    CompletionServiceClient,
+)
 from .services.document_service import DocumentServiceAsyncClient, DocumentServiceClient
 from .services.recommendation_service import (
     RecommendationServiceAsyncClient,
     RecommendationServiceClient,
 )
+from .services.schema_service import SchemaServiceAsyncClient, SchemaServiceClient
+from .services.search_service import SearchServiceAsyncClient, SearchServiceClient
 from .services.user_event_service import (
     UserEventServiceAsyncClient,
     UserEventServiceClient,
 )
-from .types.common import CustomAttribute, UserInfo
+from .types.common import CustomAttribute, Interval, UserInfo
+from .types.completion_service import CompleteQueryRequest, CompleteQueryResponse
 from .types.document import Document
 from .types.document_service import (
     CreateDocumentRequest,
@@ -48,7 +55,25 @@ from .types.import_config import (
     ImportUserEventsRequest,
     ImportUserEventsResponse,
 )
+from .types.purge_config import (
+    PurgeDocumentsMetadata,
+    PurgeDocumentsRequest,
+    PurgeDocumentsResponse,
+)
 from .types.recommendation_service import RecommendRequest, RecommendResponse
+from .types.schema import Schema
+from .types.schema_service import (
+    CreateSchemaMetadata,
+    CreateSchemaRequest,
+    DeleteSchemaMetadata,
+    DeleteSchemaRequest,
+    GetSchemaRequest,
+    ListSchemasRequest,
+    ListSchemasResponse,
+    UpdateSchemaMetadata,
+    UpdateSchemaRequest,
+)
+from .types.search_service import SearchRequest, SearchResponse
 from .types.user_event import (
     CompletionInfo,
     DocumentInfo,
@@ -62,20 +87,31 @@ from .types.user_event import (
 from .types.user_event_service import CollectUserEventRequest, WriteUserEventRequest
 
 __all__ = (
+    "CompletionServiceAsyncClient",
     "DocumentServiceAsyncClient",
     "RecommendationServiceAsyncClient",
+    "SchemaServiceAsyncClient",
+    "SearchServiceAsyncClient",
     "UserEventServiceAsyncClient",
     "BigQuerySource",
     "CollectUserEventRequest",
+    "CompleteQueryRequest",
+    "CompleteQueryResponse",
     "CompletionInfo",
+    "CompletionServiceClient",
     "CreateDocumentRequest",
+    "CreateSchemaMetadata",
+    "CreateSchemaRequest",
     "CustomAttribute",
     "DeleteDocumentRequest",
+    "DeleteSchemaMetadata",
+    "DeleteSchemaRequest",
     "Document",
     "DocumentInfo",
     "DocumentServiceClient",
     "GcsSource",
     "GetDocumentRequest",
+    "GetSchemaRequest",
     "ImportDocumentsMetadata",
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
@@ -83,17 +119,30 @@ __all__ = (
     "ImportUserEventsMetadata",
     "ImportUserEventsRequest",
     "ImportUserEventsResponse",
+    "Interval",
     "ListDocumentsRequest",
     "ListDocumentsResponse",
+    "ListSchemasRequest",
+    "ListSchemasResponse",
     "MediaInfo",
     "PageInfo",
     "PanelInfo",
+    "PurgeDocumentsMetadata",
+    "PurgeDocumentsRequest",
+    "PurgeDocumentsResponse",
     "RecommendRequest",
     "RecommendResponse",
     "RecommendationServiceClient",
+    "Schema",
+    "SchemaServiceClient",
     "SearchInfo",
+    "SearchRequest",
+    "SearchResponse",
+    "SearchServiceClient",
     "TransactionInfo",
     "UpdateDocumentRequest",
+    "UpdateSchemaMetadata",
+    "UpdateSchemaRequest",
     "UserEvent",
     "UserEventServiceClient",
     "UserInfo",

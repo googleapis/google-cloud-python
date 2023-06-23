@@ -266,8 +266,7 @@ class RecommendationServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1beta.types.RecommendRequest, dict]]):
-                The request object. Request message for Recommend
-                method.
+                The request object. Request message for Recommend method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

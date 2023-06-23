@@ -20,6 +20,7 @@ from .async_document_service_request import (
 from .common import (
     AccessControlMode,
     DatabaseType,
+    DocumentCreatorDefaultRole,
     MergeFieldsOptions,
     RequestMetadata,
     ResponseMetadata,
@@ -28,6 +29,7 @@ from .common import (
     UserInfo,
 )
 from .document import (
+    ContentCategory,
     DateTimeArray,
     Document,
     DocumentReference,
@@ -87,11 +89,19 @@ from .document_service_request import (
     DeleteDocumentRequest,
     FetchAclRequest,
     GetDocumentRequest,
+    LockDocumentRequest,
     SearchDocumentsRequest,
     SetAclRequest,
     UpdateDocumentRequest,
 )
-from .filters import DocumentQuery, FileTypeFilter, PropertyFilter, TimeFilter
+from .filters import (
+    CustomWeightsMetadata,
+    DocumentQuery,
+    FileTypeFilter,
+    PropertyFilter,
+    TimeFilter,
+    WeightedSchemaProperty,
+)
 from .histogram import (
     HistogramQuery,
     HistogramQueryPropertyNameFilter,
@@ -143,6 +153,7 @@ __all__ = (
     "UserInfo",
     "AccessControlMode",
     "DatabaseType",
+    "DocumentCreatorDefaultRole",
     "UpdateType",
     "DateTimeArray",
     "Document",
@@ -158,6 +169,7 @@ __all__ = (
     "TimestampArray",
     "TimestampValue",
     "Value",
+    "ContentCategory",
     "RawDocumentFileType",
     "CreateDocumentLinkRequest",
     "DeleteDocumentLinkRequest",
@@ -193,13 +205,16 @@ __all__ = (
     "DeleteDocumentRequest",
     "FetchAclRequest",
     "GetDocumentRequest",
+    "LockDocumentRequest",
     "SearchDocumentsRequest",
     "SetAclRequest",
     "UpdateDocumentRequest",
+    "CustomWeightsMetadata",
     "DocumentQuery",
     "FileTypeFilter",
     "PropertyFilter",
     "TimeFilter",
+    "WeightedSchemaProperty",
     "HistogramQuery",
     "HistogramQueryPropertyNameFilter",
     "HistogramQueryResult",

@@ -15,7 +15,7 @@ Python Client for Maps Platform Datasets API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-maps-mapsplatformdatasets.svg
    :target: https://pypi.org/project/google-maps-mapsplatformdatasets/
 .. _Maps Platform Datasets API: https://developers.google.com/maps
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/mapsplatformdatasets/latest
+.. _Client Library Documentation: https://googleapis.dev/python/mapsplatformdatasets/latest
 .. _Product Documentation:  https://developers.google.com/maps
 
 Quick Start

@@ -15,7 +15,7 @@ Python Client for Google Maps Routing
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-maps-routing.svg
    :target: https://pypi.org/project/google-maps-routing/
 .. _Google Maps Routing: https://mapsplatform.google.com/maps-products/#routes-section
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/routing/latest
+.. _Client Library Documentation: https://googleapis.dev/python/routing/latest
 .. _Product Documentation:  https://mapsplatform.google.com/maps-products/#routes-section
 
 Quick Start

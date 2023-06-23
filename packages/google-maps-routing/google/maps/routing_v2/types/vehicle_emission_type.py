@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
@@ -26,13 +28,13 @@ __protobuf__ = proto.module(
 
 
 class VehicleEmissionType(proto.Enum):
-    r"""A set of values describing the vehicle's emission type.
-    Applies only to the DRIVE travel mode.
+    r"""A set of values describing the vehicle's emission type. Applies only
+    to the ``DRIVE``
+    [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
 
     Values:
         VEHICLE_EMISSION_TYPE_UNSPECIFIED (0):
-            No emission type specified. Default to
-            GASOLINE.
+            No emission type specified. Default to ``GASOLINE``.
         GASOLINE (1):
             Gasoline/petrol fueled vehicle.
         ELECTRIC (2):

@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from .fallback_info import FallbackInfo, FallbackReason, FallbackRoutingMode
+from .geocoding_results import GeocodedWaypoint, GeocodingResults
 from .location import Location
 from .navigation_instruction import NavigationInstruction
 from .polyline import Polyline, PolylineEncoding, PolylineQuality
@@ -44,6 +45,8 @@ __all__ = (
     "FallbackInfo",
     "FallbackReason",
     "FallbackRoutingMode",
+    "GeocodedWaypoint",
+    "GeocodingResults",
     "Location",
     "Maneuver",
     "NavigationInstruction",

@@ -84,6 +84,10 @@ class VmwareEngineAsyncClient:
     parse_node_type_path = staticmethod(VmwareEngineClient.parse_node_type_path)
     private_cloud_path = staticmethod(VmwareEngineClient.private_cloud_path)
     parse_private_cloud_path = staticmethod(VmwareEngineClient.parse_private_cloud_path)
+    private_connection_path = staticmethod(VmwareEngineClient.private_connection_path)
+    parse_private_connection_path = staticmethod(
+        VmwareEngineClient.parse_private_connection_path
+    )
     subnet_path = staticmethod(VmwareEngineClient.subnet_path)
     parse_subnet_path = staticmethod(VmwareEngineClient.parse_subnet_path)
     vmware_engine_network_path = staticmethod(
@@ -1850,6 +1854,257 @@ class VmwareEngineAsyncClient:
             request=request,
             response=response,
             metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_subnet(
+        self,
+        request: Optional[Union[vmwareengine.GetSubnetRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> vmwareengine_resources.Subnet:
+        r"""Gets details of a single subnet.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import vmwareengine_v1
+
+            async def sample_get_subnet():
+                # Create a client
+                client = vmwareengine_v1.VmwareEngineAsyncClient()
+
+                # Initialize request argument(s)
+                request = vmwareengine_v1.GetSubnetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_subnet(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.vmwareengine_v1.types.GetSubnetRequest, dict]]):
+                The request object. Request message for
+                [VmwareEngine.GetSubnet][google.cloud.vmwareengine.v1.VmwareEngine.GetSubnet]
+            name (:class:`str`):
+                Required. The resource name of the subnet to retrieve.
+                Resource names are schemeless URIs that follow the
+                conventions in
+                https://cloud.google.com/apis/design/resource_names. For
+                example:
+                ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/subnets/my-subnet``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.vmwareengine_v1.types.Subnet:
+                Subnet in a private cloud. Either management subnets (such as vMotion) that
+                   are read-only, or userDefined, which can also be
+                   updated.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = vmwareengine.GetSubnetRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_subnet,
+            default_retry=retries.Retry(
+                initial=1.0,
+                maximum=10.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=120.0,
+            ),
+            default_timeout=120.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_subnet(
+        self,
+        request: Optional[Union[vmwareengine.UpdateSubnetRequest, dict]] = None,
+        *,
+        subnet: Optional[vmwareengine_resources.Subnet] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Updates the parameters of a single subnet. Only fields specified
+        in ``update_mask`` are applied.
+
+        *Note*: This API is synchronous and always returns a successful
+        ``google.longrunning.Operation`` (LRO). The returned LRO will
+        only have ``done`` and ``response`` fields.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import vmwareengine_v1
+
+            async def sample_update_subnet():
+                # Create a client
+                client = vmwareengine_v1.VmwareEngineAsyncClient()
+
+                # Initialize request argument(s)
+                request = vmwareengine_v1.UpdateSubnetRequest(
+                )
+
+                # Make the request
+                operation = client.update_subnet(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.vmwareengine_v1.types.UpdateSubnetRequest, dict]]):
+                The request object. Request message for
+                [VmwareEngine.UpdateSubnet][google.cloud.vmwareengine.v1.VmwareEngine.UpdateSubnet]
+            subnet (:class:`google.cloud.vmwareengine_v1.types.Subnet`):
+                Required. Subnet description.
+                This corresponds to the ``subnet`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. Field mask is used to specify the fields to be
+                overwritten in the ``Subnet`` resource by the update.
+                The fields specified in the ``update_mask`` are relative
+                to the resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.vmwareengine_v1.types.Subnet` Subnet in a private cloud. Either management subnets (such as vMotion) that
+                   are read-only, or userDefined, which can also be
+                   updated.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([subnet, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = vmwareengine.UpdateSubnetRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if subnet is not None:
+            request.subnet = subnet
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_subnet,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("subnet.name", request.subnet.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            vmwareengine_resources.Subnet,
+            metadata_type=vmwareengine.OperationMetadata,
         )
 
         # Done; return the response.
@@ -4381,6 +4636,821 @@ class VmwareEngineAsyncClient:
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListVmwareEngineNetworksAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_private_connection(
+        self,
+        request: Optional[
+            Union[vmwareengine.CreatePrivateConnectionRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        private_connection: Optional[vmwareengine_resources.PrivateConnection] = None,
+        private_connection_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a new private connection that can be used for
+        accessing private Clouds.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import vmwareengine_v1
+
+            async def sample_create_private_connection():
+                # Create a client
+                client = vmwareengine_v1.VmwareEngineAsyncClient()
+
+                # Initialize request argument(s)
+                private_connection = vmwareengine_v1.PrivateConnection()
+                private_connection.vmware_engine_network = "vmware_engine_network_value"
+                private_connection.type_ = "THIRD_PARTY_SERVICE"
+                private_connection.service_network = "service_network_value"
+
+                request = vmwareengine_v1.CreatePrivateConnectionRequest(
+                    parent="parent_value",
+                    private_connection_id="private_connection_id_value",
+                    private_connection=private_connection,
+                )
+
+                # Make the request
+                operation = client.create_private_connection(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.vmwareengine_v1.types.CreatePrivateConnectionRequest, dict]]):
+                The request object. Request message for
+                [VmwareEngine.CreatePrivateConnection][google.cloud.vmwareengine.v1.VmwareEngine.CreatePrivateConnection]
+            parent (:class:`str`):
+                Required. The resource name of the location to create
+                the new private connection in. Private connection is a
+                regional resource. Resource names are schemeless URIs
+                that follow the conventions in
+                https://cloud.google.com/apis/design/resource_names. For
+                example: ``projects/my-project/locations/us-central1``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            private_connection (:class:`google.cloud.vmwareengine_v1.types.PrivateConnection`):
+                Required. The initial description of
+                the new private connection.
+
+                This corresponds to the ``private_connection`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            private_connection_id (:class:`str`):
+                Required. The user-provided identifier of the new
+                private connection. This identifier must be unique among
+                private connection resources within the parent and
+                becomes the final token in the name URI. The identifier
+                must meet the following requirements:
+
+                -  Only contains 1-63 alphanumeric characters and
+                   hyphens
+                -  Begins with an alphabetical character
+                -  Ends with a non-hyphen character
+                -  Not formatted as a UUID
+                -  Complies with `RFC
+                   1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+                   (section 3.5)
+
+                This corresponds to the ``private_connection_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.vmwareengine_v1.types.PrivateConnection` Private connection resource that provides connectivity for VMware Engine
+                   private clouds.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, private_connection, private_connection_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = vmwareengine.CreatePrivateConnectionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if private_connection is not None:
+            request.private_connection = private_connection
+        if private_connection_id is not None:
+            request.private_connection_id = private_connection_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_private_connection,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            vmwareengine_resources.PrivateConnection,
+            metadata_type=vmwareengine.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_private_connection(
+        self,
+        request: Optional[Union[vmwareengine.GetPrivateConnectionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> vmwareengine_resources.PrivateConnection:
+        r"""Retrieves a ``PrivateConnection`` resource by its resource name.
+        The resource contains details of the private connection, such as
+        connected network, routing mode and state.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import vmwareengine_v1
+
+            async def sample_get_private_connection():
+                # Create a client
+                client = vmwareengine_v1.VmwareEngineAsyncClient()
+
+                # Initialize request argument(s)
+                request = vmwareengine_v1.GetPrivateConnectionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_private_connection(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.vmwareengine_v1.types.GetPrivateConnectionRequest, dict]]):
+                The request object. Request message for
+                [VmwareEngine.GetPrivateConnection][google.cloud.vmwareengine.v1.VmwareEngine.GetPrivateConnection]
+            name (:class:`str`):
+                Required. The resource name of the private connection to
+                retrieve. Resource names are schemeless URIs that follow
+                the conventions in
+                https://cloud.google.com/apis/design/resource_names. For
+                example:
+                ``projects/my-project/locations/us-central1/privateConnections/my-connection``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.vmwareengine_v1.types.PrivateConnection:
+                Private connection resource that
+                provides connectivity for VMware Engine
+                private clouds.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = vmwareengine.GetPrivateConnectionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_private_connection,
+            default_retry=retries.Retry(
+                initial=1.0,
+                maximum=10.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=120.0,
+            ),
+            default_timeout=120.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_private_connections(
+        self,
+        request: Optional[
+            Union[vmwareengine.ListPrivateConnectionsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListPrivateConnectionsAsyncPager:
+        r"""Lists ``PrivateConnection`` resources in a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import vmwareengine_v1
+
+            async def sample_list_private_connections():
+                # Create a client
+                client = vmwareengine_v1.VmwareEngineAsyncClient()
+
+                # Initialize request argument(s)
+                request = vmwareengine_v1.ListPrivateConnectionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_private_connections(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.vmwareengine_v1.types.ListPrivateConnectionsRequest, dict]]):
+                The request object. Request message for
+                [VmwareEngine.ListPrivateConnections][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateConnections]
+            parent (:class:`str`):
+                Required. The resource name of the location to query for
+                private connections. Resource names are schemeless URIs
+                that follow the conventions in
+                https://cloud.google.com/apis/design/resource_names. For
+                example: ``projects/my-project/locations/us-central1``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.vmwareengine_v1.services.vmware_engine.pagers.ListPrivateConnectionsAsyncPager:
+                Response message for
+                   [VmwareEngine.ListPrivateConnections][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateConnections]
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = vmwareengine.ListPrivateConnectionsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_private_connections,
+            default_retry=retries.Retry(
+                initial=1.0,
+                maximum=10.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=120.0,
+            ),
+            default_timeout=120.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListPrivateConnectionsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_private_connection(
+        self,
+        request: Optional[
+            Union[vmwareengine.UpdatePrivateConnectionRequest, dict]
+        ] = None,
+        *,
+        private_connection: Optional[vmwareengine_resources.PrivateConnection] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Modifies a ``PrivateConnection`` resource. Only ``description``
+        and ``routing_mode`` fields can be updated. Only fields
+        specified in ``updateMask`` are applied.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import vmwareengine_v1
+
+            async def sample_update_private_connection():
+                # Create a client
+                client = vmwareengine_v1.VmwareEngineAsyncClient()
+
+                # Initialize request argument(s)
+                private_connection = vmwareengine_v1.PrivateConnection()
+                private_connection.vmware_engine_network = "vmware_engine_network_value"
+                private_connection.type_ = "THIRD_PARTY_SERVICE"
+                private_connection.service_network = "service_network_value"
+
+                request = vmwareengine_v1.UpdatePrivateConnectionRequest(
+                    private_connection=private_connection,
+                )
+
+                # Make the request
+                operation = client.update_private_connection(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.vmwareengine_v1.types.UpdatePrivateConnectionRequest, dict]]):
+                The request object. Request message for
+                [VmwareEngine.UpdatePrivateConnection][google.cloud.vmwareengine.v1.VmwareEngine.UpdatePrivateConnection]
+            private_connection (:class:`google.cloud.vmwareengine_v1.types.PrivateConnection`):
+                Required. Private connection
+                description.
+
+                This corresponds to the ``private_connection`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. Field mask is used to specify the fields to be
+                overwritten in the ``PrivateConnection`` resource by the
+                update. The fields specified in the ``update_mask`` are
+                relative to the resource, not the full request. A field
+                will be overwritten if it is in the mask. If the user
+                does not provide a mask then all fields will be
+                overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.vmwareengine_v1.types.PrivateConnection` Private connection resource that provides connectivity for VMware Engine
+                   private clouds.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([private_connection, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = vmwareengine.UpdatePrivateConnectionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if private_connection is not None:
+            request.private_connection = private_connection
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_private_connection,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("private_connection.name", request.private_connection.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            vmwareengine_resources.PrivateConnection,
+            metadata_type=vmwareengine.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_private_connection(
+        self,
+        request: Optional[
+            Union[vmwareengine.DeletePrivateConnectionRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Deletes a ``PrivateConnection`` resource. When a private
+        connection is deleted for a VMware Engine network, the connected
+        network becomes inaccessible to that VMware Engine network.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import vmwareengine_v1
+
+            async def sample_delete_private_connection():
+                # Create a client
+                client = vmwareengine_v1.VmwareEngineAsyncClient()
+
+                # Initialize request argument(s)
+                request = vmwareengine_v1.DeletePrivateConnectionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_private_connection(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.vmwareengine_v1.types.DeletePrivateConnectionRequest, dict]]):
+                The request object. Request message for
+                [VmwareEngine.DeletePrivateConnection][google.cloud.vmwareengine.v1.VmwareEngine.DeletePrivateConnection]
+            name (:class:`str`):
+                Required. The resource name of the private connection to
+                be deleted. Resource names are schemeless URIs that
+                follow the conventions in
+                https://cloud.google.com/apis/design/resource_names. For
+                example:
+                ``projects/my-project/locations/us-central1/privateConnections/my-connection``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = vmwareengine.DeletePrivateConnectionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_private_connection,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=vmwareengine.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_private_connection_peering_routes(
+        self,
+        request: Optional[
+            Union[vmwareengine.ListPrivateConnectionPeeringRoutesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListPrivateConnectionPeeringRoutesAsyncPager:
+        r"""Lists the private connection routes exchanged over a
+        peering connection.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import vmwareengine_v1
+
+            async def sample_list_private_connection_peering_routes():
+                # Create a client
+                client = vmwareengine_v1.VmwareEngineAsyncClient()
+
+                # Initialize request argument(s)
+                request = vmwareengine_v1.ListPrivateConnectionPeeringRoutesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_private_connection_peering_routes(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.vmwareengine_v1.types.ListPrivateConnectionPeeringRoutesRequest, dict]]):
+                The request object. Request message for
+                [VmwareEngine.ListPrivateConnectionPeeringRoutes][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateConnectionPeeringRoutes]
+            parent (:class:`str`):
+                Required. The resource name of the private connection to
+                retrieve peering routes from. Resource names are
+                schemeless URIs that follow the conventions in
+                https://cloud.google.com/apis/design/resource_names. For
+                example:
+                ``projects/my-project/locations/us-west1/privateConnections/my-connection``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.vmwareengine_v1.services.vmware_engine.pagers.ListPrivateConnectionPeeringRoutesAsyncPager:
+                Response message for
+                   [VmwareEngine.ListPrivateConnectionPeeringRoutes][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateConnectionPeeringRoutes]
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = vmwareengine.ListPrivateConnectionPeeringRoutesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_private_connection_peering_routes,
+            default_retry=retries.Retry(
+                initial=1.0,
+                maximum=10.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=120.0,
+            ),
+            default_timeout=120.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListPrivateConnectionPeeringRoutesAsyncPager(
             method=rpc,
             request=request,
             response=response,

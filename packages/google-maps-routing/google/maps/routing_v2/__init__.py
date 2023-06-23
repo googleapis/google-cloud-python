@@ -20,6 +20,7 @@ __version__ = package_version.__version__
 
 from .services.routes import RoutesAsyncClient, RoutesClient
 from .types.fallback_info import FallbackInfo, FallbackReason, FallbackRoutingMode
+from .types.geocoding_results import GeocodedWaypoint, GeocodingResults
 from .types.location import Location
 from .types.maneuver import Maneuver
 from .types.navigation_instruction import NavigationInstruction
@@ -61,6 +62,8 @@ __all__ = (
     "FallbackInfo",
     "FallbackReason",
     "FallbackRoutingMode",
+    "GeocodedWaypoint",
+    "GeocodingResults",
     "Location",
     "Maneuver",
     "NavigationInstruction",

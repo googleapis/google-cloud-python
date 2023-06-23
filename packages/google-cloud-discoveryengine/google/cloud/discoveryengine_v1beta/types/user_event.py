@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import duration_pb2  # type: ignore
@@ -37,7 +39,7 @@ __protobuf__ = proto.module(
 
 
 class UserEvent(proto.Message):
-    r"""UserEvent captures all metadata information DiscoveryEngine
+    r"""UserEvent captures all metadata information Discovery Engine
     API needs to know about how end users interact with customers'
     website.
 
@@ -111,7 +113,7 @@ class UserEvent(proto.Message):
             length limit of 128 bytes. A session is an aggregation of an
             end user behavior in a time span.
 
-            A general guideline to populate the sesion_id:
+            A general guideline to populate the session_id:
 
             1. If user has no activity for 30 min, a new session_id
                should be assigned.
@@ -128,18 +130,21 @@ class UserEvent(proto.Message):
             trigger the event.
 
             Highly recommended for user events that are the result of
-            [PredictionService.Predict][]. This field enables accurate
-            attribution of recommendation model performance.
+            [RecommendationService.Recommend][google.cloud.discoveryengine.v1beta.RecommendationService.Recommend].
+            This field enables accurate attribution of recommendation
+            model performance.
 
             The value must be one of:
 
             -  [PredictResponse.attribution_token][] for events that are
-               the result of [PredictionService.Predict][].
+               the result of
+               [RecommendationService.Recommend][google.cloud.discoveryengine.v1beta.RecommendationService.Recommend].
             -  [SearchResponse.attribution_token][google.cloud.discoveryengine.v1beta.SearchResponse.attribution_token]
                for events that are the result of
-               [SearchService.Search][].
+               [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search].
             -  [CompleteQueryResponse.attribution_token][] for events
-               that are the result of [SearchService.CompleteQuery][].
+               that are the result of
+               [CompletionService.CompleteQuery][google.cloud.discoveryengine.v1beta.CompletionService.CompleteQuery].
 
             This token enables us to accurately attribute page view or
             conversion completion back to the event and the particular
@@ -155,15 +160,16 @@ class UserEvent(proto.Message):
             documents being filtered.
 
             One example is for ``search`` events, the associated
-            [SearchService.SearchRequest][] may contain a filter
-            expression in [SearchService.SearchRequest.filter][]
+            [SearchRequest][google.cloud.discoveryengine.v1beta.SearchRequest]
+            may contain a filter expression in
+            [SearchRequest.filter][google.cloud.discoveryengine.v1beta.SearchRequest.filter]
             conforming to https://google.aip.dev/160#filtering.
 
             Similarly, for ``view-item-list`` events that are generated
-            from a [PredictionService.PredictRequest][], this field may
-            be populated directly from
-            [PredictionService.PredictRequest.filter][] conforming to
-            https://google.aip.dev/160#filtering.
+            from a [RecommendationService.RecommendRequest][], this
+            field may be populated directly from
+            [RecommendationService.RecommendRequest.filter][] conforming
+            to https://google.aip.dev/160#filtering.
 
             The value must be a UTF-8 encoded string with a length limit
             of 1,000 characters. Otherwise, an INVALID_ARGUMENT error is
@@ -223,12 +229,12 @@ class UserEvent(proto.Message):
             also include them in the user events that you associate with
             prediction requests. Custom attribute formatting must be
             consistent between imported events and events provided with
-            prediction requests. This lets the DiscoveryEngine API use
+            prediction requests. This lets the Discovery Engine API use
             those custom attributes when training models and serving
             predictions, which helps improve recommendation quality.
 
             This field needs to pass all below criteria, otherwise an
-            INVALID_ARGUMENT error is returned:
+            ``INVALID_ARGUMENT`` error is returned:
 
             -  The key must be a UTF-8 encoded string with a length
                limit of 5,000 characters.
@@ -238,10 +244,10 @@ class UserEvent(proto.Message):
             -  For number attributes, at most 400 values are allowed.
 
             For product recommendations, an example of extra user
-            information is traffic_channel, which is how a user arrives
-            at the site. Users can arrive at the site by coming to the
-            site directly, coming through Google search, or in other
-            ways.
+            information is ``traffic_channel``, which is how a user
+            arrives at the site. Users can arrive at the site by coming
+            to the site directly, coming through Google search, or in
+            other ways.
         media_info (google.cloud.discoveryengine_v1beta.types.MediaInfo):
             Media-specific info.
     """
@@ -416,9 +422,11 @@ class SearchInfo(proto.Message):
 
             At least one of
             [search_query][google.cloud.discoveryengine.v1beta.SearchInfo.search_query]
-            or [page_categories][] is required for ``search`` events.
-            Other event types should not set this field. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            or
+            [PageInfo.page_category][google.cloud.discoveryengine.v1beta.PageInfo.page_category]
+            is required for ``search`` events. Other event types should
+            not set this field. Otherwise, an INVALID_ARGUMENT error is
+            returned.
         order_by (str):
             The order in which products are returned, if applicable.
 
@@ -603,7 +611,7 @@ class DocumentInfo(proto.Message):
             This field is a member of `oneof`_ ``document_descriptor``.
         name (str):
             Required. The Document resource full name, of the form:
-            projects/<project_id>/locations//dataStores/<data_store_id>/branches/<branch_id>/documents/<document_id>
+            ``projects/{project_id}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}/branches/{branch_id}/documents/{document_id}``
 
             This field is a member of `oneof`_ ``document_descriptor``.
         quantity (int):
@@ -708,7 +716,7 @@ class MediaInfo(proto.Message):
             Media progress should be computed using only the
             media_progress_duration relative to the media total length.
 
-            This value must be between [0, 1.0] inclusive.
+            This value must be between ``[0, 1.0]`` inclusive.
 
             If this is not a playback or the progress cannot be computed
             (e.g. ongoing livestream), this field should be unset.

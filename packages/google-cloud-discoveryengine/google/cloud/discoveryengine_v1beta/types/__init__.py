@@ -13,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .common import CustomAttribute, UserInfo
+from .common import CustomAttribute, Interval, UserInfo
+from .completion_service import CompleteQueryRequest, CompleteQueryResponse
 from .document import Document
 from .document_service import (
     CreateDocumentRequest,
@@ -34,7 +35,25 @@ from .import_config import (
     ImportUserEventsRequest,
     ImportUserEventsResponse,
 )
+from .purge_config import (
+    PurgeDocumentsMetadata,
+    PurgeDocumentsRequest,
+    PurgeDocumentsResponse,
+)
 from .recommendation_service import RecommendRequest, RecommendResponse
+from .schema import Schema
+from .schema_service import (
+    CreateSchemaMetadata,
+    CreateSchemaRequest,
+    DeleteSchemaMetadata,
+    DeleteSchemaRequest,
+    GetSchemaRequest,
+    ListSchemasRequest,
+    ListSchemasResponse,
+    UpdateSchemaMetadata,
+    UpdateSchemaRequest,
+)
+from .search_service import SearchRequest, SearchResponse
 from .user_event import (
     CompletionInfo,
     DocumentInfo,
@@ -49,7 +68,10 @@ from .user_event_service import CollectUserEventRequest, WriteUserEventRequest
 
 __all__ = (
     "CustomAttribute",
+    "Interval",
     "UserInfo",
+    "CompleteQueryRequest",
+    "CompleteQueryResponse",
     "Document",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",
@@ -66,8 +88,23 @@ __all__ = (
     "ImportUserEventsMetadata",
     "ImportUserEventsRequest",
     "ImportUserEventsResponse",
+    "PurgeDocumentsMetadata",
+    "PurgeDocumentsRequest",
+    "PurgeDocumentsResponse",
     "RecommendRequest",
     "RecommendResponse",
+    "Schema",
+    "CreateSchemaMetadata",
+    "CreateSchemaRequest",
+    "DeleteSchemaMetadata",
+    "DeleteSchemaRequest",
+    "GetSchemaRequest",
+    "ListSchemasRequest",
+    "ListSchemasResponse",
+    "UpdateSchemaMetadata",
+    "UpdateSchemaRequest",
+    "SearchRequest",
+    "SearchResponse",
     "CompletionInfo",
     "DocumentInfo",
     "MediaInfo",

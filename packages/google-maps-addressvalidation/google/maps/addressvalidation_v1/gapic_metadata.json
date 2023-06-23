@@ -36,6 +36,21 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "AddressValidationClient",
+          "rpcs": {
+            "ProvideValidationFeedback": {
+              "methods": [
+                "provide_validation_feedback"
+              ]
+            },
+            "ValidateAddress": {
+              "methods": [
+                "validate_address"
+              ]
+            }
+          }
         }
       }
     }

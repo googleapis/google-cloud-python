@@ -162,6 +162,11 @@ class DocumentServiceTransport(abc.ABC):
                 default_timeout=180.0,
                 client_info=client_info,
             ),
+            self.lock_document: gapic_v1.method.wrap_method(
+                self.lock_document,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.fetch_acl: gapic_v1.method.wrap_method(
                 self.fetch_acl,
                 default_retry=retries.Retry(
@@ -247,6 +252,15 @@ class DocumentServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def lock_document(
+        self,
+    ) -> Callable[
+        [document_service_request.LockDocumentRequest],
+        Union[gcc_document.Document, Awaitable[gcc_document.Document]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def fetch_acl(
         self,
     ) -> Callable[
@@ -266,6 +280,15 @@ class DocumentServiceTransport(abc.ABC):
         Union[
             document_service.SetAclResponse, Awaitable[document_service.SetAclResponse]
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

@@ -3,7 +3,7 @@
     "name_pretty": "Geo Type Protos",
     "api_description": "",
     "product_documentation": "https://mapsplatform.google.com/maps-products",
-    "client_documentation": "https://cloud.google.com/python/docs/reference/type/latest",
+    "client_documentation": "https://googleapis.dev/python/geotype/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",
     "language": "python",

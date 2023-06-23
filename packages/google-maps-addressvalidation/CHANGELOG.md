@@ -1,5 +1,40 @@
 # Changelog
 
+## [0.3.4](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.3...google-maps-addressvalidation-v0.3.4) (2023-06-03)
+
+
+### Documentation
+
+* fix broken client library documentation links ([#11192](https://github.com/googleapis/google-cloud-python/issues/11192)) ([5e17f7a](https://github.com/googleapis/google-cloud-python/commit/5e17f7a901bbbae8ff9a44ed62f1abd2386da2c8))
+
+## [0.3.3](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.2...google-maps-addressvalidation-v0.3.3) (2023-04-15)
+
+
+### Documentation
+
+* Update description of the postal address ([#11066](https://github.com/googleapis/google-cloud-python/issues/11066)) ([a0b1149](https://github.com/googleapis/google-cloud-python/commit/a0b11490ea6488d725a4738fdaa63e98947f8528))
+
+## [0.3.2](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.1...google-maps-addressvalidation-v0.3.2) (2023-04-11)
+
+
+### Documentation
+
+* Update some Address Validation API proto descriptions to improve clarity ([#11056](https://github.com/googleapis/google-cloud-python/issues/11056)) ([7ca4918](https://github.com/googleapis/google-cloud-python/commit/7ca4918465957e510028d4d2465d8ba0424ad97d))
+
+## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.0...google-maps-addressvalidation-v0.3.1) (2023-03-25)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#10867](https://github.com/googleapis/google-cloud-python/issues/10867)) ([d34a425](https://github.com/googleapis/google-cloud-python/commit/d34a425f7d0f02bebaf20d24b725b8c25c699697))
+
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.2.1...google-maps-addressvalidation-v0.3.0) (2023-02-09)
+
+
+### Features
+
+* enable "rest" transport in Python for services supporting numeric enums ([#10839](https://github.com/googleapis/google-cloud-python/issues/10839)) ([ad59d56](https://github.com/googleapis/google-cloud-python/commit/ad59d569bda339ed31500602e2db369afdbfcf0b))
+
 ## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.2.0...google-maps-addressvalidation-v0.2.1) (2023-01-20)
 
 

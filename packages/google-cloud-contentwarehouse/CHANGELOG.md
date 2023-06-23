@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.4.1...google-cloud-contentwarehouse-v0.5.0) (2023-04-05)
+
+
+### Features
+
+* add `content_category`, `text_extraction_enabled`, `retrieval_importance`, `schema_sources`, `total_result_size` fields ([80a9ff4](https://github.com/googleapis/google-cloud-python/commit/80a9ff4a68b3c40696e95d2b1faecea7c8397a5b))
+* add `DocumentCreatorDefaultRole`,  `ContentCategory`, `RetrievalImportance`, `SchemaSource`, `TotalResultSize`, `LockDocumentRequest`, `CustomWeightsMetadata`, `WeightedSchemaProperty` ([80a9ff4](https://github.com/googleapis/google-cloud-python/commit/80a9ff4a68b3c40696e95d2b1faecea7c8397a5b))
+* add LockDocument service ([80a9ff4](https://github.com/googleapis/google-cloud-python/commit/80a9ff4a68b3c40696e95d2b1faecea7c8397a5b))
+* deprecate `text_extraction_disabled`, `structured_content_uri`, `async_enabled` field ([80a9ff4](https://github.com/googleapis/google-cloud-python/commit/80a9ff4a68b3c40696e95d2b1faecea7c8397a5b))
+
+## [0.4.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.4.0...google-cloud-contentwarehouse-v0.4.1) (2023-03-25)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#10867](https://github.com/googleapis/google-cloud-python/issues/10867)) ([d34a425](https://github.com/googleapis/google-cloud-python/commit/d34a425f7d0f02bebaf20d24b725b8c25c699697))
+
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.3.1...google-cloud-contentwarehouse-v0.4.0) (2023-02-09)
+
+
+### Features
+
+* enable "rest" transport in Python for services supporting numeric enums ([#10839](https://github.com/googleapis/google-cloud-python/issues/10839)) ([ad59d56](https://github.com/googleapis/google-cloud-python/commit/ad59d569bda339ed31500602e2db369afdbfcf0b))
+
 ## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.3.0...google-cloud-contentwarehouse-v0.3.1) (2023-01-20)
 
 

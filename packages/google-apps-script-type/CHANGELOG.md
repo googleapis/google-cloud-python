@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/googleapis/google-cloud-python/compare/google-apps-script-type-v0.3.1...google-apps-script-type-v0.3.2) (2023-06-03)
+
+
+### Documentation
+
+* fix broken client library documentation links ([#11192](https://github.com/googleapis/google-cloud-python/issues/11192)) ([5e17f7a](https://github.com/googleapis/google-cloud-python/commit/5e17f7a901bbbae8ff9a44ed62f1abd2386da2c8))
+
 ## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-apps-script-type-v0.3.0...google-apps-script-type-v0.3.1) (2023-01-20)
 
 

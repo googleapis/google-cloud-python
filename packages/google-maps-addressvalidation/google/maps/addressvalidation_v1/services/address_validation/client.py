@@ -51,6 +51,7 @@ from google.maps.addressvalidation_v1.types import address_validation_service
 from .transports.base import DEFAULT_CLIENT_INFO, AddressValidationTransport
 from .transports.grpc import AddressValidationGrpcTransport
 from .transports.grpc_asyncio import AddressValidationGrpcAsyncIOTransport
+from .transports.rest import AddressValidationRestTransport
 
 
 class AddressValidationClientMeta(type):
@@ -66,6 +67,7 @@ class AddressValidationClientMeta(type):
     )  # type: Dict[str, Type[AddressValidationTransport]]
     _transport_registry["grpc"] = AddressValidationGrpcTransport
     _transport_registry["grpc_asyncio"] = AddressValidationGrpcAsyncIOTransport
+    _transport_registry["rest"] = AddressValidationRestTransport
 
     def get_transport_class(
         cls,

@@ -60,6 +60,7 @@ from google.maps.mapsplatformdatasets_v1alpha.types import dataset
 from .transports.base import DEFAULT_CLIENT_INFO, MapsPlatformDatasetsV1AlphaTransport
 from .transports.grpc import MapsPlatformDatasetsV1AlphaGrpcTransport
 from .transports.grpc_asyncio import MapsPlatformDatasetsV1AlphaGrpcAsyncIOTransport
+from .transports.rest import MapsPlatformDatasetsV1AlphaRestTransport
 
 
 class MapsPlatformDatasetsV1AlphaClientMeta(type):
@@ -77,6 +78,7 @@ class MapsPlatformDatasetsV1AlphaClientMeta(type):
     _transport_registry[
         "grpc_asyncio"
     ] = MapsPlatformDatasetsV1AlphaGrpcAsyncIOTransport
+    _transport_registry["rest"] = MapsPlatformDatasetsV1AlphaRestTransport
 
     def get_transport_class(
         cls,
@@ -603,8 +605,8 @@ class MapsPlatformDatasetsV1AlphaClient(
 
         Args:
             request (Union[google.maps.mapsplatformdatasets_v1alpha.types.UpdateDatasetMetadataRequest, dict]):
-                The request object. Request to update the metadata
-                fields of the dataset.
+                The request object. Request to update the metadata fields
+                of the dataset.
             dataset (google.maps.mapsplatformdatasets_v1alpha.types.Dataset):
                 Required. The dataset to update. The dataset's name is
                 used to identify the dataset to be updated. The name has
@@ -717,8 +719,7 @@ class MapsPlatformDatasetsV1AlphaClient(
 
         Args:
             request (Union[google.maps.mapsplatformdatasets_v1alpha.types.GetDatasetRequest, dict]):
-                The request object. Request to get the specified
-                dataset.
+                The request object. Request to get the specified dataset.
             name (str):
                 Required. Resource name. Can also fetch a specified
                 version projects/{project}/datasets/{dataset_id}

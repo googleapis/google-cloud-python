@@ -4,5 +4,5 @@
 google-api-core
 proto-plus
 protobuf
-grpc-google-iam-v1
 google-cloud-documentai
+grpc-google-iam-v1

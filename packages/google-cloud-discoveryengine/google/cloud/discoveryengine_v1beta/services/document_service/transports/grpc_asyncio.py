@@ -24,7 +24,11 @@ from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.types import document_service, import_config
+from google.cloud.discoveryengine_v1beta.types import (
+    document_service,
+    import_config,
+    purge_config,
+)
 from google.cloud.discoveryengine_v1beta.types import document
 from google.cloud.discoveryengine_v1beta.types import document as gcd_document
 
@@ -429,6 +433,52 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["import_documents"]
+
+    @property
+    def purge_documents(
+        self,
+    ) -> Callable[
+        [purge_config.PurgeDocumentsRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the purge documents method over gRPC.
+
+        Permanently deletes all selected
+        [Document][google.cloud.discoveryengine.v1beta.Document]s in a
+        branch.
+
+        This process is asynchronous. Depending on the number of
+        [Document][google.cloud.discoveryengine.v1beta.Document]s to be
+        deleted, this operation can take hours to complete. Before the
+        delete operation completes, some
+        [Document][google.cloud.discoveryengine.v1beta.Document]s might
+        still be returned by
+        [DocumentService.GetDocument][google.cloud.discoveryengine.v1beta.DocumentService.GetDocument]
+        or
+        [DocumentService.ListDocuments][google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments].
+
+        To get a list of the
+        [Document][google.cloud.discoveryengine.v1beta.Document]s to be
+        deleted, set
+        [PurgeDocumentsRequest.force][google.cloud.discoveryengine.v1beta.PurgeDocumentsRequest.force]
+        to false.
+
+        Returns:
+            Callable[[~.PurgeDocumentsRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "purge_documents" not in self._stubs:
+            self._stubs["purge_documents"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.DocumentService/PurgeDocuments",
+                request_serializer=purge_config.PurgeDocumentsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["purge_documents"]
 
     def close(self):
         return self.grpc_channel.close()

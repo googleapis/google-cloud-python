@@ -55,6 +55,7 @@ from google.cloud.contentwarehouse_v1.types.async_document_service_request impor
 from google.cloud.contentwarehouse_v1.types.common import (
     AccessControlMode,
     DatabaseType,
+    DocumentCreatorDefaultRole,
     MergeFieldsOptions,
     RequestMetadata,
     ResponseMetadata,
@@ -63,6 +64,7 @@ from google.cloud.contentwarehouse_v1.types.common import (
     UserInfo,
 )
 from google.cloud.contentwarehouse_v1.types.document import (
+    ContentCategory,
     DateTimeArray,
     Document,
     DocumentReference,
@@ -122,15 +124,18 @@ from google.cloud.contentwarehouse_v1.types.document_service_request import (
     DeleteDocumentRequest,
     FetchAclRequest,
     GetDocumentRequest,
+    LockDocumentRequest,
     SearchDocumentsRequest,
     SetAclRequest,
     UpdateDocumentRequest,
 )
 from google.cloud.contentwarehouse_v1.types.filters import (
+    CustomWeightsMetadata,
     DocumentQuery,
     FileTypeFilter,
     PropertyFilter,
     TimeFilter,
+    WeightedSchemaProperty,
 )
 from google.cloud.contentwarehouse_v1.types.histogram import (
     HistogramQuery,
@@ -193,6 +198,7 @@ __all__ = (
     "UserInfo",
     "AccessControlMode",
     "DatabaseType",
+    "DocumentCreatorDefaultRole",
     "UpdateType",
     "DateTimeArray",
     "Document",
@@ -208,6 +214,7 @@ __all__ = (
     "TimestampArray",
     "TimestampValue",
     "Value",
+    "ContentCategory",
     "RawDocumentFileType",
     "CreateDocumentLinkRequest",
     "DeleteDocumentLinkRequest",
@@ -243,13 +250,16 @@ __all__ = (
     "DeleteDocumentRequest",
     "FetchAclRequest",
     "GetDocumentRequest",
+    "LockDocumentRequest",
     "SearchDocumentsRequest",
     "SetAclRequest",
     "UpdateDocumentRequest",
+    "CustomWeightsMetadata",
     "DocumentQuery",
     "FileTypeFilter",
     "PropertyFilter",
     "TimeFilter",
+    "WeightedSchemaProperty",
     "HistogramQuery",
     "HistogramQueryPropertyNameFilter",
     "HistogramQueryResult",

@@ -50,11 +50,17 @@ except AttributeError:  # pragma: NO COVER
 from google.protobuf import duration_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 
-from google.maps.routing_v2.types import fallback_info, route, routes_service
+from google.maps.routing_v2.types import (
+    fallback_info,
+    geocoding_results,
+    route,
+    routes_service,
+)
 
 from .transports.base import DEFAULT_CLIENT_INFO, RoutesTransport
 from .transports.grpc import RoutesGrpcTransport
 from .transports.grpc_asyncio import RoutesGrpcAsyncIOTransport
+from .transports.rest import RoutesRestTransport
 
 
 class RoutesClientMeta(type):
@@ -68,6 +74,7 @@ class RoutesClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[RoutesTransport]]
     _transport_registry["grpc"] = RoutesGrpcTransport
     _transport_registry["grpc_asyncio"] = RoutesGrpcAsyncIOTransport
+    _transport_registry["rest"] = RoutesRestTransport
 
     def get_transport_class(
         cls,

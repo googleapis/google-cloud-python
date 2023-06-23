@@ -531,9 +531,9 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1beta.types.UserEvent:
                 UserEvent captures all metadata
-                information DiscoveryEngine API needs to
-                know about how end users interact with
-                customers' website.
+                information Discovery Engine API needs
+                to know about how end users interact
+                with customers' website.
 
         """
         # Create or coerce a protobuf request object.

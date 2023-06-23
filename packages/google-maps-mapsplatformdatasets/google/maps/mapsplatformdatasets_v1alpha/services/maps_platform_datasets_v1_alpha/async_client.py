@@ -386,8 +386,8 @@ class MapsPlatformDatasetsV1AlphaAsyncClient:
 
         Args:
             request (Optional[Union[google.maps.mapsplatformdatasets_v1alpha.types.UpdateDatasetMetadataRequest, dict]]):
-                The request object. Request to update the metadata
-                fields of the dataset.
+                The request object. Request to update the metadata fields
+                of the dataset.
             dataset (:class:`google.maps.mapsplatformdatasets_v1alpha.types.Dataset`):
                 Required. The dataset to update. The dataset's name is
                 used to identify the dataset to be updated. The name has
@@ -500,8 +500,7 @@ class MapsPlatformDatasetsV1AlphaAsyncClient:
 
         Args:
             request (Optional[Union[google.maps.mapsplatformdatasets_v1alpha.types.GetDatasetRequest, dict]]):
-                The request object. Request to get the specified
-                dataset.
+                The request object. Request to get the specified dataset.
             name (:class:`str`):
                 Required. Resource name. Can also fetch a specified
                 version projects/{project}/datasets/{dataset_id}

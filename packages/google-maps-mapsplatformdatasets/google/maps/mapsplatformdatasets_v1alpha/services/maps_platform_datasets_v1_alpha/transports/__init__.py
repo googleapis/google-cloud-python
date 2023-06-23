@@ -19,6 +19,10 @@ from typing import Dict, Type
 from .base import MapsPlatformDatasetsV1AlphaTransport
 from .grpc import MapsPlatformDatasetsV1AlphaGrpcTransport
 from .grpc_asyncio import MapsPlatformDatasetsV1AlphaGrpcAsyncIOTransport
+from .rest import (
+    MapsPlatformDatasetsV1AlphaRestInterceptor,
+    MapsPlatformDatasetsV1AlphaRestTransport,
+)
 
 # Compile a registry of transports.
 _transport_registry = (
@@ -26,9 +30,12 @@ _transport_registry = (
 )  # type: Dict[str, Type[MapsPlatformDatasetsV1AlphaTransport]]
 _transport_registry["grpc"] = MapsPlatformDatasetsV1AlphaGrpcTransport
 _transport_registry["grpc_asyncio"] = MapsPlatformDatasetsV1AlphaGrpcAsyncIOTransport
+_transport_registry["rest"] = MapsPlatformDatasetsV1AlphaRestTransport
 
 __all__ = (
     "MapsPlatformDatasetsV1AlphaTransport",
     "MapsPlatformDatasetsV1AlphaGrpcTransport",
     "MapsPlatformDatasetsV1AlphaGrpcAsyncIOTransport",
+    "MapsPlatformDatasetsV1AlphaRestTransport",
+    "MapsPlatformDatasetsV1AlphaRestInterceptor",
 )

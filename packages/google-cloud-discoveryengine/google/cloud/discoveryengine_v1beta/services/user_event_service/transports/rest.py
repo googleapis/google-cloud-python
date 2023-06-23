@@ -17,7 +17,7 @@
 import dataclasses
 import json  # type: ignore
 import re
-from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 from google.api_core import (
@@ -180,7 +180,7 @@ class UserEventServiceRestInterceptor:
         self,
         request: operations_pb2.GetOperationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.Operation:
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -189,7 +189,7 @@ class UserEventServiceRestInterceptor:
         return request, metadata
 
     def post_get_operation(
-        self, response: operations_pb2.GetOperationRequest
+        self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
@@ -203,7 +203,7 @@ class UserEventServiceRestInterceptor:
         self,
         request: operations_pb2.ListOperationsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> operations_pb2.ListOperationsResponse:
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -212,7 +212,7 @@ class UserEventServiceRestInterceptor:
         return request, metadata
 
     def post_list_operations(
-        self, response: operations_pb2.ListOperationsRequest
+        self, response: operations_pb2.ListOperationsResponse
     ) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
@@ -334,6 +334,26 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                 "google.longrunning.Operations.GetOperation": [
                     {
                         "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
                     },
                     {
@@ -354,6 +374,26 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                     },
                 ],
                 "google.longrunning.Operations.ListOperations": [
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*}/operations",
+                    },
                     {
                         "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",
@@ -397,7 +437,7 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
         def __hash__(self):
             return hash("CollectUserEvent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
             "userEvent": "",
         }
 
@@ -423,7 +463,6 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                 request (~.user_event_service.CollectUserEventRequest):
                     The request object. Request message for CollectUserEvent
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -489,6 +528,10 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                     "method": "get",
                     "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/*}/userEvents:collect",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*}/userEvents:collect",
+                },
             ]
             request, metadata = self._interceptor.pre_collect_user_event(
                 request, metadata
@@ -538,7 +581,7 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
         def __hash__(self):
             return hash("ImportUserEvents")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -562,7 +605,6 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                 request (~.import_config.ImportUserEventsRequest):
                     The request object. Request message for the
                 ImportUserEvents request.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -581,6 +623,11 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/*}/userEvents:import",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*}/userEvents:import",
                     "body": "*",
                 },
             ]
@@ -638,7 +685,7 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
         def __hash__(self):
             return hash("WriteUserEvent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -662,7 +709,6 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                 request (~.user_event_service.WriteUserEventRequest):
                     The request object. Request message for WriteUserEvent
                 method.
-
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -672,9 +718,9 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
             Returns:
                 ~.user_event.UserEvent:
                     UserEvent captures all metadata
-                information DiscoveryEngine API needs to
-                know about how end users interact with
-                customers' website.
+                information Discovery Engine API needs
+                to know about how end users interact
+                with customers' website.
 
             """
 
@@ -682,6 +728,11 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/*}/userEvents:write",
+                    "body": "user_event",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*}/userEvents:write",
                     "body": "user_event",
                 },
             ]
@@ -793,6 +844,26 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
                 },
                 {
@@ -874,6 +945,26 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
             """
 
             http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*}/operations",
+                },
                 {
                     "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",

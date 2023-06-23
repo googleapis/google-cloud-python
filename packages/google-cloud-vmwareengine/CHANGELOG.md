@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v1.0.1...google-cloud-vmwareengine-v1.1.0) (2023-06-12)
+
+
+### Features
+
+* Adding private connection CRUD, updating management subnets and time-limited PC features ([#11386](https://github.com/googleapis/google-cloud-python/issues/11386)) ([aa5942d](https://github.com/googleapis/google-cloud-python/commit/aa5942d7b3259310d6bd546c2d39a6344b89a7b3))
+
+## [1.0.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v1.0.0...google-cloud-vmwareengine-v1.0.1) (2023-03-25)
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#10867](https://github.com/googleapis/google-cloud-python/issues/10867)) ([d34a425](https://github.com/googleapis/google-cloud-python/commit/d34a425f7d0f02bebaf20d24b725b8c25c699697))
+
 ## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v0.2.2...google-cloud-vmwareengine-v1.0.0) (2023-01-31)
 
 
