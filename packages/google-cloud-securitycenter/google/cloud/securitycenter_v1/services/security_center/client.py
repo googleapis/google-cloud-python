@@ -28,6 +28,7 @@ from typing import (
     Union,
     cast,
 )
+import warnings
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -2902,6 +2903,10 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 automatically.
 
         """
+        warnings.warn(
+            "SecurityCenterClient.group_assets is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # Minor optimization to avoid making a copy if the user passes
         # in a securitycenter_service.GroupAssetsRequest.
@@ -3149,6 +3154,10 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 automatically.
 
         """
+        warnings.warn(
+            "SecurityCenterClient.list_assets is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # Minor optimization to avoid making a copy if the user passes
         # in a securitycenter_service.ListAssetsRequest.
@@ -4129,6 +4138,10 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 Response of asset discovery run
 
         """
+        warnings.warn(
+            "SecurityCenterClient.run_asset_discovery is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
