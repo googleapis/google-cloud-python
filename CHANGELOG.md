@@ -1,73 +1,106 @@
-# Changelog
+Please refer to each API's `CHANGELOG.md` file under the `packages/` directory
 
-[PyPI History][1]
+Changelogs
+-----
+- [google-ai-generativelanguage==0.2.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ai-generativelanguage/CHANGELOG.md)
+- [google-apps-script-type==0.3.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-apps-script-type/CHANGELOG.md)
+- [google-area120-tables==0.11.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-area120-tables/CHANGELOG.md)
+- [google-cloud-access-approval==1.11.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-access-approval/CHANGELOG.md)
+- [google-cloud-advisorynotifications==0.2.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-advisorynotifications/CHANGELOG.md)
+- [google-cloud-alloydb==0.2.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-alloydb/CHANGELOG.md)
+- [google-cloud-api-gateway==1.7.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-api-gateway/CHANGELOG.md)
+- [google-cloud-apigee-connect==1.7.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-apigee-connect/CHANGELOG.md)
+- [google-cloud-apigee-registry==0.6.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-apigee-registry/CHANGELOG.md)
+- [google-cloud-api-keys==0.5.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-api-keys/CHANGELOG.md)
+- [google-cloud-appengine-logging==1.3.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-appengine-logging/CHANGELOG.md)
+- [google-cloud-artifact-registry==1.8.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-artifact-registry/CHANGELOG.md)
+- [google-cloud-bare-metal-solution==1.4.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bare-metal-solution/CHANGELOG.md)
+- [google-cloud-beyondcorp-appconnections==0.4.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-beyondcorp-appconnections/CHANGELOG.md)
+- [google-cloud-beyondcorp-appconnectors==0.4.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-beyondcorp-appconnectors/CHANGELOG.md)
+- [google-cloud-beyondcorp-appgateways==0.4.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-beyondcorp-appgateways/CHANGELOG.md)
+- [google-cloud-beyondcorp-clientconnectorservices==0.4.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-beyondcorp-clientconnectorservices/CHANGELOG.md)
+- [google-cloud-beyondcorp-clientgateways==0.4.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-beyondcorp-clientgateways/CHANGELOG.md)
+- [google-cloud-bigquery-analyticshub==0.4.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-analyticshub/CHANGELOG.md)
+- [google-cloud-bigquery-biglake==0.4.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-biglake/CHANGELOG.md)
+- [google-cloud-bigquery-data-exchange==0.5.3](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-data-exchange/CHANGELOG.md)
+- [google-cloud-bigquery-datapolicies==0.5.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-datapolicies/CHANGELOG.md)
+- [google-cloud-bigquery-logging==1.2.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-logging/CHANGELOG.md)
+- [google-cloud-billing==1.11.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-billing/CHANGELOG.md)
+- [google-cloud-billing-budgets==1.11.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-billing-budgets/CHANGELOG.md)
+- [google-cloud-certificate-manager==1.4.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-certificate-manager/CHANGELOG.md)
+- [google-cloud-channel==1.15.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-channel/CHANGELOG.md)
+- [google-cloud-confidentialcomputing==0.1.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-confidentialcomputing/CHANGELOG.md)
+- [google-cloud-contact-center-insights==1.11.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-contact-center-insights/CHANGELOG.md)
+- [google-cloud-contentwarehouse==0.5.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-contentwarehouse/CHANGELOG.md)
+- [google-cloud-datacatalog==3.13.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-datacatalog/CHANGELOG.md)
+- [google-cloud-datacatalog-lineage==0.2.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-datacatalog-lineage/CHANGELOG.md)
+- [google-cloud-dataform==0.5.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dataform/CHANGELOG.md)
+- [google-cloud-data-fusion==1.8.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-data-fusion/CHANGELOG.md)
+- [google-cloud-datalabeling==1.8.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-datalabeling/CHANGELOG.md)
+- [google-cloud-dataplex==1.5.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dataplex/CHANGELOG.md)
+- [google-cloud-dataproc-metastore==1.11.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dataproc-metastore/CHANGELOG.md)
+- [google-cloud-data-qna==0.10.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-data-qna/CHANGELOG.md)
+- [google-cloud-datastream==1.6.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-datastream/CHANGELOG.md)
+- [google-cloud-deploy==1.10.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-deploy/CHANGELOG.md)
+- [google-cloud-discoveryengine==0.9.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-discoveryengine/CHANGELOG.md)
+- [google-cloud-dms==1.7.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dms/CHANGELOG.md)
+- [google-cloud-documentai==2.16.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-documentai/CHANGELOG.md)
+- [google-cloud-domains==1.5.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-domains/CHANGELOG.md)
+- [google-cloud-edgecontainer==0.5.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-edgecontainer/CHANGELOG.md)
+- [google-cloud-enterpriseknowledgegraph==0.3.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-enterpriseknowledgegraph/CHANGELOG.md)
+- [google-cloud-essential-contacts==1.5.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-essential-contacts/CHANGELOG.md)
+- [google-cloud-eventarc==1.9.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-eventarc/CHANGELOG.md)
+- [google-cloud-eventarc-publishing==0.6.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-eventarc-publishing/CHANGELOG.md)
+- [google-cloud-functions==1.13.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-functions/CHANGELOG.md)
+- [google-cloud-gke-connect-gateway==0.8.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gke-connect-gateway/CHANGELOG.md)
+- [google-cloud-gke-multicloud==0.6.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gke-multicloud/CHANGELOG.md)
+- [google-cloud-iam-logging==1.2.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-iam-logging/CHANGELOG.md)
+- [google-cloud-iap==1.10.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-iap/CHANGELOG.md)
+- [google-cloud-ids==1.5.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-ids/CHANGELOG.md)
+- [google-cloud-kms-inventory==0.1.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-kms-inventory/CHANGELOG.md)
+- [google-cloud-life-sciences==0.9.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-life-sciences/CHANGELOG.md)
+- [google-cloud-managed-identities==1.7.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-managed-identities/CHANGELOG.md)
+- [google-cloud-media-translation==0.11.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-media-translation/CHANGELOG.md)
+- [google-cloud-memcache==1.7.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-memcache/CHANGELOG.md)
+- [google-cloud-migrationcenter==0.1.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-migrationcenter/CHANGELOG.md)
+- [google-cloud-monitoring-metrics-scopes==1.4.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-monitoring-metrics-scopes/CHANGELOG.md)
+- [google-cloud-network-connectivity==2.0.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-network-connectivity/CHANGELOG.md)
+- [google-cloud-network-management==1.8.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-network-management/CHANGELOG.md)
+- [google-cloud-network-security==0.9.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-network-security/CHANGELOG.md)
+- [google-cloud-notebooks==1.7.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-notebooks/CHANGELOG.md)
+- [google-cloud-orchestration-airflow==1.9.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-orchestration-airflow/CHANGELOG.md)
+- [google-cloud-phishing-protection==1.9.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-phishing-protection/CHANGELOG.md)
+- [google-cloud-policy-troubleshooter==1.8.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-policy-troubleshooter/CHANGELOG.md)
+- [google-cloud-private-ca==1.8.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-private-ca/CHANGELOG.md)
+- [google-cloud-private-catalog==0.9.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-private-catalog/CHANGELOG.md)
+- [google-cloud-public-ca==0.3.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-public-ca/CHANGELOG.md)
+- [google-cloud-rapidmigrationassessment==0.1.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-rapidmigrationassessment/CHANGELOG.md)
+- [google-cloud-recaptcha-enterprise==1.12.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-recaptcha-enterprise/CHANGELOG.md)
+- [google-cloud-recommendations-ai==0.10.3](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-recommendations-ai/CHANGELOG.md)
+- [google-cloud-recommender==2.11.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-recommender/CHANGELOG.md)
+- [google-cloud-redis==2.13.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-redis/CHANGELOG.md)
+- [google-cloud-resource-manager==1.10.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-resource-manager/CHANGELOG.md)
+- [google-cloud-resource-settings==1.7.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-resource-settings/CHANGELOG.md)
+- [google-cloud-secret-manager==2.16.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-secret-manager/CHANGELOG.md)
+- [google-cloud-securitycenter==1.22.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-securitycenter/CHANGELOG.md)
+- [google-cloud-service-control==1.9.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-service-control/CHANGELOG.md)
+- [google-cloud-service-directory==1.8.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-service-directory/CHANGELOG.md)
+- [google-cloud-service-usage==1.7.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-service-usage/CHANGELOG.md)
+- [google-cloud-shell==1.7.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-shell/CHANGELOG.md)
+- [google-cloud-source-context==1.4.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-source-context/CHANGELOG.md)
+- [google-cloud-storageinsights==0.1.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-storageinsights/CHANGELOG.md)
+- [google-cloud-support==0.1.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-support/CHANGELOG.md)
+- [google-cloud-talent==2.11.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-talent/CHANGELOG.md)
+- [google-cloud-tpu==1.11.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-tpu/CHANGELOG.md)
+- [google-cloud-vm-migration==1.6.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-vm-migration/CHANGELOG.md)
+- [google-cloud-vmwareengine==1.1.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-vmwareengine/CHANGELOG.md)
+- [google-cloud-vpc-access==1.8.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-vpc-access/CHANGELOG.md)
+- [google-cloud-webrisk==1.12.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-webrisk/CHANGELOG.md)
+- [google-cloud-websecurityscanner==1.12.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-websecurityscanner/CHANGELOG.md)
+- [google-cloud-workstations==0.4.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-workstations/CHANGELOG.md)
+- [google-geo-type==0.3.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-geo-type/CHANGELOG.md)
+- [google-maps-addressvalidation==0.3.4](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-addressvalidation/CHANGELOG.md)
+- [google-maps-mapsplatformdatasets==0.3.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-mapsplatformdatasets/CHANGELOG.md)
+- [google-maps-places==0.1.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-places/CHANGELOG.md)
+- [google-maps-routing==0.5.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-routing/CHANGELOG.md)
 
-[1]: https://pypi.org/project/google-cloud/#history
-
-## 0.32.0
-
-Packages newly added to the `google-cloud` umbrella package:
-
-- [`google-cloud-bigquery-datatransfer==0.1.0`](https://pypi.org/project/google-cloud-bigquery-datatransfer/0.1.0/)
-- [`google-cloud-container==0.1.0`](https://pypi.org/project/google-cloud-container/0.1.0/)
-
-Feature / bugfix release for the following packages:
-
-- [`google-api-core==0.1.2`](https://pypi.org/project/google-api-core/0.1.2/)
-- [`google-cloud-bigtable==0.28.1`](https://pypi.org/project/google-cloud-bigtable/0.28.1/)
-- [`google-cloud-pubsub==0.30.0`](https://pypi.org/project/google-cloud-pubsub/0.30.0/)
-- [`google-cloud-trace==0.17.0`](https://pypi.org/project/google-cloud-trace/0.17.0/)
-- [`google-cloud-vision==0.29.0`](https://pypi.org/project/google-cloud-vision/0.29.0/)
-
-## 0.31.0
-
-Feature / bugfix release for the following packages:
-
-  *  [`google-cloud-pubsub==0.29.1`](https://pypi.org/project/google-cloud-pubsub/0.29.1/)
-  *  [`google-cloud-videointelligence==1.0.0`](https://pypi.org/project/google-cloud-videointelligence/1.0.0/)
-
-## 0.30.0
-
-Feature / bugfix release for the following package:
-
-  *  [`google-cloud-language==1.0.0`](https://pypi.org/project/google-cloud-language/1.0.0/)
-
-## 0.29.0
-
-Feature / bugfix release for the following package:
-
-- [`google-cloud-language==0.31.0`](https://pypi.org/project/google-cloud-language/0.31.0/)
-
-## 0.28.0
-
-Packages newly added to the `google-cloud` umbrella package:
-
-- [`google-api-core==0.1.1`](https://pypi.org/project/google-api-core/0.1.1/)
-- [`google-cloud-firestore==0.28.0`](https://pypi.org/project/google-cloud-firestore/0.28.0/)
-- [`google-cloud-trace==0.16.0`](https://pypi.org/project/google-cloud-trace/0.16.0/)
-- [`google-cloud-videointelligence=0.28.0`](https://pypi.org/project/google-cloud-videointelligence/0.28.0/)
-
-Feature / bugfix releases for the following packages:
-
-- [`google-cloud-bigquery==0.28.0`](https://pypi.org/project/google-cloud-bigquery/0.28.0/)
-- [`google-cloud-core==0.28.0`](https://pypi.org/project/google-cloud-core/0.28.0/)
-- [`google-cloud-datastore==1.4.0`](https://pypi.org/project/google-cloud-datastore/1.4.0/)
-- [`google-cloud-logging==1.4.0`](https://pypi.org/project/google-cloud-logging/1.4.0/)
-- [`google-cloud-pubsub==0.29.0`](https://pypi.org/project/google-cloud-pubsub/0.29.0/)
-- [`google-cloud-spanner==0.29.0`](https://pypi.org/project/google-cloud-spanner/0.29.0/)
-- [`google-cloud-translate==1.3.0`](https://pypi.org/project/google-cloud-translate/1.3.0/)
-- [`google-cloud-vision==0.28.0`](https://pypi.org/project/google-cloud-vision/0.28.0/)
-
-Dependency-only / user-invisible changes to the following packages:
-
-- [`google-cloud-bigtable==0.28.0`](https://pypi.org/project/google-cloud-bigtable/0.28.0/)
-- [`google-cloud-dns==0.28.0`](https://pypi.org/project/google-cloud-dns/0.28.0/)
-- [`google-cloud-error-reporting==0.28.0`](https://pypi.org/project/google-cloud-error-reporting/0.28.0/)
-- [`google-cloud-language==0.30.0`](https://pypi.org/project/google-cloud-language/0.30.0/)
-- [`google-cloud-monitoring==0.28.0`](https://pypi.org/project/google-cloud-monitoring/0.28.0/)
-- [`google-cloud-resource-manager==0.28.0`](https://pypi.org/project/google-cloud-resource-manager/0.28.0/)
-- [`google-cloud-runtimeconfig==0.28.0`](https://pypi.org/project/google-cloud-runtimeconfig/0.28.0/)
-- [`google-cloud-speech==0.30.0`](https://pypi.org/project/google-cloud-speech/0.30.0/)
-- [`google-cloud-storage==1.6.0`](https://pypi.org/project/google-cloud-storage/1.6.0/)
-
-PyPI: https://pypi.org/project/google-cloud/0.28.0/
