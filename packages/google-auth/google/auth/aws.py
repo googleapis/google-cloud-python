@@ -742,6 +742,11 @@ class Credentials(external_account.Credentials):
 
         return False
 
+    def _create_default_metrics_options(self):
+        metrics_options = super(Credentials, self)._create_default_metrics_options()
+        metrics_options["source"] = "aws"
+        return metrics_options
+
     @classmethod
     def from_info(cls, info, **kwargs):
         """Creates an AWS Credentials instance from parsed external account info.

@@ -32,6 +32,8 @@ IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
     "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/imp"
 )
 
+LANG_LIBRARY_METRICS_HEADER_VALUE = "gl-python/3.7 auth/1.1"
+
 CLIENT_ID = "username"
 CLIENT_SECRET = "password"
 # Base64 encoding of "username:password".
@@ -1793,8 +1795,14 @@ class TestCredentials(object):
 
         assert excinfo.match(r"Unable to retrieve AWS security credentials")
 
+    @mock.patch(
+        "google.auth.metrics.python_and_auth_lib_version",
+        return_value=LANG_LIBRARY_METRICS_HEADER_VALUE,
+    )
     @mock.patch("google.auth._helpers.utcnow")
-    def test_refresh_success_without_impersonation_ignore_default_scopes(self, utcnow):
+    def test_refresh_success_without_impersonation_ignore_default_scopes(
+        self, utcnow, mock_auth_lib_value
+    ):
         utcnow.return_value = datetime.datetime.strptime(
             self.AWS_SIGNATURE_TIME, "%Y-%m-%dT%H:%M:%SZ"
         )
@@ -1808,6 +1816,7 @@ class TestCredentials(object):
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic " + BASIC_AUTH_ENCODING,
+            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false source/aws",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1849,8 +1858,14 @@ class TestCredentials(object):
         assert credentials.scopes == SCOPES
         assert credentials.default_scopes == ["ignored"]
 
+    @mock.patch(
+        "google.auth.metrics.python_and_auth_lib_version",
+        return_value=LANG_LIBRARY_METRICS_HEADER_VALUE,
+    )
     @mock.patch("google.auth._helpers.utcnow")
-    def test_refresh_success_without_impersonation_use_default_scopes(self, utcnow):
+    def test_refresh_success_without_impersonation_use_default_scopes(
+        self, utcnow, mock_auth_lib_value
+    ):
         utcnow.return_value = datetime.datetime.strptime(
             self.AWS_SIGNATURE_TIME, "%Y-%m-%dT%H:%M:%SZ"
         )
@@ -1864,6 +1879,7 @@ class TestCredentials(object):
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic " + BASIC_AUTH_ENCODING,
+            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/false config-lifetime/false source/aws",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -1909,9 +1925,13 @@ class TestCredentials(object):
         "google.auth.metrics.token_request_access_token_impersonate",
         return_value=IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
     )
+    @mock.patch(
+        "google.auth.metrics.python_and_auth_lib_version",
+        return_value=LANG_LIBRARY_METRICS_HEADER_VALUE,
+    )
     @mock.patch("google.auth._helpers.utcnow")
     def test_refresh_success_with_impersonation_ignore_default_scopes(
-        self, utcnow, mock_metrics_header_value
+        self, utcnow, mock_metrics_header_value, mock_auth_lib_value
     ):
         utcnow.return_value = datetime.datetime.strptime(
             self.AWS_SIGNATURE_TIME, "%Y-%m-%dT%H:%M:%SZ"
@@ -1929,6 +1949,7 @@ class TestCredentials(object):
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic " + BASIC_AUTH_ENCODING,
+            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/false source/aws",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
@@ -2000,9 +2021,13 @@ class TestCredentials(object):
         "google.auth.metrics.token_request_access_token_impersonate",
         return_value=IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
     )
+    @mock.patch(
+        "google.auth.metrics.python_and_auth_lib_version",
+        return_value=LANG_LIBRARY_METRICS_HEADER_VALUE,
+    )
     @mock.patch("google.auth._helpers.utcnow")
     def test_refresh_success_with_impersonation_use_default_scopes(
-        self, utcnow, mock_metrics_header_value
+        self, utcnow, mock_metrics_header_value, mock_auth_lib_value
     ):
         utcnow.return_value = datetime.datetime.strptime(
             self.AWS_SIGNATURE_TIME, "%Y-%m-%dT%H:%M:%SZ"
@@ -2020,6 +2045,7 @@ class TestCredentials(object):
         token_headers = {
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic " + BASIC_AUTH_ENCODING,
+            "x-goog-api-client": "gl-python/3.7 auth/1.1 google-byoid-sdk sa-impersonation/true config-lifetime/false source/aws",
         }
         token_request_data = {
             "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",

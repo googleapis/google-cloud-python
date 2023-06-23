@@ -23,6 +23,9 @@ from google.auth import version
 
 API_CLIENT_HEADER = "x-goog-api-client"
 
+# BYOID Specific consts
+BYOID_HEADER_SECTION = "google-byoid-sdk"
+
 # Auth request type
 REQUEST_TYPE_ACCESS_TOKEN = "auth-request-type/at"
 REQUEST_TYPE_ID_TOKEN = "auth-request-type/it"
@@ -121,6 +124,15 @@ def reauth_start():
 # Example: "gl-python/3.7 auth/1.1 cred-type/re-cont"
 def reauth_continue():
     return "{} {}".format(python_and_auth_lib_version(), REQUEST_TYPE_REAUTH_CONTINUE)
+
+
+# x-goog-api-client header value for BYOID calls to the Security Token Service exchange token endpoint.
+# Example: "gl-python/3.7 auth/1.1 google-byoid-sdk source/aws sa-impersonation/true sa-impersonation/true"
+def byoid_metrics_header(metrics_options):
+    header = "{} {}".format(python_and_auth_lib_version(), BYOID_HEADER_SECTION)
+    for key, value in metrics_options.items():
+        header = "{} {}/{}".format(header, key, value)
+    return header
 
 
 def add_metric_header(headers, metric_header_value):

@@ -24,6 +24,7 @@ from six.moves import urllib
 from google.auth import _helpers
 from google.auth import exceptions
 from google.auth import identity_pool
+from google.auth import metrics
 from google.auth import transport
 
 
@@ -267,6 +268,21 @@ class TestCredentials(object):
         token_headers = {"Content-Type": "application/x-www-form-urlencoded"}
         if basic_auth_encoding:
             token_headers["Authorization"] = "Basic " + basic_auth_encoding
+
+        metrics_options = {}
+        if credentials._service_account_impersonation_url:
+            metrics_options["sa-impersonation"] = "true"
+        else:
+            metrics_options["sa-impersonation"] = "false"
+        metrics_options["config-lifetime"] = "false"
+        if credentials._credential_source_file:
+            metrics_options["source"] = "file"
+        else:
+            metrics_options["source"] = "url"
+
+        token_headers["x-goog-api-client"] = metrics.byoid_metrics_header(
+            metrics_options
+        )
 
         if service_account_impersonation_url:
             token_scopes = "https://www.googleapis.com/auth/iam"

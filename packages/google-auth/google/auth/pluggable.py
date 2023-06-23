@@ -422,3 +422,8 @@ class Credentials(external_account.Credentials):
             raise exceptions.InvalidValue(
                 "Interactive mode is only enabled for workforce pool."
             )
+
+    def _create_default_metrics_options(self):
+        metrics_options = super(Credentials, self)._create_default_metrics_options()
+        metrics_options["source"] = "executable"
+        return metrics_options

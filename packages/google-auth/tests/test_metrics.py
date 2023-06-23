@@ -77,3 +77,20 @@ def test_metric_values(mock_python_and_auth_lib_version):
     assert (
         metrics.reauth_continue() == "gl-python/3.7 auth/1.1 auth-request-type/re-cont"
     )
+
+
+@mock.patch(
+    "google.auth.metrics.python_and_auth_lib_version",
+    return_value="gl-python/3.7 auth/1.1",
+)
+def test_byoid_metric_header(mock_python_and_auth_lib_version):
+    metrics_options = {}
+    assert (
+        metrics.byoid_metrics_header(metrics_options)
+        == "gl-python/3.7 auth/1.1 google-byoid-sdk"
+    )
+    metrics_options["testKey"] = "testValue"
+    assert (
+        metrics.byoid_metrics_header(metrics_options)
+        == "gl-python/3.7 auth/1.1 google-byoid-sdk testKey/testValue"
+    )
