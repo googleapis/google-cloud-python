@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [2.10.0](https://github.com/googleapis/python-storage/compare/v2.9.0...v2.10.0) (2023-06-14)
+
+
+### Features
+
+* Add matchGlob parameter to list_blobs ([#1055](https://github.com/googleapis/python-storage/issues/1055)) ([d02098e](https://github.com/googleapis/python-storage/commit/d02098e6d5f656f9802cf0a494b507d77b065be7))
+* Allow exceptions to be included in batch responses ([#1043](https://github.com/googleapis/python-storage/issues/1043)) ([94a35ba](https://github.com/googleapis/python-storage/commit/94a35ba7416804881973f6a5296b430bdcf2832d))
+
+
+### Bug Fixes
+
+* Extend wait for bucket metadata consistency in system tests ([#1053](https://github.com/googleapis/python-storage/issues/1053)) ([d78586c](https://github.com/googleapis/python-storage/commit/d78586c388a683b8678f280df0c9456c6e109af7))
+
+
+### Documentation
+
+* Add clarification to batch module ([#1045](https://github.com/googleapis/python-storage/issues/1045)) ([11f6024](https://github.com/googleapis/python-storage/commit/11f6024a4fd0a66e8cdcc6c89c3d33534892386d))
+
 ## [2.9.0](https://github.com/googleapis/python-storage/compare/v2.8.0...v2.9.0) (2023-05-04)
 
 
