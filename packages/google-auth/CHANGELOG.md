@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.21.0](https://github.com/googleapis/google-auth-library-python/compare/v2.20.0...v2.21.0) (2023-06-26)
+
+
+### Features
+
+* Add framework for BYOID metrics headers ([#1332](https://github.com/googleapis/google-auth-library-python/issues/1332)) ([1a8f50c](https://github.com/googleapis/google-auth-library-python/commit/1a8f50c750669b12152b7758339600471c9e3e2a))
+
+
+### Bug Fixes
+
+* Pypy unit test build ([#1335](https://github.com/googleapis/google-auth-library-python/issues/1335)) ([33e4263](https://github.com/googleapis/google-auth-library-python/commit/33e4263e34d37db2713bfb3564f57fc10a991ee4))
+
 ## [2.20.0](https://github.com/googleapis/google-auth-library-python/compare/v2.19.1...v2.20.0) (2023-06-12)
 
 
