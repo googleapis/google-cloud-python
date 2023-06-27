@@ -442,12 +442,11 @@ def docfx(session):
 
     session.install("-e", ".")
     session.install(
-        "sphinx==4.0.1",
+        "gcp-sphinx-docfx-yaml",
         "alabaster",
         "geoalchemy2",
         "shapely",
         "recommonmark",
-        "gcp-sphinx-docfx-yaml",
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
