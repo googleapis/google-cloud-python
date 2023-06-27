@@ -24,7 +24,7 @@ dependencies = [
     'PyYAML',
     'recommonmark',
     'sphinx==4.5.0',
-    'sphinx-markdown-builder',
+    'sphinx-markdown-builder==0.5.5',
     'sphinxcontrib.napoleon',
     'unidecode',
     'wheel>=0.24.0'
