@@ -1,6 +1,22 @@
 # Changelog
 
 
+## [1.11.0](https://github.com/googleapis/gapic-generator-python/compare/v1.10.0...v1.11.0) (2023-06-27)
+
+
+### Features
+
+* Support snippet generation for services that only support REST transport ([#1656](https://github.com/googleapis/gapic-generator-python/issues/1656)) ([bb60a3d](https://github.com/googleapis/gapic-generator-python/commit/bb60a3d87b252f276f07f9ab21a17cd279b702c1))
+
+
+### Bug Fixes
+
+* Add `exec` as a reserved word ([#1673](https://github.com/googleapis/gapic-generator-python/issues/1673)) ([90af1e6](https://github.com/googleapis/gapic-generator-python/commit/90af1e6a97297c8bfbf8951e09922f3727b7074f))
+* Add async context manager return types ([#1660](https://github.com/googleapis/gapic-generator-python/issues/1660)) ([7f58100](https://github.com/googleapis/gapic-generator-python/commit/7f58100e645d9f868953deeac50992a44f6048e2))
+* Fix bug with quote replacement. ([#1613](https://github.com/googleapis/gapic-generator-python/issues/1613)) ([5268045](https://github.com/googleapis/gapic-generator-python/commit/5268045c34b36f4a89e00559bedde04d2a35bdd7))
+* Fix code coverage in async test ([#1646](https://github.com/googleapis/gapic-generator-python/issues/1646)) ([ccada98](https://github.com/googleapis/gapic-generator-python/commit/ccada9880890d6fb10ee02dad14b960d77335b82))
+* Mock return_value should not populate oneof message fields ([#1668](https://github.com/googleapis/gapic-generator-python/issues/1668)) ([34d1a5d](https://github.com/googleapis/gapic-generator-python/commit/34d1a5d6455af7ee5bd57743e55e1ada16985372))
+
 ## [1.10.0](https://github.com/googleapis/gapic-generator-python/compare/v1.9.1...v1.10.0) (2023-03-28)
 
 
