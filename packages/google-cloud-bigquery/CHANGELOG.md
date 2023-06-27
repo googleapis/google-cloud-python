@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.11.3](https://github.com/googleapis/python-bigquery/compare/v3.11.2...v3.11.3) (2023-06-27)
+
+
+### Bug Fixes
+
+* Type annotations include Optional when None is accepted ([#1554](https://github.com/googleapis/python-bigquery/issues/1554)) ([6c1ab80](https://github.com/googleapis/python-bigquery/commit/6c1ab802b09124ba837d6d5358962e3fce2d4a2c))
+
 ## [3.11.2](https://github.com/googleapis/python-bigquery/compare/v3.11.1...v3.11.2) (2023-06-21)
 
 
