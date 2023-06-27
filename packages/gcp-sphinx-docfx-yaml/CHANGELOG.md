@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.5](https://github.com/googleapis/sphinx-docfx-yaml/compare/v2.0.4...v2.0.5) (2023-06-27)
+
+
+### Bug Fixes
+
+* Pin markdown builder version ([#306](https://github.com/googleapis/sphinx-docfx-yaml/issues/306)) ([0d1879d](https://github.com/googleapis/sphinx-docfx-yaml/commit/0d1879df6446f70e088c8d5ac7df6a9a743a47c9))
+
 ## [2.0.4](https://github.com/googleapis/sphinx-docfx-yaml/compare/v2.0.3...v2.0.4) (2023-06-02)
 
 
