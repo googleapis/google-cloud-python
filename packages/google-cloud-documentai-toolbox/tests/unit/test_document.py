@@ -418,7 +418,7 @@ def test_search_page_with_multiple_pages(get_bytes_multiple_files_mock):
     actual_pages = doc.search_pages(target_string="Invoice")
 
     get_bytes_multiple_files_mock.assert_called_once()
-    assert len(actual_pages) == 48
+    assert len(actual_pages) == 5
 
 
 def test_search_page_with_no_results(get_bytes_single_file_mock):
@@ -623,10 +623,13 @@ def test_convert_document_to_annotate_file_json_response():
 
 
 def test_export_images(get_bytes_images_mock):
+    output_path = "resources/output/"
+    if os.path.exists(output_path):
+        shutil.rmtree(output_path)
+
     doc = document.Document.from_gcs(
         gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/0"
     )
-    output_path = "resources/output/"
 
     os.makedirs(output_path)
 
@@ -637,9 +640,22 @@ def test_export_images(get_bytes_images_mock):
     )
     get_bytes_images_mock.assert_called_once()
 
-    assert os.path.exists(output_path)
-    shutil.rmtree(output_path)
-
     assert actual == [
         "exported_photo_0_Portrait.png",
     ]
+
+    assert os.path.exists(output_path)
+    shutil.rmtree(output_path)
+
+
+def test_export_hocr_str():
+    wrapped_document = document.Document.from_document_path(
+        document_path="tests/unit/resources/0/toolbox_invoice_test-0.json"
+    )
+
+    actual_hocr = wrapped_document.export_hocr_str(title="toolbox_invoice_test-0")
+
+    with open("tests/unit/resources/toolbox_invoice_test_0_hocr.xml", "r") as f:
+        expected = f.read()
+
+    assert actual_hocr == expected

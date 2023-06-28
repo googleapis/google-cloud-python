@@ -60,6 +60,7 @@ setuptools.setup(
         "pikepdf >= 6.2.9, < 7.0.0; python_version<'3.8'",
         "immutabledict >= 2.0.0, < 3.0.0dev",
         "Pillow >= 9.5.0, < 10.0.0",
+        "Jinja2 >= 3.1.0, <= 3.1.2",
     ),
     python_requires=">=3.7",
     classifiers=[

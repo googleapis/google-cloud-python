@@ -26,6 +26,9 @@ output_file_extension = "png"
 
 
 def test_export_images_sample(capsys: pytest.CaptureFixture) -> None:
+    if os.path.exists(output_path):
+        shutil.rmtree(output_path)
+
     os.makedirs(output_path)
     current_directory = os.path.dirname(__file__)
     rel_document_path = os.path.relpath(document_path, current_directory)

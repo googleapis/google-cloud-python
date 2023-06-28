@@ -16,12 +16,11 @@
 """Helper functions for docproto to vision conversion."""
 
 import dataclasses
-from typing import List, Union
+from typing import List
 
 import immutabledict
 
 from google.cloud.documentai import Document
-from google.cloud.vision_v1.types import geometry
 from google.cloud.vision import (
     EntityAnnotation,
     TextAnnotation,
@@ -34,6 +33,8 @@ from google.cloud.vision import (
     ImageAnnotationContext,
 )
 from google.cloud import vision
+
+from google.cloud.documentai_toolbox.constants import ElementWithLayout
 
 
 _BREAK_TYPE_MAP = immutabledict.immutabledict(
@@ -49,15 +50,6 @@ _BREAK_TYPE_MAP = immutabledict.immutabledict(
         ),
     }
 )
-
-
-ElementWithLayout = Union[
-    Document.Page.Paragraph,
-    Document.Page,
-    Document.Page.Token,
-    Document.Page.Block,
-    Document.Page.Symbol,
-]
 
 
 @dataclasses.dataclass
@@ -254,7 +246,6 @@ def _generate_entity_annotations(
     entity_annotations: List[EntityAnnotation] = []
     for token in page_info.page.tokens:
         v: vision.Vertex = []
-        bounding_box = geometry.BoundingPoly()
         if token.layout.bounding_poly.vertices:
             for vertex in token.layout.bounding_poly.vertices:
                 v.append({"x": int(vertex.x), "y": int(vertex.y)})
@@ -266,7 +257,6 @@ def _generate_entity_annotations(
                         "y": int(normalized_vertex.y * page_info.page.dimension.height),
                     }
                 )
-        bounding_box = geometry.BoundingPoly(vertices=v)
 
         text_start_index = token.layout.text_anchor.text_segments[0].start_index
         text_end_index = token.layout.text_anchor.text_segments[0].end_index
@@ -277,12 +267,13 @@ def _generate_entity_annotations(
         ):
             text_end_index -= 1
 
-        entity_annotations.append(
-            EntityAnnotation(
-                description=page_info.text[text_start_index:text_end_index],
-                bounding_poly=bounding_box,
-            )
+        e = EntityAnnotation(
+            description=page_info.text[text_start_index:text_end_index]
         )
+
+        e.bounding_poly.vertices = v
+
+        entity_annotations.append(e)
     return entity_annotations
 
 

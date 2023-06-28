@@ -43,6 +43,8 @@ from google.longrunning.operations_pb2 import GetOperationRequest, Operation
 
 from pikepdf import Pdf
 
+from jinja2 import Environment, FileSystemLoader
+
 
 def _entities_from_shards(
     shards: List[documentai.Document],
@@ -86,7 +88,7 @@ def _pages_from_shards(shards: List[documentai.Document]) -> List[Page]:
     result = []
     for shard in shards:
         for shard_page in shard.pages:
-            result.append(Page(documentai_page=shard_page, document_text=shard.text))
+            result.append(Page(documentai_object=shard_page, document_text=shard.text))
 
     if len(result) > 1 and result[0].page_number:
         result.sort(key=lambda x: x.page_number)
@@ -755,7 +757,7 @@ class Document:
         index = 0
         for entity in self.entities:
             image = entity.crop_image(
-                documentai_page=self.pages[entity.start_page].documentai_page
+                documentai_page=self.pages[entity.start_page].documentai_object
             )
             if not image:
                 continue
@@ -767,3 +769,27 @@ class Document:
             index += 1
 
         return output_filenames
+
+    def export_hocr_str(self, title: str) -> str:
+        r"""Exports a string hOCR version of the Document.
+
+        Args:
+            title (str):
+                Required. The title for hocr_page and head.
+
+        Returns:
+            str:
+                A string hOCR version of the Document
+        """
+        environment = Environment(loader=FileSystemLoader("templates/"))
+        template = environment.get_template("hocr_xml_template.txt")
+        hocr_pages = ""
+        number_of_pages = len(self.pages)
+        for page_to_export in self.pages:
+            hocr_pages += page_to_export.to_hocr()
+
+        content = template.render(
+            hocr_pages=hocr_pages, number_of_pages=number_of_pages, title=title
+        )
+
+        return content

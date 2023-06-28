@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 
+from typing import Union
+from google.cloud.documentai import Document
+
 USER_AGENT_PRODUCT = "documentai-toolbox"
 
 JSON_EXTENSION = ".json"
@@ -39,3 +42,11 @@ VALID_MIME_TYPES = {
 }
 
 IMAGE_ENTITIES = {"Portrait"}
+
+ElementWithLayout = Union[
+    Document.Page.Paragraph,
+    Document.Page,
+    Document.Page.Token,
+    Document.Page.Block,
+    Document.Page.Symbol,
+]
