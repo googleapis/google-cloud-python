@@ -15,6 +15,7 @@
 #
 from .fallback_info import FallbackInfo, FallbackReason, FallbackRoutingMode
 from .geocoding_results import GeocodedWaypoint, GeocodingResults
+from .localized_time import LocalizedTime
 from .location import Location
 from .navigation_instruction import NavigationInstruction
 from .polyline import Polyline, PolylineEncoding, PolylineQuality
@@ -22,6 +23,7 @@ from .route import (
     Route,
     RouteLeg,
     RouteLegStep,
+    RouteLegStepTransitDetails,
     RouteLegStepTravelAdvisory,
     RouteLegTravelAdvisory,
     RouteTravelAdvisory,
@@ -38,6 +40,8 @@ from .routes_service import (
 )
 from .speed_reading_interval import SpeedReadingInterval
 from .toll_info import TollInfo
+from .transit import TransitAgency, TransitLine, TransitStop, TransitVehicle
+from .transit_preferences import TransitPreferences
 from .vehicle_info import VehicleInfo
 from .waypoint import Waypoint
 
@@ -47,6 +51,7 @@ __all__ = (
     "FallbackRoutingMode",
     "GeocodedWaypoint",
     "GeocodingResults",
+    "LocalizedTime",
     "Location",
     "Maneuver",
     "NavigationInstruction",
@@ -56,6 +61,7 @@ __all__ = (
     "Route",
     "RouteLeg",
     "RouteLegStep",
+    "RouteLegStepTransitDetails",
     "RouteLegStepTravelAdvisory",
     "RouteLegTravelAdvisory",
     "RouteTravelAdvisory",
@@ -73,6 +79,12 @@ __all__ = (
     "SpeedReadingInterval",
     "TollInfo",
     "TollPass",
+    "TrafficModel",
+    "TransitAgency",
+    "TransitLine",
+    "TransitStop",
+    "TransitVehicle",
+    "TransitPreferences",
     "Units",
     "VehicleEmissionType",
     "VehicleInfo",

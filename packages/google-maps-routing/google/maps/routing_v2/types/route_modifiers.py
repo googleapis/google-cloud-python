@@ -36,24 +36,24 @@ class RouteModifiers(proto.Message):
 
     Attributes:
         avoid_tolls (bool):
-            Specifies whether to avoid toll roads where reasonable.
-            Preference will be given to routes not containing toll
-            roads. Applies only to the ``DRIVE`` and ``TWO_WHEELER``
+            When set to true, avoids toll roads where reasonable, giving
+            preference to routes not containing toll roads. Applies only
+            to the ``DRIVE`` and ``TWO_WHEELER``
             [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
         avoid_highways (bool):
-            Specifies whether to avoid highways where reasonable.
-            Preference will be given to routes not containing highways.
-            Applies only to the ``DRIVE`` and ``TWO_WHEELER``
+            When set to true, avoids highways where reasonable, giving
+            preference to routes not containing highways. Applies only
+            to the ``DRIVE`` and ``TWO_WHEELER``
             [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
         avoid_ferries (bool):
-            Specifies whether to avoid ferries where reasonable.
-            Preference will be given to routes not containing travel by
-            ferries. Applies only to the ``DRIVE`` and\ ``TWO_WHEELER``
+            When set to true, avoids ferries where reasonable, giving
+            preference to routes not containing ferries. Applies only to
+            the ``DRIVE`` and\ ``TWO_WHEELER``
             [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
         avoid_indoor (bool):
-            Specifies whether to avoid navigating indoors where
-            reasonable. Preference will be given to routes not
-            containing indoor navigation. Applies only to the ``WALK``
+            When set to true, avoids navigating indoors where
+            reasonable, giving preference to routes not containing
+            indoor navigation. Applies only to the ``WALK``
             [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
         vehicle_info (google.maps.routing_v2.types.VehicleInfo):
             Specifies the vehicle information.

@@ -63,6 +63,8 @@ from google.maps.routing_v2.types import (
     routes_service,
     routing_preference,
     toll_passes,
+    traffic_model,
+    transit_preferences,
     units,
     vehicle_emission_type,
     vehicle_info,

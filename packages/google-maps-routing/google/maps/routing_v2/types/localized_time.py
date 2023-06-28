@@ -17,15 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.type import localized_text_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.type import localized_text_pb2  # type: ignore
-
-
 __protobuf__ = proto.module(
-    package='google.maps.routing.v2',
+    package="google.maps.routing.v2",
     manifest={
-        'LocalizedTime',
+        "LocalizedTime",
     },
 )
 

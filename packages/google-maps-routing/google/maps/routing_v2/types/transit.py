@@ -17,19 +17,18 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.type import localized_text_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.maps.routing_v2.types import location as gmr_location
-from google.type import localized_text_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
-    package='google.maps.routing.v2',
+    package="google.maps.routing.v2",
     manifest={
-        'TransitAgency',
-        'TransitLine',
-        'TransitStop',
-        'TransitVehicle',
+        "TransitAgency",
+        "TransitLine",
+        "TransitStop",
+        "TransitVehicle",
     },
 )
 
@@ -93,10 +92,10 @@ class TransitLine(proto.Message):
             transit line.
     """
 
-    agencies: MutableSequence['TransitAgency'] = proto.RepeatedField(
+    agencies: MutableSequence["TransitAgency"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='TransitAgency',
+        message="TransitAgency",
     )
     name: str = proto.Field(
         proto.STRING,
@@ -122,10 +121,10 @@ class TransitLine(proto.Message):
         proto.STRING,
         number=7,
     )
-    vehicle: 'TransitVehicle' = proto.Field(
+    vehicle: "TransitVehicle" = proto.Field(
         proto.MESSAGE,
         number=8,
-        message='TransitVehicle',
+        message="TransitVehicle",
     )
 
 
@@ -167,6 +166,7 @@ class TransitVehicle(proto.Message):
             vehicle type, based on the local transport
             signage.
     """
+
     class TransitVehicleType(proto.Enum):
         r"""The type of vehicles for transit routes.
 

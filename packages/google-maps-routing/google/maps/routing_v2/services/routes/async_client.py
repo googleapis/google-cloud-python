@@ -401,10 +401,10 @@ class RoutesAsyncClient:
 
         Returns:
             AsyncIterable[google.maps.routing_v2.types.RouteMatrixElement]:
-                Encapsulates route information
-                computed for an origin/destination pair
-                in the ComputeRouteMatrix API. This
-                proto can be streamed to the client.
+                Contains route information computed
+                for an origin/destination pair in the
+                ComputeRouteMatrix API. This proto can
+                be streamed to the client.
 
         """
         # Create or coerce a protobuf request object.

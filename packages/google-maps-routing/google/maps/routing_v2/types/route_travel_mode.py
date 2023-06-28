@@ -47,12 +47,16 @@ class RouteTravelMode(proto.Enum):
             Two-wheeled, motorized vehicle. For example, motorcycle.
             Note that this differs from the ``BICYCLE`` travel mode
             which covers human-powered mode.
+        TRANSIT (7):
+            Travel by public transit routes, where
+            available.
     """
     TRAVEL_MODE_UNSPECIFIED = 0
     DRIVE = 1
     BICYCLE = 2
     WALK = 3
     TWO_WHEELER = 4
+    TRANSIT = 7
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

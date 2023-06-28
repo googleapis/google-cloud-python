@@ -183,6 +183,9 @@ class TollPass(proto.Enum):
             MI, USA.
         US_MI_IQ_PROX_CARD (38):
             MI, USA.
+            Deprecated as this pass type no longer exists.
+        US_MI_IQ_TAG (95):
+            MI, USA.
         US_MI_MACKINAC_BRIDGE_MAC_PASS (39):
             MI, USA.
         US_MI_NEXPRESS_TOLL (40):
@@ -213,6 +216,8 @@ class TollPass(proto.Enum):
             RI, USA.
         US_SC_PALPASS (47):
             SC, USA.
+        US_TX_AVI_TAG (97):
+            TX, USA.
         US_TX_BANCPASS (48):
             TX, USA.
         US_TX_DEL_RIO_PASS (49):
@@ -226,6 +231,8 @@ class TollPass(proto.Enum):
         US_TX_EZ_CROSS (53):
             TX, USA.
         US_TX_EZTAG (54):
+            TX, USA.
+        US_TX_FUEGO_TAG (96):
             TX, USA.
         US_TX_LAREDO_TRADE_TAG (55):
             TX, USA.
@@ -311,6 +318,7 @@ class TollPass(proto.Enum):
     US_MI_BCPASS = 94
     US_MI_GROSSE_ILE_TOLL_BRIDGE_PASS_TAG = 37
     US_MI_IQ_PROX_CARD = 38
+    US_MI_IQ_TAG = 95
     US_MI_MACKINAC_BRIDGE_MAC_PASS = 39
     US_MI_NEXPRESS_TOLL = 40
     US_MN_EZPASSMN = 41
@@ -326,6 +334,7 @@ class TollPass(proto.Enum):
     US_PA_EZPASSPA = 45
     US_RI_EZPASSRI = 46
     US_SC_PALPASS = 47
+    US_TX_AVI_TAG = 97
     US_TX_BANCPASS = 48
     US_TX_DEL_RIO_PASS = 49
     US_TX_EFAST_PASS = 50
@@ -333,6 +342,7 @@ class TollPass(proto.Enum):
     US_TX_EPTOLL = 52
     US_TX_EZ_CROSS = 53
     US_TX_EZTAG = 54
+    US_TX_FUEGO_TAG = 96
     US_TX_LAREDO_TRADE_TAG = 55
     US_TX_PLUSPASS = 56
     US_TX_TOLLTAG = 57

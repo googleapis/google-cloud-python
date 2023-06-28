@@ -19,11 +19,10 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.maps.routing.v2',
+    package="google.maps.routing.v2",
     manifest={
-        'TransitPreferences',
+        "TransitPreferences",
     },
 )
 
@@ -40,6 +39,7 @@ class TransitPreferences(proto.Message):
             A routing preference that, when specified, influences the
             ``TRANSIT`` route returned.
     """
+
     class TransitTravelMode(proto.Enum):
         r"""A set of values used to specify the mode of transit.
 

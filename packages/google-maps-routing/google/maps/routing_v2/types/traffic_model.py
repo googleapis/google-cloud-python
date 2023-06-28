@@ -19,11 +19,10 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.maps.routing.v2',
+    package="google.maps.routing.v2",
     manifest={
-        'TrafficModel',
+        "TrafficModel",
     },
 )
 
