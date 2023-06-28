@@ -1026,11 +1026,10 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Attempts to start a new TransferOperation for the
-        current TransferJob. A TransferJob has a maximum of one
-        active TransferOperation. If this method is called while
-        a TransferOperation is active, an error will be
-        returned.
+        r"""Starts a new operation for the specified transfer job. A
+        ``TransferJob`` has a maximum of one active
+        ``TransferOperation``. If this method is called while a
+        ``TransferOperation`` is active, an error is returned.
 
         .. code-block:: python
 

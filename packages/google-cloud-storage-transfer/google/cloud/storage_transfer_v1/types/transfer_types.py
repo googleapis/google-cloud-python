@@ -44,6 +44,7 @@ __protobuf__ = proto.module(
         "MetadataOptions",
         "TransferManifest",
         "Schedule",
+        "EventStream",
         "TransferJob",
         "ErrorLogEntry",
         "ErrorSummary",
@@ -351,6 +352,34 @@ class AwsS3Data(proto.Message):
             using the
             [GoogleServiceAccount][google.storagetransfer.v1.GoogleServiceAccount]
             for this project.
+        credentials_secret (str):
+            Optional. The Resource name of a secret in Secret Manager.
+
+            The Azure SAS token must be stored in Secret Manager in JSON
+            format:
+
+            .. raw:: html
+
+                <pre>{
+                 "sas_token" : "<var>SAS_TOKEN</var>"
+                }</pre>
+
+            [GoogleServiceAccount][google.storagetransfer.v1.GoogleServiceAccount]
+            must be granted ``roles/secretmanager.secretAccessor`` for
+            the resource.
+
+            See [Configure access to a source: Microsoft Azure Blob
+            Storage]
+            (https://cloud.google.com/storage-transfer/docs/source-microsoft-azure#secret_manager)
+            for more information.
+
+            If ``credentials_secret`` is specified, do not specify
+            [azure_credentials][].
+
+            This feature is in
+            `preview <https://cloud.google.com/terms/service-terms#1>`__.
+
+            Format: ``projects/{project_number}/secrets/{secret_name}``
     """
 
     bucket_name: str = proto.Field(
@@ -369,6 +398,10 @@ class AwsS3Data(proto.Message):
     role_arn: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    credentials_secret: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 
@@ -401,6 +434,34 @@ class AzureBlobStorageData(proto.Message):
             ends with a '/'. This field is treated as an
             object prefix. As such, it should generally not
             begin with a '/'.
+        credentials_secret (str):
+            Optional. The Resource name of a secret in Secret Manager.
+
+            The Azure SAS token must be stored in Secret Manager in JSON
+            format:
+
+            .. raw:: html
+
+                <pre>{
+                 "sas_token" : "<var>SAS_TOKEN</var>"
+                }</pre>
+
+            [GoogleServiceAccount][google.storagetransfer.v1.GoogleServiceAccount]
+            must be granted ``roles/secretmanager.secretAccessor`` for
+            the resource.
+
+            See [Configure access to a source: Microsoft Azure Blob
+            Storage]
+            (https://cloud.google.com/storage-transfer/docs/source-microsoft-azure#secret_manager)
+            for more information.
+
+            If ``credentials_secret`` is specified, do not specify
+            [azure_credentials][google.storagetransfer.v1.AzureBlobStorageData.azure_credentials].
+
+            This feature is in
+            `preview <https://cloud.google.com/terms/service-terms#1>`__.
+
+            Format: ``projects/{project_number}/secrets/{secret_name}``
     """
 
     storage_account: str = proto.Field(
@@ -419,6 +480,10 @@ class AzureBlobStorageData(proto.Message):
     path: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    credentials_secret: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 
@@ -867,7 +932,13 @@ class TransferSpec(proto.Message):
 
             This field is a member of `oneof`_ ``data_source``.
         gcs_intermediate_data_location (google.cloud.storage_transfer_v1.types.GcsData):
-            Cloud Storage intermediate data location.
+            For transfers between file systems, specifies a Cloud
+            Storage bucket to be used as an intermediate location
+            through which to transfer data.
+
+            See `Transfer data between file
+            systems <https://cloud.google.com/storage-transfer/docs/file-to-file>`__
+            for more information.
 
             This field is a member of `oneof`_ ``intermediate_data_location``.
         object_conditions (google.cloud.storage_transfer_v1.types.ObjectConditions):
@@ -1127,9 +1198,11 @@ class MetadataOptions(proto.Message):
                 Use the destination bucket's default storage
                 class.
             STORAGE_CLASS_PRESERVE (2):
-                Preserve the object's original storage class.
-                This is only supported for transfers from Google
-                Cloud Storage buckets.
+                Preserve the object's original storage class. This is only
+                supported for transfers from Google Cloud Storage buckets.
+                REGIONAL and MULTI_REGIONAL storage classes will be mapped
+                to STANDARD to ensure they can be written to the destination
+                bucket.
             STORAGE_CLASS_STANDARD (3):
                 Set the storage class to STANDARD.
             STORAGE_CLASS_NEARLINE (4):
@@ -1378,6 +1451,47 @@ class Schedule(proto.Message):
     )
 
 
+class EventStream(proto.Message):
+    r"""Specifies the Event-driven transfer options. Event-driven
+    transfers listen to an event stream to transfer updated files.
+
+    Attributes:
+        name (str):
+            Required. Specifies a unique name of the resource such as
+            AWS SQS ARN in the form
+            'arn:aws:sqs:region:account_id:queue_name', or Pub/Sub
+            subscription resource name in the form
+            'projects/{project}/subscriptions/{sub}'.
+        event_stream_start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Specifies the date and time that Storage
+            Transfer Service starts listening for events
+            from this stream. If no start time is specified
+            or start time is in the past, Storage Transfer
+            Service starts listening immediately.
+        event_stream_expiration_time (google.protobuf.timestamp_pb2.Timestamp):
+            Specifies the data and time at which Storage
+            Transfer Service stops listening for events from
+            this stream. After this time, any transfers in
+            progress will complete, but no new transfers are
+            initiated.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    event_stream_start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    event_stream_expiration_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
 class TransferJob(proto.Message):
     r"""This resource represents the configuration of a transfer job
     that runs periodically.
@@ -1433,6 +1547,10 @@ class TransferJob(proto.Message):
             set, the job never executes a transfer, unless
             you invoke RunTransferJob or update the job to
             have a non-empty schedule.
+        event_stream (google.cloud.storage_transfer_v1.types.EventStream):
+            Specifies the event stream for the transfer
+            job for event-driven transfers. When EventStream
+            is specified, the Schedule fields are ignored.
         status (google.cloud.storage_transfer_v1.types.TransferJob.Status):
             Status of the job. This value MUST be specified for
             ``CreateTransferJobRequests``.
@@ -1515,6 +1633,11 @@ class TransferJob(proto.Message):
         proto.MESSAGE,
         number=5,
         message="Schedule",
+    )
+    event_stream: "EventStream" = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message="EventStream",
     )
     status: Status = proto.Field(
         proto.ENUM,
@@ -1968,6 +2091,8 @@ class TransferOperation(proto.Message):
             Transfer specification.
         notification_config (google.cloud.storage_transfer_v1.types.NotificationConfig):
             Notification configuration.
+        logging_config (google.cloud.storage_transfer_v1.types.LoggingConfig):
+            Cloud Logging configuration.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Start time of this transfer execution.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -2004,6 +2129,9 @@ class TransferOperation(proto.Message):
             QUEUED (6):
                 Temporarily delayed by the system. No user
                 action is required.
+            SUSPENDING (7):
+                The operation is suspending and draining the
+                ongoing work to completion.
         """
         STATUS_UNSPECIFIED = 0
         IN_PROGRESS = 1
@@ -2012,6 +2140,7 @@ class TransferOperation(proto.Message):
         FAILED = 4
         ABORTED = 5
         QUEUED = 6
+        SUSPENDING = 7
 
     name: str = proto.Field(
         proto.STRING,
@@ -2030,6 +2159,11 @@ class TransferOperation(proto.Message):
         proto.MESSAGE,
         number=10,
         message="NotificationConfig",
+    )
+    logging_config: "LoggingConfig" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="LoggingConfig",
     )
     start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
