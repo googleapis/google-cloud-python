@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/python-storage-transfer/compare/v1.8.1...v1.9.0) (2023-06-28)
+
+
+### Features
+
+* Add event driven transfer configuration ([#159](https://github.com/googleapis/python-storage-transfer/issues/159)) ([9091a10](https://github.com/googleapis/python-storage-transfer/commit/9091a1009975ef0234325eea7f81a7f313ddd2f2))
+
 ## [1.8.1](https://github.com/googleapis/python-storage-transfer/compare/v1.8.0...v1.8.1) (2023-03-23)
 
 
