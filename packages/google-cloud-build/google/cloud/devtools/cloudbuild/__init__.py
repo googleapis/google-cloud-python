@@ -81,6 +81,7 @@ from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
     ReceiveTriggerWebhookResponse,
 )
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import RepositoryEventConfig
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import RepoSource
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Results
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import RetryBuildRequest
@@ -150,6 +151,7 @@ __all__ = (
     "PushFilter",
     "ReceiveTriggerWebhookRequest",
     "ReceiveTriggerWebhookResponse",
+    "RepositoryEventConfig",
     "RepoSource",
     "Results",
     "RetryBuildRequest",

@@ -64,6 +64,7 @@ __protobuf__ = proto.module(
         "ApprovalConfig",
         "ApprovalResult",
         "BuildTrigger",
+        "RepositoryEventConfig",
         "GitHubEventsConfig",
         "PubsubConfig",
         "WebhookConfig",
@@ -2195,6 +2196,10 @@ class BuildTrigger(proto.Message):
             ([PROJECT_NUM]@system.gserviceaccount.com) will be used
             instead. Format:
             ``projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT_ID_OR_EMAIL}``
+        repository_event_config (google.cloud.devtools.cloudbuild_v1.types.RepositoryEventConfig):
+            The configuration of a trigger that creates a
+            build whenever an event from Repo API is
+            received.
     """
 
     resource_name: str = proto.Field(
@@ -2282,6 +2287,81 @@ class BuildTrigger(proto.Message):
     service_account: str = proto.Field(
         proto.STRING,
         number=33,
+    )
+    repository_event_config: "RepositoryEventConfig" = proto.Field(
+        proto.MESSAGE,
+        number=39,
+        message="RepositoryEventConfig",
+    )
+
+
+class RepositoryEventConfig(proto.Message):
+    r"""The configuration of a trigger that creates a build whenever
+    an event from Repo API is received.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        repository (str):
+            The resource name of the Repo API resource.
+        repository_type (google.cloud.devtools.cloudbuild_v1.types.RepositoryEventConfig.RepositoryType):
+            Output only. The type of the SCM vendor the
+            repository points to.
+        pull_request (google.cloud.devtools.cloudbuild_v1.types.PullRequestFilter):
+            Filter to match changes in pull requests.
+
+            This field is a member of `oneof`_ ``filter``.
+        push (google.cloud.devtools.cloudbuild_v1.types.PushFilter):
+            Filter to match changes in refs like
+            branches, tags.
+
+            This field is a member of `oneof`_ ``filter``.
+    """
+
+    class RepositoryType(proto.Enum):
+        r"""All possible SCM repo types from Repo API.
+
+        Values:
+            REPOSITORY_TYPE_UNSPECIFIED (0):
+                If unspecified, RepositoryType defaults to
+                GITHUB.
+            GITHUB (1):
+                The SCM repo is GITHUB.
+            GITHUB_ENTERPRISE (2):
+                The SCM repo is GITHUB Enterprise.
+            GITLAB_ENTERPRISE (3):
+                The SCM repo is GITLAB Enterprise.
+        """
+        REPOSITORY_TYPE_UNSPECIFIED = 0
+        GITHUB = 1
+        GITHUB_ENTERPRISE = 2
+        GITLAB_ENTERPRISE = 3
+
+    repository: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    repository_type: RepositoryType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=RepositoryType,
+    )
+    pull_request: "PullRequestFilter" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="filter",
+        message="PullRequestFilter",
+    )
+    push: "PushFilter" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="filter",
+        message="PushFilter",
     )
 
 

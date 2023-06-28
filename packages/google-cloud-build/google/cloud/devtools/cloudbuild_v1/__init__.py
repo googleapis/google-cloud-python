@@ -61,6 +61,7 @@ from .types.cloudbuild import PullRequestFilter
 from .types.cloudbuild import PushFilter
 from .types.cloudbuild import ReceiveTriggerWebhookRequest
 from .types.cloudbuild import ReceiveTriggerWebhookResponse
+from .types.cloudbuild import RepositoryEventConfig
 from .types.cloudbuild import RepoSource
 from .types.cloudbuild import Results
 from .types.cloudbuild import RetryBuildRequest
@@ -127,6 +128,7 @@ __all__ = (
     "ReceiveTriggerWebhookRequest",
     "ReceiveTriggerWebhookResponse",
     "RepoSource",
+    "RepositoryEventConfig",
     "Results",
     "RetryBuildRequest",
     "RunBuildTriggerRequest",

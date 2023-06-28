@@ -8152,6 +8152,12 @@ def test_create_build_trigger_rest(request_type):
         "included_files": ["included_files_value1", "included_files_value2"],
         "filter": "filter_value",
         "service_account": "service_account_value",
+        "repository_event_config": {
+            "repository": "repository_value",
+            "repository_type": 1,
+            "pull_request": {},
+            "push": {},
+        },
     }
     request = request_type(**request_init)
 
@@ -8571,6 +8577,12 @@ def test_create_build_trigger_rest_bad_request(
         "included_files": ["included_files_value1", "included_files_value2"],
         "filter": "filter_value",
         "service_account": "service_account_value",
+        "repository_event_config": {
+            "repository": "repository_value",
+            "repository_type": 1,
+            "pull_request": {},
+            "push": {},
+        },
     }
     request = request_type(**request_init)
 
@@ -9786,6 +9798,12 @@ def test_update_build_trigger_rest(request_type):
         "included_files": ["included_files_value1", "included_files_value2"],
         "filter": "filter_value",
         "service_account": "service_account_value",
+        "repository_event_config": {
+            "repository": "repository_value",
+            "repository_type": 1,
+            "pull_request": {},
+            "push": {},
+        },
     }
     request = request_type(**request_init)
 
@@ -10208,6 +10226,12 @@ def test_update_build_trigger_rest_bad_request(
         "included_files": ["included_files_value1", "included_files_value2"],
         "filter": "filter_value",
         "service_account": "service_account_value",
+        "repository_event_config": {
+            "repository": "repository_value",
+            "repository_type": 1,
+            "pull_request": {},
+            "push": {},
+        },
     }
     request = request_type(**request_init)
 
@@ -13057,10 +13081,39 @@ def test_parse_network_path():
     assert expected == actual
 
 
-def test_secret_version_path():
+def test_repository_path():
     project = "winkle"
-    secret = "nautilus"
-    version = "scallop"
+    location = "nautilus"
+    connection = "scallop"
+    repository = "abalone"
+    expected = "projects/{project}/locations/{location}/connections/{connection}/repositories/{repository}".format(
+        project=project,
+        location=location,
+        connection=connection,
+        repository=repository,
+    )
+    actual = CloudBuildClient.repository_path(project, location, connection, repository)
+    assert expected == actual
+
+
+def test_parse_repository_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "connection": "whelk",
+        "repository": "octopus",
+    }
+    path = CloudBuildClient.repository_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudBuildClient.parse_repository_path(path)
+    assert expected == actual
+
+
+def test_secret_version_path():
+    project = "oyster"
+    secret = "nudibranch"
+    version = "cuttlefish"
     expected = "projects/{project}/secrets/{secret}/versions/{version}".format(
         project=project,
         secret=secret,
@@ -13072,9 +13125,9 @@ def test_secret_version_path():
 
 def test_parse_secret_version_path():
     expected = {
-        "project": "abalone",
-        "secret": "squid",
-        "version": "clam",
+        "project": "mussel",
+        "secret": "winkle",
+        "version": "nautilus",
     }
     path = CloudBuildClient.secret_version_path(**expected)
 
@@ -13084,8 +13137,8 @@ def test_parse_secret_version_path():
 
 
 def test_service_account_path():
-    project = "whelk"
-    service_account = "octopus"
+    project = "scallop"
+    service_account = "abalone"
     expected = "projects/{project}/serviceAccounts/{service_account}".format(
         project=project,
         service_account=service_account,
@@ -13096,8 +13149,8 @@ def test_service_account_path():
 
 def test_parse_service_account_path():
     expected = {
-        "project": "oyster",
-        "service_account": "nudibranch",
+        "project": "squid",
+        "service_account": "clam",
     }
     path = CloudBuildClient.service_account_path(**expected)
 
@@ -13107,8 +13160,8 @@ def test_parse_service_account_path():
 
 
 def test_subscription_path():
-    project = "cuttlefish"
-    subscription = "mussel"
+    project = "whelk"
+    subscription = "octopus"
     expected = "projects/{project}/subscriptions/{subscription}".format(
         project=project,
         subscription=subscription,
@@ -13119,8 +13172,8 @@ def test_subscription_path():
 
 def test_parse_subscription_path():
     expected = {
-        "project": "winkle",
-        "subscription": "nautilus",
+        "project": "oyster",
+        "subscription": "nudibranch",
     }
     path = CloudBuildClient.subscription_path(**expected)
 
@@ -13130,8 +13183,8 @@ def test_parse_subscription_path():
 
 
 def test_topic_path():
-    project = "scallop"
-    topic = "abalone"
+    project = "cuttlefish"
+    topic = "mussel"
     expected = "projects/{project}/topics/{topic}".format(
         project=project,
         topic=topic,
@@ -13142,8 +13195,8 @@ def test_topic_path():
 
 def test_parse_topic_path():
     expected = {
-        "project": "squid",
-        "topic": "clam",
+        "project": "winkle",
+        "topic": "nautilus",
     }
     path = CloudBuildClient.topic_path(**expected)
 
@@ -13153,9 +13206,9 @@ def test_parse_topic_path():
 
 
 def test_worker_pool_path():
-    project = "whelk"
-    location = "octopus"
-    worker_pool = "oyster"
+    project = "scallop"
+    location = "abalone"
+    worker_pool = "squid"
     expected = (
         "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
             project=project,
@@ -13169,9 +13222,9 @@ def test_worker_pool_path():
 
 def test_parse_worker_pool_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "worker_pool": "mussel",
+        "project": "clam",
+        "location": "whelk",
+        "worker_pool": "octopus",
     }
     path = CloudBuildClient.worker_pool_path(**expected)
 
@@ -13181,7 +13234,7 @@ def test_parse_worker_pool_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -13191,7 +13244,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "nudibranch",
     }
     path = CloudBuildClient.common_billing_account_path(**expected)
 
@@ -13201,7 +13254,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -13211,7 +13264,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "mussel",
     }
     path = CloudBuildClient.common_folder_path(**expected)
 
@@ -13221,7 +13274,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -13231,7 +13284,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "nautilus",
     }
     path = CloudBuildClient.common_organization_path(**expected)
 
@@ -13241,7 +13294,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -13251,7 +13304,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "abalone",
     }
     path = CloudBuildClient.common_project_path(**expected)
 
@@ -13261,8 +13314,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -13273,8 +13326,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = CloudBuildClient.common_location_path(**expected)
 

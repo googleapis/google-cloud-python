@@ -266,6 +266,30 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def repository_path(
+        project: str,
+        location: str,
+        connection: str,
+        repository: str,
+    ) -> str:
+        """Returns a fully-qualified repository string."""
+        return "projects/{project}/locations/{location}/connections/{connection}/repositories/{repository}".format(
+            project=project,
+            location=location,
+            connection=connection,
+            repository=repository,
+        )
+
+    @staticmethod
+    def parse_repository_path(path: str) -> Dict[str, str]:
+        """Parses a repository path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/connections/(?P<connection>.+?)/repositories/(?P<repository>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def secret_version_path(
         project: str,
         secret: str,
