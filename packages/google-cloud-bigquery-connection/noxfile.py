@@ -379,7 +379,6 @@ def prerelease_deps(session):
         "grpcio!=1.52.0rc1",
         "grpcio-status",
         "google-api-core",
-        "google-auth",
         "proto-plus",
         "google-cloud-testutils",
         # dependencies of google-cloud-testutils"
@@ -392,6 +391,7 @@ def prerelease_deps(session):
     # Remaining dependencies
     other_deps = [
         "requests",
+        "google-auth",
     ]
     session.install(*other_deps)
 
