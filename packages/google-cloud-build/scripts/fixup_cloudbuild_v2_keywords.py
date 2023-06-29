@@ -44,6 +44,7 @@ class cloudbuildCallTransformer(cst.CSTTransformer):
         'create_repository': ('parent', 'repository', 'repository_id', ),
         'delete_connection': ('name', 'etag', 'validate_only', ),
         'delete_repository': ('name', 'etag', 'validate_only', ),
+        'fetch_git_refs': ('repository', 'ref_type', ),
         'fetch_linkable_repositories': ('connection', 'page_size', 'page_token', ),
         'fetch_read_token': ('repository', ),
         'fetch_read_write_token': ('repository', ),

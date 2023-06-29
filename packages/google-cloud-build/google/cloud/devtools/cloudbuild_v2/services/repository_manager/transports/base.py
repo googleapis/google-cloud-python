@@ -257,6 +257,11 @@ class RepositoryManagerTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.fetch_git_refs: gapic_v1.method.wrap_method(
+                self.fetch_git_refs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -401,6 +406,18 @@ class RepositoryManagerTransport(abc.ABC):
         Union[
             repositories.FetchLinkableRepositoriesResponse,
             Awaitable[repositories.FetchLinkableRepositoriesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_git_refs(
+        self,
+    ) -> Callable[
+        [repositories.FetchGitRefsRequest],
+        Union[
+            repositories.FetchGitRefsResponse,
+            Awaitable[repositories.FetchGitRefsResponse],
         ],
     ]:
         raise NotImplementedError()

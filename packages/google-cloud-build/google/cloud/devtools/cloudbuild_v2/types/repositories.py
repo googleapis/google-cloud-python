@@ -19,6 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+from google.api import httpbody_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -32,9 +33,11 @@ __protobuf__ = proto.module(
         "FetchLinkableRepositoriesResponse",
         "GitHubConfig",
         "GitHubEnterpriseConfig",
+        "GitLabConfig",
         "ServiceDirectoryConfig",
         "Repository",
         "OAuthCredential",
+        "UserCredential",
         "CreateConnectionRequest",
         "GetConnectionRequest",
         "ListConnectionsRequest",
@@ -52,6 +55,9 @@ __protobuf__ = proto.module(
         "FetchReadTokenRequest",
         "FetchReadTokenResponse",
         "FetchReadWriteTokenResponse",
+        "ProcessWebhookRequest",
+        "FetchGitRefsRequest",
+        "FetchGitRefsResponse",
     },
 )
 
@@ -85,6 +91,11 @@ class Connection(proto.Message):
         github_enterprise_config (google.cloud.devtools.cloudbuild_v2.types.GitHubEnterpriseConfig):
             Configuration for connections to an instance
             of GitHub Enterprise.
+
+            This field is a member of `oneof`_ ``connection_config``.
+        gitlab_config (google.cloud.devtools.cloudbuild_v2.types.GitLabConfig):
+            Configuration for connections to gitlab.com
+            or an instance of GitLab Enterprise.
 
             This field is a member of `oneof`_ ``connection_config``.
         installation_state (google.cloud.devtools.cloudbuild_v2.types.InstallationState):
@@ -134,6 +145,12 @@ class Connection(proto.Message):
         number=6,
         oneof="connection_config",
         message="GitHubEnterpriseConfig",
+    )
+    gitlab_config: "GitLabConfig" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="connection_config",
+        message="GitLabConfig",
     )
     installation_state: "InstallationState" = proto.Field(
         proto.MESSAGE,
@@ -382,6 +399,74 @@ class GitHubEnterpriseConfig(proto.Message):
     )
 
 
+class GitLabConfig(proto.Message):
+    r"""Configuration for connections to gitlab.com or an instance of
+    GitLab Enterprise.
+
+    Attributes:
+        host_uri (str):
+            The URI of the GitLab Enterprise host this
+            connection is for. If not specified, the default
+            value is https://gitlab.com.
+        webhook_secret_secret_version (str):
+            Required. Immutable. SecretManager resource containing the
+            webhook secret of a GitLab Enterprise project, formatted as
+            ``projects/*/secrets/*/versions/*``.
+        read_authorizer_credential (google.cloud.devtools.cloudbuild_v2.types.UserCredential):
+            Required. A GitLab personal access token with the minimum
+            ``read_api`` scope access.
+        authorizer_credential (google.cloud.devtools.cloudbuild_v2.types.UserCredential):
+            Required. A GitLab personal access token with the ``api``
+            scope access.
+        service_directory_config (google.cloud.devtools.cloudbuild_v2.types.ServiceDirectoryConfig):
+            Configuration for using Service Directory to
+            privately connect to a GitLab Enterprise server.
+            This should only be set if the GitLab Enterprise
+            server is hosted on-premises and not reachable
+            by public internet. If this field is left empty,
+            calls to the GitLab Enterprise server will be
+            made over the public internet.
+        ssl_ca (str):
+            SSL certificate to use for requests to GitLab
+            Enterprise.
+        server_version (str):
+            Output only. Version of the GitLab Enterprise server running
+            on the ``host_uri``.
+    """
+
+    host_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    webhook_secret_secret_version: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    read_authorizer_credential: "UserCredential" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="UserCredential",
+    )
+    authorizer_credential: "UserCredential" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="UserCredential",
+    )
+    service_directory_config: "ServiceDirectoryConfig" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="ServiceDirectoryConfig",
+    )
+    ssl_ca: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    server_version: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+
+
 class ServiceDirectoryConfig(proto.Message):
     r"""ServiceDirectoryConfig represents Service Directory
     configuration for a connection.
@@ -422,6 +507,9 @@ class Repository(proto.Message):
             on the value of other fields, and may be sent on
             update and delete requests to ensure the client
             has an up-to-date value before proceeding.
+        webhook_id (str):
+            Output only. External ID of the webhook
+            created for the repository.
     """
 
     name: str = proto.Field(
@@ -451,6 +539,10 @@ class Repository(proto.Message):
         proto.STRING,
         number=7,
     )
+    webhook_id: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class OAuthCredential(proto.Message):
@@ -468,6 +560,30 @@ class OAuthCredential(proto.Message):
     """
 
     oauth_token_secret_version: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    username: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UserCredential(proto.Message):
+    r"""Represents a personal access token that authorized the
+    Connection, and associated metadata.
+
+    Attributes:
+        user_token_secret_version (str):
+            Required. A SecretManager resource containing the user token
+            that authorizes the Cloud Build connection. Format:
+            ``projects/*/secrets/*/versions/*``.
+        username (str):
+            Output only. The username associated to this
+            token.
+    """
+
+    user_token_secret_version: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -904,6 +1020,86 @@ class FetchReadWriteTokenResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class ProcessWebhookRequest(proto.Message):
+    r"""RPC request object accepted by the ProcessWebhook RPC method.
+
+    Attributes:
+        parent (str):
+            Required. Project and location where the webhook will be
+            received. Format: ``projects/*/locations/*``.
+        body (google.api.httpbody_pb2.HttpBody):
+            HTTP request body.
+        webhook_key (str):
+            Arbitrary additional key to find the maching
+            repository for a webhook event if needed.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    body: httpbody_pb2.HttpBody = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=httpbody_pb2.HttpBody,
+    )
+    webhook_key: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class FetchGitRefsRequest(proto.Message):
+    r"""Request for fetching git refs
+
+    Attributes:
+        repository (str):
+            Required. The resource name of the repository in the format
+            ``projects/*/locations/*/connections/*/repositories/*``.
+        ref_type (google.cloud.devtools.cloudbuild_v2.types.FetchGitRefsRequest.RefType):
+            Type of refs to fetch
+    """
+
+    class RefType(proto.Enum):
+        r"""Type of refs
+
+        Values:
+            REF_TYPE_UNSPECIFIED (0):
+                No type specified.
+            TAG (1):
+                To fetch tags.
+            BRANCH (2):
+                To fetch branches.
+        """
+        REF_TYPE_UNSPECIFIED = 0
+        TAG = 1
+        BRANCH = 2
+
+    repository: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ref_type: RefType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=RefType,
+    )
+
+
+class FetchGitRefsResponse(proto.Message):
+    r"""Response for fetching git refs
+
+    Attributes:
+        ref_names (MutableSequence[str]):
+            Name of the refs fetched.
+    """
+
+    ref_names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
     )
 
 

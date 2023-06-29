@@ -37,7 +37,7 @@ from .base import RepositoryManagerTransport, DEFAULT_CLIENT_INFO
 class RepositoryManagerGrpcTransport(RepositoryManagerTransport):
     """gRPC backend transport for RepositoryManager.
 
-    Manages connections to source code repostiories.
+    Manages connections to source code repositories.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -603,6 +603,35 @@ class RepositoryManagerGrpcTransport(RepositoryManagerTransport):
                 response_deserializer=repositories.FetchLinkableRepositoriesResponse.deserialize,
             )
         return self._stubs["fetch_linkable_repositories"]
+
+    @property
+    def fetch_git_refs(
+        self,
+    ) -> Callable[
+        [repositories.FetchGitRefsRequest], repositories.FetchGitRefsResponse
+    ]:
+        r"""Return a callable for the fetch git refs method over gRPC.
+
+        Fetch the list of branches or tags for a given
+        repository.
+
+        Returns:
+            Callable[[~.FetchGitRefsRequest],
+                    ~.FetchGitRefsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_git_refs" not in self._stubs:
+            self._stubs["fetch_git_refs"] = self.grpc_channel.unary_unary(
+                "/google.devtools.cloudbuild.v2.RepositoryManager/FetchGitRefs",
+                request_serializer=repositories.FetchGitRefsRequest.serialize,
+                response_deserializer=repositories.FetchGitRefsResponse.deserialize,
+            )
+        return self._stubs["fetch_git_refs"]
 
     def close(self):
         self.grpc_channel.close()

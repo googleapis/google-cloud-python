@@ -60,7 +60,7 @@ from .client import RepositoryManagerClient
 
 
 class RepositoryManagerAsyncClient:
-    """Manages connections to source code repostiories."""
+    """Manages connections to source code repositories."""
 
     _client: RepositoryManagerClient
 
@@ -1822,6 +1822,109 @@ class RepositoryManagerAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def fetch_git_refs(
+        self,
+        request: Optional[Union[repositories.FetchGitRefsRequest, dict]] = None,
+        *,
+        repository: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> repositories.FetchGitRefsResponse:
+        r"""Fetch the list of branches or tags for a given
+        repository.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.devtools import cloudbuild_v2
+
+            async def sample_fetch_git_refs():
+                # Create a client
+                client = cloudbuild_v2.RepositoryManagerAsyncClient()
+
+                # Initialize request argument(s)
+                request = cloudbuild_v2.FetchGitRefsRequest(
+                    repository="repository_value",
+                )
+
+                # Make the request
+                response = await client.fetch_git_refs(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.devtools.cloudbuild_v2.types.FetchGitRefsRequest, dict]]):
+                The request object. Request for fetching git refs
+            repository (:class:`str`):
+                Required. The resource name of the repository in the
+                format
+                ``projects/*/locations/*/connections/*/repositories/*``.
+
+                This corresponds to the ``repository`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.devtools.cloudbuild_v2.types.FetchGitRefsResponse:
+                Response for fetching git refs
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([repository])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = repositories.FetchGitRefsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if repository is not None:
+            request.repository = repository
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.fetch_git_refs,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("repository", request.repository),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 

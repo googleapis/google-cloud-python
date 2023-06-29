@@ -35,6 +35,11 @@
                 "delete_repository"
               ]
             },
+            "FetchGitRefs": {
+              "methods": [
+                "fetch_git_refs"
+              ]
+            },
             "FetchLinkableRepositories": {
               "methods": [
                 "fetch_linkable_repositories"
@@ -105,6 +110,11 @@
                 "delete_repository"
               ]
             },
+            "FetchGitRefs": {
+              "methods": [
+                "fetch_git_refs"
+              ]
+            },
             "FetchLinkableRepositories": {
               "methods": [
                 "fetch_linkable_repositories"
@@ -173,6 +183,11 @@
             "DeleteRepository": {
               "methods": [
                 "delete_repository"
+              ]
+            },
+            "FetchGitRefs": {
+              "methods": [
+                "fetch_git_refs"
               ]
             },
             "FetchLinkableRepositories": {

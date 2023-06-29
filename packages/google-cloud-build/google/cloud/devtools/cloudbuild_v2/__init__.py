@@ -30,6 +30,8 @@ from .types.repositories import CreateConnectionRequest
 from .types.repositories import CreateRepositoryRequest
 from .types.repositories import DeleteConnectionRequest
 from .types.repositories import DeleteRepositoryRequest
+from .types.repositories import FetchGitRefsRequest
+from .types.repositories import FetchGitRefsResponse
 from .types.repositories import FetchLinkableRepositoriesRequest
 from .types.repositories import FetchLinkableRepositoriesResponse
 from .types.repositories import FetchReadTokenRequest
@@ -40,15 +42,18 @@ from .types.repositories import GetConnectionRequest
 from .types.repositories import GetRepositoryRequest
 from .types.repositories import GitHubConfig
 from .types.repositories import GitHubEnterpriseConfig
+from .types.repositories import GitLabConfig
 from .types.repositories import InstallationState
 from .types.repositories import ListConnectionsRequest
 from .types.repositories import ListConnectionsResponse
 from .types.repositories import ListRepositoriesRequest
 from .types.repositories import ListRepositoriesResponse
 from .types.repositories import OAuthCredential
+from .types.repositories import ProcessWebhookRequest
 from .types.repositories import Repository
 from .types.repositories import ServiceDirectoryConfig
 from .types.repositories import UpdateConnectionRequest
+from .types.repositories import UserCredential
 
 __all__ = (
     "RepositoryManagerAsyncClient",
@@ -59,6 +64,8 @@ __all__ = (
     "CreateRepositoryRequest",
     "DeleteConnectionRequest",
     "DeleteRepositoryRequest",
+    "FetchGitRefsRequest",
+    "FetchGitRefsResponse",
     "FetchLinkableRepositoriesRequest",
     "FetchLinkableRepositoriesResponse",
     "FetchReadTokenRequest",
@@ -69,6 +76,7 @@ __all__ = (
     "GetRepositoryRequest",
     "GitHubConfig",
     "GitHubEnterpriseConfig",
+    "GitLabConfig",
     "InstallationState",
     "ListConnectionsRequest",
     "ListConnectionsResponse",
@@ -76,9 +84,11 @@ __all__ = (
     "ListRepositoriesResponse",
     "OAuthCredential",
     "OperationMetadata",
+    "ProcessWebhookRequest",
     "Repository",
     "RepositoryManagerClient",
     "RunWorkflowCustomOperationMetadata",
     "ServiceDirectoryConfig",
     "UpdateConnectionRequest",
+    "UserCredential",
 )
