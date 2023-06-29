@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.17.0](https://github.com/googleapis/python-cloudbuild/compare/v3.16.0...v3.17.0) (2023-06-29)
+
+
+### Features
+
+* Add GitLabConfig and fetchGitRefs for Cloud Build Repositories ([#412](https://github.com/googleapis/python-cloudbuild/issues/412)) ([f5b1b42](https://github.com/googleapis/python-cloudbuild/commit/f5b1b4236cdfda77f95201c9cf22b74163e7c4f2))
+* Add repositoryevent to buildtrigger ([#409](https://github.com/googleapis/python-cloudbuild/issues/409)) ([a7d5ed3](https://github.com/googleapis/python-cloudbuild/commit/a7d5ed343c0d9924309398cc1769234d33d64449))
+
 ## [3.16.0](https://github.com/googleapis/python-cloudbuild/compare/v3.15.0...v3.16.0) (2023-04-18)
 
 
