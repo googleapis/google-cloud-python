@@ -3201,6 +3201,8 @@ class ClusterUpdate(proto.Message):
         desired_security_posture_config (google.cloud.container_v1.types.SecurityPostureConfig):
             Enable/Disable Security Posture API features
             for the cluster.
+        desired_network_performance_config (google.cloud.container_v1.types.NetworkConfig.ClusterNetworkPerformanceConfig):
+            The desired network performance config.
         desired_enable_fqdn_network_policy (bool):
             Enable/Disable FQDN Network Policy for the
             cluster.
@@ -3431,6 +3433,11 @@ class ClusterUpdate(proto.Message):
         proto.MESSAGE,
         number=124,
         message="SecurityPostureConfig",
+    )
+    desired_network_performance_config: "NetworkConfig.ClusterNetworkPerformanceConfig" = proto.Field(
+        proto.MESSAGE,
+        number=125,
+        message="NetworkConfig.ClusterNetworkPerformanceConfig",
     )
     desired_enable_fqdn_network_policy: bool = proto.Field(
         proto.BOOL,
@@ -7127,12 +7134,47 @@ class NetworkConfig(proto.Message):
         gateway_api_config (google.cloud.container_v1.types.GatewayAPIConfig):
             GatewayAPIConfig contains the desired config
             of Gateway API on this cluster.
+        network_performance_config (google.cloud.container_v1.types.NetworkConfig.ClusterNetworkPerformanceConfig):
+            Network bandwidth tier configuration.
         enable_fqdn_network_policy (bool):
             Whether FQDN Network Policy is enabled on
             this cluster.
 
             This field is a member of `oneof`_ ``_enable_fqdn_network_policy``.
     """
+
+    class ClusterNetworkPerformanceConfig(proto.Message):
+        r"""Configuration of network bandwidth tiers
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            total_egress_bandwidth_tier (google.cloud.container_v1.types.NetworkConfig.ClusterNetworkPerformanceConfig.Tier):
+                Specifies the total network bandwidth tier
+                for NodePools in the cluster.
+
+                This field is a member of `oneof`_ ``_total_egress_bandwidth_tier``.
+        """
+
+        class Tier(proto.Enum):
+            r"""Node network tier
+
+            Values:
+                TIER_UNSPECIFIED (0):
+                    Default value
+                TIER_1 (1):
+                    Higher bandwidth, actual values based on VM
+                    size.
+            """
+            TIER_UNSPECIFIED = 0
+            TIER_1 = 1
+
+        total_egress_bandwidth_tier: "NetworkConfig.ClusterNetworkPerformanceConfig.Tier" = proto.Field(
+            proto.ENUM,
+            number=1,
+            optional=True,
+            enum="NetworkConfig.ClusterNetworkPerformanceConfig.Tier",
+        )
 
     network: str = proto.Field(
         proto.STRING,
@@ -7179,6 +7221,11 @@ class NetworkConfig(proto.Message):
         proto.MESSAGE,
         number=16,
         message="GatewayAPIConfig",
+    )
+    network_performance_config: ClusterNetworkPerformanceConfig = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=ClusterNetworkPerformanceConfig,
     )
     enable_fqdn_network_policy: bool = proto.Field(
         proto.BOOL,
@@ -7642,10 +7689,13 @@ class DNSConfig(proto.Message):
                 DNS resolution.
             CLOUD_DNS (2):
                 Use CloudDNS for DNS resolution.
+            KUBE_DNS (3):
+                Use KubeDNS for DNS resolution
         """
         PROVIDER_UNSPECIFIED = 0
         PLATFORM_DEFAULT = 1
         CLOUD_DNS = 2
+        KUBE_DNS = 3
 
     class DNSScope(proto.Enum):
         r"""DNSScope lists the various scopes of access to cluster DNS
