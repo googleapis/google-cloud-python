@@ -21,6 +21,7 @@ __version__ = package_version.__version__
 from .services.routes import RoutesAsyncClient, RoutesClient
 from .types.fallback_info import FallbackInfo, FallbackReason, FallbackRoutingMode
 from .types.geocoding_results import GeocodedWaypoint, GeocodingResults
+from .types.localized_time import LocalizedTime
 from .types.location import Location
 from .types.maneuver import Maneuver
 from .types.navigation_instruction import NavigationInstruction
@@ -29,6 +30,7 @@ from .types.route import (
     Route,
     RouteLeg,
     RouteLegStep,
+    RouteLegStepTransitDetails,
     RouteLegStepTravelAdvisory,
     RouteLegTravelAdvisory,
     RouteTravelAdvisory,
@@ -49,6 +51,9 @@ from .types.routing_preference import RoutingPreference
 from .types.speed_reading_interval import SpeedReadingInterval
 from .types.toll_info import TollInfo
 from .types.toll_passes import TollPass
+from .types.traffic_model import TrafficModel
+from .types.transit import TransitAgency, TransitLine, TransitStop, TransitVehicle
+from .types.transit_preferences import TransitPreferences
 from .types.units import Units
 from .types.vehicle_emission_type import VehicleEmissionType
 from .types.vehicle_info import VehicleInfo
@@ -64,6 +69,7 @@ __all__ = (
     "FallbackRoutingMode",
     "GeocodedWaypoint",
     "GeocodingResults",
+    "LocalizedTime",
     "Location",
     "Maneuver",
     "NavigationInstruction",
@@ -74,6 +80,7 @@ __all__ = (
     "RouteLabel",
     "RouteLeg",
     "RouteLegStep",
+    "RouteLegStepTransitDetails",
     "RouteLegStepTravelAdvisory",
     "RouteLegTravelAdvisory",
     "RouteMatrixDestination",
@@ -88,6 +95,12 @@ __all__ = (
     "SpeedReadingInterval",
     "TollInfo",
     "TollPass",
+    "TrafficModel",
+    "TransitAgency",
+    "TransitLine",
+    "TransitPreferences",
+    "TransitStop",
+    "TransitVehicle",
     "Units",
     "VehicleEmissionType",
     "VehicleInfo",

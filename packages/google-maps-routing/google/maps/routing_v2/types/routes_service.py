@@ -20,14 +20,17 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
+from google.type import localized_text_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.maps.routing_v2.types import geocoding_results as gmr_geocoding_results
 from google.maps.routing_v2.types import routing_preference as gmr_routing_preference
+from google.maps.routing_v2.types import transit_preferences as gmr_transit_preferences
 from google.maps.routing_v2.types import fallback_info as gmr_fallback_info
 from google.maps.routing_v2.types import polyline, route
 from google.maps.routing_v2.types import route_modifiers as gmr_route_modifiers
 from google.maps.routing_v2.types import route_travel_mode
+from google.maps.routing_v2.types import traffic_model as gmr_traffic_model
 from google.maps.routing_v2.types import units as gmr_units
 from google.maps.routing_v2.types import waypoint as gmr_waypoint
 
@@ -94,11 +97,17 @@ class ComputeRoutesRequest(proto.Message):
             Optional. Specifies the preferred encoding
             for the polyline.
         departure_time (google.protobuf.timestamp_pb2.Timestamp):
-            Optional. The departure time. If you don't
-            set this value, then this value defaults to the
-            time that you made the request. If you set this
-            value to a time that has already occurred, then
-            the request fails.
+            Optional. The departure time. If you don't set this value,
+            then this value defaults to the time that you made the
+            request. NOTE: You can only specify a ``departure_time`` in
+            the past when
+            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode] is
+            set to ``TRANSIT``.
+        arrival_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. The arrival time. NOTE: Can only be set when
+            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode] is
+            set to ``TRANSIT``. You can specify either departure_time or
+            arrival_time, but not both.
         compute_alternative_routes (bool):
             Optional. Specifies whether to calculate
             alternate routes in addition to the route. No
@@ -122,12 +131,25 @@ class ComputeRoutesRequest(proto.Message):
             https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains
         units (google.maps.routing_v2.types.Units):
             Optional. Specifies the units of measure for the display
-            fields. This includes the ``instruction`` field in
+            fields. These fields include the ``instruction`` field in
             [NavigationInstruction][google.maps.routing.v2.NavigationInstruction].
             The units of measure used for the route, leg, step distance,
             and duration are not affected by this value. If you don't
             provide this value, then the display units are inferred from
-            the location of the request.
+            the location of the first origin.
+        optimize_waypoint_order (bool):
+            Optional. If set to true, the service attempts to minimize
+            the overall cost of the route by re-ordering the specified
+            intermediate waypoints. The request fails if any of the
+            intermediate waypoints is a ``via`` waypoint. Use
+            ``ComputeRoutesResponse.Routes.optimized_intermediate_waypoint_index``
+            to find the new ordering. If
+            ``ComputeRoutesResponseroutes.optimized_intermediate_waypoint_index``
+            is not requested in the ``X-Goog-FieldMask`` header, the
+            request fails. If ``optimize_waypoint_order`` is set to
+            false,
+            ``ComputeRoutesResponse.optimized_intermediate_waypoint_index``
+            will be empty.
         requested_reference_routes (MutableSequence[google.maps.routing_v2.types.ComputeRoutesRequest.ReferenceRoute]):
             Optional. Specifies what reference routes to calculate as
             part of the request in addition to the default route. A
@@ -143,6 +165,26 @@ class ComputeRoutesRequest(proto.Message):
             the response. These extra fields must also be
             specified in the field mask to be returned in
             the response.
+        traffic_model (google.maps.routing_v2.types.TrafficModel):
+            Optional. Specifies the assumptions to use when calculating
+            time in traffic. This setting affects the value returned in
+            the duration field in the
+            [Route][google.maps.routing.v2.Route] and
+            [RouteLeg][google.maps.routing.v2.RouteLeg] which contains
+            the predicted time in traffic based on historical averages.
+            ``TrafficModel`` is only available for requests that have
+            set
+            [RoutingPreference][google.maps.routing.v2.RoutingPreference]
+            to ``TRAFFIC_AWARE_OPTIMAL`` and
+            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode] to
+            ``DRIVE``. Defaults to ``BEST_GUESS`` if traffic is
+            requested and ``TrafficModel`` is not specified.
+        transit_preferences (google.maps.routing_v2.types.TransitPreferences):
+            Optional. Specifies preferences that influence the route
+            returned for ``TRANSIT`` routes. NOTE: You can only specify
+            a ``transit_preferences`` when
+            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode] is
+            set to ``TRANSIT``.
     """
 
     class ReferenceRoute(proto.Enum):
@@ -173,11 +215,18 @@ class ComputeRoutesRequest(proto.Message):
                 Estimated fuel consumption for the route(s).
             TRAFFIC_ON_POLYLINE (3):
                 Traffic aware polylines for the route(s).
+            HTML_FORMATTED_NAVIGATION_INSTRUCTIONS (4):
+                [Navigation
+                Instructions][google.maps.routing.v2.NavigationInstructions.instructions]
+                presented as a formatted HTML text string. This content is
+                meant to be read as-is. This content is for display only. Do
+                not programmatically parse it.
         """
         EXTRA_COMPUTATION_UNSPECIFIED = 0
         TOLLS = 1
         FUEL_CONSUMPTION = 2
         TRAFFIC_ON_POLYLINE = 3
+        HTML_FORMATTED_NAVIGATION_INSTRUCTIONS = 4
 
     origin: gmr_waypoint.Waypoint = proto.Field(
         proto.MESSAGE,
@@ -219,6 +268,11 @@ class ComputeRoutesRequest(proto.Message):
         number=7,
         message=timestamp_pb2.Timestamp,
     )
+    arrival_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message=timestamp_pb2.Timestamp,
+    )
     compute_alternative_routes: bool = proto.Field(
         proto.BOOL,
         number=8,
@@ -241,6 +295,10 @@ class ComputeRoutesRequest(proto.Message):
         number=11,
         enum=gmr_units.Units,
     )
+    optimize_waypoint_order: bool = proto.Field(
+        proto.BOOL,
+        number=13,
+    )
     requested_reference_routes: MutableSequence[ReferenceRoute] = proto.RepeatedField(
         proto.ENUM,
         number=14,
@@ -250,6 +308,16 @@ class ComputeRoutesRequest(proto.Message):
         proto.ENUM,
         number=15,
         enum=ExtraComputation,
+    )
+    traffic_model: gmr_traffic_model.TrafficModel = proto.Field(
+        proto.ENUM,
+        number=18,
+        enum=gmr_traffic_model.TrafficModel,
+    )
+    transit_preferences: gmr_transit_preferences.TransitPreferences = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        message=gmr_transit_preferences.TransitPreferences,
     )
 
 
@@ -323,11 +391,17 @@ class ComputeRouteMatrixRequest(proto.Message):
             this option only when the ``travel_mode`` is ``DRIVE`` or
             ``TWO_WHEELER``, otherwise the request fails.
         departure_time (google.protobuf.timestamp_pb2.Timestamp):
-            Optional. The departure time. If you don't
-            set this value, this defaults to the time that
-            you made the request. If you set this value to a
-            time that has already occurred, the request
-            fails.
+            Optional. The departure time. If you don't set this value,
+            then this value defaults to the time that you made the
+            request. NOTE: You can only specify a ``departure_time`` in
+            the past when
+            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode] is
+            set to ``TRANSIT``.
+        arrival_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. The arrival time. NOTE: Can only be set when
+            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode] is
+            set to ``TRANSIT``. You can specify either departure_time or
+            arrival_time, but not both.
         language_code (str):
             Optional. The BCP-47 language code, such as "en-US" or
             "sr-Latn". For more information, see
@@ -348,6 +422,24 @@ class ComputeRouteMatrixRequest(proto.Message):
             the response. These extra fields must also be
             specified in the field mask to be returned in
             the response.
+        traffic_model (google.maps.routing_v2.types.TrafficModel):
+            Optional. Specifies the assumptions to use when calculating
+            time in traffic. This setting affects the value returned in
+            the duration field in the
+            [RouteMatrixElement][google.maps.routing.v2.RouteMatrixElement]
+            which contains the predicted time in traffic based on
+            historical averages.
+            [RoutingPreference][google.maps.routing.v2.RoutingPreference]
+            to ``TRAFFIC_AWARE_OPTIMAL`` and
+            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode] to
+            ``DRIVE``. Defaults to ``BEST_GUESS`` if traffic is
+            requested and ``TrafficModel`` is not specified.
+        transit_preferences (google.maps.routing_v2.types.TransitPreferences):
+            Optional. Specifies preferences that influence the route
+            returned for ``TRANSIT`` routes. NOTE: You can only specify
+            a ``transit_preferences`` when
+            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode] is
+            set to ``TRANSIT``.
     """
 
     class ExtraComputation(proto.Enum):
@@ -388,6 +480,11 @@ class ComputeRouteMatrixRequest(proto.Message):
         number=5,
         message=timestamp_pb2.Timestamp,
     )
+    arrival_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=timestamp_pb2.Timestamp,
+    )
     language_code: str = proto.Field(
         proto.STRING,
         number=6,
@@ -400,6 +497,16 @@ class ComputeRouteMatrixRequest(proto.Message):
         proto.ENUM,
         number=8,
         enum=ExtraComputation,
+    )
+    traffic_model: gmr_traffic_model.TrafficModel = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=gmr_traffic_model.TrafficModel,
+    )
+    transit_preferences: gmr_transit_preferences.TransitPreferences = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=gmr_transit_preferences.TransitPreferences,
     )
 
 
@@ -442,9 +549,9 @@ class RouteMatrixDestination(proto.Message):
 
 
 class RouteMatrixElement(proto.Message):
-    r"""Encapsulates route information computed for an
-    origin/destination pair in the ComputeRouteMatrix API. This
-    proto can be streamed to the client.
+    r"""Contains route information computed for an origin/destination
+    pair in the ComputeRouteMatrix API. This proto can be streamed
+    to the client.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -493,7 +600,48 @@ class RouteMatrixElement(proto.Message):
             field contains detailed information about the
             fallback response. Otherwise this field is
             unset.
+        localized_values (google.maps.routing_v2.types.RouteMatrixElement.LocalizedValues):
+            Text representations of properties of the
+            ``RouteMatrixElement``.
     """
+
+    class LocalizedValues(proto.Message):
+        r"""Text representations of certain properties.
+
+        Attributes:
+            distance (google.type.localized_text_pb2.LocalizedText):
+                Travel distance represented in text form.
+            duration (google.type.localized_text_pb2.LocalizedText):
+                Duration represented in text form taking traffic conditions
+                into consideration. Note: If traffic information was not
+                requested, this value is the same value as static_duration.
+            static_duration (google.type.localized_text_pb2.LocalizedText):
+                Duration represented in text form without
+                taking traffic conditions into consideration.
+            transit_fare (google.type.localized_text_pb2.LocalizedText):
+                Transit fare represented in text form.
+        """
+
+        distance: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=localized_text_pb2.LocalizedText,
+        )
+        duration: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=localized_text_pb2.LocalizedText,
+        )
+        static_duration: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=localized_text_pb2.LocalizedText,
+        )
+        transit_fare: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=localized_text_pb2.LocalizedText,
+        )
 
     origin_index: int = proto.Field(
         proto.INT32,
@@ -538,6 +686,11 @@ class RouteMatrixElement(proto.Message):
         proto.MESSAGE,
         number=8,
         message=gmr_fallback_info.FallbackInfo,
+    )
+    localized_values: LocalizedValues = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=LocalizedValues,
     )
 
 

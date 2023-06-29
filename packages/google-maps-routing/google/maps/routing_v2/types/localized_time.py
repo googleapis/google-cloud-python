@@ -17,33 +17,39 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.type import localized_text_pb2  # type: ignore
 import proto  # type: ignore
-
-from google.maps.routing_v2.types import vehicle_emission_type
 
 __protobuf__ = proto.module(
     package="google.maps.routing.v2",
     manifest={
-        "VehicleInfo",
+        "LocalizedTime",
     },
 )
 
 
-class VehicleInfo(proto.Message):
-    r"""Contains the vehicle information, such as the vehicle
-    emission type.
+class LocalizedTime(proto.Message):
+    r"""Localized description of time.
 
     Attributes:
-        emission_type (google.maps.routing_v2.types.VehicleEmissionType):
-            Describes the vehicle's emission type. Applies only to the
-            ``DRIVE``
-            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
+        time (google.type.localized_text_pb2.LocalizedText):
+            The time specified as a string in a given
+            time zone.
+        time_zone (str):
+            Contains the time zone. The value is the name of the time
+            zone as defined in the `IANA Time Zone
+            Database <http://www.iana.org/time-zones>`__, e.g.
+            "America/New_York".
     """
 
-    emission_type: vehicle_emission_type.VehicleEmissionType = proto.Field(
-        proto.ENUM,
+    time: localized_text_pb2.LocalizedText = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=localized_text_pb2.LocalizedText,
+    )
+    time_zone: str = proto.Field(
+        proto.STRING,
         number=2,
-        enum=vehicle_emission_type.VehicleEmissionType,
     )
 
 
