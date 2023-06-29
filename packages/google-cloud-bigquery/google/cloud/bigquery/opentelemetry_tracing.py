@@ -87,21 +87,38 @@ def create_span(name, attributes=None, client=None, job_ref=None):
 
 
 def _get_final_span_attributes(attributes=None, client=None, job_ref=None):
-    final_attributes = {}
-    final_attributes.update(_default_attributes.copy())
+    """Compiles attributes from: client, job_ref, user-provided attributes.
+
+    Attributes from all of these sources are merged together. Note the
+    attributes are added sequentially based on perceived order of precendence:
+    i.e. attributes added last may overwrite attributes added earlier.
+
+    Args:
+        attributes (Optional[dict]):
+            Additional attributes that pertain to
+            the specific API call (i.e. not a default attribute)
+
+        client (Optional[google.cloud.bigquery.client.Client]):
+            Pass in a Client object to extract any attributes that may be
+            relevant to it and add them to the final_attributes
+
+        job_ref (Optional[google.cloud.bigquery.job._AsyncJob])
+            Pass in a _AsyncJob object to extract any attributes that may be
+            relevant to it and add them to the final_attributes.
+
+    Returns: dict
+    """
+
+    collected_attributes = _default_attributes.copy()
+
     if client:
-        client_attributes = _set_client_attributes(client)
-        final_attributes.update(client_attributes)
+        collected_attributes.update(_set_client_attributes(client))
     if job_ref:
-        job_attributes = _set_job_attributes(job_ref)
-        final_attributes.update(job_attributes)
+        collected_attributes.update(_set_job_attributes(job_ref))
     if attributes:
-        final_attributes.update(attributes)
+        collected_attributes.update(attributes)
 
-    filtered = {k: v for k, v in final_attributes.items() if v is not None}
-    final_attributes.clear()
-    final_attributes.update(filtered)
-
+    final_attributes = {k: v for k, v in collected_attributes.items() if v is not None}
     return final_attributes
 
 
