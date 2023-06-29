@@ -541,7 +541,17 @@
             "extra-files": [
                 "google/cloud/functions/gapic_version.py",
                 "google/cloud/functions_v1/gapic_version.py",
-                "google/cloud/functions_v2/gapic_version.py"
+                "google/cloud/functions_v2/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.functions.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.functions.v2.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
