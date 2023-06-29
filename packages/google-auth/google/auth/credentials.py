@@ -54,6 +54,9 @@ class Credentials(object):
         If this is None, the token is assumed to never expire."""
         self._quota_project_id = None
         """Optional[str]: Project to use for quota and billing purposes."""
+        self._trust_boundary = None
+        """Optional[str]: Encoded string representation of credentials trust
+        boundary."""
 
     @property
     def expired(self):
@@ -127,6 +130,8 @@ class Credentials(object):
         headers["authorization"] = "Bearer {}".format(
             _helpers.from_bytes(token or self.token)
         )
+        if self._trust_boundary is not None:
+            headers["x-identity-trust-boundary"] = self._trust_boundary
         if self.quota_project_id:
             headers["x-goog-user-project"] = self.quota_project_id
 

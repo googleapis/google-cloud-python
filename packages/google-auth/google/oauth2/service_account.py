@@ -140,6 +140,7 @@ class Credentials(
         additional_claims=None,
         always_use_jwt_access=False,
         universe_domain=_DEFAULT_UNIVERSE_DOMAIN,
+        trust_boundary=None,
     ):
         """
         Args:
@@ -163,6 +164,7 @@ class Credentials(
             universe_domain (str): The universe domain. The default
                 universe domain is googleapis.com. For default value self
                 signed jwt is used for token refresh.
+            trust_boundary (str): String representation of trust boundary meta.
 
         .. note:: Typically one of the helper constructors
             :meth:`from_service_account_file` or
@@ -194,6 +196,7 @@ class Credentials(
             self._additional_claims = additional_claims
         else:
             self._additional_claims = {}
+        self._trust_boundary = "0"
 
     @classmethod
     def _from_signer_and_info(cls, signer, info, **kwargs):
@@ -217,6 +220,7 @@ class Credentials(
             token_uri=info["token_uri"],
             project_id=info.get("project_id"),
             universe_domain=info.get("universe_domain", _DEFAULT_UNIVERSE_DOMAIN),
+            trust_boundary=info.get("trust_boundary"),
             **kwargs
         )
 

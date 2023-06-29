@@ -80,6 +80,7 @@ def test_before_request():
     assert credentials.valid
     assert credentials.token == "token"
     assert headers["authorization"] == "Bearer token"
+    assert "x-identity-trust-boundary" not in headers
 
     request = "token2"
     headers = {}
@@ -89,6 +90,32 @@ def test_before_request():
     assert credentials.valid
     assert credentials.token == "token"
     assert headers["authorization"] == "Bearer token"
+    assert "x-identity-trust-boundary" not in headers
+
+
+def test_before_request_with_trust_boundary():
+    DUMMY_BOUNDARY = "00110101"
+    credentials = CredentialsImpl()
+    credentials._trust_boundary = DUMMY_BOUNDARY
+    request = "token"
+    headers = {}
+
+    # First call should call refresh, setting the token.
+    credentials.before_request(request, "http://example.com", "GET", headers)
+    assert credentials.valid
+    assert credentials.token == "token"
+    assert headers["authorization"] == "Bearer token"
+    assert headers["x-identity-trust-boundary"] == DUMMY_BOUNDARY
+
+    request = "token2"
+    headers = {}
+
+    # Second call shouldn't call refresh.
+    credentials.before_request(request, "http://example.com", "GET", headers)
+    assert credentials.valid
+    assert credentials.token == "token"
+    assert headers["authorization"] == "Bearer token"
+    assert headers["x-identity-trust-boundary"] == DUMMY_BOUNDARY
 
 
 def test_before_request_metrics():

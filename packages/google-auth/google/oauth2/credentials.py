@@ -84,6 +84,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         refresh_handler=None,
         enable_reauth_refresh=False,
         granted_scopes=None,
+        trust_boundary=None,
     ):
         """
         Args:
@@ -141,6 +142,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self._rapt_token = rapt_token
         self.refresh_handler = refresh_handler
         self._enable_reauth_refresh = enable_reauth_refresh
+        self._trust_boundary = trust_boundary
 
     def __getstate__(self):
         """A __getstate__ method must exist for the __setstate__ to be called
@@ -171,6 +173,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self._quota_project_id = d.get("_quota_project_id")
         self._rapt_token = d.get("_rapt_token")
         self._enable_reauth_refresh = d.get("_enable_reauth_refresh")
+        self._trust_boundary = d.get("_trust_boundary")
         # The refresh_handler setter should be used to repopulate this.
         self._refresh_handler = None
 
@@ -268,6 +271,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             quota_project_id=quota_project_id,
             rapt_token=self.rapt_token,
             enable_reauth_refresh=self._enable_reauth_refresh,
+            trust_boundary=self._trust_boundary,
         )
 
     @_helpers.copy_docstring(credentials.CredentialsWithTokenUri)
@@ -286,6 +290,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             quota_project_id=self.quota_project_id,
             rapt_token=self.rapt_token,
             enable_reauth_refresh=self._enable_reauth_refresh,
+            trust_boundary=self._trust_boundary,
         )
 
     def _metric_header_for_usage(self):
@@ -421,6 +426,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             quota_project_id=info.get("quota_project_id"),  # may not exist
             expiry=expiry,
             rapt_token=info.get("rapt_token"),  # may not exist
+            trust_boundary=info.get("trust_boundary"),  # may not exist
         )
 
     @classmethod
