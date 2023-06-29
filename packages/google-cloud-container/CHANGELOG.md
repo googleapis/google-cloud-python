@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.25.0](https://github.com/googleapis/python-container/compare/v2.24.0...v2.25.0) (2023-06-29)
+
+
+### Features
+
+* Add `KUBE_DNS` option to `DNSConfig.cluster_dns` ([91b001a](https://github.com/googleapis/python-container/commit/91b001a4f89557e8a503c57de3e45d6bf399ea90))
+* Add Tier 1 cluster-level API network_performance_config ([91b001a](https://github.com/googleapis/python-container/commit/91b001a4f89557e8a503c57de3e45d6bf399ea90))
+
 ## [2.24.0](https://github.com/googleapis/python-container/compare/v2.23.0...v2.24.0) (2023-06-13)
 
 
