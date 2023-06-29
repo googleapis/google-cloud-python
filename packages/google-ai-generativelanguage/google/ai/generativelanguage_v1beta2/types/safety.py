@@ -223,14 +223,11 @@ class SafetySetting(proto.Message):
             BLOCK_ONLY_HIGH (3):
                 Content with NEGLIGIBLE, LOW, and MEDIUM will
                 be allowed.
-            BLOCK_NONE (4):
-                All content will be allowed.
         """
         HARM_BLOCK_THRESHOLD_UNSPECIFIED = 0
         BLOCK_LOW_AND_ABOVE = 1
         BLOCK_MEDIUM_AND_ABOVE = 2
         BLOCK_ONLY_HIGH = 3
-        BLOCK_NONE = 4
 
     category: "HarmCategory" = proto.Field(
         proto.ENUM,

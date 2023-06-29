@@ -139,12 +139,7 @@ class GenerateMessageResponse(proto.Message):
             This indicates which ``SafetyCategory``\ (s) blocked a
             candidate from this response, the lowest ``HarmProbability``
             that triggered a block, and the HarmThreshold setting for
-            that category. This indicates the smallest change to the
-            ``SafetySettings`` that would be necessary to unblock at
-            least 1 response.
-
-            The blocking is configured by the ``SafetySettings`` in the
-            request (or the default ``SafetySettings`` of the API).
+            that category.
     """
 
     candidates: MutableSequence["Message"] = proto.RepeatedField(
@@ -286,10 +281,10 @@ class Example(proto.Message):
 
     Attributes:
         input (google.ai.generativelanguage_v1beta2.types.Message):
-            An example of an input ``Message`` from the user.
+            Required. An example of an input ``Message`` from the user.
         output (google.ai.generativelanguage_v1beta2.types.Message):
-            An example of what the model should output
-            given the input.
+            Required. An example of what the model should
+            output given the input.
     """
 
     input: "Message" = proto.Field(
