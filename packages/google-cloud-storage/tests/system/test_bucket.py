@@ -653,10 +653,9 @@ def test_bucket_list_blobs_w_match_glob(
         assert [blob.name for blob in blobs] == expected_names
 
 
-def test_bucket_w_retention_period(
+def test_bucket_update_retention_period(
     storage_client,
     buckets_to_delete,
-    blobs_to_delete,
 ):
     period_secs = 3
     bucket_name = _helpers.unique_name("w-retention-period")
@@ -676,23 +675,6 @@ def test_bucket_w_retention_period(
     assert not bucket.default_event_based_hold
     assert not bucket.retention_policy_locked
 
-    blob_name = "test-blob"
-    payload = b"DEADBEEF"
-    blob = bucket.blob(blob_name)
-    blob.upload_from_string(payload)
-
-    blobs_to_delete.append(blob)
-
-    other = bucket.get_blob(blob_name)
-    _helpers.retry_has_retention_expiration(other.reload)()
-
-    assert not other.event_based_hold
-    assert not other.temporary_hold
-    assert isinstance(other.retention_expiration_time, datetime.datetime)
-
-    with pytest.raises(exceptions.Forbidden):
-        other.delete()
-
     bucket.retention_period = None
     bucket.patch()
 
@@ -705,15 +687,41 @@ def test_bucket_w_retention_period(
     assert not bucket.default_event_based_hold
     assert not bucket.retention_policy_locked
 
-    _helpers.retry_no_retention_expiration(other.reload)()
 
-    assert not other.event_based_hold
-    assert not other.temporary_hold
-    assert other.retention_expiration_time is None
+def test_delete_object_bucket_w_retention_period(
+    storage_client,
+    buckets_to_delete,
+    blobs_to_delete,
+):
+    # Create a bucket with retention period.
+    period_secs = 12
+    bucket = storage_client.bucket(_helpers.unique_name("w-retention-period"))
+    bucket.retention_period = period_secs
+    bucket.default_event_based_hold = False
+    bucket = _helpers.retry_429_503(storage_client.create_bucket)(bucket)
+    buckets_to_delete.append(bucket)
+
+    _helpers.retry_has_retention_period(bucket.reload)()
+    assert bucket.retention_period == period_secs
+    assert isinstance(bucket.retention_policy_effective_time, datetime.datetime)
+
+    payload = b"DEADBEEF"
+    blob = bucket.blob(_helpers.unique_name("w-retention"))
+    blob.upload_from_string(payload)
+    blobs_to_delete.append(blob)
+
+    _helpers.retry_has_retention_expiration(blob.reload)()
+    assert isinstance(blob.retention_expiration_time, datetime.datetime)
+    assert not blob.event_based_hold
+    assert not blob.temporary_hold
+
+    # Attempts to delete objects whose age is less than the retention period should fail.
+    with pytest.raises(exceptions.Forbidden):
+        blob.delete()
 
     # Object can be deleted once it reaches the age defined in the retention policy.
     _helpers.await_config_changes_propagate(sec=period_secs)
-    other.delete()
+    blob.delete()
     blobs_to_delete.pop()
 
 
