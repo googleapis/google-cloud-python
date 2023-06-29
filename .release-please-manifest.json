@@ -1,5 +1,5 @@
 {
-    "packages/google-ai-generativelanguage": "0.2.1",
+    "packages/google-ai-generativelanguage": "0.3.0",
     "packages/google-apps-script-type": "0.3.2",
     "packages/google-area120-tables": "0.11.2",
     "packages/google-cloud-access-approval": "1.11.1",
@@ -62,7 +62,7 @@
     "packages/google-cloud-migrationcenter": "0.1.0",
     "packages/google-cloud-monitoring-metrics-scopes": "1.4.2",
     "packages/google-cloud-network-connectivity": "2.0.1",
-    "packages/google-cloud-network-management": "1.8.2",
+    "packages/google-cloud-network-management": "1.9.0",
     "packages/google-cloud-network-security": "0.9.2",
     "packages/google-cloud-notebooks": "1.7.0",
     "packages/google-cloud-orchestration-airflow": "1.9.0",
@@ -79,7 +79,7 @@
     "packages/google-cloud-resource-manager": "1.10.1",
     "packages/google-cloud-resource-settings": "1.7.0",
     "packages/google-cloud-secret-manager": "2.16.1",
-    "packages/google-cloud-securitycenter": "1.22.0",
+    "packages/google-cloud-securitycenter": "1.23.0",
     "packages/google-cloud-service-control": "1.9.0",
     "packages/google-cloud-service-directory": "1.8.1",
     "packages/google-cloud-service-usage": "1.7.1",
@@ -99,5 +99,5 @@
     "packages/google-maps-addressvalidation": "0.3.4",
     "packages/google-maps-mapsplatformdatasets": "0.3.0",
     "packages/google-maps-places": "0.1.1",
-    "packages/google-maps-routing": "0.5.1"
+    "packages/google-maps-routing": "0.6.0"
 }

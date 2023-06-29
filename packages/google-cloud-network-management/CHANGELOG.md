@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.8.2...google-cloud-network-management-v1.9.0) (2023-06-29)
+
+
+### Features
+
+* add forwarding_rule field to Connectivity Test Endpoint proto ([#11430](https://github.com/googleapis/google-cloud-python/issues/11430)) ([312f3e7](https://github.com/googleapis/google-cloud-python/commit/312f3e7c5b2f042a68befde80e52cf7ec4f8e182))
+
 ## [1.8.2](https://github.com/googleapis/python-network-management/compare/v1.8.1...v1.8.2) (2023-04-18)
 
 
