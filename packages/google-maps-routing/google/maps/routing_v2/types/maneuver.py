@@ -70,6 +70,10 @@ class Maneuver(proto.Enum):
             Turn left at the roundabout.
         ROUNDABOUT_RIGHT (18):
             Turn right at the roundabout.
+        DEPART (19):
+            Initial maneuver.
+        NAME_CHANGE (20):
+            Used to indicate a street name change.
     """
     MANEUVER_UNSPECIFIED = 0
     TURN_SLIGHT_LEFT = 1
@@ -90,6 +94,8 @@ class Maneuver(proto.Enum):
     FERRY_TRAIN = 16
     ROUNDABOUT_LEFT = 17
     ROUNDABOUT_RIGHT = 18
+    DEPART = 19
+    NAME_CHANGE = 20
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

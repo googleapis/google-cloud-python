@@ -30,13 +30,14 @@ __protobuf__ = proto.module(
 
 
 class VehicleInfo(proto.Message):
-    r"""Encapsulates the vehicle information, such as the license
-    plate last character.
+    r"""Contains the vehicle information, such as the vehicle
+    emission type.
 
     Attributes:
         emission_type (google.maps.routing_v2.types.VehicleEmissionType):
             Describes the vehicle's emission type. Applies only to the
-            ``DRIVE`` travel mode.
+            ``DRIVE``
+            [RouteTravelMode][google.maps.routing.v2.RouteTravelMode].
     """
 
     emission_type: vehicle_emission_type.VehicleEmissionType = proto.Field(

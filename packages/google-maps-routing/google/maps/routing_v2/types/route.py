@@ -19,15 +19,23 @@ from typing import MutableMapping, MutableSequence
 
 from google.geo.type.types import viewport as ggt_viewport
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import localized_text_pb2  # type: ignore
+from google.type import money_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.maps.routing_v2.types import (
+    route_label,
+    route_travel_mode,
+    speed_reading_interval,
+)
+from google.maps.routing_v2.types import (
     navigation_instruction as gmr_navigation_instruction,
 )
-from google.maps.routing_v2.types import location
+from google.maps.routing_v2.types import localized_time, location
 from google.maps.routing_v2.types import polyline as gmr_polyline
-from google.maps.routing_v2.types import route_label, speed_reading_interval
 from google.maps.routing_v2.types import toll_info as gmr_toll_info
+from google.maps.routing_v2.types import transit
 
 __protobuf__ = proto.module(
     package="google.maps.routing.v2",
@@ -38,12 +46,13 @@ __protobuf__ = proto.module(
         "RouteLegStepTravelAdvisory",
         "RouteLeg",
         "RouteLegStep",
+        "RouteLegStepTransitDetails",
     },
 )
 
 
 class Route(proto.Message):
-    r"""Encapsulates a route, which consists of a series of connected
+    r"""Contains a route, which consists of a series of connected
     road segments that join beginning, ending, and intermediate
     waypoints.
 
@@ -53,14 +62,14 @@ class Route(proto.Message):
             specific properties of the route to compare against others.
         legs (MutableSequence[google.maps.routing_v2.types.RouteLeg]):
             A collection of legs (path segments between waypoints) that
-            make-up the route. Each leg corresponds to the trip between
+            make up the route. Each leg corresponds to the trip between
             two non-\ ``via``
             [Waypoints][google.maps.routing.v2.Waypoint]. For example, a
             route with no intermediate waypoints has only one leg. A
             route that includes one non-\ ``via`` intermediate waypoint
             has two legs. A route that includes one ``via`` intermediate
             waypoint has one leg. The order of the legs matches the
-            order of Waypoints from ``origin`` to ``intermediates`` to
+            order of waypoints from ``origin`` to ``intermediates`` to
             ``destination``.
         distance_meters (int):
             The travel distance of the route, in meters.
@@ -72,12 +81,12 @@ class Route(proto.Message):
             ``TRAFFIC_AWARE_OPTIMAL``, then this value is calculated
             taking traffic conditions into account.
         static_duration (google.protobuf.duration_pb2.Duration):
-            The duration of traveling through the route
+            The duration of travel through the route
             without taking traffic conditions into
             consideration.
         polyline (google.maps.routing_v2.types.Polyline):
-            The overall route polyline. This polyline will be the
-            combined polyline of all ``legs``.
+            The overall route polyline. This polyline is the combined
+            polyline of all ``legs``.
         description (str):
             A description of the route.
         warnings (MutableSequence[str]):
@@ -87,19 +96,72 @@ class Route(proto.Message):
             The viewport bounding box of the polyline.
         travel_advisory (google.maps.routing_v2.types.RouteTravelAdvisory):
             Additional information about the route.
+        optimized_intermediate_waypoint_index (MutableSequence[int]):
+            If you set
+            [optimize_waypoint_order][google.maps.routing.v2.ComputeRoutesRequest.optimize_waypoint_order]
+            to true, this field contains the optimized ordering of
+            intermediate waypoints. Otherwise, this field is empty. For
+            example, if you give an input of Origin: LA; Intermediate
+            waypoints: Dallas, Bangor, Phoenix; Destination: New York;
+            and the optimized intermediate waypoint order is Phoenix,
+            Dallas, Bangor, then this field contains the values [2, 0,
+            1]. The index starts with 0 for the first intermediate
+            waypoint provided in the input.
+        localized_values (google.maps.routing_v2.types.Route.RouteLocalizedValues):
+            Text representations of properties of the ``Route``.
         route_token (str):
-            Web-safe base64 encoded route token that can be passed to
-            NavigationSDK, which allows the Navigation SDK to
-            reconstruct the route during navigation, and in the event of
-            rerouting honor the original intention when Routes
-            ComputeRoutes is called. Customers should treat this token
-            as an opaque blob. NOTE: ``Route.route_token`` is only
-            available for requests that have set
+            A web-safe, base64-encoded route token that can be passed to
+            the Navigation SDK, that allows the Navigation SDK to
+            reconstruct the route during navigation, and, in the event
+            of rerouting, honor the original intention when you created
+            the route by calling ComputeRoutes. Customers should treat
+            this token as an opaque blob. It is not meant for reading or
+            mutating. NOTE: ``Route.route_token`` is only available for
+            requests that have set
             ``ComputeRoutesRequest.routing_preference`` to
             ``TRAFFIC_AWARE`` or ``TRAFFIC_AWARE_OPTIMAL``.
-            ``Route.route_token`` is also not supported for requests
-            that have Via waypoints.
+            ``Route.route_token`` is not supported for requests that
+            have Via waypoints.
     """
+
+    class RouteLocalizedValues(proto.Message):
+        r"""Text representations of certain properties.
+
+        Attributes:
+            distance (google.type.localized_text_pb2.LocalizedText):
+                Travel distance represented in text form.
+            duration (google.type.localized_text_pb2.LocalizedText):
+                Duration taking traffic conditions into consideration,
+                represented in text form. Note: If you did not request
+                traffic information, this value will be the same value as
+                static_duration.
+            static_duration (google.type.localized_text_pb2.LocalizedText):
+                Duration without taking traffic conditions
+                into consideration, represented in text form.
+            transit_fare (google.type.localized_text_pb2.LocalizedText):
+                Transit fare represented in text form.
+        """
+
+        distance: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=localized_text_pb2.LocalizedText,
+        )
+        duration: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=localized_text_pb2.LocalizedText,
+        )
+        static_duration: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=localized_text_pb2.LocalizedText,
+        )
+        transit_fare: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=localized_text_pb2.LocalizedText,
+        )
 
     route_labels: MutableSequence[route_label.RouteLabel] = proto.RepeatedField(
         proto.ENUM,
@@ -148,6 +210,15 @@ class Route(proto.Message):
         number=9,
         message="RouteTravelAdvisory",
     )
+    optimized_intermediate_waypoint_index: MutableSequence[int] = proto.RepeatedField(
+        proto.INT32,
+        number=10,
+    )
+    localized_values: RouteLocalizedValues = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=RouteLocalizedValues,
+    )
     route_token: str = proto.Field(
         proto.STRING,
         number=12,
@@ -155,18 +226,18 @@ class Route(proto.Message):
 
 
 class RouteTravelAdvisory(proto.Message):
-    r"""Encapsulates the additional information that the user should
-    be informed about, such as possible traffic zone restriction
-    etc.
+    r"""Contains the additional information that the user should be
+    informed about, such as possible traffic zone restrictions.
 
     Attributes:
         toll_info (google.maps.routing_v2.types.TollInfo):
-            Encapsulates information about tolls on the Route. This
-            field is only populated if we expect there are tolls on the
-            Route. If this field is set but the estimated_price subfield
-            is not populated, we expect that road contains tolls but we
-            do not know an estimated price. If this field is not set,
-            then we expect there is no toll on the Route.
+            Contains information about tolls on the
+            route. This field is only populated if tolls are
+            expected on the route. If this field is set, but
+            the estimatedPrice subfield is not populated,
+            then the route contains tolls, but the estimated
+            price is unknown. If this field is not set, then
+            there are no tolls expected on the route.
         speed_reading_intervals (MutableSequence[google.maps.routing_v2.types.SpeedReadingInterval]):
             Speed reading intervals detailing traffic density.
             Applicable in case of ``TRAFFIC_AWARE`` and
@@ -182,8 +253,17 @@ class RouteTravelAdvisory(proto.Message):
                 polyline: A ---- B ---- C ---- D ---- E ---- F ---- G
                 speed_reading_intervals: [A,C), [C,D), [D,G).
         fuel_consumption_microliters (int):
-            The fuel consumption prediction in
+            The predicted fuel consumption in
             microliters.
+        route_restrictions_partially_ignored (bool):
+            Returned route may have restrictions that are
+            not suitable for requested travel mode or route
+            modifiers.
+        transit_fare (google.type.money_pb2.Money):
+            If present, contains the total fare or ticket costs on this
+            route This property is only returned for ``TRANSIT``
+            requests and only for routes where fare information is
+            available for all transit steps.
     """
 
     toll_info: gmr_toll_info.TollInfo = proto.Field(
@@ -202,29 +282,38 @@ class RouteTravelAdvisory(proto.Message):
         proto.INT64,
         number=5,
     )
+    route_restrictions_partially_ignored: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    transit_fare: money_pb2.Money = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=money_pb2.Money,
+    )
 
 
 class RouteLegTravelAdvisory(proto.Message):
-    r"""Encapsulates the additional information that the user should
-    be informed about, such as possible traffic zone restriction
-    etc. on a route leg.
+    r"""Contains the additional information that the user should be
+    informed about on a leg step, such as possible traffic zone
+    restrictions.
 
     Attributes:
         toll_info (google.maps.routing_v2.types.TollInfo):
-            Encapsulates information about tolls on the specific
-            RouteLeg. This field is only populated if we expect there
-            are tolls on the RouteLeg. If this field is set but the
-            estimated_price subfield is not populated, we expect that
-            road contains tolls but we do not know an estimated price.
-            If this field does not exist, then there is no toll on the
-            RouteLeg.
+            Contains information about tolls on the specific
+            ``RouteLeg``. This field is only populated if we expect
+            there are tolls on the ``RouteLeg``. If this field is set
+            but the estimated_price subfield is not populated, we expect
+            that road contains tolls but we do not know an estimated
+            price. If this field does not exist, then there is no toll
+            on the ``RouteLeg``.
         speed_reading_intervals (MutableSequence[google.maps.routing_v2.types.SpeedReadingInterval]):
             Speed reading intervals detailing traffic density.
             Applicable in case of ``TRAFFIC_AWARE`` and
             ``TRAFFIC_AWARE_OPTIMAL`` routing preferences. The intervals
-            cover the entire polyline of the RouteLg without overlap.
-            The start point of a specified interval is the same as the
-            end point of the preceding interval.
+            cover the entire polyline of the ``RouteLeg`` without
+            overlap. The start point of a specified interval is the same
+            as the end point of the preceding interval.
 
             Example:
 
@@ -249,9 +338,9 @@ class RouteLegTravelAdvisory(proto.Message):
 
 
 class RouteLegStepTravelAdvisory(proto.Message):
-    r"""Encapsulates the additional information that the user should
-    be informed about, such as possible traffic zone restriction on
-    a leg step.
+    r"""Contains the additional information that the user should be
+    informed about, such as possible traffic zone restrictions on a
+    leg step.
 
     Attributes:
         speed_reading_intervals (MutableSequence[google.maps.routing_v2.types.SpeedReadingInterval]):
@@ -268,7 +357,7 @@ class RouteLegStepTravelAdvisory(proto.Message):
 
 
 class RouteLeg(proto.Message):
-    r"""Encapsulates a segment between non-\ ``via`` waypoints.
+    r"""Contains a segment between non-\ ``via`` waypoints.
 
     Attributes:
         distance_meters (int):
@@ -282,31 +371,138 @@ class RouteLeg(proto.Message):
             ``TRAFFIC_AWARE_OPTIMAL``, then this value is calculated
             taking traffic conditions into account.
         static_duration (google.protobuf.duration_pb2.Duration):
-            The duration of traveling through the leg,
+            The duration of travel through the leg,
             calculated without taking traffic conditions
             into consideration.
         polyline (google.maps.routing_v2.types.Polyline):
-            The overall polyline for this leg. This includes that each
+            The overall polyline for this leg that includes each
             ``step``'s polyline.
         start_location (google.maps.routing_v2.types.Location):
-            The start location of this leg. This might be different from
-            the provided ``origin``. For example, when the provided
-            ``origin`` is not near a road, this is a point on the road.
+            The start location of this leg. This location might be
+            different from the provided ``origin``. For example, when
+            the provided ``origin`` is not near a road, this is a point
+            on the road.
         end_location (google.maps.routing_v2.types.Location):
-            The end location of this leg. This might be different from
-            the provided ``destination``. For example, when the provided
-            ``destination`` is not near a road, this is a point on the
-            road.
+            The end location of this leg. This location might be
+            different from the provided ``destination``. For example,
+            when the provided ``destination`` is not near a road, this
+            is a point on the road.
         steps (MutableSequence[google.maps.routing_v2.types.RouteLegStep]):
             An array of steps denoting segments within
             this leg. Each step represents one navigation
             instruction.
         travel_advisory (google.maps.routing_v2.types.RouteLegTravelAdvisory):
-            Encapsulates the additional information that
-            the user should be informed about, such as
-            possible traffic zone restriction etc. on a
-            route leg.
+            Contains the additional information that the
+            user should be informed about, such as possible
+            traffic zone restrictions, on a route leg.
+        localized_values (google.maps.routing_v2.types.RouteLeg.RouteLegLocalizedValues):
+            Text representations of properties of the ``RouteLeg``.
+        steps_overview (google.maps.routing_v2.types.RouteLeg.StepsOverview):
+            Overview information about the steps in this ``RouteLeg``.
+            This field is only populated for TRANSIT routes.
     """
+
+    class RouteLegLocalizedValues(proto.Message):
+        r"""Text representations of certain properties.
+
+        Attributes:
+            distance (google.type.localized_text_pb2.LocalizedText):
+                Travel distance represented in text form.
+            duration (google.type.localized_text_pb2.LocalizedText):
+                Duration taking traffic conditions into consideration
+                represented in text form. Note: If you did not request
+                traffic information, this value will be the same value as
+                static_duration.
+            static_duration (google.type.localized_text_pb2.LocalizedText):
+                Duration without taking traffic conditions
+                into consideration, represented in text form.
+        """
+
+        distance: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=localized_text_pb2.LocalizedText,
+        )
+        duration: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=localized_text_pb2.LocalizedText,
+        )
+        static_duration: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=localized_text_pb2.LocalizedText,
+        )
+
+    class StepsOverview(proto.Message):
+        r"""Provides overview information about a list of ``RouteLegStep``\ s.
+
+        Attributes:
+            multi_modal_segments (MutableSequence[google.maps.routing_v2.types.RouteLeg.StepsOverview.MultiModalSegment]):
+                Summarized information about different multi-modal segments
+                of the ``RouteLeg.steps``. This field is not populated if
+                the ``RouteLeg`` does not contain any multi-modal segments
+                in the steps.
+        """
+
+        class MultiModalSegment(proto.Message):
+            r"""Provides summarized information about different multi-modal segments
+            of the ``RouteLeg.steps``. A multi-modal segment is defined as one
+            or more contiguous ``RouteLegStep`` that have the same
+            ``RouteTravelMode``. This field is not populated if the ``RouteLeg``
+            does not contain any multi-modal segments in the steps.
+
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                step_start_index (int):
+                    The corresponding ``RouteLegStep`` index that is the start
+                    of a multi-modal segment.
+
+                    This field is a member of `oneof`_ ``_step_start_index``.
+                step_end_index (int):
+                    The corresponding ``RouteLegStep`` index that is the end of
+                    a multi-modal segment.
+
+                    This field is a member of `oneof`_ ``_step_end_index``.
+                navigation_instruction (google.maps.routing_v2.types.NavigationInstruction):
+                    NavigationInstruction for the multi-modal
+                    segment.
+                travel_mode (google.maps.routing_v2.types.RouteTravelMode):
+                    The travel mode of the multi-modal segment.
+            """
+
+            step_start_index: int = proto.Field(
+                proto.INT32,
+                number=1,
+                optional=True,
+            )
+            step_end_index: int = proto.Field(
+                proto.INT32,
+                number=2,
+                optional=True,
+            )
+            navigation_instruction: gmr_navigation_instruction.NavigationInstruction = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=3,
+                    message=gmr_navigation_instruction.NavigationInstruction,
+                )
+            )
+            travel_mode: route_travel_mode.RouteTravelMode = proto.Field(
+                proto.ENUM,
+                number=4,
+                enum=route_travel_mode.RouteTravelMode,
+            )
+
+        multi_modal_segments: MutableSequence[
+            "RouteLeg.StepsOverview.MultiModalSegment"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="RouteLeg.StepsOverview.MultiModalSegment",
+        )
 
     distance_meters: int = proto.Field(
         proto.INT32,
@@ -347,12 +543,22 @@ class RouteLeg(proto.Message):
         number=8,
         message="RouteLegTravelAdvisory",
     )
+    localized_values: RouteLegLocalizedValues = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=RouteLegLocalizedValues,
+    )
+    steps_overview: StepsOverview = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=StepsOverview,
+    )
 
 
 class RouteLegStep(proto.Message):
-    r"""Encapsulates a segment of a
-    [RouteLeg][google.maps.routing.v2.RouteLeg]. A step corresponds to a
-    single navigation instruction. Route legs are made up of steps.
+    r"""Contains a segment of a [RouteLeg][google.maps.routing.v2.RouteLeg].
+    A step corresponds to a single navigation instruction. Route legs
+    are made up of steps.
 
     Attributes:
         distance_meters (int):
@@ -373,10 +579,39 @@ class RouteLegStep(proto.Message):
         navigation_instruction (google.maps.routing_v2.types.NavigationInstruction):
             Navigation instructions.
         travel_advisory (google.maps.routing_v2.types.RouteLegStepTravelAdvisory):
-            Encapsulates the additional information that
-            the user should be informed about, such as
-            possible traffic zone restriction on a leg step.
+            Contains the additional information that the
+            user should be informed about, such as possible
+            traffic zone restrictions, on a leg step.
+        localized_values (google.maps.routing_v2.types.RouteLegStep.RouteLegStepLocalizedValues):
+            Text representations of properties of the ``RouteLegStep``.
+        transit_details (google.maps.routing_v2.types.RouteLegStepTransitDetails):
+            Details pertaining to this step if the travel mode is
+            ``TRANSIT``.
+        travel_mode (google.maps.routing_v2.types.RouteTravelMode):
+            The travel mode used for this step.
     """
+
+    class RouteLegStepLocalizedValues(proto.Message):
+        r"""Text representations of certain properties.
+
+        Attributes:
+            distance (google.type.localized_text_pb2.LocalizedText):
+                Travel distance represented in text form.
+            static_duration (google.type.localized_text_pb2.LocalizedText):
+                Duration without taking traffic conditions
+                into consideration, represented in text form.
+        """
+
+        distance: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=localized_text_pb2.LocalizedText,
+        )
+        static_duration: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=localized_text_pb2.LocalizedText,
+        )
 
     distance_meters: int = proto.Field(
         proto.INT32,
@@ -413,6 +648,154 @@ class RouteLegStep(proto.Message):
         proto.MESSAGE,
         number=7,
         message="RouteLegStepTravelAdvisory",
+    )
+    localized_values: RouteLegStepLocalizedValues = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=RouteLegStepLocalizedValues,
+    )
+    transit_details: "RouteLegStepTransitDetails" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="RouteLegStepTransitDetails",
+    )
+    travel_mode: route_travel_mode.RouteTravelMode = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=route_travel_mode.RouteTravelMode,
+    )
+
+
+class RouteLegStepTransitDetails(proto.Message):
+    r"""Additional information for the ``RouteLegStep`` related to
+    ``TRANSIT`` routes.
+
+    Attributes:
+        stop_details (google.maps.routing_v2.types.RouteLegStepTransitDetails.TransitStopDetails):
+            Information about the arrival and departure
+            stops for the step.
+        localized_values (google.maps.routing_v2.types.RouteLegStepTransitDetails.TransitDetailsLocalizedValues):
+            Text representations of properties of the
+            ``RouteLegStepTransitDetails``.
+        headsign (str):
+            Specifies the direction in which to travel on
+            this line as marked on the vehicle or at the
+            departure stop. The direction is often the
+            terminus station.
+        headway (google.protobuf.duration_pb2.Duration):
+            Specifies the expected time as a duration
+            between departures from the same stop at this
+            time. For example, with a headway seconds value
+            of 600, you would expect a ten minute wait if
+            you should miss your bus.
+        transit_line (google.maps.routing_v2.types.TransitLine):
+            Information about the transit line used in
+            this step.
+        stop_count (int):
+            The number of stops from the departure to the arrival stop.
+            This count includes the arrival stop, but excludes the
+            departure stop. For example, if your route leaves from Stop
+            A, passes through stops B and C, and arrives at stop D,
+            stop_count will return 3.
+        trip_short_text (str):
+            The text that appears in schedules and sign boards to
+            identify a transit trip to passengers. The text should
+            uniquely identify a trip within a service day. For example,
+            "538" is the ``trip_short_text`` of the Amtrak train that
+            leaves San Jose, CA at 15:10 on weekdays to Sacramento, CA.
+    """
+
+    class TransitStopDetails(proto.Message):
+        r"""Details about the transit stops for the ``RouteLegStep``
+
+        Attributes:
+            arrival_stop (google.maps.routing_v2.types.TransitStop):
+                Information about the arrival stop for the
+                step.
+            arrival_time (google.protobuf.timestamp_pb2.Timestamp):
+                The estimated time of arrival for the step.
+            departure_stop (google.maps.routing_v2.types.TransitStop):
+                Information about the departure stop for the
+                step.
+            departure_time (google.protobuf.timestamp_pb2.Timestamp):
+                The estimated time of departure for the step.
+        """
+
+        arrival_stop: transit.TransitStop = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=transit.TransitStop,
+        )
+        arrival_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
+        )
+        departure_stop: transit.TransitStop = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=transit.TransitStop,
+        )
+        departure_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=timestamp_pb2.Timestamp,
+        )
+
+    class TransitDetailsLocalizedValues(proto.Message):
+        r"""Localized descriptions of values for RouteTransitDetails.
+
+        Attributes:
+            arrival_time (google.maps.routing_v2.types.LocalizedTime):
+                Time in its formatted text representation
+                with a corresponding time zone.
+            departure_time (google.maps.routing_v2.types.LocalizedTime):
+                Time in its formatted text representation
+                with a corresponding time zone.
+        """
+
+        arrival_time: localized_time.LocalizedTime = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=localized_time.LocalizedTime,
+        )
+        departure_time: localized_time.LocalizedTime = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=localized_time.LocalizedTime,
+        )
+
+    stop_details: TransitStopDetails = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=TransitStopDetails,
+    )
+    localized_values: TransitDetailsLocalizedValues = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=TransitDetailsLocalizedValues,
+    )
+    headsign: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    headway: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=duration_pb2.Duration,
+    )
+    transit_line: transit.TransitLine = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=transit.TransitLine,
+    )
+    stop_count: int = proto.Field(
+        proto.INT32,
+        number=6,
+    )
+    trip_short_text: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 
