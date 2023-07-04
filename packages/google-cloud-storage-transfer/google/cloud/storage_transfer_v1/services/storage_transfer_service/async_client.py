@@ -1699,7 +1699,7 @@ class StorageTransferServiceAsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "StorageTransferServiceAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
