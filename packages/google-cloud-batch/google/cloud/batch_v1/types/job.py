@@ -197,7 +197,7 @@ class JobStatus(proto.Message):
 
         Values:
             STATE_UNSPECIFIED (0):
-                No description available.
+                Job state unspecified.
             QUEUED (1):
                 Job is admitted (validated and persisted) and
                 waiting for resources.
@@ -487,6 +487,7 @@ class AllocationPolicy(proto.Message):
                 -  "batch-debian": use Batch Debian images.
                 -  "batch-centos": use Batch CentOS images.
                 -  "batch-cos": use Batch Container-Optimized images.
+                -  "batch-hpc-centos": use Batch HPC CentOS images.
 
                 This field is a member of `oneof`_ ``data_source``.
             snapshot (str):
