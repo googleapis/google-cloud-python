@@ -1123,9 +1123,11 @@ async def test_list_jobs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_jobs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1158,7 +1160,6 @@ def test_get_job(request_type, transport: str = "grpc"):
             time_zone="time_zone_value",
             state=job.Job.State.ENABLED,
             legacy_app_engine_cron=True,
-            pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
         )
         response = client.get_job(request)
 
@@ -1407,7 +1408,6 @@ def test_create_job(request_type, transport: str = "grpc"):
             time_zone="time_zone_value",
             state=gcs_job.Job.State.ENABLED,
             legacy_app_engine_cron=True,
-            pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
         )
         response = client.create_job(request)
 
@@ -1666,7 +1666,6 @@ def test_update_job(request_type, transport: str = "grpc"):
             time_zone="time_zone_value",
             state=gcs_job.Job.State.ENABLED,
             legacy_app_engine_cron=True,
-            pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
         )
         response = client.update_job(request)
 
@@ -2145,7 +2144,6 @@ def test_pause_job(request_type, transport: str = "grpc"):
             time_zone="time_zone_value",
             state=job.Job.State.ENABLED,
             legacy_app_engine_cron=True,
-            pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
         )
         response = client.pause_job(request)
 
@@ -2394,7 +2392,6 @@ def test_resume_job(request_type, transport: str = "grpc"):
             time_zone="time_zone_value",
             state=job.Job.State.ENABLED,
             legacy_app_engine_cron=True,
-            pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
         )
         response = client.resume_job(request)
 
@@ -2643,7 +2640,6 @@ def test_run_job(request_type, transport: str = "grpc"):
             time_zone="time_zone_value",
             state=job.Job.State.ENABLED,
             legacy_app_engine_cron=True,
-            pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
         )
         response = client.run_job(request)
 
@@ -3229,7 +3225,6 @@ def test_get_job_rest(request_type):
             time_zone="time_zone_value",
             state=job.Job.State.ENABLED,
             legacy_app_engine_cron=True,
-            pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -3561,7 +3556,6 @@ def test_create_job_rest(request_type):
             time_zone="time_zone_value",
             state=gcs_job.Job.State.ENABLED,
             legacy_app_engine_cron=True,
-            pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -3966,7 +3960,6 @@ def test_update_job_rest(request_type):
             time_zone="time_zone_value",
             state=gcs_job.Job.State.ENABLED,
             legacy_app_engine_cron=True,
-            pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -4555,7 +4548,6 @@ def test_pause_job_rest(request_type):
             time_zone="time_zone_value",
             state=job.Job.State.ENABLED,
             legacy_app_engine_cron=True,
-            pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -4829,7 +4821,6 @@ def test_resume_job_rest(request_type):
             time_zone="time_zone_value",
             state=job.Job.State.ENABLED,
             legacy_app_engine_cron=True,
-            pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -5105,7 +5096,6 @@ def test_run_job_rest(request_type):
             time_zone="time_zone_value",
             state=job.Job.State.ENABLED,
             legacy_app_engine_cron=True,
-            pubsub_target=target.PubsubTarget(topic_name="topic_name_value"),
         )
 
         # Wrap the value into a proper Response obj
