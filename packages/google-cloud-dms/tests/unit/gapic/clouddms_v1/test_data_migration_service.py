@@ -1166,9 +1166,11 @@ async def test_list_migration_jobs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_migration_jobs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1207,9 +1209,6 @@ def test_get_migration_job(request_type, transport: str = "grpc"):
             destination="destination_value",
             filter="filter_value",
             cmek_key_name="cmek_key_name_value",
-            reverse_ssh_connectivity=clouddms_resources.ReverseSshConnectivity(
-                vm_ip="vm_ip_value"
-            ),
         )
         response = client.get_migration_job(request)
 
@@ -3731,9 +3730,11 @@ async def test_list_connection_profiles_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_connection_profiles(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3766,7 +3767,6 @@ def test_get_connection_profile(request_type, transport: str = "grpc"):
             state=clouddms_resources.ConnectionProfile.State.DRAFT,
             display_name="display_name_value",
             provider=clouddms_resources.DatabaseProvider.CLOUDSQL,
-            mysql=clouddms_resources.MySqlConnectionProfile(host="host_value"),
         )
         response = client.get_connection_profile(request)
 
@@ -5038,9 +5038,6 @@ def test_get_private_connection(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             state=clouddms_resources.PrivateConnection.State.CREATING,
-            vpc_peering_config=clouddms_resources.VpcPeeringConfig(
-                vpc_name="vpc_name_value"
-            ),
         )
         response = client.get_private_connection(request)
 
@@ -5709,9 +5706,11 @@ async def test_list_private_connections_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_private_connections(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6661,9 +6660,11 @@ async def test_list_conversion_workspaces_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_conversion_workspaces(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8721,9 +8722,11 @@ async def test_describe_database_entities_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.describe_database_entities(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9454,9 +9457,11 @@ async def test_fetch_static_ips_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.fetch_static_ips(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token

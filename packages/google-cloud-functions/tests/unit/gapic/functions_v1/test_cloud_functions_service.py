@@ -1101,9 +1101,11 @@ async def test_list_functions_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_functions(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1152,7 +1154,6 @@ def test_get_function(request_type, transport: str = "grpc"):
             docker_repository="docker_repository_value",
             docker_registry=functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY,
             source_archive_url="source_archive_url_value",
-            https_trigger=functions.HttpsTrigger(url="url_value"),
         )
         response = client.get_function(request)
 
@@ -3440,7 +3441,6 @@ def test_get_function_rest(request_type):
             docker_repository="docker_repository_value",
             docker_registry=functions.CloudFunction.DockerRegistry.CONTAINER_REGISTRY,
             source_archive_url="source_archive_url_value",
-            https_trigger=functions.HttpsTrigger(url="url_value"),
         )
 
         # Wrap the value into a proper Response obj

@@ -1158,9 +1158,11 @@ async def test_list_assets_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_assets(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1190,7 +1192,6 @@ def test_get_asset(request_type, transport: str = "grpc"):
             name="name_value",
             sources=["sources_value"],
             assigned_groups=["assigned_groups_value"],
-            machine_details=migrationcenter.MachineDetails(uuid="uuid_value"),
         )
         response = client.get_asset(request)
 
@@ -1431,7 +1432,6 @@ def test_update_asset(request_type, transport: str = "grpc"):
             name="name_value",
             sources=["sources_value"],
             assigned_groups=["assigned_groups_value"],
-            machine_details=migrationcenter.MachineDetails(uuid="uuid_value"),
         )
         response = client.update_asset(request)
 
@@ -3384,9 +3384,11 @@ async def test_list_import_jobs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_import_jobs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3417,11 +3419,6 @@ def test_get_import_job(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=migrationcenter.ImportJob.ImportJobState.IMPORT_JOB_STATE_PENDING,
             asset_source="asset_source_value",
-            validation_report=migrationcenter.ValidationReport(
-                file_validations=[
-                    migrationcenter.FileValidationReport(file_name="file_name_value")
-                ]
-            ),
         )
         response = client.get_import_job(request)
 
@@ -4631,9 +4628,6 @@ def test_get_import_data_file(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             format_=migrationcenter.ImportJobFormat.IMPORT_JOB_FORMAT_RVTOOLS_XLSX,
             state=migrationcenter.ImportDataFile.State.CREATING,
-            upload_file_info=migrationcenter.UploadFileInfo(
-                signed_uri="signed_uri_value"
-            ),
         )
         response = client.get_import_data_file(request)
 
@@ -5311,9 +5305,11 @@ async def test_list_import_data_files_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_import_data_files(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6237,9 +6233,11 @@ async def test_list_groups_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_groups(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8113,9 +8111,11 @@ async def test_list_error_frames_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_error_frames(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8769,9 +8769,11 @@ async def test_list_sources_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_sources(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -10188,9 +10190,11 @@ async def test_list_preference_sets_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_preference_sets(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -12630,9 +12634,11 @@ async def test_list_report_configs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_report_configs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -13789,9 +13795,11 @@ async def test_list_reports_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_reports(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -14394,7 +14402,6 @@ def test_get_asset_rest(request_type):
             name="name_value",
             sources=["sources_value"],
             assigned_groups=["assigned_groups_value"],
-            machine_details=migrationcenter.MachineDetails(uuid="uuid_value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -14925,7 +14932,6 @@ def test_update_asset_rest(request_type):
             name="name_value",
             sources=["sources_value"],
             assigned_groups=["assigned_groups_value"],
-            machine_details=migrationcenter.MachineDetails(uuid="uuid_value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -17915,11 +17921,6 @@ def test_get_import_job_rest(request_type):
             display_name="display_name_value",
             state=migrationcenter.ImportJob.ImportJobState.IMPORT_JOB_STATE_PENDING,
             asset_source="asset_source_value",
-            validation_report=migrationcenter.ValidationReport(
-                file_validations=[
-                    migrationcenter.FileValidationReport(file_name="file_name_value")
-                ]
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -19372,9 +19373,6 @@ def test_get_import_data_file_rest(request_type):
             display_name="display_name_value",
             format_=migrationcenter.ImportJobFormat.IMPORT_JOB_FORMAT_RVTOOLS_XLSX,
             state=migrationcenter.ImportDataFile.State.CREATING,
-            upload_file_info=migrationcenter.UploadFileInfo(
-                signed_uri="signed_uri_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj

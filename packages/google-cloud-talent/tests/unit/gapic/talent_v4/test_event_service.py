@@ -719,7 +719,6 @@ def test_create_client_event(request_type, transport: str = "grpc"):
             request_id="request_id_value",
             event_id="event_id_value",
             event_notes="event_notes_value",
-            job_event=event.JobEvent(type_=event.JobEvent.JobEventType.IMPRESSION),
         )
         response = client.create_client_event(request)
 
@@ -985,7 +984,6 @@ def test_create_client_event_rest(request_type):
             request_id="request_id_value",
             event_id="event_id_value",
             event_notes="event_notes_value",
-            job_event=event.JobEvent(type_=event.JobEvent.JobEventType.IMPRESSION),
         )
 
         # Wrap the value into a proper Response obj

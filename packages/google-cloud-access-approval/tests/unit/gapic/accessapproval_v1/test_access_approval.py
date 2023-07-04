@@ -1139,9 +1139,11 @@ async def test_list_approval_requests_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_approval_requests(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1172,9 +1174,6 @@ def test_get_approval_request(request_type, transport: str = "grpc"):
         call.return_value = accessapproval.ApprovalRequest(
             name="name_value",
             requested_resource_name="requested_resource_name_value",
-            approve=accessapproval.ApproveDecision(
-                approve_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
         )
         response = client.get_approval_request(request)
 
@@ -1426,9 +1425,6 @@ def test_approve_approval_request(request_type, transport: str = "grpc"):
         call.return_value = accessapproval.ApprovalRequest(
             name="name_value",
             requested_resource_name="requested_resource_name_value",
-            approve=accessapproval.ApproveDecision(
-                approve_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
         )
         response = client.approve_approval_request(request)
 
@@ -1594,9 +1590,6 @@ def test_dismiss_approval_request(request_type, transport: str = "grpc"):
         call.return_value = accessapproval.ApprovalRequest(
             name="name_value",
             requested_resource_name="requested_resource_name_value",
-            approve=accessapproval.ApproveDecision(
-                approve_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
         )
         response = client.dismiss_approval_request(request)
 
@@ -1762,9 +1755,6 @@ def test_invalidate_approval_request(request_type, transport: str = "grpc"):
         call.return_value = accessapproval.ApprovalRequest(
             name="name_value",
             requested_resource_name="requested_resource_name_value",
-            approve=accessapproval.ApproveDecision(
-                approve_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
         )
         response = client.invalidate_approval_request(request)
 
@@ -3196,9 +3186,6 @@ def test_get_approval_request_rest(request_type):
         return_value = accessapproval.ApprovalRequest(
             name="name_value",
             requested_resource_name="requested_resource_name_value",
-            approve=accessapproval.ApproveDecision(
-                approve_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -3382,9 +3369,6 @@ def test_approve_approval_request_rest(request_type):
         return_value = accessapproval.ApprovalRequest(
             name="name_value",
             requested_resource_name="requested_resource_name_value",
-            approve=accessapproval.ApproveDecision(
-                approve_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -3513,9 +3497,6 @@ def test_dismiss_approval_request_rest(request_type):
         return_value = accessapproval.ApprovalRequest(
             name="name_value",
             requested_resource_name="requested_resource_name_value",
-            approve=accessapproval.ApproveDecision(
-                approve_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -3644,9 +3625,6 @@ def test_invalidate_approval_request_rest(request_type):
         return_value = accessapproval.ApprovalRequest(
             name="name_value",
             requested_resource_name="requested_resource_name_value",
-            approve=accessapproval.ApproveDecision(
-                approve_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
         )
 
         # Wrap the value into a proper Response obj

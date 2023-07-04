@@ -4647,7 +4647,7 @@ class DataCatalogAsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "DataCatalogAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):

@@ -1115,9 +1115,11 @@ async def test_list_sources_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_sources(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1146,7 +1148,6 @@ def test_get_source(request_type, transport: str = "grpc"):
         call.return_value = vmmigration.Source(
             name="name_value",
             description="description_value",
-            vmware=vmmigration.VmwareSourceDetails(username="username_value"),
         )
         response = client.get_source(request)
 
@@ -2108,11 +2109,7 @@ def test_fetch_inventory(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_inventory), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = vmmigration.FetchInventoryResponse(
-            vmware_vms=vmmigration.VmwareVmsDetails(
-                details=[vmmigration.VmwareVmDetails(vm_id="vm_id_value")]
-            ),
-        )
+        call.return_value = vmmigration.FetchInventoryResponse()
         response = client.fetch_inventory(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2757,9 +2754,11 @@ async def test_list_utilization_reports_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_utilization_reports(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3969,9 +3968,11 @@ async def test_list_datacenter_connectors_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_datacenter_connectors(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5648,9 +5649,11 @@ async def test_list_migrating_vms_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_migrating_vms(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5683,12 +5686,6 @@ def test_get_migrating_vm(request_type, transport: str = "grpc"):
             description="description_value",
             state=vmmigration.MigratingVm.State.PENDING,
             group="group_value",
-            compute_engine_target_defaults=vmmigration.ComputeEngineTargetDefaults(
-                vm_name="vm_name_value"
-            ),
-            aws_source_vm_details=vmmigration.AwsSourceVmDetails(
-                firmware=vmmigration.AwsSourceVmDetails.Firmware.EFI
-            ),
         )
         response = client.get_migrating_vm(request)
 
@@ -8094,9 +8091,11 @@ async def test_list_clone_jobs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_clone_jobs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8125,9 +8124,6 @@ def test_get_clone_job(request_type, transport: str = "grpc"):
         call.return_value = vmmigration.CloneJob(
             name="name_value",
             state=vmmigration.CloneJob.State.PENDING,
-            compute_engine_target_details=vmmigration.ComputeEngineTargetDetails(
-                vm_name="vm_name_value"
-            ),
         )
         response = client.get_clone_job(request)
 
@@ -9303,9 +9299,11 @@ async def test_list_cutover_jobs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_cutover_jobs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9336,9 +9334,6 @@ def test_get_cutover_job(request_type, transport: str = "grpc"):
             state=vmmigration.CutoverJob.State.PENDING,
             progress_percent=1733,
             state_message="state_message_value",
-            compute_engine_target_details=vmmigration.ComputeEngineTargetDetails(
-                vm_name="vm_name_value"
-            ),
         )
         response = client.get_cutover_job(request)
 
@@ -9974,9 +9969,11 @@ async def test_list_groups_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_groups(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -11845,9 +11842,11 @@ async def test_list_target_projects_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_target_projects(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -13296,9 +13295,11 @@ async def test_list_replication_cycles_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_replication_cycles(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -13942,7 +13943,6 @@ def test_get_source_rest(request_type):
         return_value = vmmigration.Source(
             name="name_value",
             description="description_value",
-            vmware=vmmigration.VmwareSourceDetails(username="username_value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -15210,11 +15210,7 @@ def test_fetch_inventory_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = vmmigration.FetchInventoryResponse(
-            vmware_vms=vmmigration.VmwareVmsDetails(
-                details=[vmmigration.VmwareVmDetails(vm_id="vm_id_value")]
-            ),
-        )
+        return_value = vmmigration.FetchInventoryResponse()
 
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -19360,12 +19356,6 @@ def test_get_migrating_vm_rest(request_type):
             description="description_value",
             state=vmmigration.MigratingVm.State.PENDING,
             group="group_value",
-            compute_engine_target_defaults=vmmigration.ComputeEngineTargetDefaults(
-                vm_name="vm_name_value"
-            ),
-            aws_source_vm_details=vmmigration.AwsSourceVmDetails(
-                firmware=vmmigration.AwsSourceVmDetails.Firmware.EFI
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -22587,9 +22577,6 @@ def test_get_clone_job_rest(request_type):
         return_value = vmmigration.CloneJob(
             name="name_value",
             state=vmmigration.CloneJob.State.PENDING,
-            compute_engine_target_details=vmmigration.ComputeEngineTargetDetails(
-                vm_name="vm_name_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -24010,9 +23997,6 @@ def test_get_cutover_job_rest(request_type):
             state=vmmigration.CutoverJob.State.PENDING,
             progress_percent=1733,
             state_message="state_message_value",
-            compute_engine_target_details=vmmigration.ComputeEngineTargetDetails(
-                vm_name="vm_name_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj

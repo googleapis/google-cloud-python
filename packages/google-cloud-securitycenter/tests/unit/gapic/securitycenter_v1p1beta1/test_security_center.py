@@ -1294,9 +1294,6 @@ def test_create_notification_config(request_type, transport: str = "grpc"):
             event_type=gcs_notification_config.NotificationConfig.EventType.FINDING,
             pubsub_topic="pubsub_topic_value",
             service_account="service_account_value",
-            streaming_config=gcs_notification_config.NotificationConfig.StreamingConfig(
-                filter="filter_value"
-            ),
         )
         response = client.create_notification_config(request)
 
@@ -2078,9 +2075,6 @@ def test_get_notification_config(request_type, transport: str = "grpc"):
             event_type=notification_config.NotificationConfig.EventType.FINDING,
             pubsub_topic="pubsub_topic_value",
             service_account="service_account_value",
-            streaming_config=notification_config.NotificationConfig.StreamingConfig(
-                filter="filter_value"
-            ),
         )
         response = client.get_notification_config(request)
 
@@ -3147,9 +3141,11 @@ async def test_group_assets_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.group_assets(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3582,9 +3578,11 @@ async def test_group_findings_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.group_findings(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4013,9 +4011,11 @@ async def test_list_assets_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_assets(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4448,9 +4448,11 @@ async def test_list_findings_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_findings(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4895,9 +4897,11 @@ async def test_list_notification_configs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_notification_configs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5316,9 +5320,11 @@ async def test_list_sources_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_sources(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6677,9 +6683,6 @@ def test_update_notification_config(request_type, transport: str = "grpc"):
             event_type=gcs_notification_config.NotificationConfig.EventType.FINDING,
             pubsub_topic="pubsub_topic_value",
             service_account="service_account_value",
-            streaming_config=gcs_notification_config.NotificationConfig.StreamingConfig(
-                filter="filter_value"
-            ),
         )
         response = client.update_notification_config(request)
 
@@ -8383,9 +8386,6 @@ def test_create_notification_config_rest(request_type):
             event_type=gcs_notification_config.NotificationConfig.EventType.FINDING,
             pubsub_topic="pubsub_topic_value",
             service_account="service_account_value",
-            streaming_config=gcs_notification_config.NotificationConfig.StreamingConfig(
-                filter="filter_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -9230,9 +9230,6 @@ def test_get_notification_config_rest(request_type):
             event_type=notification_config.NotificationConfig.EventType.FINDING,
             pubsub_topic="pubsub_topic_value",
             service_account="service_account_value",
-            streaming_config=notification_config.NotificationConfig.StreamingConfig(
-                filter="filter_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -13547,9 +13544,6 @@ def test_update_notification_config_rest(request_type):
             event_type=gcs_notification_config.NotificationConfig.EventType.FINDING,
             pubsub_topic="pubsub_topic_value",
             service_account="service_account_value",
-            streaming_config=gcs_notification_config.NotificationConfig.StreamingConfig(
-                filter="filter_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj

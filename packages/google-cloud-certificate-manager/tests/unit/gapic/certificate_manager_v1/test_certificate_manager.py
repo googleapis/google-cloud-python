@@ -1190,9 +1190,11 @@ async def test_list_certificates_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_certificates(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1224,9 +1226,6 @@ def test_get_certificate(request_type, transport: str = "grpc"):
             san_dnsnames=["san_dnsnames_value"],
             pem_certificate="pem_certificate_value",
             scope=certificate_manager.Certificate.Scope.EDGE_CACHE,
-            self_managed=certificate_manager.Certificate.SelfManagedCertificate(
-                pem_certificate="pem_certificate_value"
-            ),
         )
         response = client.get_certificate(request)
 
@@ -2642,9 +2641,11 @@ async def test_list_certificate_maps_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_certificate_maps(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4097,9 +4098,11 @@ async def test_list_certificate_map_entries_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_certificate_map_entries(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5575,9 +5578,11 @@ async def test_list_dns_authorizations_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_dns_authorizations(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7053,9 +7058,11 @@ async def test_list_certificate_issuance_configs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_certificate_issuance_configs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8240,9 +8247,6 @@ def test_get_certificate_rest(request_type):
             san_dnsnames=["san_dnsnames_value"],
             pem_certificate="pem_certificate_value",
             scope=certificate_manager.Certificate.Scope.EDGE_CACHE,
-            self_managed=certificate_manager.Certificate.SelfManagedCertificate(
-                pem_certificate="pem_certificate_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
