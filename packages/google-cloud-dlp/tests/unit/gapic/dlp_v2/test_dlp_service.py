@@ -2674,9 +2674,11 @@ async def test_list_inspect_templates_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_inspect_templates(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4142,9 +4144,11 @@ async def test_list_deidentify_templates_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_deidentify_templates(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4411,13 +4415,6 @@ def test_create_job_trigger(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             description="description_value",
             status=dlp.JobTrigger.Status.HEALTHY,
-            inspect_job=dlp.InspectJobConfig(
-                storage_config=storage.StorageConfig(
-                    datastore_options=storage.DatastoreOptions(
-                        partition_id=storage.PartitionId(project_id="project_id_value")
-                    )
-                )
-            ),
         )
         response = client.create_job_trigger(request)
 
@@ -4682,13 +4679,6 @@ def test_update_job_trigger(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             description="description_value",
             status=dlp.JobTrigger.Status.HEALTHY,
-            inspect_job=dlp.InspectJobConfig(
-                storage_config=storage.StorageConfig(
-                    datastore_options=storage.DatastoreOptions(
-                        partition_id=storage.PartitionId(project_id="project_id_value")
-                    )
-                )
-            ),
         )
         response = client.update_job_trigger(request)
 
@@ -5201,13 +5191,6 @@ def test_get_job_trigger(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             description="description_value",
             status=dlp.JobTrigger.Status.HEALTHY,
-            inspect_job=dlp.InspectJobConfig(
-                storage_config=storage.StorageConfig(
-                    datastore_options=storage.DatastoreOptions(
-                        partition_id=storage.PartitionId(project_id="project_id_value")
-                    )
-                )
-            ),
         )
         response = client.get_job_trigger(request)
 
@@ -5857,9 +5840,11 @@ async def test_list_job_triggers_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_job_triggers(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6126,13 +6111,6 @@ def test_activate_job_trigger(request_type, transport: str = "grpc"):
             type_=dlp.DlpJobType.INSPECT_JOB,
             state=dlp.DlpJob.JobState.PENDING,
             job_trigger_name="job_trigger_name_value",
-            risk_details=dlp.AnalyzeDataSourceRiskDetails(
-                requested_privacy_metric=dlp.PrivacyMetric(
-                    numerical_stats_config=dlp.PrivacyMetric.NumericalStatsConfig(
-                        field=storage.FieldId(name="name_value")
-                    )
-                )
-            ),
         )
         response = client.activate_job_trigger(request)
 
@@ -6301,13 +6279,6 @@ def test_create_dlp_job(request_type, transport: str = "grpc"):
             type_=dlp.DlpJobType.INSPECT_JOB,
             state=dlp.DlpJob.JobState.PENDING,
             job_trigger_name="job_trigger_name_value",
-            risk_details=dlp.AnalyzeDataSourceRiskDetails(
-                requested_privacy_metric=dlp.PrivacyMetric(
-                    numerical_stats_config=dlp.PrivacyMetric.NumericalStatsConfig(
-                        field=storage.FieldId(name="name_value")
-                    )
-                )
-            ),
         )
         response = client.create_dlp_job(request)
 
@@ -7005,9 +6976,11 @@ async def test_list_dlp_jobs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_dlp_jobs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7038,13 +7011,6 @@ def test_get_dlp_job(request_type, transport: str = "grpc"):
             type_=dlp.DlpJobType.INSPECT_JOB,
             state=dlp.DlpJob.JobState.PENDING,
             job_trigger_name="job_trigger_name_value",
-            risk_details=dlp.AnalyzeDataSourceRiskDetails(
-                requested_privacy_metric=dlp.PrivacyMetric(
-                    numerical_stats_config=dlp.PrivacyMetric.NumericalStatsConfig(
-                        field=storage.FieldId(name="name_value")
-                    )
-                )
-            ),
         )
         response = client.get_dlp_job(request)
 
@@ -8810,9 +8776,11 @@ async def test_list_stored_info_types_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_stored_info_types(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -13051,13 +13019,6 @@ def test_create_job_trigger_rest(request_type):
             display_name="display_name_value",
             description="description_value",
             status=dlp.JobTrigger.Status.HEALTHY,
-            inspect_job=dlp.InspectJobConfig(
-                storage_config=storage.StorageConfig(
-                    datastore_options=storage.DatastoreOptions(
-                        partition_id=storage.PartitionId(project_id="project_id_value")
-                    )
-                )
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -13337,13 +13298,6 @@ def test_update_job_trigger_rest(request_type):
             display_name="display_name_value",
             description="description_value",
             status=dlp.JobTrigger.Status.HEALTHY,
-            inspect_job=dlp.InspectJobConfig(
-                storage_config=storage.StorageConfig(
-                    datastore_options=storage.DatastoreOptions(
-                        partition_id=storage.PartitionId(project_id="project_id_value")
-                    )
-                )
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -13885,13 +13839,6 @@ def test_get_job_trigger_rest(request_type):
             display_name="display_name_value",
             description="description_value",
             status=dlp.JobTrigger.Status.HEALTHY,
-            inspect_job=dlp.InspectJobConfig(
-                storage_config=storage.StorageConfig(
-                    datastore_options=storage.DatastoreOptions(
-                        partition_id=storage.PartitionId(project_id="project_id_value")
-                    )
-                )
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -14749,13 +14696,6 @@ def test_activate_job_trigger_rest(request_type):
             type_=dlp.DlpJobType.INSPECT_JOB,
             state=dlp.DlpJob.JobState.PENDING,
             job_trigger_name="job_trigger_name_value",
-            risk_details=dlp.AnalyzeDataSourceRiskDetails(
-                requested_privacy_metric=dlp.PrivacyMetric(
-                    numerical_stats_config=dlp.PrivacyMetric.NumericalStatsConfig(
-                        field=storage.FieldId(name="name_value")
-                    )
-                )
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -14971,13 +14911,6 @@ def test_create_dlp_job_rest(request_type):
             type_=dlp.DlpJobType.INSPECT_JOB,
             state=dlp.DlpJob.JobState.PENDING,
             job_trigger_name="job_trigger_name_value",
-            risk_details=dlp.AnalyzeDataSourceRiskDetails(
-                requested_privacy_metric=dlp.PrivacyMetric(
-                    numerical_stats_config=dlp.PrivacyMetric.NumericalStatsConfig(
-                        field=storage.FieldId(name="name_value")
-                    )
-                )
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -15599,13 +15532,6 @@ def test_get_dlp_job_rest(request_type):
             type_=dlp.DlpJobType.INSPECT_JOB,
             state=dlp.DlpJob.JobState.PENDING,
             job_trigger_name="job_trigger_name_value",
-            risk_details=dlp.AnalyzeDataSourceRiskDetails(
-                requested_privacy_metric=dlp.PrivacyMetric(
-                    numerical_stats_config=dlp.PrivacyMetric.NumericalStatsConfig(
-                        field=storage.FieldId(name="name_value")
-                    )
-                )
-            ),
         )
 
         # Wrap the value into a proper Response obj

@@ -94,71 +94,46 @@ class FileType(proto.Enum):
             storage scan.
         TEXT_FILE (2):
             Included file extensions:
-
-            ::
-
-                 asc,asp, aspx, brf, c, cc,cfm, cgi, cpp, csv, cxx, c++, cs, css, dart,
-                 dat, dot, eml,, epbub, ged, go, h, hh, hpp, hxx, h++, hs, html, htm,
-                 mkd, markdown, m, ml, mli, perl, pl, plist, pm, php, phtml, pht,
-                 properties, py, pyw, rb, rbw, rs, rss,  rc, scala, sh, sql, swift, tex,
-                 shtml, shtm, xhtml, lhs, ics, ini, java, js, json, kix, kml, ocaml, md,
-                 txt, text, tsv, vb, vcard, vcs, wml, xcodeproj, xml, xsl, xsd, yml, yaml.
+            asc,asp, aspx, brf, c, cc,cfm, cgi, cpp, csv,
+            cxx, c++, cs, css, dart,   dat, dot, eml,,
+            epbub, ged, go, h, hh, hpp, hxx, h++, hs, html,
+            htm,   mkd, markdown, m, ml, mli, perl, pl,
+            plist, pm, php, phtml, pht,   properties, py,
+            pyw, rb, rbw, rs, rss,  rc, scala, sh, sql,
+            swift, tex,   shtml, shtm, xhtml, lhs, ics, ini,
+            java, js, json, kix, kml, ocaml, md,   txt,
+            text, tsv, vb, vcard, vcs, wml, xcodeproj, xml,
+            xsl, xsd, yml, yaml.
         IMAGE (3):
-            Included file extensions:
-
-            ::
-
-                 bmp, gif, jpg, jpeg, jpe, png.
-
+            Included file extensions: bmp, gif, jpg, jpeg, jpe, png.
             bytes_limit_per_file has no effect on image files. Image
             inspection is restricted to 'global', 'us', 'asia', and
             'europe'.
         WORD (5):
-            Word files >30 MB will be scanned as binary files. Included
-            file extensions:
-
-            ::
-
-                 docx, dotx, docm, dotm
+            Word files >30 MB will be scanned as binary
+            files. Included file extensions:
+              docx, dotx, docm, dotm
         PDF (6):
-            PDF files >30 MB will be scanned as binary files. Included
-            file extensions:
-
-            ::
-
-                 pdf
+            PDF files >30 MB will be scanned as binary
+            files. Included file extensions:
+              pdf
         AVRO (7):
             Included file extensions:
-
-            ::
-
-                 avro
+            avro
         CSV (8):
             Included file extensions:
-
-            ::
-
-                 csv
+            csv
         TSV (9):
             Included file extensions:
-
-            ::
-
-                 tsv
+            tsv
         POWERPOINT (11):
-            Powerpoint files >30 MB will be scanned as binary files.
-            Included file extensions:
-
-            ::
-
-                 pptx, pptm, potx, potm, pot
+            Powerpoint files >30 MB will be scanned as
+            binary files. Included file extensions:
+              pptx, pptm, potx, potm, pot
         EXCEL (12):
-            Excel files >30 MB will be scanned as binary files. Included
-            file extensions:
-
-            ::
-
-                 xlsx, xlsm, xltx, xltm
+            Excel files >30 MB will be scanned as binary
+            files. Included file extensions:
+              xlsx, xlsm, xltx, xltm
     """
     FILE_TYPE_UNSPECIFIED = 0
     BINARY_FILE = 1
