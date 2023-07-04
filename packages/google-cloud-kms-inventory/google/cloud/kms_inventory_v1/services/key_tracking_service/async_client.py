@@ -469,7 +469,7 @@ class KeyTrackingServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "KeyTrackingServiceAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):

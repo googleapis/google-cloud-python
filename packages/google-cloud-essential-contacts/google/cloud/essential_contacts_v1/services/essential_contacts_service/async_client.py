@@ -963,7 +963,7 @@ class EssentialContactsServiceAsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "EssentialContactsServiceAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
