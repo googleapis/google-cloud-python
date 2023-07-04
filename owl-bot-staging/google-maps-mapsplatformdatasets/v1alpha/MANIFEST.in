@@ -1,2 +1,0 @@
-recursive-include google/maps/mapsplatformdatasets *.py
-recursive-include google/maps/mapsplatformdatasets_v1alpha *.py

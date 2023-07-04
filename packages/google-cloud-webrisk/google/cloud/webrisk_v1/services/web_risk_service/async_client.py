@@ -1057,7 +1057,7 @@ class WebRiskServiceAsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "WebRiskServiceAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):

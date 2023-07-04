@@ -790,7 +790,6 @@ def test_create_dataset(request_type, transport: str = "grpc"):
             usage=[gmm_dataset.Usage.USAGE_DATA_DRIVEN_STYLING],
             status=gmm_dataset.State.STATE_IMPORTING,
             version_description="version_description_value",
-            local_file_source=data_source.LocalFileSource(filename="filename_value"),
         )
         response = client.create_dataset(request)
 
@@ -1056,7 +1055,6 @@ def test_update_dataset_metadata(request_type, transport: str = "grpc"):
             usage=[gmm_dataset.Usage.USAGE_DATA_DRIVEN_STYLING],
             status=gmm_dataset.State.STATE_IMPORTING,
             version_description="version_description_value",
-            local_file_source=data_source.LocalFileSource(filename="filename_value"),
         )
         response = client.update_dataset_metadata(request)
 
@@ -1332,7 +1330,6 @@ def test_get_dataset(request_type, transport: str = "grpc"):
             usage=[dataset.Usage.USAGE_DATA_DRIVEN_STYLING],
             status=dataset.State.STATE_IMPORTING,
             version_description="version_description_value",
-            local_file_source=data_source.LocalFileSource(filename="filename_value"),
         )
         response = client.get_dataset(request)
 
@@ -1993,9 +1990,11 @@ async def test_list_dataset_versions_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_dataset_versions(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2414,9 +2413,11 @@ async def test_list_datasets_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_datasets(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2920,7 +2921,6 @@ def test_create_dataset_rest(request_type):
             usage=[gmm_dataset.Usage.USAGE_DATA_DRIVEN_STYLING],
             status=gmm_dataset.State.STATE_IMPORTING,
             version_description="version_description_value",
-            local_file_source=data_source.LocalFileSource(filename="filename_value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -3236,7 +3236,6 @@ def test_update_dataset_metadata_rest(request_type):
             usage=[gmm_dataset.Usage.USAGE_DATA_DRIVEN_STYLING],
             status=gmm_dataset.State.STATE_IMPORTING,
             version_description="version_description_value",
-            local_file_source=data_source.LocalFileSource(filename="filename_value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -3531,7 +3530,6 @@ def test_get_dataset_rest(request_type):
             usage=[dataset.Usage.USAGE_DATA_DRIVEN_STYLING],
             status=dataset.State.STATE_IMPORTING,
             version_description="version_description_value",
-            local_file_source=data_source.LocalFileSource(filename="filename_value"),
         )
 
         # Wrap the value into a proper Response obj
