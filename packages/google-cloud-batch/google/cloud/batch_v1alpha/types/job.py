@@ -281,7 +281,7 @@ class JobStatus(proto.Message):
 
         Values:
             STATE_UNSPECIFIED (0):
-                No description available.
+                Job state unspecified.
             QUEUED (1):
                 Job is admitted (validated and persisted) and
                 waiting for resources.
@@ -606,6 +606,7 @@ class AllocationPolicy(proto.Message):
                 -  "batch-debian": use Batch Debian images.
                 -  "batch-centos": use Batch CentOS images.
                 -  "batch-cos": use Batch Container-Optimized images.
+                -  "batch-hpc-centos": use Batch HPC CentOS images.
 
                 This field is a member of `oneof`_ ``data_source``.
             snapshot (str):
@@ -715,6 +716,10 @@ class AllocationPolicy(proto.Message):
             install_gpu_drivers (bool):
                 Deprecated: please use instances[0].install_gpu_drivers
                 instead.
+            driver_version (str):
+                The accelerator driver version that will be
+                installed for this type.
+                Not yet implemented.
         """
 
         type_: str = proto.Field(
@@ -728,6 +733,10 @@ class AllocationPolicy(proto.Message):
         install_gpu_drivers: bool = proto.Field(
             proto.BOOL,
             number=3,
+        )
+        driver_version: str = proto.Field(
+            proto.STRING,
+            number=4,
         )
 
     class InstancePolicy(proto.Message):
