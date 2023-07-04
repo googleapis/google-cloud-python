@@ -770,9 +770,6 @@ def test_create_connection(request_type, transport: str = "grpc"):
             creation_time=1379,
             last_modified_time=1890,
             has_credential=True,
-            cloud_sql=gcbc_connection.CloudSqlProperties(
-                instance_id="instance_id_value"
-            ),
         )
         response = client.create_connection(request)
 
@@ -1058,7 +1055,6 @@ def test_get_connection(request_type, transport: str = "grpc"):
             creation_time=1379,
             last_modified_time=1890,
             has_credential=True,
-            cloud_sql=connection.CloudSqlProperties(instance_id="instance_id_value"),
         )
         response = client.get_connection(request)
 
@@ -1696,9 +1692,11 @@ async def test_list_connections_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_connections(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1733,9 +1731,6 @@ def test_update_connection(request_type, transport: str = "grpc"):
             creation_time=1379,
             last_modified_time=1890,
             has_credential=True,
-            cloud_sql=gcbc_connection.CloudSqlProperties(
-                instance_id="instance_id_value"
-            ),
         )
         response = client.update_connection(request)
 
@@ -3081,9 +3076,6 @@ def test_create_connection_rest(request_type):
             creation_time=1379,
             last_modified_time=1890,
             has_credential=True,
-            cloud_sql=gcbc_connection.CloudSqlProperties(
-                instance_id="instance_id_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -3428,7 +3420,6 @@ def test_get_connection_rest(request_type):
             creation_time=1379,
             last_modified_time=1890,
             has_credential=True,
-            cloud_sql=connection.CloudSqlProperties(instance_id="instance_id_value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -4118,9 +4109,6 @@ def test_update_connection_rest(request_type):
             creation_time=1379,
             last_modified_time=1890,
             has_credential=True,
-            cloud_sql=gcbc_connection.CloudSqlProperties(
-                instance_id="instance_id_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
