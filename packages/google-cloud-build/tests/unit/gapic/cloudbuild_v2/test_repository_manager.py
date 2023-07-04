@@ -1036,11 +1036,6 @@ def test_get_connection(request_type, transport: str = "grpc"):
             disabled=True,
             reconciling=True,
             etag="etag_value",
-            github_config=repositories.GitHubConfig(
-                authorizer_credential=repositories.OAuthCredential(
-                    oauth_token_secret_version="oauth_token_secret_version_value"
-                )
-            ),
         )
         response = client.get_connection(request)
 
@@ -1672,9 +1667,11 @@ async def test_list_connections_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_connections(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3359,9 +3356,11 @@ async def test_list_repositories_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_repositories(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4435,9 +4434,11 @@ async def test_fetch_linkable_repositories_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.fetch_linkable_repositories(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5082,11 +5083,6 @@ def test_get_connection_rest(request_type):
             disabled=True,
             reconciling=True,
             etag="etag_value",
-            github_config=repositories.GitHubConfig(
-                authorizer_credential=repositories.OAuthCredential(
-                    oauth_token_secret_version="oauth_token_secret_version_value"
-                )
-            ),
         )
 
         # Wrap the value into a proper Response obj

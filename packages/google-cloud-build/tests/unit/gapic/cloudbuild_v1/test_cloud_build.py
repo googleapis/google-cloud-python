@@ -1632,9 +1632,11 @@ async def test_list_builds_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_builds(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3424,9 +3426,11 @@ async def test_list_build_triggers_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_build_triggers(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4688,11 +4692,6 @@ def test_get_worker_pool(request_type, transport: str = "grpc"):
             uid="uid_value",
             state=cloudbuild.WorkerPool.State.CREATING,
             etag="etag_value",
-            private_pool_v1_config=cloudbuild.PrivatePoolV1Config(
-                worker_config=cloudbuild.PrivatePoolV1Config.WorkerConfig(
-                    machine_type="machine_type_value"
-                )
-            ),
         )
         response = client.get_worker_pool(request)
 
@@ -5839,9 +5838,11 @@ async def test_list_worker_pools_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_worker_pools(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -11130,11 +11131,6 @@ def test_get_worker_pool_rest(request_type):
             uid="uid_value",
             state=cloudbuild.WorkerPool.State.CREATING,
             etag="etag_value",
-            private_pool_v1_config=cloudbuild.PrivatePoolV1Config(
-                worker_config=cloudbuild.PrivatePoolV1Config.WorkerConfig(
-                    machine_type="machine_type_value"
-                )
-            ),
         )
 
         # Wrap the value into a proper Response obj
