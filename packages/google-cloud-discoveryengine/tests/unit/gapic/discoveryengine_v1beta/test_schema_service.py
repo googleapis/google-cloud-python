@@ -738,13 +738,7 @@ def test_get_schema(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = schema.Schema(
             name="name_value",
-            struct_schema=struct_pb2.Struct(
-                fields={
-                    "key_value": struct_pb2.Value(
-                        null_value=struct_pb2.NullValue.NULL_VALUE
-                    )
-                }
-            ),
+            json_schema="json_schema_value",
         )
         response = client.get_schema(request)
 
@@ -1363,9 +1357,11 @@ async def test_list_schemas_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_schemas(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2059,13 +2055,7 @@ def test_get_schema_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = schema.Schema(
             name="name_value",
-            struct_schema=struct_pb2.Struct(
-                fields={
-                    "key_value": struct_pb2.Value(
-                        null_value=struct_pb2.NullValue.NULL_VALUE
-                    )
-                }
-            ),
+            json_schema="json_schema_value",
         )
 
         # Wrap the value into a proper Response obj

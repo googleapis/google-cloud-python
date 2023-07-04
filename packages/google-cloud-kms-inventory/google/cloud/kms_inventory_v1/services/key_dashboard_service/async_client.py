@@ -42,7 +42,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.kms_v1.types import resources
+from google.cloud.kms.v1 import resources_pb2  # type: ignore
 
 from google.cloud.kms_inventory_v1.services.key_dashboard_service import pagers
 from google.cloud.kms_inventory_v1.types import key_dashboard_service
@@ -347,7 +347,7 @@ class KeyDashboardServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "KeyDashboardServiceAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
