@@ -641,7 +641,7 @@ class AuthorizedCertificatesAsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "AuthorizedCertificatesAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):

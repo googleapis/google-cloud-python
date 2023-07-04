@@ -1017,9 +1017,11 @@ async def test_list_versions_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_versions(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1065,9 +1067,6 @@ def test_get_version(request_type, transport: str = "grpc"):
             service_account="service_account_value",
             nobuild_files_regex="nobuild_files_regex_value",
             version_url="version_url_value",
-            automatic_scaling=version.AutomaticScaling(
-                cool_down_period=duration_pb2.Duration(seconds=751)
-            ),
         )
         response = client.get_version(request)
 
@@ -1901,9 +1900,6 @@ def test_get_version_rest(request_type):
             service_account="service_account_value",
             nobuild_files_regex="nobuild_files_regex_value",
             version_url="version_url_value",
-            automatic_scaling=version.AutomaticScaling(
-                cool_down_period=duration_pb2.Duration(seconds=751)
-            ),
         )
 
         # Wrap the value into a proper Response obj
