@@ -1175,9 +1175,11 @@ async def test_list_key_rings_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_key_rings(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1599,9 +1601,11 @@ async def test_list_crypto_keys_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_crypto_keys(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2045,9 +2049,11 @@ async def test_list_crypto_key_versions_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_crypto_key_versions(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2469,9 +2475,11 @@ async def test_list_import_jobs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_import_jobs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2730,7 +2738,6 @@ def test_get_crypto_key(request_type, transport: str = "grpc"):
             purpose=resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT,
             import_only=True,
             crypto_key_backend="crypto_key_backend_value",
-            rotation_period=duration_pb2.Duration(seconds=751),
         )
         response = client.get_crypto_key(request)
 
@@ -4009,7 +4016,6 @@ def test_create_crypto_key(request_type, transport: str = "grpc"):
             purpose=resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT,
             import_only=True,
             crypto_key_backend="crypto_key_backend_value",
-            rotation_period=duration_pb2.Duration(seconds=751),
         )
         response = client.create_crypto_key(request)
 
@@ -5080,7 +5086,6 @@ def test_update_crypto_key(request_type, transport: str = "grpc"):
             purpose=resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT,
             import_only=True,
             crypto_key_backend="crypto_key_backend_value",
-            rotation_period=duration_pb2.Duration(seconds=751),
         )
         response = client.update_crypto_key(request)
 
@@ -5651,7 +5656,6 @@ def test_update_crypto_key_primary_version(request_type, transport: str = "grpc"
             purpose=resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT,
             import_only=True,
             crypto_key_backend="crypto_key_backend_value",
-            rotation_period=duration_pb2.Duration(seconds=751),
         )
         response = client.update_crypto_key_primary_version(request)
 
@@ -10325,7 +10329,6 @@ def test_get_crypto_key_rest(request_type):
             purpose=resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT,
             import_only=True,
             crypto_key_backend="crypto_key_backend_value",
-            rotation_period=duration_pb2.Duration(seconds=751),
         )
 
         # Wrap the value into a proper Response obj
@@ -11798,7 +11801,6 @@ def test_create_crypto_key_rest(request_type):
             purpose=resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT,
             import_only=True,
             crypto_key_backend="crypto_key_backend_value",
-            rotation_period=duration_pb2.Duration(seconds=751),
         )
 
         # Wrap the value into a proper Response obj
@@ -13199,7 +13201,6 @@ def test_update_crypto_key_rest(request_type):
             purpose=resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT,
             import_only=True,
             crypto_key_backend="crypto_key_backend_value",
-            rotation_period=duration_pb2.Duration(seconds=751),
         )
 
         # Wrap the value into a proper Response obj
@@ -13918,7 +13919,6 @@ def test_update_crypto_key_primary_version_rest(request_type):
             purpose=resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT,
             import_only=True,
             crypto_key_backend="crypto_key_backend_value",
-            rotation_period=duration_pb2.Duration(seconds=751),
         )
 
         # Wrap the value into a proper Response obj
