@@ -3078,6 +3078,180 @@ class KeyManagementServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def raw_encrypt(
+        self,
+        request: Optional[Union[service.RawEncryptRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> service.RawEncryptResponse:
+        r"""Encrypts data using portable cryptographic primitives. Most
+        users should choose
+        [Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt] and
+        [Decrypt][google.cloud.kms.v1.KeyManagementService.Decrypt]
+        rather than their raw counterparts. The
+        [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] must
+        be
+        [RAW_ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.RAW_ENCRYPT_DECRYPT].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import kms_v1
+
+            async def sample_raw_encrypt():
+                # Create a client
+                client = kms_v1.KeyManagementServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.RawEncryptRequest(
+                    name="name_value",
+                    plaintext=b'plaintext_blob',
+                )
+
+                # Make the request
+                response = await client.raw_encrypt(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.kms_v1.types.RawEncryptRequest, dict]]):
+                The request object. Request message for
+                [KeyManagementService.RawEncrypt][google.cloud.kms.v1.KeyManagementService.RawEncrypt].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.kms_v1.types.RawEncryptResponse:
+                Response message for
+                   [KeyManagementService.RawEncrypt][google.cloud.kms.v1.KeyManagementService.RawEncrypt].
+
+        """
+        # Create or coerce a protobuf request object.
+        request = service.RawEncryptRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.raw_encrypt,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def raw_decrypt(
+        self,
+        request: Optional[Union[service.RawDecryptRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> service.RawDecryptResponse:
+        r"""Decrypts data that was originally encrypted using a raw
+        cryptographic mechanism. The
+        [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] must
+        be
+        [RAW_ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.RAW_ENCRYPT_DECRYPT].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import kms_v1
+
+            async def sample_raw_decrypt():
+                # Create a client
+                client = kms_v1.KeyManagementServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.RawDecryptRequest(
+                    name="name_value",
+                    ciphertext=b'ciphertext_blob',
+                    initialization_vector=b'initialization_vector_blob',
+                )
+
+                # Make the request
+                response = await client.raw_decrypt(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.kms_v1.types.RawDecryptRequest, dict]]):
+                The request object. Request message for
+                [KeyManagementService.RawDecrypt][google.cloud.kms.v1.KeyManagementService.RawDecrypt].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.kms_v1.types.RawDecryptResponse:
+                Response message for
+                   [KeyManagementService.RawDecrypt][google.cloud.kms.v1.KeyManagementService.RawDecrypt].
+
+        """
+        # Create or coerce a protobuf request object.
+        request = service.RawDecryptRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.raw_decrypt,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def asymmetric_sign(
         self,
         request: Optional[Union[service.AsymmetricSignRequest, dict]] = None,

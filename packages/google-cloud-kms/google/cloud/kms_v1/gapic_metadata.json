@@ -244,6 +244,16 @@
                 "mac_verify"
               ]
             },
+            "RawDecrypt": {
+              "methods": [
+                "raw_decrypt"
+              ]
+            },
+            "RawEncrypt": {
+              "methods": [
+                "raw_encrypt"
+              ]
+            },
             "RestoreCryptoKeyVersion": {
               "methods": [
                 "restore_crypto_key_version"
@@ -379,6 +389,16 @@
                 "mac_verify"
               ]
             },
+            "RawDecrypt": {
+              "methods": [
+                "raw_decrypt"
+              ]
+            },
+            "RawEncrypt": {
+              "methods": [
+                "raw_encrypt"
+              ]
+            },
             "RestoreCryptoKeyVersion": {
               "methods": [
                 "restore_crypto_key_version"
@@ -512,6 +532,16 @@
             "MacVerify": {
               "methods": [
                 "mac_verify"
+              ]
+            },
+            "RawDecrypt": {
+              "methods": [
+                "raw_decrypt"
+              ]
+            },
+            "RawEncrypt": {
+              "methods": [
+                "raw_encrypt"
               ]
             },
             "RestoreCryptoKeyVersion": {

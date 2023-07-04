@@ -239,6 +239,15 @@ class CryptoKey(proto.Message):
                 [AsymmetricDecrypt][google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt]
                 and
                 [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
+            RAW_ENCRYPT_DECRYPT (7):
+                [CryptoKeys][google.cloud.kms.v1.CryptoKey] with this
+                purpose may be used with
+                [RawEncrypt][google.cloud.kms.v1.KeyManagementService.RawEncrypt]
+                and
+                [RawDecrypt][google.cloud.kms.v1.KeyManagementService.RawDecrypt].
+                This purpose is meant to be used for interoperable symmetric
+                encryption and does not support automatic CryptoKey
+                rotation.
             MAC (9):
                 [CryptoKeys][google.cloud.kms.v1.CryptoKey] with this
                 purpose may be used with
@@ -248,6 +257,7 @@ class CryptoKey(proto.Message):
         ENCRYPT_DECRYPT = 1
         ASYMMETRIC_SIGN = 5
         ASYMMETRIC_DECRYPT = 6
+        RAW_ENCRYPT_DECRYPT = 7
         MAC = 9
 
     name: str = proto.Field(
@@ -586,6 +596,12 @@ class CryptoKeyVersion(proto.Message):
                 Not specified.
             GOOGLE_SYMMETRIC_ENCRYPTION (1):
                 Creates symmetric encryption keys.
+            AES_128_GCM (41):
+                AES-GCM (Galois Counter Mode) using 128-bit
+                keys.
+            AES_256_GCM (19):
+                AES-GCM (Galois Counter Mode) using 256-bit
+                keys.
             RSA_SIGN_PSS_2048_SHA256 (2):
                 RSASSA-PSS 2048 bit key with a SHA256 digest.
             RSA_SIGN_PSS_3072_SHA256 (3):
@@ -654,6 +670,8 @@ class CryptoKeyVersion(proto.Message):
         """
         CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED = 0
         GOOGLE_SYMMETRIC_ENCRYPTION = 1
+        AES_128_GCM = 41
+        AES_256_GCM = 19
         RSA_SIGN_PSS_2048_SHA256 = 2
         RSA_SIGN_PSS_3072_SHA256 = 3
         RSA_SIGN_PSS_4096_SHA256 = 4

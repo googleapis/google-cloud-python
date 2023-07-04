@@ -885,6 +885,69 @@ class KeyManagementServiceGrpcTransport(KeyManagementServiceTransport):
         return self._stubs["decrypt"]
 
     @property
+    def raw_encrypt(
+        self,
+    ) -> Callable[[service.RawEncryptRequest], service.RawEncryptResponse]:
+        r"""Return a callable for the raw encrypt method over gRPC.
+
+        Encrypts data using portable cryptographic primitives. Most
+        users should choose
+        [Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt] and
+        [Decrypt][google.cloud.kms.v1.KeyManagementService.Decrypt]
+        rather than their raw counterparts. The
+        [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] must
+        be
+        [RAW_ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.RAW_ENCRYPT_DECRYPT].
+
+        Returns:
+            Callable[[~.RawEncryptRequest],
+                    ~.RawEncryptResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "raw_encrypt" not in self._stubs:
+            self._stubs["raw_encrypt"] = self.grpc_channel.unary_unary(
+                "/google.cloud.kms.v1.KeyManagementService/RawEncrypt",
+                request_serializer=service.RawEncryptRequest.serialize,
+                response_deserializer=service.RawEncryptResponse.deserialize,
+            )
+        return self._stubs["raw_encrypt"]
+
+    @property
+    def raw_decrypt(
+        self,
+    ) -> Callable[[service.RawDecryptRequest], service.RawDecryptResponse]:
+        r"""Return a callable for the raw decrypt method over gRPC.
+
+        Decrypts data that was originally encrypted using a raw
+        cryptographic mechanism. The
+        [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] must
+        be
+        [RAW_ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.RAW_ENCRYPT_DECRYPT].
+
+        Returns:
+            Callable[[~.RawDecryptRequest],
+                    ~.RawDecryptResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "raw_decrypt" not in self._stubs:
+            self._stubs["raw_decrypt"] = self.grpc_channel.unary_unary(
+                "/google.cloud.kms.v1.KeyManagementService/RawDecrypt",
+                request_serializer=service.RawDecryptRequest.serialize,
+                response_deserializer=service.RawDecryptResponse.deserialize,
+            )
+        return self._stubs["raw_decrypt"]
+
+    @property
     def asymmetric_sign(
         self,
     ) -> Callable[[service.AsymmetricSignRequest], service.AsymmetricSignResponse]:

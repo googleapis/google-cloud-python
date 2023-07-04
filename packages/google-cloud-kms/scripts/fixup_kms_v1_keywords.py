@@ -65,6 +65,8 @@ class kmsCallTransformer(cst.CSTTransformer):
         'list_key_rings': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'mac_sign': ('name', 'data', 'data_crc32c', ),
         'mac_verify': ('name', 'data', 'mac', 'data_crc32c', 'mac_crc32c', ),
+        'raw_decrypt': ('name', 'ciphertext', 'initialization_vector', 'additional_authenticated_data', 'tag_length', 'ciphertext_crc32c', 'additional_authenticated_data_crc32c', 'initialization_vector_crc32c', ),
+        'raw_encrypt': ('name', 'plaintext', 'additional_authenticated_data', 'plaintext_crc32c', 'additional_authenticated_data_crc32c', 'initialization_vector', 'initialization_vector_crc32c', ),
         'restore_crypto_key_version': ('name', ),
         'update_crypto_key': ('crypto_key', 'update_mask', ),
         'update_crypto_key_primary_version': ('name', 'crypto_key_version_id', ),

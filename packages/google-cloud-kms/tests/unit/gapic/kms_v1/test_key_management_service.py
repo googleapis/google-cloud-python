@@ -6993,6 +6993,350 @@ async def test_decrypt_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        service.RawEncryptRequest,
+        dict,
+    ],
+)
+def test_raw_encrypt(request_type, transport: str = "grpc"):
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.raw_encrypt), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.RawEncryptResponse(
+            ciphertext=b"ciphertext_blob",
+            initialization_vector=b"initialization_vector_blob",
+            tag_length=1053,
+            verified_plaintext_crc32c=True,
+            verified_additional_authenticated_data_crc32c=True,
+            verified_initialization_vector_crc32c=True,
+            name="name_value",
+            protection_level=resources.ProtectionLevel.SOFTWARE,
+        )
+        response = client.raw_encrypt(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.RawEncryptRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.RawEncryptResponse)
+    assert response.ciphertext == b"ciphertext_blob"
+    assert response.initialization_vector == b"initialization_vector_blob"
+    assert response.tag_length == 1053
+    assert response.verified_plaintext_crc32c is True
+    assert response.verified_additional_authenticated_data_crc32c is True
+    assert response.verified_initialization_vector_crc32c is True
+    assert response.name == "name_value"
+    assert response.protection_level == resources.ProtectionLevel.SOFTWARE
+
+
+def test_raw_encrypt_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.raw_encrypt), "__call__") as call:
+        client.raw_encrypt()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.RawEncryptRequest()
+
+
+@pytest.mark.asyncio
+async def test_raw_encrypt_async(
+    transport: str = "grpc_asyncio", request_type=service.RawEncryptRequest
+):
+    client = KeyManagementServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.raw_encrypt), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.RawEncryptResponse(
+                ciphertext=b"ciphertext_blob",
+                initialization_vector=b"initialization_vector_blob",
+                tag_length=1053,
+                verified_plaintext_crc32c=True,
+                verified_additional_authenticated_data_crc32c=True,
+                verified_initialization_vector_crc32c=True,
+                name="name_value",
+                protection_level=resources.ProtectionLevel.SOFTWARE,
+            )
+        )
+        response = await client.raw_encrypt(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.RawEncryptRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.RawEncryptResponse)
+    assert response.ciphertext == b"ciphertext_blob"
+    assert response.initialization_vector == b"initialization_vector_blob"
+    assert response.tag_length == 1053
+    assert response.verified_plaintext_crc32c is True
+    assert response.verified_additional_authenticated_data_crc32c is True
+    assert response.verified_initialization_vector_crc32c is True
+    assert response.name == "name_value"
+    assert response.protection_level == resources.ProtectionLevel.SOFTWARE
+
+
+@pytest.mark.asyncio
+async def test_raw_encrypt_async_from_dict():
+    await test_raw_encrypt_async(request_type=dict)
+
+
+def test_raw_encrypt_field_headers():
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.RawEncryptRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.raw_encrypt), "__call__") as call:
+        call.return_value = service.RawEncryptResponse()
+        client.raw_encrypt(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_raw_encrypt_field_headers_async():
+    client = KeyManagementServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.RawEncryptRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.raw_encrypt), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.RawEncryptResponse()
+        )
+        await client.raw_encrypt(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.RawDecryptRequest,
+        dict,
+    ],
+)
+def test_raw_decrypt(request_type, transport: str = "grpc"):
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.raw_decrypt), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.RawDecryptResponse(
+            plaintext=b"plaintext_blob",
+            protection_level=resources.ProtectionLevel.SOFTWARE,
+            verified_ciphertext_crc32c=True,
+            verified_additional_authenticated_data_crc32c=True,
+            verified_initialization_vector_crc32c=True,
+        )
+        response = client.raw_decrypt(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.RawDecryptRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.RawDecryptResponse)
+    assert response.plaintext == b"plaintext_blob"
+    assert response.protection_level == resources.ProtectionLevel.SOFTWARE
+    assert response.verified_ciphertext_crc32c is True
+    assert response.verified_additional_authenticated_data_crc32c is True
+    assert response.verified_initialization_vector_crc32c is True
+
+
+def test_raw_decrypt_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.raw_decrypt), "__call__") as call:
+        client.raw_decrypt()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.RawDecryptRequest()
+
+
+@pytest.mark.asyncio
+async def test_raw_decrypt_async(
+    transport: str = "grpc_asyncio", request_type=service.RawDecryptRequest
+):
+    client = KeyManagementServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.raw_decrypt), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.RawDecryptResponse(
+                plaintext=b"plaintext_blob",
+                protection_level=resources.ProtectionLevel.SOFTWARE,
+                verified_ciphertext_crc32c=True,
+                verified_additional_authenticated_data_crc32c=True,
+                verified_initialization_vector_crc32c=True,
+            )
+        )
+        response = await client.raw_decrypt(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.RawDecryptRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.RawDecryptResponse)
+    assert response.plaintext == b"plaintext_blob"
+    assert response.protection_level == resources.ProtectionLevel.SOFTWARE
+    assert response.verified_ciphertext_crc32c is True
+    assert response.verified_additional_authenticated_data_crc32c is True
+    assert response.verified_initialization_vector_crc32c is True
+
+
+@pytest.mark.asyncio
+async def test_raw_decrypt_async_from_dict():
+    await test_raw_decrypt_async(request_type=dict)
+
+
+def test_raw_decrypt_field_headers():
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.RawDecryptRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.raw_decrypt), "__call__") as call:
+        call.return_value = service.RawDecryptResponse()
+        client.raw_decrypt(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_raw_decrypt_field_headers_async():
+    client = KeyManagementServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.RawDecryptRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.raw_decrypt), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.RawDecryptResponse()
+        )
+        await client.raw_decrypt(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         service.AsymmetricSignRequest,
         dict,
     ],
@@ -15034,6 +15378,483 @@ def test_decrypt_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        service.RawEncryptRequest,
+        dict,
+    ],
+)
+def test_raw_encrypt_rest(request_type):
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/keyRings/sample3/cryptoKeys/sample4/cryptoKeyVersions/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.RawEncryptResponse(
+            ciphertext=b"ciphertext_blob",
+            initialization_vector=b"initialization_vector_blob",
+            tag_length=1053,
+            verified_plaintext_crc32c=True,
+            verified_additional_authenticated_data_crc32c=True,
+            verified_initialization_vector_crc32c=True,
+            name="name_value",
+            protection_level=resources.ProtectionLevel.SOFTWARE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.RawEncryptResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.raw_encrypt(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.RawEncryptResponse)
+    assert response.ciphertext == b"ciphertext_blob"
+    assert response.initialization_vector == b"initialization_vector_blob"
+    assert response.tag_length == 1053
+    assert response.verified_plaintext_crc32c is True
+    assert response.verified_additional_authenticated_data_crc32c is True
+    assert response.verified_initialization_vector_crc32c is True
+    assert response.name == "name_value"
+    assert response.protection_level == resources.ProtectionLevel.SOFTWARE
+
+
+def test_raw_encrypt_rest_required_fields(request_type=service.RawEncryptRequest):
+    transport_class = transports.KeyManagementServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["plaintext"] = b""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).raw_encrypt._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["plaintext"] = b"plaintext_blob"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).raw_encrypt._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "plaintext" in jsonified_request
+    assert jsonified_request["plaintext"] == b"plaintext_blob"
+
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.RawEncryptResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.RawEncryptResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.raw_encrypt(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_raw_encrypt_rest_unset_required_fields():
+    transport = transports.KeyManagementServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.raw_encrypt._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "plaintext",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_raw_encrypt_rest_interceptors(null_interceptor):
+    transport = transports.KeyManagementServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.KeyManagementServiceRestInterceptor(),
+    )
+    client = KeyManagementServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.KeyManagementServiceRestInterceptor, "post_raw_encrypt"
+    ) as post, mock.patch.object(
+        transports.KeyManagementServiceRestInterceptor, "pre_raw_encrypt"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.RawEncryptRequest.pb(service.RawEncryptRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.RawEncryptResponse.to_json(
+            service.RawEncryptResponse()
+        )
+
+        request = service.RawEncryptRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.RawEncryptResponse()
+
+        client.raw_encrypt(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_raw_encrypt_rest_bad_request(
+    transport: str = "rest", request_type=service.RawEncryptRequest
+):
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/keyRings/sample3/cryptoKeys/sample4/cryptoKeyVersions/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.raw_encrypt(request)
+
+
+def test_raw_encrypt_rest_error():
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.RawDecryptRequest,
+        dict,
+    ],
+)
+def test_raw_decrypt_rest(request_type):
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/keyRings/sample3/cryptoKeys/sample4/cryptoKeyVersions/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.RawDecryptResponse(
+            plaintext=b"plaintext_blob",
+            protection_level=resources.ProtectionLevel.SOFTWARE,
+            verified_ciphertext_crc32c=True,
+            verified_additional_authenticated_data_crc32c=True,
+            verified_initialization_vector_crc32c=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.RawDecryptResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.raw_decrypt(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.RawDecryptResponse)
+    assert response.plaintext == b"plaintext_blob"
+    assert response.protection_level == resources.ProtectionLevel.SOFTWARE
+    assert response.verified_ciphertext_crc32c is True
+    assert response.verified_additional_authenticated_data_crc32c is True
+    assert response.verified_initialization_vector_crc32c is True
+
+
+def test_raw_decrypt_rest_required_fields(request_type=service.RawDecryptRequest):
+    transport_class = transports.KeyManagementServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["ciphertext"] = b""
+    request_init["initialization_vector"] = b""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).raw_decrypt._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["ciphertext"] = b"ciphertext_blob"
+    jsonified_request["initializationVector"] = b"initialization_vector_blob"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).raw_decrypt._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "ciphertext" in jsonified_request
+    assert jsonified_request["ciphertext"] == b"ciphertext_blob"
+    assert "initializationVector" in jsonified_request
+    assert jsonified_request["initializationVector"] == b"initialization_vector_blob"
+
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.RawDecryptResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.RawDecryptResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.raw_decrypt(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_raw_decrypt_rest_unset_required_fields():
+    transport = transports.KeyManagementServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.raw_decrypt._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "ciphertext",
+                "initializationVector",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_raw_decrypt_rest_interceptors(null_interceptor):
+    transport = transports.KeyManagementServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.KeyManagementServiceRestInterceptor(),
+    )
+    client = KeyManagementServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.KeyManagementServiceRestInterceptor, "post_raw_decrypt"
+    ) as post, mock.patch.object(
+        transports.KeyManagementServiceRestInterceptor, "pre_raw_decrypt"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.RawDecryptRequest.pb(service.RawDecryptRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.RawDecryptResponse.to_json(
+            service.RawDecryptResponse()
+        )
+
+        request = service.RawDecryptRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.RawDecryptResponse()
+
+        client.raw_decrypt(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_raw_decrypt_rest_bad_request(
+    transport: str = "rest", request_type=service.RawDecryptRequest
+):
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/keyRings/sample3/cryptoKeys/sample4/cryptoKeyVersions/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.raw_decrypt(request)
+
+
+def test_raw_decrypt_rest_error():
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         service.AsymmetricSignRequest,
         dict,
     ],
@@ -16546,6 +17367,8 @@ def test_key_management_service_base_transport():
         "restore_crypto_key_version",
         "encrypt",
         "decrypt",
+        "raw_encrypt",
+        "raw_decrypt",
         "asymmetric_sign",
         "asymmetric_decrypt",
         "mac_sign",
@@ -16890,6 +17713,12 @@ def test_key_management_service_client_transport_session_collision(transport_nam
     assert session1 != session2
     session1 = client1.transport.decrypt._session
     session2 = client2.transport.decrypt._session
+    assert session1 != session2
+    session1 = client1.transport.raw_encrypt._session
+    session2 = client2.transport.raw_encrypt._session
+    assert session1 != session2
+    session1 = client1.transport.raw_decrypt._session
+    session2 = client2.transport.raw_decrypt._session
     assert session1 != session2
     session1 = client1.transport.asymmetric_sign._session
     session2 = client2.transport.asymmetric_sign._session

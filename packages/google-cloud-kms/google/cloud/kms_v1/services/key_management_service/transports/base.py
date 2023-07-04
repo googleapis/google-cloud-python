@@ -423,6 +423,16 @@ class KeyManagementServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.raw_encrypt: gapic_v1.method.wrap_method(
+                self.raw_encrypt,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.raw_decrypt: gapic_v1.method.wrap_method(
+                self.raw_decrypt,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.asymmetric_sign: gapic_v1.method.wrap_method(
                 self.asymmetric_sign,
                 default_retry=retries.Retry(
@@ -702,6 +712,24 @@ class KeyManagementServiceTransport(abc.ABC):
     ) -> Callable[
         [service.DecryptRequest],
         Union[service.DecryptResponse, Awaitable[service.DecryptResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def raw_encrypt(
+        self,
+    ) -> Callable[
+        [service.RawEncryptRequest],
+        Union[service.RawEncryptResponse, Awaitable[service.RawEncryptResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def raw_decrypt(
+        self,
+    ) -> Callable[
+        [service.RawDecryptRequest],
+        Union[service.RawDecryptResponse, Awaitable[service.RawDecryptResponse]],
     ]:
         raise NotImplementedError()
 
