@@ -811,7 +811,7 @@ class CloudChannelReportsServiceAsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "CloudChannelReportsServiceAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):

@@ -1147,9 +1147,11 @@ async def test_list_data_exchanges_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_data_exchanges(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1590,9 +1592,11 @@ async def test_list_org_data_exchanges_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_org_data_exchanges(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3074,9 +3078,11 @@ async def test_list_listings_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_listings(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3112,9 +3118,6 @@ def test_get_listing(request_type, transport: str = "grpc"):
             icon=b"icon_blob",
             categories=[dataexchange.Listing.Category.CATEGORY_OTHERS],
             request_access="request_access_value",
-            bigquery_dataset=dataexchange.Listing.BigQueryDatasetSource(
-                dataset="dataset_value"
-            ),
         )
         response = client.get_listing(request)
 
@@ -3379,9 +3382,6 @@ def test_create_listing(request_type, transport: str = "grpc"):
             icon=b"icon_blob",
             categories=[dataexchange.Listing.Category.CATEGORY_OTHERS],
             request_access="request_access_value",
-            bigquery_dataset=dataexchange.Listing.BigQueryDatasetSource(
-                dataset="dataset_value"
-            ),
         )
         response = client.create_listing(request)
 
@@ -3680,9 +3680,6 @@ def test_update_listing(request_type, transport: str = "grpc"):
             icon=b"icon_blob",
             categories=[dataexchange.Listing.Category.CATEGORY_OTHERS],
             request_access="request_access_value",
-            bigquery_dataset=dataexchange.Listing.BigQueryDatasetSource(
-                dataset="dataset_value"
-            ),
         )
         response = client.update_listing(request)
 

@@ -1042,9 +1042,11 @@ async def test_search_catalog_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.search_catalog(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2506,9 +2508,11 @@ async def test_list_entry_groups_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_entry_groups(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2541,9 +2545,6 @@ def test_create_entry(request_type, transport: str = "grpc"):
             description="description_value",
             type_=datacatalog.EntryType.TABLE,
             integrated_system=common.IntegratedSystem.BIGQUERY,
-            gcs_fileset_spec=gcs_fileset_spec.GcsFilesetSpec(
-                file_patterns=["file_patterns_value"]
-            ),
         )
         response = client.create_entry(request)
 
@@ -2806,9 +2807,6 @@ def test_update_entry(request_type, transport: str = "grpc"):
             description="description_value",
             type_=datacatalog.EntryType.TABLE,
             integrated_system=common.IntegratedSystem.BIGQUERY,
-            gcs_fileset_spec=gcs_fileset_spec.GcsFilesetSpec(
-                file_patterns=["file_patterns_value"]
-            ),
         )
         response = client.update_entry(request)
 
@@ -3281,9 +3279,6 @@ def test_get_entry(request_type, transport: str = "grpc"):
             description="description_value",
             type_=datacatalog.EntryType.TABLE,
             integrated_system=common.IntegratedSystem.BIGQUERY,
-            gcs_fileset_spec=gcs_fileset_spec.GcsFilesetSpec(
-                file_patterns=["file_patterns_value"]
-            ),
         )
         response = client.get_entry(request)
 
@@ -3526,9 +3521,6 @@ def test_lookup_entry(request_type, transport: str = "grpc"):
             description="description_value",
             type_=datacatalog.EntryType.TABLE,
             integrated_system=common.IntegratedSystem.BIGQUERY,
-            gcs_fileset_spec=gcs_fileset_spec.GcsFilesetSpec(
-                file_patterns=["file_patterns_value"]
-            ),
         )
         response = client.lookup_entry(request)
 
@@ -4017,9 +4009,11 @@ async def test_list_entries_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_entries(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7221,9 +7215,11 @@ async def test_list_tags_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_tags(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token

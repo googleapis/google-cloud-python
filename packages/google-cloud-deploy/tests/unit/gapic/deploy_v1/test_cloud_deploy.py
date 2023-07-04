@@ -1136,9 +1136,11 @@ async def test_list_delivery_pipelines_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_delivery_pipelines(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1172,9 +1174,6 @@ def test_get_delivery_pipeline(request_type, transport: str = "grpc"):
             description="description_value",
             etag="etag_value",
             suspended=True,
-            serial_pipeline=cloud_deploy.SerialPipeline(
-                stages=[cloud_deploy.Stage(target_id="target_id_value")]
-            ),
         )
         response = client.get_delivery_pipeline(request)
 
@@ -2579,9 +2578,11 @@ async def test_list_targets_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_targets(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2614,7 +2615,6 @@ def test_get_target(request_type, transport: str = "grpc"):
             description="description_value",
             require_approval=True,
             etag="etag_value",
-            gke=cloud_deploy.GkeCluster(cluster="cluster_value"),
         )
         response = client.get_target(request)
 
@@ -3960,9 +3960,11 @@ async def test_list_releases_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_releases(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5808,9 +5810,11 @@ async def test_list_rollouts_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_rollouts(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7248,9 +7252,11 @@ async def test_list_job_runs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_job_runs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7283,7 +7289,6 @@ def test_get_job_run(request_type, transport: str = "grpc"):
             job_id="job_id_value",
             state=cloud_deploy.JobRun.State.IN_PROGRESS,
             etag="etag_value",
-            deploy_job_run=cloud_deploy.DeployJobRun(build="build_value"),
         )
         response = client.get_job_run(request)
 
@@ -8353,9 +8358,6 @@ def test_get_delivery_pipeline_rest(request_type):
             description="description_value",
             etag="etag_value",
             suspended=True,
-            serial_pipeline=cloud_deploy.SerialPipeline(
-                stages=[cloud_deploy.Stage(target_id="target_id_value")]
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -10149,7 +10151,6 @@ def test_get_target_rest(request_type):
             description="description_value",
             require_approval=True,
             etag="etag_value",
-            gke=cloud_deploy.GkeCluster(cluster="cluster_value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -15769,7 +15770,6 @@ def test_get_job_run_rest(request_type):
             job_id="job_id_value",
             state=cloud_deploy.JobRun.State.IN_PROGRESS,
             etag="etag_value",
-            deploy_job_run=cloud_deploy.DeployJobRun(build="build_value"),
         )
 
         # Wrap the value into a proper Response obj
