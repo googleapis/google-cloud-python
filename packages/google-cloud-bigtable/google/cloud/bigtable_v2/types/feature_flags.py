@@ -39,12 +39,21 @@ class FeatureFlags(proto.Message):
     endusers directly.
 
     Attributes:
+        reverse_scans (bool):
+            Notify the server that the client supports
+            reverse scans. The server will reject
+            ReadRowsRequests with the reverse bit set when
+            this is absent.
         mutate_rows_rate_limit (bool):
             Notify the server that the client enables
             batch write flow control by requesting
             RateLimitInfo from MutateRowsResponse.
     """
 
+    reverse_scans: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
     mutate_rows_rate_limit: bool = proto.Field(
         proto.BOOL,
         number=3,

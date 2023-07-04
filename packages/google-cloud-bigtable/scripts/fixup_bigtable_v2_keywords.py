@@ -46,7 +46,7 @@ class bigtableCallTransformer(cst.CSTTransformer):
         'ping_and_warm': ('name', 'app_profile_id', ),
         'read_change_stream': ('table_name', 'app_profile_id', 'partition', 'start_time', 'continuation_tokens', 'end_time', 'heartbeat_duration', ),
         'read_modify_write_row': ('table_name', 'row_key', 'rules', 'app_profile_id', ),
-        'read_rows': ('table_name', 'app_profile_id', 'rows', 'filter', 'rows_limit', 'request_stats_view', ),
+        'read_rows': ('table_name', 'app_profile_id', 'rows', 'filter', 'rows_limit', 'request_stats_view', 'reversed_', ),
         'sample_row_keys': ('table_name', 'app_profile_id', ),
     }
 

@@ -590,7 +590,7 @@ class Backup(proto.Message):
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
             Required. The expiration time of the backup, with
             microseconds granularity that must be at least 6 hours and
-            at most 30 days from the time the request is received. Once
+            at most 90 days from the time the request is received. Once
             the ``expire_time`` has passed, Cloud Bigtable will delete
             the backup and free the resources used by the backup.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
