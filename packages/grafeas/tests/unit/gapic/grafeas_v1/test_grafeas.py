@@ -107,7 +107,6 @@ def test_get_occurrence(request_type, transport: str = "grpc"):
             note_name="note_name_value",
             kind=common.NoteKind.VULNERABILITY,
             remediation="remediation_value",
-            vulnerability=vulnerability.VulnerabilityOccurrence(type_="type__value"),
         )
         response = client.get_occurrence(request)
 
@@ -748,9 +747,11 @@ async def test_list_occurrences_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_occurrences(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1018,7 +1019,6 @@ def test_create_occurrence(request_type, transport: str = "grpc"):
             note_name="note_name_value",
             kind=common.NoteKind.VULNERABILITY,
             remediation="remediation_value",
-            vulnerability=vulnerability.VulnerabilityOccurrence(type_="type__value"),
         )
         response = client.create_occurrence(request)
 
@@ -1537,7 +1537,6 @@ def test_update_occurrence(request_type, transport: str = "grpc"):
             note_name="note_name_value",
             kind=common.NoteKind.VULNERABILITY,
             remediation="remediation_value",
-            vulnerability=vulnerability.VulnerabilityOccurrence(type_="type__value"),
         )
         response = client.update_occurrence(request)
 
@@ -1816,7 +1815,6 @@ def test_get_occurrence_note(request_type, transport: str = "grpc"):
             long_description="long_description_value",
             kind=common.NoteKind.VULNERABILITY,
             related_note_names=["related_note_names_value"],
-            vulnerability=vulnerability.VulnerabilityNote(cvss_score=0.1082),
         )
         response = client.get_occurrence_note(request)
 
@@ -2073,7 +2071,6 @@ def test_get_note(request_type, transport: str = "grpc"):
             long_description="long_description_value",
             kind=common.NoteKind.VULNERABILITY,
             related_note_names=["related_note_names_value"],
-            vulnerability=vulnerability.VulnerabilityNote(cvss_score=0.1082),
         )
         response = client.get_note(request)
 
@@ -2714,9 +2711,11 @@ async def test_list_notes_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_notes(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2968,7 +2967,6 @@ def test_create_note(request_type, transport: str = "grpc"):
             long_description="long_description_value",
             kind=common.NoteKind.VULNERABILITY,
             related_note_names=["related_note_names_value"],
-            vulnerability=vulnerability.VulnerabilityNote(cvss_score=0.1082),
         )
         response = client.create_note(request)
 
@@ -3483,7 +3481,6 @@ def test_update_note(request_type, transport: str = "grpc"):
             long_description="long_description_value",
             kind=common.NoteKind.VULNERABILITY,
             related_note_names=["related_note_names_value"],
-            vulnerability=vulnerability.VulnerabilityNote(cvss_score=0.1082),
         )
         response = client.update_note(request)
 
@@ -4166,9 +4163,11 @@ async def test_list_note_occurrences_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_note_occurrences(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4200,7 +4199,6 @@ def test_get_occurrence_rest(request_type):
             note_name="note_name_value",
             kind=common.NoteKind.VULNERABILITY,
             remediation="remediation_value",
-            vulnerability=vulnerability.VulnerabilityOccurrence(type_="type__value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -5358,7 +5356,6 @@ def test_create_occurrence_rest(request_type):
             note_name="note_name_value",
             kind=common.NoteKind.VULNERABILITY,
             remediation="remediation_value",
-            vulnerability=vulnerability.VulnerabilityOccurrence(type_="type__value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -6526,7 +6523,6 @@ def test_update_occurrence_rest(request_type):
             note_name="note_name_value",
             kind=common.NoteKind.VULNERABILITY,
             remediation="remediation_value",
-            vulnerability=vulnerability.VulnerabilityOccurrence(type_="type__value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -7118,7 +7114,6 @@ def test_get_occurrence_note_rest(request_type):
             long_description="long_description_value",
             kind=common.NoteKind.VULNERABILITY,
             related_note_names=["related_note_names_value"],
-            vulnerability=vulnerability.VulnerabilityNote(cvss_score=0.1082),
         )
 
         # Wrap the value into a proper Response obj
@@ -7390,7 +7385,6 @@ def test_get_note_rest(request_type):
             long_description="long_description_value",
             kind=common.NoteKind.VULNERABILITY,
             related_note_names=["related_note_names_value"],
-            vulnerability=vulnerability.VulnerabilityNote(cvss_score=0.1082),
         )
 
         # Wrap the value into a proper Response obj
@@ -8426,7 +8420,6 @@ def test_create_note_rest(request_type):
             long_description="long_description_value",
             kind=common.NoteKind.VULNERABILITY,
             related_note_names=["related_note_names_value"],
-            vulnerability=vulnerability.VulnerabilityNote(cvss_score=0.1082),
         )
 
         # Wrap the value into a proper Response obj
@@ -9375,7 +9368,6 @@ def test_update_note_rest(request_type):
             long_description="long_description_value",
             kind=common.NoteKind.VULNERABILITY,
             related_note_names=["related_note_names_value"],
-            vulnerability=vulnerability.VulnerabilityNote(cvss_score=0.1082),
         )
 
         # Wrap the value into a proper Response obj
