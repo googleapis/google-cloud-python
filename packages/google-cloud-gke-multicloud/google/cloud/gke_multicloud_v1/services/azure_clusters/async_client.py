@@ -2721,7 +2721,7 @@ class AzureClustersAsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "AzureClustersAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):

@@ -1600,7 +1600,7 @@ class AttachedClustersAsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "AttachedClustersAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
