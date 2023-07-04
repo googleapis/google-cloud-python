@@ -1,2 +1,0 @@
-recursive-include google/cloud/rapidmigrationassessment *.py
-recursive-include google/cloud/rapidmigrationassessment_v1 *.py

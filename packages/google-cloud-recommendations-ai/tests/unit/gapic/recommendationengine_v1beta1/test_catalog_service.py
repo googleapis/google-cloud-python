@@ -749,9 +749,6 @@ def test_create_catalog_item(request_type, transport: str = "grpc"):
             language_code="language_code_value",
             tags=["tags_value"],
             item_group_id="item_group_id_value",
-            product_metadata=catalog.ProductCatalogItem(
-                exact_price=catalog.ProductCatalogItem.ExactPrice(display_price=0.1384)
-            ),
         )
         response = client.create_catalog_item(request)
 
@@ -1023,9 +1020,6 @@ def test_get_catalog_item(request_type, transport: str = "grpc"):
             language_code="language_code_value",
             tags=["tags_value"],
             item_group_id="item_group_id_value",
-            product_metadata=catalog.ProductCatalogItem(
-                exact_price=catalog.ProductCatalogItem.ExactPrice(display_price=0.1384)
-            ),
         )
         response = client.get_catalog_item(request)
 
@@ -1692,9 +1686,11 @@ async def test_list_catalog_items_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_catalog_items(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1729,9 +1725,6 @@ def test_update_catalog_item(request_type, transport: str = "grpc"):
             language_code="language_code_value",
             tags=["tags_value"],
             item_group_id="item_group_id_value",
-            product_metadata=catalog.ProductCatalogItem(
-                exact_price=catalog.ProductCatalogItem.ExactPrice(display_price=0.1384)
-            ),
         )
         response = client.update_catalog_item(request)
 
@@ -2564,9 +2557,6 @@ def test_create_catalog_item_rest(request_type):
             language_code="language_code_value",
             tags=["tags_value"],
             item_group_id="item_group_id_value",
-            product_metadata=catalog.ProductCatalogItem(
-                exact_price=catalog.ProductCatalogItem.ExactPrice(display_price=0.1384)
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -2880,9 +2870,6 @@ def test_get_catalog_item_rest(request_type):
             language_code="language_code_value",
             tags=["tags_value"],
             item_group_id="item_group_id_value",
-            product_metadata=catalog.ProductCatalogItem(
-                exact_price=catalog.ProductCatalogItem.ExactPrice(display_price=0.1384)
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -3535,9 +3522,6 @@ def test_update_catalog_item_rest(request_type):
             language_code="language_code_value",
             tags=["tags_value"],
             item_group_id="item_group_id_value",
-            product_metadata=catalog.ProductCatalogItem(
-                exact_price=catalog.ProductCatalogItem.ExactPrice(display_price=0.1384)
-            ),
         )
 
         # Wrap the value into a proper Response obj

@@ -997,7 +997,7 @@ class OrganizationsAsyncClient:
         # Done; return the response.
         return response
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "OrganizationsAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):

@@ -1142,9 +1142,11 @@ async def test_list_runtimes_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_runtimes(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1174,7 +1176,6 @@ def test_get_runtime(request_type, transport: str = "grpc"):
             name="name_value",
             state=runtime.Runtime.State.STARTING,
             health_state=runtime.Runtime.HealthState.HEALTHY,
-            virtual_machine=runtime.VirtualMachine(instance_name="instance_name_value"),
         )
         response = client.get_runtime(request)
 

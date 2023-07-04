@@ -1171,9 +1171,11 @@ async def test_list_secrets_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_secrets(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1202,7 +1204,6 @@ def test_create_secret(request_type, transport: str = "grpc"):
         call.return_value = resources.Secret(
             name="name_value",
             etag="etag_value",
-            expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
         response = client.create_secret(request)
 
@@ -1723,7 +1724,6 @@ def test_get_secret(request_type, transport: str = "grpc"):
         call.return_value = resources.Secret(
             name="name_value",
             etag="etag_value",
-            expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
         response = client.get_secret(request)
 
@@ -1956,7 +1956,6 @@ def test_update_secret(request_type, transport: str = "grpc"):
         call.return_value = resources.Secret(
             name="name_value",
             etag="etag_value",
-            expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
         response = client.update_secret(request)
 
@@ -2834,9 +2833,11 @@ async def test_list_secret_versions_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_secret_versions(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5020,7 +5021,6 @@ def test_create_secret_rest(request_type):
         return_value = resources.Secret(
             name="name_value",
             etag="etag_value",
-            expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
 
         # Wrap the value into a proper Response obj
@@ -5618,7 +5618,6 @@ def test_get_secret_rest(request_type):
         return_value = resources.Secret(
             name="name_value",
             etag="etag_value",
-            expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
 
         # Wrap the value into a proper Response obj
@@ -5903,7 +5902,6 @@ def test_update_secret_rest(request_type):
         return_value = resources.Secret(
             name="name_value",
             etag="etag_value",
-            expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
 
         # Wrap the value into a proper Response obj

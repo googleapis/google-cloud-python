@@ -2827,7 +2827,7 @@ class NetworkSecurityAsyncClient:
         # Done; return the response.
         return response
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "NetworkSecurityAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):

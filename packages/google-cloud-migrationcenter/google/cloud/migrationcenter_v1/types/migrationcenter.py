@@ -5467,7 +5467,7 @@ class Aggregation(proto.Message):
             Count the number of matching objects.
 
             This field is a member of `oneof`_ ``aggregation_function``.
-        sum_ (google.cloud.migrationcenter_v1.types.Aggregation.Sum):
+        sum (google.cloud.migrationcenter_v1.types.Aggregation.Sum):
             Sum over a numeric field.
 
             This field is a member of `oneof`_ ``aggregation_function``.
@@ -5521,7 +5521,7 @@ class Aggregation(proto.Message):
         oneof="aggregation_function",
         message=Count,
     )
-    sum_: Sum = proto.Field(
+    sum: Sum = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="aggregation_function",
@@ -5557,7 +5557,7 @@ class AggregationResult(proto.Message):
         count (google.cloud.migrationcenter_v1.types.AggregationResult.Count):
 
             This field is a member of `oneof`_ ``result``.
-        sum_ (google.cloud.migrationcenter_v1.types.AggregationResult.Sum):
+        sum (google.cloud.migrationcenter_v1.types.AggregationResult.Sum):
 
             This field is a member of `oneof`_ ``result``.
         histogram (google.cloud.migrationcenter_v1.types.AggregationResult.Histogram):
@@ -5666,7 +5666,7 @@ class AggregationResult(proto.Message):
         oneof="result",
         message=Count,
     )
-    sum_: Sum = proto.Field(
+    sum: Sum = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="result",
