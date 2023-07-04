@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.2.1...google-ai-generativelanguage-v0.3.0) (2023-06-29)
+
+
+### Bug Fixes
+
+* remove `BLOCK_NONE` from `HarmBlockThreshold` ([9d46f7f](https://github.com/googleapis/google-cloud-python/commit/9d46f7f5c6d2f84b8e351969d4ab17b4195b941b))
+
 ## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.2.0...google-ai-generativelanguage-v0.2.1) (2023-06-03)
 
 

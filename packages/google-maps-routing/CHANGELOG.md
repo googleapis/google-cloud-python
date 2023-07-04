@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.5.1...google-maps-routing-v0.6.0) (2023-06-29)
+
+
+### Features
+
+* Add HTML Navigation Instructions feature to ComputeRoutes ([e6e1e79](https://github.com/googleapis/google-cloud-python/commit/e6e1e7981085ccd1b0c9d97cc1009a6683a9192b))
+* Add more navigation instruction maneuvers ([e6e1e79](https://github.com/googleapis/google-cloud-python/commit/e6e1e7981085ccd1b0c9d97cc1009a6683a9192b))
+* Add more toll pass values ([e6e1e79](https://github.com/googleapis/google-cloud-python/commit/e6e1e7981085ccd1b0c9d97cc1009a6683a9192b))
+* Add TrafficModel feature in ComputeRoutes and ComputeRouteMatrix ([e6e1e79](https://github.com/googleapis/google-cloud-python/commit/e6e1e7981085ccd1b0c9d97cc1009a6683a9192b))
+* Add Waypoint Optimization feature to ComputeRoutes ([e6e1e79](https://github.com/googleapis/google-cloud-python/commit/e6e1e7981085ccd1b0c9d97cc1009a6683a9192b))
+* Support returning localized values in ComputeRoutes and ComputeRouteMatrix ([e6e1e79](https://github.com/googleapis/google-cloud-python/commit/e6e1e7981085ccd1b0c9d97cc1009a6683a9192b))
+* Support Transit routes in ComputeRoutes and ComputeRouteMatrix ([e6e1e79](https://github.com/googleapis/google-cloud-python/commit/e6e1e7981085ccd1b0c9d97cc1009a6683a9192b))
+
 ## [0.5.1](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.5.0...google-maps-routing-v0.5.1) (2023-06-03)
 
 

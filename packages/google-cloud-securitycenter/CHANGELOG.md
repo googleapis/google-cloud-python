@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.22.0...google-cloud-securitycenter-v1.23.0) (2023-06-29)
+
+
+### Features
+
+* Mark the Asset APIs as deprecated ([#11429](https://github.com/googleapis/google-cloud-python/issues/11429)) ([3efd11b](https://github.com/googleapis/google-cloud-python/commit/3efd11bf1383481ef0e352071003a688da067802))
+
 ## [1.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.21.0...google-cloud-securitycenter-v1.22.0) (2023-06-13)
 
 
