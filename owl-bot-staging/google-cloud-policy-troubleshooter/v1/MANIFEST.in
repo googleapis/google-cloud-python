@@ -1,0 +1,2 @@
+recursive-include google/cloud/policytroubleshooter *.py
+recursive-include google/cloud/policytroubleshooter_v1 *.py
