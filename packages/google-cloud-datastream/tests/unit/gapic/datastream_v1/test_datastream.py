@@ -1140,9 +1140,11 @@ async def test_list_connection_profiles_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_connection_profiles(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1173,10 +1175,6 @@ def test_get_connection_profile(request_type, transport: str = "grpc"):
         call.return_value = datastream_resources.ConnectionProfile(
             name="name_value",
             display_name="display_name_value",
-            oracle_profile=datastream_resources.OracleProfile(
-                hostname="hostname_value"
-            ),
-            static_service_ip_connectivity=None,
         )
         response = client.get_connection_profile(request)
 
@@ -2193,13 +2191,7 @@ def test_discover_connection_profile(request_type, transport: str = "grpc"):
         type(client.transport.discover_connection_profile), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = datastream.DiscoverConnectionProfileResponse(
-            oracle_rdbms=datastream_resources.OracleRdbms(
-                oracle_schemas=[
-                    datastream_resources.OracleSchema(schema="schema_value")
-                ]
-            ),
-        )
+        call.return_value = datastream.DiscoverConnectionProfileResponse()
         response = client.discover_connection_profile(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2748,9 +2740,11 @@ async def test_list_streams_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_streams(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2781,13 +2775,6 @@ def test_get_stream(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=datastream_resources.Stream.State.NOT_STARTED,
             customer_managed_encryption_key="customer_managed_encryption_key_value",
-            backfill_all=datastream_resources.Stream.BackfillAllStrategy(
-                oracle_excluded_objects=datastream_resources.OracleRdbms(
-                    oracle_schemas=[
-                        datastream_resources.OracleSchema(schema="schema_value")
-                    ]
-                )
-            ),
         )
         response = client.get_stream(request)
 
@@ -4569,9 +4556,11 @@ async def test_list_stream_objects_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_stream_objects(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5473,9 +5462,11 @@ async def test_fetch_static_ips_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.fetch_static_ips(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6447,9 +6438,11 @@ async def test_list_private_connections_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_private_connections(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7602,9 +7595,11 @@ async def test_list_routes_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_routes(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8209,10 +8204,6 @@ def test_get_connection_profile_rest(request_type):
         return_value = datastream_resources.ConnectionProfile(
             name="name_value",
             display_name="display_name_value",
-            oracle_profile=datastream_resources.OracleProfile(
-                hostname="hostname_value"
-            ),
-            static_service_ip_connectivity=None,
         )
 
         # Wrap the value into a proper Response obj
@@ -9552,13 +9543,7 @@ def test_discover_connection_profile_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = datastream.DiscoverConnectionProfileResponse(
-            oracle_rdbms=datastream_resources.OracleRdbms(
-                oracle_schemas=[
-                    datastream_resources.OracleSchema(schema="schema_value")
-                ]
-            ),
-        )
+        return_value = datastream.DiscoverConnectionProfileResponse()
 
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -10116,13 +10101,6 @@ def test_get_stream_rest(request_type):
             display_name="display_name_value",
             state=datastream_resources.Stream.State.NOT_STARTED,
             customer_managed_encryption_key="customer_managed_encryption_key_value",
-            backfill_all=datastream_resources.Stream.BackfillAllStrategy(
-                oracle_excluded_objects=datastream_resources.OracleRdbms(
-                    oracle_schemas=[
-                        datastream_resources.OracleSchema(schema="schema_value")
-                    ]
-                )
-            ),
         )
 
         # Wrap the value into a proper Response obj

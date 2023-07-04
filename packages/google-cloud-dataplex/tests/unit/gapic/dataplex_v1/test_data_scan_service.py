@@ -1453,16 +1453,6 @@ def test_get_data_scan(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=resources.State.ACTIVE,
             type_=datascans.DataScanType.DATA_QUALITY,
-            data_quality_spec=data_quality.DataQualitySpec(
-                rules=[
-                    data_quality.DataQualityRule(
-                        range_expectation=data_quality.DataQualityRule.RangeExpectation(
-                            min_value="min_value_value"
-                        )
-                    )
-                ]
-            ),
-            data_quality_result=data_quality.DataQualityResult(passed=True),
         )
         response = client.get_data_scan(request)
 
@@ -2100,9 +2090,11 @@ async def test_list_data_scans_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_data_scans(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2362,16 +2354,6 @@ def test_get_data_scan_job(request_type, transport: str = "grpc"):
             state=datascans.DataScanJob.State.RUNNING,
             message="message_value",
             type_=datascans.DataScanType.DATA_QUALITY,
-            data_quality_spec=data_quality.DataQualitySpec(
-                rules=[
-                    data_quality.DataQualityRule(
-                        range_expectation=data_quality.DataQualityRule.RangeExpectation(
-                            min_value="min_value_value"
-                        )
-                    )
-                ]
-            ),
-            data_quality_result=data_quality.DataQualityResult(passed=True),
         )
         response = client.get_data_scan_job(request)
 
@@ -3040,9 +3022,11 @@ async def test_list_data_scan_jobs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_data_scan_jobs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
