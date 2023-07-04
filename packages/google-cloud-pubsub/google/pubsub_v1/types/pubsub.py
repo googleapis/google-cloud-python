@@ -1212,6 +1212,7 @@ class CloudStorageConfig(proto.Message):
             User-provided suffix for Cloud Storage filename. See the
             `object naming
             requirements <https://cloud.google.com/storage/docs/objects#naming>`__.
+            Must not end in "/".
         text_config (google.pubsub_v1.types.CloudStorageConfig.TextConfig):
             If set, message data will be written to Cloud
             Storage in text format.
