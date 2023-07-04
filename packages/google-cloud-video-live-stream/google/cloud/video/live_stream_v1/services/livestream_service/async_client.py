@@ -2567,7 +2567,7 @@ class LivestreamServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "LivestreamServiceAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):

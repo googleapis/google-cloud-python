@@ -1412,9 +1412,11 @@ async def test_list_channels_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_channels(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3232,9 +3234,11 @@ async def test_list_inputs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_inputs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3966,7 +3970,6 @@ def test_create_event(request_type, transport: str = "grpc"):
             name="name_value",
             execute_now=True,
             state=resources.Event.State.SCHEDULED,
-            input_switch=resources.Event.InputSwitchTask(input_key="input_key_value"),
         )
         response = client.create_event(request)
 
@@ -4615,9 +4618,11 @@ async def test_list_events_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_events(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4647,7 +4652,6 @@ def test_get_event(request_type, transport: str = "grpc"):
             name="name_value",
             execute_now=True,
             state=resources.Event.State.SCHEDULED,
-            input_switch=resources.Event.InputSwitchTask(input_key="input_key_value"),
         )
         response = client.get_event(request)
 
@@ -9265,7 +9269,6 @@ def test_create_event_rest(request_type):
             name="name_value",
             execute_now=True,
             state=resources.Event.State.SCHEDULED,
-            input_switch=resources.Event.InputSwitchTask(input_key="input_key_value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -9943,7 +9946,6 @@ def test_get_event_rest(request_type):
             name="name_value",
             execute_now=True,
             state=resources.Event.State.SCHEDULED,
-            input_switch=resources.Event.InputSwitchTask(input_key="input_key_value"),
         )
 
         # Wrap the value into a proper Response obj
