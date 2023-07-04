@@ -703,7 +703,6 @@ def test_create_read_session(request_type, transport: str = "grpc"):
             name="name_value",
             data_format=stream.DataFormat.AVRO,
             table="table_value",
-            avro_schema=avro.AvroSchema(schema="schema_value"),
         )
         response = client.create_read_session(request)
 

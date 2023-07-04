@@ -705,7 +705,6 @@ def test_create_read_session(request_type, transport: str = "grpc"):
             estimated_total_physical_file_size=3608,
             estimated_row_count=2047,
             trace_id="trace_id_value",
-            avro_schema=avro.AvroSchema(schema="schema_value"),
         )
         response = client.create_read_session(request)
 
