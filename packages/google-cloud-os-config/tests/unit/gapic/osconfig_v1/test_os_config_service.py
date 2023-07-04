@@ -1766,9 +1766,11 @@ async def test_list_patch_jobs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_patch_jobs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2209,9 +2211,11 @@ async def test_list_patch_job_instance_details_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_patch_job_instance_details(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2243,9 +2247,6 @@ def test_create_patch_deployment(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             state=patch_deployments.PatchDeployment.State.ACTIVE,
-            one_time_schedule=patch_deployments.OneTimeSchedule(
-                execute_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
         )
         response = client.create_patch_deployment(request)
 
@@ -2521,9 +2522,6 @@ def test_get_patch_deployment(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             state=patch_deployments.PatchDeployment.State.ACTIVE,
-            one_time_schedule=patch_deployments.OneTimeSchedule(
-                execute_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
         )
         response = client.get_patch_deployment(request)
 
@@ -3188,9 +3186,11 @@ async def test_list_patch_deployments_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_patch_deployments(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3457,9 +3457,6 @@ def test_update_patch_deployment(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             state=patch_deployments.PatchDeployment.State.ACTIVE,
-            one_time_schedule=patch_deployments.OneTimeSchedule(
-                execute_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
         )
         response = client.update_patch_deployment(request)
 
@@ -3725,9 +3722,6 @@ def test_pause_patch_deployment(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             state=patch_deployments.PatchDeployment.State.ACTIVE,
-            one_time_schedule=patch_deployments.OneTimeSchedule(
-                execute_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
         )
         response = client.pause_patch_deployment(request)
 
@@ -3983,9 +3977,6 @@ def test_resume_patch_deployment(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             state=patch_deployments.PatchDeployment.State.ACTIVE,
-            one_time_schedule=patch_deployments.OneTimeSchedule(
-                execute_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
         )
         response = client.resume_patch_deployment(request)
 
@@ -5758,9 +5749,6 @@ def test_create_patch_deployment_rest(request_type):
             name="name_value",
             description="description_value",
             state=patch_deployments.PatchDeployment.State.ACTIVE,
-            one_time_schedule=patch_deployments.OneTimeSchedule(
-                execute_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -6155,9 +6143,6 @@ def test_get_patch_deployment_rest(request_type):
             name="name_value",
             description="description_value",
             state=patch_deployments.PatchDeployment.State.ACTIVE,
-            one_time_schedule=patch_deployments.OneTimeSchedule(
-                execute_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -7124,9 +7109,6 @@ def test_update_patch_deployment_rest(request_type):
             name="name_value",
             description="description_value",
             state=patch_deployments.PatchDeployment.State.ACTIVE,
-            one_time_schedule=patch_deployments.OneTimeSchedule(
-                execute_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -7497,9 +7479,6 @@ def test_pause_patch_deployment_rest(request_type):
             name="name_value",
             description="description_value",
             state=patch_deployments.PatchDeployment.State.ACTIVE,
-            one_time_schedule=patch_deployments.OneTimeSchedule(
-                execute_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -7772,9 +7751,6 @@ def test_resume_patch_deployment_rest(request_type):
             name="name_value",
             description="description_value",
             state=patch_deployments.PatchDeployment.State.ACTIVE,
-            one_time_schedule=patch_deployments.OneTimeSchedule(
-                execute_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
         )
 
         # Wrap the value into a proper Response obj
