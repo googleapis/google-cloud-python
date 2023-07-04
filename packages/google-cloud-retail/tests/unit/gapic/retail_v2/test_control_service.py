@@ -737,7 +737,6 @@ def test_create_control(request_type, transport: str = "grpc"):
             search_solution_use_case=[
                 common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
             ],
-            rule=common.Rule(boost_action=common.Rule.BoostAction(boost=0.551)),
         )
         response = client.create_control(request)
 
@@ -1246,7 +1245,6 @@ def test_update_control(request_type, transport: str = "grpc"):
             search_solution_use_case=[
                 common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
             ],
-            rule=common.Rule(boost_action=common.Rule.BoostAction(boost=0.551)),
         )
         response = client.update_control(request)
 
@@ -1525,7 +1523,6 @@ def test_get_control(request_type, transport: str = "grpc"):
             search_solution_use_case=[
                 common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
             ],
-            rule=common.Rule(boost_action=common.Rule.BoostAction(boost=0.551)),
         )
         response = client.get_control(request)
 
@@ -2166,9 +2163,11 @@ async def test_list_controls_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_controls(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2250,7 +2249,6 @@ def test_create_control_rest(request_type):
             search_solution_use_case=[
                 common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
             ],
-            rule=common.Rule(boost_action=common.Rule.BoostAction(boost=0.551)),
         )
 
         # Wrap the value into a proper Response obj
@@ -2925,7 +2923,6 @@ def test_update_control_rest(request_type):
             search_solution_use_case=[
                 common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
             ],
-            rule=common.Rule(boost_action=common.Rule.BoostAction(boost=0.551)),
         )
 
         # Wrap the value into a proper Response obj
@@ -3268,7 +3265,6 @@ def test_get_control_rest(request_type):
             search_solution_use_case=[
                 common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
             ],
-            rule=common.Rule(boost_action=common.Rule.BoostAction(boost=0.551)),
         )
 
         # Wrap the value into a proper Response obj

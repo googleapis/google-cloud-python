@@ -760,7 +760,6 @@ def test_create_product(request_type, transport: str = "grpc"):
             materials=["materials_value"],
             patterns=["patterns_value"],
             conditions=["conditions_value"],
-            expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
         response = client.create_product(request)
 
@@ -1085,7 +1084,6 @@ def test_get_product(request_type, transport: str = "grpc"):
             materials=["materials_value"],
             patterns=["patterns_value"],
             conditions=["conditions_value"],
-            expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
         response = client.get_product(request)
 
@@ -1755,9 +1753,11 @@ async def test_list_products_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_products(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1802,7 +1802,6 @@ def test_update_product(request_type, transport: str = "grpc"):
             materials=["materials_value"],
             patterns=["patterns_value"],
             conditions=["conditions_value"],
-            expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
         response = client.update_product(request)
 
@@ -3763,7 +3762,6 @@ def test_create_product_rest(request_type):
             materials=["materials_value"],
             patterns=["patterns_value"],
             conditions=["conditions_value"],
-            expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
 
         # Wrap the value into a proper Response obj
@@ -4183,7 +4181,6 @@ def test_get_product_rest(request_type):
             materials=["materials_value"],
             patterns=["patterns_value"],
             conditions=["conditions_value"],
-            expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
 
         # Wrap the value into a proper Response obj
@@ -4924,7 +4921,6 @@ def test_update_product_rest(request_type):
             materials=["materials_value"],
             patterns=["patterns_value"],
             conditions=["conditions_value"],
-            expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
 
         # Wrap the value into a proper Response obj

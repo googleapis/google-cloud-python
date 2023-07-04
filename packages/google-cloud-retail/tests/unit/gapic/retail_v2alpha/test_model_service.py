@@ -996,9 +996,6 @@ def test_get_model(request_type, transport: str = "grpc"):
             tuning_operation="tuning_operation_value",
             data_state=model.Model.DataState.DATA_OK,
             filtering_option=common.RecommendationsFilteringOption.RECOMMENDATIONS_FILTERING_DISABLED,
-            page_optimization_config=model.Model.PageOptimizationConfig(
-                page_optimization_event_type="page_optimization_event_type_value"
-            ),
         )
         response = client.get_model(request)
 
@@ -1275,9 +1272,6 @@ def test_pause_model(request_type, transport: str = "grpc"):
             tuning_operation="tuning_operation_value",
             data_state=model.Model.DataState.DATA_OK,
             filtering_option=common.RecommendationsFilteringOption.RECOMMENDATIONS_FILTERING_DISABLED,
-            page_optimization_config=model.Model.PageOptimizationConfig(
-                page_optimization_event_type="page_optimization_event_type_value"
-            ),
         )
         response = client.pause_model(request)
 
@@ -1554,9 +1548,6 @@ def test_resume_model(request_type, transport: str = "grpc"):
             tuning_operation="tuning_operation_value",
             data_state=model.Model.DataState.DATA_OK,
             filtering_option=common.RecommendationsFilteringOption.RECOMMENDATIONS_FILTERING_DISABLED,
-            page_optimization_config=model.Model.PageOptimizationConfig(
-                page_optimization_event_type="page_optimization_event_type_value"
-            ),
         )
         response = client.resume_model(request)
 
@@ -2434,9 +2425,11 @@ async def test_list_models_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_models(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2473,9 +2466,6 @@ def test_update_model(request_type, transport: str = "grpc"):
             tuning_operation="tuning_operation_value",
             data_state=gcr_model.Model.DataState.DATA_OK,
             filtering_option=common.RecommendationsFilteringOption.RECOMMENDATIONS_FILTERING_DISABLED,
-            page_optimization_config=gcr_model.Model.PageOptimizationConfig(
-                page_optimization_event_type="page_optimization_event_type_value"
-            ),
         )
         response = client.update_model(request)
 
@@ -3368,9 +3358,6 @@ def test_get_model_rest(request_type):
             tuning_operation="tuning_operation_value",
             data_state=model.Model.DataState.DATA_OK,
             filtering_option=common.RecommendationsFilteringOption.RECOMMENDATIONS_FILTERING_DISABLED,
-            page_optimization_config=model.Model.PageOptimizationConfig(
-                page_optimization_event_type="page_optimization_event_type_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -3663,9 +3650,6 @@ def test_pause_model_rest(request_type):
             tuning_operation="tuning_operation_value",
             data_state=model.Model.DataState.DATA_OK,
             filtering_option=common.RecommendationsFilteringOption.RECOMMENDATIONS_FILTERING_DISABLED,
-            page_optimization_config=model.Model.PageOptimizationConfig(
-                page_optimization_event_type="page_optimization_event_type_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -3961,9 +3945,6 @@ def test_resume_model_rest(request_type):
             tuning_operation="tuning_operation_value",
             data_state=model.Model.DataState.DATA_OK,
             filtering_option=common.RecommendationsFilteringOption.RECOMMENDATIONS_FILTERING_DISABLED,
-            page_optimization_config=model.Model.PageOptimizationConfig(
-                page_optimization_event_type="page_optimization_event_type_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -4896,9 +4877,6 @@ def test_update_model_rest(request_type):
             tuning_operation="tuning_operation_value",
             data_state=gcr_model.Model.DataState.DATA_OK,
             filtering_option=common.RecommendationsFilteringOption.RECOMMENDATIONS_FILTERING_DISABLED,
-            page_optimization_config=gcr_model.Model.PageOptimizationConfig(
-                page_optimization_event_type="page_optimization_event_type_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
