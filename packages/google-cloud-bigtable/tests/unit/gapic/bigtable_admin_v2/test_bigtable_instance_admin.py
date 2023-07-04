@@ -2425,11 +2425,6 @@ def test_get_cluster(request_type, transport: str = "grpc"):
             state=instance.Cluster.State.READY,
             serve_nodes=1181,
             default_storage_type=common.StorageType.SSD,
-            cluster_config=instance.Cluster.ClusterConfig(
-                cluster_autoscaling_config=instance.Cluster.ClusterAutoscalingConfig(
-                    autoscaling_limits=instance.AutoscalingLimits(min_serve_nodes=1600)
-                )
-            ),
         )
         response = client.get_cluster(request)
 
@@ -3529,9 +3524,6 @@ def test_create_app_profile(request_type, transport: str = "grpc"):
             name="name_value",
             etag="etag_value",
             description="description_value",
-            multi_cluster_routing_use_any=instance.AppProfile.MultiClusterRoutingUseAny(
-                cluster_ids=["cluster_ids_value"]
-            ),
         )
         response = client.create_app_profile(request)
 
@@ -3801,9 +3793,6 @@ def test_get_app_profile(request_type, transport: str = "grpc"):
             name="name_value",
             etag="etag_value",
             description="description_value",
-            multi_cluster_routing_use_any=instance.AppProfile.MultiClusterRoutingUseAny(
-                cluster_ids=["cluster_ids_value"]
-            ),
         )
         response = client.get_app_profile(request)
 
@@ -4456,9 +4445,11 @@ async def test_list_app_profiles_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_app_profiles(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6138,9 +6129,11 @@ async def test_list_hot_tablets_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_hot_tablets(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8088,11 +8081,6 @@ def test_get_cluster_rest(request_type):
             state=instance.Cluster.State.READY,
             serve_nodes=1181,
             default_storage_type=common.StorageType.SSD,
-            cluster_config=instance.Cluster.ClusterConfig(
-                cluster_autoscaling_config=instance.Cluster.ClusterAutoscalingConfig(
-                    autoscaling_limits=instance.AutoscalingLimits(min_serve_nodes=1600)
-                )
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -9345,9 +9333,6 @@ def test_create_app_profile_rest(request_type):
             name="name_value",
             etag="etag_value",
             description="description_value",
-            multi_cluster_routing_use_any=instance.AppProfile.MultiClusterRoutingUseAny(
-                cluster_ids=["cluster_ids_value"]
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -9670,9 +9655,6 @@ def test_get_app_profile_rest(request_type):
             name="name_value",
             etag="etag_value",
             description="description_value",
-            multi_cluster_routing_use_any=instance.AppProfile.MultiClusterRoutingUseAny(
-                cluster_ids=["cluster_ids_value"]
-            ),
         )
 
         # Wrap the value into a proper Response obj

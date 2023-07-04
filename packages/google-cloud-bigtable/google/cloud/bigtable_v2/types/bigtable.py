@@ -80,7 +80,7 @@ class ReadRowsRequest(proto.Message):
         request_stats_view (google.cloud.bigtable_v2.types.ReadRowsRequest.RequestStatsView):
             The view into RequestStats, as described
             above.
-        reversed_ (bool):
+        reversed (bool):
             Experimental API - Please note that this API is currently
             experimental and can change in the future.
 
@@ -139,7 +139,7 @@ class ReadRowsRequest(proto.Message):
         number=6,
         enum=RequestStatsView,
     )
-    reversed_: bool = proto.Field(
+    reversed: bool = proto.Field(
         proto.BOOL,
         number=7,
     )

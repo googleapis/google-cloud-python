@@ -5316,11 +5316,7 @@ def test_read_change_stream_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = bigtable.ReadChangeStreamResponse(
-            data_change=bigtable.ReadChangeStreamResponse.DataChange(
-                type_=bigtable.ReadChangeStreamResponse.DataChange.Type.USER
-            ),
-        )
+        return_value = bigtable.ReadChangeStreamResponse()
 
         # Wrap the value into a proper Response obj
         response_value = Response()
