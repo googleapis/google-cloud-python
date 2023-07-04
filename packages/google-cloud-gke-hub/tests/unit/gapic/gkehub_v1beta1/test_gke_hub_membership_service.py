@@ -1184,9 +1184,11 @@ async def test_list_memberships_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_memberships(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1218,9 +1220,6 @@ def test_get_membership(request_type, transport: str = "grpc"):
             external_id="external_id_value",
             unique_id="unique_id_value",
             infrastructure_type=membership.Membership.InfrastructureType.ON_PREM,
-            endpoint=membership.MembershipEndpoint(
-                gke_cluster=membership.GkeCluster(resource_link="resource_link_value")
-            ),
         )
         response = client.get_membership(request)
 
@@ -3053,9 +3052,6 @@ def test_get_membership_rest(request_type):
             external_id="external_id_value",
             unique_id="unique_id_value",
             infrastructure_type=membership.Membership.InfrastructureType.ON_PREM,
-            endpoint=membership.MembershipEndpoint(
-                gke_cluster=membership.GkeCluster(resource_link="resource_link_value")
-            ),
         )
 
         # Wrap the value into a proper Response obj
