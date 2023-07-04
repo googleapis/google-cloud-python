@@ -739,7 +739,6 @@ def test_submit_job(request_type, transport: str = "grpc"):
             driver_control_files_uri="driver_control_files_uri_value",
             job_uuid="job_uuid_value",
             done=True,
-            hadoop_job=jobs.HadoopJob(main_jar_file_uri="main_jar_file_uri_value"),
         )
         response = client.submit_job(request)
 
@@ -1264,7 +1263,6 @@ def test_get_job(request_type, transport: str = "grpc"):
             driver_control_files_uri="driver_control_files_uri_value",
             job_uuid="job_uuid_value",
             done=True,
-            hadoop_job=jobs.HadoopJob(main_jar_file_uri="main_jar_file_uri_value"),
         )
         response = client.get_job(request)
 
@@ -1943,9 +1941,11 @@ async def test_list_jobs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_jobs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1976,7 +1976,6 @@ def test_update_job(request_type, transport: str = "grpc"):
             driver_control_files_uri="driver_control_files_uri_value",
             job_uuid="job_uuid_value",
             done=True,
-            hadoop_job=jobs.HadoopJob(main_jar_file_uri="main_jar_file_uri_value"),
         )
         response = client.update_job(request)
 
@@ -2141,7 +2140,6 @@ def test_cancel_job(request_type, transport: str = "grpc"):
             driver_control_files_uri="driver_control_files_uri_value",
             job_uuid="job_uuid_value",
             done=True,
-            hadoop_job=jobs.HadoopJob(main_jar_file_uri="main_jar_file_uri_value"),
         )
         response = client.cancel_job(request)
 
@@ -2650,7 +2648,6 @@ def test_submit_job_rest(request_type):
             driver_control_files_uri="driver_control_files_uri_value",
             job_uuid="job_uuid_value",
             done=True,
-            hadoop_job=jobs.HadoopJob(main_jar_file_uri="main_jar_file_uri_value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -3216,7 +3213,6 @@ def test_get_job_rest(request_type):
             driver_control_files_uri="driver_control_files_uri_value",
             job_uuid="job_uuid_value",
             done=True,
-            hadoop_job=jobs.HadoopJob(main_jar_file_uri="main_jar_file_uri_value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -3974,7 +3970,6 @@ def test_update_job_rest(request_type):
             driver_control_files_uri="driver_control_files_uri_value",
             job_uuid="job_uuid_value",
             done=True,
-            hadoop_job=jobs.HadoopJob(main_jar_file_uri="main_jar_file_uri_value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -4320,7 +4315,6 @@ def test_cancel_job_rest(request_type):
             driver_control_files_uri="driver_control_files_uri_value",
             job_uuid="job_uuid_value",
             done=True,
-            hadoop_job=jobs.HadoopJob(main_jar_file_uri="main_jar_file_uri_value"),
         )
 
         # Wrap the value into a proper Response obj

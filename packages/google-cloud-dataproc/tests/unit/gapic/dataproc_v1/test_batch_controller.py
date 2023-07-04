@@ -1015,9 +1015,6 @@ def test_get_batch(request_type, transport: str = "grpc"):
             state_message="state_message_value",
             creator="creator_value",
             operation="operation_value",
-            pyspark_batch=batches.PySparkBatch(
-                main_python_file_uri="main_python_file_uri_value"
-            ),
         )
         response = client.get_batch(request)
 
@@ -1651,9 +1648,11 @@ async def test_list_batches_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_batches(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2343,9 +2342,6 @@ def test_get_batch_rest(request_type):
             state_message="state_message_value",
             creator="creator_value",
             operation="operation_value",
-            pyspark_batch=batches.PySparkBatch(
-                main_python_file_uri="main_python_file_uri_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
