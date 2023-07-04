@@ -6046,7 +6046,7 @@ class SecurityCenterAsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "SecurityCenterAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
