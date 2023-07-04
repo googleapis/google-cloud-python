@@ -736,9 +736,6 @@ def test_get_answer_record(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = answer_record.AnswerRecord(
             name="name_value",
-            agent_assistant_record=answer_record.AgentAssistantRecord(
-                article_suggestion_answer=participant.ArticleAnswer(title="title_value")
-            ),
         )
         response = client.get_answer_record(request)
 
@@ -1309,9 +1306,11 @@ async def test_list_answer_records_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_answer_records(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1341,9 +1340,6 @@ def test_update_answer_record(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = gcd_answer_record.AnswerRecord(
             name="name_value",
-            agent_assistant_record=gcd_answer_record.AgentAssistantRecord(
-                article_suggestion_answer=participant.ArticleAnswer(title="title_value")
-            ),
         )
         response = client.update_answer_record(request)
 
@@ -1599,9 +1595,6 @@ def test_get_answer_record_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = answer_record.AnswerRecord(
             name="name_value",
-            agent_assistant_record=answer_record.AgentAssistantRecord(
-                article_suggestion_answer=participant.ArticleAnswer(title="title_value")
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -2272,9 +2265,6 @@ def test_update_answer_record_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = gcd_answer_record.AnswerRecord(
             name="name_value",
-            agent_assistant_record=gcd_answer_record.AgentAssistantRecord(
-                article_suggestion_answer=participant.ArticleAnswer(title="title_value")
-            ),
         )
 
         # Wrap the value into a proper Response obj

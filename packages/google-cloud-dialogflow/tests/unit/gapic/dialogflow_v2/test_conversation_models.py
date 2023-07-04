@@ -1037,9 +1037,6 @@ def test_get_conversation_model(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             state=conversation_model.ConversationModel.State.CREATING,
             language_code="language_code_value",
-            article_suggestion_model_metadata=conversation_model.ArticleSuggestionModelMetadata(
-                training_model_type=conversation_model.ConversationModel.ModelType.SMART_REPLY_DUAL_ENCODER_MODEL
-            ),
         )
         response = client.get_conversation_model(request)
 
@@ -1709,9 +1706,11 @@ async def test_list_conversation_models_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_conversation_models(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2294,9 +2293,6 @@ def test_get_conversation_model_evaluation(request_type, transport: str = "grpc"
             name="name_value",
             display_name="display_name_value",
             raw_human_eval_template_csv="raw_human_eval_template_csv_value",
-            smart_reply_metrics=conversation_model.SmartReplyMetrics(
-                allowlist_coverage=0.19260000000000002
-            ),
         )
         response = client.get_conversation_model_evaluation(request)
 
@@ -2973,9 +2969,11 @@ async def test_list_conversation_model_evaluations_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_conversation_model_evaluations(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3550,9 +3548,6 @@ def test_get_conversation_model_rest(request_type):
             display_name="display_name_value",
             state=conversation_model.ConversationModel.State.CREATING,
             language_code="language_code_value",
-            article_suggestion_model_metadata=conversation_model.ArticleSuggestionModelMetadata(
-                training_model_type=conversation_model.ConversationModel.ModelType.SMART_REPLY_DUAL_ENCODER_MODEL
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -4859,9 +4854,6 @@ def test_get_conversation_model_evaluation_rest(request_type):
             name="name_value",
             display_name="display_name_value",
             raw_human_eval_template_csv="raw_human_eval_template_csv_value",
-            smart_reply_metrics=conversation_model.SmartReplyMetrics(
-                allowlist_coverage=0.19260000000000002
-            ),
         )
 
         # Wrap the value into a proper Response obj

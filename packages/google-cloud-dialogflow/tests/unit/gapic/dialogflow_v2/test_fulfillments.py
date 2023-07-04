@@ -719,9 +719,6 @@ def test_get_fulfillment(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             enabled=True,
-            generic_web_service=fulfillment.Fulfillment.GenericWebService(
-                uri="uri_value"
-            ),
         )
         response = client.get_fulfillment(request)
 
@@ -964,9 +961,6 @@ def test_update_fulfillment(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             enabled=True,
-            generic_web_service=gcd_fulfillment.Fulfillment.GenericWebService(
-                uri="uri_value"
-            ),
         )
         response = client.update_fulfillment(request)
 
@@ -1230,9 +1224,6 @@ def test_get_fulfillment_rest(request_type):
             name="name_value",
             display_name="display_name_value",
             enabled=True,
-            generic_web_service=fulfillment.Fulfillment.GenericWebService(
-                uri="uri_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -1517,9 +1508,6 @@ def test_update_fulfillment_rest(request_type):
             name="name_value",
             display_name="display_name_value",
             enabled=True,
-            generic_web_service=gcd_fulfillment.Fulfillment.GenericWebService(
-                uri="uri_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
