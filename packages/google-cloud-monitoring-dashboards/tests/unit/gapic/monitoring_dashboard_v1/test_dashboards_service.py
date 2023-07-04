@@ -783,7 +783,6 @@ def test_create_dashboard(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             etag="etag_value",
-            grid_layout=layouts.GridLayout(columns=769),
         )
         response = client.create_dashboard(request)
 
@@ -1248,9 +1247,11 @@ async def test_list_dashboards_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_dashboards(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1280,7 +1281,6 @@ def test_get_dashboard(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             etag="etag_value",
-            grid_layout=layouts.GridLayout(columns=769),
         )
         response = client.get_dashboard(request)
 
@@ -1578,7 +1578,6 @@ def test_update_dashboard(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             etag="etag_value",
-            grid_layout=layouts.GridLayout(columns=769),
         )
         response = client.update_dashboard(request)
 
@@ -1869,7 +1868,6 @@ def test_create_dashboard_rest(request_type):
             name="name_value",
             display_name="display_name_value",
             etag="etag_value",
-            grid_layout=layouts.GridLayout(columns=769),
         )
 
         # Wrap the value into a proper Response obj
@@ -2512,7 +2510,6 @@ def test_get_dashboard_rest(request_type):
             name="name_value",
             display_name="display_name_value",
             etag="etag_value",
-            grid_layout=layouts.GridLayout(columns=769),
         )
 
         # Wrap the value into a proper Response obj
@@ -3058,7 +3055,6 @@ def test_update_dashboard_rest(request_type):
             name="name_value",
             display_name="display_name_value",
             etag="etag_value",
-            grid_layout=layouts.GridLayout(columns=769),
         )
 
         # Wrap the value into a proper Response obj
