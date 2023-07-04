@@ -1091,6 +1091,9 @@ class HttpRule:
         uri = utils.convert_uri_fieldnames(uri)
 
         body = http_rule.body or None
+        # Ensure body doesn't conflict with reserved names.
+        if body in utils.RESERVED_NAMES and not body.endswith("_"):
+            body += "_"
         return cls(method, uri, body)
 
 
