@@ -1921,7 +1921,7 @@ class PolicyTagManagerAsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "PolicyTagManagerAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):

@@ -767,9 +767,6 @@ def test_create_data_policy(request_type, transport: str = "grpc"):
             data_policy_type=datapolicy.DataPolicy.DataPolicyType.COLUMN_LEVEL_SECURITY_POLICY,
             data_policy_id="data_policy_id_value",
             policy_tag="policy_tag_value",
-            data_masking_policy=datapolicy.DataMaskingPolicy(
-                predefined_expression=datapolicy.DataMaskingPolicy.PredefinedExpression.SHA256
-            ),
         )
         response = client.create_data_policy(request)
 
@@ -1041,9 +1038,6 @@ def test_update_data_policy(request_type, transport: str = "grpc"):
             data_policy_type=datapolicy.DataPolicy.DataPolicyType.COLUMN_LEVEL_SECURITY_POLICY,
             data_policy_id="data_policy_id_value",
             policy_tag="policy_tag_value",
-            data_masking_policy=datapolicy.DataMaskingPolicy(
-                predefined_expression=datapolicy.DataMaskingPolicy.PredefinedExpression.SHA256
-            ),
         )
         response = client.update_data_policy(request)
 
@@ -1315,9 +1309,6 @@ def test_rename_data_policy(request_type, transport: str = "grpc"):
             data_policy_type=datapolicy.DataPolicy.DataPolicyType.COLUMN_LEVEL_SECURITY_POLICY,
             data_policy_id="data_policy_id_value",
             policy_tag="policy_tag_value",
-            data_masking_policy=datapolicy.DataMaskingPolicy(
-                predefined_expression=datapolicy.DataMaskingPolicy.PredefinedExpression.SHA256
-            ),
         )
         response = client.rename_data_policy(request)
 
@@ -1821,9 +1812,6 @@ def test_get_data_policy(request_type, transport: str = "grpc"):
             data_policy_type=datapolicy.DataPolicy.DataPolicyType.COLUMN_LEVEL_SECURITY_POLICY,
             data_policy_id="data_policy_id_value",
             policy_tag="policy_tag_value",
-            data_masking_policy=datapolicy.DataMaskingPolicy(
-                predefined_expression=datapolicy.DataMaskingPolicy.PredefinedExpression.SHA256
-            ),
         )
         response = client.get_data_policy(request)
 
@@ -2480,9 +2468,11 @@ async def test_list_data_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_data_policies(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3039,9 +3029,6 @@ def test_create_data_policy_rest(request_type):
             data_policy_type=datapolicy.DataPolicy.DataPolicyType.COLUMN_LEVEL_SECURITY_POLICY,
             data_policy_id="data_policy_id_value",
             policy_tag="policy_tag_value",
-            data_masking_policy=datapolicy.DataMaskingPolicy(
-                predefined_expression=datapolicy.DataMaskingPolicy.PredefinedExpression.SHA256
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -3347,9 +3334,6 @@ def test_update_data_policy_rest(request_type):
             data_policy_type=datapolicy.DataPolicy.DataPolicyType.COLUMN_LEVEL_SECURITY_POLICY,
             data_policy_id="data_policy_id_value",
             policy_tag="policy_tag_value",
-            data_masking_policy=datapolicy.DataMaskingPolicy(
-                predefined_expression=datapolicy.DataMaskingPolicy.PredefinedExpression.SHA256
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -3641,9 +3625,6 @@ def test_rename_data_policy_rest(request_type):
             data_policy_type=datapolicy.DataPolicy.DataPolicyType.COLUMN_LEVEL_SECURITY_POLICY,
             data_policy_id="data_policy_id_value",
             policy_tag="policy_tag_value",
-            data_masking_policy=datapolicy.DataMaskingPolicy(
-                predefined_expression=datapolicy.DataMaskingPolicy.PredefinedExpression.SHA256
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -4192,9 +4173,6 @@ def test_get_data_policy_rest(request_type):
             data_policy_type=datapolicy.DataPolicy.DataPolicyType.COLUMN_LEVEL_SECURITY_POLICY,
             data_policy_id="data_policy_id_value",
             policy_tag="policy_tag_value",
-            data_masking_policy=datapolicy.DataMaskingPolicy(
-                predefined_expression=datapolicy.DataMaskingPolicy.PredefinedExpression.SHA256
-            ),
         )
 
         # Wrap the value into a proper Response obj
