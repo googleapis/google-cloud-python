@@ -746,7 +746,6 @@ def test_create_service(request_type, transport: str = "grpc"):
         call.return_value = gm_service.Service(
             name="name_value",
             display_name="display_name_value",
-            custom=None,
         )
         response = client.create_service(request)
 
@@ -989,7 +988,6 @@ def test_get_service(request_type, transport: str = "grpc"):
         call.return_value = service.Service(
             name="name_value",
             display_name="display_name_value",
-            custom=None,
         )
         response = client.get_service(request)
 
@@ -1611,9 +1609,11 @@ async def test_list_services_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_services(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1642,7 +1642,6 @@ def test_update_service(request_type, transport: str = "grpc"):
         call.return_value = gm_service.Service(
             name="name_value",
             display_name="display_name_value",
-            custom=None,
         )
         response = client.update_service(request)
 
@@ -2098,7 +2097,7 @@ def test_create_service_level_objective(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             goal=0.419,
-            rolling_period=duration_pb2.Duration(seconds=751),
+            calendar_period=calendar_period_pb2.CalendarPeriod.DAY,
         )
         response = client.create_service_level_objective(request)
 
@@ -2364,7 +2363,7 @@ def test_get_service_level_objective(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             goal=0.419,
-            rolling_period=duration_pb2.Duration(seconds=751),
+            calendar_period=calendar_period_pb2.CalendarPeriod.DAY,
         )
         response = client.get_service_level_objective(request)
 
@@ -3029,9 +3028,11 @@ async def test_list_service_level_objectives_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_service_level_objectives(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3063,7 +3064,7 @@ def test_update_service_level_objective(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             goal=0.419,
-            rolling_period=duration_pb2.Duration(seconds=751),
+            calendar_period=calendar_period_pb2.CalendarPeriod.DAY,
         )
         response = client.update_service_level_objective(request)
 

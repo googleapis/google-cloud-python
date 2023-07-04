@@ -1146,9 +1146,11 @@ async def test_list_uptime_check_configs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_uptime_check_configs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1182,12 +1184,6 @@ def test_get_uptime_check_config(request_type, transport: str = "grpc"):
             checker_type=uptime.UptimeCheckConfig.CheckerType.STATIC_IP_CHECKERS,
             selected_regions=[uptime.UptimeCheckRegion.USA],
             is_internal=True,
-            monitored_resource=monitored_resource_pb2.MonitoredResource(
-                type="type_value"
-            ),
-            http_check=uptime.UptimeCheckConfig.HttpCheck(
-                request_method=uptime.UptimeCheckConfig.HttpCheck.RequestMethod.GET
-            ),
         )
         response = client.get_uptime_check_config(request)
 
@@ -1455,12 +1451,6 @@ def test_create_uptime_check_config(request_type, transport: str = "grpc"):
             checker_type=uptime.UptimeCheckConfig.CheckerType.STATIC_IP_CHECKERS,
             selected_regions=[uptime.UptimeCheckRegion.USA],
             is_internal=True,
-            monitored_resource=monitored_resource_pb2.MonitoredResource(
-                type="type_value"
-            ),
-            http_check=uptime.UptimeCheckConfig.HttpCheck(
-                request_method=uptime.UptimeCheckConfig.HttpCheck.RequestMethod.GET
-            ),
         )
         response = client.create_uptime_check_config(request)
 
@@ -1738,12 +1728,6 @@ def test_update_uptime_check_config(request_type, transport: str = "grpc"):
             checker_type=uptime.UptimeCheckConfig.CheckerType.STATIC_IP_CHECKERS,
             selected_regions=[uptime.UptimeCheckRegion.USA],
             is_internal=True,
-            monitored_resource=monitored_resource_pb2.MonitoredResource(
-                type="type_value"
-            ),
-            http_check=uptime.UptimeCheckConfig.HttpCheck(
-                request_method=uptime.UptimeCheckConfig.HttpCheck.RequestMethod.GET
-            ),
         )
         response = client.update_uptime_check_config(request)
 
@@ -2499,9 +2483,11 @@ async def test_list_uptime_check_ips_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_uptime_check_ips(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token

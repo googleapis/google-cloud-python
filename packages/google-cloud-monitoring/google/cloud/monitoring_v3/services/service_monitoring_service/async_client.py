@@ -1416,7 +1416,7 @@ class ServiceMonitoringServiceAsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "ServiceMonitoringServiceAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
