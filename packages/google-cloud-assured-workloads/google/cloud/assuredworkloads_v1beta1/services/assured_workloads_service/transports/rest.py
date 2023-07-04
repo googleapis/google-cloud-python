@@ -379,16 +379,6 @@ class AssuredWorkloadsServiceRestTransport(AssuredWorkloadsServiceTransport):
         def __hash__(self):
             return hash("AnalyzeWorkloadMove")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
         def __call__(
             self,
             request: assuredworkloads.AnalyzeWorkloadMoveRequest,
@@ -575,16 +565,6 @@ class AssuredWorkloadsServiceRestTransport(AssuredWorkloadsServiceTransport):
         def __hash__(self):
             return hash("GetWorkload")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
         def __call__(
             self,
             request: assuredworkloads.GetWorkloadRequest,
@@ -600,16 +580,6 @@ class AssuredWorkloadsServiceRestTransport(AssuredWorkloadsServiceTransport):
     class _ListWorkloads(AssuredWorkloadsServiceRestStub):
         def __hash__(self):
             return hash("ListWorkloads")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
 
         def __call__(
             self,
@@ -728,16 +698,6 @@ class AssuredWorkloadsServiceRestTransport(AssuredWorkloadsServiceTransport):
     class _UpdateWorkload(AssuredWorkloadsServiceRestStub):
         def __hash__(self):
             return hash("UpdateWorkload")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
 
         def __call__(
             self,

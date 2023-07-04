@@ -464,16 +464,6 @@ class AssuredWorkloadsServiceRestTransport(AssuredWorkloadsServiceTransport):
         def __hash__(self):
             return hash("AcknowledgeViolation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
         def __call__(
             self,
             request: assuredworkloads.AcknowledgeViolationRequest,
@@ -660,16 +650,6 @@ class AssuredWorkloadsServiceRestTransport(AssuredWorkloadsServiceTransport):
         def __hash__(self):
             return hash("GetViolation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
         def __call__(
             self,
             request: assuredworkloads.GetViolationRequest,
@@ -773,16 +753,6 @@ class AssuredWorkloadsServiceRestTransport(AssuredWorkloadsServiceTransport):
     class _ListViolations(AssuredWorkloadsServiceRestStub):
         def __hash__(self):
             return hash("ListViolations")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
 
         def __call__(
             self,

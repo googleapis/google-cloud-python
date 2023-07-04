@@ -1031,11 +1031,6 @@ def test_update_workload(request_type, transport: str = "grpc"):
             compliant_but_disallowed_services=[
                 "compliant_but_disallowed_services_value"
             ],
-            il4_settings=assuredworkloads.Workload.IL4Settings(
-                kms_settings=assuredworkloads.Workload.KMSSettings(
-                    next_rotation_time=timestamp_pb2.Timestamp(seconds=751)
-                )
-            ),
         )
         response = client.update_workload(request)
 
@@ -1638,11 +1633,6 @@ def test_get_workload(request_type, transport: str = "grpc"):
             compliant_but_disallowed_services=[
                 "compliant_but_disallowed_services_value"
             ],
-            il4_settings=assuredworkloads.Workload.IL4Settings(
-                kms_settings=assuredworkloads.Workload.KMSSettings(
-                    next_rotation_time=timestamp_pb2.Timestamp(seconds=751)
-                )
-            ),
         )
         response = client.get_workload(request)
 
@@ -2364,9 +2354,11 @@ async def test_list_workloads_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_workloads(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
