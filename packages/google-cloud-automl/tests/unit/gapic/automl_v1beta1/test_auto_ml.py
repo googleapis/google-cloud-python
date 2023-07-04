@@ -718,9 +718,6 @@ def test_create_dataset(request_type, transport: str = "grpc"):
             description="description_value",
             example_count=1396,
             etag="etag_value",
-            translation_dataset_metadata=translation.TranslationDatasetMetadata(
-                source_language_code="source_language_code_value"
-            ),
         )
         response = client.create_dataset(request)
 
@@ -999,9 +996,6 @@ def test_get_dataset(request_type, transport: str = "grpc"):
             description="description_value",
             example_count=1396,
             etag="etag_value",
-            translation_dataset_metadata=translation.TranslationDatasetMetadata(
-                source_language_code="source_language_code_value"
-            ),
         )
         response = client.get_dataset(request)
 
@@ -1632,9 +1626,11 @@ async def test_list_datasets_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_datasets(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1666,9 +1662,6 @@ def test_update_dataset(request_type, transport: str = "grpc"):
             description="description_value",
             example_count=1396,
             etag="etag_value",
-            translation_dataset_metadata=translation.TranslationDatasetMetadata(
-                source_language_code="source_language_code_value"
-            ),
         )
         response = client.update_dataset(request)
 
@@ -3563,9 +3556,11 @@ async def test_list_table_specs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_table_specs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4511,9 +4506,11 @@ async def test_list_column_specs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_column_specs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5058,9 +5055,6 @@ def test_get_model(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             dataset_id="dataset_id_value",
             deployment_state=model.Model.DeploymentState.DEPLOYED,
-            translation_model_metadata=translation.TranslationModelMetadata(
-                base_model="base_model_value"
-            ),
         )
         response = client.get_model(request)
 
@@ -5688,9 +5682,11 @@ async def test_list_models_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_models(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6931,9 +6927,6 @@ def test_get_model_evaluation(request_type, transport: str = "grpc"):
             annotation_spec_id="annotation_spec_id_value",
             display_name="display_name_value",
             evaluated_example_count=2446,
-            classification_evaluation_metrics=classification.ClassificationEvaluationMetrics(
-                au_prc=0.634
-            ),
         )
         response = client.get_model_evaluation(request)
 
@@ -7599,9 +7592,11 @@ async def test_list_model_evaluations_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_model_evaluations(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7660,9 +7655,6 @@ def test_create_dataset_rest(request_type):
             description="description_value",
             example_count=1396,
             etag="etag_value",
-            translation_dataset_metadata=translation.TranslationDatasetMetadata(
-                source_language_code="source_language_code_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -7977,9 +7969,6 @@ def test_get_dataset_rest(request_type):
             description="description_value",
             example_count=1396,
             etag="etag_value",
-            translation_dataset_metadata=translation.TranslationDatasetMetadata(
-                source_language_code="source_language_code_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -8611,9 +8600,6 @@ def test_update_dataset_rest(request_type):
             description="description_value",
             example_count=1396,
             etag="etag_value",
-            translation_dataset_metadata=translation.TranslationDatasetMetadata(
-                source_language_code="source_language_code_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -12373,9 +12359,6 @@ def test_get_model_rest(request_type):
             display_name="display_name_value",
             dataset_id="dataset_id_value",
             deployment_state=model.Model.DeploymentState.DEPLOYED,
-            translation_model_metadata=translation.TranslationModelMetadata(
-                base_model="base_model_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -14307,9 +14290,6 @@ def test_get_model_evaluation_rest(request_type):
             annotation_spec_id="annotation_spec_id_value",
             display_name="display_name_value",
             evaluated_example_count=2446,
-            classification_evaluation_metrics=classification.ClassificationEvaluationMetrics(
-                au_prc=0.634
-            ),
         )
 
         # Wrap the value into a proper Response obj
