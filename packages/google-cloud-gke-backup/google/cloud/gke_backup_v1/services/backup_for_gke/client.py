@@ -2204,7 +2204,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
                 The result type for the operation will be :class:`google.cloud.gke_backup_v1.types.RestorePlan` The configuration of a potential series of Restore operations to be performed
                    against Backups belong to a particular BackupPlan.
-                   Next id: 11
+                   Next id: 13
 
         """
         # Create or coerce a protobuf request object.
@@ -2433,7 +2433,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 The configuration of a potential
                 series of Restore operations to be
                 performed against Backups belong to a
-                particular BackupPlan. Next id: 11
+                particular BackupPlan. Next id: 13
 
         """
         # Create or coerce a protobuf request object.
@@ -2564,7 +2564,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
                 The result type for the operation will be :class:`google.cloud.gke_backup_v1.types.RestorePlan` The configuration of a potential series of Restore operations to be performed
                    against Backups belong to a particular BackupPlan.
-                   Next id: 11
+                   Next id: 13
 
         """
         # Create or coerce a protobuf request object.

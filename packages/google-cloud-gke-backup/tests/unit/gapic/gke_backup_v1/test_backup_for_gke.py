@@ -1449,6 +1449,8 @@ def test_get_backup_plan(request_type, transport: str = "grpc"):
             etag="etag_value",
             deactivated=True,
             protected_pod_count=2036,
+            state=backup_plan.BackupPlan.State.CLUSTER_PENDING,
+            state_reason="state_reason_value",
         )
         response = client.get_backup_plan(request)
 
@@ -1466,6 +1468,8 @@ def test_get_backup_plan(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
     assert response.deactivated is True
     assert response.protected_pod_count == 2036
+    assert response.state == backup_plan.BackupPlan.State.CLUSTER_PENDING
+    assert response.state_reason == "state_reason_value"
 
 
 def test_get_backup_plan_empty_call():
@@ -1509,6 +1513,8 @@ async def test_get_backup_plan_async(
                 etag="etag_value",
                 deactivated=True,
                 protected_pod_count=2036,
+                state=backup_plan.BackupPlan.State.CLUSTER_PENDING,
+                state_reason="state_reason_value",
             )
         )
         response = await client.get_backup_plan(request)
@@ -1527,6 +1533,8 @@ async def test_get_backup_plan_async(
     assert response.etag == "etag_value"
     assert response.deactivated is True
     assert response.protected_pod_count == 2036
+    assert response.state == backup_plan.BackupPlan.State.CLUSTER_PENDING
+    assert response.state_reason == "state_reason_value"
 
 
 @pytest.mark.asyncio
@@ -5037,6 +5045,8 @@ def test_get_restore_plan(request_type, transport: str = "grpc"):
             backup_plan="backup_plan_value",
             cluster="cluster_value",
             etag="etag_value",
+            state=restore_plan.RestorePlan.State.CLUSTER_PENDING,
+            state_reason="state_reason_value",
         )
         response = client.get_restore_plan(request)
 
@@ -5053,6 +5063,8 @@ def test_get_restore_plan(request_type, transport: str = "grpc"):
     assert response.backup_plan == "backup_plan_value"
     assert response.cluster == "cluster_value"
     assert response.etag == "etag_value"
+    assert response.state == restore_plan.RestorePlan.State.CLUSTER_PENDING
+    assert response.state_reason == "state_reason_value"
 
 
 def test_get_restore_plan_empty_call():
@@ -5095,6 +5107,8 @@ async def test_get_restore_plan_async(
                 backup_plan="backup_plan_value",
                 cluster="cluster_value",
                 etag="etag_value",
+                state=restore_plan.RestorePlan.State.CLUSTER_PENDING,
+                state_reason="state_reason_value",
             )
         )
         response = await client.get_restore_plan(request)
@@ -5112,6 +5126,8 @@ async def test_get_restore_plan_async(
     assert response.backup_plan == "backup_plan_value"
     assert response.cluster == "cluster_value"
     assert response.etag == "etag_value"
+    assert response.state == restore_plan.RestorePlan.State.CLUSTER_PENDING
+    assert response.state_reason == "state_reason_value"
 
 
 @pytest.mark.asyncio
@@ -7920,6 +7936,8 @@ def test_create_backup_plan_rest(request_type):
             },
         },
         "protected_pod_count": 2036,
+        "state": 1,
+        "state_reason": "state_reason_value",
     }
     request = request_type(**request_init)
 
@@ -8152,6 +8170,8 @@ def test_create_backup_plan_rest_bad_request(
             },
         },
         "protected_pod_count": 2036,
+        "state": 1,
+        "state_reason": "state_reason_value",
     }
     request = request_type(**request_init)
 
@@ -8604,6 +8624,8 @@ def test_get_backup_plan_rest(request_type):
             etag="etag_value",
             deactivated=True,
             protected_pod_count=2036,
+            state=backup_plan.BackupPlan.State.CLUSTER_PENDING,
+            state_reason="state_reason_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -8625,6 +8647,8 @@ def test_get_backup_plan_rest(request_type):
     assert response.etag == "etag_value"
     assert response.deactivated is True
     assert response.protected_pod_count == 2036
+    assert response.state == backup_plan.BackupPlan.State.CLUSTER_PENDING
+    assert response.state_reason == "state_reason_value"
 
 
 def test_get_backup_plan_rest_required_fields(
@@ -8908,6 +8932,8 @@ def test_update_backup_plan_rest(request_type):
             },
         },
         "protected_pod_count": 2036,
+        "state": 1,
+        "state_reason": "state_reason_value",
     }
     request = request_type(**request_init)
 
@@ -9117,6 +9143,8 @@ def test_update_backup_plan_rest_bad_request(
             },
         },
         "protected_pod_count": 2036,
+        "state": 1,
+        "state_reason": "state_reason_value",
     }
     request = request_type(**request_init)
 
@@ -11757,7 +11785,10 @@ def test_create_restore_plan_rest(request_type):
                         "resource_group": "resource_group_value",
                         "resource_kind": "resource_kind_value",
                     }
-                ]
+                ],
+                "excluded_group_kinds": {},
+                "all_group_kinds": True,
+                "no_group_kinds": True,
             },
             "all_namespaces": True,
             "selected_namespaces": {
@@ -11768,6 +11799,8 @@ def test_create_restore_plan_rest(request_type):
                     {"namespace": "namespace_value", "name": "name_value"}
                 ]
             },
+            "no_namespaces": True,
+            "excluded_namespaces": {},
             "substitution_rules": [
                 {
                     "target_namespaces": [
@@ -11780,9 +11813,29 @@ def test_create_restore_plan_rest(request_type):
                     "new_value": "new_value_value",
                 }
             ],
+            "transformation_rules": [
+                {
+                    "field_actions": [
+                        {
+                            "op": 1,
+                            "from_path": "from_path_value",
+                            "path": "path_value",
+                            "value": "value_value",
+                        }
+                    ],
+                    "resource_filter": {
+                        "namespaces": ["namespaces_value1", "namespaces_value2"],
+                        "group_kinds": {},
+                        "json_path": "json_path_value",
+                    },
+                    "description": "description_value",
+                }
+            ],
         },
         "labels": {},
         "etag": "etag_value",
+        "state": 1,
+        "state_reason": "state_reason_value",
     }
     request = request_type(**request_init)
 
@@ -12000,7 +12053,10 @@ def test_create_restore_plan_rest_bad_request(
                         "resource_group": "resource_group_value",
                         "resource_kind": "resource_kind_value",
                     }
-                ]
+                ],
+                "excluded_group_kinds": {},
+                "all_group_kinds": True,
+                "no_group_kinds": True,
             },
             "all_namespaces": True,
             "selected_namespaces": {
@@ -12011,6 +12067,8 @@ def test_create_restore_plan_rest_bad_request(
                     {"namespace": "namespace_value", "name": "name_value"}
                 ]
             },
+            "no_namespaces": True,
+            "excluded_namespaces": {},
             "substitution_rules": [
                 {
                     "target_namespaces": [
@@ -12023,9 +12081,29 @@ def test_create_restore_plan_rest_bad_request(
                     "new_value": "new_value_value",
                 }
             ],
+            "transformation_rules": [
+                {
+                    "field_actions": [
+                        {
+                            "op": 1,
+                            "from_path": "from_path_value",
+                            "path": "path_value",
+                            "value": "value_value",
+                        }
+                    ],
+                    "resource_filter": {
+                        "namespaces": ["namespaces_value1", "namespaces_value2"],
+                        "group_kinds": {},
+                        "json_path": "json_path_value",
+                    },
+                    "description": "description_value",
+                }
+            ],
         },
         "labels": {},
         "etag": "etag_value",
+        "state": 1,
+        "state_reason": "state_reason_value",
     }
     request = request_type(**request_init)
 
@@ -12479,6 +12557,8 @@ def test_get_restore_plan_rest(request_type):
             backup_plan="backup_plan_value",
             cluster="cluster_value",
             etag="etag_value",
+            state=restore_plan.RestorePlan.State.CLUSTER_PENDING,
+            state_reason="state_reason_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -12499,6 +12579,8 @@ def test_get_restore_plan_rest(request_type):
     assert response.backup_plan == "backup_plan_value"
     assert response.cluster == "cluster_value"
     assert response.etag == "etag_value"
+    assert response.state == restore_plan.RestorePlan.State.CLUSTER_PENDING
+    assert response.state_reason == "state_reason_value"
 
 
 def test_get_restore_plan_rest_required_fields(
@@ -12769,7 +12851,10 @@ def test_update_restore_plan_rest(request_type):
                         "resource_group": "resource_group_value",
                         "resource_kind": "resource_kind_value",
                     }
-                ]
+                ],
+                "excluded_group_kinds": {},
+                "all_group_kinds": True,
+                "no_group_kinds": True,
             },
             "all_namespaces": True,
             "selected_namespaces": {
@@ -12780,6 +12865,8 @@ def test_update_restore_plan_rest(request_type):
                     {"namespace": "namespace_value", "name": "name_value"}
                 ]
             },
+            "no_namespaces": True,
+            "excluded_namespaces": {},
             "substitution_rules": [
                 {
                     "target_namespaces": [
@@ -12792,9 +12879,29 @@ def test_update_restore_plan_rest(request_type):
                     "new_value": "new_value_value",
                 }
             ],
+            "transformation_rules": [
+                {
+                    "field_actions": [
+                        {
+                            "op": 1,
+                            "from_path": "from_path_value",
+                            "path": "path_value",
+                            "value": "value_value",
+                        }
+                    ],
+                    "resource_filter": {
+                        "namespaces": ["namespaces_value1", "namespaces_value2"],
+                        "group_kinds": {},
+                        "json_path": "json_path_value",
+                    },
+                    "description": "description_value",
+                }
+            ],
         },
         "labels": {},
         "etag": "etag_value",
+        "state": 1,
+        "state_reason": "state_reason_value",
     }
     request = request_type(**request_init)
 
@@ -12989,7 +13096,10 @@ def test_update_restore_plan_rest_bad_request(
                         "resource_group": "resource_group_value",
                         "resource_kind": "resource_kind_value",
                     }
-                ]
+                ],
+                "excluded_group_kinds": {},
+                "all_group_kinds": True,
+                "no_group_kinds": True,
             },
             "all_namespaces": True,
             "selected_namespaces": {
@@ -13000,6 +13110,8 @@ def test_update_restore_plan_rest_bad_request(
                     {"namespace": "namespace_value", "name": "name_value"}
                 ]
             },
+            "no_namespaces": True,
+            "excluded_namespaces": {},
             "substitution_rules": [
                 {
                     "target_namespaces": [
@@ -13012,9 +13124,29 @@ def test_update_restore_plan_rest_bad_request(
                     "new_value": "new_value_value",
                 }
             ],
+            "transformation_rules": [
+                {
+                    "field_actions": [
+                        {
+                            "op": 1,
+                            "from_path": "from_path_value",
+                            "path": "path_value",
+                            "value": "value_value",
+                        }
+                    ],
+                    "resource_filter": {
+                        "namespaces": ["namespaces_value1", "namespaces_value2"],
+                        "group_kinds": {},
+                        "json_path": "json_path_value",
+                    },
+                    "description": "description_value",
+                }
+            ],
         },
         "labels": {},
         "etag": "etag_value",
+        "state": 1,
+        "state_reason": "state_reason_value",
     }
     request = request_type(**request_init)
 
@@ -13410,7 +13542,10 @@ def test_create_restore_rest(request_type):
                         "resource_group": "resource_group_value",
                         "resource_kind": "resource_kind_value",
                     }
-                ]
+                ],
+                "excluded_group_kinds": {},
+                "all_group_kinds": True,
+                "no_group_kinds": True,
             },
             "all_namespaces": True,
             "selected_namespaces": {
@@ -13421,6 +13556,8 @@ def test_create_restore_rest(request_type):
                     {"namespace": "namespace_value", "name": "name_value"}
                 ]
             },
+            "no_namespaces": True,
+            "excluded_namespaces": {},
             "substitution_rules": [
                 {
                     "target_namespaces": [
@@ -13431,6 +13568,24 @@ def test_create_restore_rest(request_type):
                     "target_json_path": "target_json_path_value",
                     "original_value_pattern": "original_value_pattern_value",
                     "new_value": "new_value_value",
+                }
+            ],
+            "transformation_rules": [
+                {
+                    "field_actions": [
+                        {
+                            "op": 1,
+                            "from_path": "from_path_value",
+                            "path": "path_value",
+                            "value": "value_value",
+                        }
+                    ],
+                    "resource_filter": {
+                        "namespaces": ["namespaces_value1", "namespaces_value2"],
+                        "group_kinds": {},
+                        "json_path": "json_path_value",
+                    },
+                    "description": "description_value",
                 }
             ],
         },
@@ -13658,7 +13813,10 @@ def test_create_restore_rest_bad_request(
                         "resource_group": "resource_group_value",
                         "resource_kind": "resource_kind_value",
                     }
-                ]
+                ],
+                "excluded_group_kinds": {},
+                "all_group_kinds": True,
+                "no_group_kinds": True,
             },
             "all_namespaces": True,
             "selected_namespaces": {
@@ -13669,6 +13827,8 @@ def test_create_restore_rest_bad_request(
                     {"namespace": "namespace_value", "name": "name_value"}
                 ]
             },
+            "no_namespaces": True,
+            "excluded_namespaces": {},
             "substitution_rules": [
                 {
                     "target_namespaces": [
@@ -13679,6 +13839,24 @@ def test_create_restore_rest_bad_request(
                     "target_json_path": "target_json_path_value",
                     "original_value_pattern": "original_value_pattern_value",
                     "new_value": "new_value_value",
+                }
+            ],
+            "transformation_rules": [
+                {
+                    "field_actions": [
+                        {
+                            "op": 1,
+                            "from_path": "from_path_value",
+                            "path": "path_value",
+                            "value": "value_value",
+                        }
+                    ],
+                    "resource_filter": {
+                        "namespaces": ["namespaces_value1", "namespaces_value2"],
+                        "group_kinds": {},
+                        "json_path": "json_path_value",
+                    },
+                    "description": "description_value",
                 }
             ],
         },
@@ -14444,7 +14622,10 @@ def test_update_restore_rest(request_type):
                         "resource_group": "resource_group_value",
                         "resource_kind": "resource_kind_value",
                     }
-                ]
+                ],
+                "excluded_group_kinds": {},
+                "all_group_kinds": True,
+                "no_group_kinds": True,
             },
             "all_namespaces": True,
             "selected_namespaces": {
@@ -14455,6 +14636,8 @@ def test_update_restore_rest(request_type):
                     {"namespace": "namespace_value", "name": "name_value"}
                 ]
             },
+            "no_namespaces": True,
+            "excluded_namespaces": {},
             "substitution_rules": [
                 {
                     "target_namespaces": [
@@ -14465,6 +14648,24 @@ def test_update_restore_rest(request_type):
                     "target_json_path": "target_json_path_value",
                     "original_value_pattern": "original_value_pattern_value",
                     "new_value": "new_value_value",
+                }
+            ],
+            "transformation_rules": [
+                {
+                    "field_actions": [
+                        {
+                            "op": 1,
+                            "from_path": "from_path_value",
+                            "path": "path_value",
+                            "value": "value_value",
+                        }
+                    ],
+                    "resource_filter": {
+                        "namespaces": ["namespaces_value1", "namespaces_value2"],
+                        "group_kinds": {},
+                        "json_path": "json_path_value",
+                    },
+                    "description": "description_value",
                 }
             ],
         },
@@ -14669,7 +14870,10 @@ def test_update_restore_rest_bad_request(
                         "resource_group": "resource_group_value",
                         "resource_kind": "resource_kind_value",
                     }
-                ]
+                ],
+                "excluded_group_kinds": {},
+                "all_group_kinds": True,
+                "no_group_kinds": True,
             },
             "all_namespaces": True,
             "selected_namespaces": {
@@ -14680,6 +14884,8 @@ def test_update_restore_rest_bad_request(
                     {"namespace": "namespace_value", "name": "name_value"}
                 ]
             },
+            "no_namespaces": True,
+            "excluded_namespaces": {},
             "substitution_rules": [
                 {
                     "target_namespaces": [
@@ -14690,6 +14896,24 @@ def test_update_restore_rest_bad_request(
                     "target_json_path": "target_json_path_value",
                     "original_value_pattern": "original_value_pattern_value",
                     "new_value": "new_value_value",
+                }
+            ],
+            "transformation_rules": [
+                {
+                    "field_actions": [
+                        {
+                            "op": 1,
+                            "from_path": "from_path_value",
+                            "path": "path_value",
+                            "value": "value_value",
+                        }
+                    ],
+                    "resource_filter": {
+                        "namespaces": ["namespaces_value1", "namespaces_value2"],
+                        "group_kinds": {},
+                        "json_path": "json_path_value",
+                    },
+                    "description": "description_value",
                 }
             ],
         },

@@ -33,7 +33,7 @@ __protobuf__ = proto.module(
 class RestorePlan(proto.Message):
     r"""The configuration of a potential series of Restore operations
     to be performed against Backups belong to a particular
-    BackupPlan. Next id: 11
+    BackupPlan. Next id: 13
 
     Attributes:
         name (str):
@@ -82,7 +82,38 @@ class RestorePlan(proto.Message):
             put that etag in the request to ``UpdateRestorePlan`` or
             ``DeleteRestorePlan`` to ensure that their change will be
             applied to the same version of the resource.
+        state (google.cloud.gke_backup_v1.types.RestorePlan.State):
+            Output only. State of the RestorePlan. This
+            State field reflects the various stages a
+            RestorePlan can be in during the Create
+            operation.
+        state_reason (str):
+            Output only. Human-readable description of why RestorePlan
+            is in the current ``state``
     """
+
+    class State(proto.Enum):
+        r"""State
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default first value for Enums.
+            CLUSTER_PENDING (1):
+                Waiting for cluster state to be RUNNING.
+            READY (2):
+                The RestorePlan has successfully been created
+                and is ready for Restores.
+            FAILED (3):
+                RestorePlan creation has failed.
+            DELETING (4):
+                The RestorePlan is in the process of being
+                deleted.
+        """
+        STATE_UNSPECIFIED = 0
+        CLUSTER_PENDING = 1
+        READY = 2
+        FAILED = 3
+        DELETING = 4
 
     name: str = proto.Field(
         proto.STRING,
@@ -127,6 +158,15 @@ class RestorePlan(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=10,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=State,
+    )
+    state_reason: str = proto.Field(
+        proto.STRING,
+        number=12,
     )
 
 

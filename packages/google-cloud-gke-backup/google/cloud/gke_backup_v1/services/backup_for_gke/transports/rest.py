@@ -2232,7 +2232,7 @@ class BackupForGKERestTransport(BackupForGKETransport):
                     The configuration of a potential
                 series of Restore operations to be
                 performed against Backups belong to a
-                particular BackupPlan. Next id: 11
+                particular BackupPlan. Next id: 13
 
             """
 

@@ -93,7 +93,46 @@ class BackupPlan(proto.Message):
             Output only. The number of Kubernetes Pods
             backed up in the last successful Backup created
             via this BackupPlan.
+        state (google.cloud.gke_backup_v1.types.BackupPlan.State):
+            Output only. State of the BackupPlan. This
+            State field reflects the various stages a
+            BackupPlan can be in during the Create
+            operation. It will be set to "DEACTIVATED" if
+            the BackupPlan is deactivated on an Update
+        state_reason (str):
+            Output only. Human-readable description of why BackupPlan is
+            in the current ``state``
     """
+
+    class State(proto.Enum):
+        r"""State
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default first value for Enums.
+            CLUSTER_PENDING (1):
+                Waiting for cluster state to be RUNNING.
+            PROVISIONING (2):
+                The BackupPlan is in the process of being
+                created.
+            READY (3):
+                The BackupPlan has successfully been created
+                and is ready for Backups.
+            FAILED (4):
+                BackupPlan creation has failed.
+            DEACTIVATED (5):
+                The BackupPlan has been deactivated.
+            DELETING (6):
+                The BackupPlan is in the process of being
+                deleted.
+        """
+        STATE_UNSPECIFIED = 0
+        CLUSTER_PENDING = 1
+        PROVISIONING = 2
+        READY = 3
+        FAILED = 4
+        DEACTIVATED = 5
+        DELETING = 6
 
     class RetentionPolicy(proto.Message):
         r"""RetentionPolicy defines a Backup retention policy for a
@@ -152,8 +191,8 @@ class BackupPlan(proto.Message):
         )
 
     class Schedule(proto.Message):
-        r"""Schedule defines scheduling parameters for automatically
-        creating Backups via this BackupPlan.
+        r"""Defines scheduling parameters for automatically creating
+        Backups via this BackupPlan.
 
         Attributes:
             cron_schedule (str):
@@ -314,6 +353,15 @@ class BackupPlan(proto.Message):
     protected_pod_count: int = proto.Field(
         proto.INT32,
         number=13,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum=State,
+    )
+    state_reason: str = proto.Field(
+        proto.STRING,
+        number=15,
     )
 
 

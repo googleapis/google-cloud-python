@@ -219,7 +219,7 @@ class Restore(proto.Message):
 
 class RestoreConfig(proto.Message):
     r"""Configuration of a restore.
-    Next id: 9
+    Next id: 12
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -268,6 +268,18 @@ class RestoreConfig(proto.Message):
             restored.
 
             This field is a member of `oneof`_ ``namespaced_resource_restore_scope``.
+        no_namespaces (bool):
+            Do not restore any namespaced resources if
+            set to "True". Specifying this field to "False"
+            is not allowed.
+
+            This field is a member of `oneof`_ ``namespaced_resource_restore_scope``.
+        excluded_namespaces (google.cloud.gke_backup_v1.types.Namespaces):
+            A list of selected namespaces excluded from
+            restoration. All namespaces except those in this
+            list will be restored.
+
+            This field is a member of `oneof`_ ``namespaced_resource_restore_scope``.
         substitution_rules (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.SubstitutionRule]):
             A list of transformation rules to be applied
             against Kubernetes resources as they are
@@ -276,6 +288,14 @@ class RestoreConfig(proto.Message):
             matters, as changes made by a rule may impact
             the filtering logic of subsequent rules. An
             empty list means no substitution will occur.
+        transformation_rules (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.TransformationRule]):
+            A list of transformation rules to be applied
+            against Kubernetes resources as they are
+            selected for restoration from a Backup. Rules
+            are executed in order defined - this order
+            matters, as changes made by a rule may impact
+            the filtering logic of subsequent rules. An
+            empty list means no transformation will occur.
     """
 
     class VolumeDataRestorePolicy(proto.Enum):
@@ -416,6 +436,22 @@ class RestoreConfig(proto.Message):
                 the selected resources will be restored.
                 Mutually exclusive to any other field in the
                 message.
+            excluded_group_kinds (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.GroupKind]):
+                A list of cluster-scoped resource group kinds
+                to NOT restore from the backup. If specified,
+                all valid cluster-scoped resources will be
+                restored except for those specified in the list.
+                Mutually exclusive to any other field in the
+                message.
+            all_group_kinds (bool):
+                If True, all valid cluster-scoped resources
+                will be restored. Mutually exclusive to any
+                other field in the message.
+            no_group_kinds (bool):
+                If True, no cluster-scoped resources will be
+                restored. This has the same restore scope as if
+                the message is not defined. Mutually exclusive
+                to any other field in the message.
         """
 
         selected_group_kinds: MutableSequence[
@@ -424,6 +460,21 @@ class RestoreConfig(proto.Message):
             proto.MESSAGE,
             number=1,
             message="RestoreConfig.GroupKind",
+        )
+        excluded_group_kinds: MutableSequence[
+            "RestoreConfig.GroupKind"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="RestoreConfig.GroupKind",
+        )
+        all_group_kinds: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+        no_group_kinds: bool = proto.Field(
+            proto.BOOL,
+            number=4,
         )
 
     class SubstitutionRule(proto.Message):
@@ -503,6 +554,184 @@ class RestoreConfig(proto.Message):
             number=5,
         )
 
+    class TransformationRuleAction(proto.Message):
+        r"""TransformationRuleAction defines a TransformationRule action
+        based on the JSON Patch RFC
+        (https://www.rfc-editor.org/rfc/rfc6902)
+
+        Attributes:
+            op (google.cloud.gke_backup_v1.types.RestoreConfig.TransformationRuleAction.Op):
+                Required. op specifies the operation to
+                perform.
+            from_path (str):
+                A string containing a JSON Pointer value that
+                references the location in the target document
+                to move the value from.
+            path (str):
+                A string containing a JSON-Pointer value that
+                references a location within the target document
+                where the operation is performed.
+            value (str):
+                A string that specifies the desired value in
+                string format to use for transformation.
+        """
+
+        class Op(proto.Enum):
+            r"""Possible values for operations of a transformation rule
+            action.
+
+            Values:
+                OP_UNSPECIFIED (0):
+                    Unspecified operation
+                REMOVE (1):
+                    The "remove" operation removes the value at
+                    the target location.
+                MOVE (2):
+                    The "move" operation removes the value at a
+                    specified location and adds it to the target
+                    location.
+                COPY (3):
+                    The "copy" operation copies the value at a
+                    specified location to the target location.
+                ADD (4):
+                    The "add" operation performs one of the
+                    following functions, depending upon what the
+                    target location references: 1. If the target
+                    location specifies an array index, a new value
+                    is inserted into the array at the specified
+                    index. 2. If the target location specifies an
+                    object member that does not already exist, a new
+                    member is added to the object. 3. If the target
+                    location specifies an object member that does
+                    exist, that member's value is replaced.
+                TEST (5):
+                    The "test" operation tests that a value at
+                    the target location is equal to a specified
+                    value.
+                REPLACE (6):
+                    The "replace" operation replaces the value at
+                    the target location with a new value.  The
+                    operation object MUST contain a "value" member
+                    whose content specifies the replacement value.
+            """
+            OP_UNSPECIFIED = 0
+            REMOVE = 1
+            MOVE = 2
+            COPY = 3
+            ADD = 4
+            TEST = 5
+            REPLACE = 6
+
+        op: "RestoreConfig.TransformationRuleAction.Op" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="RestoreConfig.TransformationRuleAction.Op",
+        )
+        from_path: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        path: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        value: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+
+    class ResourceFilter(proto.Message):
+        r"""ResourceFilter specifies matching criteria to limit the scope
+        of a change to a specific set of kubernetes resources that are
+        selected for restoration from a backup.
+
+        Attributes:
+            namespaces (MutableSequence[str]):
+                (Filtering parameter) Any resource subject to
+                transformation must be contained within one of
+                the listed Kubernetes Namespace in the Backup.
+                If this field is not provided, no namespace
+                filtering will be performed (all resources in
+                all Namespaces, including all cluster-scoped
+                resources, will be candidates for
+                transformation).
+                To mix cluster-scoped and namespaced resources
+                in the same rule, use an empty string ("") as
+                one of the target namespaces.
+            group_kinds (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.GroupKind]):
+                (Filtering parameter) Any resource subject to
+                transformation must belong to one of the listed
+                "types". If this field is not provided, no type
+                filtering will be performed (all resources of
+                all types matching previous filtering parameters
+                will be candidates for transformation).
+            json_path (str):
+                This is a [JSONPath]
+                (https://github.com/json-path/JsonPath/blob/master/README.md)
+                expression that matches specific fields of candidate
+                resources and it operates as a filtering parameter
+                (resources that are not matched with this expression will
+                not be candidates for transformation).
+        """
+
+        namespaces: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        group_kinds: MutableSequence["RestoreConfig.GroupKind"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="RestoreConfig.GroupKind",
+        )
+        json_path: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    class TransformationRule(proto.Message):
+        r"""A transformation rule to be applied against Kubernetes
+        resources as they are selected for restoration from a Backup. A
+        rule contains both filtering logic (which resources are subject
+        to transform) and transformation logic.
+
+        Attributes:
+            field_actions (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.TransformationRuleAction]):
+                Required. A list of transformation rule
+                actions to take against candidate resources.
+                Actions are executed in order defined - this
+                order matters, as they could potentially
+                interfere with each other and the first
+                operation could affect the outcome of the second
+                operation.
+            resource_filter (google.cloud.gke_backup_v1.types.RestoreConfig.ResourceFilter):
+                This field is used to specify a set of fields
+                that should be used to determine which resources
+                in backup should be acted upon by the supplied
+                transformation rule actions, and this will
+                ensure that only specific resources are affected
+                by transformation rule actions.
+            description (str):
+                The description is a user specified string
+                description of the transformation rule.
+        """
+
+        field_actions: MutableSequence[
+            "RestoreConfig.TransformationRuleAction"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="RestoreConfig.TransformationRuleAction",
+        )
+        resource_filter: "RestoreConfig.ResourceFilter" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="RestoreConfig.ResourceFilter",
+        )
+        description: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
     volume_data_restore_policy: VolumeDataRestorePolicy = proto.Field(
         proto.ENUM,
         number=1,
@@ -540,10 +769,26 @@ class RestoreConfig(proto.Message):
         oneof="namespaced_resource_restore_scope",
         message=common.NamespacedNames,
     )
+    no_namespaces: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+        oneof="namespaced_resource_restore_scope",
+    )
+    excluded_namespaces: common.Namespaces = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="namespaced_resource_restore_scope",
+        message=common.Namespaces,
+    )
     substitution_rules: MutableSequence[SubstitutionRule] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message=SubstitutionRule,
+    )
+    transformation_rules: MutableSequence[TransformationRule] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=11,
+        message=TransformationRule,
     )
 
 
