@@ -1172,9 +1172,11 @@ async def test_list_report_configs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_report_configs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1205,12 +1207,6 @@ def test_get_report_config(request_type, transport: str = "grpc"):
         call.return_value = storageinsights.ReportConfig(
             name="name_value",
             display_name="display_name_value",
-            csv_options=storageinsights.CSVOptions(
-                record_separator="record_separator_value"
-            ),
-            object_metadata_report_options=storageinsights.ObjectMetadataReportOptions(
-                metadata_fields=["metadata_fields_value"]
-            ),
         )
         response = client.get_report_config(request)
 
@@ -1461,12 +1457,6 @@ def test_create_report_config(request_type, transport: str = "grpc"):
         call.return_value = storageinsights.ReportConfig(
             name="name_value",
             display_name="display_name_value",
-            csv_options=storageinsights.CSVOptions(
-                record_separator="record_separator_value"
-            ),
-            object_metadata_report_options=storageinsights.ObjectMetadataReportOptions(
-                metadata_fields=["metadata_fields_value"]
-            ),
         )
         response = client.create_report_config(request)
 
@@ -1728,12 +1718,6 @@ def test_update_report_config(request_type, transport: str = "grpc"):
         call.return_value = storageinsights.ReportConfig(
             name="name_value",
             display_name="display_name_value",
-            csv_options=storageinsights.CSVOptions(
-                record_separator="record_separator_value"
-            ),
-            object_metadata_report_options=storageinsights.ObjectMetadataReportOptions(
-                metadata_fields=["metadata_fields_value"]
-            ),
         )
         response = client.update_report_config(request)
 
@@ -2644,9 +2628,11 @@ async def test_list_report_details_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_report_details(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3275,12 +3261,6 @@ def test_get_report_config_rest(request_type):
         return_value = storageinsights.ReportConfig(
             name="name_value",
             display_name="display_name_value",
-            csv_options=storageinsights.CSVOptions(
-                record_separator="record_separator_value"
-            ),
-            object_metadata_report_options=storageinsights.ObjectMetadataReportOptions(
-                metadata_fields=["metadata_fields_value"]
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -3579,12 +3559,6 @@ def test_create_report_config_rest(request_type):
         return_value = storageinsights.ReportConfig(
             name="name_value",
             display_name="display_name_value",
-            csv_options=storageinsights.CSVOptions(
-                record_separator="record_separator_value"
-            ),
-            object_metadata_report_options=storageinsights.ObjectMetadataReportOptions(
-                metadata_fields=["metadata_fields_value"]
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -3924,12 +3898,6 @@ def test_update_report_config_rest(request_type):
         return_value = storageinsights.ReportConfig(
             name="name_value",
             display_name="display_name_value",
-            csv_options=storageinsights.CSVOptions(
-                record_separator="record_separator_value"
-            ),
-            object_metadata_report_options=storageinsights.ObjectMetadataReportOptions(
-                metadata_fields=["metadata_fields_value"]
-            ),
         )
 
         # Wrap the value into a proper Response obj
