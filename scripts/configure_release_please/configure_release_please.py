@@ -43,8 +43,8 @@ def walk_through_owlbot_dirs(packages_dir: Path = PACKAGES_DIR) -> List[Path]:
         packages_dir(pathlib.Path): Path to the directory which contains packages.
 
     Returns:
-        List[pathlib.Path] which contains directories for all of the packages which have
-        a corresponding .OwlBot.yaml file within the specified `packages_dir`.
+        List[pathlib.Path] where each entry corresponds to a package within the
+            specified `packages_dir`, which has a corresponding .OwlBot.yaml file.
     """
     if not Path(packages_dir).exists():
         raise FileNotFoundError(f"Directory {packages_dir} not found")
