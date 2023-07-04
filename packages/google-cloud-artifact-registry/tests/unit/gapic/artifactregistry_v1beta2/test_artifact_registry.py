@@ -1502,9 +1502,11 @@ async def test_list_repositories_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_repositories(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1535,9 +1537,6 @@ def test_get_repository(request_type, transport: str = "grpc"):
             format_=repository.Repository.Format.DOCKER,
             description="description_value",
             kms_key_name="kms_key_name_value",
-            maven_config=repository.Repository.MavenRepositoryConfig(
-                allow_snapshot_overwrites=True
-            ),
         )
         response = client.get_repository(request)
 
@@ -2068,9 +2067,6 @@ def test_update_repository(request_type, transport: str = "grpc"):
             format_=gda_repository.Repository.Format.DOCKER,
             description="description_value",
             kms_key_name="kms_key_name_value",
-            maven_config=gda_repository.Repository.MavenRepositoryConfig(
-                allow_snapshot_overwrites=True
-            ),
         )
         response = client.update_repository(request)
 
@@ -2988,9 +2984,11 @@ async def test_list_packages_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_packages(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3866,9 +3864,11 @@ async def test_list_versions_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_versions(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4744,9 +4744,11 @@ async def test_list_files_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_files(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5400,9 +5402,11 @@ async def test_list_tags_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_tags(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8008,9 +8012,6 @@ def test_get_repository_rest(request_type):
             format_=repository.Repository.Format.DOCKER,
             description="description_value",
             kms_key_name="kms_key_name_value",
-            maven_config=repository.Repository.MavenRepositoryConfig(
-                allow_snapshot_overwrites=True
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -8599,9 +8600,6 @@ def test_update_repository_rest(request_type):
             format_=gda_repository.Repository.Format.DOCKER,
             description="description_value",
             kms_key_name="kms_key_name_value",
-            maven_config=gda_repository.Repository.MavenRepositoryConfig(
-                allow_snapshot_overwrites=True
-            ),
         )
 
         # Wrap the value into a proper Response obj

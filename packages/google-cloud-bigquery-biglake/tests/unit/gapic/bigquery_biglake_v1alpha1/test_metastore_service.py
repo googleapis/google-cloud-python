@@ -1853,9 +1853,11 @@ async def test_list_catalogs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_catalogs(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1884,9 +1886,6 @@ def test_create_database(request_type, transport: str = "grpc"):
         call.return_value = metastore.Database(
             name="name_value",
             type_=metastore.Database.Type.HIVE,
-            hive_options=metastore.HiveDatabaseOptions(
-                location_uri="location_uri_value"
-            ),
         )
         response = client.create_database(request)
 
@@ -2163,9 +2162,6 @@ def test_delete_database(request_type, transport: str = "grpc"):
         call.return_value = metastore.Database(
             name="name_value",
             type_=metastore.Database.Type.HIVE,
-            hive_options=metastore.HiveDatabaseOptions(
-                location_uri="location_uri_value"
-            ),
         )
         response = client.delete_database(request)
 
@@ -2398,9 +2394,6 @@ def test_update_database(request_type, transport: str = "grpc"):
         call.return_value = metastore.Database(
             name="name_value",
             type_=metastore.Database.Type.HIVE,
-            hive_options=metastore.HiveDatabaseOptions(
-                location_uri="location_uri_value"
-            ),
         )
         response = client.update_database(request)
 
@@ -2667,9 +2660,6 @@ def test_get_database(request_type, transport: str = "grpc"):
         call.return_value = metastore.Database(
             name="name_value",
             type_=metastore.Database.Type.HIVE,
-            hive_options=metastore.HiveDatabaseOptions(
-                location_uri="location_uri_value"
-            ),
         )
         response = client.get_database(request)
 
@@ -3291,9 +3281,11 @@ async def test_list_databases_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_databases(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3323,9 +3315,6 @@ def test_create_table(request_type, transport: str = "grpc"):
             name="name_value",
             type_=metastore.Table.Type.HIVE,
             etag="etag_value",
-            hive_options=metastore.HiveTableOptions(
-                parameters={"key_value": "value_value"}
-            ),
         )
         response = client.create_table(request)
 
@@ -3606,9 +3595,6 @@ def test_delete_table(request_type, transport: str = "grpc"):
             name="name_value",
             type_=metastore.Table.Type.HIVE,
             etag="etag_value",
-            hive_options=metastore.HiveTableOptions(
-                parameters={"key_value": "value_value"}
-            ),
         )
         response = client.delete_table(request)
 
@@ -3845,9 +3831,6 @@ def test_update_table(request_type, transport: str = "grpc"):
             name="name_value",
             type_=metastore.Table.Type.HIVE,
             etag="etag_value",
-            hive_options=metastore.HiveTableOptions(
-                parameters={"key_value": "value_value"}
-            ),
         )
         response = client.update_table(request)
 
@@ -4118,9 +4101,6 @@ def test_rename_table(request_type, transport: str = "grpc"):
             name="name_value",
             type_=metastore.Table.Type.HIVE,
             etag="etag_value",
-            hive_options=metastore.HiveTableOptions(
-                parameters={"key_value": "value_value"}
-            ),
         )
         response = client.rename_table(request)
 
@@ -4367,9 +4347,6 @@ def test_get_table(request_type, transport: str = "grpc"):
             name="name_value",
             type_=metastore.Table.Type.HIVE,
             etag="etag_value",
-            hive_options=metastore.HiveTableOptions(
-                parameters={"key_value": "value_value"}
-            ),
         )
         response = client.get_table(request)
 
@@ -4994,9 +4971,11 @@ async def test_list_tables_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_tables(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6118,9 +6097,11 @@ async def test_list_locks_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_locks(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7325,9 +7306,6 @@ def test_create_database_rest(request_type):
         return_value = metastore.Database(
             name="name_value",
             type_=metastore.Database.Type.HIVE,
-            hive_options=metastore.HiveDatabaseOptions(
-                location_uri="location_uri_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -7646,9 +7624,6 @@ def test_delete_database_rest(request_type):
         return_value = metastore.Database(
             name="name_value",
             type_=metastore.Database.Type.HIVE,
-            hive_options=metastore.HiveDatabaseOptions(
-                location_uri="location_uri_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -7934,9 +7909,6 @@ def test_update_database_rest(request_type):
         return_value = metastore.Database(
             name="name_value",
             type_=metastore.Database.Type.HIVE,
-            hive_options=metastore.HiveDatabaseOptions(
-                location_uri="location_uri_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -8232,9 +8204,6 @@ def test_get_database_rest(request_type):
         return_value = metastore.Database(
             name="name_value",
             type_=metastore.Database.Type.HIVE,
-            hive_options=metastore.HiveDatabaseOptions(
-                location_uri="location_uri_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -8865,9 +8834,6 @@ def test_create_table_rest(request_type):
             name="name_value",
             type_=metastore.Table.Type.HIVE,
             etag="etag_value",
-            hive_options=metastore.HiveTableOptions(
-                parameters={"key_value": "value_value"}
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -9196,9 +9162,6 @@ def test_delete_table_rest(request_type):
             name="name_value",
             type_=metastore.Table.Type.HIVE,
             etag="etag_value",
-            hive_options=metastore.HiveTableOptions(
-                parameters={"key_value": "value_value"}
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -9492,9 +9455,6 @@ def test_update_table_rest(request_type):
             name="name_value",
             type_=metastore.Table.Type.HIVE,
             etag="etag_value",
-            hive_options=metastore.HiveTableOptions(
-                parameters={"key_value": "value_value"}
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -9798,9 +9758,6 @@ def test_rename_table_rest(request_type):
             name="name_value",
             type_=metastore.Table.Type.HIVE,
             etag="etag_value",
-            hive_options=metastore.HiveTableOptions(
-                parameters={"key_value": "value_value"}
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -10088,9 +10045,6 @@ def test_get_table_rest(request_type):
             name="name_value",
             type_=metastore.Table.Type.HIVE,
             etag="etag_value",
-            hive_options=metastore.HiveTableOptions(
-                parameters={"key_value": "value_value"}
-            ),
         )
 
         # Wrap the value into a proper Response obj
