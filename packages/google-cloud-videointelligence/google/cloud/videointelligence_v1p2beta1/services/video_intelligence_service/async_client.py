@@ -365,7 +365,7 @@ class VideoIntelligenceServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "VideoIntelligenceServiceAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
