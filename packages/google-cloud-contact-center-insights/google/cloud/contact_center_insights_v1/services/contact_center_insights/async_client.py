@@ -4583,7 +4583,7 @@ class ContactCenterInsightsAsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "ContactCenterInsightsAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
