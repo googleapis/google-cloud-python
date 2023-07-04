@@ -1640,6 +1640,7 @@ def test_get_rest(request_type):
             forwarding_rules=["forwarding_rules_value"],
             id=205,
             kind="kind_value",
+            label_fingerprint="label_fingerprint_value",
             name="name_value",
             network="network_value",
             region="region_value",
@@ -1665,6 +1666,7 @@ def test_get_rest(request_type):
     assert response.forwarding_rules == ["forwarding_rules_value"]
     assert response.id == 205
     assert response.kind == "kind_value"
+    assert response.label_fingerprint == "label_fingerprint_value"
     assert response.name == "name_value"
     assert response.network == "network_value"
     assert response.region == "region_value"
@@ -1950,6 +1952,8 @@ def test_insert_rest(request_type):
         "forwarding_rules": ["forwarding_rules_value1", "forwarding_rules_value2"],
         "id": 205,
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "name": "name_value",
         "network": "network_value",
         "region": "region_value",
@@ -2196,6 +2200,8 @@ def test_insert_rest_bad_request(
         "forwarding_rules": ["forwarding_rules_value1", "forwarding_rules_value2"],
         "id": 205,
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "name": "name_value",
         "network": "network_value",
         "region": "region_value",
@@ -2308,6 +2314,8 @@ def test_insert_unary_rest(request_type):
         "forwarding_rules": ["forwarding_rules_value1", "forwarding_rules_value2"],
         "id": 205,
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "name": "name_value",
         "network": "network_value",
         "region": "region_value",
@@ -2532,6 +2540,8 @@ def test_insert_unary_rest_bad_request(
         "forwarding_rules": ["forwarding_rules_value1", "forwarding_rules_value2"],
         "id": 205,
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "name": "name_value",
         "network": "network_value",
         "region": "region_value",

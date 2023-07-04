@@ -1648,6 +1648,7 @@ def test_get_rest(request_type):
             name="name_value",
             nat_subnets=["nat_subnets_value"],
             producer_forwarding_rule="producer_forwarding_rule_value",
+            reconcile_connections=True,
             region="region_value",
             self_link="self_link_value",
             target_service="target_service_value",
@@ -1677,6 +1678,7 @@ def test_get_rest(request_type):
     assert response.name == "name_value"
     assert response.nat_subnets == ["nat_subnets_value"]
     assert response.producer_forwarding_rule == "producer_forwarding_rule_value"
+    assert response.reconcile_connections is True
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
     assert response.target_service == "target_service_value"
@@ -2281,6 +2283,7 @@ def test_insert_rest(request_type):
         "nat_subnets": ["nat_subnets_value1", "nat_subnets_value2"],
         "producer_forwarding_rule": "producer_forwarding_rule_value",
         "psc_service_attachment_id": {"high": 416, "low": 338},
+        "reconcile_connections": True,
         "region": "region_value",
         "self_link": "self_link_value",
         "target_service": "target_service_value",
@@ -2549,6 +2552,7 @@ def test_insert_rest_bad_request(
         "nat_subnets": ["nat_subnets_value1", "nat_subnets_value2"],
         "producer_forwarding_rule": "producer_forwarding_rule_value",
         "psc_service_attachment_id": {"high": 416, "low": 338},
+        "reconcile_connections": True,
         "region": "region_value",
         "self_link": "self_link_value",
         "target_service": "target_service_value",
@@ -2691,6 +2695,7 @@ def test_insert_unary_rest(request_type):
         "nat_subnets": ["nat_subnets_value1", "nat_subnets_value2"],
         "producer_forwarding_rule": "producer_forwarding_rule_value",
         "psc_service_attachment_id": {"high": 416, "low": 338},
+        "reconcile_connections": True,
         "region": "region_value",
         "self_link": "self_link_value",
         "target_service": "target_service_value",
@@ -2937,6 +2942,7 @@ def test_insert_unary_rest_bad_request(
         "nat_subnets": ["nat_subnets_value1", "nat_subnets_value2"],
         "producer_forwarding_rule": "producer_forwarding_rule_value",
         "psc_service_attachment_id": {"high": 416, "low": 338},
+        "reconcile_connections": True,
         "region": "region_value",
         "self_link": "self_link_value",
         "target_service": "target_service_value",
@@ -3442,6 +3448,7 @@ def test_patch_rest(request_type):
         "nat_subnets": ["nat_subnets_value1", "nat_subnets_value2"],
         "producer_forwarding_rule": "producer_forwarding_rule_value",
         "psc_service_attachment_id": {"high": 416, "low": 338},
+        "reconcile_connections": True,
         "region": "region_value",
         "self_link": "self_link_value",
         "target_service": "target_service_value",
@@ -3717,6 +3724,7 @@ def test_patch_rest_bad_request(
         "nat_subnets": ["nat_subnets_value1", "nat_subnets_value2"],
         "producer_forwarding_rule": "producer_forwarding_rule_value",
         "psc_service_attachment_id": {"high": 416, "low": 338},
+        "reconcile_connections": True,
         "region": "region_value",
         "self_link": "self_link_value",
         "target_service": "target_service_value",
@@ -3869,6 +3877,7 @@ def test_patch_unary_rest(request_type):
         "nat_subnets": ["nat_subnets_value1", "nat_subnets_value2"],
         "producer_forwarding_rule": "producer_forwarding_rule_value",
         "psc_service_attachment_id": {"high": 416, "low": 338},
+        "reconcile_connections": True,
         "region": "region_value",
         "self_link": "self_link_value",
         "target_service": "target_service_value",
@@ -4124,6 +4133,7 @@ def test_patch_unary_rest_bad_request(
         "nat_subnets": ["nat_subnets_value1", "nat_subnets_value2"],
         "producer_forwarding_rule": "producer_forwarding_rule_value",
         "psc_service_attachment_id": {"high": 416, "low": 338},
+        "reconcile_connections": True,
         "region": "region_value",
         "self_link": "self_link_value",
         "target_service": "target_service_value",

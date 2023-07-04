@@ -132,6 +132,11 @@ class RegionDisksTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.bulk_insert: gapic_v1.method.wrap_method(
+                self.bulk_insert,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_snapshot: gapic_v1.method.wrap_method(
                 self.create_snapshot,
                 default_timeout=None,
@@ -182,6 +187,21 @@ class RegionDisksTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.start_async_replication: gapic_v1.method.wrap_method(
+                self.start_async_replication,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.stop_async_replication: gapic_v1.method.wrap_method(
+                self.stop_async_replication,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.stop_group_async_replication: gapic_v1.method.wrap_method(
+                self.stop_group_async_replication,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
                 default_timeout=None,
@@ -208,6 +228,15 @@ class RegionDisksTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.AddResourcePoliciesRegionDiskRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def bulk_insert(
+        self,
+    ) -> Callable[
+        [compute.BulkInsertRegionDiskRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
@@ -297,6 +326,33 @@ class RegionDisksTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.SetLabelsRegionDiskRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def start_async_replication(
+        self,
+    ) -> Callable[
+        [compute.StartAsyncReplicationRegionDiskRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def stop_async_replication(
+        self,
+    ) -> Callable[
+        [compute.StopAsyncReplicationRegionDiskRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def stop_group_async_replication(
+        self,
+    ) -> Callable[
+        [compute.StopGroupAsyncReplicationRegionDiskRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

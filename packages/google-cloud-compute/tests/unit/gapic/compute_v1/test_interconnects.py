@@ -1213,6 +1213,7 @@ def test_get_rest(request_type):
             interconnect_attachments=["interconnect_attachments_value"],
             interconnect_type="interconnect_type_value",
             kind="kind_value",
+            label_fingerprint="label_fingerprint_value",
             link_type="link_type_value",
             location="location_value",
             name="name_value",
@@ -1220,6 +1221,7 @@ def test_get_rest(request_type):
             operational_status="operational_status_value",
             peer_ip_address="peer_ip_address_value",
             provisioned_link_count=2375,
+            remote_location="remote_location_value",
             requested_link_count=2151,
             satisfies_pzs=True,
             self_link="self_link_value",
@@ -1248,6 +1250,7 @@ def test_get_rest(request_type):
     assert response.interconnect_attachments == ["interconnect_attachments_value"]
     assert response.interconnect_type == "interconnect_type_value"
     assert response.kind == "kind_value"
+    assert response.label_fingerprint == "label_fingerprint_value"
     assert response.link_type == "link_type_value"
     assert response.location == "location_value"
     assert response.name == "name_value"
@@ -1255,6 +1258,7 @@ def test_get_rest(request_type):
     assert response.operational_status == "operational_status_value"
     assert response.peer_ip_address == "peer_ip_address_value"
     assert response.provisioned_link_count == 2375
+    assert response.remote_location == "remote_location_value"
     assert response.requested_link_count == 2151
     assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
@@ -1830,6 +1834,8 @@ def test_insert_rest(request_type):
         ],
         "interconnect_type": "interconnect_type_value",
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "link_type": "link_type_value",
         "location": "location_value",
         "name": "name_value",
@@ -1837,6 +1843,7 @@ def test_insert_rest(request_type):
         "operational_status": "operational_status_value",
         "peer_ip_address": "peer_ip_address_value",
         "provisioned_link_count": 2375,
+        "remote_location": "remote_location_value",
         "requested_link_count": 2151,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
@@ -2104,6 +2111,8 @@ def test_insert_rest_bad_request(
         ],
         "interconnect_type": "interconnect_type_value",
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "link_type": "link_type_value",
         "location": "location_value",
         "name": "name_value",
@@ -2111,6 +2120,7 @@ def test_insert_rest_bad_request(
         "operational_status": "operational_status_value",
         "peer_ip_address": "peer_ip_address_value",
         "provisioned_link_count": 2375,
+        "remote_location": "remote_location_value",
         "requested_link_count": 2151,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
@@ -2245,6 +2255,8 @@ def test_insert_unary_rest(request_type):
         ],
         "interconnect_type": "interconnect_type_value",
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "link_type": "link_type_value",
         "location": "location_value",
         "name": "name_value",
@@ -2252,6 +2264,7 @@ def test_insert_unary_rest(request_type):
         "operational_status": "operational_status_value",
         "peer_ip_address": "peer_ip_address_value",
         "provisioned_link_count": 2375,
+        "remote_location": "remote_location_value",
         "requested_link_count": 2151,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
@@ -2499,6 +2512,8 @@ def test_insert_unary_rest_bad_request(
         ],
         "interconnect_type": "interconnect_type_value",
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "link_type": "link_type_value",
         "location": "location_value",
         "name": "name_value",
@@ -2506,6 +2521,7 @@ def test_insert_unary_rest_bad_request(
         "operational_status": "operational_status_value",
         "peer_ip_address": "peer_ip_address_value",
         "provisioned_link_count": 2375,
+        "remote_location": "remote_location_value",
         "requested_link_count": 2151,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
@@ -2988,6 +3004,8 @@ def test_patch_rest(request_type):
         ],
         "interconnect_type": "interconnect_type_value",
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "link_type": "link_type_value",
         "location": "location_value",
         "name": "name_value",
@@ -2995,6 +3013,7 @@ def test_patch_rest(request_type):
         "operational_status": "operational_status_value",
         "peer_ip_address": "peer_ip_address_value",
         "provisioned_link_count": 2375,
+        "remote_location": "remote_location_value",
         "requested_link_count": 2151,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
@@ -3267,6 +3286,8 @@ def test_patch_rest_bad_request(
         ],
         "interconnect_type": "interconnect_type_value",
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "link_type": "link_type_value",
         "location": "location_value",
         "name": "name_value",
@@ -3274,6 +3295,7 @@ def test_patch_rest_bad_request(
         "operational_status": "operational_status_value",
         "peer_ip_address": "peer_ip_address_value",
         "provisioned_link_count": 2375,
+        "remote_location": "remote_location_value",
         "requested_link_count": 2151,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
@@ -3410,6 +3432,8 @@ def test_patch_unary_rest(request_type):
         ],
         "interconnect_type": "interconnect_type_value",
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "link_type": "link_type_value",
         "location": "location_value",
         "name": "name_value",
@@ -3417,6 +3441,7 @@ def test_patch_unary_rest(request_type):
         "operational_status": "operational_status_value",
         "peer_ip_address": "peer_ip_address_value",
         "provisioned_link_count": 2375,
+        "remote_location": "remote_location_value",
         "requested_link_count": 2151,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
@@ -3669,6 +3694,8 @@ def test_patch_unary_rest_bad_request(
         ],
         "interconnect_type": "interconnect_type_value",
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "link_type": "link_type_value",
         "location": "location_value",
         "name": "name_value",
@@ -3676,6 +3703,7 @@ def test_patch_unary_rest_bad_request(
         "operational_status": "operational_status_value",
         "peer_ip_address": "peer_ip_address_value",
         "provisioned_link_count": 2375,
+        "remote_location": "remote_location_value",
         "requested_link_count": 2151,
         "satisfies_pzs": True,
         "self_link": "self_link_value",

@@ -152,6 +152,11 @@ class AddressesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.move: gapic_v1.method.wrap_method(
+                self.move,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.set_labels: gapic_v1.method.wrap_method(
                 self.set_labels,
                 default_timeout=None,
@@ -209,6 +214,15 @@ class AddressesTransport(abc.ABC):
     ) -> Callable[
         [compute.ListAddressesRequest],
         Union[compute.AddressList, Awaitable[compute.AddressList]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def move(
+        self,
+    ) -> Callable[
+        [compute.MoveAddressRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
 

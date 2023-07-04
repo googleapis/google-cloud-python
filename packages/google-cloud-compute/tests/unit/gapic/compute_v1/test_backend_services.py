@@ -3934,6 +3934,7 @@ def test_insert_rest(request_type):
             "sample_rate": 0.1165,
         },
         "max_stream_duration": {},
+        "metadatas": {},
         "name": "name_value",
         "network": "network_value",
         "outlier_detection": {
@@ -4314,6 +4315,7 @@ def test_insert_rest_bad_request(
             "sample_rate": 0.1165,
         },
         "max_stream_duration": {},
+        "metadatas": {},
         "name": "name_value",
         "network": "network_value",
         "outlier_detection": {
@@ -4565,6 +4567,7 @@ def test_insert_unary_rest(request_type):
             "sample_rate": 0.1165,
         },
         "max_stream_duration": {},
+        "metadatas": {},
         "name": "name_value",
         "network": "network_value",
         "outlier_detection": {
@@ -4925,6 +4928,7 @@ def test_insert_unary_rest_bad_request(
             "sample_rate": 0.1165,
         },
         "max_stream_duration": {},
+        "metadatas": {},
         "name": "name_value",
         "network": "network_value",
         "outlier_detection": {
@@ -5524,6 +5528,7 @@ def test_patch_rest(request_type):
             "sample_rate": 0.1165,
         },
         "max_stream_duration": {},
+        "metadatas": {},
         "name": "name_value",
         "network": "network_value",
         "outlier_detection": {
@@ -5909,6 +5914,7 @@ def test_patch_rest_bad_request(
             "sample_rate": 0.1165,
         },
         "max_stream_duration": {},
+        "metadatas": {},
         "name": "name_value",
         "network": "network_value",
         "outlier_detection": {
@@ -6162,6 +6168,7 @@ def test_patch_unary_rest(request_type):
             "sample_rate": 0.1165,
         },
         "max_stream_duration": {},
+        "metadatas": {},
         "name": "name_value",
         "network": "network_value",
         "outlier_detection": {
@@ -6527,6 +6534,7 @@ def test_patch_unary_rest_bad_request(
             "sample_rate": 0.1165,
         },
         "max_stream_duration": {},
+        "metadatas": {},
         "name": "name_value",
         "network": "network_value",
         "outlier_detection": {
@@ -8536,6 +8544,7 @@ def test_update_rest(request_type):
             "sample_rate": 0.1165,
         },
         "max_stream_duration": {},
+        "metadatas": {},
         "name": "name_value",
         "network": "network_value",
         "outlier_detection": {
@@ -8921,6 +8930,7 @@ def test_update_rest_bad_request(
             "sample_rate": 0.1165,
         },
         "max_stream_duration": {},
+        "metadatas": {},
         "name": "name_value",
         "network": "network_value",
         "outlier_detection": {
@@ -9174,6 +9184,7 @@ def test_update_unary_rest(request_type):
             "sample_rate": 0.1165,
         },
         "max_stream_duration": {},
+        "metadatas": {},
         "name": "name_value",
         "network": "network_value",
         "outlier_detection": {
@@ -9539,6 +9550,7 @@ def test_update_unary_rest_bad_request(
             "sample_rate": 0.1165,
         },
         "max_stream_duration": {},
+        "metadatas": {},
         "name": "name_value",
         "network": "network_value",
         "outlier_detection": {

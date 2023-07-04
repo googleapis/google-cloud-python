@@ -1566,6 +1566,650 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
 @pytest.mark.parametrize(
     "request_type",
     [
+        compute.BulkInsertDiskRequest,
+        dict,
+    ],
+)
+def test_bulk_insert_rest(request_type):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2"}
+    request_init["bulk_insert_disk_resource_resource"] = {
+        "source_consistency_group_policy": "source_consistency_group_policy_value"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.bulk_insert(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+def test_bulk_insert_rest_required_fields(request_type=compute.BulkInsertDiskRequest):
+    transport_class = transports.DisksRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).bulk_insert._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).bulk_insert._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.bulk_insert(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_bulk_insert_rest_unset_required_fields():
+    transport = transports.DisksRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.bulk_insert._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "bulkInsertDiskResourceResource",
+                "project",
+                "zone",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_bulk_insert_rest_interceptors(null_interceptor):
+    transport = transports.DisksRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DisksRestInterceptor(),
+    )
+    client = DisksClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DisksRestInterceptor, "post_bulk_insert"
+    ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "pre_bulk_insert"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.BulkInsertDiskRequest.pb(compute.BulkInsertDiskRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.BulkInsertDiskRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.bulk_insert(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_bulk_insert_rest_bad_request(
+    transport: str = "rest", request_type=compute.BulkInsertDiskRequest
+):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2"}
+    request_init["bulk_insert_disk_resource_resource"] = {
+        "source_consistency_group_policy": "source_consistency_group_policy_value"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.bulk_insert(request)
+
+
+def test_bulk_insert_rest_flattened():
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "zone": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            zone="zone_value",
+            bulk_insert_disk_resource_resource=compute.BulkInsertDiskResource(
+                source_consistency_group_policy="source_consistency_group_policy_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.bulk_insert(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/zones/{zone}/disks/bulkInsert"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_bulk_insert_rest_flattened_error(transport: str = "rest"):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.bulk_insert(
+            compute.BulkInsertDiskRequest(),
+            project="project_value",
+            zone="zone_value",
+            bulk_insert_disk_resource_resource=compute.BulkInsertDiskResource(
+                source_consistency_group_policy="source_consistency_group_policy_value"
+            ),
+        )
+
+
+def test_bulk_insert_rest_error():
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.BulkInsertDiskRequest,
+        dict,
+    ],
+)
+def test_bulk_insert_unary_rest(request_type):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2"}
+    request_init["bulk_insert_disk_resource_resource"] = {
+        "source_consistency_group_policy": "source_consistency_group_policy_value"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.bulk_insert_unary(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Operation)
+
+
+def test_bulk_insert_unary_rest_required_fields(
+    request_type=compute.BulkInsertDiskRequest,
+):
+    transport_class = transports.DisksRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).bulk_insert._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).bulk_insert._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.bulk_insert_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_bulk_insert_unary_rest_unset_required_fields():
+    transport = transports.DisksRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.bulk_insert._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "bulkInsertDiskResourceResource",
+                "project",
+                "zone",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_bulk_insert_unary_rest_interceptors(null_interceptor):
+    transport = transports.DisksRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DisksRestInterceptor(),
+    )
+    client = DisksClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DisksRestInterceptor, "post_bulk_insert"
+    ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "pre_bulk_insert"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.BulkInsertDiskRequest.pb(compute.BulkInsertDiskRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.BulkInsertDiskRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.bulk_insert_unary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_bulk_insert_unary_rest_bad_request(
+    transport: str = "rest", request_type=compute.BulkInsertDiskRequest
+):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2"}
+    request_init["bulk_insert_disk_resource_resource"] = {
+        "source_consistency_group_policy": "source_consistency_group_policy_value"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.bulk_insert_unary(request)
+
+
+def test_bulk_insert_unary_rest_flattened():
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "zone": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            zone="zone_value",
+            bulk_insert_disk_resource_resource=compute.BulkInsertDiskResource(
+                source_consistency_group_policy="source_consistency_group_policy_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.bulk_insert_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/zones/{zone}/disks/bulkInsert"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_bulk_insert_unary_rest_flattened_error(transport: str = "rest"):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.bulk_insert_unary(
+            compute.BulkInsertDiskRequest(),
+            project="project_value",
+            zone="zone_value",
+            bulk_insert_disk_resource_resource=compute.BulkInsertDiskResource(
+                source_consistency_group_policy="source_consistency_group_policy_value"
+            ),
+        )
+
+
+def test_bulk_insert_unary_rest_error():
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         compute.CreateSnapshotDiskRequest,
         dict,
     ],
@@ -3039,12 +3683,15 @@ def test_get_rest(request_type):
             options="options_value",
             physical_block_size_bytes=2663,
             provisioned_iops=1740,
+            provisioned_throughput=2411,
             region="region_value",
             replica_zones=["replica_zones_value"],
             resource_policies=["resource_policies_value"],
             satisfies_pzs=True,
             self_link="self_link_value",
             size_gb=739,
+            source_consistency_group_policy="source_consistency_group_policy_value",
+            source_consistency_group_policy_id="source_consistency_group_policy_id_value",
             source_disk="source_disk_value",
             source_disk_id="source_disk_id_value",
             source_image="source_image_value",
@@ -3085,12 +3732,21 @@ def test_get_rest(request_type):
     assert response.options == "options_value"
     assert response.physical_block_size_bytes == 2663
     assert response.provisioned_iops == 1740
+    assert response.provisioned_throughput == 2411
     assert response.region == "region_value"
     assert response.replica_zones == ["replica_zones_value"]
     assert response.resource_policies == ["resource_policies_value"]
     assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
     assert response.size_gb == 739
+    assert (
+        response.source_consistency_group_policy
+        == "source_consistency_group_policy_value"
+    )
+    assert (
+        response.source_consistency_group_policy_id
+        == "source_consistency_group_policy_id_value"
+    )
     assert response.source_disk == "source_disk_value"
     assert response.source_disk_id == "source_disk_id_value"
     assert response.source_image == "source_image_value"
@@ -3658,6 +4314,13 @@ def test_insert_rest(request_type):
     request_init = {"project": "sample1", "zone": "sample2"}
     request_init["disk_resource"] = {
         "architecture": "architecture_value",
+        "async_primary_disk": {
+            "consistency_group_policy": "consistency_group_policy_value",
+            "consistency_group_policy_id": "consistency_group_policy_id_value",
+            "disk": "disk_value",
+            "disk_id": "disk_id_value",
+        },
+        "async_secondary_disks": {},
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "disk_encryption_key": {
@@ -3682,12 +4345,19 @@ def test_insert_rest(request_type):
         "params": {"resource_manager_tags": {}},
         "physical_block_size_bytes": 2663,
         "provisioned_iops": 1740,
+        "provisioned_throughput": 2411,
         "region": "region_value",
         "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
+        "resource_status": {
+            "async_primary_disk": {"state": "state_value"},
+            "async_secondary_disks": {},
+        },
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "size_gb": 739,
+        "source_consistency_group_policy": "source_consistency_group_policy_value",
+        "source_consistency_group_policy_id": "source_consistency_group_policy_id_value",
         "source_disk": "source_disk_value",
         "source_disk_id": "source_disk_id_value",
         "source_image": "source_image_value",
@@ -3941,6 +4611,13 @@ def test_insert_rest_bad_request(
     request_init = {"project": "sample1", "zone": "sample2"}
     request_init["disk_resource"] = {
         "architecture": "architecture_value",
+        "async_primary_disk": {
+            "consistency_group_policy": "consistency_group_policy_value",
+            "consistency_group_policy_id": "consistency_group_policy_id_value",
+            "disk": "disk_value",
+            "disk_id": "disk_id_value",
+        },
+        "async_secondary_disks": {},
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "disk_encryption_key": {
@@ -3965,12 +4642,19 @@ def test_insert_rest_bad_request(
         "params": {"resource_manager_tags": {}},
         "physical_block_size_bytes": 2663,
         "provisioned_iops": 1740,
+        "provisioned_throughput": 2411,
         "region": "region_value",
         "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
+        "resource_status": {
+            "async_primary_disk": {"state": "state_value"},
+            "async_secondary_disks": {},
+        },
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "size_gb": 739,
+        "source_consistency_group_policy": "source_consistency_group_policy_value",
+        "source_consistency_group_policy_id": "source_consistency_group_policy_id_value",
         "source_disk": "source_disk_value",
         "source_disk_id": "source_disk_id_value",
         "source_image": "source_image_value",
@@ -4082,6 +4766,13 @@ def test_insert_unary_rest(request_type):
     request_init = {"project": "sample1", "zone": "sample2"}
     request_init["disk_resource"] = {
         "architecture": "architecture_value",
+        "async_primary_disk": {
+            "consistency_group_policy": "consistency_group_policy_value",
+            "consistency_group_policy_id": "consistency_group_policy_id_value",
+            "disk": "disk_value",
+            "disk_id": "disk_id_value",
+        },
+        "async_secondary_disks": {},
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "disk_encryption_key": {
@@ -4106,12 +4797,19 @@ def test_insert_unary_rest(request_type):
         "params": {"resource_manager_tags": {}},
         "physical_block_size_bytes": 2663,
         "provisioned_iops": 1740,
+        "provisioned_throughput": 2411,
         "region": "region_value",
         "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
+        "resource_status": {
+            "async_primary_disk": {"state": "state_value"},
+            "async_secondary_disks": {},
+        },
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "size_gb": 739,
+        "source_consistency_group_policy": "source_consistency_group_policy_value",
+        "source_consistency_group_policy_id": "source_consistency_group_policy_id_value",
         "source_disk": "source_disk_value",
         "source_disk_id": "source_disk_id_value",
         "source_image": "source_image_value",
@@ -4343,6 +5041,13 @@ def test_insert_unary_rest_bad_request(
     request_init = {"project": "sample1", "zone": "sample2"}
     request_init["disk_resource"] = {
         "architecture": "architecture_value",
+        "async_primary_disk": {
+            "consistency_group_policy": "consistency_group_policy_value",
+            "consistency_group_policy_id": "consistency_group_policy_id_value",
+            "disk": "disk_value",
+            "disk_id": "disk_id_value",
+        },
+        "async_secondary_disks": {},
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "disk_encryption_key": {
@@ -4367,12 +5072,19 @@ def test_insert_unary_rest_bad_request(
         "params": {"resource_manager_tags": {}},
         "physical_block_size_bytes": 2663,
         "provisioned_iops": 1740,
+        "provisioned_throughput": 2411,
         "region": "region_value",
         "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
+        "resource_status": {
+            "async_primary_disk": {"state": "state_value"},
+            "async_secondary_disks": {},
+        },
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "size_gb": 739,
+        "source_consistency_group_policy": "source_consistency_group_policy_value",
+        "source_consistency_group_policy_id": "source_consistency_group_policy_id_value",
         "source_disk": "source_disk_value",
         "source_disk_id": "source_disk_id_value",
         "source_image": "source_image_value",
@@ -7252,6 +7964,1958 @@ def test_set_labels_unary_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        compute.StartAsyncReplicationDiskRequest,
+        dict,
+    ],
+)
+def test_start_async_replication_rest(request_type):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "disk": "sample3"}
+    request_init["disks_start_async_replication_request_resource"] = {
+        "async_secondary_disk": "async_secondary_disk_value"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.start_async_replication(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+def test_start_async_replication_rest_required_fields(
+    request_type=compute.StartAsyncReplicationDiskRequest,
+):
+    transport_class = transports.DisksRestTransport
+
+    request_init = {}
+    request_init["disk"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).start_async_replication._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["disk"] = "disk_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).start_async_replication._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "disk" in jsonified_request
+    assert jsonified_request["disk"] == "disk_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.start_async_replication(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_start_async_replication_rest_unset_required_fields():
+    transport = transports.DisksRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.start_async_replication._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "disk",
+                "disksStartAsyncReplicationRequestResource",
+                "project",
+                "zone",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_start_async_replication_rest_interceptors(null_interceptor):
+    transport = transports.DisksRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DisksRestInterceptor(),
+    )
+    client = DisksClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DisksRestInterceptor, "post_start_async_replication"
+    ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "pre_start_async_replication"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.StartAsyncReplicationDiskRequest.pb(
+            compute.StartAsyncReplicationDiskRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.StartAsyncReplicationDiskRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.start_async_replication(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_start_async_replication_rest_bad_request(
+    transport: str = "rest", request_type=compute.StartAsyncReplicationDiskRequest
+):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "disk": "sample3"}
+    request_init["disks_start_async_replication_request_resource"] = {
+        "async_secondary_disk": "async_secondary_disk_value"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.start_async_replication(request)
+
+
+def test_start_async_replication_rest_flattened():
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "zone": "sample2", "disk": "sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            zone="zone_value",
+            disk="disk_value",
+            disks_start_async_replication_request_resource=compute.DisksStartAsyncReplicationRequest(
+                async_secondary_disk="async_secondary_disk_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.start_async_replication(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/zones/{zone}/disks/{disk}/startAsyncReplication"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_start_async_replication_rest_flattened_error(transport: str = "rest"):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.start_async_replication(
+            compute.StartAsyncReplicationDiskRequest(),
+            project="project_value",
+            zone="zone_value",
+            disk="disk_value",
+            disks_start_async_replication_request_resource=compute.DisksStartAsyncReplicationRequest(
+                async_secondary_disk="async_secondary_disk_value"
+            ),
+        )
+
+
+def test_start_async_replication_rest_error():
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.StartAsyncReplicationDiskRequest,
+        dict,
+    ],
+)
+def test_start_async_replication_unary_rest(request_type):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "disk": "sample3"}
+    request_init["disks_start_async_replication_request_resource"] = {
+        "async_secondary_disk": "async_secondary_disk_value"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.start_async_replication_unary(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Operation)
+
+
+def test_start_async_replication_unary_rest_required_fields(
+    request_type=compute.StartAsyncReplicationDiskRequest,
+):
+    transport_class = transports.DisksRestTransport
+
+    request_init = {}
+    request_init["disk"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).start_async_replication._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["disk"] = "disk_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).start_async_replication._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "disk" in jsonified_request
+    assert jsonified_request["disk"] == "disk_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.start_async_replication_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_start_async_replication_unary_rest_unset_required_fields():
+    transport = transports.DisksRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.start_async_replication._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "disk",
+                "disksStartAsyncReplicationRequestResource",
+                "project",
+                "zone",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_start_async_replication_unary_rest_interceptors(null_interceptor):
+    transport = transports.DisksRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DisksRestInterceptor(),
+    )
+    client = DisksClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DisksRestInterceptor, "post_start_async_replication"
+    ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "pre_start_async_replication"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.StartAsyncReplicationDiskRequest.pb(
+            compute.StartAsyncReplicationDiskRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.StartAsyncReplicationDiskRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.start_async_replication_unary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_start_async_replication_unary_rest_bad_request(
+    transport: str = "rest", request_type=compute.StartAsyncReplicationDiskRequest
+):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "disk": "sample3"}
+    request_init["disks_start_async_replication_request_resource"] = {
+        "async_secondary_disk": "async_secondary_disk_value"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.start_async_replication_unary(request)
+
+
+def test_start_async_replication_unary_rest_flattened():
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "zone": "sample2", "disk": "sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            zone="zone_value",
+            disk="disk_value",
+            disks_start_async_replication_request_resource=compute.DisksStartAsyncReplicationRequest(
+                async_secondary_disk="async_secondary_disk_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.start_async_replication_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/zones/{zone}/disks/{disk}/startAsyncReplication"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_start_async_replication_unary_rest_flattened_error(transport: str = "rest"):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.start_async_replication_unary(
+            compute.StartAsyncReplicationDiskRequest(),
+            project="project_value",
+            zone="zone_value",
+            disk="disk_value",
+            disks_start_async_replication_request_resource=compute.DisksStartAsyncReplicationRequest(
+                async_secondary_disk="async_secondary_disk_value"
+            ),
+        )
+
+
+def test_start_async_replication_unary_rest_error():
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.StopAsyncReplicationDiskRequest,
+        dict,
+    ],
+)
+def test_stop_async_replication_rest(request_type):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "disk": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.stop_async_replication(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+def test_stop_async_replication_rest_required_fields(
+    request_type=compute.StopAsyncReplicationDiskRequest,
+):
+    transport_class = transports.DisksRestTransport
+
+    request_init = {}
+    request_init["disk"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).stop_async_replication._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["disk"] = "disk_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).stop_async_replication._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "disk" in jsonified_request
+    assert jsonified_request["disk"] == "disk_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.stop_async_replication(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_stop_async_replication_rest_unset_required_fields():
+    transport = transports.DisksRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.stop_async_replication._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "disk",
+                "project",
+                "zone",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_stop_async_replication_rest_interceptors(null_interceptor):
+    transport = transports.DisksRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DisksRestInterceptor(),
+    )
+    client = DisksClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DisksRestInterceptor, "post_stop_async_replication"
+    ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "pre_stop_async_replication"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.StopAsyncReplicationDiskRequest.pb(
+            compute.StopAsyncReplicationDiskRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.StopAsyncReplicationDiskRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.stop_async_replication(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_stop_async_replication_rest_bad_request(
+    transport: str = "rest", request_type=compute.StopAsyncReplicationDiskRequest
+):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "disk": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.stop_async_replication(request)
+
+
+def test_stop_async_replication_rest_flattened():
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "zone": "sample2", "disk": "sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            zone="zone_value",
+            disk="disk_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.stop_async_replication(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/zones/{zone}/disks/{disk}/stopAsyncReplication"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_stop_async_replication_rest_flattened_error(transport: str = "rest"):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.stop_async_replication(
+            compute.StopAsyncReplicationDiskRequest(),
+            project="project_value",
+            zone="zone_value",
+            disk="disk_value",
+        )
+
+
+def test_stop_async_replication_rest_error():
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.StopAsyncReplicationDiskRequest,
+        dict,
+    ],
+)
+def test_stop_async_replication_unary_rest(request_type):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "disk": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.stop_async_replication_unary(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Operation)
+
+
+def test_stop_async_replication_unary_rest_required_fields(
+    request_type=compute.StopAsyncReplicationDiskRequest,
+):
+    transport_class = transports.DisksRestTransport
+
+    request_init = {}
+    request_init["disk"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).stop_async_replication._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["disk"] = "disk_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).stop_async_replication._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "disk" in jsonified_request
+    assert jsonified_request["disk"] == "disk_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.stop_async_replication_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_stop_async_replication_unary_rest_unset_required_fields():
+    transport = transports.DisksRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.stop_async_replication._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "disk",
+                "project",
+                "zone",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_stop_async_replication_unary_rest_interceptors(null_interceptor):
+    transport = transports.DisksRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DisksRestInterceptor(),
+    )
+    client = DisksClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DisksRestInterceptor, "post_stop_async_replication"
+    ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "pre_stop_async_replication"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.StopAsyncReplicationDiskRequest.pb(
+            compute.StopAsyncReplicationDiskRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.StopAsyncReplicationDiskRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.stop_async_replication_unary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_stop_async_replication_unary_rest_bad_request(
+    transport: str = "rest", request_type=compute.StopAsyncReplicationDiskRequest
+):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "disk": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.stop_async_replication_unary(request)
+
+
+def test_stop_async_replication_unary_rest_flattened():
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "zone": "sample2", "disk": "sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            zone="zone_value",
+            disk="disk_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.stop_async_replication_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/zones/{zone}/disks/{disk}/stopAsyncReplication"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_stop_async_replication_unary_rest_flattened_error(transport: str = "rest"):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.stop_async_replication_unary(
+            compute.StopAsyncReplicationDiskRequest(),
+            project="project_value",
+            zone="zone_value",
+            disk="disk_value",
+        )
+
+
+def test_stop_async_replication_unary_rest_error():
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.StopGroupAsyncReplicationDiskRequest,
+        dict,
+    ],
+)
+def test_stop_group_async_replication_rest(request_type):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2"}
+    request_init["disks_stop_group_async_replication_resource_resource"] = {
+        "resource_policy": "resource_policy_value"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.stop_group_async_replication(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+def test_stop_group_async_replication_rest_required_fields(
+    request_type=compute.StopGroupAsyncReplicationDiskRequest,
+):
+    transport_class = transports.DisksRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).stop_group_async_replication._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).stop_group_async_replication._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.stop_group_async_replication(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_stop_group_async_replication_rest_unset_required_fields():
+    transport = transports.DisksRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.stop_group_async_replication._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "disksStopGroupAsyncReplicationResourceResource",
+                "project",
+                "zone",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_stop_group_async_replication_rest_interceptors(null_interceptor):
+    transport = transports.DisksRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DisksRestInterceptor(),
+    )
+    client = DisksClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DisksRestInterceptor, "post_stop_group_async_replication"
+    ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "pre_stop_group_async_replication"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.StopGroupAsyncReplicationDiskRequest.pb(
+            compute.StopGroupAsyncReplicationDiskRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.StopGroupAsyncReplicationDiskRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.stop_group_async_replication(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_stop_group_async_replication_rest_bad_request(
+    transport: str = "rest", request_type=compute.StopGroupAsyncReplicationDiskRequest
+):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2"}
+    request_init["disks_stop_group_async_replication_resource_resource"] = {
+        "resource_policy": "resource_policy_value"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.stop_group_async_replication(request)
+
+
+def test_stop_group_async_replication_rest_flattened():
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "zone": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            zone="zone_value",
+            disks_stop_group_async_replication_resource_resource=compute.DisksStopGroupAsyncReplicationResource(
+                resource_policy="resource_policy_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.stop_group_async_replication(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/zones/{zone}/disks/stopGroupAsyncReplication"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_stop_group_async_replication_rest_flattened_error(transport: str = "rest"):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.stop_group_async_replication(
+            compute.StopGroupAsyncReplicationDiskRequest(),
+            project="project_value",
+            zone="zone_value",
+            disks_stop_group_async_replication_resource_resource=compute.DisksStopGroupAsyncReplicationResource(
+                resource_policy="resource_policy_value"
+            ),
+        )
+
+
+def test_stop_group_async_replication_rest_error():
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.StopGroupAsyncReplicationDiskRequest,
+        dict,
+    ],
+)
+def test_stop_group_async_replication_unary_rest(request_type):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2"}
+    request_init["disks_stop_group_async_replication_resource_resource"] = {
+        "resource_policy": "resource_policy_value"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.stop_group_async_replication_unary(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Operation)
+
+
+def test_stop_group_async_replication_unary_rest_required_fields(
+    request_type=compute.StopGroupAsyncReplicationDiskRequest,
+):
+    transport_class = transports.DisksRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).stop_group_async_replication._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).stop_group_async_replication._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.stop_group_async_replication_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_stop_group_async_replication_unary_rest_unset_required_fields():
+    transport = transports.DisksRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.stop_group_async_replication._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "disksStopGroupAsyncReplicationResourceResource",
+                "project",
+                "zone",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_stop_group_async_replication_unary_rest_interceptors(null_interceptor):
+    transport = transports.DisksRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.DisksRestInterceptor(),
+    )
+    client = DisksClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DisksRestInterceptor, "post_stop_group_async_replication"
+    ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "pre_stop_group_async_replication"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.StopGroupAsyncReplicationDiskRequest.pb(
+            compute.StopGroupAsyncReplicationDiskRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.StopGroupAsyncReplicationDiskRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.stop_group_async_replication_unary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_stop_group_async_replication_unary_rest_bad_request(
+    transport: str = "rest", request_type=compute.StopGroupAsyncReplicationDiskRequest
+):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2"}
+    request_init["disks_stop_group_async_replication_resource_resource"] = {
+        "resource_policy": "resource_policy_value"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.stop_group_async_replication_unary(request)
+
+
+def test_stop_group_async_replication_unary_rest_flattened():
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "zone": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            zone="zone_value",
+            disks_stop_group_async_replication_resource_resource=compute.DisksStopGroupAsyncReplicationResource(
+                resource_policy="resource_policy_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.stop_group_async_replication_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/zones/{zone}/disks/stopGroupAsyncReplication"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_stop_group_async_replication_unary_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.stop_group_async_replication_unary(
+            compute.StopGroupAsyncReplicationDiskRequest(),
+            project="project_value",
+            zone="zone_value",
+            disks_stop_group_async_replication_resource_resource=compute.DisksStopGroupAsyncReplicationResource(
+                resource_policy="resource_policy_value"
+            ),
+        )
+
+
+def test_stop_group_async_replication_unary_rest_error():
+    client = DisksClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         compute.TestIamPermissionsDiskRequest,
         dict,
     ],
@@ -7571,6 +10235,13 @@ def test_update_rest(request_type):
     request_init = {"project": "sample1", "zone": "sample2", "disk": "sample3"}
     request_init["disk_resource"] = {
         "architecture": "architecture_value",
+        "async_primary_disk": {
+            "consistency_group_policy": "consistency_group_policy_value",
+            "consistency_group_policy_id": "consistency_group_policy_id_value",
+            "disk": "disk_value",
+            "disk_id": "disk_id_value",
+        },
+        "async_secondary_disks": {},
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "disk_encryption_key": {
@@ -7595,12 +10266,19 @@ def test_update_rest(request_type):
         "params": {"resource_manager_tags": {}},
         "physical_block_size_bytes": 2663,
         "provisioned_iops": 1740,
+        "provisioned_throughput": 2411,
         "region": "region_value",
         "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
+        "resource_status": {
+            "async_primary_disk": {"state": "state_value"},
+            "async_secondary_disks": {},
+        },
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "size_gb": 739,
+        "source_consistency_group_policy": "source_consistency_group_policy_value",
+        "source_consistency_group_policy_id": "source_consistency_group_policy_id_value",
         "source_disk": "source_disk_value",
         "source_disk_id": "source_disk_id_value",
         "source_image": "source_image_value",
@@ -7861,6 +10539,13 @@ def test_update_rest_bad_request(
     request_init = {"project": "sample1", "zone": "sample2", "disk": "sample3"}
     request_init["disk_resource"] = {
         "architecture": "architecture_value",
+        "async_primary_disk": {
+            "consistency_group_policy": "consistency_group_policy_value",
+            "consistency_group_policy_id": "consistency_group_policy_id_value",
+            "disk": "disk_value",
+            "disk_id": "disk_id_value",
+        },
+        "async_secondary_disks": {},
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "disk_encryption_key": {
@@ -7885,12 +10570,19 @@ def test_update_rest_bad_request(
         "params": {"resource_manager_tags": {}},
         "physical_block_size_bytes": 2663,
         "provisioned_iops": 1740,
+        "provisioned_throughput": 2411,
         "region": "region_value",
         "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
+        "resource_status": {
+            "async_primary_disk": {"state": "state_value"},
+            "async_secondary_disks": {},
+        },
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "size_gb": 739,
+        "source_consistency_group_policy": "source_consistency_group_policy_value",
+        "source_consistency_group_policy_id": "source_consistency_group_policy_id_value",
         "source_disk": "source_disk_value",
         "source_disk_id": "source_disk_id_value",
         "source_image": "source_image_value",
@@ -8004,6 +10696,13 @@ def test_update_unary_rest(request_type):
     request_init = {"project": "sample1", "zone": "sample2", "disk": "sample3"}
     request_init["disk_resource"] = {
         "architecture": "architecture_value",
+        "async_primary_disk": {
+            "consistency_group_policy": "consistency_group_policy_value",
+            "consistency_group_policy_id": "consistency_group_policy_id_value",
+            "disk": "disk_value",
+            "disk_id": "disk_id_value",
+        },
+        "async_secondary_disks": {},
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "disk_encryption_key": {
@@ -8028,12 +10727,19 @@ def test_update_unary_rest(request_type):
         "params": {"resource_manager_tags": {}},
         "physical_block_size_bytes": 2663,
         "provisioned_iops": 1740,
+        "provisioned_throughput": 2411,
         "region": "region_value",
         "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
+        "resource_status": {
+            "async_primary_disk": {"state": "state_value"},
+            "async_secondary_disks": {},
+        },
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "size_gb": 739,
+        "source_consistency_group_policy": "source_consistency_group_policy_value",
+        "source_consistency_group_policy_id": "source_consistency_group_policy_id_value",
         "source_disk": "source_disk_value",
         "source_disk_id": "source_disk_id_value",
         "source_image": "source_image_value",
@@ -8272,6 +10978,13 @@ def test_update_unary_rest_bad_request(
     request_init = {"project": "sample1", "zone": "sample2", "disk": "sample3"}
     request_init["disk_resource"] = {
         "architecture": "architecture_value",
+        "async_primary_disk": {
+            "consistency_group_policy": "consistency_group_policy_value",
+            "consistency_group_policy_id": "consistency_group_policy_id_value",
+            "disk": "disk_value",
+            "disk_id": "disk_id_value",
+        },
+        "async_secondary_disks": {},
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "disk_encryption_key": {
@@ -8296,12 +11009,19 @@ def test_update_unary_rest_bad_request(
         "params": {"resource_manager_tags": {}},
         "physical_block_size_bytes": 2663,
         "provisioned_iops": 1740,
+        "provisioned_throughput": 2411,
         "region": "region_value",
         "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
+        "resource_status": {
+            "async_primary_disk": {"state": "state_value"},
+            "async_secondary_disks": {},
+        },
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "size_gb": 739,
+        "source_consistency_group_policy": "source_consistency_group_policy_value",
+        "source_consistency_group_policy_id": "source_consistency_group_policy_id_value",
         "source_disk": "source_disk_value",
         "source_disk_id": "source_disk_id_value",
         "source_image": "source_image_value",
@@ -8510,6 +11230,7 @@ def test_disks_base_transport():
     methods = (
         "add_resource_policies",
         "aggregated_list",
+        "bulk_insert",
         "create_snapshot",
         "delete",
         "get",
@@ -8520,6 +11241,9 @@ def test_disks_base_transport():
         "resize",
         "set_iam_policy",
         "set_labels",
+        "start_async_replication",
+        "stop_async_replication",
+        "stop_group_async_replication",
         "test_iam_permissions",
         "update",
     )
@@ -8665,6 +11389,9 @@ def test_disks_client_transport_session_collision(transport_name):
     session1 = client1.transport.aggregated_list._session
     session2 = client2.transport.aggregated_list._session
     assert session1 != session2
+    session1 = client1.transport.bulk_insert._session
+    session2 = client2.transport.bulk_insert._session
+    assert session1 != session2
     session1 = client1.transport.create_snapshot._session
     session2 = client2.transport.create_snapshot._session
     assert session1 != session2
@@ -8694,6 +11421,15 @@ def test_disks_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.set_labels._session
     session2 = client2.transport.set_labels._session
+    assert session1 != session2
+    session1 = client1.transport.start_async_replication._session
+    session2 = client2.transport.start_async_replication._session
+    assert session1 != session2
+    session1 = client1.transport.stop_async_replication._session
+    session2 = client2.transport.stop_async_replication._session
+    assert session1 != session2
+    session1 = client1.transport.stop_group_async_replication._session
+    session2 = client2.transport.stop_group_async_replication._session
     assert session1 != session2
     session1 = client1.transport.test_iam_permissions._session
     session2 = client2.transport.test_iam_permissions._session

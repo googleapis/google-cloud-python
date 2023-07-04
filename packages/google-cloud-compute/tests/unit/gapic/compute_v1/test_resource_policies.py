@@ -2238,6 +2238,7 @@ def test_insert_rest(request_type):
     request_init["resource_policy_resource"] = {
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
+        "disk_consistency_group_policy": {},
         "group_placement_policy": {
             "availability_domain_count": 2650,
             "collocation": "collocation_value",
@@ -2533,6 +2534,7 @@ def test_insert_rest_bad_request(
     request_init["resource_policy_resource"] = {
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
+        "disk_consistency_group_policy": {},
         "group_placement_policy": {
             "availability_domain_count": 2650,
             "collocation": "collocation_value",
@@ -2696,6 +2698,7 @@ def test_insert_unary_rest(request_type):
     request_init["resource_policy_resource"] = {
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
+        "disk_consistency_group_policy": {},
         "group_placement_policy": {
             "availability_domain_count": 2650,
             "collocation": "collocation_value",
@@ -2971,6 +2974,7 @@ def test_insert_unary_rest_bad_request(
     request_init["resource_policy_resource"] = {
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
+        "disk_consistency_group_policy": {},
         "group_placement_policy": {
             "availability_domain_count": 2650,
             "collocation": "collocation_value",

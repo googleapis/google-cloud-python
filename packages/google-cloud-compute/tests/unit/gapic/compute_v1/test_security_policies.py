@@ -641,6 +641,12 @@ def test_add_rule_rest(request_type):
             "ban_threshold": {"count": 553, "interval_sec": 1279},
             "conform_action": "conform_action_value",
             "enforce_on_key": "enforce_on_key_value",
+            "enforce_on_key_configs": [
+                {
+                    "enforce_on_key_name": "enforce_on_key_name_value",
+                    "enforce_on_key_type": "enforce_on_key_type_value",
+                }
+            ],
             "enforce_on_key_name": "enforce_on_key_name_value",
             "exceed_action": "exceed_action_value",
             "exceed_redirect_options": {
@@ -932,6 +938,12 @@ def test_add_rule_rest_bad_request(
             "ban_threshold": {"count": 553, "interval_sec": 1279},
             "conform_action": "conform_action_value",
             "enforce_on_key": "enforce_on_key_value",
+            "enforce_on_key_configs": [
+                {
+                    "enforce_on_key_name": "enforce_on_key_name_value",
+                    "enforce_on_key_type": "enforce_on_key_type_value",
+                }
+            ],
             "enforce_on_key_name": "enforce_on_key_name_value",
             "exceed_action": "exceed_action_value",
             "exceed_redirect_options": {
@@ -1089,6 +1101,12 @@ def test_add_rule_unary_rest(request_type):
             "ban_threshold": {"count": 553, "interval_sec": 1279},
             "conform_action": "conform_action_value",
             "enforce_on_key": "enforce_on_key_value",
+            "enforce_on_key_configs": [
+                {
+                    "enforce_on_key_name": "enforce_on_key_name_value",
+                    "enforce_on_key_type": "enforce_on_key_type_value",
+                }
+            ],
             "enforce_on_key_name": "enforce_on_key_name_value",
             "exceed_action": "exceed_action_value",
             "exceed_redirect_options": {
@@ -1358,6 +1376,12 @@ def test_add_rule_unary_rest_bad_request(
             "ban_threshold": {"count": 553, "interval_sec": 1279},
             "conform_action": "conform_action_value",
             "enforce_on_key": "enforce_on_key_value",
+            "enforce_on_key_configs": [
+                {
+                    "enforce_on_key_name": "enforce_on_key_name_value",
+                    "enforce_on_key_type": "enforce_on_key_type_value",
+                }
+            ],
             "enforce_on_key_name": "enforce_on_key_name_value",
             "exceed_action": "exceed_action_value",
             "exceed_redirect_options": {
@@ -2472,6 +2496,7 @@ def test_get_rest(request_type):
             fingerprint="fingerprint_value",
             id=205,
             kind="kind_value",
+            label_fingerprint="label_fingerprint_value",
             name="name_value",
             region="region_value",
             self_link="self_link_value",
@@ -2495,6 +2520,7 @@ def test_get_rest(request_type):
     assert response.fingerprint == "fingerprint_value"
     assert response.id == 205
     assert response.kind == "kind_value"
+    assert response.label_fingerprint == "label_fingerprint_value"
     assert response.name == "name_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
@@ -3069,6 +3095,8 @@ def test_insert_rest(request_type):
         "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "name": "name_value",
         "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
         "region": "region_value",
@@ -3124,6 +3152,12 @@ def test_insert_rest(request_type):
                     "ban_threshold": {"count": 553, "interval_sec": 1279},
                     "conform_action": "conform_action_value",
                     "enforce_on_key": "enforce_on_key_value",
+                    "enforce_on_key_configs": [
+                        {
+                            "enforce_on_key_name": "enforce_on_key_name_value",
+                            "enforce_on_key_type": "enforce_on_key_type_value",
+                        }
+                    ],
                     "enforce_on_key_name": "enforce_on_key_name_value",
                     "exceed_action": "exceed_action_value",
                     "exceed_redirect_options": {
@@ -3394,6 +3428,8 @@ def test_insert_rest_bad_request(
         "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "name": "name_value",
         "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
         "region": "region_value",
@@ -3449,6 +3485,12 @@ def test_insert_rest_bad_request(
                     "ban_threshold": {"count": 553, "interval_sec": 1279},
                     "conform_action": "conform_action_value",
                     "enforce_on_key": "enforce_on_key_value",
+                    "enforce_on_key_configs": [
+                        {
+                            "enforce_on_key_name": "enforce_on_key_name_value",
+                            "enforce_on_key_type": "enforce_on_key_type_value",
+                        }
+                    ],
                     "enforce_on_key_name": "enforce_on_key_name_value",
                     "exceed_action": "exceed_action_value",
                     "exceed_redirect_options": {
@@ -3588,6 +3630,8 @@ def test_insert_unary_rest(request_type):
         "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "name": "name_value",
         "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
         "region": "region_value",
@@ -3643,6 +3687,12 @@ def test_insert_unary_rest(request_type):
                     "ban_threshold": {"count": 553, "interval_sec": 1279},
                     "conform_action": "conform_action_value",
                     "enforce_on_key": "enforce_on_key_value",
+                    "enforce_on_key_configs": [
+                        {
+                            "enforce_on_key_name": "enforce_on_key_name_value",
+                            "enforce_on_key_type": "enforce_on_key_type_value",
+                        }
+                    ],
                     "enforce_on_key_name": "enforce_on_key_name_value",
                     "exceed_action": "exceed_action_value",
                     "exceed_redirect_options": {
@@ -3893,6 +3943,8 @@ def test_insert_unary_rest_bad_request(
         "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "name": "name_value",
         "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
         "region": "region_value",
@@ -3948,6 +4000,12 @@ def test_insert_unary_rest_bad_request(
                     "ban_threshold": {"count": 553, "interval_sec": 1279},
                     "conform_action": "conform_action_value",
                     "enforce_on_key": "enforce_on_key_value",
+                    "enforce_on_key_configs": [
+                        {
+                            "enforce_on_key_name": "enforce_on_key_name_value",
+                            "enforce_on_key_type": "enforce_on_key_type_value",
+                        }
+                    ],
                     "enforce_on_key_name": "enforce_on_key_name_value",
                     "exceed_action": "exceed_action_value",
                     "exceed_redirect_options": {
@@ -4744,6 +4802,8 @@ def test_patch_rest(request_type):
         "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "name": "name_value",
         "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
         "region": "region_value",
@@ -4799,6 +4859,12 @@ def test_patch_rest(request_type):
                     "ban_threshold": {"count": 553, "interval_sec": 1279},
                     "conform_action": "conform_action_value",
                     "enforce_on_key": "enforce_on_key_value",
+                    "enforce_on_key_configs": [
+                        {
+                            "enforce_on_key_name": "enforce_on_key_name_value",
+                            "enforce_on_key_type": "enforce_on_key_type_value",
+                        }
+                    ],
                     "enforce_on_key_name": "enforce_on_key_name_value",
                     "exceed_action": "exceed_action_value",
                     "exceed_redirect_options": {
@@ -5064,6 +5130,8 @@ def test_patch_rest_bad_request(
         "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "name": "name_value",
         "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
         "region": "region_value",
@@ -5119,6 +5187,12 @@ def test_patch_rest_bad_request(
                     "ban_threshold": {"count": 553, "interval_sec": 1279},
                     "conform_action": "conform_action_value",
                     "enforce_on_key": "enforce_on_key_value",
+                    "enforce_on_key_configs": [
+                        {
+                            "enforce_on_key_name": "enforce_on_key_name_value",
+                            "enforce_on_key_type": "enforce_on_key_type_value",
+                        }
+                    ],
                     "enforce_on_key_name": "enforce_on_key_name_value",
                     "exceed_action": "exceed_action_value",
                     "exceed_redirect_options": {
@@ -5260,6 +5334,8 @@ def test_patch_unary_rest(request_type):
         "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "name": "name_value",
         "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
         "region": "region_value",
@@ -5315,6 +5391,12 @@ def test_patch_unary_rest(request_type):
                     "ban_threshold": {"count": 553, "interval_sec": 1279},
                     "conform_action": "conform_action_value",
                     "enforce_on_key": "enforce_on_key_value",
+                    "enforce_on_key_configs": [
+                        {
+                            "enforce_on_key_name": "enforce_on_key_name_value",
+                            "enforce_on_key_type": "enforce_on_key_type_value",
+                        }
+                    ],
                     "enforce_on_key_name": "enforce_on_key_name_value",
                     "exceed_action": "exceed_action_value",
                     "exceed_redirect_options": {
@@ -5560,6 +5642,8 @@ def test_patch_unary_rest_bad_request(
         "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "name": "name_value",
         "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
         "region": "region_value",
@@ -5615,6 +5699,12 @@ def test_patch_unary_rest_bad_request(
                     "ban_threshold": {"count": 553, "interval_sec": 1279},
                     "conform_action": "conform_action_value",
                     "enforce_on_key": "enforce_on_key_value",
+                    "enforce_on_key_configs": [
+                        {
+                            "enforce_on_key_name": "enforce_on_key_name_value",
+                            "enforce_on_key_type": "enforce_on_key_type_value",
+                        }
+                    ],
                     "enforce_on_key_name": "enforce_on_key_name_value",
                     "exceed_action": "exceed_action_value",
                     "exceed_redirect_options": {
@@ -5784,6 +5874,12 @@ def test_patch_rule_rest(request_type):
             "ban_threshold": {"count": 553, "interval_sec": 1279},
             "conform_action": "conform_action_value",
             "enforce_on_key": "enforce_on_key_value",
+            "enforce_on_key_configs": [
+                {
+                    "enforce_on_key_name": "enforce_on_key_name_value",
+                    "enforce_on_key_type": "enforce_on_key_type_value",
+                }
+            ],
             "enforce_on_key_name": "enforce_on_key_name_value",
             "exceed_action": "exceed_action_value",
             "exceed_redirect_options": {
@@ -6085,6 +6181,12 @@ def test_patch_rule_rest_bad_request(
             "ban_threshold": {"count": 553, "interval_sec": 1279},
             "conform_action": "conform_action_value",
             "enforce_on_key": "enforce_on_key_value",
+            "enforce_on_key_configs": [
+                {
+                    "enforce_on_key_name": "enforce_on_key_name_value",
+                    "enforce_on_key_type": "enforce_on_key_type_value",
+                }
+            ],
             "enforce_on_key_name": "enforce_on_key_name_value",
             "exceed_action": "exceed_action_value",
             "exceed_redirect_options": {
@@ -6242,6 +6344,12 @@ def test_patch_rule_unary_rest(request_type):
             "ban_threshold": {"count": 553, "interval_sec": 1279},
             "conform_action": "conform_action_value",
             "enforce_on_key": "enforce_on_key_value",
+            "enforce_on_key_configs": [
+                {
+                    "enforce_on_key_name": "enforce_on_key_name_value",
+                    "enforce_on_key_type": "enforce_on_key_type_value",
+                }
+            ],
             "enforce_on_key_name": "enforce_on_key_name_value",
             "exceed_action": "exceed_action_value",
             "exceed_redirect_options": {
@@ -6521,6 +6629,12 @@ def test_patch_rule_unary_rest_bad_request(
             "ban_threshold": {"count": 553, "interval_sec": 1279},
             "conform_action": "conform_action_value",
             "enforce_on_key": "enforce_on_key_value",
+            "enforce_on_key_configs": [
+                {
+                    "enforce_on_key_name": "enforce_on_key_name_value",
+                    "enforce_on_key_type": "enforce_on_key_type_value",
+                }
+            ],
             "enforce_on_key_name": "enforce_on_key_name_value",
             "exceed_action": "exceed_action_value",
             "exceed_redirect_options": {

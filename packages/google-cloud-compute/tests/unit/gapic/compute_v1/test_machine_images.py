@@ -1823,6 +1823,11 @@ def test_insert_rest(request_type):
                         "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
+                        "provisioned_throughput": 2411,
+                        "replica_zones": [
+                            "replica_zones_value1",
+                            "replica_zones_value2",
+                        ],
                         "resource_manager_tags": {},
                         "resource_policies": [
                             "resource_policies_value1",
@@ -1837,6 +1842,7 @@ def test_insert_rest(request_type):
                     "kind": "kind_value",
                     "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
+                    "saved_state": "saved_state_value",
                     "shielded_instance_initial_state": {
                         "dbs": [
                             {"content": "content_value", "file_type": "file_type_value"}
@@ -2279,6 +2285,11 @@ def test_insert_rest_bad_request(
                         "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
+                        "provisioned_throughput": 2411,
+                        "replica_zones": [
+                            "replica_zones_value1",
+                            "replica_zones_value2",
+                        ],
                         "resource_manager_tags": {},
                         "resource_policies": [
                             "resource_policies_value1",
@@ -2293,6 +2304,7 @@ def test_insert_rest_bad_request(
                     "kind": "kind_value",
                     "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
+                    "saved_state": "saved_state_value",
                     "shielded_instance_initial_state": {
                         "dbs": [
                             {"content": "content_value", "file_type": "file_type_value"}
@@ -2596,6 +2608,11 @@ def test_insert_unary_rest(request_type):
                         "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
+                        "provisioned_throughput": 2411,
+                        "replica_zones": [
+                            "replica_zones_value1",
+                            "replica_zones_value2",
+                        ],
                         "resource_manager_tags": {},
                         "resource_policies": [
                             "resource_policies_value1",
@@ -2610,6 +2627,7 @@ def test_insert_unary_rest(request_type):
                     "kind": "kind_value",
                     "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
+                    "saved_state": "saved_state_value",
                     "shielded_instance_initial_state": {
                         "dbs": [
                             {"content": "content_value", "file_type": "file_type_value"}
@@ -3032,6 +3050,11 @@ def test_insert_unary_rest_bad_request(
                         "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
+                        "provisioned_throughput": 2411,
+                        "replica_zones": [
+                            "replica_zones_value1",
+                            "replica_zones_value2",
+                        ],
                         "resource_manager_tags": {},
                         "resource_policies": [
                             "resource_policies_value1",
@@ -3046,6 +3069,7 @@ def test_insert_unary_rest_bad_request(
                     "kind": "kind_value",
                     "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
+                    "saved_state": "saved_state_value",
                     "shielded_instance_initial_state": {
                         "dbs": [
                             {"content": "content_value", "file_type": "file_type_value"}

@@ -1579,6 +1579,7 @@ def test_get_rest(request_type):
             id=205,
             ike_version=1182,
             kind="kind_value",
+            label_fingerprint="label_fingerprint_value",
             local_traffic_selector=["local_traffic_selector_value"],
             name="name_value",
             peer_external_gateway="peer_external_gateway_value",
@@ -1615,6 +1616,7 @@ def test_get_rest(request_type):
     assert response.id == 205
     assert response.ike_version == 1182
     assert response.kind == "kind_value"
+    assert response.label_fingerprint == "label_fingerprint_value"
     assert response.local_traffic_selector == ["local_traffic_selector_value"]
     assert response.name == "name_value"
     assert response.peer_external_gateway == "peer_external_gateway_value"
@@ -1903,6 +1905,8 @@ def test_insert_rest(request_type):
         "id": 205,
         "ike_version": 1182,
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "local_traffic_selector": [
             "local_traffic_selector_value1",
             "local_traffic_selector_value2",
@@ -2162,6 +2166,8 @@ def test_insert_rest_bad_request(
         "id": 205,
         "ike_version": 1182,
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "local_traffic_selector": [
             "local_traffic_selector_value1",
             "local_traffic_selector_value2",
@@ -2291,6 +2297,8 @@ def test_insert_unary_rest(request_type):
         "id": 205,
         "ike_version": 1182,
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "local_traffic_selector": [
             "local_traffic_selector_value1",
             "local_traffic_selector_value2",
@@ -2528,6 +2536,8 @@ def test_insert_unary_rest_bad_request(
         "id": 205,
         "ike_version": 1182,
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "local_traffic_selector": [
             "local_traffic_selector_value1",
             "local_traffic_selector_value2",

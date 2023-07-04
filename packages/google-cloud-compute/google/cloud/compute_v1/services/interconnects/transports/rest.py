@@ -518,9 +518,9 @@ class InterconnectsRestTransport(InterconnectsTransport):
                 ~.compute.Interconnect:
                     Represents an Interconnect resource.
                 An Interconnect resource is a dedicated
-                connection between the GCP network and
-                your on-premises network. For more
-                information, read the Dedicated
+                connection between the Google Cloud
+                network and your on-premises network.
+                For more information, read the Dedicated
                 Interconnect Overview.
 
             """

@@ -79,6 +79,14 @@ class DisksRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_bulk_insert(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_bulk_insert(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_snapshot(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -159,6 +167,30 @@ class DisksRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_start_async_replication(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_start_async_replication(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_stop_async_replication(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_stop_async_replication(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_stop_group_async_replication(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_stop_group_async_replication(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_test_iam_permissions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -220,6 +252,27 @@ class DisksRestInterceptor:
         self, response: compute.DiskAggregatedList
     ) -> compute.DiskAggregatedList:
         """Post-rpc interceptor for aggregated_list
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Disks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_bulk_insert(
+        self,
+        request: compute.BulkInsertDiskRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.BulkInsertDiskRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for bulk_insert
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Disks server.
+        """
+        return request, metadata
+
+    def post_bulk_insert(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for bulk_insert
 
         Override in a subclass to manipulate the response
         after it is returned by the Disks server but before
@@ -420,6 +473,75 @@ class DisksRestInterceptor:
 
     def post_set_labels(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for set_labels
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Disks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_start_async_replication(
+        self,
+        request: compute.StartAsyncReplicationDiskRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.StartAsyncReplicationDiskRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for start_async_replication
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Disks server.
+        """
+        return request, metadata
+
+    def post_start_async_replication(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for start_async_replication
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Disks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_stop_async_replication(
+        self,
+        request: compute.StopAsyncReplicationDiskRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.StopAsyncReplicationDiskRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for stop_async_replication
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Disks server.
+        """
+        return request, metadata
+
+    def post_stop_async_replication(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for stop_async_replication
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Disks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_stop_group_async_replication(
+        self,
+        request: compute.StopGroupAsyncReplicationDiskRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[compute.StopGroupAsyncReplicationDiskRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for stop_group_async_replication
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Disks server.
+        """
+        return request, metadata
+
+    def post_stop_group_async_replication(
+        self, response: compute.Operation
+    ) -> compute.Operation:
+        """Post-rpc interceptor for stop_group_async_replication
 
         Override in a subclass to manipulate the response
         after it is returned by the Disks server but before
@@ -769,6 +891,116 @@ class DisksRestTransport(DisksTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_aggregated_list(resp)
+            return resp
+
+    class _BulkInsert(DisksRestStub):
+        def __hash__(self):
+            return hash("BulkInsert")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.BulkInsertDiskRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the bulk insert method over HTTP.
+
+            Args:
+                request (~.compute.BulkInsertDiskRequest):
+                    The request object. A request message for
+                Disks.BulkInsert. See the method
+                description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zonalOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/bulkInsert",
+                    "body": "bulk_insert_disk_resource_resource",
+                },
+            ]
+            request, metadata = self._interceptor.pre_bulk_insert(request, metadata)
+            pb_request = compute.BulkInsertDiskRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_bulk_insert(resp)
             return resp
 
     class _CreateSnapshot(DisksRestStub):
@@ -1866,6 +2098,334 @@ class DisksRestTransport(DisksTransport):
             resp = self._interceptor.post_set_labels(resp)
             return resp
 
+    class _StartAsyncReplication(DisksRestStub):
+        def __hash__(self):
+            return hash("StartAsyncReplication")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.StartAsyncReplicationDiskRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the start async replication method over HTTP.
+
+            Args:
+                request (~.compute.StartAsyncReplicationDiskRequest):
+                    The request object. A request message for
+                Disks.StartAsyncReplication. See the
+                method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zonalOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{disk}/startAsyncReplication",
+                    "body": "disks_start_async_replication_request_resource",
+                },
+            ]
+            request, metadata = self._interceptor.pre_start_async_replication(
+                request, metadata
+            )
+            pb_request = compute.StartAsyncReplicationDiskRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_start_async_replication(resp)
+            return resp
+
+    class _StopAsyncReplication(DisksRestStub):
+        def __hash__(self):
+            return hash("StopAsyncReplication")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.StopAsyncReplicationDiskRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the stop async replication method over HTTP.
+
+            Args:
+                request (~.compute.StopAsyncReplicationDiskRequest):
+                    The request object. A request message for
+                Disks.StopAsyncReplication. See the
+                method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zonalOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{disk}/stopAsyncReplication",
+                },
+            ]
+            request, metadata = self._interceptor.pre_stop_async_replication(
+                request, metadata
+            )
+            pb_request = compute.StopAsyncReplicationDiskRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_stop_async_replication(resp)
+            return resp
+
+    class _StopGroupAsyncReplication(DisksRestStub):
+        def __hash__(self):
+            return hash("StopGroupAsyncReplication")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.StopGroupAsyncReplicationDiskRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the stop group async
+            replication method over HTTP.
+
+                Args:
+                    request (~.compute.StopGroupAsyncReplicationDiskRequest):
+                        The request object. A request message for
+                    Disks.StopGroupAsyncReplication. See the
+                    method description for details.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.compute.Operation:
+                        Represents an Operation resource. Google Compute Engine
+                    has three Operation resources: \*
+                    `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                    \*
+                    `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                    \*
+                    `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                    You can use an operation resource to manage asynchronous
+                    API requests. For more information, read Handling API
+                    responses. Operations can be global, regional or zonal.
+                    - For global operations, use the ``globalOperations``
+                    resource. - For regional operations, use the
+                    ``regionOperations`` resource. - For zonal operations,
+                    use the ``zonalOperations`` resource. For more
+                    information, read Global, Regional, and Zonal Resources.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/stopGroupAsyncReplication",
+                    "body": "disks_stop_group_async_replication_resource_resource",
+                },
+            ]
+            request, metadata = self._interceptor.pre_stop_group_async_replication(
+                request, metadata
+            )
+            pb_request = compute.StopGroupAsyncReplicationDiskRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_stop_group_async_replication(resp)
+            return resp
+
     class _TestIamPermissions(DisksRestStub):
         def __hash__(self):
             return hash("TestIamPermissions")
@@ -2089,6 +2649,14 @@ class DisksRestTransport(DisksTransport):
         return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def bulk_insert(
+        self,
+    ) -> Callable[[compute.BulkInsertDiskRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BulkInsert(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_snapshot(
         self,
     ) -> Callable[[compute.CreateSnapshotDiskRequest], compute.Operation]:
@@ -2155,6 +2723,30 @@ class DisksRestTransport(DisksTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetLabels(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def start_async_replication(
+        self,
+    ) -> Callable[[compute.StartAsyncReplicationDiskRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StartAsyncReplication(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def stop_async_replication(
+        self,
+    ) -> Callable[[compute.StopAsyncReplicationDiskRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StopAsyncReplication(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def stop_group_async_replication(
+        self,
+    ) -> Callable[[compute.StopGroupAsyncReplicationDiskRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StopGroupAsyncReplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def test_iam_permissions(

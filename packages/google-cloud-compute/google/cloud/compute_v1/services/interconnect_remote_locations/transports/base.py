@@ -25,7 +25,6 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.compute_v1 import gapic_version as package_version
-from google.cloud.compute_v1.services import global_operations
 from google.cloud.compute_v1.types import compute
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -33,10 +32,11 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-class GlobalAddressesTransport(abc.ABC):
-    """Abstract transport class for GlobalAddresses."""
+class InterconnectRemoteLocationsTransport(abc.ABC):
+    """Abstract transport class for InterconnectRemoteLocations."""
 
     AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/compute.readonly",
         "https://www.googleapis.com/auth/compute",
         "https://www.googleapis.com/auth/cloud-platform",
     )
@@ -80,7 +80,6 @@ class GlobalAddressesTransport(abc.ABC):
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
         """
-        self._extended_operations_services: Dict[str, Any] = {}
 
         scopes_kwargs = {"scopes": scopes, "default_scopes": self.AUTH_SCOPES}
 
@@ -127,33 +126,13 @@ class GlobalAddressesTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.delete: gapic_v1.method.wrap_method(
-                self.delete,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.get: gapic_v1.method.wrap_method(
                 self.get,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.insert: gapic_v1.method.wrap_method(
-                self.insert,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.list: gapic_v1.method.wrap_method(
                 self.list,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.move: gapic_v1.method.wrap_method(
-                self.move,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.set_labels: gapic_v1.method.wrap_method(
-                self.set_labels,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -169,29 +148,14 @@ class GlobalAddressesTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def delete(
-        self,
-    ) -> Callable[
-        [compute.DeleteGlobalAddressRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
     def get(
         self,
     ) -> Callable[
-        [compute.GetGlobalAddressRequest],
-        Union[compute.Address, Awaitable[compute.Address]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def insert(
-        self,
-    ) -> Callable[
-        [compute.InsertGlobalAddressRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
+        [compute.GetInterconnectRemoteLocationRequest],
+        Union[
+            compute.InterconnectRemoteLocation,
+            Awaitable[compute.InterconnectRemoteLocation],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -199,26 +163,11 @@ class GlobalAddressesTransport(abc.ABC):
     def list(
         self,
     ) -> Callable[
-        [compute.ListGlobalAddressesRequest],
-        Union[compute.AddressList, Awaitable[compute.AddressList]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def move(
-        self,
-    ) -> Callable[
-        [compute.MoveGlobalAddressRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def set_labels(
-        self,
-    ) -> Callable[
-        [compute.SetLabelsGlobalAddressRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
+        [compute.ListInterconnectRemoteLocationsRequest],
+        Union[
+            compute.InterconnectRemoteLocationList,
+            Awaitable[compute.InterconnectRemoteLocationList],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -226,17 +175,5 @@ class GlobalAddressesTransport(abc.ABC):
     def kind(self) -> str:
         raise NotImplementedError()
 
-    @property
-    def _global_operations_client(self) -> global_operations.GlobalOperationsClient:
-        ex_op_service = self._extended_operations_services.get("global_operations")
-        if not ex_op_service:
-            ex_op_service = global_operations.GlobalOperationsClient(
-                credentials=self._credentials,
-                transport=self.kind,
-            )
-            self._extended_operations_services["global_operations"] = ex_op_service
 
-        return ex_op_service
-
-
-__all__ = ("GlobalAddressesTransport",)
+__all__ = ("InterconnectRemoteLocationsTransport",)

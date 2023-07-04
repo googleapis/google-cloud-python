@@ -1303,15 +1303,38 @@ def test_add_rule_rest(request_type):
         "enable_logging": True,
         "kind": "kind_value",
         "match": {
+            "dest_address_groups": [
+                "dest_address_groups_value1",
+                "dest_address_groups_value2",
+            ],
+            "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
             "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_region_codes": [
+                "dest_region_codes_value1",
+                "dest_region_codes_value2",
+            ],
+            "dest_threat_intelligences": [
+                "dest_threat_intelligences_value1",
+                "dest_threat_intelligences_value2",
+            ],
             "layer4_configs": [
                 {
                     "ip_protocol": "ip_protocol_value",
                     "ports": ["ports_value1", "ports_value2"],
                 }
             ],
+            "src_address_groups": [
+                "src_address_groups_value1",
+                "src_address_groups_value2",
+            ],
+            "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
             "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
             "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
+            "src_threat_intelligences": [
+                "src_threat_intelligences_value1",
+                "src_threat_intelligences_value2",
+            ],
         },
         "priority": 898,
         "rule_name": "rule_name_value",
@@ -1576,15 +1599,38 @@ def test_add_rule_rest_bad_request(
         "enable_logging": True,
         "kind": "kind_value",
         "match": {
+            "dest_address_groups": [
+                "dest_address_groups_value1",
+                "dest_address_groups_value2",
+            ],
+            "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
             "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_region_codes": [
+                "dest_region_codes_value1",
+                "dest_region_codes_value2",
+            ],
+            "dest_threat_intelligences": [
+                "dest_threat_intelligences_value1",
+                "dest_threat_intelligences_value2",
+            ],
             "layer4_configs": [
                 {
                     "ip_protocol": "ip_protocol_value",
                     "ports": ["ports_value1", "ports_value2"],
                 }
             ],
+            "src_address_groups": [
+                "src_address_groups_value1",
+                "src_address_groups_value2",
+            ],
+            "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
             "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
             "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
+            "src_threat_intelligences": [
+                "src_threat_intelligences_value1",
+                "src_threat_intelligences_value2",
+            ],
         },
         "priority": 898,
         "rule_name": "rule_name_value",
@@ -1703,15 +1749,38 @@ def test_add_rule_unary_rest(request_type):
         "enable_logging": True,
         "kind": "kind_value",
         "match": {
+            "dest_address_groups": [
+                "dest_address_groups_value1",
+                "dest_address_groups_value2",
+            ],
+            "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
             "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_region_codes": [
+                "dest_region_codes_value1",
+                "dest_region_codes_value2",
+            ],
+            "dest_threat_intelligences": [
+                "dest_threat_intelligences_value1",
+                "dest_threat_intelligences_value2",
+            ],
             "layer4_configs": [
                 {
                     "ip_protocol": "ip_protocol_value",
                     "ports": ["ports_value1", "ports_value2"],
                 }
             ],
+            "src_address_groups": [
+                "src_address_groups_value1",
+                "src_address_groups_value2",
+            ],
+            "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
             "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
             "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
+            "src_threat_intelligences": [
+                "src_threat_intelligences_value1",
+                "src_threat_intelligences_value2",
+            ],
         },
         "priority": 898,
         "rule_name": "rule_name_value",
@@ -1954,15 +2023,38 @@ def test_add_rule_unary_rest_bad_request(
         "enable_logging": True,
         "kind": "kind_value",
         "match": {
+            "dest_address_groups": [
+                "dest_address_groups_value1",
+                "dest_address_groups_value2",
+            ],
+            "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
             "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_region_codes": [
+                "dest_region_codes_value1",
+                "dest_region_codes_value2",
+            ],
+            "dest_threat_intelligences": [
+                "dest_threat_intelligences_value1",
+                "dest_threat_intelligences_value2",
+            ],
             "layer4_configs": [
                 {
                     "ip_protocol": "ip_protocol_value",
                     "ports": ["ports_value1", "ports_value2"],
                 }
             ],
+            "src_address_groups": [
+                "src_address_groups_value1",
+                "src_address_groups_value2",
+            ],
+            "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
             "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
             "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
+            "src_threat_intelligences": [
+                "src_threat_intelligences_value1",
+                "src_threat_intelligences_value2",
+            ],
         },
         "priority": 898,
         "rule_name": "rule_name_value",
@@ -4562,9 +4654,22 @@ def test_insert_rest(request_type):
                 "enable_logging": True,
                 "kind": "kind_value",
                 "match": {
+                    "dest_address_groups": [
+                        "dest_address_groups_value1",
+                        "dest_address_groups_value2",
+                    ],
+                    "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
                     "dest_ip_ranges": [
                         "dest_ip_ranges_value1",
                         "dest_ip_ranges_value2",
+                    ],
+                    "dest_region_codes": [
+                        "dest_region_codes_value1",
+                        "dest_region_codes_value2",
+                    ],
+                    "dest_threat_intelligences": [
+                        "dest_threat_intelligences_value1",
+                        "dest_threat_intelligences_value2",
                     ],
                     "layer4_configs": [
                         {
@@ -4572,8 +4677,21 @@ def test_insert_rest(request_type):
                             "ports": ["ports_value1", "ports_value2"],
                         }
                     ],
+                    "src_address_groups": [
+                        "src_address_groups_value1",
+                        "src_address_groups_value2",
+                    ],
+                    "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
                     "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+                    "src_region_codes": [
+                        "src_region_codes_value1",
+                        "src_region_codes_value2",
+                    ],
                     "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
+                    "src_threat_intelligences": [
+                        "src_threat_intelligences_value1",
+                        "src_threat_intelligences_value2",
+                    ],
                 },
                 "priority": 898,
                 "rule_name": "rule_name_value",
@@ -4850,9 +4968,22 @@ def test_insert_rest_bad_request(
                 "enable_logging": True,
                 "kind": "kind_value",
                 "match": {
+                    "dest_address_groups": [
+                        "dest_address_groups_value1",
+                        "dest_address_groups_value2",
+                    ],
+                    "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
                     "dest_ip_ranges": [
                         "dest_ip_ranges_value1",
                         "dest_ip_ranges_value2",
+                    ],
+                    "dest_region_codes": [
+                        "dest_region_codes_value1",
+                        "dest_region_codes_value2",
+                    ],
+                    "dest_threat_intelligences": [
+                        "dest_threat_intelligences_value1",
+                        "dest_threat_intelligences_value2",
                     ],
                     "layer4_configs": [
                         {
@@ -4860,8 +4991,21 @@ def test_insert_rest_bad_request(
                             "ports": ["ports_value1", "ports_value2"],
                         }
                     ],
+                    "src_address_groups": [
+                        "src_address_groups_value1",
+                        "src_address_groups_value2",
+                    ],
+                    "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
                     "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+                    "src_region_codes": [
+                        "src_region_codes_value1",
+                        "src_region_codes_value2",
+                    ],
                     "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
+                    "src_threat_intelligences": [
+                        "src_threat_intelligences_value1",
+                        "src_threat_intelligences_value2",
+                    ],
                 },
                 "priority": 898,
                 "rule_name": "rule_name_value",
@@ -5015,9 +5159,22 @@ def test_insert_unary_rest(request_type):
                 "enable_logging": True,
                 "kind": "kind_value",
                 "match": {
+                    "dest_address_groups": [
+                        "dest_address_groups_value1",
+                        "dest_address_groups_value2",
+                    ],
+                    "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
                     "dest_ip_ranges": [
                         "dest_ip_ranges_value1",
                         "dest_ip_ranges_value2",
+                    ],
+                    "dest_region_codes": [
+                        "dest_region_codes_value1",
+                        "dest_region_codes_value2",
+                    ],
+                    "dest_threat_intelligences": [
+                        "dest_threat_intelligences_value1",
+                        "dest_threat_intelligences_value2",
                     ],
                     "layer4_configs": [
                         {
@@ -5025,8 +5182,21 @@ def test_insert_unary_rest(request_type):
                             "ports": ["ports_value1", "ports_value2"],
                         }
                     ],
+                    "src_address_groups": [
+                        "src_address_groups_value1",
+                        "src_address_groups_value2",
+                    ],
+                    "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
                     "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+                    "src_region_codes": [
+                        "src_region_codes_value1",
+                        "src_region_codes_value2",
+                    ],
                     "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
+                    "src_threat_intelligences": [
+                        "src_threat_intelligences_value1",
+                        "src_threat_intelligences_value2",
+                    ],
                 },
                 "priority": 898,
                 "rule_name": "rule_name_value",
@@ -5281,9 +5451,22 @@ def test_insert_unary_rest_bad_request(
                 "enable_logging": True,
                 "kind": "kind_value",
                 "match": {
+                    "dest_address_groups": [
+                        "dest_address_groups_value1",
+                        "dest_address_groups_value2",
+                    ],
+                    "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
                     "dest_ip_ranges": [
                         "dest_ip_ranges_value1",
                         "dest_ip_ranges_value2",
+                    ],
+                    "dest_region_codes": [
+                        "dest_region_codes_value1",
+                        "dest_region_codes_value2",
+                    ],
+                    "dest_threat_intelligences": [
+                        "dest_threat_intelligences_value1",
+                        "dest_threat_intelligences_value2",
                     ],
                     "layer4_configs": [
                         {
@@ -5291,8 +5474,21 @@ def test_insert_unary_rest_bad_request(
                             "ports": ["ports_value1", "ports_value2"],
                         }
                     ],
+                    "src_address_groups": [
+                        "src_address_groups_value1",
+                        "src_address_groups_value2",
+                    ],
+                    "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
                     "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+                    "src_region_codes": [
+                        "src_region_codes_value1",
+                        "src_region_codes_value2",
+                    ],
                     "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
+                    "src_threat_intelligences": [
+                        "src_threat_intelligences_value1",
+                        "src_threat_intelligences_value2",
+                    ],
                 },
                 "priority": 898,
                 "rule_name": "rule_name_value",
@@ -5794,9 +5990,22 @@ def test_patch_rest(request_type):
                 "enable_logging": True,
                 "kind": "kind_value",
                 "match": {
+                    "dest_address_groups": [
+                        "dest_address_groups_value1",
+                        "dest_address_groups_value2",
+                    ],
+                    "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
                     "dest_ip_ranges": [
                         "dest_ip_ranges_value1",
                         "dest_ip_ranges_value2",
+                    ],
+                    "dest_region_codes": [
+                        "dest_region_codes_value1",
+                        "dest_region_codes_value2",
+                    ],
+                    "dest_threat_intelligences": [
+                        "dest_threat_intelligences_value1",
+                        "dest_threat_intelligences_value2",
                     ],
                     "layer4_configs": [
                         {
@@ -5804,8 +6013,21 @@ def test_patch_rest(request_type):
                             "ports": ["ports_value1", "ports_value2"],
                         }
                     ],
+                    "src_address_groups": [
+                        "src_address_groups_value1",
+                        "src_address_groups_value2",
+                    ],
+                    "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
                     "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+                    "src_region_codes": [
+                        "src_region_codes_value1",
+                        "src_region_codes_value2",
+                    ],
                     "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
+                    "src_threat_intelligences": [
+                        "src_threat_intelligences_value1",
+                        "src_threat_intelligences_value2",
+                    ],
                 },
                 "priority": 898,
                 "rule_name": "rule_name_value",
@@ -6087,9 +6309,22 @@ def test_patch_rest_bad_request(
                 "enable_logging": True,
                 "kind": "kind_value",
                 "match": {
+                    "dest_address_groups": [
+                        "dest_address_groups_value1",
+                        "dest_address_groups_value2",
+                    ],
+                    "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
                     "dest_ip_ranges": [
                         "dest_ip_ranges_value1",
                         "dest_ip_ranges_value2",
+                    ],
+                    "dest_region_codes": [
+                        "dest_region_codes_value1",
+                        "dest_region_codes_value2",
+                    ],
+                    "dest_threat_intelligences": [
+                        "dest_threat_intelligences_value1",
+                        "dest_threat_intelligences_value2",
                     ],
                     "layer4_configs": [
                         {
@@ -6097,8 +6332,21 @@ def test_patch_rest_bad_request(
                             "ports": ["ports_value1", "ports_value2"],
                         }
                     ],
+                    "src_address_groups": [
+                        "src_address_groups_value1",
+                        "src_address_groups_value2",
+                    ],
+                    "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
                     "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+                    "src_region_codes": [
+                        "src_region_codes_value1",
+                        "src_region_codes_value2",
+                    ],
                     "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
+                    "src_threat_intelligences": [
+                        "src_threat_intelligences_value1",
+                        "src_threat_intelligences_value2",
+                    ],
                 },
                 "priority": 898,
                 "rule_name": "rule_name_value",
@@ -6254,9 +6502,22 @@ def test_patch_unary_rest(request_type):
                 "enable_logging": True,
                 "kind": "kind_value",
                 "match": {
+                    "dest_address_groups": [
+                        "dest_address_groups_value1",
+                        "dest_address_groups_value2",
+                    ],
+                    "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
                     "dest_ip_ranges": [
                         "dest_ip_ranges_value1",
                         "dest_ip_ranges_value2",
+                    ],
+                    "dest_region_codes": [
+                        "dest_region_codes_value1",
+                        "dest_region_codes_value2",
+                    ],
+                    "dest_threat_intelligences": [
+                        "dest_threat_intelligences_value1",
+                        "dest_threat_intelligences_value2",
                     ],
                     "layer4_configs": [
                         {
@@ -6264,8 +6525,21 @@ def test_patch_unary_rest(request_type):
                             "ports": ["ports_value1", "ports_value2"],
                         }
                     ],
+                    "src_address_groups": [
+                        "src_address_groups_value1",
+                        "src_address_groups_value2",
+                    ],
+                    "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
                     "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+                    "src_region_codes": [
+                        "src_region_codes_value1",
+                        "src_region_codes_value2",
+                    ],
                     "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
+                    "src_threat_intelligences": [
+                        "src_threat_intelligences_value1",
+                        "src_threat_intelligences_value2",
+                    ],
                 },
                 "priority": 898,
                 "rule_name": "rule_name_value",
@@ -6525,9 +6799,22 @@ def test_patch_unary_rest_bad_request(
                 "enable_logging": True,
                 "kind": "kind_value",
                 "match": {
+                    "dest_address_groups": [
+                        "dest_address_groups_value1",
+                        "dest_address_groups_value2",
+                    ],
+                    "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
                     "dest_ip_ranges": [
                         "dest_ip_ranges_value1",
                         "dest_ip_ranges_value2",
+                    ],
+                    "dest_region_codes": [
+                        "dest_region_codes_value1",
+                        "dest_region_codes_value2",
+                    ],
+                    "dest_threat_intelligences": [
+                        "dest_threat_intelligences_value1",
+                        "dest_threat_intelligences_value2",
                     ],
                     "layer4_configs": [
                         {
@@ -6535,8 +6822,21 @@ def test_patch_unary_rest_bad_request(
                             "ports": ["ports_value1", "ports_value2"],
                         }
                     ],
+                    "src_address_groups": [
+                        "src_address_groups_value1",
+                        "src_address_groups_value2",
+                    ],
+                    "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
                     "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+                    "src_region_codes": [
+                        "src_region_codes_value1",
+                        "src_region_codes_value2",
+                    ],
                     "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
+                    "src_threat_intelligences": [
+                        "src_threat_intelligences_value1",
+                        "src_threat_intelligences_value2",
+                    ],
                 },
                 "priority": 898,
                 "rule_name": "rule_name_value",
@@ -6671,15 +6971,38 @@ def test_patch_rule_rest(request_type):
         "enable_logging": True,
         "kind": "kind_value",
         "match": {
+            "dest_address_groups": [
+                "dest_address_groups_value1",
+                "dest_address_groups_value2",
+            ],
+            "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
             "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_region_codes": [
+                "dest_region_codes_value1",
+                "dest_region_codes_value2",
+            ],
+            "dest_threat_intelligences": [
+                "dest_threat_intelligences_value1",
+                "dest_threat_intelligences_value2",
+            ],
             "layer4_configs": [
                 {
                     "ip_protocol": "ip_protocol_value",
                     "ports": ["ports_value1", "ports_value2"],
                 }
             ],
+            "src_address_groups": [
+                "src_address_groups_value1",
+                "src_address_groups_value2",
+            ],
+            "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
             "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
             "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
+            "src_threat_intelligences": [
+                "src_threat_intelligences_value1",
+                "src_threat_intelligences_value2",
+            ],
         },
         "priority": 898,
         "rule_name": "rule_name_value",
@@ -6942,15 +7265,38 @@ def test_patch_rule_rest_bad_request(
         "enable_logging": True,
         "kind": "kind_value",
         "match": {
+            "dest_address_groups": [
+                "dest_address_groups_value1",
+                "dest_address_groups_value2",
+            ],
+            "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
             "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_region_codes": [
+                "dest_region_codes_value1",
+                "dest_region_codes_value2",
+            ],
+            "dest_threat_intelligences": [
+                "dest_threat_intelligences_value1",
+                "dest_threat_intelligences_value2",
+            ],
             "layer4_configs": [
                 {
                     "ip_protocol": "ip_protocol_value",
                     "ports": ["ports_value1", "ports_value2"],
                 }
             ],
+            "src_address_groups": [
+                "src_address_groups_value1",
+                "src_address_groups_value2",
+            ],
+            "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
             "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
             "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
+            "src_threat_intelligences": [
+                "src_threat_intelligences_value1",
+                "src_threat_intelligences_value2",
+            ],
         },
         "priority": 898,
         "rule_name": "rule_name_value",
@@ -7069,15 +7415,38 @@ def test_patch_rule_unary_rest(request_type):
         "enable_logging": True,
         "kind": "kind_value",
         "match": {
+            "dest_address_groups": [
+                "dest_address_groups_value1",
+                "dest_address_groups_value2",
+            ],
+            "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
             "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_region_codes": [
+                "dest_region_codes_value1",
+                "dest_region_codes_value2",
+            ],
+            "dest_threat_intelligences": [
+                "dest_threat_intelligences_value1",
+                "dest_threat_intelligences_value2",
+            ],
             "layer4_configs": [
                 {
                     "ip_protocol": "ip_protocol_value",
                     "ports": ["ports_value1", "ports_value2"],
                 }
             ],
+            "src_address_groups": [
+                "src_address_groups_value1",
+                "src_address_groups_value2",
+            ],
+            "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
             "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
             "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
+            "src_threat_intelligences": [
+                "src_threat_intelligences_value1",
+                "src_threat_intelligences_value2",
+            ],
         },
         "priority": 898,
         "rule_name": "rule_name_value",
@@ -7318,15 +7687,38 @@ def test_patch_rule_unary_rest_bad_request(
         "enable_logging": True,
         "kind": "kind_value",
         "match": {
+            "dest_address_groups": [
+                "dest_address_groups_value1",
+                "dest_address_groups_value2",
+            ],
+            "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
             "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_region_codes": [
+                "dest_region_codes_value1",
+                "dest_region_codes_value2",
+            ],
+            "dest_threat_intelligences": [
+                "dest_threat_intelligences_value1",
+                "dest_threat_intelligences_value2",
+            ],
             "layer4_configs": [
                 {
                     "ip_protocol": "ip_protocol_value",
                     "ports": ["ports_value1", "ports_value2"],
                 }
             ],
+            "src_address_groups": [
+                "src_address_groups_value1",
+                "src_address_groups_value2",
+            ],
+            "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
             "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
             "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
+            "src_threat_intelligences": [
+                "src_threat_intelligences_value1",
+                "src_threat_intelligences_value2",
+            ],
         },
         "priority": 898,
         "rule_name": "rule_name_value",

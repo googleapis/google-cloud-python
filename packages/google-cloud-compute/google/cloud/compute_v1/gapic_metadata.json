@@ -59,6 +59,11 @@
                 "list"
               ]
             },
+            "Move": {
+              "methods": [
+                "move"
+              ]
+            },
             "SetLabels": {
               "methods": [
                 "set_labels"
@@ -284,6 +289,11 @@
                 "aggregated_list"
               ]
             },
+            "BulkInsert": {
+              "methods": [
+                "bulk_insert"
+              ]
+            },
             "CreateSnapshot": {
               "methods": [
                 "create_snapshot"
@@ -332,6 +342,21 @@
             "SetLabels": {
               "methods": [
                 "set_labels"
+              ]
+            },
+            "StartAsyncReplication": {
+              "methods": [
+                "start_async_replication"
+              ]
+            },
+            "StopAsyncReplication": {
+              "methods": [
+                "stop_async_replication"
+              ]
+            },
+            "StopGroupAsyncReplication": {
+              "methods": [
+                "stop_group_async_replication"
               ]
             },
             "TestIamPermissions": {
@@ -597,6 +622,11 @@
             "List": {
               "methods": [
                 "list"
+              ]
+            },
+            "Move": {
+              "methods": [
+                "move"
               ]
             },
             "SetLabels": {
@@ -1409,6 +1439,25 @@
       "clients": {
         "rest": {
           "libraryClient": "InterconnectLocationsClient",
+          "rpcs": {
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "InterconnectRemoteLocations": {
+      "clients": {
+        "rest": {
+          "libraryClient": "InterconnectRemoteLocationsClient",
           "rpcs": {
             "Get": {
               "methods": [
@@ -2388,6 +2437,11 @@
                 "add_resource_policies"
               ]
             },
+            "BulkInsert": {
+              "methods": [
+                "bulk_insert"
+              ]
+            },
             "CreateSnapshot": {
               "methods": [
                 "create_snapshot"
@@ -2436,6 +2490,21 @@
             "SetLabels": {
               "methods": [
                 "set_labels"
+              ]
+            },
+            "StartAsyncReplication": {
+              "methods": [
+                "start_async_replication"
+              ]
+            },
+            "StopAsyncReplication": {
+              "methods": [
+                "stop_async_replication"
+              ]
+            },
+            "StopGroupAsyncReplication": {
+              "methods": [
+                "stop_group_async_replication"
               ]
             },
             "TestIamPermissions": {

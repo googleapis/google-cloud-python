@@ -2373,6 +2373,8 @@ def test_attach_disk_rest(request_type):
             "licenses": ["licenses_value1", "licenses_value2"],
             "on_update_action": "on_update_action_value",
             "provisioned_iops": 1740,
+            "provisioned_throughput": 2411,
+            "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
             "resource_manager_tags": {},
             "resource_policies": [
                 "resource_policies_value1",
@@ -2387,6 +2389,7 @@ def test_attach_disk_rest(request_type):
         "kind": "kind_value",
         "licenses": ["licenses_value1", "licenses_value2"],
         "mode": "mode_value",
+        "saved_state": "saved_state_value",
         "shielded_instance_initial_state": {
             "dbs": [{"content": "content_value", "file_type": "file_type_value"}],
             "dbxs": {},
@@ -2668,6 +2671,8 @@ def test_attach_disk_rest_bad_request(
             "licenses": ["licenses_value1", "licenses_value2"],
             "on_update_action": "on_update_action_value",
             "provisioned_iops": 1740,
+            "provisioned_throughput": 2411,
+            "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
             "resource_manager_tags": {},
             "resource_policies": [
                 "resource_policies_value1",
@@ -2682,6 +2687,7 @@ def test_attach_disk_rest_bad_request(
         "kind": "kind_value",
         "licenses": ["licenses_value1", "licenses_value2"],
         "mode": "mode_value",
+        "saved_state": "saved_state_value",
         "shielded_instance_initial_state": {
             "dbs": [{"content": "content_value", "file_type": "file_type_value"}],
             "dbxs": {},
@@ -2822,6 +2828,8 @@ def test_attach_disk_unary_rest(request_type):
             "licenses": ["licenses_value1", "licenses_value2"],
             "on_update_action": "on_update_action_value",
             "provisioned_iops": 1740,
+            "provisioned_throughput": 2411,
+            "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
             "resource_manager_tags": {},
             "resource_policies": [
                 "resource_policies_value1",
@@ -2836,6 +2844,7 @@ def test_attach_disk_unary_rest(request_type):
         "kind": "kind_value",
         "licenses": ["licenses_value1", "licenses_value2"],
         "mode": "mode_value",
+        "saved_state": "saved_state_value",
         "shielded_instance_initial_state": {
             "dbs": [{"content": "content_value", "file_type": "file_type_value"}],
             "dbxs": {},
@@ -3095,6 +3104,8 @@ def test_attach_disk_unary_rest_bad_request(
             "licenses": ["licenses_value1", "licenses_value2"],
             "on_update_action": "on_update_action_value",
             "provisioned_iops": 1740,
+            "provisioned_throughput": 2411,
+            "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
             "resource_manager_tags": {},
             "resource_policies": [
                 "resource_policies_value1",
@@ -3109,6 +3120,7 @@ def test_attach_disk_unary_rest_bad_request(
         "kind": "kind_value",
         "licenses": ["licenses_value1", "licenses_value2"],
         "mode": "mode_value",
+        "saved_state": "saved_state_value",
         "shielded_instance_initial_state": {
             "dbs": [{"content": "content_value", "file_type": "file_type_value"}],
             "dbxs": {},
@@ -3262,6 +3274,11 @@ def test_bulk_insert_rest(request_type):
                         "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
+                        "provisioned_throughput": 2411,
+                        "replica_zones": [
+                            "replica_zones_value1",
+                            "replica_zones_value2",
+                        ],
                         "resource_manager_tags": {},
                         "resource_policies": [
                             "resource_policies_value1",
@@ -3276,6 +3293,7 @@ def test_bulk_insert_rest(request_type):
                     "kind": "kind_value",
                     "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
+                    "saved_state": "saved_state_value",
                     "shielded_instance_initial_state": {
                         "dbs": [
                             {"content": "content_value", "file_type": "file_type_value"}
@@ -3659,6 +3677,11 @@ def test_bulk_insert_rest_bad_request(
                         "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
+                        "provisioned_throughput": 2411,
+                        "replica_zones": [
+                            "replica_zones_value1",
+                            "replica_zones_value2",
+                        ],
                         "resource_manager_tags": {},
                         "resource_policies": [
                             "resource_policies_value1",
@@ -3673,6 +3696,7 @@ def test_bulk_insert_rest_bad_request(
                     "kind": "kind_value",
                     "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
+                    "saved_state": "saved_state_value",
                     "shielded_instance_initial_state": {
                         "dbs": [
                             {"content": "content_value", "file_type": "file_type_value"}
@@ -3924,6 +3948,11 @@ def test_bulk_insert_unary_rest(request_type):
                         "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
+                        "provisioned_throughput": 2411,
+                        "replica_zones": [
+                            "replica_zones_value1",
+                            "replica_zones_value2",
+                        ],
                         "resource_manager_tags": {},
                         "resource_policies": [
                             "resource_policies_value1",
@@ -3938,6 +3967,7 @@ def test_bulk_insert_unary_rest(request_type):
                     "kind": "kind_value",
                     "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
+                    "saved_state": "saved_state_value",
                     "shielded_instance_initial_state": {
                         "dbs": [
                             {"content": "content_value", "file_type": "file_type_value"}
@@ -4299,6 +4329,11 @@ def test_bulk_insert_unary_rest_bad_request(
                         "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
                         "provisioned_iops": 1740,
+                        "provisioned_throughput": 2411,
+                        "replica_zones": [
+                            "replica_zones_value1",
+                            "replica_zones_value2",
+                        ],
                         "resource_manager_tags": {},
                         "resource_policies": [
                             "resource_policies_value1",
@@ -4313,6 +4348,7 @@ def test_bulk_insert_unary_rest_bad_request(
                     "kind": "kind_value",
                     "licenses": ["licenses_value1", "licenses_value2"],
                     "mode": "mode_value",
+                    "saved_state": "saved_state_value",
                     "shielded_instance_initial_state": {
                         "dbs": [
                             {"content": "content_value", "file_type": "file_type_value"}
@@ -8771,6 +8807,8 @@ def test_insert_rest(request_type):
                     "licenses": ["licenses_value1", "licenses_value2"],
                     "on_update_action": "on_update_action_value",
                     "provisioned_iops": 1740,
+                    "provisioned_throughput": 2411,
+                    "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
                     "resource_manager_tags": {},
                     "resource_policies": [
                         "resource_policies_value1",
@@ -8785,6 +8823,7 @@ def test_insert_rest(request_type):
                 "kind": "kind_value",
                 "licenses": ["licenses_value1", "licenses_value2"],
                 "mode": "mode_value",
+                "saved_state": "saved_state_value",
                 "shielded_instance_initial_state": {
                     "dbs": [
                         {"content": "content_value", "file_type": "file_type_value"}
@@ -8804,6 +8843,7 @@ def test_insert_rest(request_type):
         ],
         "hostname": "hostname_value",
         "id": 205,
+        "instance_encryption_key": {},
         "key_revocation_action_type": "key_revocation_action_type_value",
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
@@ -9185,6 +9225,8 @@ def test_insert_rest_bad_request(
                     "licenses": ["licenses_value1", "licenses_value2"],
                     "on_update_action": "on_update_action_value",
                     "provisioned_iops": 1740,
+                    "provisioned_throughput": 2411,
+                    "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
                     "resource_manager_tags": {},
                     "resource_policies": [
                         "resource_policies_value1",
@@ -9199,6 +9241,7 @@ def test_insert_rest_bad_request(
                 "kind": "kind_value",
                 "licenses": ["licenses_value1", "licenses_value2"],
                 "mode": "mode_value",
+                "saved_state": "saved_state_value",
                 "shielded_instance_initial_state": {
                     "dbs": [
                         {"content": "content_value", "file_type": "file_type_value"}
@@ -9218,6 +9261,7 @@ def test_insert_rest_bad_request(
         ],
         "hostname": "hostname_value",
         "id": 205,
+        "instance_encryption_key": {},
         "key_revocation_action_type": "key_revocation_action_type_value",
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
@@ -9463,6 +9507,8 @@ def test_insert_unary_rest(request_type):
                     "licenses": ["licenses_value1", "licenses_value2"],
                     "on_update_action": "on_update_action_value",
                     "provisioned_iops": 1740,
+                    "provisioned_throughput": 2411,
+                    "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
                     "resource_manager_tags": {},
                     "resource_policies": [
                         "resource_policies_value1",
@@ -9477,6 +9523,7 @@ def test_insert_unary_rest(request_type):
                 "kind": "kind_value",
                 "licenses": ["licenses_value1", "licenses_value2"],
                 "mode": "mode_value",
+                "saved_state": "saved_state_value",
                 "shielded_instance_initial_state": {
                     "dbs": [
                         {"content": "content_value", "file_type": "file_type_value"}
@@ -9496,6 +9543,7 @@ def test_insert_unary_rest(request_type):
         ],
         "hostname": "hostname_value",
         "id": 205,
+        "instance_encryption_key": {},
         "key_revocation_action_type": "key_revocation_action_type_value",
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
@@ -9855,6 +9903,8 @@ def test_insert_unary_rest_bad_request(
                     "licenses": ["licenses_value1", "licenses_value2"],
                     "on_update_action": "on_update_action_value",
                     "provisioned_iops": 1740,
+                    "provisioned_throughput": 2411,
+                    "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
                     "resource_manager_tags": {},
                     "resource_policies": [
                         "resource_policies_value1",
@@ -9869,6 +9919,7 @@ def test_insert_unary_rest_bad_request(
                 "kind": "kind_value",
                 "licenses": ["licenses_value1", "licenses_value2"],
                 "mode": "mode_value",
+                "saved_state": "saved_state_value",
                 "shielded_instance_initial_state": {
                     "dbs": [
                         {"content": "content_value", "file_type": "file_type_value"}
@@ -9888,6 +9939,7 @@ def test_insert_unary_rest_bad_request(
         ],
         "hostname": "hostname_value",
         "id": 205,
+        "instance_encryption_key": {},
         "key_revocation_action_type": "key_revocation_action_type_value",
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
@@ -21796,6 +21848,8 @@ def test_simulate_maintenance_event_rest_required_fields(
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).simulate_maintenance_event._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -21853,7 +21907,7 @@ def test_simulate_maintenance_event_rest_unset_required_fields():
 
     unset_fields = transport.simulate_maintenance_event._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(())
+        set(("requestId",))
         & set(
             (
                 "instance",
@@ -22106,6 +22160,8 @@ def test_simulate_maintenance_event_unary_rest_required_fields(
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).simulate_maintenance_event._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -22163,7 +22219,7 @@ def test_simulate_maintenance_event_unary_rest_unset_required_fields():
 
     unset_fields = transport.simulate_maintenance_event._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(())
+        set(("requestId",))
         & set(
             (
                 "instance",
@@ -25372,6 +25428,8 @@ def test_update_rest(request_type):
                     "licenses": ["licenses_value1", "licenses_value2"],
                     "on_update_action": "on_update_action_value",
                     "provisioned_iops": 1740,
+                    "provisioned_throughput": 2411,
+                    "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
                     "resource_manager_tags": {},
                     "resource_policies": [
                         "resource_policies_value1",
@@ -25386,6 +25444,7 @@ def test_update_rest(request_type):
                 "kind": "kind_value",
                 "licenses": ["licenses_value1", "licenses_value2"],
                 "mode": "mode_value",
+                "saved_state": "saved_state_value",
                 "shielded_instance_initial_state": {
                     "dbs": [
                         {"content": "content_value", "file_type": "file_type_value"}
@@ -25405,6 +25464,7 @@ def test_update_rest(request_type):
         ],
         "hostname": "hostname_value",
         "id": 205,
+        "instance_encryption_key": {},
         "key_revocation_action_type": "key_revocation_action_type_value",
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
@@ -25791,6 +25851,8 @@ def test_update_rest_bad_request(
                     "licenses": ["licenses_value1", "licenses_value2"],
                     "on_update_action": "on_update_action_value",
                     "provisioned_iops": 1740,
+                    "provisioned_throughput": 2411,
+                    "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
                     "resource_manager_tags": {},
                     "resource_policies": [
                         "resource_policies_value1",
@@ -25805,6 +25867,7 @@ def test_update_rest_bad_request(
                 "kind": "kind_value",
                 "licenses": ["licenses_value1", "licenses_value2"],
                 "mode": "mode_value",
+                "saved_state": "saved_state_value",
                 "shielded_instance_initial_state": {
                     "dbs": [
                         {"content": "content_value", "file_type": "file_type_value"}
@@ -25824,6 +25887,7 @@ def test_update_rest_bad_request(
         ],
         "hostname": "hostname_value",
         "id": 205,
+        "instance_encryption_key": {},
         "key_revocation_action_type": "key_revocation_action_type_value",
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
@@ -26075,6 +26139,8 @@ def test_update_unary_rest(request_type):
                     "licenses": ["licenses_value1", "licenses_value2"],
                     "on_update_action": "on_update_action_value",
                     "provisioned_iops": 1740,
+                    "provisioned_throughput": 2411,
+                    "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
                     "resource_manager_tags": {},
                     "resource_policies": [
                         "resource_policies_value1",
@@ -26089,6 +26155,7 @@ def test_update_unary_rest(request_type):
                 "kind": "kind_value",
                 "licenses": ["licenses_value1", "licenses_value2"],
                 "mode": "mode_value",
+                "saved_state": "saved_state_value",
                 "shielded_instance_initial_state": {
                     "dbs": [
                         {"content": "content_value", "file_type": "file_type_value"}
@@ -26108,6 +26175,7 @@ def test_update_unary_rest(request_type):
         ],
         "hostname": "hostname_value",
         "id": 205,
+        "instance_encryption_key": {},
         "key_revocation_action_type": "key_revocation_action_type_value",
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
@@ -26472,6 +26540,8 @@ def test_update_unary_rest_bad_request(
                     "licenses": ["licenses_value1", "licenses_value2"],
                     "on_update_action": "on_update_action_value",
                     "provisioned_iops": 1740,
+                    "provisioned_throughput": 2411,
+                    "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
                     "resource_manager_tags": {},
                     "resource_policies": [
                         "resource_policies_value1",
@@ -26486,6 +26556,7 @@ def test_update_unary_rest_bad_request(
                 "kind": "kind_value",
                 "licenses": ["licenses_value1", "licenses_value2"],
                 "mode": "mode_value",
+                "saved_state": "saved_state_value",
                 "shielded_instance_initial_state": {
                     "dbs": [
                         {"content": "content_value", "file_type": "file_type_value"}
@@ -26505,6 +26576,7 @@ def test_update_unary_rest_bad_request(
         ],
         "hostname": "hostname_value",
         "id": 205,
+        "instance_encryption_key": {},
         "key_revocation_action_type": "key_revocation_action_type_value",
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",

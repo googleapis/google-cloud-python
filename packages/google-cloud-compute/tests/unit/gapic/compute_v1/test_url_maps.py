@@ -1857,6 +1857,7 @@ def test_insert_rest(request_type):
             "url_rewrite": {
                 "host_rewrite": "host_rewrite_value",
                 "path_prefix_rewrite": "path_prefix_rewrite_value",
+                "path_template_rewrite": "path_template_rewrite_value",
             },
             "weighted_backend_services": [
                 {
@@ -1955,6 +1956,7 @@ def test_insert_rest(request_type):
                                         "filter_match_criteria": "filter_match_criteria_value",
                                     }
                                 ],
+                                "path_template_match": "path_template_match_value",
                                 "prefix_match": "prefix_match_value",
                                 "query_parameter_matches": [
                                     {
@@ -2248,6 +2250,7 @@ def test_insert_rest_bad_request(
             "url_rewrite": {
                 "host_rewrite": "host_rewrite_value",
                 "path_prefix_rewrite": "path_prefix_rewrite_value",
+                "path_template_rewrite": "path_template_rewrite_value",
             },
             "weighted_backend_services": [
                 {
@@ -2346,6 +2349,7 @@ def test_insert_rest_bad_request(
                                         "filter_match_criteria": "filter_match_criteria_value",
                                     }
                                 ],
+                                "path_template_match": "path_template_match_value",
                                 "prefix_match": "prefix_match_value",
                                 "query_parameter_matches": [
                                     {
@@ -2513,6 +2517,7 @@ def test_insert_unary_rest(request_type):
             "url_rewrite": {
                 "host_rewrite": "host_rewrite_value",
                 "path_prefix_rewrite": "path_prefix_rewrite_value",
+                "path_template_rewrite": "path_template_rewrite_value",
             },
             "weighted_backend_services": [
                 {
@@ -2611,6 +2616,7 @@ def test_insert_unary_rest(request_type):
                                         "filter_match_criteria": "filter_match_criteria_value",
                                     }
                                 ],
+                                "path_template_match": "path_template_match_value",
                                 "prefix_match": "prefix_match_value",
                                 "query_parameter_matches": [
                                     {
@@ -2882,6 +2888,7 @@ def test_insert_unary_rest_bad_request(
             "url_rewrite": {
                 "host_rewrite": "host_rewrite_value",
                 "path_prefix_rewrite": "path_prefix_rewrite_value",
+                "path_template_rewrite": "path_template_rewrite_value",
             },
             "weighted_backend_services": [
                 {
@@ -2980,6 +2987,7 @@ def test_insert_unary_rest_bad_request(
                                         "filter_match_criteria": "filter_match_criteria_value",
                                     }
                                 ],
+                                "path_template_match": "path_template_match_value",
                                 "prefix_match": "prefix_match_value",
                                 "query_parameter_matches": [
                                     {
@@ -4142,6 +4150,7 @@ def test_patch_rest(request_type):
             "url_rewrite": {
                 "host_rewrite": "host_rewrite_value",
                 "path_prefix_rewrite": "path_prefix_rewrite_value",
+                "path_template_rewrite": "path_template_rewrite_value",
             },
             "weighted_backend_services": [
                 {
@@ -4240,6 +4249,7 @@ def test_patch_rest(request_type):
                                         "filter_match_criteria": "filter_match_criteria_value",
                                     }
                                 ],
+                                "path_template_match": "path_template_match_value",
                                 "prefix_match": "prefix_match_value",
                                 "query_parameter_matches": [
                                     {
@@ -4538,6 +4548,7 @@ def test_patch_rest_bad_request(
             "url_rewrite": {
                 "host_rewrite": "host_rewrite_value",
                 "path_prefix_rewrite": "path_prefix_rewrite_value",
+                "path_template_rewrite": "path_template_rewrite_value",
             },
             "weighted_backend_services": [
                 {
@@ -4636,6 +4647,7 @@ def test_patch_rest_bad_request(
                                         "filter_match_criteria": "filter_match_criteria_value",
                                     }
                                 ],
+                                "path_template_match": "path_template_match_value",
                                 "prefix_match": "prefix_match_value",
                                 "query_parameter_matches": [
                                     {
@@ -4806,6 +4818,7 @@ def test_patch_unary_rest(request_type):
             "url_rewrite": {
                 "host_rewrite": "host_rewrite_value",
                 "path_prefix_rewrite": "path_prefix_rewrite_value",
+                "path_template_rewrite": "path_template_rewrite_value",
             },
             "weighted_backend_services": [
                 {
@@ -4904,6 +4917,7 @@ def test_patch_unary_rest(request_type):
                                         "filter_match_criteria": "filter_match_criteria_value",
                                     }
                                 ],
+                                "path_template_match": "path_template_match_value",
                                 "prefix_match": "prefix_match_value",
                                 "query_parameter_matches": [
                                     {
@@ -5180,6 +5194,7 @@ def test_patch_unary_rest_bad_request(
             "url_rewrite": {
                 "host_rewrite": "host_rewrite_value",
                 "path_prefix_rewrite": "path_prefix_rewrite_value",
+                "path_template_rewrite": "path_template_rewrite_value",
             },
             "weighted_backend_services": [
                 {
@@ -5278,6 +5293,7 @@ def test_patch_unary_rest_bad_request(
                                         "filter_match_criteria": "filter_match_criteria_value",
                                     }
                                 ],
+                                "path_template_match": "path_template_match_value",
                                 "prefix_match": "prefix_match_value",
                                 "query_parameter_matches": [
                                     {
@@ -5448,6 +5464,7 @@ def test_update_rest(request_type):
             "url_rewrite": {
                 "host_rewrite": "host_rewrite_value",
                 "path_prefix_rewrite": "path_prefix_rewrite_value",
+                "path_template_rewrite": "path_template_rewrite_value",
             },
             "weighted_backend_services": [
                 {
@@ -5546,6 +5563,7 @@ def test_update_rest(request_type):
                                         "filter_match_criteria": "filter_match_criteria_value",
                                     }
                                 ],
+                                "path_template_match": "path_template_match_value",
                                 "prefix_match": "prefix_match_value",
                                 "query_parameter_matches": [
                                     {
@@ -5844,6 +5862,7 @@ def test_update_rest_bad_request(
             "url_rewrite": {
                 "host_rewrite": "host_rewrite_value",
                 "path_prefix_rewrite": "path_prefix_rewrite_value",
+                "path_template_rewrite": "path_template_rewrite_value",
             },
             "weighted_backend_services": [
                 {
@@ -5942,6 +5961,7 @@ def test_update_rest_bad_request(
                                         "filter_match_criteria": "filter_match_criteria_value",
                                     }
                                 ],
+                                "path_template_match": "path_template_match_value",
                                 "prefix_match": "prefix_match_value",
                                 "query_parameter_matches": [
                                     {
@@ -6112,6 +6132,7 @@ def test_update_unary_rest(request_type):
             "url_rewrite": {
                 "host_rewrite": "host_rewrite_value",
                 "path_prefix_rewrite": "path_prefix_rewrite_value",
+                "path_template_rewrite": "path_template_rewrite_value",
             },
             "weighted_backend_services": [
                 {
@@ -6210,6 +6231,7 @@ def test_update_unary_rest(request_type):
                                         "filter_match_criteria": "filter_match_criteria_value",
                                     }
                                 ],
+                                "path_template_match": "path_template_match_value",
                                 "prefix_match": "prefix_match_value",
                                 "query_parameter_matches": [
                                     {
@@ -6486,6 +6508,7 @@ def test_update_unary_rest_bad_request(
             "url_rewrite": {
                 "host_rewrite": "host_rewrite_value",
                 "path_prefix_rewrite": "path_prefix_rewrite_value",
+                "path_template_rewrite": "path_template_rewrite_value",
             },
             "weighted_backend_services": [
                 {
@@ -6584,6 +6607,7 @@ def test_update_unary_rest_bad_request(
                                         "filter_match_criteria": "filter_match_criteria_value",
                                     }
                                 ],
+                                "path_template_match": "path_template_match_value",
                                 "prefix_match": "prefix_match_value",
                                 "query_parameter_matches": [
                                     {
@@ -6762,6 +6786,7 @@ def test_validate_rest(request_type):
                 "url_rewrite": {
                     "host_rewrite": "host_rewrite_value",
                     "path_prefix_rewrite": "path_prefix_rewrite_value",
+                    "path_template_rewrite": "path_template_rewrite_value",
                 },
                 "weighted_backend_services": [
                     {
@@ -6860,6 +6885,7 @@ def test_validate_rest(request_type):
                                             "filter_match_criteria": "filter_match_criteria_value",
                                         }
                                     ],
+                                    "path_template_match": "path_template_match_value",
                                     "prefix_match": "prefix_match_value",
                                     "query_parameter_matches": [
                                         {
@@ -7122,6 +7148,7 @@ def test_validate_rest_bad_request(
                 "url_rewrite": {
                     "host_rewrite": "host_rewrite_value",
                     "path_prefix_rewrite": "path_prefix_rewrite_value",
+                    "path_template_rewrite": "path_template_rewrite_value",
                 },
                 "weighted_backend_services": [
                     {
@@ -7220,6 +7247,7 @@ def test_validate_rest_bad_request(
                                             "filter_match_criteria": "filter_match_criteria_value",
                                         }
                                     ],
+                                    "path_template_match": "path_template_match_value",
                                     "prefix_match": "prefix_match_value",
                                     "query_parameter_matches": [
                                         {

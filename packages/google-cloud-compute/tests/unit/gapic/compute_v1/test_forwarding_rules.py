@@ -1631,6 +1631,7 @@ def test_get_rest(request_type):
             I_p_protocol="I_p_protocol_value",
             all_ports=True,
             allow_global_access=True,
+            allow_psc_global_access=True,
             backend_service="backend_service_value",
             base_forwarding_rule="base_forwarding_rule_value",
             creation_timestamp="creation_timestamp_value",
@@ -1675,6 +1676,7 @@ def test_get_rest(request_type):
     assert response.I_p_protocol == "I_p_protocol_value"
     assert response.all_ports is True
     assert response.allow_global_access is True
+    assert response.allow_psc_global_access is True
     assert response.backend_service == "backend_service_value"
     assert response.base_forwarding_rule == "base_forwarding_rule_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -1979,6 +1981,7 @@ def test_insert_rest(request_type):
         "I_p_protocol": "I_p_protocol_value",
         "all_ports": True,
         "allow_global_access": True,
+        "allow_psc_global_access": True,
         "backend_service": "backend_service_value",
         "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
@@ -2256,6 +2259,7 @@ def test_insert_rest_bad_request(
         "I_p_protocol": "I_p_protocol_value",
         "all_ports": True,
         "allow_global_access": True,
+        "allow_psc_global_access": True,
         "backend_service": "backend_service_value",
         "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
@@ -2401,6 +2405,7 @@ def test_insert_unary_rest(request_type):
         "I_p_protocol": "I_p_protocol_value",
         "all_ports": True,
         "allow_global_access": True,
+        "allow_psc_global_access": True,
         "backend_service": "backend_service_value",
         "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
@@ -2658,6 +2663,7 @@ def test_insert_unary_rest_bad_request(
         "I_p_protocol": "I_p_protocol_value",
         "all_ports": True,
         "allow_global_access": True,
+        "allow_psc_global_access": True,
         "backend_service": "backend_service_value",
         "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
@@ -3166,6 +3172,7 @@ def test_patch_rest(request_type):
         "I_p_protocol": "I_p_protocol_value",
         "all_ports": True,
         "allow_global_access": True,
+        "allow_psc_global_access": True,
         "backend_service": "backend_service_value",
         "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
@@ -3452,6 +3459,7 @@ def test_patch_rest_bad_request(
         "I_p_protocol": "I_p_protocol_value",
         "all_ports": True,
         "allow_global_access": True,
+        "allow_psc_global_access": True,
         "backend_service": "backend_service_value",
         "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
@@ -3607,6 +3615,7 @@ def test_patch_unary_rest(request_type):
         "I_p_protocol": "I_p_protocol_value",
         "all_ports": True,
         "allow_global_access": True,
+        "allow_psc_global_access": True,
         "backend_service": "backend_service_value",
         "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
@@ -3873,6 +3882,7 @@ def test_patch_unary_rest_bad_request(
         "I_p_protocol": "I_p_protocol_value",
         "all_ports": True,
         "allow_global_access": True,
+        "allow_psc_global_access": True,
         "backend_service": "backend_service_value",
         "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",

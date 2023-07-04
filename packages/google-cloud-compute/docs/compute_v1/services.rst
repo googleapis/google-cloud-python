@@ -29,6 +29,7 @@ Services for Google Cloud Compute v1 API
     instance_templates
     interconnect_attachments
     interconnect_locations
+    interconnect_remote_locations
     interconnects
     license_codes
     licenses

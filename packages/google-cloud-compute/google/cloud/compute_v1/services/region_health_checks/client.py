@@ -702,13 +702,13 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
                 [Regional](/compute/docs/reference/rest/v1/regionHealthChecks)
                 Internal HTTP(S) load balancers must use regional health
                 checks (compute.v1.regionHealthChecks). Traffic Director
-                must use global health checks (compute.v1.HealthChecks).
+                must use global health checks (compute.v1.healthChecks).
                 Internal TCP/UDP load balancers can use either regional
                 or global health checks (compute.v1.regionHealthChecks
-                or compute.v1.HealthChecks). External HTTP(S), TCP
+                or compute.v1.healthChecks). External HTTP(S), TCP
                 proxy, and SSL proxy load balancers as well as managed
                 instance group auto-healing must use global health
-                checks (compute.v1.HealthChecks). Backend service-based
+                checks (compute.v1.healthChecks). Backend service-based
                 network load balancers must use regional health checks
                 (compute.v1.regionHealthChecks). Target pool-based
                 network load balancers must use legacy HTTP health

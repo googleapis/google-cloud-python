@@ -1674,17 +1674,20 @@ def test_get_rest(request_type):
             interconnect="interconnect_value",
             ipsec_internal_addresses=["ipsec_internal_addresses_value"],
             kind="kind_value",
+            label_fingerprint="label_fingerprint_value",
             mtu=342,
             name="name_value",
             operational_status="operational_status_value",
             pairing_key="pairing_key_value",
             partner_asn=1181,
             region="region_value",
+            remote_service="remote_service_value",
             router="router_value",
             satisfies_pzs=True,
             self_link="self_link_value",
             stack_type="stack_type_value",
             state="state_value",
+            subnet_length=1394,
             type_="type__value",
             vlan_tag8021q=1160,
         )
@@ -1727,17 +1730,20 @@ def test_get_rest(request_type):
     assert response.interconnect == "interconnect_value"
     assert response.ipsec_internal_addresses == ["ipsec_internal_addresses_value"]
     assert response.kind == "kind_value"
+    assert response.label_fingerprint == "label_fingerprint_value"
     assert response.mtu == 342
     assert response.name == "name_value"
     assert response.operational_status == "operational_status_value"
     assert response.pairing_key == "pairing_key_value"
     assert response.partner_asn == 1181
     assert response.region == "region_value"
+    assert response.remote_service == "remote_service_value"
     assert response.router == "router_value"
     assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
     assert response.stack_type == "stack_type_value"
     assert response.state == "state_value"
+    assert response.subnet_length == 1394
     assert response.type_ == "type__value"
     assert response.vlan_tag8021q == 1160
 
@@ -2028,6 +2034,10 @@ def test_insert_rest(request_type):
         "cloud_router_ip_address": "cloud_router_ip_address_value",
         "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
         "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
+        "configuration_constraints": {
+            "bgp_md5": "bgp_md5_value",
+            "bgp_peer_asn_ranges": [{"max_": 421, "min_": 419}],
+        },
         "creation_timestamp": "creation_timestamp_value",
         "customer_router_ip_address": "customer_router_ip_address_value",
         "customer_router_ipv6_address": "customer_router_ipv6_address_value",
@@ -2044,6 +2054,8 @@ def test_insert_rest(request_type):
             "ipsec_internal_addresses_value2",
         ],
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "mtu": 342,
         "name": "name_value",
         "operational_status": "operational_status_value",
@@ -2056,11 +2068,13 @@ def test_insert_rest(request_type):
         },
         "private_interconnect_info": {"tag8021q": 632},
         "region": "region_value",
+        "remote_service": "remote_service_value",
         "router": "router_value",
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "stack_type": "stack_type_value",
         "state": "state_value",
+        "subnet_length": 1394,
         "type_": "type__value",
         "vlan_tag8021q": 1160,
     }
@@ -2318,6 +2332,10 @@ def test_insert_rest_bad_request(
         "cloud_router_ip_address": "cloud_router_ip_address_value",
         "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
         "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
+        "configuration_constraints": {
+            "bgp_md5": "bgp_md5_value",
+            "bgp_peer_asn_ranges": [{"max_": 421, "min_": 419}],
+        },
         "creation_timestamp": "creation_timestamp_value",
         "customer_router_ip_address": "customer_router_ip_address_value",
         "customer_router_ipv6_address": "customer_router_ipv6_address_value",
@@ -2334,6 +2352,8 @@ def test_insert_rest_bad_request(
             "ipsec_internal_addresses_value2",
         ],
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "mtu": 342,
         "name": "name_value",
         "operational_status": "operational_status_value",
@@ -2346,11 +2366,13 @@ def test_insert_rest_bad_request(
         },
         "private_interconnect_info": {"tag8021q": 632},
         "region": "region_value",
+        "remote_service": "remote_service_value",
         "router": "router_value",
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "stack_type": "stack_type_value",
         "state": "state_value",
+        "subnet_length": 1394,
         "type_": "type__value",
         "vlan_tag8021q": 1160,
     }
@@ -2464,6 +2486,10 @@ def test_insert_unary_rest(request_type):
         "cloud_router_ip_address": "cloud_router_ip_address_value",
         "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
         "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
+        "configuration_constraints": {
+            "bgp_md5": "bgp_md5_value",
+            "bgp_peer_asn_ranges": [{"max_": 421, "min_": 419}],
+        },
         "creation_timestamp": "creation_timestamp_value",
         "customer_router_ip_address": "customer_router_ip_address_value",
         "customer_router_ipv6_address": "customer_router_ipv6_address_value",
@@ -2480,6 +2506,8 @@ def test_insert_unary_rest(request_type):
             "ipsec_internal_addresses_value2",
         ],
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "mtu": 342,
         "name": "name_value",
         "operational_status": "operational_status_value",
@@ -2492,11 +2520,13 @@ def test_insert_unary_rest(request_type):
         },
         "private_interconnect_info": {"tag8021q": 632},
         "region": "region_value",
+        "remote_service": "remote_service_value",
         "router": "router_value",
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "stack_type": "stack_type_value",
         "state": "state_value",
+        "subnet_length": 1394,
         "type_": "type__value",
         "vlan_tag8021q": 1160,
     }
@@ -2732,6 +2762,10 @@ def test_insert_unary_rest_bad_request(
         "cloud_router_ip_address": "cloud_router_ip_address_value",
         "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
         "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
+        "configuration_constraints": {
+            "bgp_md5": "bgp_md5_value",
+            "bgp_peer_asn_ranges": [{"max_": 421, "min_": 419}],
+        },
         "creation_timestamp": "creation_timestamp_value",
         "customer_router_ip_address": "customer_router_ip_address_value",
         "customer_router_ipv6_address": "customer_router_ipv6_address_value",
@@ -2748,6 +2782,8 @@ def test_insert_unary_rest_bad_request(
             "ipsec_internal_addresses_value2",
         ],
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "mtu": 342,
         "name": "name_value",
         "operational_status": "operational_status_value",
@@ -2760,11 +2796,13 @@ def test_insert_unary_rest_bad_request(
         },
         "private_interconnect_info": {"tag8021q": 632},
         "region": "region_value",
+        "remote_service": "remote_service_value",
         "router": "router_value",
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "stack_type": "stack_type_value",
         "state": "state_value",
+        "subnet_length": 1394,
         "type_": "type__value",
         "vlan_tag8021q": 1160,
     }
@@ -3245,6 +3283,10 @@ def test_patch_rest(request_type):
         "cloud_router_ip_address": "cloud_router_ip_address_value",
         "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
         "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
+        "configuration_constraints": {
+            "bgp_md5": "bgp_md5_value",
+            "bgp_peer_asn_ranges": [{"max_": 421, "min_": 419}],
+        },
         "creation_timestamp": "creation_timestamp_value",
         "customer_router_ip_address": "customer_router_ip_address_value",
         "customer_router_ipv6_address": "customer_router_ipv6_address_value",
@@ -3261,6 +3303,8 @@ def test_patch_rest(request_type):
             "ipsec_internal_addresses_value2",
         ],
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "mtu": 342,
         "name": "name_value",
         "operational_status": "operational_status_value",
@@ -3273,11 +3317,13 @@ def test_patch_rest(request_type):
         },
         "private_interconnect_info": {"tag8021q": 632},
         "region": "region_value",
+        "remote_service": "remote_service_value",
         "router": "router_value",
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "stack_type": "stack_type_value",
         "state": "state_value",
+        "subnet_length": 1394,
         "type_": "type__value",
         "vlan_tag8021q": 1160,
     }
@@ -3536,6 +3582,10 @@ def test_patch_rest_bad_request(
         "cloud_router_ip_address": "cloud_router_ip_address_value",
         "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
         "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
+        "configuration_constraints": {
+            "bgp_md5": "bgp_md5_value",
+            "bgp_peer_asn_ranges": [{"max_": 421, "min_": 419}],
+        },
         "creation_timestamp": "creation_timestamp_value",
         "customer_router_ip_address": "customer_router_ip_address_value",
         "customer_router_ipv6_address": "customer_router_ipv6_address_value",
@@ -3552,6 +3602,8 @@ def test_patch_rest_bad_request(
             "ipsec_internal_addresses_value2",
         ],
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "mtu": 342,
         "name": "name_value",
         "operational_status": "operational_status_value",
@@ -3564,11 +3616,13 @@ def test_patch_rest_bad_request(
         },
         "private_interconnect_info": {"tag8021q": 632},
         "region": "region_value",
+        "remote_service": "remote_service_value",
         "router": "router_value",
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "stack_type": "stack_type_value",
         "state": "state_value",
+        "subnet_length": 1394,
         "type_": "type__value",
         "vlan_tag8021q": 1160,
     }
@@ -3692,6 +3746,10 @@ def test_patch_unary_rest(request_type):
         "cloud_router_ip_address": "cloud_router_ip_address_value",
         "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
         "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
+        "configuration_constraints": {
+            "bgp_md5": "bgp_md5_value",
+            "bgp_peer_asn_ranges": [{"max_": 421, "min_": 419}],
+        },
         "creation_timestamp": "creation_timestamp_value",
         "customer_router_ip_address": "customer_router_ip_address_value",
         "customer_router_ipv6_address": "customer_router_ipv6_address_value",
@@ -3708,6 +3766,8 @@ def test_patch_unary_rest(request_type):
             "ipsec_internal_addresses_value2",
         ],
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "mtu": 342,
         "name": "name_value",
         "operational_status": "operational_status_value",
@@ -3720,11 +3780,13 @@ def test_patch_unary_rest(request_type):
         },
         "private_interconnect_info": {"tag8021q": 632},
         "region": "region_value",
+        "remote_service": "remote_service_value",
         "router": "router_value",
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "stack_type": "stack_type_value",
         "state": "state_value",
+        "subnet_length": 1394,
         "type_": "type__value",
         "vlan_tag8021q": 1160,
     }
@@ -3961,6 +4023,10 @@ def test_patch_unary_rest_bad_request(
         "cloud_router_ip_address": "cloud_router_ip_address_value",
         "cloud_router_ipv6_address": "cloud_router_ipv6_address_value",
         "cloud_router_ipv6_interface_id": "cloud_router_ipv6_interface_id_value",
+        "configuration_constraints": {
+            "bgp_md5": "bgp_md5_value",
+            "bgp_peer_asn_ranges": [{"max_": 421, "min_": 419}],
+        },
         "creation_timestamp": "creation_timestamp_value",
         "customer_router_ip_address": "customer_router_ip_address_value",
         "customer_router_ipv6_address": "customer_router_ipv6_address_value",
@@ -3977,6 +4043,8 @@ def test_patch_unary_rest_bad_request(
             "ipsec_internal_addresses_value2",
         ],
         "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
         "mtu": 342,
         "name": "name_value",
         "operational_status": "operational_status_value",
@@ -3989,11 +4057,13 @@ def test_patch_unary_rest_bad_request(
         },
         "private_interconnect_info": {"tag8021q": 632},
         "region": "region_value",
+        "remote_service": "remote_service_value",
         "router": "router_value",
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "stack_type": "stack_type_value",
         "state": "state_value",
+        "subnet_length": 1394,
         "type_": "type__value",
         "vlan_tag8021q": 1160,
     }

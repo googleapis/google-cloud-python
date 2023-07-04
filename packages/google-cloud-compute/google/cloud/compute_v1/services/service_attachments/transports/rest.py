@@ -680,7 +680,6 @@ class ServiceAttachmentsRestTransport(ServiceAttachmentsTransport):
                 and a list of NAT IP ranges that the
                 producers uses to represent the
                 consumers connecting to the service.
-                next tag = 20
 
             """
 
