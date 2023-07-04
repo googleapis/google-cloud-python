@@ -392,7 +392,7 @@ class PublisherAsyncClient:
         # Done; return the response.
         return response
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "PublisherAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
