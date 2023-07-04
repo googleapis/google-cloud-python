@@ -19,7 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.apps.script.type import extension_point_pb2  # type: ignore
+import google.apps.script.type.types  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.apps.script.type.sheets",
@@ -34,7 +34,7 @@ class SheetsAddOnManifest(proto.Message):
     r"""Sheets add-on manifest.
 
     Attributes:
-        homepage_trigger (google.apps.script.type.extension_point_pb2.HomepageExtensionPoint):
+        homepage_trigger (google.apps.script.type.types.HomepageExtensionPoint):
             If present, this overrides the configuration from
             ``addOns.common.homepageTrigger``.
         on_file_scope_granted_trigger (google.apps.script.type.sheets.types.SheetsExtensionPoint):
@@ -43,10 +43,12 @@ class SheetsAddOnManifest(proto.Message):
             pair.
     """
 
-    homepage_trigger: extension_point_pb2.HomepageExtensionPoint = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message=extension_point_pb2.HomepageExtensionPoint,
+    homepage_trigger: google.apps.script.type.types.HomepageExtensionPoint = (
+        proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=google.apps.script.type.types.HomepageExtensionPoint,
+        )
     )
     on_file_scope_granted_trigger: "SheetsExtensionPoint" = proto.Field(
         proto.MESSAGE,
