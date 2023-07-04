@@ -1167,9 +1167,11 @@ async def test_list_services_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_services(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1207,9 +1209,6 @@ def test_get_service(request_type, transport: str = "grpc"):
             uid="uid_value",
             release_channel=metastore.Service.ReleaseChannel.CANARY,
             database_type=metastore.Service.DatabaseType.MYSQL,
-            hive_metastore_config=metastore.HiveMetastoreConfig(
-                version="version_value"
-            ),
         )
         response = client.get_service(request)
 
@@ -2632,9 +2631,11 @@ async def test_list_metadata_imports_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_metadata_imports(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2666,9 +2667,6 @@ def test_get_metadata_import(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             state=metastore.MetadataImport.State.RUNNING,
-            database_dump=metastore.MetadataImport.DatabaseDump(
-                database_type=metastore.MetadataImport.DatabaseDump.DatabaseType.MYSQL
-            ),
         )
         response = client.get_metadata_import(request)
 
@@ -4251,9 +4249,11 @@ async def test_list_backups_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_backups(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5342,9 +5342,6 @@ def test_get_service_rest(request_type):
             uid="uid_value",
             release_channel=metastore.Service.ReleaseChannel.CANARY,
             database_type=metastore.Service.DatabaseType.MYSQL,
-            hive_metastore_config=metastore.HiveMetastoreConfig(
-                version="version_value"
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -7056,9 +7053,6 @@ def test_get_metadata_import_rest(request_type):
             name="name_value",
             description="description_value",
             state=metastore.MetadataImport.State.RUNNING,
-            database_dump=metastore.MetadataImport.DatabaseDump(
-                database_type=metastore.MetadataImport.DatabaseDump.DatabaseType.MYSQL
-            ),
         )
 
         # Wrap the value into a proper Response obj

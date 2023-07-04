@@ -794,8 +794,6 @@ def test_create_conversation(request_type, transport: str = "grpc"):
             medium=resources.Conversation.Medium.PHONE_CALL,
             turn_count=1105,
             obfuscated_user_id="obfuscated_user_id_value",
-            call_metadata=resources.Conversation.CallMetadata(customer_channel=1706),
-            expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
         response = client.create_conversation(request)
 
@@ -1250,8 +1248,6 @@ def test_update_conversation(request_type, transport: str = "grpc"):
             medium=resources.Conversation.Medium.PHONE_CALL,
             turn_count=1105,
             obfuscated_user_id="obfuscated_user_id_value",
-            call_metadata=resources.Conversation.CallMetadata(customer_channel=1706),
-            expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
         response = client.update_conversation(request)
 
@@ -1539,8 +1535,6 @@ def test_get_conversation(request_type, transport: str = "grpc"):
             medium=resources.Conversation.Medium.PHONE_CALL,
             turn_count=1105,
             obfuscated_user_id="obfuscated_user_id_value",
-            call_metadata=resources.Conversation.CallMetadata(customer_channel=1706),
-            expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
         response = client.get_conversation(request)
 
@@ -2202,9 +2196,11 @@ async def test_list_conversations_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_conversations(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3324,9 +3320,11 @@ async def test_list_analyses_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_analyses(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8189,9 +8187,11 @@ async def test_list_phrase_matchers_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_phrase_matchers(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -10322,9 +10322,11 @@ async def test_list_views_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_views(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -11003,8 +11005,6 @@ def test_create_conversation_rest(request_type):
             medium=resources.Conversation.Medium.PHONE_CALL,
             turn_count=1105,
             obfuscated_user_id="obfuscated_user_id_value",
-            call_metadata=resources.Conversation.CallMetadata(customer_channel=1706),
-            expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
 
         # Wrap the value into a proper Response obj
@@ -11881,8 +11881,6 @@ def test_update_conversation_rest(request_type):
             medium=resources.Conversation.Medium.PHONE_CALL,
             turn_count=1105,
             obfuscated_user_id="obfuscated_user_id_value",
-            call_metadata=resources.Conversation.CallMetadata(customer_channel=1706),
-            expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
 
         # Wrap the value into a proper Response obj
@@ -12352,8 +12350,6 @@ def test_get_conversation_rest(request_type):
             medium=resources.Conversation.Medium.PHONE_CALL,
             turn_count=1105,
             obfuscated_user_id="obfuscated_user_id_value",
-            call_metadata=resources.Conversation.CallMetadata(customer_channel=1706),
-            expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
 
         # Wrap the value into a proper Response obj
