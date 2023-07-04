@@ -1105,9 +1105,11 @@ async def test_list_queues_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_queues(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1137,11 +1139,6 @@ def test_get_queue(request_type, transport: str = "grpc"):
             name="name_value",
             state=queue.Queue.State.RUNNING,
             type_=queue.Queue.Type.PULL,
-            app_engine_http_queue=target.AppEngineHttpQueue(
-                app_engine_routing_override=target.AppEngineRouting(
-                    service="service_value"
-                )
-            ),
         )
         response = client.get_queue(request)
 
@@ -1378,11 +1375,6 @@ def test_create_queue(request_type, transport: str = "grpc"):
             name="name_value",
             state=gct_queue.Queue.State.RUNNING,
             type_=gct_queue.Queue.Type.PULL,
-            app_engine_http_queue=target.AppEngineHttpQueue(
-                app_engine_routing_override=target.AppEngineRouting(
-                    service="service_value"
-                )
-            ),
         )
         response = client.create_queue(request)
 
@@ -1629,11 +1621,6 @@ def test_update_queue(request_type, transport: str = "grpc"):
             name="name_value",
             state=gct_queue.Queue.State.RUNNING,
             type_=gct_queue.Queue.Type.PULL,
-            app_engine_http_queue=target.AppEngineHttpQueue(
-                app_engine_routing_override=target.AppEngineRouting(
-                    service="service_value"
-                )
-            ),
         )
         response = client.update_queue(request)
 
@@ -2100,11 +2087,6 @@ def test_purge_queue(request_type, transport: str = "grpc"):
             name="name_value",
             state=queue.Queue.State.RUNNING,
             type_=queue.Queue.Type.PULL,
-            app_engine_http_queue=target.AppEngineHttpQueue(
-                app_engine_routing_override=target.AppEngineRouting(
-                    service="service_value"
-                )
-            ),
         )
         response = client.purge_queue(request)
 
@@ -2341,11 +2323,6 @@ def test_pause_queue(request_type, transport: str = "grpc"):
             name="name_value",
             state=queue.Queue.State.RUNNING,
             type_=queue.Queue.Type.PULL,
-            app_engine_http_queue=target.AppEngineHttpQueue(
-                app_engine_routing_override=target.AppEngineRouting(
-                    service="service_value"
-                )
-            ),
         )
         response = client.pause_queue(request)
 
@@ -2582,11 +2559,6 @@ def test_resume_queue(request_type, transport: str = "grpc"):
             name="name_value",
             state=queue.Queue.State.RUNNING,
             type_=queue.Queue.Type.PULL,
-            app_engine_http_queue=target.AppEngineHttpQueue(
-                app_engine_routing_override=target.AppEngineRouting(
-                    service="service_value"
-                )
-            ),
         )
         response = client.resume_queue(request)
 
@@ -3986,9 +3958,11 @@ async def test_list_tasks_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_tasks(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4019,9 +3993,6 @@ def test_get_task(request_type, transport: str = "grpc"):
             dispatch_count=1496,
             response_count=1527,
             view=task.Task.View.BASIC,
-            app_engine_http_request=target.AppEngineHttpRequest(
-                http_method=target.HttpMethod.POST
-            ),
         )
         response = client.get_task(request)
 
@@ -4262,9 +4233,6 @@ def test_create_task(request_type, transport: str = "grpc"):
             dispatch_count=1496,
             response_count=1527,
             view=gct_task.Task.View.BASIC,
-            app_engine_http_request=target.AppEngineHttpRequest(
-                http_method=target.HttpMethod.POST
-            ),
         )
         response = client.create_task(request)
 
@@ -4735,9 +4703,6 @@ def test_run_task(request_type, transport: str = "grpc"):
             dispatch_count=1496,
             response_count=1527,
             view=task.Task.View.BASIC,
-            app_engine_http_request=target.AppEngineHttpRequest(
-                http_method=target.HttpMethod.POST
-            ),
         )
         response = client.run_task(request)
 
@@ -5315,11 +5280,6 @@ def test_get_queue_rest(request_type):
             name="name_value",
             state=queue.Queue.State.RUNNING,
             type_=queue.Queue.Type.PULL,
-            app_engine_http_queue=target.AppEngineHttpQueue(
-                app_engine_routing_override=target.AppEngineRouting(
-                    service="service_value"
-                )
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -5624,11 +5584,6 @@ def test_create_queue_rest(request_type):
             name="name_value",
             state=gct_queue.Queue.State.RUNNING,
             type_=gct_queue.Queue.Type.PULL,
-            app_engine_http_queue=target.AppEngineHttpQueue(
-                app_engine_routing_override=target.AppEngineRouting(
-                    service="service_value"
-                )
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -5980,11 +5935,6 @@ def test_update_queue_rest(request_type):
             name="name_value",
             state=gct_queue.Queue.State.RUNNING,
             type_=gct_queue.Queue.Type.PULL,
-            app_engine_http_queue=target.AppEngineHttpQueue(
-                app_engine_routing_override=target.AppEngineRouting(
-                    service="service_value"
-                )
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -6540,11 +6490,6 @@ def test_purge_queue_rest(request_type):
             name="name_value",
             state=queue.Queue.State.RUNNING,
             type_=queue.Queue.Type.PULL,
-            app_engine_http_queue=target.AppEngineHttpQueue(
-                app_engine_routing_override=target.AppEngineRouting(
-                    service="service_value"
-                )
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -6812,11 +6757,6 @@ def test_pause_queue_rest(request_type):
             name="name_value",
             state=queue.Queue.State.RUNNING,
             type_=queue.Queue.Type.PULL,
-            app_engine_http_queue=target.AppEngineHttpQueue(
-                app_engine_routing_override=target.AppEngineRouting(
-                    service="service_value"
-                )
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -7084,11 +7024,6 @@ def test_resume_queue_rest(request_type):
             name="name_value",
             state=queue.Queue.State.RUNNING,
             type_=queue.Queue.Type.PULL,
-            app_engine_http_queue=target.AppEngineHttpQueue(
-                app_engine_routing_override=target.AppEngineRouting(
-                    service="service_value"
-                )
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -8524,9 +8459,6 @@ def test_get_task_rest(request_type):
             dispatch_count=1496,
             response_count=1527,
             view=task.Task.View.BASIC,
-            app_engine_http_request=target.AppEngineHttpRequest(
-                http_method=target.HttpMethod.POST
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -8801,9 +8733,6 @@ def test_create_task_rest(request_type):
             dispatch_count=1496,
             response_count=1527,
             view=gct_task.Task.View.BASIC,
-            app_engine_http_request=target.AppEngineHttpRequest(
-                http_method=target.HttpMethod.POST
-            ),
         )
 
         # Wrap the value into a proper Response obj
@@ -9340,9 +9269,6 @@ def test_run_task_rest(request_type):
             dispatch_count=1496,
             response_count=1527,
             view=task.Task.View.BASIC,
-            app_engine_http_request=target.AppEngineHttpRequest(
-                http_method=target.HttpMethod.POST
-            ),
         )
 
         # Wrap the value into a proper Response obj
