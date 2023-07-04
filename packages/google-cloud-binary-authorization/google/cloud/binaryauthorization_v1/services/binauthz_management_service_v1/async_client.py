@@ -1109,7 +1109,7 @@ class BinauthzManagementServiceV1AsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "BinauthzManagementServiceV1AsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
