@@ -1779,7 +1779,7 @@ class EnvironmentsAsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "EnvironmentsAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):

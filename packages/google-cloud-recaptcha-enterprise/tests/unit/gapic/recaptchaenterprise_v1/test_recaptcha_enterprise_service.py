@@ -1245,7 +1245,6 @@ def test_create_key(request_type, transport: str = "grpc"):
         call.return_value = recaptchaenterprise.Key(
             name="name_value",
             display_name="display_name_value",
-            web_settings=recaptchaenterprise.WebKeySettings(allow_all_domains=True),
         )
         response = client.create_key(request)
 
@@ -1881,9 +1880,11 @@ async def test_list_keys_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_keys(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2159,7 +2160,6 @@ def test_get_key(request_type, transport: str = "grpc"):
         call.return_value = recaptchaenterprise.Key(
             name="name_value",
             display_name="display_name_value",
-            web_settings=recaptchaenterprise.WebKeySettings(allow_all_domains=True),
         )
         response = client.get_key(request)
 
@@ -2396,7 +2396,6 @@ def test_update_key(request_type, transport: str = "grpc"):
         call.return_value = recaptchaenterprise.Key(
             name="name_value",
             display_name="display_name_value",
-            web_settings=recaptchaenterprise.WebKeySettings(allow_all_domains=True),
         )
         response = client.update_key(request)
 
@@ -2863,7 +2862,6 @@ def test_migrate_key(request_type, transport: str = "grpc"):
         call.return_value = recaptchaenterprise.Key(
             name="name_value",
             display_name="display_name_value",
-            web_settings=recaptchaenterprise.WebKeySettings(allow_all_domains=True),
         )
         response = client.migrate_key(request)
 
@@ -3666,9 +3664,11 @@ async def test_list_related_account_groups_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_related_account_groups(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4129,9 +4129,11 @@ async def test_list_related_account_group_memberships_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_related_account_group_memberships(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4604,9 +4606,11 @@ async def test_search_related_account_group_memberships_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.search_related_account_group_memberships(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
