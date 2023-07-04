@@ -35,7 +35,7 @@ def get_version_for_package(version_path: Path) -> Tuple[int]:
     return (major_version, minor_version, patch_version)
 
 
-def walk_through_owlbot_dirs(packages_dir: Path = PACKAGES_DIR) -> List[Path]:
+def get_packages_with_owlbot_yaml(packages_dir: Path = PACKAGES_DIR) -> List[Path]:
     """
     Walks through all API packages in the specified `packages_dir` path. 
 
@@ -132,6 +132,6 @@ def configure_release_please_config(
 
 
 if __name__ == "__main__":
-    owlbot_dirs = walk_through_owlbot_dirs()
+    owlbot_dirs = get_packages_with_owlbot_yaml()
     configure_release_please_manifest(owlbot_dirs)
     configure_release_please_config(owlbot_dirs)

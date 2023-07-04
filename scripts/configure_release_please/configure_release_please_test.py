@@ -23,22 +23,22 @@ class TestChangeSummary(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             configure_release_please.get_version_for_package(Path("does/not/exist"))
 
-    def test_walk_through_owlbot_dirs(self):
+    def test_get_packages_with_owlbot_yaml(self):
         expected_result = [PACKAGES_DIR / "google-cloud-ids"]
         self.assertEqual(
-            configure_release_please.walk_through_owlbot_dirs(PACKAGES_DIR),
+            configure_release_please.get_packages_with_owlbot_yaml(PACKAGES_DIR),
             expected_result,
         )
 
-    def test_walk_through_owlbot_dirs_bad_path(self):
+    def test_get_packages_with_owlbot_yaml_bad_path(self):
         with self.assertRaises(FileNotFoundError):
-            configure_release_please.walk_through_owlbot_dirs(Path("does/not/exist"))
+            configure_release_please.get_packages_with_owlbot_yaml(Path("does/not/exist"))
 
     def test_configure_release_please_manifest(self):
         expected_result = """{
     "packages/google-cloud-ids": "1.5.1"
 }\n"""
-        package_dirs = configure_release_please.walk_through_owlbot_dirs(PACKAGES_DIR)
+        package_dirs = configure_release_please.get_packages_with_owlbot_yaml(PACKAGES_DIR)
         configure_release_please.configure_release_please_manifest(
             package_dirs=package_dirs, root_dir=TEST_RESOURCES_DIR
         )
@@ -59,7 +59,7 @@ class TestChangeSummary(unittest.TestCase):
         }
     }
 }\n"""
-        package_dirs = configure_release_please.walk_through_owlbot_dirs(PACKAGES_DIR)
+        package_dirs = configure_release_please.get_packages_with_owlbot_yaml(PACKAGES_DIR)
         configure_release_please.configure_release_please_config(
             package_dirs=package_dirs, root_dir=TEST_RESOURCES_DIR
         )
