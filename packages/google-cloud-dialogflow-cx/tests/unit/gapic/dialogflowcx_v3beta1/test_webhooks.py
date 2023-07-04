@@ -1089,9 +1089,11 @@ async def test_list_webhooks_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_webhooks(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1121,7 +1123,6 @@ def test_get_webhook(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             disabled=True,
-            generic_web_service=webhook.Webhook.GenericWebService(uri="uri_value"),
         )
         response = client.get_webhook(request)
 
@@ -1358,7 +1359,6 @@ def test_create_webhook(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             disabled=True,
-            generic_web_service=gcdc_webhook.Webhook.GenericWebService(uri="uri_value"),
         )
         response = client.create_webhook(request)
 
@@ -1609,7 +1609,6 @@ def test_update_webhook(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             disabled=True,
-            generic_web_service=gcdc_webhook.Webhook.GenericWebService(uri="uri_value"),
         )
         response = client.update_webhook(request)
 
@@ -2414,7 +2413,6 @@ def test_get_webhook_rest(request_type):
             name="name_value",
             display_name="display_name_value",
             disabled=True,
-            generic_web_service=webhook.Webhook.GenericWebService(uri="uri_value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -2701,7 +2699,6 @@ def test_create_webhook_rest(request_type):
             name="name_value",
             display_name="display_name_value",
             disabled=True,
-            generic_web_service=gcdc_webhook.Webhook.GenericWebService(uri="uri_value"),
         )
 
         # Wrap the value into a proper Response obj
@@ -3021,7 +3018,6 @@ def test_update_webhook_rest(request_type):
             name="name_value",
             display_name="display_name_value",
             disabled=True,
-            generic_web_service=gcdc_webhook.Webhook.GenericWebService(uri="uri_value"),
         )
 
         # Wrap the value into a proper Response obj

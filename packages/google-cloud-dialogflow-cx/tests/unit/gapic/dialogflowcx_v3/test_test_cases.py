@@ -1112,9 +1112,11 @@ async def test_list_test_cases_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_test_cases(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2424,9 +2426,6 @@ def test_calculate_coverage(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = test_case.CalculateCoverageResponse(
             agent="agent_value",
-            intent_coverage=test_case.IntentCoverage(
-                intents=[test_case.IntentCoverage.Intent(intent="intent_value")]
-            ),
         )
         response = client.calculate_coverage(request)
 
@@ -3305,9 +3304,11 @@ async def test_list_test_case_results_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
             await client.list_test_case_results(request={})
-        ).pages:  # pragma: no branch
+        ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6290,9 +6291,6 @@ def test_calculate_coverage_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = test_case.CalculateCoverageResponse(
             agent="agent_value",
-            intent_coverage=test_case.IntentCoverage(
-                intents=[test_case.IntentCoverage.Intent(intent="intent_value")]
-            ),
         )
 
         # Wrap the value into a proper Response obj
