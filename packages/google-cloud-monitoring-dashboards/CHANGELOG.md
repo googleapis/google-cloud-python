@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.12.2](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.12.1...v2.12.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#271](https://github.com/googleapis/python-monitoring-dashboards/issues/271)) ([15d68ce](https://github.com/googleapis/python-monitoring-dashboards/commit/15d68ce39da700d6bc70496d193bef211d9c48d9))
+
 ## [2.12.1](https://github.com/googleapis/python-monitoring-dashboards/compare/v2.12.0...v2.12.1) (2023-03-23)
 
 
