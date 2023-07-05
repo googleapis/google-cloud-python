@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.3](https://github.com/googleapis/python-video-stitcher/compare/v0.7.2...v0.7.3) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#161](https://github.com/googleapis/python-video-stitcher/issues/161)) ([c97054a](https://github.com/googleapis/python-video-stitcher/commit/c97054a6f226b48c7e9b1d70bbf466a590ababdd))
+
 ## [0.7.2](https://github.com/googleapis/python-video-stitcher/compare/v0.7.1...v0.7.2) (2023-05-25)
 
 
