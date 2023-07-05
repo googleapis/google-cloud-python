@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-video-live-stream/compare/v1.4.0...v1.4.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#167](https://github.com/googleapis/python-video-live-stream/issues/167)) ([f010478](https://github.com/googleapis/python-video-live-stream/commit/f0104783006f7816b5f79816ee9c3019e1c9a29c))
+
 ## [1.4.0](https://github.com/googleapis/python-video-live-stream/compare/v1.3.0...v1.4.0) (2023-03-23)
 
 
