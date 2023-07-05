@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## [1.11.2](https://github.com/googleapis/python-trace/compare/v1.11.1...v1.11.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#318](https://github.com/googleapis/python-trace/issues/318)) ([ba205b8](https://github.com/googleapis/python-trace/commit/ba205b8e86b939ae53fa7bf8b05ac6fc22946175))
+
 ## [1.11.1](https://github.com/googleapis/python-trace/compare/v1.11.0...v1.11.1) (2023-03-23)
 
 
