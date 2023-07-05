@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.16.1](https://github.com/googleapis/python-datastore/compare/v2.16.0...v2.16.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#452](https://github.com/googleapis/python-datastore/issues/452)) ([05f20dc](https://github.com/googleapis/python-datastore/commit/05f20dc54a100413ff7db2376ba353311584e4c8))
+
 ## [2.16.0](https://github.com/googleapis/python-datastore/compare/v2.15.2...v2.16.0) (2023-06-21)
 
 
