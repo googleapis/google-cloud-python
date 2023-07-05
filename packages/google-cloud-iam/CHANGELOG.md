@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.12.1](https://github.com/googleapis/python-iam/compare/v2.12.0...v2.12.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#284](https://github.com/googleapis/python-iam/issues/284)) ([6005f6f](https://github.com/googleapis/python-iam/commit/6005f6fe50a216920096c60b243c08124a78be92))
+
 ## [2.12.0](https://github.com/googleapis/python-iam/compare/v2.11.2...v2.12.0) (2023-03-23)
 
 
