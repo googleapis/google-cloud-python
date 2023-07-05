@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.2](https://github.com/googleapis/python-workflows/compare/v1.10.1...v1.10.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#255](https://github.com/googleapis/python-workflows/issues/255)) ([6c2f727](https://github.com/googleapis/python-workflows/commit/6c2f727572d6f7c1615fb153b512fe295341059f))
+
 ## [1.10.1](https://github.com/googleapis/python-workflows/compare/v1.10.0...v1.10.1) (2023-03-23)
 
 
