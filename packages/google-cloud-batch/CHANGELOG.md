@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.13.0](https://github.com/googleapis/python-batch/compare/v0.12.0...v0.13.0) (2023-07-04)
+
+
+### Features
+
+* **v1alpha:** Add gpu driver version field ([fa1e00b](https://github.com/googleapis/python-batch/commit/fa1e00bedc7386ab6119ab79c11ec03607bb6da7))
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#122](https://github.com/googleapis/python-batch/issues/122)) ([57f49cc](https://github.com/googleapis/python-batch/commit/57f49ccd10494f5ad26a592cd35e4f73bcdcdc8d))
+
+
+### Documentation
+
+* **v1:** Add image shortcut example for Batch HPC CentOS Image ([#119](https://github.com/googleapis/python-batch/issues/119)) ([cc9d65a](https://github.com/googleapis/python-batch/commit/cc9d65ad9329a3e8b281834fe32ea56ce28b5599))
+* **v1alpha:** Add image shortcut example for Batch HPC CentOS Image ([fa1e00b](https://github.com/googleapis/python-batch/commit/fa1e00bedc7386ab6119ab79c11ec03607bb6da7))
+
 ## [0.12.0](https://github.com/googleapis/python-batch/compare/v0.11.0...v0.12.0) (2023-06-14)
 
 
