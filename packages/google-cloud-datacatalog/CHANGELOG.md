@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.13.0...google-cloud-datacatalog-v3.13.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11445](https://github.com/googleapis/google-cloud-python/issues/11445)) ([98bddda](https://github.com/googleapis/google-cloud-python/commit/98bdddafc821e2fc6e86a31965da0c46899aa229))
+
 ## [3.13.0](https://github.com/googleapis/python-datacatalog/compare/v3.12.0...v3.13.0) (2023-05-29)
 
 
