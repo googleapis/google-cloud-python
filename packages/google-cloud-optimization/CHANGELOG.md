@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/googleapis/python-optimization/compare/v1.4.1...v1.4.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#132](https://github.com/googleapis/python-optimization/issues/132)) ([ec8db55](https://github.com/googleapis/python-optimization/commit/ec8db55d32c1ad95ca2dfcc82d96e0978d30c128))
+
 ## [1.4.1](https://github.com/googleapis/python-optimization/compare/v1.4.0...v1.4.1) (2023-03-23)
 
 
