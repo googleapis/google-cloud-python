@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.4.0...google-cloud-bigquery-analyticshub-v0.4.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11444](https://github.com/googleapis/google-cloud-python/issues/11444)) ([9aa301a](https://github.com/googleapis/google-cloud-python/commit/9aa301ae6ca3080cae286a19de9cdc1b796ab37d))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.3.2...google-cloud-bigquery-analyticshub-v0.4.0) (2023-06-19)
 
 
