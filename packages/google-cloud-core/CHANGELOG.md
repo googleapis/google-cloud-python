@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## [2.3.3](https://github.com/googleapis/python-cloud-core/compare/v2.3.2...v2.3.3) (2023-06-29)
+
+
+### Documentation
+
+* Update docs structure for c.g.c usage ([#226](https://github.com/googleapis/python-cloud-core/issues/226)) ([b805f4a](https://github.com/googleapis/python-cloud-core/commit/b805f4a273de53017f74ca693ba7243fb4694848))
+
 ## [2.3.2](https://github.com/googleapis/python-cloud-core/compare/v2.3.1...v2.3.2) (2022-07-15)
 
 
