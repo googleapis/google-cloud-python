@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.9.2](https://github.com/googleapis/python-error-reporting/compare/v1.9.1...v1.9.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#434](https://github.com/googleapis/python-error-reporting/issues/434)) ([319fa54](https://github.com/googleapis/python-error-reporting/commit/319fa54a19cb9aca3a079439fd7c6bd2c3163f71))
+
 ## [1.9.1](https://github.com/googleapis/python-error-reporting/compare/v1.9.0...v1.9.1) (2023-03-23)
 
 
