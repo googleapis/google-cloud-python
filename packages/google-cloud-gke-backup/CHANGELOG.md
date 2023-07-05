@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/python-gke-backup/compare/v0.4.4...v0.5.0) (2023-07-04)
+
+
+### Features
+
+* Added BackupPlan and RestorePlan state information ([8ddab08](https://github.com/googleapis/python-gke-backup/commit/8ddab0894c63bc7c6ffaad027bbc53a38688cbcf))
+* Added new restore scope options ([8ddab08](https://github.com/googleapis/python-gke-backup/commit/8ddab0894c63bc7c6ffaad027bbc53a38688cbcf))
+* Added transformation rules for restore ([8ddab08](https://github.com/googleapis/python-gke-backup/commit/8ddab0894c63bc7c6ffaad027bbc53a38688cbcf))
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#72](https://github.com/googleapis/python-gke-backup/issues/72)) ([301ec6d](https://github.com/googleapis/python-gke-backup/commit/301ec6de120e70f94c8938ad8073b4a8ed2dc63d))
+
 ## [0.4.4](https://github.com/googleapis/python-gke-backup/compare/v0.4.3...v0.4.4) (2023-06-12)
 
 
