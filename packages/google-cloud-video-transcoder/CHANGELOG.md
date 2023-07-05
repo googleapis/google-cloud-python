@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/googleapis/python-video-transcoder/compare/v1.9.0...v1.9.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#314](https://github.com/googleapis/python-video-transcoder/issues/314)) ([a56cebc](https://github.com/googleapis/python-video-transcoder/commit/a56cebc53896633e47bf14f5cfd2a0c0cd882c4b))
+
 ## [1.9.0](https://github.com/googleapis/python-video-transcoder/compare/v1.8.2...v1.9.0) (2023-04-13)
 
 
