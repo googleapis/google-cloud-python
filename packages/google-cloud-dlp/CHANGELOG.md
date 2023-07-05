@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.12.2](https://github.com/googleapis/python-dlp/compare/v3.12.1...v3.12.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#505](https://github.com/googleapis/python-dlp/issues/505)) ([a4099cc](https://github.com/googleapis/python-dlp/commit/a4099cca37464c6b94531d327bdfd7ab600f7159))
+
 ## [3.12.1](https://github.com/googleapis/python-dlp/compare/v3.12.0...v3.12.1) (2023-03-23)
 
 
