@@ -87,6 +87,7 @@ RESERVED_NAMES = frozenset(
         "try",
         "type",
         "exec",
+        "help",
         # Comes from Protoplus
         "ignore_unknown_fields"
     ]
