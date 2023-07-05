@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.3](https://github.com/googleapis/python-analytics-data/compare/v0.16.2...v0.16.3) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#362](https://github.com/googleapis/python-analytics-data/issues/362)) ([fa7d615](https://github.com/googleapis/python-analytics-data/commit/fa7d6150f04a8f65954d91bd439994dc99acd313))
+
 ## [0.16.2](https://github.com/googleapis/python-analytics-data/compare/v0.16.1...v0.16.2) (2023-03-23)
 
 
