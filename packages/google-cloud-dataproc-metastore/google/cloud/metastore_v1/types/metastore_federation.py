@@ -187,10 +187,13 @@ class BackendMetastore(proto.Message):
         Values:
             METASTORE_TYPE_UNSPECIFIED (0):
                 The metastore type is not set.
+            BIGQUERY (2):
+                The backend metastore is BigQuery.
             DATAPROC_METASTORE (3):
                 The backend metastore is Dataproc Metastore.
         """
         METASTORE_TYPE_UNSPECIFIED = 0
+        BIGQUERY = 2
         DATAPROC_METASTORE = 3
 
     name: str = proto.Field(

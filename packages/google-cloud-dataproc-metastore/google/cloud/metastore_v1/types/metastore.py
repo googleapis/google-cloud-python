@@ -62,6 +62,13 @@ __protobuf__ = proto.module(
         "OperationMetadata",
         "LocationMetadata",
         "DatabaseDumpSpec",
+        "QueryMetadataRequest",
+        "QueryMetadataResponse",
+        "ErrorDetails",
+        "MoveTableToDatabaseRequest",
+        "MoveTableToDatabaseResponse",
+        "AlterMetadataResourceLocationRequest",
+        "AlterMetadataResourceLocationResponse",
     },
 )
 
@@ -397,6 +404,9 @@ class HiveMetastoreConfig(proto.Message):
             field's path (``hive_metastore_config.kerberos_config``) in
             the request's ``update_mask`` while omitting this field from
             the request's ``service``.
+        endpoint_protocol (google.cloud.metastore_v1.types.HiveMetastoreConfig.EndpointProtocol):
+            The protocol to use for the metastore service endpoint. If
+            unspecified, defaults to ``THRIFT``.
         auxiliary_versions (MutableMapping[str, google.cloud.metastore_v1.types.AuxiliaryVersionConfig]):
             A mapping of Hive metastore version to the auxiliary version
             configuration. When specified, a secondary Hive metastore
@@ -409,6 +419,24 @@ class HiveMetastoreConfig(proto.Message):
             lowercase letters, or digits, except the last character,
             which cannot be a hyphen.
     """
+
+    class EndpointProtocol(proto.Enum):
+        r"""Protocols available for serving the metastore service
+        endpoint.
+
+        Values:
+            ENDPOINT_PROTOCOL_UNSPECIFIED (0):
+                The protocol is not set.
+            THRIFT (1):
+                Use the legacy Apache Thrift protocol for the
+                metastore service endpoint.
+            GRPC (2):
+                Use the modernized gRPC protocol for the
+                metastore service endpoint.
+        """
+        ENDPOINT_PROTOCOL_UNSPECIFIED = 0
+        THRIFT = 1
+        GRPC = 2
 
     version: str = proto.Field(
         proto.STRING,
@@ -423,6 +451,11 @@ class HiveMetastoreConfig(proto.Message):
         proto.MESSAGE,
         number=3,
         message="KerberosConfig",
+    )
+    endpoint_protocol: EndpointProtocol = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=EndpointProtocol,
     )
     auxiliary_versions: MutableMapping[str, "AuxiliaryVersionConfig"] = proto.MapField(
         proto.STRING,
@@ -715,6 +748,8 @@ class MetadataImport(proto.Message):
                 A Cloud Storage object or folder URI that specifies the
                 source from which to import metadata. It must begin with
                 ``gs://``.
+            source_database (str):
+                The name of the source database.
             type_ (google.cloud.metastore_v1.types.DatabaseDumpSpec.Type):
                 Optional. The type of the database dump. If unspecified,
                 defaults to ``MYSQL``.
@@ -740,6 +775,10 @@ class MetadataImport(proto.Message):
         gcs_uri: str = proto.Field(
             proto.STRING,
             number=2,
+        )
+        source_database: str = proto.Field(
+            proto.STRING,
+            number=3,
         )
         type_: "DatabaseDumpSpec.Type" = proto.Field(
             proto.ENUM,
@@ -2029,6 +2068,160 @@ class DatabaseDumpSpec(proto.Message):
         TYPE_UNSPECIFIED = 0
         MYSQL = 1
         AVRO = 2
+
+
+class QueryMetadataRequest(proto.Message):
+    r"""Request message for
+    [DataprocMetastore.QueryMetadata][google.cloud.metastore.v1.DataprocMetastore.QueryMetadata].
+
+    Attributes:
+        service (str):
+            Required. The relative resource name of the metastore
+            service to query metadata, in the following format:
+
+            ``projects/{project_id}/locations/{location_id}/services/{service_id}``.
+        query (str):
+            Required. A read-only SQL query to execute
+            against the metadata database. The query cannot
+            change or mutate the data.
+    """
+
+    service: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class QueryMetadataResponse(proto.Message):
+    r"""Response message for
+    [DataprocMetastore.QueryMetadata][google.cloud.metastore.v1.DataprocMetastore.QueryMetadata].
+
+    Attributes:
+        result_manifest_uri (str):
+            The manifest URI  is link to a JSON instance
+            in Cloud Storage. This instance manifests
+            immediately along with QueryMetadataResponse.
+            The content of the URI is not retriable until
+            the long-running operation query against the
+            metadata finishes.
+    """
+
+    result_manifest_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ErrorDetails(proto.Message):
+    r"""Error details in public error message for
+    [DataprocMetastore.QueryMetadata][google.cloud.metastore.v1.DataprocMetastore.QueryMetadata].
+
+    Attributes:
+        details (MutableMapping[str, str]):
+            Additional structured details about this
+            error.
+            Keys define the failure items.
+            Value describes the exception or details of the
+            item.
+    """
+
+    details: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=1,
+    )
+
+
+class MoveTableToDatabaseRequest(proto.Message):
+    r"""Request message for
+    [DataprocMetastore.MoveTableToDatabase][google.cloud.metastore.v1.DataprocMetastore.MoveTableToDatabase].
+
+    Attributes:
+        service (str):
+            Required. The relative resource name of the metastore
+            service to mutate metadata, in the following format:
+
+            ``projects/{project_id}/locations/{location_id}/services/{service_id}``.
+        table_name (str):
+            Required. The name of the table to be moved.
+        db_name (str):
+            Required. The name of the database where the
+            table resides.
+        destination_db_name (str):
+            Required. The name of the database where the
+            table should be moved.
+    """
+
+    service: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    table_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    db_name: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    destination_db_name: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class MoveTableToDatabaseResponse(proto.Message):
+    r"""Response message for
+    [DataprocMetastore.MoveTableToDatabase][google.cloud.metastore.v1.DataprocMetastore.MoveTableToDatabase].
+
+    """
+
+
+class AlterMetadataResourceLocationRequest(proto.Message):
+    r"""Request message for
+    [DataprocMetastore.AlterMetadataResourceLocation][google.cloud.metastore.v1.DataprocMetastore.AlterMetadataResourceLocation].
+
+    Attributes:
+        service (str):
+            Required. The relative resource name of the metastore
+            service to mutate metadata, in the following format:
+
+            ``projects/{project_id}/locations/{location_id}/services/{service_id}``.
+        resource_name (str):
+            Required. The relative metadata resource name in the
+            following format.
+
+            ``databases/{database_id}`` or
+            ``databases/{database_id}/tables/{table_id}`` or
+            ``databases/{database_id}/tables/{table_id}/partitions/{partition_id}``
+        location_uri (str):
+            Required. The new location URI for the
+            metadata resource.
+    """
+
+    service: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    resource_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    location_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class AlterMetadataResourceLocationResponse(proto.Message):
+    r"""Response message for
+    [DataprocMetastore.AlterMetadataResourceLocation][google.cloud.metastore.v1.DataprocMetastore.AlterMetadataResourceLocation].
+
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
