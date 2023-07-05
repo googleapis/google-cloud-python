@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.1](https://github.com/googleapis/python-bigquery-migration/compare/v0.11.0...v0.11.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#191](https://github.com/googleapis/python-bigquery-migration/issues/191)) ([d14439c](https://github.com/googleapis/python-bigquery-migration/commit/d14439c44c58a274e2bdfb6cde1d0883baee1a3c))
+
 ## [0.11.0](https://github.com/googleapis/python-bigquery-migration/compare/v0.10.0...v0.11.0) (2023-03-23)
 
 
