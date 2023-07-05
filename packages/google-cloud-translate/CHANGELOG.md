@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.11.2](https://github.com/googleapis/python-translate/compare/v3.11.1...v3.11.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#496](https://github.com/googleapis/python-translate/issues/496)) ([528a91d](https://github.com/googleapis/python-translate/commit/528a91d9505b1daabbd46856ccb6021934b2f26a))
+
 ## [3.11.1](https://github.com/googleapis/python-translate/compare/v3.11.0...v3.11.1) (2023-03-23)
 
 
