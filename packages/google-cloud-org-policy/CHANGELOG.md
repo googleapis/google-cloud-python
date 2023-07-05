@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.2](https://github.com/googleapis/python-org-policy/compare/v1.8.1...v1.8.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#218](https://github.com/googleapis/python-org-policy/issues/218)) ([2196157](https://github.com/googleapis/python-org-policy/commit/2196157c00c76089aded461ab2e07e3cbb555fd9))
+
 ## [1.8.1](https://github.com/googleapis/python-org-policy/compare/v1.8.0...v1.8.1) (2023-03-23)
 
 
