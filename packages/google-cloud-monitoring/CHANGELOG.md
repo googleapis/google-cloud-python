@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.15.1](https://github.com/googleapis/python-monitoring/compare/v2.15.0...v2.15.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#545](https://github.com/googleapis/python-monitoring/issues/545)) ([4309faa](https://github.com/googleapis/python-monitoring/commit/4309faa3664044a0b01078ba34da5663984d4d0f))
+
 ## [2.15.0](https://github.com/googleapis/python-monitoring/compare/v2.14.2...v2.15.0) (2023-05-25)
 
 
