@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.3](https://github.com/googleapis/python-appengine-admin/compare/v1.9.2...v1.9.3) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#238](https://github.com/googleapis/python-appengine-admin/issues/238)) ([72764d1](https://github.com/googleapis/python-appengine-admin/commit/72764d13c06bdd3d6055efcb753819f67823a971))
+
 ## [1.9.2](https://github.com/googleapis/python-appengine-admin/compare/v1.9.1...v1.9.2) (2023-04-01)
 
 
