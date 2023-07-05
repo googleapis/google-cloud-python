@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.21.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.20.0...v2.21.0) (2023-07-04)
+
+
+### Features
+
+* Add estimated physical file sizes to ReadAPI v1 ([#605](https://github.com/googleapis/python-bigquery-storage/issues/605)) ([ad342fe](https://github.com/googleapis/python-bigquery-storage/commit/ad342fe91e3e5c6563f87770aed55d686ae24466))
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#610](https://github.com/googleapis/python-bigquery-storage/issues/610)) ([e7069d1](https://github.com/googleapis/python-bigquery-storage/commit/e7069d17c32927e33bb905be147a75f7404929fc))
+
 ## [2.20.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.19.1...v2.20.0) (2023-05-25)
 
 
