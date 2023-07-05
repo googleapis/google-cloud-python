@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.1](https://github.com/googleapis/python-dialogflow-cx/compare/v1.23.0...v1.23.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#529](https://github.com/googleapis/python-dialogflow-cx/issues/529)) ([e5e5ceb](https://github.com/googleapis/python-dialogflow-cx/commit/e5e5ceb35fd307b7395124dee961df545567fc11))
+
 ## [1.23.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.22.0...v1.23.0) (2023-06-19)
 
 
