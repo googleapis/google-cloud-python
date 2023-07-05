@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/googleapis/python-gsuiteaddons/compare/v0.3.1...v0.3.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#36](https://github.com/googleapis/python-gsuiteaddons/issues/36)) ([2c2bcde](https://github.com/googleapis/python-gsuiteaddons/commit/2c2bcde646d3b0e1550ea46e1008e7b7964f5f91))
+
 ## [0.3.1](https://github.com/googleapis/python-gsuiteaddons/compare/v0.3.0...v0.3.1) (2023-03-24)
 
 
