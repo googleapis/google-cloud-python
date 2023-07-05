@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.21.0](https://github.com/googleapis/python-speech/compare/v2.20.1...v2.21.0) (2023-07-05)
+
+
+### Features
+
+* Add `model` and `language_codes` fields in `RecognitionConfig` message + enable default `_` recognizer ([#524](https://github.com/googleapis/python-speech/issues/524)) ([65971c5](https://github.com/googleapis/python-speech/commit/65971c547587cb85e752b25a836e0a7ac41eee48))
+
 ## [2.20.1](https://github.com/googleapis/python-speech/compare/v2.20.0...v2.20.1) (2023-07-04)
 
 
