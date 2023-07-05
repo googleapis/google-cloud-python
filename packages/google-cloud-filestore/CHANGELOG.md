@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-filestore/compare/v1.6.0...v1.6.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#148](https://github.com/googleapis/python-filestore/issues/148)) ([8c826d1](https://github.com/googleapis/python-filestore/commit/8c826d1e045bf968ac2951f42169d065c5862c08))
+
 ## [1.6.0](https://github.com/googleapis/python-filestore/compare/v1.5.1...v1.6.0) (2023-03-23)
 
 
