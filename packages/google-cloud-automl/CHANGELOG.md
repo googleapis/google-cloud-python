@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.11.2](https://github.com/googleapis/python-automl/compare/v2.11.1...v2.11.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#490](https://github.com/googleapis/python-automl/issues/490)) ([0fd78dc](https://github.com/googleapis/python-automl/commit/0fd78dc06e133f2fc6a3e41373ea47f4b4ea898d))
+
 ## [2.11.1](https://github.com/googleapis/python-automl/compare/v2.11.0...v2.11.1) (2023-03-23)
 
 
