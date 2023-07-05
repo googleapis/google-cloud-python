@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.2](https://github.com/googleapis/python-assured-workloads/compare/v1.10.1...v1.10.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#246](https://github.com/googleapis/python-assured-workloads/issues/246)) ([04dbd20](https://github.com/googleapis/python-assured-workloads/commit/04dbd20319108ba4a504bdde8d4cf012f05f0baa))
+
 ## [1.10.1](https://github.com/googleapis/python-assured-workloads/compare/v1.10.0...v1.10.1) (2023-03-23)
 
 
