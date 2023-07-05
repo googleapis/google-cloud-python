@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/googleapis/python-storage-transfer/compare/v1.9.0...v1.9.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#163](https://github.com/googleapis/python-storage-transfer/issues/163)) ([b1d5f2f](https://github.com/googleapis/python-storage-transfer/commit/b1d5f2f9958b18d705277e521aea1c48674d57dd))
+
 ## [1.9.0](https://github.com/googleapis/python-storage-transfer/compare/v1.8.1...v1.9.0) (2023-06-28)
 
 
