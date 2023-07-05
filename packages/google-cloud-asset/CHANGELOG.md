@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.19.1](https://github.com/googleapis/python-asset/compare/v3.19.0...v3.19.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#571](https://github.com/googleapis/python-asset/issues/571)) ([4bdad82](https://github.com/googleapis/python-asset/commit/4bdad82a3e49dd4a6e61f6fab40a8b7a54e8c771))
+
 ## [3.19.0](https://github.com/googleapis/python-asset/compare/v3.18.1...v3.19.0) (2023-04-01)
 
 
