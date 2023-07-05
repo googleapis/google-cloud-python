@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.11.1](https://github.com/googleapis/python-scheduler/compare/v2.11.0...v2.11.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#340](https://github.com/googleapis/python-scheduler/issues/340)) ([7e65978](https://github.com/googleapis/python-scheduler/commit/7e65978db72b38d1fed273562df86dd058cfd271))
+
 ## [2.11.0](https://github.com/googleapis/python-scheduler/compare/v2.10.0...v2.11.0) (2023-03-23)
 
 
