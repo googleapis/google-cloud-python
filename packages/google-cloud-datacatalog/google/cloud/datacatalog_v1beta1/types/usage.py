@@ -17,16 +17,14 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.protobuf import timestamp_pb2  # type: ignore
-
-
 __protobuf__ = proto.module(
-    package='google.cloud.datacatalog.v1beta1',
+    package="google.cloud.datacatalog.v1beta1",
     manifest={
-        'UsageStats',
-        'UsageSignal',
+        "UsageStats",
+        "UsageSignal",
     },
 )
 
@@ -92,11 +90,11 @@ class UsageSignal(proto.Message):
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    usage_within_time_range: MutableMapping[str, 'UsageStats'] = proto.MapField(
+    usage_within_time_range: MutableMapping[str, "UsageStats"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=2,
-        message='UsageStats',
+        message="UsageStats",
     )
 
 

@@ -37,6 +37,7 @@ from .datacatalog import (
     ListTagsRequest,
     ListTagsResponse,
     LookupEntryRequest,
+    RenameTagTemplateFieldEnumValueRequest,
     RenameTagTemplateFieldRequest,
     SearchCatalogRequest,
     SearchCatalogResponse,
@@ -83,9 +84,11 @@ from .table_spec import (
 )
 from .tags import FieldType, Tag, TagField, TagTemplate, TagTemplateField
 from .timestamps import SystemTimestamps
+from .usage import UsageSignal, UsageStats
 
 __all__ = (
     "IntegratedSystem",
+    "ManagingSystem",
     "CreateEntryGroupRequest",
     "CreateEntryRequest",
     "CreateTagRequest",
@@ -108,6 +111,7 @@ __all__ = (
     "ListTagsRequest",
     "ListTagsResponse",
     "LookupEntryRequest",
+    "RenameTagTemplateFieldEnumValueRequest",
     "RenameTagTemplateFieldRequest",
     "SearchCatalogRequest",
     "SearchCatalogResponse",
@@ -155,4 +159,6 @@ __all__ = (
     "TagTemplate",
     "TagTemplateField",
     "SystemTimestamps",
+    "UsageSignal",
+    "UsageStats",
 )

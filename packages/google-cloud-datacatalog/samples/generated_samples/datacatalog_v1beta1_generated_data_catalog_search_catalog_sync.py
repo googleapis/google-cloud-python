@@ -40,7 +40,6 @@ def sample_search_catalog():
 
     # Initialize request argument(s)
     request = datacatalog_v1beta1.SearchCatalogRequest(
-        query="query_value",
     )
 
     # Make the request
