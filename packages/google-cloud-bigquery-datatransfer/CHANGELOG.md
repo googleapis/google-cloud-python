@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.11.2](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.11.1...v3.11.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#470](https://github.com/googleapis/python-bigquery-datatransfer/issues/470)) ([551adeb](https://github.com/googleapis/python-bigquery-datatransfer/commit/551adeb66c823df68daed10bd55ad7a9a075a986))
+
 ## [3.11.1](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.11.0...v3.11.1) (2023-03-27)
 
 
