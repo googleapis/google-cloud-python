@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.2](https://github.com/googleapis/python-binary-authorization/compare/v1.6.1...v1.6.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#215](https://github.com/googleapis/python-binary-authorization/issues/215)) ([bb5e71d](https://github.com/googleapis/python-binary-authorization/commit/bb5e71d61ed841e62276104819630a5f76ffe68d))
+
 ## [1.6.1](https://github.com/googleapis/python-binary-authorization/compare/v1.6.0...v1.6.1) (2023-03-23)
 
 
