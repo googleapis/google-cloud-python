@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.23.1](https://github.com/googleapis/python-dialogflow/compare/v2.23.0...v2.23.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#645](https://github.com/googleapis/python-dialogflow/issues/645)) ([f6aaa2d](https://github.com/googleapis/python-dialogflow/commit/f6aaa2d6aaf8b22bc5257b61fc2152291cfa8255))
+
 ## [2.23.0](https://github.com/googleapis/python-dialogflow/compare/v2.22.0...v2.23.0) (2023-06-21)
 
 
