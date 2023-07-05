@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.10.1](https://github.com/googleapis/python-language/compare/v2.10.0...v2.10.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#440](https://github.com/googleapis/python-language/issues/440)) ([f6322f4](https://github.com/googleapis/python-language/commit/f6322f471be25c7f8f5c1392d78ebfcb4f498785))
+
 ## [2.10.0](https://github.com/googleapis/python-language/compare/v2.9.1...v2.10.0) (2023-05-25)
 
 
