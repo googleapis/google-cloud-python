@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.17.1](https://github.com/googleapis/python-cloudbuild/compare/v3.17.0...v3.17.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#413](https://github.com/googleapis/python-cloudbuild/issues/413)) ([794de7a](https://github.com/googleapis/python-cloudbuild/commit/794de7afc5bd254c6dd6433c81cc59d00d62ad41))
+
 ## [3.17.0](https://github.com/googleapis/python-cloudbuild/compare/v3.16.0...v3.17.0) (2023-06-29)
 
 
