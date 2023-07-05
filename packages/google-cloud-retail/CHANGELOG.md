@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.2](https://github.com/googleapis/python-retail/compare/v1.16.1...v1.16.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#421](https://github.com/googleapis/python-retail/issues/421)) ([9756fa2](https://github.com/googleapis/python-retail/commit/9756fa276d3403d70413be1f6e15d98590f7e1ac))
+
 ## [1.16.1](https://github.com/googleapis/python-retail/compare/v1.16.0...v1.16.1) (2023-04-17)
 
 
