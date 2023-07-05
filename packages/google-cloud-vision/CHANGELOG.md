@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [3.4.4](https://github.com/googleapis/python-vision/compare/v3.4.3...v3.4.4) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#539](https://github.com/googleapis/python-vision/issues/539)) ([69e507f](https://github.com/googleapis/python-vision/commit/69e507f84a21b988a5fb44628652ec9d7811917f))
+
 ## [3.4.3](https://github.com/googleapis/python-vision/compare/v3.4.2...v3.4.3) (2023-06-19)
 
 
