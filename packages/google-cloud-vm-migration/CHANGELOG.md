@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vm-migration-v1.6.1...google-cloud-vm-migration-v1.6.2) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11449](https://github.com/googleapis/google-cloud-python/issues/11449)) ([3885820](https://github.com/googleapis/google-cloud-python/commit/388582082828e22a517c4f794901ee5dcbc31bd9))
+
 ## [1.6.1](https://github.com/googleapis/python-vm-migration/compare/v1.6.0...v1.6.1) (2023-03-23)
 
 

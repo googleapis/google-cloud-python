@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-talent-v2.11.0...google-cloud-talent-v2.11.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11449](https://github.com/googleapis/google-cloud-python/issues/11449)) ([3885820](https://github.com/googleapis/google-cloud-python/commit/388582082828e22a517c4f794901ee5dcbc31bd9))
+
 ## [2.11.0](https://github.com/googleapis/python-talent/compare/v2.10.1...v2.11.0) (2023-06-01)
 
 
