@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.26.0](https://github.com/googleapis/python-container/compare/v2.25.0...v2.26.0) (2023-07-04)
+
+
+### Features
+
+* **v1beta1:** Add `InsecureKubeletReadonlyPortEnabled` in `NodeKubeletConfig` and `AutoProvisioningNodePoolDefaults` ([be6b0ab](https://github.com/googleapis/python-container/commit/be6b0ab88931a3c6a64cc92b8b0dbd33b82be255))
+* **v1beta1:** Add `KUBE_DNS` option to `DNSConfig.cluster_dns` ([be6b0ab](https://github.com/googleapis/python-container/commit/be6b0ab88931a3c6a64cc92b8b0dbd33b82be255))
+* **v1beta1:** Add a Pod IP Utilization API ([be6b0ab](https://github.com/googleapis/python-container/commit/be6b0ab88931a3c6a64cc92b8b0dbd33b82be255))
+* **v1beta1:** Add Tier 1 cluster-level API network_performance_config ([be6b0ab](https://github.com/googleapis/python-container/commit/be6b0ab88931a3c6a64cc92b8b0dbd33b82be255))
+* **v1beta1:** Publicize tpu topology ([be6b0ab](https://github.com/googleapis/python-container/commit/be6b0ab88931a3c6a64cc92b8b0dbd33b82be255))
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#385](https://github.com/googleapis/python-container/issues/385)) ([074edd4](https://github.com/googleapis/python-container/commit/074edd4c4f8cd10d8cd2afa5d8fb09f1c951c292))
+
 ## [2.25.0](https://github.com/googleapis/python-container/compare/v2.24.0...v2.25.0) (2023-06-29)
 
 
