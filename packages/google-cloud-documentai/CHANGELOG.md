@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.16.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.16.0...google-cloud-documentai-v2.16.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11446](https://github.com/googleapis/google-cloud-python/issues/11446)) ([37682b7](https://github.com/googleapis/google-cloud-python/commit/37682b7793cfe0dcb27963fea7e474b3b85571c9))
+
 ## [2.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.15.0...google-cloud-documentai-v2.16.0) (2023-06-19)
 
 

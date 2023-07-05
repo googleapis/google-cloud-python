@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.2.0...google-cloud-alloydb-v0.2.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11444](https://github.com/googleapis/google-cloud-python/issues/11444)) ([9aa301a](https://github.com/googleapis/google-cloud-python/commit/9aa301ae6ca3080cae286a19de9cdc1b796ab37d))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.1.1...google-cloud-alloydb-v0.2.0) (2023-06-13)
 
 

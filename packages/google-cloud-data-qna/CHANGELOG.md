@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-data-qna-v0.10.2...google-cloud-data-qna-v0.10.3) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11445](https://github.com/googleapis/google-cloud-python/issues/11445)) ([98bddda](https://github.com/googleapis/google-cloud-python/commit/98bdddafc821e2fc6e86a31965da0c46899aa229))
+
 ## [0.10.2](https://github.com/googleapis/python-data-qna/compare/v0.10.1...v0.10.2) (2023-03-23)
 
 

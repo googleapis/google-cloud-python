@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.11.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommender-v2.11.1...google-cloud-recommender-v2.11.2) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11448](https://github.com/googleapis/google-cloud-python/issues/11448)) ([4d2c35a](https://github.com/googleapis/google-cloud-python/commit/4d2c35a1cd0b68b6d481d5611ff820451273e859))
+
 ## [2.11.1](https://github.com/googleapis/python-recommender/compare/v2.11.0...v2.11.1) (2023-03-23)
 
 

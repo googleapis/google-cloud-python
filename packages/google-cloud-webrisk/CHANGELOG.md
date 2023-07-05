@@ -3,6 +3,13 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-webrisk-v1.12.0...google-cloud-webrisk-v1.12.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11449](https://github.com/googleapis/google-cloud-python/issues/11449)) ([3885820](https://github.com/googleapis/google-cloud-python/commit/388582082828e22a517c4f794901ee5dcbc31bd9))
+
 ## [1.12.0](https://github.com/googleapis/python-webrisk/compare/v1.11.1...v1.12.0) (2023-05-25)
 
 

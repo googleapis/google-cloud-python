@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.5](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.4...google-maps-addressvalidation-v0.3.5) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11449](https://github.com/googleapis/google-cloud-python/issues/11449)) ([3885820](https://github.com/googleapis/google-cloud-python/commit/388582082828e22a517c4f794901ee5dcbc31bd9))
+
 ## [0.3.4](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.3...google-maps-addressvalidation-v0.3.4) (2023-06-03)
 
 

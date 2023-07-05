@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-logging-v1.2.1...google-cloud-bigquery-logging-v1.2.2) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11445](https://github.com/googleapis/google-cloud-python/issues/11445)) ([98bddda](https://github.com/googleapis/google-cloud-python/commit/98bdddafc821e2fc6e86a31965da0c46899aa229))
+
 ## [1.2.1](https://github.com/googleapis/python-bigquery-logging/compare/v1.2.0...v1.2.1) (2023-04-01)
 
 

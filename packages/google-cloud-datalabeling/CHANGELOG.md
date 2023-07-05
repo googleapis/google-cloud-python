@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+## [1.8.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datalabeling-v1.8.2...google-cloud-datalabeling-v1.8.3) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11445](https://github.com/googleapis/google-cloud-python/issues/11445)) ([98bddda](https://github.com/googleapis/google-cloud-python/commit/98bdddafc821e2fc6e86a31965da0c46899aa229))
+
 ## [1.8.2](https://github.com/googleapis/python-datalabeling/compare/v1.8.1...v1.8.2) (2023-03-23)
 
 

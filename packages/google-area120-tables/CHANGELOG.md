@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.3](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.2...google-area120-tables-v0.11.3) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11444](https://github.com/googleapis/google-cloud-python/issues/11444)) ([9aa301a](https://github.com/googleapis/google-cloud-python/commit/9aa301ae6ca3080cae286a19de9cdc1b796ab37d))
+
 ## [0.11.2](https://github.com/googleapis/python-area120-tables/compare/v0.11.1...v0.11.2) (2023-03-23)
 
 

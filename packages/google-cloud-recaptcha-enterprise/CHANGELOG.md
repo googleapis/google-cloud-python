@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.12.0...google-cloud-recaptcha-enterprise-v1.12.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11448](https://github.com/googleapis/google-cloud-python/issues/11448)) ([4d2c35a](https://github.com/googleapis/google-cloud-python/commit/4d2c35a1cd0b68b6d481d5611ff820451273e859))
+
 ## [1.12.0](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.11.1...v1.12.0) (2023-03-23)
 
 

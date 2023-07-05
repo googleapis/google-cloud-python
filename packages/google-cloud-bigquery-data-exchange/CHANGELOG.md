@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-data-exchange-v0.5.3...google-cloud-bigquery-data-exchange-v0.5.4) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11445](https://github.com/googleapis/google-cloud-python/issues/11445)) ([98bddda](https://github.com/googleapis/google-cloud-python/commit/98bdddafc821e2fc6e86a31965da0c46899aa229))
+
 ## [0.5.3](https://github.com/googleapis/python-bigquery-data-exchange/compare/v0.5.2...v0.5.3) (2023-04-13)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-connect-v1.7.1...google-cloud-apigee-connect-v1.7.2) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11444](https://github.com/googleapis/google-cloud-python/issues/11444)) ([9aa301a](https://github.com/googleapis/google-cloud-python/commit/9aa301ae6ca3080cae286a19de9cdc1b796ab37d))
+
 ## [1.7.1](https://github.com/googleapis/python-apigee-connect/compare/v1.7.0...v1.7.1) (2023-01-20)
 
 
