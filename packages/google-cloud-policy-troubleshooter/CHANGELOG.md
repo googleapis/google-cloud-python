@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policy-troubleshooter-v1.8.1...google-cloud-policy-troubleshooter-v1.8.2) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11448](https://github.com/googleapis/google-cloud-python/issues/11448)) ([4d2c35a](https://github.com/googleapis/google-cloud-python/commit/4d2c35a1cd0b68b6d481d5611ff820451273e859))
+
 ## [1.8.1](https://github.com/googleapis/python-policy-troubleshooter/compare/v1.8.0...v1.8.1) (2023-03-23)
 
 

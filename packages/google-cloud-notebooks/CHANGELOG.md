@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-notebooks-v1.7.0...google-cloud-notebooks-v1.7.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11448](https://github.com/googleapis/google-cloud-python/issues/11448)) ([4d2c35a](https://github.com/googleapis/google-cloud-python/commit/4d2c35a1cd0b68b6d481d5611ff820451273e859))
+
 ## [1.7.0](https://github.com/googleapis/python-notebooks/compare/v1.6.1...v1.7.0) (2023-04-14)
 
 

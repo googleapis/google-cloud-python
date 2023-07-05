@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [2.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-redis-v2.13.0...google-cloud-redis-v2.13.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11448](https://github.com/googleapis/google-cloud-python/issues/11448)) ([4d2c35a](https://github.com/googleapis/google-cloud-python/commit/4d2c35a1cd0b68b6d481d5611ff820451273e859))
+
 ## [2.13.0](https://github.com/googleapis/python-redis/compare/v2.12.1...v2.13.0) (2023-05-25)
 
 
