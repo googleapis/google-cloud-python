@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.4.2](https://github.com/googleapis/python-dataproc/compare/v5.4.1...v5.4.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#539](https://github.com/googleapis/python-dataproc/issues/539)) ([7c081a6](https://github.com/googleapis/python-dataproc/commit/7c081a682a6d981ac3eed932f7c8e1e67f75af69))
+
 ## [5.4.1](https://github.com/googleapis/python-dataproc/compare/v5.4.0...v5.4.1) (2023-03-23)
 
 
