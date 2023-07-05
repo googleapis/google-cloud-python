@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.13.2](https://github.com/googleapis/python-tasks/compare/v2.13.1...v2.13.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#351](https://github.com/googleapis/python-tasks/issues/351)) ([ba48edc](https://github.com/googleapis/python-tasks/commit/ba48edc3c95ba025450db0f8ce9bb35cf4f1194c))
+
 ## [2.13.1](https://github.com/googleapis/python-tasks/compare/v2.13.0...v2.13.1) (2023-03-23)
 
 
