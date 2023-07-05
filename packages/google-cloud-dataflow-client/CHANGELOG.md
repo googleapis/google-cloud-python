@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.4](https://github.com/googleapis/python-dataflow-client/compare/v0.8.3...v0.8.4) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#184](https://github.com/googleapis/python-dataflow-client/issues/184)) ([355b8b4](https://github.com/googleapis/python-dataflow-client/commit/355b8b4c08fbb35d0c7f8402d8814096523663b2))
+
 ## [0.8.3](https://github.com/googleapis/python-dataflow-client/compare/v0.8.2...v0.8.3) (2023-03-23)
 
 
