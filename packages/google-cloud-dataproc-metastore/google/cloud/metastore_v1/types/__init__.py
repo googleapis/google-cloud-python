@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 from .metastore import (
+    AlterMetadataResourceLocationRequest,
+    AlterMetadataResourceLocationResponse,
     AuxiliaryVersionConfig,
     Backup,
     CreateBackupRequest,
@@ -23,6 +25,7 @@ from .metastore import (
     DeleteBackupRequest,
     DeleteServiceRequest,
     EncryptionConfig,
+    ErrorDetails,
     ExportMetadataRequest,
     GetBackupRequest,
     GetMetadataImportRequest,
@@ -40,8 +43,12 @@ from .metastore import (
     MetadataExport,
     MetadataImport,
     MetadataManagementActivity,
+    MoveTableToDatabaseRequest,
+    MoveTableToDatabaseResponse,
     NetworkConfig,
     OperationMetadata,
+    QueryMetadataRequest,
+    QueryMetadataResponse,
     Restore,
     RestoreServiceRequest,
     ScalingConfig,
@@ -63,6 +70,8 @@ from .metastore_federation import (
 )
 
 __all__ = (
+    "AlterMetadataResourceLocationRequest",
+    "AlterMetadataResourceLocationResponse",
     "AuxiliaryVersionConfig",
     "Backup",
     "CreateBackupRequest",
@@ -72,6 +81,7 @@ __all__ = (
     "DeleteBackupRequest",
     "DeleteServiceRequest",
     "EncryptionConfig",
+    "ErrorDetails",
     "ExportMetadataRequest",
     "GetBackupRequest",
     "GetMetadataImportRequest",
@@ -89,8 +99,12 @@ __all__ = (
     "MetadataExport",
     "MetadataImport",
     "MetadataManagementActivity",
+    "MoveTableToDatabaseRequest",
+    "MoveTableToDatabaseResponse",
     "NetworkConfig",
     "OperationMetadata",
+    "QueryMetadataRequest",
+    "QueryMetadataResponse",
     "Restore",
     "RestoreServiceRequest",
     "ScalingConfig",
