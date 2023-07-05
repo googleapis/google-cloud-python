@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.2](https://github.com/googleapis/python-os-config/compare/v1.15.1...v1.15.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#280](https://github.com/googleapis/python-os-config/issues/280)) ([ba03471](https://github.com/googleapis/python-os-config/commit/ba0347119e6e14ea6a30793a1499ceaf60e46b56))
+
 ## [1.15.1](https://github.com/googleapis/python-os-config/compare/v1.15.0...v1.15.1) (2023-03-23)
 
 
