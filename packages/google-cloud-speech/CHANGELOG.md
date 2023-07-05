@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.20.1](https://github.com/googleapis/python-speech/compare/v2.20.0...v2.20.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#522](https://github.com/googleapis/python-speech/issues/522)) ([d473ad3](https://github.com/googleapis/python-speech/commit/d473ad3c9e272b13d54014e8d3aca4871e4fd270))
+
 ## [2.20.0](https://github.com/googleapis/python-speech/compare/v2.19.0...v2.20.0) (2023-05-25)
 
 
