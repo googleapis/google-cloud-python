@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.1](https://github.com/googleapis/python-analytics-admin/compare/v0.18.0...v0.18.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#355](https://github.com/googleapis/python-analytics-admin/issues/355)) ([2dfee7b](https://github.com/googleapis/python-analytics-admin/commit/2dfee7b3e825133d8c406d7a15c68f3ac535198c))
+
 ## [0.18.0](https://github.com/googleapis/python-analytics-admin/compare/v0.17.0...v0.18.0) (2023-06-21)
 
 
