@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [1.11.1](https://github.com/googleapis/gapic-generator-python/compare/v1.11.0...v1.11.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add `help` as a reserved word ([#1682](https://github.com/googleapis/gapic-generator-python/issues/1682)) ([23fe890](https://github.com/googleapis/gapic-generator-python/commit/23fe890136144567e153d257faa31086f18544df))
+* Fix issue with reserved names and http body. ([#1657](https://github.com/googleapis/gapic-generator-python/issues/1657)) ([e51109d](https://github.com/googleapis/gapic-generator-python/commit/e51109da85bbd53e5b2af90fbce031b0dd7e2be5))
+
 ## [1.11.0](https://github.com/googleapis/gapic-generator-python/compare/v1.10.0...v1.11.0) (2023-06-27)
 
 
