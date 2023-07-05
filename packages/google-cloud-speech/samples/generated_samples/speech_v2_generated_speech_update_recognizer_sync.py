@@ -39,12 +39,7 @@ def sample_update_recognizer():
     client = speech_v2.SpeechClient()
 
     # Initialize request argument(s)
-    recognizer = speech_v2.Recognizer()
-    recognizer.model = "model_value"
-    recognizer.language_codes = ['language_codes_value1', 'language_codes_value2']
-
     request = speech_v2.UpdateRecognizerRequest(
-        recognizer=recognizer,
     )
 
     # Make the request

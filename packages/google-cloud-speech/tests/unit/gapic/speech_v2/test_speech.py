@@ -6810,6 +6810,8 @@ def test_create_recognizer_rest(request_type):
                 "sample_rate_hertz": 1817,
                 "audio_channel_count": 2002,
             },
+            "model": "model_value",
+            "language_codes": ["language_codes_value1", "language_codes_value2"],
             "features": {
                 "profanity_filter": True,
                 "enable_word_time_offsets": True,
@@ -7083,6 +7085,8 @@ def test_create_recognizer_rest_bad_request(
                 "sample_rate_hertz": 1817,
                 "audio_channel_count": 2002,
             },
+            "model": "model_value",
+            "language_codes": ["language_codes_value1", "language_codes_value2"],
             "features": {
                 "profanity_filter": True,
                 "enable_word_time_offsets": True,
@@ -7886,6 +7890,8 @@ def test_update_recognizer_rest(request_type):
                 "sample_rate_hertz": 1817,
                 "audio_channel_count": 2002,
             },
+            "model": "model_value",
+            "language_codes": ["language_codes_value1", "language_codes_value2"],
             "features": {
                 "profanity_filter": True,
                 "enable_word_time_offsets": True,
@@ -8151,6 +8157,8 @@ def test_update_recognizer_rest_bad_request(
                 "sample_rate_hertz": 1817,
                 "audio_channel_count": 2002,
             },
+            "model": "model_value",
+            "language_codes": ["language_codes_value1", "language_codes_value2"],
             "features": {
                 "profanity_filter": True,
                 "enable_word_time_offsets": True,

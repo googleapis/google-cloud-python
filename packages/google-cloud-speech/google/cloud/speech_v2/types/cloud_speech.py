@@ -589,7 +589,7 @@ class Recognizer(proto.Message):
             User-settable, human-readable name for the
             Recognizer. Must be 63 characters or less.
         model (str):
-            Required. Which model to use for recognition requests.
+            Optional. Which model to use for recognition requests.
             Select the model best suited to your domain to get best
             results.
 
@@ -600,7 +600,7 @@ class Recognizer(proto.Message):
             `Table Of Supported
             Models <https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages>`__.
         language_codes (MutableSequence[str]):
-            Required. The language of the supplied audio as a
+            Optional. The language of the supplied audio as a
             `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
             language tag.
 
@@ -1080,6 +1080,31 @@ class RecognitionConfig(proto.Message):
             (linear16, mulaw, alaw).
 
             This field is a member of `oneof`_ ``decoding_config``.
+        model (str):
+            Optional. Which model to use for recognition requests.
+            Select the model best suited to your domain to get best
+            results.
+
+            Guidance for choosing which model to use can be found in the
+            `Transcription Models
+            Documentation <https://cloud.google.com/speech-to-text/v2/docs/transcription-model>`__
+            and the models supported in each region can be found in the
+            `Table Of Supported
+            Models <https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages>`__.
+        language_codes (MutableSequence[str]):
+            Optional. The language of the supplied audio as a
+            `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
+            language tag. Language tags are normalized to BCP-47 before
+            they are used eg "en-us" becomes "en-US".
+
+            Supported languages for each model are listed in the `Table
+            of Supported
+            Models <https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages>`__.
+
+            If additional languages are provided, recognition result
+            will contain recognition in the most likely language
+            detected. The recognition result will include the language
+            tag of the language detected in the audio.
         features (google.cloud.speech_v2.types.RecognitionFeatures):
             Speech recognition features to enable.
         adaptation (google.cloud.speech_v2.types.SpeechAdaptation):
@@ -1099,6 +1124,14 @@ class RecognitionConfig(proto.Message):
         number=8,
         oneof="decoding_config",
         message="ExplicitDecodingConfig",
+    )
+    model: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    language_codes: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=10,
     )
     features: "RecognitionFeatures" = proto.Field(
         proto.MESSAGE,
@@ -1132,6 +1165,8 @@ class RecognizeRequest(proto.Message):
             Required. The name of the Recognizer to use during
             recognition. The expected format is
             ``projects/{project}/locations/{location}/recognizers/{recognizer}``.
+            The {recognizer} segment may be set to ``_`` to use an empty
+            implicit Recognizer.
         config (google.cloud.speech_v2.types.RecognitionConfig):
             Features and audio metadata to use for the Automatic Speech
             Recognition. This field in combination with the
@@ -1515,17 +1550,23 @@ class StreamingRecognizeRequest(proto.Message):
     [StreamingRecognize][google.cloud.speech.v2.Speech.StreamingRecognize]
     method. Multiple
     [StreamingRecognizeRequest][google.cloud.speech.v2.StreamingRecognizeRequest]
-    messages are sent. The first message must contain a
+    messages are sent in one call.
+
+    If the [Recognizer][google.cloud.speech.v2.Recognizer] referenced by
     [recognizer][google.cloud.speech.v2.StreamingRecognizeRequest.recognizer]
-    and optionally a
+    contains a fully specified request configuration then the stream may
+    only contain messages with only
+    [audio][google.cloud.speech.v2.StreamingRecognizeRequest.audio] set.
+
+    Otherwise the first message must contain a
+    [recognizer][google.cloud.speech.v2.StreamingRecognizeRequest.recognizer]
+    and a
     [streaming_config][google.cloud.speech.v2.StreamingRecognizeRequest.streaming_config]
-    message and must not contain
+    message that together fully specify the request configuration and
+    must not contain
     [audio][google.cloud.speech.v2.StreamingRecognizeRequest.audio]. All
-    subsequent messages must contain
-    [audio][google.cloud.speech.v2.StreamingRecognizeRequest.audio] and
-    must not contain a
-    [streaming_config][google.cloud.speech.v2.StreamingRecognizeRequest.streaming_config]
-    message.
+    subsequent messages must only have
+    [audio][google.cloud.speech.v2.StreamingRecognizeRequest.audio] set.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -1536,13 +1577,11 @@ class StreamingRecognizeRequest(proto.Message):
 
     Attributes:
         recognizer (str):
-            Required. Streaming recognition should start with an initial
-            request having a ``recognizer``. Subsequent requests carry
-            the audio data to be recognized.
-
-            The initial request with configuration can be omitted if the
-            Recognizer being used has a
-            [default_recognition_config][google.cloud.speech.v2.Recognizer.default_recognition_config].
+            Required. The name of the Recognizer to use during
+            recognition. The expected format is
+            ``projects/{project}/locations/{location}/recognizers/{recognizer}``.
+            The {recognizer} segment may be set to ``_`` to use an empty
+            implicit Recognizer.
         streaming_config (google.cloud.speech_v2.types.StreamingRecognitionConfig):
             StreamingRecognitionConfig to be used in this
             recognition attempt. If provided, it will
@@ -1582,8 +1621,11 @@ class BatchRecognizeRequest(proto.Message):
 
     Attributes:
         recognizer (str):
-            Required. Resource name of the recognizer to
-            be used for ASR.
+            Required. The name of the Recognizer to use during
+            recognition. The expected format is
+            ``projects/{project}/locations/{location}/recognizers/{recognizer}``.
+            The {recognizer} segment may be set to ``_`` to use an empty
+            implicit Recognizer.
         config (google.cloud.speech_v2.types.RecognitionConfig):
             Features and audio metadata to use for the Automatic Speech
             Recognition. This field in combination with the

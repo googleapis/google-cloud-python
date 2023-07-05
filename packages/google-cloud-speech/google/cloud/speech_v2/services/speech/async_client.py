@@ -254,12 +254,7 @@ class SpeechAsyncClient:
                 client = speech_v2.SpeechAsyncClient()
 
                 # Initialize request argument(s)
-                recognizer = speech_v2.Recognizer()
-                recognizer.model = "model_value"
-                recognizer.language_codes = ['language_codes_value1', 'language_codes_value2']
-
                 request = speech_v2.CreateRecognizerRequest(
-                    recognizer=recognizer,
                     parent="parent_value",
                 )
 
@@ -624,12 +619,7 @@ class SpeechAsyncClient:
                 client = speech_v2.SpeechAsyncClient()
 
                 # Initialize request argument(s)
-                recognizer = speech_v2.Recognizer()
-                recognizer.model = "model_value"
-                recognizer.language_codes = ['language_codes_value1', 'language_codes_value2']
-
                 request = speech_v2.UpdateRecognizerRequest(
-                    recognizer=recognizer,
                 )
 
                 # Make the request
@@ -1030,6 +1020,8 @@ class SpeechAsyncClient:
                 Required. The name of the Recognizer to use during
                 recognition. The expected format is
                 ``projects/{project}/locations/{location}/recognizers/{recognizer}``.
+                The {recognizer} segment may be set to ``_`` to use an
+                empty implicit Recognizer.
 
                 This corresponds to the ``recognizer`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1213,17 +1205,26 @@ class SpeechAsyncClient:
                 [StreamingRecognize][google.cloud.speech.v2.Speech.StreamingRecognize]
                 method. Multiple
                 [StreamingRecognizeRequest][google.cloud.speech.v2.StreamingRecognizeRequest]
-                messages are sent. The first message must contain a
+                messages are sent in one call.
+
+                If the [Recognizer][google.cloud.speech.v2.Recognizer]
+                referenced by
                 [recognizer][google.cloud.speech.v2.StreamingRecognizeRequest.recognizer]
-                and optionally a
-                [streaming_config][google.cloud.speech.v2.StreamingRecognizeRequest.streaming_config]
-                message and must not contain
-                [audio][google.cloud.speech.v2.StreamingRecognizeRequest.audio].
-                All subsequent messages must contain
+                contains a fully specified request configuration then
+                the stream may only contain messages with only
                 [audio][google.cloud.speech.v2.StreamingRecognizeRequest.audio]
-                and must not contain a
+                set.
+
+                Otherwise the first message must contain a
+                [recognizer][google.cloud.speech.v2.StreamingRecognizeRequest.recognizer]
+                and a
                 [streaming_config][google.cloud.speech.v2.StreamingRecognizeRequest.streaming_config]
-                message.
+                message that together fully specify the request
+                configuration and must not contain
+                [audio][google.cloud.speech.v2.StreamingRecognizeRequest.audio].
+                All subsequent messages must only have
+                [audio][google.cloud.speech.v2.StreamingRecognizeRequest.audio]
+                set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1367,8 +1368,11 @@ class SpeechAsyncClient:
                 [BatchRecognize][google.cloud.speech.v2.Speech.BatchRecognize]
                 method.
             recognizer (:class:`str`):
-                Required. Resource name of the
-                recognizer to be used for ASR.
+                Required. The name of the Recognizer to use during
+                recognition. The expected format is
+                ``projects/{project}/locations/{location}/recognizers/{recognizer}``.
+                The {recognizer} segment may be set to ``_`` to use an
+                empty implicit Recognizer.
 
                 This corresponds to the ``recognizer`` field
                 on the ``request`` instance; if ``request`` is provided, this
