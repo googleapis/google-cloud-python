@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/googleapis/python-bigquery-connection/compare/v1.12.0...v1.12.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#320](https://github.com/googleapis/python-bigquery-connection/issues/320)) ([aa9088a](https://github.com/googleapis/python-bigquery-connection/commit/aa9088ab70a2930849e4fd96685e52d741a3a385))
+
 ## [1.12.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.11.0...v1.12.0) (2023-03-23)
 
 
