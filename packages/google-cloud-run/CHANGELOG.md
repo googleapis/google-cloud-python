@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/googleapis/python-run/compare/v0.8.0...v0.8.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#105](https://github.com/googleapis/python-run/issues/105)) ([592b761](https://github.com/googleapis/python-run/commit/592b761bd1f04c7a6d0fb7d8e3b70ba54db01779))
+
 ## [0.8.0](https://github.com/googleapis/python-run/compare/v0.7.1...v0.8.0) (2023-05-25)
 
 
