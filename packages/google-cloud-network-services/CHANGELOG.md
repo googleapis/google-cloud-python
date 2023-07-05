@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2](https://github.com/googleapis/python-network-services/compare/v0.5.1...v0.5.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#85](https://github.com/googleapis/python-network-services/issues/85)) ([17a0737](https://github.com/googleapis/python-network-services/commit/17a0737eec7645eb09590cc3203677aff12beaef))
+
 ## [0.5.1](https://github.com/googleapis/python-network-services/compare/v0.5.0...v0.5.1) (2023-03-23)
 
 
