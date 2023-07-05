@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.11.3](https://github.com/googleapis/python-videointelligence/compare/v2.11.2...v2.11.3) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#433](https://github.com/googleapis/python-videointelligence/issues/433)) ([9a5baa7](https://github.com/googleapis/python-videointelligence/commit/9a5baa7df22b5389bfb83d8488ba12206ebec73f))
+
 ## [2.11.2](https://github.com/googleapis/python-videointelligence/compare/v2.11.1...v2.11.2) (2023-06-01)
 
 
