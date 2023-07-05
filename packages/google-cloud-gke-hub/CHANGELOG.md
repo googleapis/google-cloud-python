@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/googleapis/python-gke-hub/compare/v1.10.0...v1.10.1) (2023-07-04)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#242](https://github.com/googleapis/python-gke-hub/issues/242)) ([7b933e0](https://github.com/googleapis/python-gke-hub/commit/7b933e01633d1620526e9224e9a66bf0b1a3fee4))
+
 ## [1.10.0](https://github.com/googleapis/python-gke-hub/compare/v1.9.0...v1.10.0) (2023-04-21)
 
 
