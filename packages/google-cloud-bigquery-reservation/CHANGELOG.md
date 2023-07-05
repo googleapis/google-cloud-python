@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.2](https://github.com/googleapis/python-bigquery-reservation/compare/v1.11.1...v1.11.2) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#362](https://github.com/googleapis/python-bigquery-reservation/issues/362)) ([98df6ad](https://github.com/googleapis/python-bigquery-reservation/commit/98df6adf73f2a1276e34977c06882a87558edf58))
+
 ## [1.11.1](https://github.com/googleapis/python-bigquery-reservation/compare/v1.11.0...v1.11.1) (2023-03-28)
 
 
