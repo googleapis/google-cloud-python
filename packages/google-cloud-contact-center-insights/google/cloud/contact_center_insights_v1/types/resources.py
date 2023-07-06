@@ -1224,6 +1224,10 @@ class IssueModel(proto.Message):
         training_stats (google.cloud.contact_center_insights_v1.types.IssueModelLabelStats):
             Output only. Immutable. The issue model's
             label statistics on its training data.
+        model_type (google.cloud.contact_center_insights_v1.types.IssueModel.ModelType):
+            Type of the model.
+        language_code (str):
+            Language of the model.
     """
 
     class State(proto.Enum):
@@ -1251,6 +1255,21 @@ class IssueModel(proto.Message):
         DEPLOYED = 3
         UNDEPLOYING = 4
         DELETING = 5
+
+    class ModelType(proto.Enum):
+        r"""Type of the model.
+
+        Values:
+            MODEL_TYPE_UNSPECIFIED (0):
+                Unspecified model type.
+            TYPE_V1 (1):
+                Type V1.
+            TYPE_V2 (2):
+                Type V2.
+        """
+        MODEL_TYPE_UNSPECIFIED = 0
+        TYPE_V1 = 1
+        TYPE_V2 = 2
 
     class InputDataConfig(proto.Message):
         r"""Configs for the input data used to create the issue model.
@@ -1319,6 +1338,15 @@ class IssueModel(proto.Message):
         proto.MESSAGE,
         number=7,
         message="IssueModelLabelStats",
+    )
+    model_type: ModelType = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=ModelType,
+    )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=10,
     )
 
 
@@ -1785,7 +1813,8 @@ class RedactionConfig(proto.Message):
             ``projects/{project}/deidentifyTemplates/{template}``
         inspect_template (str):
             The fully-qualified DLP inspect template resource name.
-            Format: ``projects/{project}/inspectTemplates/{template}``
+            Format:
+            ``projects/{project}/locations/{location}/inspectTemplates/{template}``
     """
 
     deidentify_template: str = proto.Field(

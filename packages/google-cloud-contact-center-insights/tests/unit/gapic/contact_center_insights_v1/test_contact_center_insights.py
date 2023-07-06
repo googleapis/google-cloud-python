@@ -4572,6 +4572,8 @@ def test_update_issue_model(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             issue_count=1201,
             state=resources.IssueModel.State.UNDEPLOYED,
+            model_type=resources.IssueModel.ModelType.TYPE_V1,
+            language_code="language_code_value",
         )
         response = client.update_issue_model(request)
 
@@ -4586,6 +4588,8 @@ def test_update_issue_model(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.issue_count == 1201
     assert response.state == resources.IssueModel.State.UNDEPLOYED
+    assert response.model_type == resources.IssueModel.ModelType.TYPE_V1
+    assert response.language_code == "language_code_value"
 
 
 def test_update_issue_model_empty_call():
@@ -4631,6 +4635,8 @@ async def test_update_issue_model_async(
                 display_name="display_name_value",
                 issue_count=1201,
                 state=resources.IssueModel.State.UNDEPLOYED,
+                model_type=resources.IssueModel.ModelType.TYPE_V1,
+                language_code="language_code_value",
             )
         )
         response = await client.update_issue_model(request)
@@ -4646,6 +4652,8 @@ async def test_update_issue_model_async(
     assert response.display_name == "display_name_value"
     assert response.issue_count == 1201
     assert response.state == resources.IssueModel.State.UNDEPLOYED
+    assert response.model_type == resources.IssueModel.ModelType.TYPE_V1
+    assert response.language_code == "language_code_value"
 
 
 @pytest.mark.asyncio
@@ -4839,6 +4847,8 @@ def test_get_issue_model(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             issue_count=1201,
             state=resources.IssueModel.State.UNDEPLOYED,
+            model_type=resources.IssueModel.ModelType.TYPE_V1,
+            language_code="language_code_value",
         )
         response = client.get_issue_model(request)
 
@@ -4853,6 +4863,8 @@ def test_get_issue_model(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.issue_count == 1201
     assert response.state == resources.IssueModel.State.UNDEPLOYED
+    assert response.model_type == resources.IssueModel.ModelType.TYPE_V1
+    assert response.language_code == "language_code_value"
 
 
 def test_get_issue_model_empty_call():
@@ -4894,6 +4906,8 @@ async def test_get_issue_model_async(
                 display_name="display_name_value",
                 issue_count=1201,
                 state=resources.IssueModel.State.UNDEPLOYED,
+                model_type=resources.IssueModel.ModelType.TYPE_V1,
+                language_code="language_code_value",
             )
         )
         response = await client.get_issue_model(request)
@@ -4909,6 +4923,8 @@ async def test_get_issue_model_async(
     assert response.display_name == "display_name_value"
     assert response.issue_count == 1201
     assert response.state == resources.IssueModel.State.UNDEPLOYED
+    assert response.model_type == resources.IssueModel.ModelType.TYPE_V1
+    assert response.language_code == "language_code_value"
 
 
 @pytest.mark.asyncio
@@ -15372,6 +15388,8 @@ def test_create_issue_model_rest(request_type):
             "unclassified_conversations_count": 3439,
             "issue_stats": {},
         },
+        "model_type": 1,
+        "language_code": "language_code_value",
     }
     request = request_type(**request_init)
 
@@ -15573,6 +15591,8 @@ def test_create_issue_model_rest_bad_request(
             "unclassified_conversations_count": 3439,
             "issue_stats": {},
         },
+        "model_type": 1,
+        "language_code": "language_code_value",
     }
     request = request_type(**request_init)
 
@@ -15687,6 +15707,8 @@ def test_update_issue_model_rest(request_type):
             "unclassified_conversations_count": 3439,
             "issue_stats": {},
         },
+        "model_type": 1,
+        "language_code": "language_code_value",
     }
     request = request_type(**request_init)
 
@@ -15698,6 +15720,8 @@ def test_update_issue_model_rest(request_type):
             display_name="display_name_value",
             issue_count=1201,
             state=resources.IssueModel.State.UNDEPLOYED,
+            model_type=resources.IssueModel.ModelType.TYPE_V1,
+            language_code="language_code_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -15716,6 +15740,8 @@ def test_update_issue_model_rest(request_type):
     assert response.display_name == "display_name_value"
     assert response.issue_count == 1201
     assert response.state == resources.IssueModel.State.UNDEPLOYED
+    assert response.model_type == resources.IssueModel.ModelType.TYPE_V1
+    assert response.language_code == "language_code_value"
 
 
 def test_update_issue_model_rest_required_fields(
@@ -15889,6 +15915,8 @@ def test_update_issue_model_rest_bad_request(
             "unclassified_conversations_count": 3439,
             "issue_stats": {},
         },
+        "model_type": 1,
+        "language_code": "language_code_value",
     }
     request = request_type(**request_init)
 
@@ -15997,6 +16025,8 @@ def test_get_issue_model_rest(request_type):
             display_name="display_name_value",
             issue_count=1201,
             state=resources.IssueModel.State.UNDEPLOYED,
+            model_type=resources.IssueModel.ModelType.TYPE_V1,
+            language_code="language_code_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -16015,6 +16045,8 @@ def test_get_issue_model_rest(request_type):
     assert response.display_name == "display_name_value"
     assert response.issue_count == 1201
     assert response.state == resources.IssueModel.State.UNDEPLOYED
+    assert response.model_type == resources.IssueModel.ModelType.TYPE_V1
+    assert response.language_code == "language_code_value"
 
 
 def test_get_issue_model_rest_required_fields(
