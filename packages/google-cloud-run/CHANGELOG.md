@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/googleapis/python-run/compare/v0.8.1...v0.9.0) (2023-07-06)
+
+
+### Features
+
+* Adds support for custom audiences ([#107](https://github.com/googleapis/python-run/issues/107)) ([bfd0829](https://github.com/googleapis/python-run/commit/bfd08297d6301c57e242819dba35006218d217e5))
+
 ## [0.8.1](https://github.com/googleapis/python-run/compare/v0.8.0...v0.8.1) (2023-07-04)
 
 
