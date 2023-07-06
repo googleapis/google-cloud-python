@@ -403,7 +403,7 @@ class Node(proto.Message):
                 TPU node is being deleted.
             REPAIRING (6):
                 TPU node is being repaired and may be unusable. Details can
-                be found in the ``help_description`` field.
+                be found in the 'help_description' field.
             STOPPED (8):
                 TPU node is stopped.
             STOPPING (9):
