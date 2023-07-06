@@ -73,7 +73,7 @@ value, the client library uses the jobs.insert REST API to start a query job.
 Before it issues this request, it sets a job ID. This job ID remains constant
 across API retries.
 
-If the job ID was randomly generated, and the jobs.insert request and all retries fail, the client library sends a request to the jobs.get API. This covers the case when a query request succeeded, but there was a transient issue that prevented the client from receiving a successful response.
+If the job ID was randomly generated, and the jobs.insert request and all retries fail, the client library sends a request to the jobs.get API. This covers the case when a query request succeeded, but there was a transient issue that prevented the client from receiving a successful response. Note: `jobs.get` requires the location of the query. It will fail with 404 if the location is not specified and the job is not in the US multi-region.
 
 
 #### Retrying the jobs.query API via the retry parameter
