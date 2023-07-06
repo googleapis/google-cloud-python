@@ -166,6 +166,7 @@ class BigQueryWriteTransport(abc.ABC):
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=600.0,
@@ -181,6 +182,7 @@ class BigQueryWriteTransport(abc.ABC):
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=600.0,
@@ -196,6 +198,7 @@ class BigQueryWriteTransport(abc.ABC):
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=600.0,
@@ -211,6 +214,7 @@ class BigQueryWriteTransport(abc.ABC):
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=600.0,

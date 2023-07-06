@@ -672,10 +672,11 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
             requests (Iterator[google.cloud.bigquery_storage_v1.types.AppendRowsRequest]):
                 The request object iterator. Request message for ``AppendRows``.
 
-                Due to the nature of AppendRows being a bidirectional
-                streaming RPC, certain parts of the AppendRowsRequest
-                need only be specified for the first request sent each
-                time the gRPC network connection is opened/reopened.
+                Because AppendRows is a bidirectional streaming RPC,
+                certain parts of the AppendRowsRequest need only be
+                specified for the first request before switching table
+                destinations. You can also switch table destinations
+                within the same connection for the default stream.
 
                 The size of a single AppendRowsRequest must be less than
                 10 MB in size. Requests larger than this return an

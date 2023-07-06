@@ -437,10 +437,11 @@ class BigQueryWriteAsyncClient:
             requests (AsyncIterator[`google.cloud.bigquery_storage_v1.types.AppendRowsRequest`]):
                 The request object AsyncIterator. Request message for ``AppendRows``.
 
-                Due to the nature of AppendRows being a bidirectional
-                streaming RPC, certain parts of the AppendRowsRequest
-                need only be specified for the first request sent each
-                time the gRPC network connection is opened/reopened.
+                Because AppendRows is a bidirectional streaming RPC,
+                certain parts of the AppendRowsRequest need only be
+                specified for the first request before switching table
+                destinations. You can also switch table destinations
+                within the same connection for the default stream.
 
                 The size of a single AppendRowsRequest must be less than
                 10 MB in size. Requests larger than this return an
@@ -575,6 +576,7 @@ class BigQueryWriteAsyncClient:
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
                     core_exceptions.DeadlineExceeded,
+                    core_exceptions.ResourceExhausted,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=600.0,
@@ -685,6 +687,7 @@ class BigQueryWriteAsyncClient:
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
                     core_exceptions.DeadlineExceeded,
+                    core_exceptions.ResourceExhausted,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=600.0,
@@ -801,6 +804,7 @@ class BigQueryWriteAsyncClient:
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
                     core_exceptions.DeadlineExceeded,
+                    core_exceptions.ResourceExhausted,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=600.0,
@@ -919,6 +923,7 @@ class BigQueryWriteAsyncClient:
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
                     core_exceptions.DeadlineExceeded,
+                    core_exceptions.ResourceExhausted,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=600.0,
