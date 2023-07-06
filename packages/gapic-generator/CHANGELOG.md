@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.11.2](https://github.com/googleapis/gapic-generator-python/compare/v1.11.1...v1.11.2) (2023-07-06)
+
+
+### Documentation
+
+* Update copyright year ([#1685](https://github.com/googleapis/gapic-generator-python/issues/1685)) ([6e1bcde](https://github.com/googleapis/gapic-generator-python/commit/6e1bcde56f232789d356ca5617aa668d5d4cf37f))
+
 ## [1.11.1](https://github.com/googleapis/gapic-generator-python/compare/v1.11.0...v1.11.1) (2023-07-05)
 
 
