@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.22.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.21.0...v2.22.0) (2023-07-06)
+
+
+### Features
+
+* Add ResourceExhausted to retryable error for Write API unary calls ([aebe9d1](https://github.com/googleapis/python-bigquery-storage/commit/aebe9d10d3160ec29fdb2e7e76541322e1cfff21))
+
+
+### Documentation
+
+* Add multiplexing documentation ([aebe9d1](https://github.com/googleapis/python-bigquery-storage/commit/aebe9d10d3160ec29fdb2e7e76541322e1cfff21))
+
 ## [2.21.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.20.0...v2.21.0) (2023-07-04)
 
 
