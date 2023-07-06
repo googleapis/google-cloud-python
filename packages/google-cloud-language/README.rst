@@ -1,9 +1,9 @@
-Python Client for Natural Language API
-======================================
+Python Client for Natural Language
+==================================
 
 |stable| |pypi| |versions|
 
-`Natural Language API`_: provides natural language understanding technologies to developers, including sentiment analysis, entity analysis, entity sentiment analysis, content classification, and syntax analysis. This API is part of the larger Cloud Machine Learning API family.
+`Natural Language`_: provides natural language understanding technologies to developers, including sentiment analysis, entity analysis, entity sentiment analysis, content classification, and syntax analysis. This API is part of the larger Cloud Machine Learning API family.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Natural Language API
    :target: https://pypi.org/project/google-cloud-language/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-language.svg
    :target: https://pypi.org/project/google-cloud-language/
-.. _Natural Language API: https://cloud.google.com/natural-language/docs/
+.. _Natural Language: https://cloud.google.com/natural-language/docs/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/language/latest
 .. _Product Documentation:  https://cloud.google.com/natural-language/docs/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Natural Language API.`_
+3. `Enable the Natural Language.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Natural Language API.:  https://cloud.google.com/natural-language/docs/
+.. _Enable the Natural Language.:  https://cloud.google.com/natural-language/docs/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -96,12 +96,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Natural Language API
+-  Read the `Client Library Documentation`_ for Natural Language
    to see other available methods on the client.
--  Read the `Natural Language API Product documentation`_ to learn
+-  Read the `Natural Language Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Natural Language API Product documentation:  https://cloud.google.com/natural-language/docs/
+.. _Natural Language Product documentation:  https://cloud.google.com/natural-language/docs/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
