@@ -12,7 +12,9 @@ API Reference
     :maxdepth: 2
 
     workflows_v1/services
+    executions_v1/services
     workflows_v1/types
+    executions_v1/types
 
 API Reference
 -------------
@@ -20,7 +22,9 @@ API Reference
     :maxdepth: 2
 
     workflows_v1beta/services
+    executions_v1beta/services
     workflows_v1beta/types
+    executions_v1beta/types
 
 
 Changelog
