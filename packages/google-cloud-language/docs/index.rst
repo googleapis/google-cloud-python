@@ -23,17 +23,6 @@ API Reference
     language_v1beta2/types
 
 
-Migration Guide
----------------
-
-See the guide below for instructions on migrating to the latest version.
-
-.. toctree::
-    :maxdepth: 2
-
-    UPGRADING
-
-
 Changelog
 ---------
 
@@ -42,4 +31,4 @@ For a list of all ``google-cloud-language`` releases:
 .. toctree::
     :maxdepth: 2
 
-    changelog
+    CHANGELOG
