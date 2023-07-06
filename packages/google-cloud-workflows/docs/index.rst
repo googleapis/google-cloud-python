@@ -35,4 +35,4 @@ For a list of all ``google-cloud-workflows`` releases:
 .. toctree::
     :maxdepth: 2
 
-    changelog
+    CHANGELOG
