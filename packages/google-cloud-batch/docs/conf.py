@@ -156,7 +156,7 @@ html_theme = "alabaster"
 html_theme_options = {
     "description": "Google Cloud Client Libraries for google-cloud-batch",
     "github_user": "googleapis",
-    "github_repo": "python-batch",
+    "github_repo": "google-cloud-python",
     "github_banner": True,
     "font_family": "'Roboto', Georgia, sans",
     "head_font_family": "'Roboto', Georgia, serif",
