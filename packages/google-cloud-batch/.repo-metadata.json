@@ -8,7 +8,7 @@
     "release_level": "preview",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-batch",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-batch",
     "api_id": "batch.googleapis.com",
     "default_version": "v1",

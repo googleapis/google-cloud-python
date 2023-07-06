@@ -185,9 +185,19 @@
         "packages/google-cloud-batch": {
             "component": "google-cloud-batch",
             "extra-files": [
-                "google/cloud/batch/gapic_version.py",
                 "google/cloud/batch_v1/gapic_version.py",
-                "google/cloud/batch_v1alpha/gapic_version.py"
+                "google/cloud/batch_v1alpha/gapic_version.py",
+                "google/cloud/batch/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.batch.v1alpha.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.batch.v1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
