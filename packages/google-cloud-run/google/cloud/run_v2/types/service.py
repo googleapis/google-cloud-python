@@ -379,6 +379,13 @@ class Service(proto.Message):
         uri (str):
             Output only. The main URI in which this
             Service is serving traffic.
+        custom_audiences (MutableSequence[str]):
+            One or more custom audiences that you want
+            this service to support. Specify each custom
+            audience as the full URL in a string. The custom
+            audiences are encoded in the token and used to
+            authenticate requests. For more information, see
+            https://cloud.google.com/run/docs/configuring/custom-audiences.
         satisfies_pzs (bool):
             Output only. Reserved for future use.
         reconciling (bool):
@@ -534,6 +541,10 @@ class Service(proto.Message):
     uri: str = proto.Field(
         proto.STRING,
         number=36,
+    )
+    custom_audiences: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=37,
     )
     satisfies_pzs: bool = proto.Field(
         proto.BOOL,

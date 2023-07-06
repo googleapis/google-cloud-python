@@ -935,6 +935,7 @@ def test_get_service(request_type, transport: str = "grpc"):
             latest_ready_revision="latest_ready_revision_value",
             latest_created_revision="latest_created_revision_value",
             uri="uri_value",
+            custom_audiences=["custom_audiences_value"],
             satisfies_pzs=True,
             reconciling=True,
             etag="etag_value",
@@ -962,6 +963,7 @@ def test_get_service(request_type, transport: str = "grpc"):
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
     assert response.uri == "uri_value"
+    assert response.custom_audiences == ["custom_audiences_value"]
     assert response.satisfies_pzs is True
     assert response.reconciling is True
     assert response.etag == "etag_value"
@@ -1015,6 +1017,7 @@ async def test_get_service_async(
                 latest_ready_revision="latest_ready_revision_value",
                 latest_created_revision="latest_created_revision_value",
                 uri="uri_value",
+                custom_audiences=["custom_audiences_value"],
                 satisfies_pzs=True,
                 reconciling=True,
                 etag="etag_value",
@@ -1043,6 +1046,7 @@ async def test_get_service_async(
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
     assert response.uri == "uri_value"
+    assert response.custom_audiences == ["custom_audiences_value"]
     assert response.satisfies_pzs is True
     assert response.reconciling is True
     assert response.etag == "etag_value"
@@ -2590,6 +2594,7 @@ def test_create_service_rest(request_type):
             }
         ],
         "uri": "uri_value",
+        "custom_audiences": ["custom_audiences_value1", "custom_audiences_value2"],
         "satisfies_pzs": True,
         "reconciling": True,
         "etag": "etag_value",
@@ -2931,6 +2936,7 @@ def test_create_service_rest_bad_request(
             }
         ],
         "uri": "uri_value",
+        "custom_audiences": ["custom_audiences_value1", "custom_audiences_value2"],
         "satisfies_pzs": True,
         "reconciling": True,
         "etag": "etag_value",
@@ -3048,6 +3054,7 @@ def test_get_service_rest(request_type):
             latest_ready_revision="latest_ready_revision_value",
             latest_created_revision="latest_created_revision_value",
             uri="uri_value",
+            custom_audiences=["custom_audiences_value"],
             satisfies_pzs=True,
             reconciling=True,
             etag="etag_value",
@@ -3079,6 +3086,7 @@ def test_get_service_rest(request_type):
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
     assert response.uri == "uri_value"
+    assert response.custom_audiences == ["custom_audiences_value"]
     assert response.satisfies_pzs is True
     assert response.reconciling is True
     assert response.etag == "etag_value"
@@ -3785,6 +3793,7 @@ def test_update_service_rest(request_type):
             }
         ],
         "uri": "uri_value",
+        "custom_audiences": ["custom_audiences_value1", "custom_audiences_value2"],
         "satisfies_pzs": True,
         "reconciling": True,
         "etag": "etag_value",
@@ -4104,6 +4113,7 @@ def test_update_service_rest_bad_request(
             }
         ],
         "uri": "uri_value",
+        "custom_audiences": ["custom_audiences_value1", "custom_audiences_value2"],
         "satisfies_pzs": True,
         "reconciling": True,
         "etag": "etag_value",
