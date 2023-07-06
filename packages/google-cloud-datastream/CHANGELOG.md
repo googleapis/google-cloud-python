@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastream-v1.6.0...google-cloud-datastream-v1.6.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11445](https://github.com/googleapis/google-cloud-python/issues/11445)) ([98bddda](https://github.com/googleapis/google-cloud-python/commit/98bdddafc821e2fc6e86a31965da0c46899aa229))
+
 ## [1.6.0](https://github.com/googleapis/python-datastream/compare/v1.5.1...v1.6.0) (2023-05-25)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.1...google-maps-places-v0.1.2) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11449](https://github.com/googleapis/google-cloud-python/issues/11449)) ([3885820](https://github.com/googleapis/google-cloud-python/commit/388582082828e22a517c4f794901ee5dcbc31bd9))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.0...google-maps-places-v0.1.1) (2023-06-03)
 
 

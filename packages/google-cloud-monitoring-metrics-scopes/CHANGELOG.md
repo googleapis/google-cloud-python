@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-metrics-scopes-v1.4.2...google-cloud-monitoring-metrics-scopes-v1.4.3) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11448](https://github.com/googleapis/google-cloud-python/issues/11448)) ([4d2c35a](https://github.com/googleapis/google-cloud-python/commit/4d2c35a1cd0b68b6d481d5611ff820451273e859))
+
 ## [1.4.2](https://github.com/googleapis/python-monitoring-metrics-scopes/compare/v1.4.1...v1.4.2) (2023-03-23)
 
 

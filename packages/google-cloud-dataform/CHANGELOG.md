@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.5.1...google-cloud-dataform-v0.5.2) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11445](https://github.com/googleapis/google-cloud-python/issues/11445)) ([98bddda](https://github.com/googleapis/google-cloud-python/commit/98bdddafc821e2fc6e86a31965da0c46899aa229))
+
 ## [0.5.1](https://github.com/googleapis/python-dataform/compare/v0.5.0...v0.5.1) (2023-03-23)
 
 

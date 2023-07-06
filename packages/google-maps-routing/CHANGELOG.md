@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.6.0...google-maps-routing-v0.6.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11450](https://github.com/googleapis/google-cloud-python/issues/11450)) ([bf58f57](https://github.com/googleapis/google-cloud-python/commit/bf58f5787dbc694e5bbe8fb48a1ede9e0089d26a))
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.5.1...google-maps-routing-v0.6.0) (2023-06-29)
 
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-metastore-v1.11.0...google-cloud-dataproc-metastore-v1.12.0) (2023-07-05)
+
+
+### Features
+
+* added Admin Interface (v1)  ([2311f9e](https://github.com/googleapis/google-cloud-python/commit/2311f9eb3d2e9b9ab04c952ef624a7518111b7a5))
+* added BigQuery as a backend metastore (v1) ([2311f9e](https://github.com/googleapis/google-cloud-python/commit/2311f9eb3d2e9b9ab04c952ef624a7518111b7a5))
+* added gRPC endpoint protocol (v1) ([2311f9e](https://github.com/googleapis/google-cloud-python/commit/2311f9eb3d2e9b9ab04c952ef624a7518111b7a5))
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11445](https://github.com/googleapis/google-cloud-python/issues/11445)) ([98bddda](https://github.com/googleapis/google-cloud-python/commit/98bdddafc821e2fc6e86a31965da0c46899aa229))
+
 ## [1.11.0](https://github.com/googleapis/python-dataproc-metastore/compare/v1.10.1...v1.11.0) (2023-04-15)
 
 

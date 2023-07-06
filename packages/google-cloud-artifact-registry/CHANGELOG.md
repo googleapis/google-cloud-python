@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.8.1...google-cloud-artifact-registry-v1.8.2) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11444](https://github.com/googleapis/google-cloud-python/issues/11444)) ([9aa301a](https://github.com/googleapis/google-cloud-python/commit/9aa301ae6ca3080cae286a19de9cdc1b796ab37d))
+
 ## [1.8.1](https://github.com/googleapis/python-artifact-registry/compare/v1.8.0...v1.8.1) (2023-03-23)
 
 

@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "DataprocMetastoreClient",
           "rpcs": {
+            "AlterMetadataResourceLocation": {
+              "methods": [
+                "alter_metadata_resource_location"
+              ]
+            },
             "CreateBackup": {
               "methods": [
                 "create_backup"
@@ -68,6 +73,16 @@
             "ListServices": {
               "methods": [
                 "list_services"
+              ]
+            },
+            "MoveTableToDatabase": {
+              "methods": [
+                "move_table_to_database"
+              ]
+            },
+            "QueryMetadata": {
+              "methods": [
+                "query_metadata"
               ]
             },
             "RestoreService": {
@@ -90,6 +105,11 @@
         "grpc-async": {
           "libraryClient": "DataprocMetastoreAsyncClient",
           "rpcs": {
+            "AlterMetadataResourceLocation": {
+              "methods": [
+                "alter_metadata_resource_location"
+              ]
+            },
             "CreateBackup": {
               "methods": [
                 "create_backup"
@@ -148,6 +168,16 @@
             "ListServices": {
               "methods": [
                 "list_services"
+              ]
+            },
+            "MoveTableToDatabase": {
+              "methods": [
+                "move_table_to_database"
+              ]
+            },
+            "QueryMetadata": {
+              "methods": [
+                "query_metadata"
               ]
             },
             "RestoreService": {
@@ -170,6 +200,11 @@
         "rest": {
           "libraryClient": "DataprocMetastoreClient",
           "rpcs": {
+            "AlterMetadataResourceLocation": {
+              "methods": [
+                "alter_metadata_resource_location"
+              ]
+            },
             "CreateBackup": {
               "methods": [
                 "create_backup"
@@ -228,6 +263,16 @@
             "ListServices": {
               "methods": [
                 "list_services"
+              ]
+            },
+            "MoveTableToDatabase": {
+              "methods": [
+                "move_table_to_database"
+              ]
+            },
+            "QueryMetadata": {
+              "methods": [
+                "query_metadata"
               ]
             },
             "RestoreService": {

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.23.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.23.0...google-cloud-securitycenter-v1.23.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11449](https://github.com/googleapis/google-cloud-python/issues/11449)) ([3885820](https://github.com/googleapis/google-cloud-python/commit/388582082828e22a517c4f794901ee5dcbc31bd9))
+
 ## [1.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.22.0...google-cloud-securitycenter-v1.23.0) (2023-06-29)
 
 

@@ -70,6 +70,7 @@ __protobuf__ = proto.module(
         "RemoveIamPolicyResponse",
         "QueryMetadataRequest",
         "QueryMetadataResponse",
+        "ErrorDetails",
         "MoveTableToDatabaseRequest",
         "MoveTableToDatabaseResponse",
         "AlterMetadataResourceLocationRequest",
@@ -2254,6 +2255,26 @@ class QueryMetadataResponse(proto.Message):
     """
 
     result_manifest_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ErrorDetails(proto.Message):
+    r"""Error details in public error message for
+    [DataprocMetastore.QueryMetadata][google.cloud.metastore.v1beta.DataprocMetastore.QueryMetadata].
+
+    Attributes:
+        details (MutableMapping[str, str]):
+            Additional structured details about this
+            error.
+            Keys define the failure items.
+            Value describes the exception or details of the
+            item.
+    """
+
+    details: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
         proto.STRING,
         number=1,
     )

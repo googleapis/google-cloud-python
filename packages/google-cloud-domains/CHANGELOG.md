@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-domains-v1.5.1...google-cloud-domains-v1.5.2) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11446](https://github.com/googleapis/google-cloud-python/issues/11446)) ([37682b7](https://github.com/googleapis/google-cloud-python/commit/37682b7793cfe0dcb27963fea7e474b3b85571c9))
+
 ## [1.5.1](https://github.com/googleapis/python-domains/compare/v1.5.0...v1.5.1) (2023-03-23)
 
 

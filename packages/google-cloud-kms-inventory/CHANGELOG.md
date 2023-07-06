@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.1.0...google-cloud-kms-inventory-v0.1.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11446](https://github.com/googleapis/google-cloud-python/issues/11446)) ([37682b7](https://github.com/googleapis/google-cloud-python/commit/37682b7793cfe0dcb27963fea7e474b3b85571c9))
+
 ## 0.1.0 (2023-06-22)
 
 

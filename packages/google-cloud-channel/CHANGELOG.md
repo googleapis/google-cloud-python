@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.15.0...google-cloud-channel-v1.15.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#11445](https://github.com/googleapis/google-cloud-python/issues/11445)) ([98bddda](https://github.com/googleapis/google-cloud-python/commit/98bdddafc821e2fc6e86a31965da0c46899aa229))
+
 ## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.14.0...google-cloud-channel-v1.15.0) (2023-06-19)
 
 
