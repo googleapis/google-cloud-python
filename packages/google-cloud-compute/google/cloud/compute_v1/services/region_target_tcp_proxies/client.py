@@ -438,6 +438,34 @@ class RegionTargetTcpProxiesClient(metaclass=RegionTargetTcpProxiesClientMeta):
     ) -> compute.Operation:
         r"""Deletes the specified TargetTcpProxy resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.RegionTargetTcpProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteRegionTargetTcpProxyRequest(
+                    project="project_value",
+                    region="region_value",
+                    target_tcp_proxy="target_tcp_proxy_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionTargetTcpProxyRequest, dict]):
                 The request object. A request message for
@@ -540,6 +568,34 @@ class RegionTargetTcpProxiesClient(metaclass=RegionTargetTcpProxiesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified TargetTcpProxy resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.RegionTargetTcpProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteRegionTargetTcpProxyRequest(
+                    project="project_value",
+                    region="region_value",
+                    target_tcp_proxy="target_tcp_proxy_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionTargetTcpProxyRequest, dict]):
@@ -667,6 +723,34 @@ class RegionTargetTcpProxiesClient(metaclass=RegionTargetTcpProxiesClientMeta):
     ) -> compute.TargetTcpProxy:
         r"""Returns the specified TargetTcpProxy resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.RegionTargetTcpProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetRegionTargetTcpProxyRequest(
+                    project="project_value",
+                    region="region_value",
+                    target_tcp_proxy="target_tcp_proxy_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionTargetTcpProxyRequest, dict]):
                 The request object. A request message for
@@ -778,6 +862,33 @@ class RegionTargetTcpProxiesClient(metaclass=RegionTargetTcpProxiesClientMeta):
         project and region using the data included in the
         request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.RegionTargetTcpProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertRegionTargetTcpProxyRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionTargetTcpProxyRequest, dict]):
                 The request object. A request message for
@@ -879,6 +990,33 @@ class RegionTargetTcpProxiesClient(metaclass=RegionTargetTcpProxiesClientMeta):
         r"""Creates a TargetTcpProxy resource in the specified
         project and region using the data included in the
         request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.RegionTargetTcpProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertRegionTargetTcpProxyRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionTargetTcpProxyRequest, dict]):
@@ -1004,6 +1142,34 @@ class RegionTargetTcpProxiesClient(metaclass=RegionTargetTcpProxiesClientMeta):
     ) -> pagers.ListPager:
         r"""Retrieves a list of TargetTcpProxy resources
         available to the specified project in a given region.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.RegionTargetTcpProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListRegionTargetTcpProxiesRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionTargetTcpProxiesRequest, dict]):

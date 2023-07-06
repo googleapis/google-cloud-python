@@ -436,6 +436,33 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of forwarding rules.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.ForwardingRulesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListForwardingRulesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListForwardingRulesRequest, dict]):
                 The request object. A request message for
@@ -522,6 +549,34 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified ForwardingRule resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.ForwardingRulesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteForwardingRuleRequest(
+                    forwarding_rule="forwarding_rule_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteForwardingRuleRequest, dict]):
@@ -623,6 +678,34 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified ForwardingRule resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.ForwardingRulesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteForwardingRuleRequest(
+                    forwarding_rule="forwarding_rule_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteForwardingRuleRequest, dict]):
@@ -750,6 +833,34 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
     ) -> compute.ForwardingRule:
         r"""Returns the specified ForwardingRule resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.ForwardingRulesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetForwardingRuleRequest(
+                    forwarding_rule="forwarding_rule_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetForwardingRuleRequest, dict]):
                 The request object. A request message for
@@ -863,6 +974,33 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         project and region using the data included in the
         request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.ForwardingRulesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertForwardingRuleRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertForwardingRuleRequest, dict]):
                 The request object. A request message for
@@ -962,6 +1100,33 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         r"""Creates a ForwardingRule resource in the specified
         project and region using the data included in the
         request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.ForwardingRulesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertForwardingRuleRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertForwardingRuleRequest, dict]):
@@ -1086,6 +1251,34 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         r"""Retrieves a list of ForwardingRule resources
         available to the specified project and region.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.ForwardingRulesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListForwardingRulesRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListForwardingRulesRequest, dict]):
                 The request object. A request message for
@@ -1192,6 +1385,34 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         the request. This method supports PATCH semantics and uses the
         JSON merge patch format and processing rules. Currently, you can
         only patch the network_tier field.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.ForwardingRulesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchForwardingRuleRequest(
+                    forwarding_rule="forwarding_rule_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchForwardingRuleRequest, dict]):
@@ -1306,6 +1527,34 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         the request. This method supports PATCH semantics and uses the
         JSON merge patch format and processing rules. Currently, you can
         only patch the network_tier field.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.ForwardingRulesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchForwardingRuleRequest(
+                    forwarding_rule="forwarding_rule_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchForwardingRuleRequest, dict]):
@@ -1447,6 +1696,34 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         more about labels, read the Labeling Resources
         documentation.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_labels():
+                # Create a client
+                client = compute_v1.ForwardingRulesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetLabelsForwardingRuleRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_labels(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsForwardingRuleRequest, dict]):
                 The request object. A request message for
@@ -1561,6 +1838,34 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         r"""Sets the labels on the specified resource. To learn
         more about labels, read the Labeling Resources
         documentation.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_labels():
+                # Create a client
+                client = compute_v1.ForwardingRulesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetLabelsForwardingRuleRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_labels(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsForwardingRuleRequest, dict]):
@@ -1699,6 +2004,34 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         r"""Changes target URL for forwarding rule. The new
         target should be of the same type as the old target.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_target():
+                # Create a client
+                client = compute_v1.ForwardingRulesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetTargetForwardingRuleRequest(
+                    forwarding_rule="forwarding_rule_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.set_target(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.SetTargetForwardingRuleRequest, dict]):
                 The request object. A request message for
@@ -1810,6 +2143,34 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Changes target URL for forwarding rule. The new
         target should be of the same type as the old target.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_target():
+                # Create a client
+                client = compute_v1.ForwardingRulesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetTargetForwardingRuleRequest(
+                    forwarding_rule="forwarding_rule_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.set_target(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetTargetForwardingRuleRequest, dict]):

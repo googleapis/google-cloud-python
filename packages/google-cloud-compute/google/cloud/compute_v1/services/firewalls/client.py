@@ -433,6 +433,33 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
     ) -> compute.Operation:
         r"""Deletes the specified firewall.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.FirewallsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteFirewallRequest(
+                    firewall="firewall_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteFirewallRequest, dict]):
                 The request object. A request message for
@@ -520,6 +547,33 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified firewall.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.FirewallsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteFirewallRequest(
+                    firewall="firewall_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteFirewallRequest, dict]):
@@ -633,6 +687,33 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
     ) -> compute.Firewall:
         r"""Returns the specified firewall.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.FirewallsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetFirewallRequest(
+                    firewall="firewall_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetFirewallRequest, dict]):
                 The request object. A request message for Firewalls.Get.
@@ -724,6 +805,32 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         r"""Creates a firewall rule in the specified project
         using the data included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.FirewallsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertFirewallRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertFirewallRequest, dict]):
                 The request object. A request message for
@@ -807,6 +914,32 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a firewall rule in the specified project
         using the data included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.FirewallsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertFirewallRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertFirewallRequest, dict]):
@@ -915,6 +1048,33 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         r"""Retrieves the list of firewall rules available to the
         specified project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.FirewallsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListFirewallsRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListFirewallsRequest, dict]):
                 The request object. A request message for Firewalls.List.
@@ -1004,6 +1164,33 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         included in the request. This method supports PATCH
         semantics and uses the JSON merge patch format and
         processing rules.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.FirewallsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchFirewallRequest(
+                    firewall="firewall_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchFirewallRequest, dict]):
@@ -1103,6 +1290,33 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         included in the request. This method supports PATCH
         semantics and uses the JSON merge patch format and
         processing rules.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.FirewallsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchFirewallRequest(
+                    firewall="firewall_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchFirewallRequest, dict]):
@@ -1228,6 +1442,33 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         specified. To update individual fields, please use PATCH
         instead.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_update():
+                # Create a client
+                client = compute_v1.FirewallsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.UpdateFirewallRequest(
+                    firewall="firewall_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.update(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateFirewallRequest, dict]):
                 The request object. A request message for
@@ -1327,6 +1568,33 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         updated if using PUT, even fields that are not
         specified. To update individual fields, please use PATCH
         instead.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_update():
+                # Create a client
+                client = compute_v1.FirewallsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.UpdateFirewallRequest(
+                    firewall="firewall_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.update(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateFirewallRequest, dict]):

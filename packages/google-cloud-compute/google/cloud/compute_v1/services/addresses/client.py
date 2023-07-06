@@ -432,6 +432,33 @@ class AddressesClient(metaclass=AddressesClientMeta):
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of addresses.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.AddressesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListAddressesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListAddressesRequest, dict]):
                 The request object. A request message for
@@ -518,6 +545,34 @@ class AddressesClient(metaclass=AddressesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified address resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.AddressesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteAddressRequest(
+                    address="address_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteAddressRequest, dict]):
@@ -617,6 +672,34 @@ class AddressesClient(metaclass=AddressesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified address resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.AddressesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteAddressRequest(
+                    address="address_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteAddressRequest, dict]):
@@ -742,6 +825,34 @@ class AddressesClient(metaclass=AddressesClientMeta):
     ) -> compute.Address:
         r"""Returns the specified address resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.AddressesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetAddressRequest(
+                    address="address_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetAddressRequest, dict]):
                 The request object. A request message for Addresses.Get.
@@ -846,6 +957,33 @@ class AddressesClient(metaclass=AddressesClientMeta):
         r"""Creates an address resource in the specified project
         by using the data included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.AddressesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertAddressRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertAddressRequest, dict]):
                 The request object. A request message for
@@ -942,6 +1080,33 @@ class AddressesClient(metaclass=AddressesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Creates an address resource in the specified project
         by using the data included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.AddressesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertAddressRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertAddressRequest, dict]):
@@ -1064,6 +1229,34 @@ class AddressesClient(metaclass=AddressesClientMeta):
         r"""Retrieves a list of addresses contained within the
         specified region.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.AddressesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListAddressesRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListAddressesRequest, dict]):
                 The request object. A request message for Addresses.List.
@@ -1165,6 +1358,34 @@ class AddressesClient(metaclass=AddressesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Moves the specified address resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_move():
+                # Create a client
+                client = compute_v1.AddressesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.MoveAddressRequest(
+                    address="address_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.move(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.MoveAddressRequest, dict]):
@@ -1277,6 +1498,34 @@ class AddressesClient(metaclass=AddressesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Moves the specified address resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_move():
+                # Create a client
+                client = compute_v1.AddressesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.MoveAddressRequest(
+                    address="address_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.move(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.MoveAddressRequest, dict]):
@@ -1416,6 +1665,34 @@ class AddressesClient(metaclass=AddressesClientMeta):
         r"""Sets the labels on an Address. To learn more about
         labels, read the Labeling Resources documentation.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_labels():
+                # Create a client
+                client = compute_v1.AddressesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetLabelsAddressRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_labels(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsAddressRequest, dict]):
                 The request object. A request message for
@@ -1529,6 +1806,34 @@ class AddressesClient(metaclass=AddressesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on an Address. To learn more about
         labels, read the Labeling Resources documentation.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_labels():
+                # Create a client
+                client = compute_v1.AddressesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetLabelsAddressRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_labels(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsAddressRequest, dict]):

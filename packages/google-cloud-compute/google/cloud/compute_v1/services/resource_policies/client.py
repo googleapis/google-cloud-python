@@ -436,6 +436,33 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of resource policies.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.ResourcePoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListResourcePoliciesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListResourcePoliciesRequest, dict]):
                 The request object. A request message for
@@ -523,6 +550,34 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified resource policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.ResourcePoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteResourcePolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource_policy="resource_policy_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteResourcePolicyRequest, dict]):
@@ -622,6 +677,34 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified resource policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.ResourcePoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteResourcePolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource_policy="resource_policy_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteResourcePolicyRequest, dict]):
@@ -748,6 +831,34 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         r"""Retrieves all information of the specified resource
         policy.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.ResourcePoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetResourcePolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource_policy="resource_policy_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetResourcePolicyRequest, dict]):
                 The request object. A request message for
@@ -853,6 +964,34 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
     ) -> compute.Policy:
         r"""Gets the access control policy for a resource. May be
         empty if no such policy or resource exists.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = compute_v1.ResourcePoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetIamPolicyResourcePolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyResourcePolicyRequest, dict]):
@@ -993,6 +1132,33 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
     ) -> compute.Operation:
         r"""Creates a new resource policy.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.ResourcePoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertResourcePolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertResourcePolicyRequest, dict]):
                 The request object. A request message for
@@ -1088,6 +1254,33 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a new resource policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.ResourcePoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertResourcePolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertResourcePolicyRequest, dict]):
@@ -1211,6 +1404,34 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         configured for the specified project in specified
         region.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.ResourcePoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListResourcePoliciesRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListResourcePoliciesRequest, dict]):
                 The request object. A request message for
@@ -1315,6 +1536,34 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
     ) -> compute.Policy:
         r"""Sets the access control policy on the specified
         resource. Replaces any existing policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = compute_v1.ResourcePoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetIamPolicyResourcePolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyResourcePolicyRequest, dict]):
@@ -1471,6 +1720,34 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the
         specified resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = compute_v1.ResourcePoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.TestIamPermissionsResourcePolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsResourcePolicyRequest, dict]):

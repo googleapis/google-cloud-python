@@ -441,6 +441,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         r"""Inserts an association for the specified firewall
         policy.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_add_association():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AddAssociationNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.add_association(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AddAssociationNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
@@ -547,6 +574,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
     ) -> extended_operation.ExtendedOperation:
         r"""Inserts an association for the specified firewall
         policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_add_association():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AddAssociationNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.add_association(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.AddAssociationNetworkFirewallPolicyRequest, dict]):
@@ -676,6 +730,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
     ) -> compute.Operation:
         r"""Inserts a rule into a firewall policy.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_add_rule():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AddRuleNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.add_rule(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AddRuleNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
@@ -777,6 +858,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Inserts a rule into a firewall policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_add_rule():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AddRuleNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.add_rule(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.AddRuleNetworkFirewallPolicyRequest, dict]):
@@ -903,6 +1011,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
     ) -> compute.Operation:
         r"""Copies rules to the specified firewall policy.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_clone_rules():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.CloneRulesNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.clone_rules(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.CloneRulesNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
@@ -994,6 +1129,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Copies rules to the specified firewall policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_clone_rules():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.CloneRulesNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.clone_rules(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.CloneRulesNetworkFirewallPolicyRequest, dict]):
@@ -1111,6 +1273,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
     ) -> compute.Operation:
         r"""Deletes the specified policy.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
@@ -1202,6 +1391,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNetworkFirewallPolicyRequest, dict]):
@@ -1317,6 +1533,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
     ) -> compute.FirewallPolicy:
         r"""Returns the specified network firewall policy.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
@@ -1406,6 +1649,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.FirewallPolicyAssociation:
         r"""Gets an association with the specified name.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get_association():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetAssociationNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.get_association(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetAssociationNetworkFirewallPolicyRequest, dict]):
@@ -1497,6 +1767,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
     ) -> compute.Policy:
         r"""Gets the access control policy for a resource. May be
         empty if no such policy or resource exists.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetIamPolicyNetworkFirewallPolicyRequest(
+                    project="project_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyNetworkFirewallPolicyRequest, dict]):
@@ -1628,6 +1925,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
     ) -> compute.FirewallPolicyRule:
         r"""Gets a rule of the specified priority.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get_rule():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetRuleNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.get_rule(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetRuleNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
@@ -1723,6 +2047,32 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         r"""Creates a new policy in the specified project using
         the data included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertNetworkFirewallPolicyRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
@@ -1808,6 +2158,32 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a new policy in the specified project using
         the data included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertNetworkFirewallPolicyRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNetworkFirewallPolicyRequest, dict]):
@@ -1918,6 +2294,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         r"""Lists all the policies that have been configured for
         the specified project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListNetworkFirewallPoliciesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListNetworkFirewallPoliciesRequest, dict]):
                 The request object. A request message for
@@ -2007,6 +2410,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
     ) -> compute.Operation:
         r"""Patches the specified policy with the data included
         in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchNetworkFirewallPolicyRequest, dict]):
@@ -2108,6 +2538,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified policy with the data included
         in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchNetworkFirewallPolicyRequest, dict]):
@@ -2233,6 +2690,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
     ) -> compute.Operation:
         r"""Patches a rule of the specified priority.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch_rule():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchRuleNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.patch_rule(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRuleNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
@@ -2334,6 +2818,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Patches a rule of the specified priority.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch_rule():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchRuleNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.patch_rule(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRuleNetworkFirewallPolicyRequest, dict]):
@@ -2461,6 +2972,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         r"""Removes an association for the specified firewall
         policy.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_remove_association():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.RemoveAssociationNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.remove_association(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveAssociationNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
@@ -2555,6 +3093,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
     ) -> extended_operation.ExtendedOperation:
         r"""Removes an association for the specified firewall
         policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_remove_association():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.RemoveAssociationNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.remove_association(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveAssociationNetworkFirewallPolicyRequest, dict]):
@@ -2674,6 +3239,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
     ) -> compute.Operation:
         r"""Deletes a rule of the specified priority.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_remove_rule():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.RemoveRuleNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.remove_rule(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveRuleNetworkFirewallPolicyRequest, dict]):
                 The request object. A request message for
@@ -2765,6 +3357,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes a rule of the specified priority.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_remove_rule():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.RemoveRuleNetworkFirewallPolicyRequest(
+                    firewall_policy="firewall_policy_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.remove_rule(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveRuleNetworkFirewallPolicyRequest, dict]):
@@ -2885,6 +3504,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
     ) -> compute.Policy:
         r"""Sets the access control policy on the specified
         resource. Replaces any existing policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetIamPolicyNetworkFirewallPolicyRequest(
+                    project="project_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyNetworkFirewallPolicyRequest, dict]):
@@ -3030,6 +3676,33 @@ class NetworkFirewallPoliciesClient(metaclass=NetworkFirewallPoliciesClientMeta)
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the
         specified resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = compute_v1.NetworkFirewallPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.TestIamPermissionsNetworkFirewallPolicyRequest(
+                    project="project_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsNetworkFirewallPolicyRequest, dict]):

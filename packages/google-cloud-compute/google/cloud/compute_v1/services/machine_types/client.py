@@ -431,6 +431,33 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of machine types.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.MachineTypesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListMachineTypesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListMachineTypesRequest, dict]):
                 The request object. A request message for
@@ -517,6 +544,34 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.MachineType:
         r"""Returns the specified machine type.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.MachineTypesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetMachineTypeRequest(
+                    machine_type="machine_type_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetMachineTypeRequest, dict]):
@@ -619,6 +674,34 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
     ) -> pagers.ListPager:
         r"""Retrieves a list of machine types available to the
         specified project.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.MachineTypesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListMachineTypesRequest(
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListMachineTypesRequest, dict]):

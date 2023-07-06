@@ -436,6 +436,34 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
     ) -> compute.InstanceGroup:
         r"""Returns the specified instance group resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.RegionInstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetRegionInstanceGroupRequest(
+                    instance_group="instance_group_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionInstanceGroupRequest, dict]):
                 The request object. A request message for
@@ -549,6 +577,34 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
         r"""Retrieves the list of instance group resources
         contained within the specified region.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.RegionInstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListRegionInstanceGroupsRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionInstanceGroupsRequest, dict]):
                 The request object. A request message for
@@ -660,6 +716,35 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
         Depending on the specified options, this method can list
         all instances or only the instances that are running.
         The orderBy query parameter is not supported.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list_instances():
+                # Create a client
+                client = compute_v1.RegionInstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListInstancesRegionInstanceGroupsRequest(
+                    instance_group="instance_group_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                page_result = client.list_instances(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListInstancesRegionInstanceGroupsRequest, dict]):
@@ -794,6 +879,34 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
         r"""Sets the named ports for the specified regional
         instance group.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_named_ports():
+                # Create a client
+                client = compute_v1.RegionInstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetNamedPortsRegionInstanceGroupRequest(
+                    instance_group="instance_group_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.set_named_ports(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.SetNamedPortsRegionInstanceGroupRequest, dict]):
                 The request object. A request message for
@@ -916,6 +1029,34 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the named ports for the specified regional
         instance group.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_named_ports():
+                # Create a client
+                client = compute_v1.RegionInstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetNamedPortsRegionInstanceGroupRequest(
+                    instance_group="instance_group_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.set_named_ports(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetNamedPortsRegionInstanceGroupRequest, dict]):

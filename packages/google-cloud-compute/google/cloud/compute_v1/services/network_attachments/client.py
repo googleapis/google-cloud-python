@@ -438,6 +438,33 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
         resources, regional and global, available to the
         specified project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.NetworkAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListNetworkAttachmentsRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListNetworkAttachmentsRequest, dict]):
                 The request object. A request message for
@@ -527,6 +554,34 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
     ) -> compute.Operation:
         r"""Deletes the specified NetworkAttachment in the given
         scope
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.NetworkAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteNetworkAttachmentRequest(
+                    network_attachment="network_attachment_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNetworkAttachmentRequest, dict]):
@@ -627,6 +682,34 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified NetworkAttachment in the given
         scope
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.NetworkAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteNetworkAttachmentRequest(
+                    network_attachment="network_attachment_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNetworkAttachmentRequest, dict]):
@@ -753,6 +836,34 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
         r"""Returns the specified NetworkAttachment resource in
         the given scope.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.NetworkAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetNetworkAttachmentRequest(
+                    network_attachment="network_attachment_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetNetworkAttachmentRequest, dict]):
                 The request object. A request message for
@@ -854,6 +965,34 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
     ) -> compute.Policy:
         r"""Gets the access control policy for a resource. May be
         empty if no such policy or resource exists.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = compute_v1.NetworkAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetIamPolicyNetworkAttachmentRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyNetworkAttachmentRequest, dict]):
@@ -996,6 +1135,33 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
         in the given scope using the parameters that are
         included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.NetworkAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertNetworkAttachmentRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNetworkAttachmentRequest, dict]):
                 The request object. A request message for
@@ -1093,6 +1259,33 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
         r"""Creates a NetworkAttachment in the specified project
         in the given scope using the parameters that are
         included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.NetworkAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertNetworkAttachmentRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNetworkAttachmentRequest, dict]):
@@ -1215,6 +1408,34 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
         r"""Lists the NetworkAttachments for a project in the
         given scope.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.NetworkAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListNetworkAttachmentsRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListNetworkAttachmentsRequest, dict]):
                 The request object. A request message for
@@ -1319,6 +1540,34 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
     ) -> compute.Policy:
         r"""Sets the access control policy on the specified
         resource. Replaces any existing policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = compute_v1.NetworkAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetIamPolicyNetworkAttachmentRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyNetworkAttachmentRequest, dict]):
@@ -1475,6 +1724,34 @@ class NetworkAttachmentsClient(metaclass=NetworkAttachmentsClientMeta):
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the
         specified resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = compute_v1.NetworkAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.TestIamPermissionsNetworkAttachmentRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsNetworkAttachmentRequest, dict]):

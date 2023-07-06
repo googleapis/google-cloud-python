@@ -439,6 +439,34 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
         r"""Deletes the specified instance template. Deleting an
         instance template is permanent and cannot be undone.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.RegionInstanceTemplatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteRegionInstanceTemplateRequest(
+                    instance_template="instance_template_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionInstanceTemplateRequest, dict]):
                 The request object. A request message for
@@ -542,6 +570,34 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified instance template. Deleting an
         instance template is permanent and cannot be undone.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.RegionInstanceTemplatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteRegionInstanceTemplateRequest(
+                    instance_template="instance_template_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionInstanceTemplateRequest, dict]):
@@ -669,6 +725,34 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
     ) -> compute.InstanceTemplate:
         r"""Returns the specified instance template.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.RegionInstanceTemplatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetRegionInstanceTemplateRequest(
+                    instance_template="instance_template_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionInstanceTemplateRequest, dict]):
                 The request object. A request message for
@@ -775,6 +859,33 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
         and region using the global instance template whose URL
         is included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.RegionInstanceTemplatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertRegionInstanceTemplateRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionInstanceTemplateRequest, dict]):
                 The request object. A request message for
@@ -876,6 +987,33 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
         r"""Creates an instance template in the specified project
         and region using the global instance template whose URL
         is included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.RegionInstanceTemplatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertRegionInstanceTemplateRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionInstanceTemplateRequest, dict]):
@@ -1001,6 +1139,34 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
     ) -> pagers.ListPager:
         r"""Retrieves a list of instance templates that are
         contained within the specified project and region.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.RegionInstanceTemplatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListRegionInstanceTemplatesRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionInstanceTemplatesRequest, dict]):

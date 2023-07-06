@@ -439,6 +439,33 @@ class NetworkEdgeSecurityServicesClient(
         r"""Retrieves the list of all NetworkEdgeSecurityService
         resources available to the specified project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.NetworkEdgeSecurityServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListNetworkEdgeSecurityServicesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListNetworkEdgeSecurityServicesRequest, dict]):
                 The request object. A request message for
@@ -531,6 +558,34 @@ class NetworkEdgeSecurityServicesClient(
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified service.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.NetworkEdgeSecurityServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteNetworkEdgeSecurityServiceRequest(
+                    network_edge_security_service="network_edge_security_service_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNetworkEdgeSecurityServiceRequest, dict]):
@@ -637,6 +692,34 @@ class NetworkEdgeSecurityServicesClient(
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified service.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.NetworkEdgeSecurityServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteNetworkEdgeSecurityServiceRequest(
+                    network_edge_security_service="network_edge_security_service_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteNetworkEdgeSecurityServiceRequest, dict]):
@@ -769,6 +852,34 @@ class NetworkEdgeSecurityServicesClient(
     ) -> compute.NetworkEdgeSecurityService:
         r"""Gets a specified NetworkEdgeSecurityService.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.NetworkEdgeSecurityServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetNetworkEdgeSecurityServiceRequest(
+                    network_edge_security_service="network_edge_security_service_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetNetworkEdgeSecurityServiceRequest, dict]):
                 The request object. A request message for
@@ -878,6 +989,33 @@ class NetworkEdgeSecurityServicesClient(
         r"""Creates a new service in the specified project using
         the data included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.NetworkEdgeSecurityServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertNetworkEdgeSecurityServiceRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNetworkEdgeSecurityServiceRequest, dict]):
                 The request object. A request message for
@@ -984,6 +1122,33 @@ class NetworkEdgeSecurityServicesClient(
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a new service in the specified project using
         the data included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.NetworkEdgeSecurityServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertNetworkEdgeSecurityServiceRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertNetworkEdgeSecurityServiceRequest, dict]):
@@ -1118,6 +1283,34 @@ class NetworkEdgeSecurityServicesClient(
         r"""Patches the specified policy with the data included
         in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.NetworkEdgeSecurityServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchNetworkEdgeSecurityServiceRequest(
+                    network_edge_security_service="network_edge_security_service_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.PatchNetworkEdgeSecurityServiceRequest, dict]):
                 The request object. A request message for
@@ -1243,6 +1436,34 @@ class NetworkEdgeSecurityServicesClient(
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified policy with the data included
         in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.NetworkEdgeSecurityServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchNetworkEdgeSecurityServiceRequest(
+                    network_edge_security_service="network_edge_security_service_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchNetworkEdgeSecurityServiceRequest, dict]):

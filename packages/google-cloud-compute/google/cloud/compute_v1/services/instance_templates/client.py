@@ -438,6 +438,33 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         resources, regional and global, available to the
         specified project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.InstanceTemplatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListInstanceTemplatesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListInstanceTemplatesRequest, dict]):
                 The request object. A request message for
@@ -531,6 +558,33 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         is not possible to delete templates that are already in
         use by a managed instance group.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.InstanceTemplatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteInstanceTemplateRequest(
+                    instance_template="instance_template_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstanceTemplateRequest, dict]):
                 The request object. A request message for
@@ -623,6 +677,33 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         instance template is permanent and cannot be undone. It
         is not possible to delete templates that are already in
         use by a managed instance group.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.InstanceTemplatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteInstanceTemplateRequest(
+                    instance_template="instance_template_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstanceTemplateRequest, dict]):
@@ -738,6 +819,33 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
     ) -> compute.InstanceTemplate:
         r"""Returns the specified instance template.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.InstanceTemplatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetInstanceTemplateRequest(
+                    instance_template="instance_template_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetInstanceTemplateRequest, dict]):
                 The request object. A request message for
@@ -831,6 +939,33 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
     ) -> compute.Policy:
         r"""Gets the access control policy for a resource. May be
         empty if no such policy or resource exists.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = compute_v1.InstanceTemplatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetIamPolicyInstanceTemplateRequest(
+                    project="project_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyInstanceTemplateRequest, dict]):
@@ -965,6 +1100,32 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         same network or, if applicable, the same subnetwork as
         the original template.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.InstanceTemplatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertInstanceTemplateRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertInstanceTemplateRequest, dict]):
                 The request object. A request message for
@@ -1052,6 +1213,32 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         instance group, your new instance template must use the
         same network or, if applicable, the same subnetwork as
         the original template.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.InstanceTemplatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertInstanceTemplateRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertInstanceTemplateRequest, dict]):
@@ -1160,6 +1347,33 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         r"""Retrieves a list of instance templates that are
         contained within the specified project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.InstanceTemplatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListInstanceTemplatesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListInstanceTemplatesRequest, dict]):
                 The request object. A request message for
@@ -1252,6 +1466,33 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
     ) -> compute.Policy:
         r"""Sets the access control policy on the specified
         resource. Replaces any existing policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = compute_v1.InstanceTemplatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetIamPolicyInstanceTemplateRequest(
+                    project="project_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyInstanceTemplateRequest, dict]):
@@ -1397,6 +1638,33 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the
         specified resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = compute_v1.InstanceTemplatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.TestIamPermissionsInstanceTemplateRequest(
+                    project="project_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsInstanceTemplateRequest, dict]):

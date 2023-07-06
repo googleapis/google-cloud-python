@@ -438,6 +438,34 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
     ) -> compute.Operation:
         r"""Deletes the specified policy.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.RegionSecurityPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteRegionSecurityPolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                    security_policy="security_policy_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionSecurityPolicyRequest, dict]):
                 The request object. A request message for
@@ -540,6 +568,34 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.RegionSecurityPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteRegionSecurityPolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                    security_policy="security_policy_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionSecurityPolicyRequest, dict]):
@@ -668,6 +724,34 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         r"""List all of the ordered rules present in a single
         specified policy.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.RegionSecurityPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetRegionSecurityPolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                    security_policy="security_policy_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionSecurityPolicyRequest, dict]):
                 The request object. A request message for
@@ -774,6 +858,33 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         r"""Creates a new policy in the specified project using
         the data included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.RegionSecurityPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertRegionSecurityPolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionSecurityPolicyRequest, dict]):
                 The request object. A request message for
@@ -874,6 +985,33 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a new policy in the specified project using
         the data included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.RegionSecurityPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertRegionSecurityPolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionSecurityPolicyRequest, dict]):
@@ -1000,6 +1138,34 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         r"""List all the policies that have been configured for
         the specified project and region.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.RegionSecurityPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListRegionSecurityPoliciesRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionSecurityPoliciesRequest, dict]):
                 The request object. A request message for
@@ -1106,6 +1272,34 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         cannot be used to be update the rules in the policy.
         Please use the per rule methods like addRule, patchRule,
         and removeRule instead.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.RegionSecurityPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchRegionSecurityPolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                    security_policy="security_policy_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionSecurityPolicyRequest, dict]):
@@ -1222,6 +1416,34 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         cannot be used to be update the rules in the policy.
         Please use the per rule methods like addRule, patchRule,
         and removeRule instead.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.RegionSecurityPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchRegionSecurityPolicyRequest(
+                    project="project_value",
+                    region="region_value",
+                    security_policy="security_policy_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchRegionSecurityPolicyRequest, dict]):

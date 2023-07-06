@@ -435,6 +435,33 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
     ) -> compute.Operation:
         r"""Deletes the specified TargetSslProxy resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.TargetSslProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteTargetSslProxyRequest(
+                    project="project_value",
+                    target_ssl_proxy="target_ssl_proxy_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteTargetSslProxyRequest, dict]):
                 The request object. A request message for
@@ -524,6 +551,33 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified TargetSslProxy resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.TargetSslProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteTargetSslProxyRequest(
+                    project="project_value",
+                    target_ssl_proxy="target_ssl_proxy_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteTargetSslProxyRequest, dict]):
@@ -639,6 +693,33 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
     ) -> compute.TargetSslProxy:
         r"""Returns the specified TargetSslProxy resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.TargetSslProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetTargetSslProxyRequest(
+                    project="project_value",
+                    target_ssl_proxy="target_ssl_proxy_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetTargetSslProxyRequest, dict]):
                 The request object. A request message for
@@ -736,6 +817,32 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         r"""Creates a TargetSslProxy resource in the specified
         project using the data included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.TargetSslProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertTargetSslProxyRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertTargetSslProxyRequest, dict]):
                 The request object. A request message for
@@ -819,6 +926,32 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a TargetSslProxy resource in the specified
         project using the data included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.TargetSslProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertTargetSslProxyRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertTargetSslProxyRequest, dict]):
@@ -927,6 +1060,33 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         r"""Retrieves the list of TargetSslProxy resources
         available to the specified project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.TargetSslProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListTargetSslProxiesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListTargetSslProxiesRequest, dict]):
                 The request object. A request message for
@@ -1019,6 +1179,33 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Changes the BackendService for TargetSslProxy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_backend_service():
+                # Create a client
+                client = compute_v1.TargetSslProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetBackendServiceTargetSslProxyRequest(
+                    project="project_value",
+                    target_ssl_proxy="target_ssl_proxy_value",
+                )
+
+                # Make the request
+                response = client.set_backend_service(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetBackendServiceTargetSslProxyRequest, dict]):
@@ -1130,6 +1317,33 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Changes the BackendService for TargetSslProxy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_backend_service():
+                # Create a client
+                client = compute_v1.TargetSslProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetBackendServiceTargetSslProxyRequest(
+                    project="project_value",
+                    target_ssl_proxy="target_ssl_proxy_value",
+                )
+
+                # Make the request
+                response = client.set_backend_service(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetBackendServiceTargetSslProxyRequest, dict]):
@@ -1266,6 +1480,33 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
     ) -> compute.Operation:
         r"""Changes the Certificate Map for TargetSslProxy.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_certificate_map():
+                # Create a client
+                client = compute_v1.TargetSslProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetCertificateMapTargetSslProxyRequest(
+                    project="project_value",
+                    target_ssl_proxy="target_ssl_proxy_value",
+                )
+
+                # Make the request
+                response = client.set_certificate_map(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.SetCertificateMapTargetSslProxyRequest, dict]):
                 The request object. A request message for
@@ -1377,6 +1618,33 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Changes the Certificate Map for TargetSslProxy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_certificate_map():
+                # Create a client
+                client = compute_v1.TargetSslProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetCertificateMapTargetSslProxyRequest(
+                    project="project_value",
+                    target_ssl_proxy="target_ssl_proxy_value",
+                )
+
+                # Make the request
+                response = client.set_certificate_map(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetCertificateMapTargetSslProxyRequest, dict]):
@@ -1514,6 +1782,33 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
     ) -> compute.Operation:
         r"""Changes the ProxyHeaderType for TargetSslProxy.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_proxy_header():
+                # Create a client
+                client = compute_v1.TargetSslProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetProxyHeaderTargetSslProxyRequest(
+                    project="project_value",
+                    target_ssl_proxy="target_ssl_proxy_value",
+                )
+
+                # Make the request
+                response = client.set_proxy_header(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.SetProxyHeaderTargetSslProxyRequest, dict]):
                 The request object. A request message for
@@ -1623,6 +1918,33 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Changes the ProxyHeaderType for TargetSslProxy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_proxy_header():
+                # Create a client
+                client = compute_v1.TargetSslProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetProxyHeaderTargetSslProxyRequest(
+                    project="project_value",
+                    target_ssl_proxy="target_ssl_proxy_value",
+                )
+
+                # Make the request
+                response = client.set_proxy_header(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetProxyHeaderTargetSslProxyRequest, dict]):
@@ -1758,6 +2080,33 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
     ) -> compute.Operation:
         r"""Changes SslCertificates for TargetSslProxy.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_ssl_certificates():
+                # Create a client
+                client = compute_v1.TargetSslProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetSslCertificatesTargetSslProxyRequest(
+                    project="project_value",
+                    target_ssl_proxy="target_ssl_proxy_value",
+                )
+
+                # Make the request
+                response = client.set_ssl_certificates(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.SetSslCertificatesTargetSslProxyRequest, dict]):
                 The request object. A request message for
@@ -1868,6 +2217,33 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Changes SslCertificates for TargetSslProxy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_ssl_certificates():
+                # Create a client
+                client = compute_v1.TargetSslProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetSslCertificatesTargetSslProxyRequest(
+                    project="project_value",
+                    target_ssl_proxy="target_ssl_proxy_value",
+                )
+
+                # Make the request
+                response = client.set_ssl_certificates(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetSslCertificatesTargetSslProxyRequest, dict]):
@@ -2006,6 +2382,33 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         the SSL proxy load balancer. They do not affect the
         connection between the load balancer and the backends.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_ssl_policy():
+                # Create a client
+                client = compute_v1.TargetSslProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetSslPolicyTargetSslProxyRequest(
+                    project="project_value",
+                    target_ssl_proxy="target_ssl_proxy_value",
+                )
+
+                # Make the request
+                response = client.set_ssl_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.SetSslPolicyTargetSslProxyRequest, dict]):
                 The request object. A request message for
@@ -2113,6 +2516,33 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         features. This affects connections between clients and
         the SSL proxy load balancer. They do not affect the
         connection between the load balancer and the backends.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_ssl_policy():
+                # Create a client
+                client = compute_v1.TargetSslProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetSslPolicyTargetSslProxyRequest(
+                    project="project_value",
+                    target_ssl_proxy="target_ssl_proxy_value",
+                )
+
+                # Make the request
+                response = client.set_ssl_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetSslPolicyTargetSslProxyRequest, dict]):

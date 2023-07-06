@@ -438,6 +438,33 @@ class RegionInstancesClient(metaclass=RegionInstancesClientMeta):
         r"""Creates multiple instances in a given region. Count
         specifies the number of instances to create.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_bulk_insert():
+                # Create a client
+                client = compute_v1.RegionInstancesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.BulkInsertRegionInstanceRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.bulk_insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.BulkInsertRegionInstanceRequest, dict]):
                 The request object. A request message for
@@ -542,6 +569,33 @@ class RegionInstancesClient(metaclass=RegionInstancesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Creates multiple instances in a given region. Count
         specifies the number of instances to create.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_bulk_insert():
+                # Create a client
+                client = compute_v1.RegionInstancesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.BulkInsertRegionInstanceRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.bulk_insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.BulkInsertRegionInstanceRequest, dict]):

@@ -433,6 +433,33 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         r"""Retrieves the list of all SslPolicy resources,
         regional and global, available to the specified project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.SslPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListSslPoliciesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListSslPoliciesRequest, dict]):
                 The request object. A request message for
@@ -522,6 +549,33 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         r"""Deletes the specified SSL policy. The SSL policy
         resource can be deleted only if it is not in use by any
         TargetHttpsProxy or TargetSslProxy resources.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.SslPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteSslPolicyRequest(
+                    project="project_value",
+                    ssl_policy="ssl_policy_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteSslPolicyRequest, dict]):
@@ -615,6 +669,33 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         r"""Deletes the specified SSL policy. The SSL policy
         resource can be deleted only if it is not in use by any
         TargetHttpsProxy or TargetSslProxy resources.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.SslPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteSslPolicyRequest(
+                    project="project_value",
+                    ssl_policy="ssl_policy_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteSslPolicyRequest, dict]):
@@ -732,6 +813,33 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         r"""Lists all of the ordered rules present in a single
         specified policy.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.SslPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetSslPolicyRequest(
+                    project="project_value",
+                    ssl_policy="ssl_policy_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetSslPolicyRequest, dict]):
                 The request object. A request message for
@@ -827,6 +935,32 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
     ) -> compute.Operation:
         r"""Returns the specified SSL policy resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.SslPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertSslPolicyRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertSslPolicyRequest, dict]):
                 The request object. A request message for
@@ -909,6 +1043,32 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Returns the specified SSL policy resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.SslPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertSslPolicyRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertSslPolicyRequest, dict]):
@@ -1017,6 +1177,33 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         r"""Lists all the SSL policies that have been configured
         for the specified project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.SslPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListSslPoliciesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListSslPoliciesRequest, dict]):
                 The request object. A request message for
@@ -1105,6 +1292,32 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         r"""Lists all features that can be specified in the SSL
         policy when using custom profile.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list_available_features():
+                # Create a client
+                client = compute_v1.SslPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListAvailableFeaturesSslPoliciesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.list_available_features(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListAvailableFeaturesSslPoliciesRequest, dict]):
                 The request object. A request message for
@@ -1180,6 +1393,33 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
     ) -> compute.Operation:
         r"""Patches the specified SSL policy with the data
         included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.SslPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchSslPolicyRequest(
+                    project="project_value",
+                    ssl_policy="ssl_policy_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchSslPolicyRequest, dict]):
@@ -1280,6 +1520,33 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified SSL policy with the data
         included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.SslPoliciesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchSslPolicyRequest(
+                    project="project_value",
+                    ssl_policy="ssl_policy_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchSslPolicyRequest, dict]):

@@ -435,6 +435,33 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         r"""Retrieves the list of all HealthCheck resources,
         regional and global, available to the specified project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.HealthChecksClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListHealthChecksRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListHealthChecksRequest, dict]):
                 The request object. A request message for
@@ -522,6 +549,33 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified HealthCheck resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.HealthChecksClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteHealthCheckRequest(
+                    health_check="health_check_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteHealthCheckRequest, dict]):
@@ -612,6 +666,33 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified HealthCheck resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.HealthChecksClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteHealthCheckRequest(
+                    health_check="health_check_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteHealthCheckRequest, dict]):
@@ -727,6 +808,33 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
     ) -> compute.HealthCheck:
         r"""Returns the specified HealthCheck resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.HealthChecksClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetHealthCheckRequest(
+                    health_check="health_check_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetHealthCheckRequest, dict]):
                 The request object. A request message for
@@ -835,6 +943,32 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         r"""Creates a HealthCheck resource in the specified
         project using the data included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.HealthChecksClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertHealthCheckRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertHealthCheckRequest, dict]):
                 The request object. A request message for
@@ -918,6 +1052,32 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a HealthCheck resource in the specified
         project using the data included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.HealthChecksClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertHealthCheckRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertHealthCheckRequest, dict]):
@@ -1026,6 +1186,33 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         r"""Retrieves the list of HealthCheck resources available
         to the specified project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.HealthChecksClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListHealthChecksRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListHealthChecksRequest, dict]):
                 The request object. A request message for
@@ -1117,6 +1304,33 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         project using the data included in the request. This
         method supports PATCH semantics and uses the JSON merge
         patch format and processing rules.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.HealthChecksClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchHealthCheckRequest(
+                    health_check="health_check_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchHealthCheckRequest, dict]):
@@ -1218,6 +1432,33 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         project using the data included in the request. This
         method supports PATCH semantics and uses the JSON merge
         patch format and processing rules.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.HealthChecksClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchHealthCheckRequest(
+                    health_check="health_check_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchHealthCheckRequest, dict]):
@@ -1342,6 +1583,33 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         r"""Updates a HealthCheck resource in the specified
         project using the data included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_update():
+                # Create a client
+                client = compute_v1.HealthChecksClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.UpdateHealthCheckRequest(
+                    health_check="health_check_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.update(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateHealthCheckRequest, dict]):
                 The request object. A request message for
@@ -1440,6 +1708,33 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Updates a HealthCheck resource in the specified
         project using the data included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_update():
+                # Create a client
+                client = compute_v1.HealthChecksClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.UpdateHealthCheckRequest(
+                    health_check="health_check_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.update(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateHealthCheckRequest, dict]):

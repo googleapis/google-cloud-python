@@ -433,6 +433,33 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         r"""Retrieves the list of all UrlMap resources, regional
         and global, available to the specified project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.UrlMapsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListUrlMapsRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListUrlMapsRequest, dict]):
                 The request object. A request message for
@@ -520,6 +547,33 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified UrlMap resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.UrlMapsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteUrlMapRequest(
+                    project="project_value",
+                    url_map="url_map_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteUrlMapRequest, dict]):
@@ -609,6 +663,33 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified UrlMap resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.UrlMapsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteUrlMapRequest(
+                    project="project_value",
+                    url_map="url_map_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteUrlMapRequest, dict]):
@@ -723,6 +804,33 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
     ) -> compute.UrlMap:
         r"""Returns the specified UrlMap resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.UrlMapsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetUrlMapRequest(
+                    project="project_value",
+                    url_map="url_map_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetUrlMapRequest, dict]):
                 The request object. A request message for UrlMaps.Get.
@@ -832,6 +940,32 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         r"""Creates a UrlMap resource in the specified project
         using the data included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.UrlMapsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertUrlMapRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertUrlMapRequest, dict]):
                 The request object. A request message for UrlMaps.Insert.
@@ -914,6 +1048,32 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a UrlMap resource in the specified project
         using the data included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.UrlMapsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertUrlMapRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertUrlMapRequest, dict]):
@@ -1027,6 +1187,33 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         information, see `Invalidating cached
         content </cdn/docs/invalidating-cached-content>`__.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_invalidate_cache():
+                # Create a client
+                client = compute_v1.UrlMapsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InvalidateCacheUrlMapRequest(
+                    project="project_value",
+                    url_map="url_map_value",
+                )
+
+                # Make the request
+                response = client.invalidate_cache(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InvalidateCacheUrlMapRequest, dict]):
                 The request object. A request message for
@@ -1131,6 +1318,33 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         specified path, scoped to the specified UrlMap. For more
         information, see `Invalidating cached
         content </cdn/docs/invalidating-cached-content>`__.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_invalidate_cache():
+                # Create a client
+                client = compute_v1.UrlMapsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InvalidateCacheUrlMapRequest(
+                    project="project_value",
+                    url_map="url_map_value",
+                )
+
+                # Make the request
+                response = client.invalidate_cache(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InvalidateCacheUrlMapRequest, dict]):
@@ -1255,6 +1469,33 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         r"""Retrieves the list of UrlMap resources available to
         the specified project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.UrlMapsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListUrlMapsRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListUrlMapsRequest, dict]):
                 The request object. A request message for UrlMaps.List.
@@ -1344,6 +1585,33 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         included in the request. This method supports PATCH
         semantics and uses the JSON merge patch format and
         processing rules.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.UrlMapsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchUrlMapRequest(
+                    project="project_value",
+                    url_map="url_map_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchUrlMapRequest, dict]):
@@ -1442,6 +1710,33 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         included in the request. This method supports PATCH
         semantics and uses the JSON merge patch format and
         processing rules.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.UrlMapsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchUrlMapRequest(
+                    project="project_value",
+                    url_map="url_map_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchUrlMapRequest, dict]):
@@ -1563,6 +1858,33 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         r"""Updates the specified UrlMap resource with the data
         included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_update():
+                # Create a client
+                client = compute_v1.UrlMapsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.UpdateUrlMapRequest(
+                    project="project_value",
+                    url_map="url_map_value",
+                )
+
+                # Make the request
+                response = client.update(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateUrlMapRequest, dict]):
                 The request object. A request message for UrlMaps.Update.
@@ -1660,6 +1982,33 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified UrlMap resource with the data
         included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_update():
+                # Create a client
+                client = compute_v1.UrlMapsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.UpdateUrlMapRequest(
+                    project="project_value",
+                    url_map="url_map_value",
+                )
+
+                # Make the request
+                response = client.update(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateUrlMapRequest, dict]):
@@ -1785,6 +2134,33 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         r"""Runs static validation for the UrlMap. In particular,
         the tests of the provided UrlMap will be run. Calling
         this method does NOT create the UrlMap.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_validate():
+                # Create a client
+                client = compute_v1.UrlMapsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ValidateUrlMapRequest(
+                    project="project_value",
+                    url_map="url_map_value",
+                )
+
+                # Make the request
+                response = client.validate(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.ValidateUrlMapRequest, dict]):

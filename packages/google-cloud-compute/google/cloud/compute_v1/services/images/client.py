@@ -433,6 +433,33 @@ class ImagesClient(metaclass=ImagesClientMeta):
     ) -> compute.Operation:
         r"""Deletes the specified image.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.ImagesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteImageRequest(
+                    image="image_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteImageRequest, dict]):
                 The request object. A request message for Images.Delete.
@@ -519,6 +546,33 @@ class ImagesClient(metaclass=ImagesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified image.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.ImagesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteImageRequest(
+                    image="image_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteImageRequest, dict]):
@@ -634,6 +688,33 @@ class ImagesClient(metaclass=ImagesClientMeta):
         request body is given, clears the deprecation status
         instead.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_deprecate():
+                # Create a client
+                client = compute_v1.ImagesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeprecateImageRequest(
+                    image="image_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.deprecate(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeprecateImageRequest, dict]):
                 The request object. A request message for
@@ -731,6 +812,33 @@ class ImagesClient(metaclass=ImagesClientMeta):
         r"""Sets the deprecation status of an image. If an empty
         request body is given, clears the deprecation status
         instead.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_deprecate():
+                # Create a client
+                client = compute_v1.ImagesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeprecateImageRequest(
+                    image="image_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.deprecate(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeprecateImageRequest, dict]):
@@ -851,6 +959,33 @@ class ImagesClient(metaclass=ImagesClientMeta):
     ) -> compute.Image:
         r"""Returns the specified image.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.ImagesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetImageRequest(
+                    image="image_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetImageRequest, dict]):
                 The request object. A request message for Images.Get. See
@@ -941,6 +1076,33 @@ class ImagesClient(metaclass=ImagesClientMeta):
         r"""Returns the latest image that is part of an image
         family and is not deprecated. For more information on
         image families, see Public image families documentation.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get_from_family():
+                # Create a client
+                client = compute_v1.ImagesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetFromFamilyImageRequest(
+                    family="family_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.get_from_family(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetFromFamilyImageRequest, dict]):
@@ -1038,6 +1200,33 @@ class ImagesClient(metaclass=ImagesClientMeta):
     ) -> compute.Policy:
         r"""Gets the access control policy for a resource. May be
         empty if no such policy or resource exists.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = compute_v1.ImagesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetIamPolicyImageRequest(
+                    project="project_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyImageRequest, dict]):
@@ -1168,6 +1357,32 @@ class ImagesClient(metaclass=ImagesClientMeta):
         r"""Creates an image in the specified project using the
         data included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.ImagesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertImageRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertImageRequest, dict]):
                 The request object. A request message for Images.Insert.
@@ -1250,6 +1465,32 @@ class ImagesClient(metaclass=ImagesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Creates an image in the specified project using the
         data included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.ImagesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertImageRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertImageRequest, dict]):
@@ -1363,6 +1604,33 @@ class ImagesClient(metaclass=ImagesClientMeta):
         to make a request to the respective image project, such
         as debian-cloud or windows-cloud.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.ImagesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListImagesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListImagesRequest, dict]):
                 The request object. A request message for Images.List.
@@ -1451,6 +1719,33 @@ class ImagesClient(metaclass=ImagesClientMeta):
         r"""Patches the specified image with the data included in
         the request. Only the following fields can be modified:
         family, description, deprecation status.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.ImagesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchImageRequest(
+                    image="image_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchImageRequest, dict]):
@@ -1548,6 +1843,33 @@ class ImagesClient(metaclass=ImagesClientMeta):
         r"""Patches the specified image with the data included in
         the request. Only the following fields can be modified:
         family, description, deprecation status.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.ImagesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchImageRequest(
+                    image="image_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchImageRequest, dict]):
@@ -1670,6 +1992,33 @@ class ImagesClient(metaclass=ImagesClientMeta):
     ) -> compute.Policy:
         r"""Sets the access control policy on the specified
         resource. Replaces any existing policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = compute_v1.ImagesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetIamPolicyImageRequest(
+                    project="project_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyImageRequest, dict]):
@@ -1814,6 +2163,33 @@ class ImagesClient(metaclass=ImagesClientMeta):
         r"""Sets the labels on an image. To learn more about
         labels, read the Labeling Resources documentation.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_labels():
+                # Create a client
+                client = compute_v1.ImagesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetLabelsImageRequest(
+                    project="project_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_labels(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsImageRequest, dict]):
                 The request object. A request message for
@@ -1918,6 +2294,33 @@ class ImagesClient(metaclass=ImagesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on an image. To learn more about
         labels, read the Labeling Resources documentation.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_labels():
+                # Create a client
+                client = compute_v1.ImagesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetLabelsImageRequest(
+                    project="project_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_labels(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsImageRequest, dict]):
@@ -2047,6 +2450,33 @@ class ImagesClient(metaclass=ImagesClientMeta):
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the
         specified resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = compute_v1.ImagesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.TestIamPermissionsImageRequest(
+                    project="project_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsImageRequest, dict]):

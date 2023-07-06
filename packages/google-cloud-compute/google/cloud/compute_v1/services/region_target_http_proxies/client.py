@@ -438,6 +438,34 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
     ) -> compute.Operation:
         r"""Deletes the specified TargetHttpProxy resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.RegionTargetHttpProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteRegionTargetHttpProxyRequest(
+                    project="project_value",
+                    region="region_value",
+                    target_http_proxy="target_http_proxy_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionTargetHttpProxyRequest, dict]):
                 The request object. A request message for
@@ -540,6 +568,34 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified TargetHttpProxy resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.RegionTargetHttpProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteRegionTargetHttpProxyRequest(
+                    project="project_value",
+                    region="region_value",
+                    target_http_proxy="target_http_proxy_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRegionTargetHttpProxyRequest, dict]):
@@ -668,6 +724,34 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         r"""Returns the specified TargetHttpProxy resource in the
         specified region.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.RegionTargetHttpProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetRegionTargetHttpProxyRequest(
+                    project="project_value",
+                    region="region_value",
+                    target_http_proxy="target_http_proxy_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionTargetHttpProxyRequest, dict]):
                 The request object. A request message for
@@ -784,6 +868,33 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         project and region using the data included in the
         request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.RegionTargetHttpProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertRegionTargetHttpProxyRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionTargetHttpProxyRequest, dict]):
                 The request object. A request message for
@@ -885,6 +996,33 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         r"""Creates a TargetHttpProxy resource in the specified
         project and region using the data included in the
         request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.RegionTargetHttpProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertRegionTargetHttpProxyRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionTargetHttpProxyRequest, dict]):
@@ -1012,6 +1150,34 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         available to the specified project in the specified
         region.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.RegionTargetHttpProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListRegionTargetHttpProxiesRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionTargetHttpProxiesRequest, dict]):
                 The request object. A request message for
@@ -1116,6 +1282,34 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Changes the URL map for TargetHttpProxy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_url_map():
+                # Create a client
+                client = compute_v1.RegionTargetHttpProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetUrlMapRegionTargetHttpProxyRequest(
+                    project="project_value",
+                    region="region_value",
+                    target_http_proxy="target_http_proxy_value",
+                )
+
+                # Make the request
+                response = client.set_url_map(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetUrlMapRegionTargetHttpProxyRequest, dict]):
@@ -1229,6 +1423,34 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Changes the URL map for TargetHttpProxy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_url_map():
+                # Create a client
+                client = compute_v1.RegionTargetHttpProxiesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetUrlMapRegionTargetHttpProxyRequest(
+                    project="project_value",
+                    region="region_value",
+                    target_http_proxy="target_http_proxy_value",
+                )
+
+                # Make the request
+                response = client.set_url_map(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetUrlMapRegionTargetHttpProxyRequest, dict]):

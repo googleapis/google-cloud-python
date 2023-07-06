@@ -432,6 +432,33 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of VPN gateways.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.VpnGatewaysClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListVpnGatewaysRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListVpnGatewaysRequest, dict]):
                 The request object. A request message for
@@ -518,6 +545,34 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified VPN gateway.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.VpnGatewaysClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteVpnGatewayRequest(
+                    project="project_value",
+                    region="region_value",
+                    vpn_gateway="vpn_gateway_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteVpnGatewayRequest, dict]):
@@ -615,6 +670,34 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified VPN gateway.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.VpnGatewaysClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteVpnGatewayRequest(
+                    project="project_value",
+                    region="region_value",
+                    vpn_gateway="vpn_gateway_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteVpnGatewayRequest, dict]):
@@ -738,6 +821,34 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
     ) -> compute.VpnGateway:
         r"""Returns the specified VPN gateway.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.VpnGatewaysClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetVpnGatewayRequest(
+                    project="project_value",
+                    region="region_value",
+                    vpn_gateway="vpn_gateway_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetVpnGatewayRequest, dict]):
                 The request object. A request message for
@@ -842,6 +953,34 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
     ) -> compute.VpnGatewaysGetStatusResponse:
         r"""Returns the status for the specified VPN gateway.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get_status():
+                # Create a client
+                client = compute_v1.VpnGatewaysClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetStatusVpnGatewayRequest(
+                    project="project_value",
+                    region="region_value",
+                    vpn_gateway="vpn_gateway_value",
+                )
+
+                # Make the request
+                response = client.get_status(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetStatusVpnGatewayRequest, dict]):
                 The request object. A request message for
@@ -937,6 +1076,33 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
     ) -> compute.Operation:
         r"""Creates a VPN gateway in the specified project and
         region using the data included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.VpnGatewaysClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertVpnGatewayRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertVpnGatewayRequest, dict]):
@@ -1034,6 +1200,33 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a VPN gateway in the specified project and
         region using the data included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.VpnGatewaysClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertVpnGatewayRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertVpnGatewayRequest, dict]):
@@ -1156,6 +1349,34 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         r"""Retrieves a list of VPN gateways available to the
         specified project and region.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.VpnGatewaysClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListVpnGatewaysRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListVpnGatewaysRequest, dict]):
                 The request object. A request message for
@@ -1260,6 +1481,34 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
     ) -> compute.Operation:
         r"""Sets the labels on a VpnGateway. To learn more about
         labels, read the Labeling Resources documentation.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_labels():
+                # Create a client
+                client = compute_v1.VpnGatewaysClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetLabelsVpnGatewayRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_labels(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsVpnGatewayRequest, dict]):
@@ -1374,6 +1623,34 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on a VpnGateway. To learn more about
         labels, read the Labeling Resources documentation.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_labels():
+                # Create a client
+                client = compute_v1.VpnGatewaysClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetLabelsVpnGatewayRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_labels(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetLabelsVpnGatewayRequest, dict]):
@@ -1515,6 +1792,34 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the
         specified resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = compute_v1.VpnGatewaysClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.TestIamPermissionsVpnGatewayRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsVpnGatewayRequest, dict]):

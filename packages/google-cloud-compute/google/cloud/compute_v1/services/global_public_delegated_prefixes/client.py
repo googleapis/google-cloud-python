@@ -439,6 +439,33 @@ class GlobalPublicDelegatedPrefixesClient(
     ) -> compute.Operation:
         r"""Deletes the specified global PublicDelegatedPrefix.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.GlobalPublicDelegatedPrefixesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteGlobalPublicDelegatedPrefixeRequest(
+                    project="project_value",
+                    public_delegated_prefix="public_delegated_prefix_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteGlobalPublicDelegatedPrefixeRequest, dict]):
                 The request object. A request message for
@@ -530,6 +557,33 @@ class GlobalPublicDelegatedPrefixesClient(
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified global PublicDelegatedPrefix.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.GlobalPublicDelegatedPrefixesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteGlobalPublicDelegatedPrefixeRequest(
+                    project="project_value",
+                    public_delegated_prefix="public_delegated_prefix_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteGlobalPublicDelegatedPrefixeRequest, dict]):
@@ -648,6 +702,33 @@ class GlobalPublicDelegatedPrefixesClient(
         r"""Returns the specified global PublicDelegatedPrefix
         resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.GlobalPublicDelegatedPrefixesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetGlobalPublicDelegatedPrefixeRequest(
+                    project="project_value",
+                    public_delegated_prefix="public_delegated_prefix_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetGlobalPublicDelegatedPrefixeRequest, dict]):
                 The request object. A request message for
@@ -751,6 +832,32 @@ class GlobalPublicDelegatedPrefixesClient(
         specified project using the parameters that are included
         in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.GlobalPublicDelegatedPrefixesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertGlobalPublicDelegatedPrefixeRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertGlobalPublicDelegatedPrefixeRequest, dict]):
                 The request object. A request message for
@@ -841,6 +948,32 @@ class GlobalPublicDelegatedPrefixesClient(
         r"""Creates a global PublicDelegatedPrefix in the
         specified project using the parameters that are included
         in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.GlobalPublicDelegatedPrefixesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertGlobalPublicDelegatedPrefixeRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertGlobalPublicDelegatedPrefixeRequest, dict]):
@@ -953,6 +1086,33 @@ class GlobalPublicDelegatedPrefixesClient(
         r"""Lists the global PublicDelegatedPrefixes for a
         project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.GlobalPublicDelegatedPrefixesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListGlobalPublicDelegatedPrefixesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListGlobalPublicDelegatedPrefixesRequest, dict]):
                 The request object. A request message for
@@ -1046,6 +1206,33 @@ class GlobalPublicDelegatedPrefixesClient(
         resource with the data included in the request. This
         method supports PATCH semantics and uses JSON merge
         patch format and processing rules.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.GlobalPublicDelegatedPrefixesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchGlobalPublicDelegatedPrefixeRequest(
+                    project="project_value",
+                    public_delegated_prefix="public_delegated_prefix_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchGlobalPublicDelegatedPrefixeRequest, dict]):
@@ -1155,6 +1342,33 @@ class GlobalPublicDelegatedPrefixesClient(
         resource with the data included in the request. This
         method supports PATCH semantics and uses JSON merge
         patch format and processing rules.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.GlobalPublicDelegatedPrefixesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchGlobalPublicDelegatedPrefixeRequest(
+                    project="project_value",
+                    public_delegated_prefix="public_delegated_prefix_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchGlobalPublicDelegatedPrefixeRequest, dict]):

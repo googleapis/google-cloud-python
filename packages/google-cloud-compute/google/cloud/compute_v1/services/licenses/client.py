@@ -435,6 +435,33 @@ class LicensesClient(metaclass=LicensesClientMeta):
         intended for use only by third-party partners who are creating
         Cloud Marketplace images.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.LicensesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteLicenseRequest(
+                    license_="license__value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteLicenseRequest, dict]):
                 The request object. A request message for
@@ -526,6 +553,33 @@ class LicensesClient(metaclass=LicensesClientMeta):
         r"""Deletes the specified license. *Caution* This resource is
         intended for use only by third-party partners who are creating
         Cloud Marketplace images.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.LicensesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteLicenseRequest(
+                    license_="license__value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteLicenseRequest, dict]):
@@ -643,6 +697,33 @@ class LicensesClient(metaclass=LicensesClientMeta):
         is intended for use only by third-party partners who are
         creating Cloud Marketplace images.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.LicensesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetLicenseRequest(
+                    license_="license__value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetLicenseRequest, dict]):
                 The request object. A request message for Licenses.Get.
@@ -737,6 +818,33 @@ class LicensesClient(metaclass=LicensesClientMeta):
         no such policy or resource exists. *Caution* This resource is
         intended for use only by third-party partners who are creating
         Cloud Marketplace images.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = compute_v1.LicensesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetIamPolicyLicenseRequest(
+                    project="project_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyLicenseRequest, dict]):
@@ -868,6 +976,32 @@ class LicensesClient(metaclass=LicensesClientMeta):
         This resource is intended for use only by third-party partners
         who are creating Cloud Marketplace images.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.LicensesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertLicenseRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertLicenseRequest, dict]):
                 The request object. A request message for
@@ -952,6 +1086,32 @@ class LicensesClient(metaclass=LicensesClientMeta):
         r"""Create a License resource in the specified project. *Caution*
         This resource is intended for use only by third-party partners
         who are creating Cloud Marketplace images.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.LicensesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertLicenseRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertLicenseRequest, dict]):
@@ -1067,6 +1227,33 @@ class LicensesClient(metaclass=LicensesClientMeta):
         by third-party partners who are creating Cloud Marketplace
         images.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.LicensesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListLicensesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListLicensesRequest, dict]):
                 The request object. A request message for Licenses.List.
@@ -1157,6 +1344,33 @@ class LicensesClient(metaclass=LicensesClientMeta):
         Replaces any existing policy. *Caution* This resource is
         intended for use only by third-party partners who are creating
         Cloud Marketplace images.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = compute_v1.LicensesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetIamPolicyLicenseRequest(
+                    project="project_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyLicenseRequest, dict]):
@@ -1301,6 +1515,33 @@ class LicensesClient(metaclass=LicensesClientMeta):
         r"""Returns permissions that a caller has on the specified resource.
         *Caution* This resource is intended for use only by third-party
         partners who are creating Cloud Marketplace images.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = compute_v1.LicensesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.TestIamPermissionsLicenseRequest(
+                    project="project_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsLicenseRequest, dict]):

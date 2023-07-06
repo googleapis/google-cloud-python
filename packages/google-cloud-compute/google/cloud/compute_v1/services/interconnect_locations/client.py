@@ -434,6 +434,33 @@ class InterconnectLocationsClient(metaclass=InterconnectLocationsClientMeta):
         location. Gets a list of available interconnect
         locations by making a list() request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.InterconnectLocationsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetInterconnectLocationRequest(
+                    interconnect_location="interconnect_location_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetInterconnectLocationRequest, dict]):
                 The request object. A request message for
@@ -528,6 +555,33 @@ class InterconnectLocationsClient(metaclass=InterconnectLocationsClientMeta):
     ) -> pagers.ListPager:
         r"""Retrieves the list of interconnect locations
         available to the specified project.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.InterconnectLocationsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListInterconnectLocationsRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListInterconnectLocationsRequest, dict]):

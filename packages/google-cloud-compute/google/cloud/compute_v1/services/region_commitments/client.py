@@ -437,6 +437,33 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         r"""Retrieves an aggregated list of commitments by
         region.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.RegionCommitmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListRegionCommitmentsRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListRegionCommitmentsRequest, dict]):
                 The request object. A request message for
@@ -523,6 +550,34 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Commitment:
         r"""Returns the specified commitment resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.RegionCommitmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetRegionCommitmentRequest(
+                    commitment="commitment_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetRegionCommitmentRequest, dict]):
@@ -629,6 +684,33 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         r"""Creates a commitment in the specified project using
         the data included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.RegionCommitmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertRegionCommitmentRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionCommitmentRequest, dict]):
                 The request object. A request message for
@@ -725,6 +807,33 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a commitment in the specified project using
         the data included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.RegionCommitmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertRegionCommitmentRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRegionCommitmentRequest, dict]):
@@ -847,6 +956,34 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         r"""Retrieves a list of commitments contained within the
         specified region.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.RegionCommitmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListRegionCommitmentsRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListRegionCommitmentsRequest, dict]):
                 The request object. A request message for
@@ -951,6 +1088,34 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         request. Update is performed only on selected fields included as
         part of update-mask. Only the following fields can be modified:
         auto_renew.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_update():
+                # Create a client
+                client = compute_v1.RegionCommitmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.UpdateRegionCommitmentRequest(
+                    commitment="commitment_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.update(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateRegionCommitmentRequest, dict]):
@@ -1061,6 +1226,34 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         request. Update is performed only on selected fields included as
         part of update-mask. Only the following fields can be modified:
         auto_renew.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_update():
+                # Create a client
+                client = compute_v1.RegionCommitmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.UpdateRegionCommitmentRequest(
+                    commitment="commitment_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.update(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateRegionCommitmentRequest, dict]):

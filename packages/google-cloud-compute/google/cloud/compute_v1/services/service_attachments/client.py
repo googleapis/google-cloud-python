@@ -438,6 +438,33 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         resources, regional and global, available to the
         specified project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.ServiceAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListServiceAttachmentsRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListServiceAttachmentsRequest, dict]):
                 The request object. A request message for
@@ -529,6 +556,34 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
     ) -> compute.Operation:
         r"""Deletes the specified ServiceAttachment in the given
         scope
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.ServiceAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteServiceAttachmentRequest(
+                    project="project_value",
+                    region="region_value",
+                    service_attachment="service_attachment_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteServiceAttachmentRequest, dict]):
@@ -629,6 +684,34 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified ServiceAttachment in the given
         scope
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.ServiceAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteServiceAttachmentRequest(
+                    project="project_value",
+                    region="region_value",
+                    service_attachment="service_attachment_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteServiceAttachmentRequest, dict]):
@@ -755,6 +838,34 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         r"""Returns the specified ServiceAttachment resource in
         the given scope.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.ServiceAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetServiceAttachmentRequest(
+                    project="project_value",
+                    region="region_value",
+                    service_attachment="service_attachment_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetServiceAttachmentRequest, dict]):
                 The request object. A request message for
@@ -862,6 +973,34 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
     ) -> compute.Policy:
         r"""Gets the access control policy for a resource. May be
         empty if no such policy or resource exists.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = compute_v1.ServiceAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetIamPolicyServiceAttachmentRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyServiceAttachmentRequest, dict]):
@@ -1004,6 +1143,33 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         in the given scope using the parameters that are
         included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.ServiceAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertServiceAttachmentRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertServiceAttachmentRequest, dict]):
                 The request object. A request message for
@@ -1101,6 +1267,33 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         r"""Creates a ServiceAttachment in the specified project
         in the given scope using the parameters that are
         included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.ServiceAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertServiceAttachmentRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertServiceAttachmentRequest, dict]):
@@ -1223,6 +1416,34 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         r"""Lists the ServiceAttachments for a project in the
         given scope.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.ServiceAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListServiceAttachmentsRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListServiceAttachmentsRequest, dict]):
                 The request object. A request message for
@@ -1325,6 +1546,34 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         the data included in the request. This method supports
         PATCH semantics and uses JSON merge patch format and
         processing rules.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.ServiceAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchServiceAttachmentRequest(
+                    project="project_value",
+                    region="region_value",
+                    service_attachment="service_attachment_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchServiceAttachmentRequest, dict]):
@@ -1441,6 +1690,34 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         the data included in the request. This method supports
         PATCH semantics and uses JSON merge patch format and
         processing rules.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.ServiceAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchServiceAttachmentRequest(
+                    project="project_value",
+                    region="region_value",
+                    service_attachment="service_attachment_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchServiceAttachmentRequest, dict]):
@@ -1584,6 +1861,34 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
     ) -> compute.Policy:
         r"""Sets the access control policy on the specified
         resource. Replaces any existing policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = compute_v1.ServiceAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetIamPolicyServiceAttachmentRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyServiceAttachmentRequest, dict]):
@@ -1740,6 +2045,34 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the
         specified resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = compute_v1.ServiceAttachmentsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.TestIamPermissionsServiceAttachmentRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsServiceAttachmentRequest, dict]):

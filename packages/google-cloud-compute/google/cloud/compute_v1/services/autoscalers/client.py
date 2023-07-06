@@ -432,6 +432,33 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of autoscalers.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.AutoscalersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListAutoscalersRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListAutoscalersRequest, dict]):
                 The request object. A request message for
@@ -518,6 +545,34 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified autoscaler.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.AutoscalersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteAutoscalerRequest(
+                    autoscaler="autoscaler_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteAutoscalerRequest, dict]):
@@ -615,6 +670,34 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified autoscaler.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.AutoscalersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteAutoscalerRequest(
+                    autoscaler="autoscaler_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteAutoscalerRequest, dict]):
@@ -738,6 +821,34 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
     ) -> compute.Autoscaler:
         r"""Returns the specified autoscaler resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.AutoscalersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetAutoscalerRequest(
+                    autoscaler="autoscaler_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetAutoscalerRequest, dict]):
                 The request object. A request message for
@@ -845,6 +956,33 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         r"""Creates an autoscaler in the specified project using
         the data included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.AutoscalersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertAutoscalerRequest(
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertAutoscalerRequest, dict]):
                 The request object. A request message for
@@ -941,6 +1079,33 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Creates an autoscaler in the specified project using
         the data included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.AutoscalersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertAutoscalerRequest(
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertAutoscalerRequest, dict]):
@@ -1063,6 +1228,34 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         r"""Retrieves a list of autoscalers contained within the
         specified zone.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.AutoscalersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListAutoscalersRequest(
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListAutoscalersRequest, dict]):
                 The request object. A request message for
@@ -1167,6 +1360,33 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         PATCH semantics and uses the JSON merge patch format and
         processing rules.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.AutoscalersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchAutoscalerRequest(
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.PatchAutoscalerRequest, dict]):
                 The request object. A request message for
@@ -1265,6 +1485,33 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         the data included in the request. This method supports
         PATCH semantics and uses the JSON merge patch format and
         processing rules.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.AutoscalersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchAutoscalerRequest(
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchAutoscalerRequest, dict]):
@@ -1388,6 +1635,33 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         r"""Updates an autoscaler in the specified project using
         the data included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_update():
+                # Create a client
+                client = compute_v1.AutoscalersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.UpdateAutoscalerRequest(
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.update(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateAutoscalerRequest, dict]):
                 The request object. A request message for
@@ -1484,6 +1758,33 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Updates an autoscaler in the specified project using
         the data included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_update():
+                # Create a client
+                client = compute_v1.AutoscalersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.UpdateAutoscalerRequest(
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.update(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateAutoscalerRequest, dict]):

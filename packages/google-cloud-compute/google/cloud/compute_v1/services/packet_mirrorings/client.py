@@ -436,6 +436,33 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of packetMirrorings.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.PacketMirroringsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListPacketMirroringsRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListPacketMirroringsRequest, dict]):
                 The request object. A request message for
@@ -523,6 +550,34 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified PacketMirroring resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.PacketMirroringsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeletePacketMirroringRequest(
+                    packet_mirroring="packet_mirroring_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeletePacketMirroringRequest, dict]):
@@ -622,6 +677,34 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified PacketMirroring resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.PacketMirroringsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeletePacketMirroringRequest(
+                    packet_mirroring="packet_mirroring_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeletePacketMirroringRequest, dict]):
@@ -747,6 +830,34 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
     ) -> compute.PacketMirroring:
         r"""Returns the specified PacketMirroring resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.PacketMirroringsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetPacketMirroringRequest(
+                    packet_mirroring="packet_mirroring_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetPacketMirroringRequest, dict]):
                 The request object. A request message for
@@ -856,6 +967,33 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         project and region using the data included in the
         request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.PacketMirroringsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertPacketMirroringRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertPacketMirroringRequest, dict]):
                 The request object. A request message for
@@ -953,6 +1091,33 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         r"""Creates a PacketMirroring resource in the specified
         project and region using the data included in the
         request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.PacketMirroringsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertPacketMirroringRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertPacketMirroringRequest, dict]):
@@ -1075,6 +1240,34 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         r"""Retrieves a list of PacketMirroring resources
         available to the specified project and region.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.PacketMirroringsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListPacketMirroringsRequest(
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListPacketMirroringsRequest, dict]):
                 The request object. A request message for
@@ -1179,6 +1372,34 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         the data included in the request. This method supports
         PATCH semantics and uses JSON merge patch format and
         processing rules.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.PacketMirroringsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchPacketMirroringRequest(
+                    packet_mirroring="packet_mirroring_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchPacketMirroringRequest, dict]):
@@ -1291,6 +1512,34 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         the data included in the request. This method supports
         PATCH semantics and uses JSON merge patch format and
         processing rules.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.PacketMirroringsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchPacketMirroringRequest(
+                    packet_mirroring="packet_mirroring_value",
+                    project="project_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchPacketMirroringRequest, dict]):
@@ -1430,6 +1679,34 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
     ) -> compute.TestPermissionsResponse:
         r"""Returns permissions that a caller has on the
         specified resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = compute_v1.PacketMirroringsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.TestIamPermissionsPacketMirroringRequest(
+                    project="project_value",
+                    region="region_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsPacketMirroringRequest, dict]):

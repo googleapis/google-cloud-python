@@ -432,6 +432,33 @@ class LicenseCodesClient(metaclass=LicenseCodesClientMeta):
         Code. *Caution* This resource is intended for use only by
         third-party partners who are creating Cloud Marketplace images.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.LicenseCodesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetLicenseCodeRequest(
+                    license_code="license_code_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetLicenseCodeRequest, dict]):
                 The request object. A request message for
@@ -531,6 +558,33 @@ class LicenseCodesClient(metaclass=LicenseCodesClientMeta):
         r"""Returns permissions that a caller has on the specified resource.
         *Caution* This resource is intended for use only by third-party
         partners who are creating Cloud Marketplace images.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = compute_v1.LicenseCodesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.TestIamPermissionsLicenseCodeRequest(
+                    project="project_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.TestIamPermissionsLicenseCodeRequest, dict]):

@@ -435,6 +435,32 @@ class GlobalOrganizationOperationsClient(
     ) -> compute.DeleteGlobalOrganizationOperationResponse:
         r"""Deletes the specified Operations resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.GlobalOrganizationOperationsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteGlobalOrganizationOperationRequest(
+                    operation="operation_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteGlobalOrganizationOperationRequest, dict]):
                 The request object. A request message for
@@ -517,6 +543,32 @@ class GlobalOrganizationOperationsClient(
     ) -> compute.Operation:
         r"""Retrieves the specified Operations resource. Gets a list of
         operations by making a ``list()`` request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.GlobalOrganizationOperationsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetGlobalOrganizationOperationRequest(
+                    operation="operation_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetGlobalOrganizationOperationRequest, dict]):
@@ -611,6 +663,32 @@ class GlobalOrganizationOperationsClient(
     ) -> pagers.ListPager:
         r"""Retrieves a list of Operation resources contained
         within the specified organization.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.GlobalOrganizationOperationsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListGlobalOrganizationOperationsRequest(
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListGlobalOrganizationOperationsRequest, dict]):

@@ -442,6 +442,34 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         be in the same network/subnetwork. Read Adding instances
         for more information.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_add_instances():
+                # Create a client
+                client = compute_v1.InstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AddInstancesInstanceGroupRequest(
+                    instance_group="instance_group_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.add_instances(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AddInstancesInstanceGroupRequest, dict]):
                 The request object. A request message for
@@ -564,6 +592,34 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         group. All of the instances in the instance group must
         be in the same network/subnetwork. Read Adding instances
         for more information.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_add_instances():
+                # Create a client
+                client = compute_v1.InstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AddInstancesInstanceGroupRequest(
+                    instance_group="instance_group_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.add_instances(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.AddInstancesInstanceGroupRequest, dict]):
@@ -708,6 +764,33 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         r"""Retrieves the list of instance groups and sorts them
         by zone.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.InstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListInstanceGroupsRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListInstanceGroupsRequest, dict]):
                 The request object. A request message for
@@ -797,6 +880,34 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         in the group are not deleted. Note that instance group
         must not belong to a backend service. Read Deleting an
         instance group for more information.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.InstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteInstanceGroupRequest(
+                    instance_group="instance_group_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstanceGroupRequest, dict]):
@@ -901,6 +1012,34 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         in the group are not deleted. Note that instance group
         must not belong to a backend service. Read Deleting an
         instance group for more information.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.InstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteInstanceGroupRequest(
+                    instance_group="instance_group_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstanceGroupRequest, dict]):
@@ -1032,6 +1171,34 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         instanceGroupManagers or regionInstanceGroupManagers
         methods instead.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.InstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetInstanceGroupRequest(
+                    instance_group="instance_group_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetInstanceGroupRequest, dict]):
                 The request object. A request message for
@@ -1144,6 +1311,33 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         r"""Creates an instance group in the specified project
         using the parameters that are included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.InstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertInstanceGroupRequest(
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertInstanceGroupRequest, dict]):
                 The request object. A request message for
@@ -1242,6 +1436,33 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Creates an instance group in the specified project
         using the parameters that are included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.InstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertInstanceGroupRequest(
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertInstanceGroupRequest, dict]):
@@ -1368,6 +1589,34 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         instance groups, use the instanceGroupManagers or
         regionInstanceGroupManagers methods instead.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.InstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListInstanceGroupsRequest(
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListInstanceGroupsRequest, dict]):
                 The request object. A request message for
@@ -1477,6 +1726,35 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         query parameter is not supported. The filter query parameter is
         supported, but only for expressions that use ``eq`` (equal) or
         ``ne`` (not equal) operators.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list_instances():
+                # Create a client
+                client = compute_v1.InstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListInstancesInstanceGroupsRequest(
+                    instance_group="instance_group_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                page_result = client.list_instances(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListInstancesInstanceGroupsRequest, dict]):
@@ -1616,6 +1894,34 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         the connection draining duration before the VM instance
         is removed or deleted.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_remove_instances():
+                # Create a client
+                client = compute_v1.InstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.RemoveInstancesInstanceGroupRequest(
+                    instance_group="instance_group_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.remove_instances(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveInstancesInstanceGroupRequest, dict]):
                 The request object. A request message for
@@ -1742,6 +2048,34 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         connection draining, it can take up to 60 seconds after
         the connection draining duration before the VM instance
         is removed or deleted.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_remove_instances():
+                # Create a client
+                client = compute_v1.InstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.RemoveInstancesInstanceGroupRequest(
+                    instance_group="instance_group_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.remove_instances(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.RemoveInstancesInstanceGroupRequest, dict]):
@@ -1891,6 +2225,34 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         r"""Sets the named ports for the specified instance
         group.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_named_ports():
+                # Create a client
+                client = compute_v1.InstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetNamedPortsInstanceGroupRequest(
+                    instance_group="instance_group_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.set_named_ports(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.SetNamedPortsInstanceGroupRequest, dict]):
                 The request object. A request message for
@@ -2013,6 +2375,34 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the named ports for the specified instance
         group.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_named_ports():
+                # Create a client
+                client = compute_v1.InstanceGroupsClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetNamedPortsInstanceGroupRequest(
+                    instance_group="instance_group_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.set_named_ports(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetNamedPortsInstanceGroupRequest, dict]):

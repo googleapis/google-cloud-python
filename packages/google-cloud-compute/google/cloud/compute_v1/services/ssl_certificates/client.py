@@ -437,6 +437,33 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
         r"""Retrieves the list of all SslCertificate resources,
         regional and global, available to the specified project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.SslCertificatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListSslCertificatesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListSslCertificatesRequest, dict]):
                 The request object. A request message for
@@ -524,6 +551,33 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified SslCertificate resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.SslCertificatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteSslCertificateRequest(
+                    project="project_value",
+                    ssl_certificate="ssl_certificate_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteSslCertificateRequest, dict]):
@@ -614,6 +668,33 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified SslCertificate resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.SslCertificatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteSslCertificateRequest(
+                    project="project_value",
+                    ssl_certificate="ssl_certificate_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteSslCertificateRequest, dict]):
@@ -729,6 +810,33 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
     ) -> compute.SslCertificate:
         r"""Returns the specified SslCertificate resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.SslCertificatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetSslCertificateRequest(
+                    project="project_value",
+                    ssl_certificate="ssl_certificate_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetSslCertificateRequest, dict]):
                 The request object. A request message for
@@ -834,6 +942,32 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
         r"""Creates a SslCertificate resource in the specified
         project using the data included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.SslCertificatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertSslCertificateRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertSslCertificateRequest, dict]):
                 The request object. A request message for
@@ -917,6 +1051,32 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a SslCertificate resource in the specified
         project using the data included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.SslCertificatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertSslCertificateRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertSslCertificateRequest, dict]):
@@ -1024,6 +1184,33 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
     ) -> pagers.ListPager:
         r"""Retrieves the list of SslCertificate resources
         available to the specified project.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.SslCertificatesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListSslCertificatesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListSslCertificatesRequest, dict]):

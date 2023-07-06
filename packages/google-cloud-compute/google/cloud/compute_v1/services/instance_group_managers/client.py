@@ -456,6 +456,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         or deleted. You can specify a maximum of 1000 instances
         with this method per request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_abandon_instances():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AbandonInstancesInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.abandon_instances(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AbandonInstancesInstanceGroupManagerRequest, dict]):
                 The request object. Messages
@@ -593,6 +621,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         duration has elapsed before the VM instance is removed
         or deleted. You can specify a maximum of 1000 instances
         with this method per request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_abandon_instances():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AbandonInstancesInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.abandon_instances(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.AbandonInstancesInstanceGroupManagerRequest, dict]):
@@ -738,6 +794,33 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         r"""Retrieves the list of managed instance groups and
         groups them by zone.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListInstanceGroupManagersRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListInstanceGroupManagersRequest, dict]):
                 The request object. A request message for
@@ -831,6 +914,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         r"""Applies changes to selected instances on the managed
         instance group. This method can be used to apply new
         overrides and/or new versions.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_apply_updates_to_instances():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ApplyUpdatesToInstancesInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.apply_updates_to_instances(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.ApplyUpdatesToInstancesInstanceGroupManagerRequest, dict]):
@@ -962,6 +1073,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         r"""Applies changes to selected instances on the managed
         instance group. This method can be used to apply new
         overrides and/or new versions.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_apply_updates_to_instances():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ApplyUpdatesToInstancesInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.apply_updates_to_instances(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.ApplyUpdatesToInstancesInstanceGroupManagerRequest, dict]):
@@ -1124,6 +1263,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         creating or actions with the listmanagedinstances
         method.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_create_instances():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.CreateInstancesInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.create_instances(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.CreateInstancesInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
@@ -1253,6 +1420,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         time. You must separately verify the status of the
         creating or actions with the listmanagedinstances
         method.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_create_instances():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.CreateInstancesInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.create_instances(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.CreateInstancesInstanceGroupManagerRequest, dict]):
@@ -1402,6 +1597,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         group must not belong to a backend service. Read
         Deleting an instance group for more information.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
@@ -1507,6 +1730,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         of the instances in that group. Note that the instance
         group must not belong to a backend service. Read
         Deleting an instance group for more information.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstanceGroupManagerRequest, dict]):
@@ -1653,6 +1904,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         You can specify a maximum of 1000 instances with this
         method per request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete_instances():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteInstancesInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.delete_instances(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstancesInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
@@ -1788,6 +2067,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         elapsed before the VM instance is removed or deleted.
         You can specify a maximum of 1000 instances with this
         method per request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete_instances():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteInstancesInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.delete_instances(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteInstancesInstanceGroupManagerRequest, dict]):
@@ -1937,6 +2244,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         r"""Deletes selected per-instance configurations for the
         managed instance group.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete_per_instance_configs():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeletePerInstanceConfigsInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.delete_per_instance_configs(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeletePerInstanceConfigsInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
@@ -2069,6 +2404,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes selected per-instance configurations for the
         managed instance group.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete_per_instance_configs():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeletePerInstanceConfigsInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.delete_per_instance_configs(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeletePerInstanceConfigsInstanceGroupManagerRequest, dict]):
@@ -2223,6 +2586,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         r"""Returns all of the details about the specified
         managed instance group.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
@@ -2343,6 +2734,33 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         per group. Please contact Cloud Support if you need an
         increase in this limit.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertInstanceGroupManagerRequest(
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
@@ -2454,6 +2872,33 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         managed instance group can have up to 1000 VM instances
         per group. Please contact Cloud Support if you need an
         increase in this limit.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertInstanceGroupManagerRequest(
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertInstanceGroupManagerRequest, dict]):
@@ -2580,6 +3025,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         r"""Retrieves a list of managed instance groups that are
         contained within the specified project and zone.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListInstanceGroupManagersRequest(
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListInstanceGroupManagersRequest, dict]):
                 The request object. A request message for
@@ -2685,6 +3158,35 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         r"""Lists all errors thrown by actions on instances for a
         given managed instance group. The filter and orderBy
         query parameters are not supported.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list_errors():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListErrorsInstanceGroupManagersRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                page_result = client.list_errors(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListErrorsInstanceGroupManagersRequest, dict]):
@@ -2811,6 +3313,35 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         only if the group's ``listManagedInstancesResults`` field is set
         to ``PAGINATED``.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list_managed_instances():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListManagedInstancesInstanceGroupManagersRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                page_result = client.list_managed_instances(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListManagedInstancesInstanceGroupManagersRequest, dict]):
                 The request object. A request message for
@@ -2927,6 +3458,35 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         r"""Lists all of the per-instance configurations defined
         for the managed instance group. The orderBy query
         parameter is not supported.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list_per_instance_configs():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListPerInstanceConfigsInstanceGroupManagersRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                page_result = client.list_per_instance_configs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListPerInstanceConfigsInstanceGroupManagersRequest, dict]):
@@ -3060,6 +3620,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         learn how to apply an updated configuration to the VMs
         in a MIG, see Updating instances in a MIG.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.PatchInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
@@ -3185,6 +3773,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         group is different from the current state of that VM. To
         learn how to apply an updated configuration to the VMs
         in a MIG, see Updating instances in a MIG.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchInstanceGroupManagerRequest, dict]):
@@ -3331,6 +3947,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         serves as a key used to distinguish whether to perform
         insert or patch.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch_per_instance_configs():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchPerInstanceConfigsInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.patch_per_instance_configs(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.PatchPerInstanceConfigsInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
@@ -3465,6 +4109,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         the managed instance group. perInstanceConfig.name
         serves as a key used to distinguish whether to perform
         insert or patch.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch_per_instance_configs():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchPerInstanceConfigsInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.patch_per_instance_configs(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchPerInstanceConfigsInstanceGroupManagerRequest, dict]):
@@ -3636,6 +4308,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         You can specify a maximum of 1000 instances with this
         method per request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_recreate_instances():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.RecreateInstancesInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.recreate_instances(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.RecreateInstancesInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
@@ -3772,6 +4472,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         elapsed before the VM instance is removed or deleted.
         You can specify a maximum of 1000 instances with this
         method per request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_recreate_instances():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.RecreateInstancesInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.recreate_instances(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.RecreateInstancesInstanceGroupManagerRequest, dict]):
@@ -3939,6 +4667,35 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         duration has elapsed before the VM instance is removed
         or deleted.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_resize():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ResizeInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    size=443,
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.resize(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ResizeInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
@@ -4074,6 +4831,35 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         can take up to 60 seconds after the connection draining
         duration has elapsed before the VM instance is removed
         or deleted.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_resize():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ResizeInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    size=443,
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.resize(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.ResizeInstanceGroupManagerRequest, dict]):
@@ -4223,6 +5009,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         recreateInstances, run applyUpdatesToInstances, or set
         the group's updatePolicy.type to PROACTIVE.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_instance_template():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetInstanceTemplateInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.set_instance_template(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.SetInstanceTemplateInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
@@ -4353,6 +5167,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         instances in the group do not change unless you run
         recreateInstances, run applyUpdatesToInstances, or set
         the group's updatePolicy.type to PROACTIVE.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_instance_template():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetInstanceTemplateInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.set_instance_template(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetInstanceTemplateInstanceGroupManagerRequest, dict]):
@@ -4513,6 +5355,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         take some time to apply to all of the instances in the
         group depending on the size of the group.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_target_pools():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetTargetPoolsInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.set_target_pools(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.SetTargetPoolsInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
@@ -4641,6 +5511,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         yet been added to their target pools. The change might
         take some time to apply to all of the instances in the
         group depending on the size of the group.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_target_pools():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetTargetPoolsInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.set_target_pools(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetTargetPoolsInstanceGroupManagerRequest, dict]):
@@ -4792,6 +5690,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         serves as a key used to distinguish whether to perform
         insert or patch.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_update_per_instance_configs():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.UpdatePerInstanceConfigsInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.update_per_instance_configs(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.UpdatePerInstanceConfigsInstanceGroupManagerRequest, dict]):
                 The request object. A request message for
@@ -4926,6 +5852,34 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         the managed instance group. perInstanceConfig.name
         serves as a key used to distinguish whether to perform
         insert or patch.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_update_per_instance_configs():
+                # Create a client
+                client = compute_v1.InstanceGroupManagersClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.UpdatePerInstanceConfigsInstanceGroupManagerRequest(
+                    instance_group_manager="instance_group_manager_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.update_per_instance_configs(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.UpdatePerInstanceConfigsInstanceGroupManagerRequest, dict]):

@@ -433,6 +433,33 @@ class RoutesClient(metaclass=RoutesClientMeta):
     ) -> compute.Operation:
         r"""Deletes the specified Route resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.RoutesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteRouteRequest(
+                    project="project_value",
+                    route="route_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRouteRequest, dict]):
                 The request object. A request message for Routes.Delete.
@@ -519,6 +546,33 @@ class RoutesClient(metaclass=RoutesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified Route resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.RoutesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteRouteRequest(
+                    project="project_value",
+                    route="route_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteRouteRequest, dict]):
@@ -631,6 +685,33 @@ class RoutesClient(metaclass=RoutesClientMeta):
     ) -> compute.Route:
         r"""Returns the specified Route resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.RoutesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetRouteRequest(
+                    project="project_value",
+                    route="route_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetRouteRequest, dict]):
                 The request object. A request message for Routes.Get. See
@@ -723,6 +804,32 @@ class RoutesClient(metaclass=RoutesClientMeta):
         r"""Creates a Route resource in the specified project
         using the data included in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.RoutesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertRouteRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRouteRequest, dict]):
                 The request object. A request message for Routes.Insert.
@@ -805,6 +912,32 @@ class RoutesClient(metaclass=RoutesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a Route resource in the specified project
         using the data included in the request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.RoutesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertRouteRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertRouteRequest, dict]):
@@ -911,6 +1044,33 @@ class RoutesClient(metaclass=RoutesClientMeta):
     ) -> pagers.ListPager:
         r"""Retrieves the list of Route resources available to
         the specified project.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.RoutesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListRoutesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListRoutesRequest, dict]):

@@ -429,6 +429,33 @@ class NodeTypesClient(metaclass=NodeTypesClientMeta):
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of node types.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.NodeTypesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListNodeTypesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListNodeTypesRequest, dict]):
                 The request object. A request message for
@@ -515,6 +542,34 @@ class NodeTypesClient(metaclass=NodeTypesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.NodeType:
         r"""Returns the specified node type.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.NodeTypesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetNodeTypeRequest(
+                    node_type="node_type_value",
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetNodeTypeRequest, dict]):
@@ -621,6 +676,34 @@ class NodeTypesClient(metaclass=NodeTypesClientMeta):
     ) -> pagers.ListPager:
         r"""Retrieves a list of node types available to the
         specified project.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.NodeTypesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListNodeTypesRequest(
+                    project="project_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.ListNodeTypesRequest, dict]):

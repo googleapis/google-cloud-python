@@ -439,6 +439,33 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         r"""Adds a key for validating requests with signed URLs
         for this backend service.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_add_signed_url_key():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AddSignedUrlKeyBackendServiceRequest(
+                    backend_service="backend_service_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.add_signed_url_key(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AddSignedUrlKeyBackendServiceRequest, dict]):
                 The request object. A request message for
@@ -541,6 +568,33 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Adds a key for validating requests with signed URLs
         for this backend service.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_add_signed_url_key():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AddSignedUrlKeyBackendServiceRequest(
+                    backend_service="backend_service_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.add_signed_url_key(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.AddSignedUrlKeyBackendServiceRequest, dict]):
@@ -667,6 +721,33 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         r"""Retrieves the list of all BackendService resources,
         regional and global, available to the specified project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_aggregated_list():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.AggregatedListBackendServicesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.aggregated_list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.AggregatedListBackendServicesRequest, dict]):
                 The request object. A request message for
@@ -757,6 +838,33 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
     ) -> compute.Operation:
         r"""Deletes the specified BackendService resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteBackendServiceRequest(
+                    backend_service="backend_service_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteBackendServiceRequest, dict]):
                 The request object. A request message for
@@ -846,6 +954,33 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified BackendService resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteBackendServiceRequest(
+                    backend_service="backend_service_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.delete(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteBackendServiceRequest, dict]):
@@ -965,6 +1100,34 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         r"""Deletes a key for validating requests with signed
         URLs for this backend service.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete_signed_url_key():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteSignedUrlKeyBackendServiceRequest(
+                    backend_service="backend_service_value",
+                    key_name="key_name_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.delete_signed_url_key(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteSignedUrlKeyBackendServiceRequest, dict]):
                 The request object. A request message for
@@ -1069,6 +1232,34 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes a key for validating requests with signed
         URLs for this backend service.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_delete_signed_url_key():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.DeleteSignedUrlKeyBackendServiceRequest(
+                    backend_service="backend_service_value",
+                    key_name="key_name_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.delete_signed_url_key(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.DeleteSignedUrlKeyBackendServiceRequest, dict]):
@@ -1195,6 +1386,33 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
     ) -> compute.BackendService:
         r"""Returns the specified BackendService resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetBackendServiceRequest(
+                    backend_service="backend_service_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.get(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetBackendServiceRequest, dict]):
                 The request object. A request message for
@@ -1303,6 +1521,33 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         BackendService. Example request body: { "group":
         "/zones/us-east1-b/instanceGroups/lb-backend-example" }
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get_health():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetHealthBackendServiceRequest(
+                    backend_service="backend_service_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.get_health(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.GetHealthBackendServiceRequest, dict]):
                 The request object. A request message for
@@ -1404,6 +1649,33 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
     ) -> compute.Policy:
         r"""Gets the access control policy for a resource. May be
         empty if no such policy or resource exists.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.GetIamPolicyBackendServiceRequest(
+                    project="project_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.GetIamPolicyBackendServiceRequest, dict]):
@@ -1535,6 +1807,32 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         project using the data included in the request. For more
         information, see Backend services overview .
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertBackendServiceRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.InsertBackendServiceRequest, dict]):
                 The request object. A request message for
@@ -1619,6 +1917,32 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         r"""Creates a BackendService resource in the specified
         project using the data included in the request. For more
         information, see Backend services overview .
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_insert():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.InsertBackendServiceRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.insert(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.InsertBackendServiceRequest, dict]):
@@ -1727,6 +2051,33 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         r"""Retrieves the list of BackendService resources
         available to the specified project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_list():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.ListBackendServicesRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.list(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.ListBackendServicesRequest, dict]):
                 The request object. A request message for
@@ -1819,6 +2170,33 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         see Backend services overview. This method supports
         PATCH semantics and uses the JSON merge patch format and
         processing rules.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchBackendServiceRequest(
+                    backend_service="backend_service_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchBackendServiceRequest, dict]):
@@ -1921,6 +2299,33 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         see Backend services overview. This method supports
         PATCH semantics and uses the JSON merge patch format and
         processing rules.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_patch():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.PatchBackendServiceRequest(
+                    backend_service="backend_service_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.PatchBackendServiceRequest, dict]):
@@ -2049,6 +2454,33 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         r"""Sets the edge security policy for the specified
         backend service.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_edge_security_policy():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetEdgeSecurityPolicyBackendServiceRequest(
+                    backend_service="backend_service_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.set_edge_security_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.SetEdgeSecurityPolicyBackendServiceRequest, dict]):
                 The request object. A request message for
@@ -2157,6 +2589,33 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the edge security policy for the specified
         backend service.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_edge_security_policy():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetEdgeSecurityPolicyBackendServiceRequest(
+                    backend_service="backend_service_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.set_edge_security_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetEdgeSecurityPolicyBackendServiceRequest, dict]):
@@ -2290,6 +2749,33 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
     ) -> compute.Policy:
         r"""Sets the access control policy on the specified
         resource. Replaces any existing policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetIamPolicyBackendServiceRequest(
+                    project="project_value",
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetIamPolicyBackendServiceRequest, dict]):
@@ -2437,6 +2923,33 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         specified backend service. For more information, see
         Google Cloud Armor Overview
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_security_policy():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetSecurityPolicyBackendServiceRequest(
+                    backend_service="backend_service_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.set_security_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.SetSecurityPolicyBackendServiceRequest, dict]):
                 The request object. A request message for
@@ -2545,6 +3058,33 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         r"""Sets the Google Cloud Armor security policy for the
         specified backend service. For more information, see
         Google Cloud Armor Overview
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_set_security_policy():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.SetSecurityPolicyBackendServiceRequest(
+                    backend_service="backend_service_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.set_security_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.SetSecurityPolicyBackendServiceRequest, dict]):
@@ -2675,6 +3215,33 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         the data included in the request. For more information,
         see Backend services overview.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_update():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.UpdateBackendServiceRequest(
+                    backend_service="backend_service_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.update(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateBackendServiceRequest, dict]):
                 The request object. A request message for
@@ -2774,6 +3341,33 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         r"""Updates the specified BackendService resource with
         the data included in the request. For more information,
         see Backend services overview.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import compute_v1
+
+            def sample_update():
+                # Create a client
+                client = compute_v1.BackendServicesClient()
+
+                # Initialize request argument(s)
+                request = compute_v1.UpdateBackendServiceRequest(
+                    backend_service="backend_service_value",
+                    project="project_value",
+                )
+
+                # Make the request
+                response = client.update(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.compute_v1.types.UpdateBackendServiceRequest, dict]):
