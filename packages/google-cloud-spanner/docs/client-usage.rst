@@ -1,5 +1,5 @@
-Spanner Client
-==============
+Spanner Client Usage
+====================
 
 .. _spanner-client:
 

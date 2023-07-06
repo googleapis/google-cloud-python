@@ -1,5 +1,5 @@
-Table Admin
-===========
+Table Admin Usage
+=================
 
 After creating an :class:`~google.cloud.spanner_v1.database.Database`, you can
 interact with individual tables for that instance.

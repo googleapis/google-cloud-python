@@ -1,5 +1,5 @@
-Database Admin
-==============
+Database Admin Usage
+====================
 
 After creating an :class:`~google.cloud.spanner_v1.instance.Instance`, you can
 interact with individual databases for that instance.

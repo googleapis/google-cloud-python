@@ -1,5 +1,5 @@
-Instance Admin
-==============
+Instance Admin Usage
+====================
 
 After creating a :class:`~google.cloud.spanner_v1.client.Client`, you can
 interact with individual instances for a project.
