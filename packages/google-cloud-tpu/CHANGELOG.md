@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tpu-v1.11.1...google-cloud-tpu-v1.11.2) (2023-07-06)
+
+
+### Documentation
+
+* minor updates in comments ([#11465](https://github.com/googleapis/google-cloud-python/issues/11465)) ([2164070](https://github.com/googleapis/google-cloud-python/commit/2164070f7abb6d8b7d0659dc5ca774f5aa531d96))
+
 ## [1.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tpu-v1.11.0...google-cloud-tpu-v1.11.1) (2023-07-05)
 
 
