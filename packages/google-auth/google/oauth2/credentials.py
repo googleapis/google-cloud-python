@@ -35,6 +35,7 @@ from datetime import datetime
 import io
 import json
 import logging
+import warnings
 
 import six
 
@@ -498,6 +499,13 @@ class UserAccessTokenCredentials(credentials.CredentialsWithQuotaProject):
     """
 
     def __init__(self, account=None, quota_project_id=None):
+        warnings.warn(
+            "UserAccessTokenCredentials is deprecated, please use "
+            "google.oauth2.credentials.Credentials instead. To use "
+            "that credential type, simply run "
+            "`gcloud auth application-default login` and let the "
+            "client libraries pick up the application default credentials."
+        )
         super(UserAccessTokenCredentials, self).__init__()
         self._account = account
         self._quota_project_id = quota_project_id

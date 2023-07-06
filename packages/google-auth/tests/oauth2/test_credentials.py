@@ -951,25 +951,34 @@ class TestCredentials(object):
 
 class TestUserAccessTokenCredentials(object):
     def test_instance(self):
-        cred = credentials.UserAccessTokenCredentials()
-        assert cred._account is None
+        with pytest.warns(
+            UserWarning, match="UserAccessTokenCredentials is deprecated"
+        ):
+            cred = credentials.UserAccessTokenCredentials()
+            assert cred._account is None
 
-        cred = cred.with_account("account")
-        assert cred._account == "account"
+            cred = cred.with_account("account")
+            assert cred._account == "account"
 
     @mock.patch("google.auth._cloud_sdk.get_auth_access_token", autospec=True)
     def test_refresh(self, get_auth_access_token):
-        get_auth_access_token.return_value = "access_token"
-        cred = credentials.UserAccessTokenCredentials()
-        cred.refresh(None)
-        assert cred.token == "access_token"
+        with pytest.warns(
+            UserWarning, match="UserAccessTokenCredentials is deprecated"
+        ):
+            get_auth_access_token.return_value = "access_token"
+            cred = credentials.UserAccessTokenCredentials()
+            cred.refresh(None)
+            assert cred.token == "access_token"
 
     def test_with_quota_project(self):
-        cred = credentials.UserAccessTokenCredentials()
-        quota_project_cred = cred.with_quota_project("project-foo")
+        with pytest.warns(
+            UserWarning, match="UserAccessTokenCredentials is deprecated"
+        ):
+            cred = credentials.UserAccessTokenCredentials()
+            quota_project_cred = cred.with_quota_project("project-foo")
 
-        assert quota_project_cred._quota_project_id == "project-foo"
-        assert quota_project_cred._account == cred._account
+            assert quota_project_cred._quota_project_id == "project-foo"
+            assert quota_project_cred._account == cred._account
 
     @mock.patch(
         "google.oauth2.credentials.UserAccessTokenCredentials.apply", autospec=True
@@ -978,7 +987,10 @@ class TestUserAccessTokenCredentials(object):
         "google.oauth2.credentials.UserAccessTokenCredentials.refresh", autospec=True
     )
     def test_before_request(self, refresh, apply):
-        cred = credentials.UserAccessTokenCredentials()
-        cred.before_request(mock.Mock(), "GET", "https://example.com", {})
-        refresh.assert_called()
-        apply.assert_called()
+        with pytest.warns(
+            UserWarning, match="UserAccessTokenCredentials is deprecated"
+        ):
+            cred = credentials.UserAccessTokenCredentials()
+            cred.before_request(mock.Mock(), "GET", "https://example.com", {})
+            refresh.assert_called()
+            apply.assert_called()
