@@ -219,11 +219,8 @@ See the `CONTRIBUTING doc`_ for more information on how to get started.
 Community
 ---------
 
-Google Cloud Platform Python developers hang out in `Slack`_ in the ``#python``
-channel, click here to `get an invitation`_.
+The best place to ask questions is via Stackoverflow: https://stackoverflow.com/questions/tagged/google-cloud-pubsub
 
-.. _Slack: https://googlecloud-community.slack.com
-.. _get an invitation: https://gcp-slack.appspot.com/
 
 License
 -------
