@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/googleapis/python-compute/compare/v1.12.0...v1.12.1) (2023-07-06)
+
+
+### Documentation
+
+* Add generated code snippets ([#418](https://github.com/googleapis/python-compute/issues/418)) ([b5c4592](https://github.com/googleapis/python-compute/commit/b5c4592f7f99f3732e1cea75ea80e985371bf60e))
+
 ## [1.12.0](https://github.com/googleapis/python-compute/compare/v1.11.0...v1.12.0) (2023-07-04)
 
 
