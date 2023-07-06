@@ -826,8 +826,18 @@
             "component": "google-cloud-language",
             "extra-files": [
                 "google/cloud/language/gapic_version.py",
+                "google/cloud/language_v1beta2/gapic_version.py",
                 "google/cloud/language_v1/gapic_version.py",
-                "google/cloud/language_v1beta2/gapic_version.py"
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.language.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.language.v1beta2.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
