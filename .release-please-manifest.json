@@ -27,7 +27,7 @@
     "packages/google-cloud-certificate-manager": "1.4.3",
     "packages/google-cloud-channel": "1.15.1",
     "packages/google-cloud-confidentialcomputing": "0.1.1",
-    "packages/google-cloud-contact-center-insights": "1.11.1",
+    "packages/google-cloud-contact-center-insights": "1.12.0",
     "packages/google-cloud-contentwarehouse": "0.5.1",
     "packages/google-cloud-data-fusion": "1.8.2",
     "packages/google-cloud-data-qna": "0.10.3",

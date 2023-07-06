@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.11.1...google-cloud-contact-center-insights-v1.12.0) (2023-07-06)
+
+
+### Features
+
+* Support topic model type V2 ([#11457](https://github.com/googleapis/google-cloud-python/issues/11457)) ([4c94c24](https://github.com/googleapis/google-cloud-python/commit/4c94c24e0678e0867bff063d2268164a5ed9685c))
+
 ## [1.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.11.0...google-cloud-contact-center-insights-v1.11.1) (2023-07-05)
 
 
