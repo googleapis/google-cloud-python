@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,5 +11,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-requestsize:
-  enabled: true
+
+
+deep-remove-regex:
+  - /owl-bot-staging
+
+deep-copy-regex:
+  - source: /google/cloud/language/(v.*)/.*-py
+    dest: /owl-bot-staging/google-cloud-language/$1
+
+begin-after-commit-hash: 6a5da3f1274b088752f074da5bc9e30bd1beb27e
+
