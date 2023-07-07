@@ -16,12 +16,11 @@
 """Wrappers for Document AI Page type."""
 
 import dataclasses
-import html
-from typing import List, Optional, Tuple, Union
-
-from google.cloud.documentai_toolbox.constants import ElementWithLayout
+from typing import List, Optional, Union
 
 from google.cloud import documentai
+from google.cloud.documentai_toolbox.constants import ElementWithLayout
+
 import pandas as pd
 
 ChildrenElements = Union[
@@ -113,6 +112,36 @@ class Table:
 
 
 @dataclasses.dataclass
+class FormField:
+    """Represents a wrapped documentai.Document.Page.FormField.
+
+    Attributes:
+        documentai_object (google.cloud.documentai.Document.Page.FormField):
+            Required. The original google.cloud.documentai.Document.Page.FormField object.
+        document_text (str):
+            Required. UTF-8 encoded text in reading order from the document.
+        field_name (str):
+            Required. The form field name
+        field_value (str):
+            Required. The form field value
+    """
+
+    documentai_object: documentai.Document.Page.FormField
+    document_text: dataclasses.InitVar[str]
+
+    field_name: str = dataclasses.field(init=False)
+    field_value: str = dataclasses.field(init=False)
+
+    def __post_init__(self, document_text) -> None:
+        self.field_name = _trim_text(
+            _text_from_layout(self.documentai_object.field_name, document_text)
+        )
+        self.field_value = _trim_text(
+            _text_from_layout(self.documentai_object.field_value, document_text)
+        )
+
+
+@dataclasses.dataclass
 class Token:
     """Represents a wrapped documentai.Document.Page.
     .
@@ -143,7 +172,7 @@ class Token:
         if self._hocr_bounding_box is None:
             self._hocr_bounding_box = _get_hocr_bounding_box(
                 element_with_layout=self.documentai_object,
-                dimension=self._page.documentai_object.dimension,
+                page_dimension=self._page.documentai_object.dimension,
             )
         return self._hocr_bounding_box
 
@@ -186,39 +215,9 @@ class Line:
         if self._hocr_bounding_box is None:
             self._hocr_bounding_box = _get_hocr_bounding_box(
                 element_with_layout=self.documentai_object,
-                dimension=self._page.documentai_object.dimension,
+                page_dimension=self._page.documentai_object.dimension,
             )
         return self._hocr_bounding_box
-
-
-@dataclasses.dataclass
-class FormField:
-    """Represents a wrapped documentai.Document.Page.FormField.
-
-    Attributes:
-        documentai_object (google.cloud.documentai.Document.Page.FormField):
-            Required. The original google.cloud.documentai.Document.Page.FormField object.
-        document_text (str):
-            Required. UTF-8 encoded text in reading order from the document.
-        field_name (str):
-            Required. The form field name
-        field_value (str):
-            Required. The form field value
-    """
-
-    documentai_object: documentai.Document.Page.FormField
-    document_text: dataclasses.InitVar[str]
-
-    field_name: str = dataclasses.field(init=False)
-    field_value: str = dataclasses.field(init=False)
-
-    def __post_init__(self, document_text) -> None:
-        self.field_name = _trim_text(
-            _text_from_layout(self.documentai_object.field_name, document_text)
-        )
-        self.field_value = _trim_text(
-            _text_from_layout(self.documentai_object.field_value, document_text)
-        )
 
 
 @dataclasses.dataclass
@@ -257,7 +256,7 @@ class Paragraph:
         if self._hocr_bounding_box is None:
             self._hocr_bounding_box = _get_hocr_bounding_box(
                 element_with_layout=self.documentai_object,
-                dimension=self._page.documentai_object.dimension,
+                page_dimension=self._page.documentai_object.dimension,
             )
         return self._hocr_bounding_box
 
@@ -298,7 +297,7 @@ class Block:
         if self._hocr_bounding_box is None:
             self._hocr_bounding_box = _get_hocr_bounding_box(
                 element_with_layout=self.documentai_object,
-                dimension=self._page.documentai_object.dimension,
+                page_dimension=self._page.documentai_object.dimension,
             )
         return self._hocr_bounding_box
 
@@ -332,43 +331,9 @@ def _table_rows_from_documentai_table_rows(
     return body_rows
 
 
-def _get_xy(
-    element: ElementWithLayout,
-    dimension: documentai.Document.Page.Dimension,
-    normalized: bool = False,
-    min: bool = False,
-) -> Tuple[int, int]:
-    r"""Returns hocr xy coordinates corresponding to elements bounding box.
-
-    Args:
-        element (ElementWithLayout):
-            Required. an element with layout fields.
-        dimension (documentai.Document.Page.Dimension):
-            Required. Page dimension.
-        normalized (Boolean):
-            Required. Wether element.layout.bounding_poly is normalized
-        min (Boolean):
-            Required. Wether xy should be min
-
-    Returns:
-        Tuple[int, int]:
-            hocr xy coordinates corresponding to elements bounding box.
-    """
-    index = 0 if min else 2
-    if not normalized:
-        return (
-            element.layout.bounding_poly.vertices[index].x,
-            element.layout.bounding_poly.vertices[index].y,
-        )
-    return (
-        element.layout.bounding_poly.vertices[index].x * dimension.width,
-        element.layout.bounding_poly.vertices[index].y * dimension.height,
-    )
-
-
 def _get_hocr_bounding_box(
     element_with_layout: ElementWithLayout,
-    dimension: documentai.Document.Page.Dimension,
+    page_dimension: documentai.Document.Page.Dimension,
 ) -> str:
     r"""Returns a hOCR bounding box string.
 
@@ -382,13 +347,11 @@ def _get_hocr_bounding_box(
         str:
             hOCR bounding box sring.
     """
-
-    if element_with_layout.layout.bounding_poly.vertices:
-        min_x, min_y = _get_xy(element_with_layout, dimension, False, True)
-        max_x, max_y = _get_xy(element_with_layout, dimension, False, False)
-    else:
-        min_x, min_y = _get_xy(element_with_layout, dimension, True, True)
-        max_x, max_y = _get_xy(element_with_layout, dimension, True, False)
+    vertices = [
+        (int(v.x * page_dimension.width + 0.5), int(v.y * page_dimension.height + 0.5))
+        for v in element_with_layout.layout.bounding_poly.normalized_vertices
+    ]
+    (min_x, min_y), (max_x, max_y) = vertices[0], vertices[2]
 
     return f"bbox {min_x} {min_y} {max_x} {max_y}"
 
@@ -440,118 +403,6 @@ def _get_children_of_element(element: ElementWithLayout, children: ChildrenEleme
         if child.documentai_object.layout.text_anchor.text_segments[0].end_index
         <= end_index
     ]
-
-
-def _get_blocks(
-    blocks: List[documentai.Document.Page.Block], page: "Page"
-) -> List[Block]:
-    r"""Returns a list of wrapped Blocks.
-
-    Args:
-        blocks (List[documentai.Document.Page.Block]):
-            Required. A list of documentai.Document.Page.Block objects.
-        page (Page):
-            Required. The Page object.
-
-    Returns:
-        List[Block]:
-             A list of wrapped Blocks.
-    """
-    result = []
-
-    for block in blocks:
-        result.append(
-            Block(
-                documentai_object=block,
-                _page=page,
-            )
-        )
-
-    return result
-
-
-def _get_paragraphs(
-    paragraphs: List[documentai.Document.Page.Paragraph],
-    page: "Page",
-) -> List[Paragraph]:
-    r"""Returns a list of wrapped Paragraphs.
-
-    Args:
-        paragraphs (List[documentai.Document.Page.Paragraph]):
-            Required. A list of documentai.Document.Page.Paragraph objects.
-        page (Page):
-            Required. The Page object.
-
-    Returns:
-        List[Paragraph]:
-             A list of wrapped Paragraphs.
-    """
-    result = []
-
-    for paragraph in paragraphs:
-        result.append(
-            Paragraph(
-                documentai_object=paragraph,
-                _page=page,
-            )
-        )
-
-    return result
-
-
-def _get_tokens(
-    tokens: List[documentai.Document.Page.Token], page: "Page"
-) -> List[Token]:
-    r"""Returns a list of wrapped tokens.
-
-    Args:
-        tokens (List[documentai.Document.Page.Token]):
-            Required. A list of documentai.Document.Page.Token.
-        page (Page):
-            Required. The Page object.
-
-    Returns:
-        List[Token]:
-            A list of wrapped tokens.
-    """
-    result = []
-
-    for token in tokens:
-        result.append(
-            Token(
-                documentai_object=token,
-                _page=page,
-            )
-        )
-
-    return result
-
-
-def _get_lines(lines: List[documentai.Document.Page.Line], page: "Page") -> List[Line]:
-    r"""Returns a list of wrapped lines.
-
-    Args:
-        lines (List[documentai.Document.Page.Line]):
-            Required. A list of documentai.Document.Page.Line objects.
-        page (Page):
-            Required. The Page object.
-
-    Returns:
-        List[Line]:
-            A list of wrapped Lines.
-    """
-
-    result = []
-
-    for line in lines:
-        result.append(
-            Line(
-                documentai_object=line,
-                _page=page,
-            )
-        )
-
-    return result
 
 
 def _trim_text(text: str) -> str:
@@ -637,54 +488,34 @@ class Page:
             for form_field in self.documentai_object.form_fields
         ]
 
-        self.tokens = _get_tokens(tokens=self.documentai_object.tokens, page=self)
-        self.lines = _get_lines(lines=self.documentai_object.lines, page=self)
-        self.paragraphs = _get_paragraphs(
-            paragraphs=self.documentai_object.paragraphs, page=self
-        )
-        self.blocks = _get_blocks(
-            blocks=self.documentai_object.blocks,
-            page=self,
-        )
+        self.tokens = [
+            Token(
+                documentai_object=token,
+                _page=self,
+            )
+            for token in self.documentai_object.tokens
+        ]
 
-    def to_hocr(self):
-        r"""Exports a string hOCR version of the documentai.Document.Page.
+        self.lines = [
+            Line(documentai_object=line, _page=self)
+            for line in self.documentai_object.lines
+        ]
 
-        The format for the id of the object follows as such:
-            object_{page_index}_...
+        self.paragraphs = [
+            Paragraph(documentai_object=paragraph, _page=self)
+            for paragraph in self.documentai_object.paragraphs
+        ]
 
-        For example words will have the following id format:
-            word_{page_index}_{block_index}_{paragraph_index}_{line_index}_{word_index}
-
-        Args:
-
-        Returns:
-            str:
-                A string hOCR version of the documentai.Document.Page.
-        """
-        f = ""
-        pidx = self.documentai_object.page_number
-        f += f"<div class='ocr_page' lang='unknown' title='{self.hocr_bounding_box}'>"
-        for bidx, block in enumerate(self.blocks):
-            f += f"<span class='ocr_carea' id='block_{pidx}_{bidx}' title='{block.hocr_bounding_box}'>"
-            for paridx, paragraph in enumerate(block.paragraphs):
-                f += f"<span class='ocr_par' id='par_{pidx}_{bidx}_{paridx}' title='{paragraph.hocr_bounding_box}'>"
-                for lidx, line in enumerate(paragraph.lines):
-                    line_text = html.escape(line.text)
-                    f += f"<span class='ocr_line' id='line_{pidx}_{bidx}_{paridx}_{lidx}' title='{line.hocr_bounding_box}'>{line_text}</span>"
-                    for tidx, token in enumerate(line.tokens):
-                        word_text = html.escape(token.text)
-                        f += f"<span class='ocrx_word' id='word_{pidx}_{bidx}_{paridx}_{lidx}_{tidx}' title='{token.hocr_bounding_box}'>{word_text}</span>"
-                f += "</span>"
-            f += "</span>"
-        f += "</div>"
-        return f
+        self.blocks = [
+            Block(documentai_object=block, _page=self)
+            for block in self.documentai_object.blocks
+        ]
 
     @property
     def hocr_bounding_box(self):
         if self._hocr_bounding_box is None:
             self._hocr_bounding_box = _get_hocr_bounding_box(
                 element_with_layout=self.documentai_object,
-                dimension=self.documentai_object.dimension,
+                page_dimension=self.documentai_object.dimension,
             )
         return self._hocr_bounding_box

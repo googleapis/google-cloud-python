@@ -43,7 +43,7 @@ from google.longrunning.operations_pb2 import GetOperationRequest, Operation
 
 from pikepdf import Pdf
 
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, PackageLoader
 
 
 def _entities_from_shards(
@@ -773,6 +773,12 @@ class Document:
     def export_hocr_str(self, title: str) -> str:
         r"""Exports a string hOCR version of the Document.
 
+            The format for the id of the object follows as such:
+                object_{page_index}_...
+
+            For example words will have the following id format:
+                word_{page_index}_{block_index}_{paragraph_index}_{line_index}_{word_index}
+
         Args:
             title (str):
                 Required. The title for hocr_page and head.
@@ -781,15 +787,9 @@ class Document:
             str:
                 A string hOCR version of the Document
         """
-        environment = Environment(loader=FileSystemLoader("templates/"))
-        template = environment.get_template("hocr_xml_template.txt")
-        hocr_pages = ""
-        number_of_pages = len(self.pages)
-        for page_to_export in self.pages:
-            hocr_pages += page_to_export.to_hocr()
-
-        content = template.render(
-            hocr_pages=hocr_pages, number_of_pages=number_of_pages, title=title
+        environment = Environment(
+            loader=PackageLoader("google.cloud.documentai_toolbox", "templates")
         )
-
+        template = environment.get_template("hocr_document_template.xml.j2")
+        content = template.render(pages=self.pages, title=title)
         return content
