@@ -2932,12 +2932,15 @@ class BuildOptions(proto.Message):
                 Highcpu e2 machine with 8 CPUs.
             E2_HIGHCPU_32 (6):
                 Highcpu e2 machine with 32 CPUs.
+            E2_MEDIUM (7):
+                E2 machine with 1 CPU.
         """
         UNSPECIFIED = 0
         N1_HIGHCPU_8 = 1
         N1_HIGHCPU_32 = 2
         E2_HIGHCPU_8 = 5
         E2_HIGHCPU_32 = 6
+        E2_MEDIUM = 7
 
     class SubstitutionOption(proto.Enum):
         r"""Specifies the behavior when there is an error in the
