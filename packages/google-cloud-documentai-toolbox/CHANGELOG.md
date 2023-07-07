@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.8.0-alpha...v0.9.0-alpha) (2023-07-07)
+
+
+### Features
+
+* Added hOCR export functionality ([#123](https://github.com/googleapis/python-documentai-toolbox/issues/123)) ([87d2fc1](https://github.com/googleapis/python-documentai-toolbox/commit/87d2fc160db3d9d5c3306f7e607f148462747aec))
+
 ## [0.8.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.7.0-alpha...v0.8.0-alpha) (2023-06-07)
 
 
