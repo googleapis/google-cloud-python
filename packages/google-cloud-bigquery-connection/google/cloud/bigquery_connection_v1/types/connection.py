@@ -41,6 +41,7 @@ __protobuf__ = proto.module(
         "MetastoreServiceConfig",
         "SparkHistoryServerConfig",
         "SparkProperties",
+        "SalesforceDataCloudProperties",
     },
 )
 
@@ -236,6 +237,14 @@ class Connection(proto.Message):
             Spark properties.
 
             This field is a member of `oneof`_ ``properties``.
+        salesforce_data_cloud (google.cloud.bigquery_connection_v1.types.SalesforceDataCloudProperties):
+            Optional. Salesforce DataCloud properties.
+            This field is intended for use only by
+            Salesforce partner projects. This field contains
+            properties for your Salesforce DataCloud
+            connection.
+
+            This field is a member of `oneof`_ ``properties``.
         creation_time (int):
             Output only. The creation timestamp of the
             connection.
@@ -294,6 +303,12 @@ class Connection(proto.Message):
         number=23,
         oneof="properties",
         message="SparkProperties",
+    )
+    salesforce_data_cloud: "SalesforceDataCloudProperties" = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        oneof="properties",
+        message="SalesforceDataCloudProperties",
     )
     creation_time: int = proto.Field(
         proto.INT64,
@@ -402,30 +417,38 @@ class CloudSpannerProperties(proto.Message):
         use_parallelism (bool):
             If parallelism should be used when reading
             from Cloud Spanner
+        max_parallelism (int):
+            Allows setting max parallelism per query when executing on
+            Spanner independent compute resources. If unspecified,
+            default values of parallelism are chosen that are dependent
+            on the Cloud Spanner instance configuration.
+
+            REQUIRES: ``use_parallelism`` must be set. REQUIRES: Either
+            ``use_data_boost`` or ``use_serverless_analytics`` must be
+            set.
         use_serverless_analytics (bool):
             If the serverless analytics service should be used to read
             data from Cloud Spanner. Note: ``use_parallelism`` must be
             set when using serverless analytics.
-        database_role (str):
-            Optional. Cloud Spanner database role for
-            fine-grained access control. A database role is
-            a collection of fine-grained access privileges.
-            Example: Admin predefines roles that provides
-            user a set of permissions (SELECT, INSERT, ..).
-            The user can then specify a predefined role on a
-            connection to execute their Cloud Spanner query.
-            The role is passthrough here. If the user is not
-            authorized to use the specified role, they get
-            an error. This validation happens on Cloud
-            Spanner.
+        use_data_boost (bool):
+            If set, the request will be executed via Spanner independent
+            compute resources. REQUIRES: ``use_parallelism`` must be
+            set.
 
-            See
-            https://cloud.google.com/spanner/docs/fgac-about
-            for more details.
-            REQUIRES: database role name must start with
-            uppercase/lowercase letter and only contain
-            uppercase/lowercase letters, numbers, and
-            underscores.
+            NOTE: ``use_serverless_analytics`` will be deprecated.
+            Prefer ``use_data_boost`` over ``use_serverless_analytics``.
+        database_role (str):
+            Optional. Cloud Spanner database role for fine-grained
+            access control. The Cloud Spanner admin should have
+            provisioned the database role with appropriate permissions,
+            such as ``SELECT`` and ``INSERT``. Other users should only
+            use roles provided by their Cloud Spanner admins.
+
+            For more details, see [About fine-grained access control]
+            (https://cloud.google.com/spanner/docs/fgac-about).
+
+            REQUIRES: The database role name must start with a letter,
+            and can only contain letters, numbers, and underscores.
     """
 
     database: str = proto.Field(
@@ -436,9 +459,17 @@ class CloudSpannerProperties(proto.Message):
         proto.BOOL,
         number=2,
     )
+    max_parallelism: int = proto.Field(
+        proto.INT32,
+        number=5,
+    )
     use_serverless_analytics: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    use_data_boost: bool = proto.Field(
+        proto.BOOL,
+        number=6,
     )
     database_role: str = proto.Field(
         proto.STRING,
@@ -683,7 +714,7 @@ class SparkProperties(proto.Message):
             permissions to the service account. When the
             connection is used in the context of a stored
             procedure for Apache Spark in BigQuery, the
-            service account will be used to connect to the
+            service account is used to connect to the
             desired resources in Google Cloud.
             The account ID is in the form of:
             bqcx-<projectnumber>-<uniqueid>@gcp-sa-bigquery-consp.iam.gserviceaccount.com
@@ -708,6 +739,36 @@ class SparkProperties(proto.Message):
         proto.MESSAGE,
         number=4,
         message="SparkHistoryServerConfig",
+    )
+
+
+class SalesforceDataCloudProperties(proto.Message):
+    r"""Connection properties specific to Salesforce DataCloud. This
+    is intended for use only by Salesforce partner projects.
+
+    Attributes:
+        instance_uri (str):
+            The URL to the user's Salesforce DataCloud
+            instance.
+        identity (str):
+            Output only. A unique Google-owned and
+            Google-generated service account identity for
+            the connection.
+        tenant_id (str):
+            The ID of the user's Salesforce tenant.
+    """
+
+    instance_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    identity: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    tenant_id: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

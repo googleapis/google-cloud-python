@@ -3047,7 +3047,9 @@ def test_create_connection_rest(request_type):
         "cloud_spanner": {
             "database": "database_value",
             "use_parallelism": True,
+            "max_parallelism": 1595,
             "use_serverless_analytics": True,
+            "use_data_boost": True,
             "database_role": "database_role_value",
         },
         "cloud_resource": {"service_account_id": "service_account_id_value"},
@@ -3059,6 +3061,11 @@ def test_create_connection_rest(request_type):
             "spark_history_server_config": {
                 "dataproc_cluster": "dataproc_cluster_value"
             },
+        },
+        "salesforce_data_cloud": {
+            "instance_uri": "instance_uri_value",
+            "identity": "identity_value",
+            "tenant_id": "tenant_id_value",
         },
         "creation_time": 1379,
         "last_modified_time": 1890,
@@ -3296,7 +3303,9 @@ def test_create_connection_rest_bad_request(
         "cloud_spanner": {
             "database": "database_value",
             "use_parallelism": True,
+            "max_parallelism": 1595,
             "use_serverless_analytics": True,
+            "use_data_boost": True,
             "database_role": "database_role_value",
         },
         "cloud_resource": {"service_account_id": "service_account_id_value"},
@@ -3308,6 +3317,11 @@ def test_create_connection_rest_bad_request(
             "spark_history_server_config": {
                 "dataproc_cluster": "dataproc_cluster_value"
             },
+        },
+        "salesforce_data_cloud": {
+            "instance_uri": "instance_uri_value",
+            "identity": "identity_value",
+            "tenant_id": "tenant_id_value",
         },
         "creation_time": 1379,
         "last_modified_time": 1890,
@@ -4080,7 +4094,9 @@ def test_update_connection_rest(request_type):
         "cloud_spanner": {
             "database": "database_value",
             "use_parallelism": True,
+            "max_parallelism": 1595,
             "use_serverless_analytics": True,
+            "use_data_boost": True,
             "database_role": "database_role_value",
         },
         "cloud_resource": {"service_account_id": "service_account_id_value"},
@@ -4092,6 +4108,11 @@ def test_update_connection_rest(request_type):
             "spark_history_server_config": {
                 "dataproc_cluster": "dataproc_cluster_value"
             },
+        },
+        "salesforce_data_cloud": {
+            "instance_uri": "instance_uri_value",
+            "identity": "identity_value",
+            "tenant_id": "tenant_id_value",
         },
         "creation_time": 1379,
         "last_modified_time": 1890,
@@ -4330,7 +4351,9 @@ def test_update_connection_rest_bad_request(
         "cloud_spanner": {
             "database": "database_value",
             "use_parallelism": True,
+            "max_parallelism": 1595,
             "use_serverless_analytics": True,
+            "use_data_boost": True,
             "database_role": "database_role_value",
         },
         "cloud_resource": {"service_account_id": "service_account_id_value"},
@@ -4342,6 +4365,11 @@ def test_update_connection_rest_bad_request(
             "spark_history_server_config": {
                 "dataproc_cluster": "dataproc_cluster_value"
             },
+        },
+        "salesforce_data_cloud": {
+            "instance_uri": "instance_uri_value",
+            "identity": "identity_value",
+            "tenant_id": "tenant_id_value",
         },
         "creation_time": 1379,
         "last_modified_time": 1890,
