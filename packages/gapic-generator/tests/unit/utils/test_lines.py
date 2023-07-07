@@ -91,3 +91,71 @@ def test_wrap_short_line_preserved():
 
 def test_wrap_does_not_break_hyphenated_word():
     assert lines.wrap('do-not-break', width=5) == 'do-not-break'
+
+
+def test_wrap_with_short_lines():
+    input = """The hail in Wales falls mainly on the snails. The hail in Wales falls mainly
+on the snails."""
+    expected = """The hail in Wales falls mainly on the snails. The hail in
+Wales falls mainly on the snails."""
+    assert lines.wrap(input, width=60) == expected
+
+
+def test_list_each_item_in_list_has_new_line():
+    s = """Type of weather:
+- Hail
+- Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain
+- Snow"""
+    assert lines.wrap(s, width=80) == s
+
+
+def test_list_items_are_indented():
+    input = """Type of weather.
+Some types of weather:
+
+- A mix of hail and snow, followed by rain clouds, then finally clear sky
+- Rain
+- Snow"""
+    expected = """Type of weather.
+Some types of weather:
+
+- A mix of hail and snow, followed by rain clouds, then
+  finally clear sky
+- Rain
+- Snow"""
+    assert lines.wrap(input, width=60) == expected
+
+
+def test_list_new_line_preserved_after_colon():
+    input = """Today's forecast will have different types of weather:
+
+- A mix of hail and snow, followed by rain clouds, then finally clear sky
+- Rain
+- Snow"""
+    expected = """Today's forecast will have different types
+                of weather:
+
+                - A mix of hail and snow, followed by rain
+                  clouds, then finally clear sky
+                - Rain
+                - Snow"""
+    assert lines.wrap(input, width=60, indent=16) == expected
+
+
+def test_list_items_longer_text_before_list():
+    input = """Weather Weather Weather Weather Weather Weather Weather
+Weather Weather Weather Weather Weather Weather Weather
+Type of weather:
+
+- Hail
+- Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain
+- Snow"""
+    expected = """Weather Weather Weather Weather Weather Weather Weather
+Weather Weather Weather Weather Weather Weather Weather Type
+of weather:
+
+- Hail
+- Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain
+  Rain
+- Snow"""
+    assert lines.wrap(input, width=60) == expected

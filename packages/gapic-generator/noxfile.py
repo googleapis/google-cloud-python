@@ -436,7 +436,13 @@ def docs(session):
 @nox.session(python=NEWEST_PYTHON)
 def mypy(session):
     """Perform typecheck analysis."""
-
-    session.install("mypy", "types-protobuf<=3.19.7", "types-PyYAML", "types-dataclasses")
+    # Pin to click==8.1.3 to workaround https://github.com/pallets/click/issues/2558
+    session.install(
+        "mypy",
+        "types-protobuf<=3.19.7",
+        "types-PyYAML",
+        "types-dataclasses",
+        "click==8.1.3",
+    )
     session.install(".")
     session.run("mypy", "gapic")
