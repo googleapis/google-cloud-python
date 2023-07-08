@@ -1,0 +1,2 @@
+recursive-include google/cloud/source_context *.py
+recursive-include google/cloud/source_context_v1 *.py
