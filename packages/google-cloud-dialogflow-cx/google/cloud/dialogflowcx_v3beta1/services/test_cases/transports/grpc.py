@@ -567,7 +567,9 @@ class TestCasesGrpcTransport(TestCasesTransport):
     ]:
         r"""Return a callable for the list test case results method over gRPC.
 
-        Fetches a list of results for a given test case.
+        Fetches the list of run results for the given test
+        case. A maximum of 100 results are kept for each test
+        case.
 
         Returns:
             Callable[[~.ListTestCaseResultsRequest],

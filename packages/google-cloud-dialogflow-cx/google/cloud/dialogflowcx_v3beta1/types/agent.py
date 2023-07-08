@@ -142,11 +142,74 @@ class Agent(proto.Message):
             agent. The settings exposed at the lower level
             overrides the settings exposed at the higher
             level.
+        git_integration_settings (google.cloud.dialogflowcx_v3beta1.types.Agent.GitIntegrationSettings):
+            Git integration settings for this agent.
         text_to_speech_settings (google.cloud.dialogflowcx_v3beta1.types.TextToSpeechSettings):
             Settings on instructing the speech
             synthesizer on how to generate the output audio
             content.
     """
+
+    class GitIntegrationSettings(proto.Message):
+        r"""Settings for connecting to Git repository for an agent.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            github_settings (google.cloud.dialogflowcx_v3beta1.types.Agent.GitIntegrationSettings.GithubSettings):
+                GitHub settings.
+
+                This field is a member of `oneof`_ ``git_settings``.
+        """
+
+        class GithubSettings(proto.Message):
+            r"""Settings of integration with GitHub.
+
+            Attributes:
+                display_name (str):
+                    The unique repository display name for the
+                    GitHub repository.
+                repository_uri (str):
+                    The GitHub repository URI related to the
+                    agent.
+                tracking_branch (str):
+                    The branch of the GitHub repository tracked
+                    for this agent.
+                access_token (str):
+                    The access token used to authenticate the
+                    access to the GitHub repository.
+                branches (MutableSequence[str]):
+                    A list of branches configured to be used from
+                    Dialogflow.
+            """
+
+            display_name: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            repository_uri: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            tracking_branch: str = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+            access_token: str = proto.Field(
+                proto.STRING,
+                number=4,
+            )
+            branches: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=5,
+            )
+
+        github_settings: "Agent.GitIntegrationSettings.GithubSettings" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="git_settings",
+            message="Agent.GitIntegrationSettings.GithubSettings",
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -205,6 +268,11 @@ class Agent(proto.Message):
         proto.MESSAGE,
         number=22,
         message=gcdc_advanced_settings.AdvancedSettings,
+    )
+    git_integration_settings: GitIntegrationSettings = proto.Field(
+        proto.MESSAGE,
+        number=30,
+        message=GitIntegrationSettings,
     )
     text_to_speech_settings: audio_config.TextToSpeechSettings = proto.Field(
         proto.MESSAGE,
@@ -379,6 +447,9 @@ class ExportAgentRequest(proto.Message):
             Optional. Environment name. If not set, draft environment is
             assumed. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+        git_destination (google.cloud.dialogflowcx_v3beta1.types.ExportAgentRequest.GitDestination):
+            Optional. The Git branch to export the agent
+            to.
         include_bigquery_export_settings (bool):
             Optional. Whether to include BigQuery Export
             setting.
@@ -400,6 +471,25 @@ class ExportAgentRequest(proto.Message):
         BLOB = 1
         JSON_PACKAGE = 4
 
+    class GitDestination(proto.Message):
+        r"""Settings for exporting to a git branch.
+
+        Attributes:
+            tracking_branch (str):
+                Tracking branch for the git push.
+            commit_message (str):
+                Commit message for the git push.
+        """
+
+        tracking_branch: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        commit_message: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -416,6 +506,11 @@ class ExportAgentRequest(proto.Message):
     environment: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    git_destination: GitDestination = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=GitDestination,
     )
     include_bigquery_export_settings: bool = proto.Field(
         proto.BOOL,
@@ -442,7 +537,16 @@ class ExportAgentResponse(proto.Message):
 
             This field is a member of `oneof`_ ``agent``.
         agent_content (bytes):
-            Uncompressed raw byte content for agent.
+            Uncompressed raw byte content for agent. This field is
+            populated if none of ``agent_uri`` and ``git_destination``
+            are specified in
+            [ExportAgentRequest][google.cloud.dialogflow.cx.v3beta1.ExportAgentRequest].
+
+            This field is a member of `oneof`_ ``agent``.
+        commit_sha (str):
+            Commit SHA of the git push. This field is populated if
+            ``git_destination`` is specified in
+            [ExportAgentRequest][google.cloud.dialogflow.cx.v3beta1.ExportAgentRequest].
 
             This field is a member of `oneof`_ ``agent``.
     """
@@ -455,6 +559,11 @@ class ExportAgentResponse(proto.Message):
     agent_content: bytes = proto.Field(
         proto.BYTES,
         number=2,
+        oneof="agent",
+    )
+    commit_sha: str = proto.Field(
+        proto.STRING,
+        number=3,
         oneof="agent",
     )
 
@@ -491,6 +600,10 @@ class RestoreAgentRequest(proto.Message):
             Uncompressed raw byte content for agent.
 
             This field is a member of `oneof`_ ``agent``.
+        git_source (google.cloud.dialogflowcx_v3beta1.types.RestoreAgentRequest.GitSource):
+            Setting for restoring from a git branch
+
+            This field is a member of `oneof`_ ``agent``.
         restore_option (google.cloud.dialogflowcx_v3beta1.types.RestoreAgentRequest.RestoreOption):
             Agent restore mode. If not specified, ``KEEP`` is assumed.
     """
@@ -514,6 +627,19 @@ class RestoreAgentRequest(proto.Message):
         KEEP = 1
         FALLBACK = 2
 
+    class GitSource(proto.Message):
+        r"""Settings for restoring from a git branch
+
+        Attributes:
+            tracking_branch (str):
+                tracking branch for the git pull
+        """
+
+        tracking_branch: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -527,6 +653,12 @@ class RestoreAgentRequest(proto.Message):
         proto.BYTES,
         number=3,
         oneof="agent",
+    )
+    git_source: GitSource = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="agent",
+        message=GitSource,
     )
     restore_option: RestoreOption = proto.Field(
         proto.ENUM,
