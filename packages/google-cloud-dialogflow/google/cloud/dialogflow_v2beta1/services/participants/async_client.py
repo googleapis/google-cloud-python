@@ -866,7 +866,13 @@ class ParticipantsAsyncClient:
                 client = dialogflow_v2beta1.ParticipantsAsyncClient()
 
                 # Initialize request argument(s)
+                audio_config = dialogflow_v2beta1.InputAudioConfig()
+                audio_config.audio_encoding = "AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE"
+                audio_config.sample_rate_hertz = 1817
+                audio_config.language_code = "language_code_value"
+
                 request = dialogflow_v2beta1.StreamingAnalyzeContentRequest(
+                    audio_config=audio_config,
                     input_audio=b'input_audio_blob',
                     participant="participant_value",
                 )

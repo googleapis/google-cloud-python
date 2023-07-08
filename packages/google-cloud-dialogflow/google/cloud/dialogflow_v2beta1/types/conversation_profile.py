@@ -278,7 +278,7 @@ class HumanAgentAssistantConfig(proto.Message):
                 suggestions.
 
                 Supported features: ARTICLE_SUGGESTION, FAQ,
-                DIALOGFLOW_ASSIST.
+                DIALOGFLOW_ASSIST, ENTITY_EXTRACTION.
             suggestion_trigger_settings (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionTriggerSettings):
                 Settings of suggestion trigger.
 
@@ -379,7 +379,7 @@ class HumanAgentAssistantConfig(proto.Message):
                 This field is a member of `oneof`_ ``query_source``.
             dialogflow_query_source (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionQueryConfig.DialogflowQuerySource):
                 Query from Dialogflow agent. It is used by
-                DIALOGFLOW_ASSIST.
+                DIALOGFLOW_ASSIST, ENTITY_EXTRACTION.
 
                 This field is a member of `oneof`_ ``query_source``.
             max_results (int):
@@ -452,7 +452,7 @@ class HumanAgentAssistantConfig(proto.Message):
         class DialogflowQuerySource(proto.Message):
             r"""Dialogflow source setting.
 
-            Supported feature: DIALOGFLOW_ASSIST.
+            Supported feature: DIALOGFLOW_ASSIST, ENTITY_EXTRACTION.
 
             Attributes:
                 agent (str):

@@ -39,8 +39,14 @@ async def sample_streaming_detect_intent():
     client = dialogflow_v2.SessionsAsyncClient()
 
     # Initialize request argument(s)
+    query_input = dialogflow_v2.QueryInput()
+    query_input.audio_config.audio_encoding = "AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE"
+    query_input.audio_config.sample_rate_hertz = 1817
+    query_input.audio_config.language_code = "language_code_value"
+
     request = dialogflow_v2.StreamingDetectIntentRequest(
         session="session_value",
+        query_input=query_input,
     )
 
     # This method expects an iterator which contains

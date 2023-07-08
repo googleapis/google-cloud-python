@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-dialogflow",
-    "version": "2.23.1"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -14239,12 +14239,12 @@
       "regionTag": "dialogflow_v2_generated_Participants_StreamingAnalyzeContent_async",
       "segments": [
         {
-          "end": 63,
+          "end": 69,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 63,
+          "end": 69,
           "start": 27,
           "type": "SHORT"
         },
@@ -14254,18 +14254,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 56,
+          "end": 62,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 59,
-          "start": 57,
+          "end": 65,
+          "start": 63,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 64,
-          "start": 60,
+          "end": 70,
+          "start": 66,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -14315,12 +14315,12 @@
       "regionTag": "dialogflow_v2_generated_Participants_StreamingAnalyzeContent_sync",
       "segments": [
         {
-          "end": 63,
+          "end": 69,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 63,
+          "end": 69,
           "start": 27,
           "type": "SHORT"
         },
@@ -14330,18 +14330,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 56,
+          "end": 62,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 59,
-          "start": 57,
+          "end": 65,
+          "start": 63,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 64,
-          "start": 60,
+          "end": 70,
+          "start": 66,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -15867,12 +15867,12 @@
       "regionTag": "dialogflow_v2_generated_Sessions_DetectIntent_async",
       "segments": [
         {
-          "end": 51,
+          "end": 57,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 57,
           "start": 27,
           "type": "SHORT"
         },
@@ -15882,18 +15882,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 45,
+          "end": 51,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 48,
-          "start": 46,
+          "end": 54,
+          "start": 52,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
-          "start": 49,
+          "end": 58,
+          "start": 55,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -15951,12 +15951,12 @@
       "regionTag": "dialogflow_v2_generated_Sessions_DetectIntent_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 57,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 57,
           "start": 27,
           "type": "SHORT"
         },
@@ -15966,18 +15966,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 45,
+          "end": 51,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 48,
-          "start": 46,
+          "end": 54,
+          "start": 52,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
-          "start": 49,
+          "end": 58,
+          "start": 55,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -16028,12 +16028,12 @@
       "regionTag": "dialogflow_v2_generated_Sessions_StreamingDetectIntent_async",
       "segments": [
         {
-          "end": 62,
+          "end": 68,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 62,
+          "end": 68,
           "start": 27,
           "type": "SHORT"
         },
@@ -16043,18 +16043,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 55,
+          "end": 61,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 58,
-          "start": 56,
+          "end": 64,
+          "start": 62,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 63,
-          "start": 59,
+          "end": 69,
+          "start": 65,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -16104,12 +16104,12 @@
       "regionTag": "dialogflow_v2_generated_Sessions_StreamingDetectIntent_sync",
       "segments": [
         {
-          "end": 62,
+          "end": 68,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 62,
+          "end": 68,
           "start": 27,
           "type": "SHORT"
         },
@@ -16119,18 +16119,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 55,
+          "end": 61,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 58,
-          "start": 56,
+          "end": 64,
+          "start": 62,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 63,
-          "start": 59,
+          "end": 69,
+          "start": 65,
           "type": "RESPONSE_HANDLING"
         }
       ],

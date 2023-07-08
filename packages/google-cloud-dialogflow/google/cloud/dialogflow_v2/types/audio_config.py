@@ -23,11 +23,11 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
     manifest={
+        "TelephonyDtmf",
         "AudioEncoding",
         "SpeechModelVariant",
         "SsmlVoiceGender",
         "OutputAudioEncoding",
-        "TelephonyDtmf",
         "SpeechContext",
         "SpeechWordInfo",
         "InputAudioConfig",
@@ -38,6 +38,67 @@ __protobuf__ = proto.module(
         "SpeechToTextConfig",
     },
 )
+
+
+class TelephonyDtmf(proto.Enum):
+    r"""`DTMF <https://en.wikipedia.org/wiki/Dual-tone_multi-frequency_signaling>`__
+    digit in Telephony Gateway.
+
+    Values:
+        TELEPHONY_DTMF_UNSPECIFIED (0):
+            Not specified. This value may be used to
+            indicate an absent digit.
+        DTMF_ONE (1):
+            Number: '1'.
+        DTMF_TWO (2):
+            Number: '2'.
+        DTMF_THREE (3):
+            Number: '3'.
+        DTMF_FOUR (4):
+            Number: '4'.
+        DTMF_FIVE (5):
+            Number: '5'.
+        DTMF_SIX (6):
+            Number: '6'.
+        DTMF_SEVEN (7):
+            Number: '7'.
+        DTMF_EIGHT (8):
+            Number: '8'.
+        DTMF_NINE (9):
+            Number: '9'.
+        DTMF_ZERO (10):
+            Number: '0'.
+        DTMF_A (11):
+            Letter: 'A'.
+        DTMF_B (12):
+            Letter: 'B'.
+        DTMF_C (13):
+            Letter: 'C'.
+        DTMF_D (14):
+            Letter: 'D'.
+        DTMF_STAR (15):
+            Asterisk/star: '*'.
+        DTMF_POUND (16):
+            Pound/diamond/hash/square/gate/octothorpe:
+            '#'.
+    """
+    TELEPHONY_DTMF_UNSPECIFIED = 0
+    DTMF_ONE = 1
+    DTMF_TWO = 2
+    DTMF_THREE = 3
+    DTMF_FOUR = 4
+    DTMF_FIVE = 5
+    DTMF_SIX = 6
+    DTMF_SEVEN = 7
+    DTMF_EIGHT = 8
+    DTMF_NINE = 9
+    DTMF_ZERO = 10
+    DTMF_A = 11
+    DTMF_B = 12
+    DTMF_C = 13
+    DTMF_D = 14
+    DTMF_STAR = 15
+    DTMF_POUND = 16
 
 
 class AudioEncoding(proto.Enum):
@@ -204,67 +265,6 @@ class OutputAudioEncoding(proto.Enum):
     OUTPUT_AUDIO_ENCODING_MP3_64_KBPS = 4
     OUTPUT_AUDIO_ENCODING_OGG_OPUS = 3
     OUTPUT_AUDIO_ENCODING_MULAW = 5
-
-
-class TelephonyDtmf(proto.Enum):
-    r"""`DTMF <https://en.wikipedia.org/wiki/Dual-tone_multi-frequency_signaling>`__
-    digit in Telephony Gateway.
-
-    Values:
-        TELEPHONY_DTMF_UNSPECIFIED (0):
-            Not specified. This value may be used to
-            indicate an absent digit.
-        DTMF_ONE (1):
-            Number: '1'.
-        DTMF_TWO (2):
-            Number: '2'.
-        DTMF_THREE (3):
-            Number: '3'.
-        DTMF_FOUR (4):
-            Number: '4'.
-        DTMF_FIVE (5):
-            Number: '5'.
-        DTMF_SIX (6):
-            Number: '6'.
-        DTMF_SEVEN (7):
-            Number: '7'.
-        DTMF_EIGHT (8):
-            Number: '8'.
-        DTMF_NINE (9):
-            Number: '9'.
-        DTMF_ZERO (10):
-            Number: '0'.
-        DTMF_A (11):
-            Letter: 'A'.
-        DTMF_B (12):
-            Letter: 'B'.
-        DTMF_C (13):
-            Letter: 'C'.
-        DTMF_D (14):
-            Letter: 'D'.
-        DTMF_STAR (15):
-            Asterisk/star: '*'.
-        DTMF_POUND (16):
-            Pound/diamond/hash/square/gate/octothorpe:
-            '#'.
-    """
-    TELEPHONY_DTMF_UNSPECIFIED = 0
-    DTMF_ONE = 1
-    DTMF_TWO = 2
-    DTMF_THREE = 3
-    DTMF_FOUR = 4
-    DTMF_FIVE = 5
-    DTMF_SIX = 6
-    DTMF_SEVEN = 7
-    DTMF_EIGHT = 8
-    DTMF_NINE = 9
-    DTMF_ZERO = 10
-    DTMF_A = 11
-    DTMF_B = 12
-    DTMF_C = 13
-    DTMF_D = 14
-    DTMF_STAR = 15
-    DTMF_POUND = 16
 
 
 class SpeechContext(proto.Message):
