@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-apigee-registry",
-    "version": "0.6.3"
+    "version": "0.1.0"
   },
   "snippets": [
     {

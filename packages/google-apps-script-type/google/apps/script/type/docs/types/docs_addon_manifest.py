@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-import google.apps.script.type.types  # type: ignore
+from google.apps.script.type import extension_point_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.apps.script.type.docs",
@@ -34,7 +34,7 @@ class DocsAddOnManifest(proto.Message):
     r"""Docs add-on manifest.
 
     Attributes:
-        homepage_trigger (google.apps.script.type.types.HomepageExtensionPoint):
+        homepage_trigger (google.apps.script.type.extension_point_pb2.HomepageExtensionPoint):
             If present, this overrides the configuration from
             ``addOns.common.homepageTrigger``.
         on_file_scope_granted_trigger (google.apps.script.type.docs.types.DocsExtensionPoint):
@@ -43,12 +43,10 @@ class DocsAddOnManifest(proto.Message):
             pair.
     """
 
-    homepage_trigger: google.apps.script.type.types.HomepageExtensionPoint = (
-        proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=google.apps.script.type.types.HomepageExtensionPoint,
-        )
+    homepage_trigger: extension_point_pb2.HomepageExtensionPoint = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=extension_point_pb2.HomepageExtensionPoint,
     )
     on_file_scope_granted_trigger: "DocsExtensionPoint" = proto.Field(
         proto.MESSAGE,
