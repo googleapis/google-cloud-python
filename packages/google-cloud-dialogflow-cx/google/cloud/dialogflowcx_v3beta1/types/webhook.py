@@ -129,8 +129,8 @@ class Webhook(proto.Message):
             parameter_mapping (MutableMapping[str, str]):
                 Optional. Maps the values extracted from
                 specific fields of the flexible webhook response
-                into session parameters.  - Key: session
-                parameter name
+                into session parameters.
+                 - Key: session parameter name
                  - Value: field path in the webhook response
         """
 

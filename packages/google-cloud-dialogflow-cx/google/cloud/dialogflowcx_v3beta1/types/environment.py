@@ -95,8 +95,9 @@ class Environment(proto.Message):
         Attributes:
             version (str):
                 Required. Format: projects/<Project
-                ID>/locations/<Location ID>/agents/<Agent
-                ID>/flows/<Flow ID>/versions/<Version ID>.
+                ID>/locations/<Location
+                ID>/agents/<Agent ID>/flows/<Flow
+                ID>/versions/<Version ID>.
         """
 
         version: str = proto.Field(
