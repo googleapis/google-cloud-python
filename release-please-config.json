@@ -185,17 +185,17 @@
         "packages/google-cloud-batch": {
             "component": "google-cloud-batch",
             "extra-files": [
+                "google/cloud/batch/gapic_version.py",
                 "google/cloud/batch_v1/gapic_version.py",
                 "google/cloud/batch_v1alpha/gapic_version.py",
-                "google/cloud/batch/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.batch.v1alpha.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.batch.v1.json",
                     "type": "json"
                 },
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.batch.v1.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.batch.v1alpha.json",
                     "type": "json"
                 }
             ],
@@ -826,8 +826,8 @@
             "component": "google-cloud-language",
             "extra-files": [
                 "google/cloud/language/gapic_version.py",
-                "google/cloud/language_v1beta2/gapic_version.py",
                 "google/cloud/language_v1/gapic_version.py",
+                "google/cloud/language_v1beta2/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.language.v1.json",
@@ -1461,19 +1461,29 @@
             "component": "google-cloud-workflows",
             "extra-files": [
                 "google/cloud/workflows/executions/gapic_version.py",
+                "google/cloud/workflows/executions_v1/gapic_version.py",
+                "google/cloud/workflows/executions_v1beta/gapic_version.py",
                 "google/cloud/workflows/gapic_version.py",
                 "google/cloud/workflows_v1/gapic_version.py",
                 "google/cloud/workflows_v1beta/gapic_version.py",
-                "google/cloud/workflows/executions_v1/gapic_version.py",
-                "google/cloud/workflows/executions_v1beta/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.workflows.v1beta.json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.workflows.executions.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.workflows.executions.v1beta.json",
                     "type": "json"
                 },
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.workflows.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.workflows.v1beta.json",
                     "type": "json"
                 }
             ],
