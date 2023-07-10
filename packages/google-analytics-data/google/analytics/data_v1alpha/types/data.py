@@ -262,7 +262,8 @@ class MetricType(proto.Enum):
 
 class DateRange(proto.Message):
     r"""A contiguous set of days: startDate, startDate + 1, ...,
-    endDate. Requests are allowed up to 4 date ranges.
+    endDate. Requests
+    are allowed up to 4 date ranges.
 
     Attributes:
         start_date (str):

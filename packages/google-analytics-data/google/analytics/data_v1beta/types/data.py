@@ -176,7 +176,8 @@ class Compatibility(proto.Enum):
 
 class DateRange(proto.Message):
     r"""A contiguous set of days: startDate, startDate + 1, ...,
-    endDate. Requests are allowed up to 4 date ranges.
+    endDate. Requests
+    are allowed up to 4 date ranges.
 
     Attributes:
         start_date (str):
@@ -215,8 +216,8 @@ class DateRange(proto.Message):
 
 class MinuteRange(proto.Message):
     r"""A contiguous set of minutes: startMinutesAgo, startMinutesAgo
-    + 1, ..., endMinutesAgo. Requests are allowed up to 2 minute
-    ranges.
+    + 1, ...,
+    endMinutesAgo. Requests are allowed up to 2 minute ranges.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
