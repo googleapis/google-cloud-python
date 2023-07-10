@@ -29,7 +29,7 @@ branchProtectionRules:
   # List of required status check contexts that must pass for commits to be accepted to matching branches.
   requiredStatusCheckContexts:
     - 'ubuntu-20.04'
-    - 'macos-10.15'
+    - 'macos-13'
     - 'windows-2019 ( x64 )'
     - 'cla/google'
 # List of explicit permissions to add (additive only)
