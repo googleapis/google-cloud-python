@@ -270,7 +270,8 @@ class TextToSpeechGrpcAsyncIOTransport(TextToSpeechTransport):
         r"""Return a callable for the synthesize speech method over gRPC.
 
         Synthesizes speech synchronously: receive results
-        after all text input has been processed.
+        after all text input
+        has been processed.
 
         Returns:
             Callable[[~.SynthesizeSpeechRequest],

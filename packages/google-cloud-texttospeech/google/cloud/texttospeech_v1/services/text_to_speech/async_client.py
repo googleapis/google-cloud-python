@@ -325,7 +325,8 @@ class TextToSpeechAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_tts.SynthesizeSpeechResponse:
         r"""Synthesizes speech synchronously: receive results
-        after all text input has been processed.
+        after all text input
+        has been processed.
 
         .. code-block:: python
 
