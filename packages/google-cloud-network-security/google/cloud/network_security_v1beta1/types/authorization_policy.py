@@ -159,13 +159,13 @@ class AuthorizationPolicy(proto.Message):
                     for gRPC services.
                 http_header_match (google.cloud.network_security_v1beta1.types.AuthorizationPolicy.Rule.Destination.HttpHeaderMatch):
                     Optional. Match against key:value pair in
-                    http header. Provides a flexible match based on
-                    HTTP headers, for potentially advanced use
-                    cases. At least one header should match. Avoid
-                    using header matches to make authorization
-                    decisions unless there is a strong guarantee
-                    that requests arrive through a trusted client or
-                    proxy.
+                    http header. Provides a
+                    flexible match based on HTTP headers, for
+                    potentially advanced use cases. At least one
+                    header should match. Avoid using header matches
+                    to make authorization decisions unless there is
+                    a strong guarantee that requests arrive through
+                    a trusted client or proxy.
             """
 
             class HttpHeaderMatch(proto.Message):

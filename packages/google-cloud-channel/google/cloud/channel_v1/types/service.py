@@ -1439,7 +1439,8 @@ class BillableSku(proto.Message):
             Unique human readable name for the SKU.
         service (str):
             Resource name of Service which contains
-            Repricing SKU. Format: services/{service}.
+            Repricing SKU. Format:
+            services/{service}.
             Example:
             "services/B7D9-FDCB-15D8".
         service_display_name (str):
