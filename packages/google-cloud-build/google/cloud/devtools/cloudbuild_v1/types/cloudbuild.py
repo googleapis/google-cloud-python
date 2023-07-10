@@ -3198,8 +3198,9 @@ class WorkerPool(proto.Message):
             Output only. A unique identifier for the ``WorkerPool``.
         annotations (MutableMapping[str, str]):
             User specified annotations. See
-            https://google.aip.dev/128#annotations for more
-            details such as format and size limitations.
+            https://google.aip.dev/128#annotations
+            for more details such as format and size
+            limitations.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time at which the request to create the
             ``WorkerPool`` was received.
