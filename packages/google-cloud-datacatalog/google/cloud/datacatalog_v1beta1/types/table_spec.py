@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,10 +41,13 @@ class TableSourceType(proto.Enum):
             Table view.
         BIGQUERY_TABLE (5):
             BigQuery native table.
+        BIGQUERY_MATERIALIZED_VIEW (7):
+            BigQuery materialized view.
     """
     TABLE_SOURCE_TYPE_UNSPECIFIED = 0
     BIGQUERY_VIEW = 2
     BIGQUERY_TABLE = 5
+    BIGQUERY_MATERIALIZED_VIEW = 7
 
 
 class BigQueryTableSpec(proto.Message):

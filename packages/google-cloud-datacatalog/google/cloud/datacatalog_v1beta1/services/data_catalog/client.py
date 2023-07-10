@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,6 +48,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2
 from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.datacatalog_v1beta1.services.data_catalog import pagers
@@ -60,6 +61,7 @@ from google.cloud.datacatalog_v1beta1.types import (
     table_spec,
     tags,
     timestamps,
+    usage,
 )
 
 from .transports.base import DEFAULT_CLIENT_INFO, DataCatalogTransport
@@ -304,6 +306,32 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         """Parses a tag_template_field path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/tagTemplates/(?P<tag_template>.+?)/fields/(?P<field>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def tag_template_field_enum_value_path(
+        project: str,
+        location: str,
+        tag_template: str,
+        tag_template_field_id: str,
+        enum_value_display_name: str,
+    ) -> str:
+        """Returns a fully-qualified tag_template_field_enum_value string."""
+        return "projects/{project}/locations/{location}/tagTemplates/{tag_template}/fields/{tag_template_field_id}/enumValues/{enum_value_display_name}".format(
+            project=project,
+            location=location,
+            tag_template=tag_template,
+            tag_template_field_id=tag_template_field_id,
+            enum_value_display_name=enum_value_display_name,
+        )
+
+    @staticmethod
+    def parse_tag_template_field_enum_value_path(path: str) -> Dict[str, str]:
+        """Parses a tag_template_field_enum_value path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/tagTemplates/(?P<tag_template>.+?)/fields/(?P<tag_template_field_id>.+?)/enumValues/(?P<enum_value_display_name>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -568,7 +596,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         This is a custom method
         (https://cloud.google.com/apis/design/custom_methods) and does
         not return the complete resource, only the resource identifier
-        and high level fields. Clients can subsequentally call ``Get``
+        and high level fields. Clients can subsequently call ``Get``
         methods.
 
         Note that Data Catalog search queries do not guarantee full
@@ -597,7 +625,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
                 # Initialize request argument(s)
                 request = datacatalog_v1beta1.SearchCatalogRequest(
-                    query="query_value",
                 )
 
                 # Make the request
@@ -622,10 +649,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             query (str):
-                Required. The query string in search query syntax. The
-                query must be non-empty.
-
-                Query strings can be simple as "x" or more qualified as:
+                Optional. The query string in search query syntax. An
+                empty query string will result in all data assets (in
+                the specified scope) that the user has access to. Query
+                strings can be simple as "x" or more qualified as:
 
                 -  name:x
                 -  column:x
@@ -897,9 +924,13 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                The fields to update on the entry
-                group. If absent or empty, all
-                modifiable fields are updated.
+                Names of fields whose values to
+                overwrite on an entry group.
+                If this parameter is absent or empty,
+                all modifiable fields are overwritten.
+                If such fields are non-required and
+                omitted in the request body, their
+                values are emptied.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1503,8 +1534,12 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                The fields to update on the entry. If absent or empty,
-                all modifiable fields are updated.
+                Names of fields whose values to overwrite on an entry.
+
+                If this parameter is absent or empty, all modifiable
+                fields are overwritten. If such fields are non-required
+                and omitted in the request body, their values are
+                emptied.
 
                 The following fields are modifiable:
 
@@ -1512,7 +1547,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
                    -  ``schema``
 
-                -  For entries with type ``FILESET``
+                -  For entries with type ``FILESET``:
 
                    -  ``schema``
                    -  ``display_name``
@@ -1520,15 +1555,15 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                    -  ``gcs_fileset_spec``
                    -  ``gcs_fileset_spec.file_patterns``
 
-                -  For entries with ``user_specified_type``
+                -  For entries with ``user_specified_type``:
 
                    -  ``schema``
                    -  ``display_name``
                    -  ``description``
-                   -  user_specified_type
-                   -  user_specified_system
-                   -  linked_resource
-                   -  source_system_timestamps
+                   -  ``user_specified_type``
+                   -  ``user_specified_system``
+                   -  ``linked_resource``
+                   -  ``source_system_timestamps``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2098,7 +2133,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
             google.cloud.datacatalog_v1beta1.types.TagTemplate:
                 A tag template defines a tag, which can have one or more typed fields.
                    The template is used to create and attach the tag to
-                   GCP resources. [Tag template
+                   Google Cloud resources. [Tag template
                    roles](\ https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
                    provide permissions to create, edit, and use the
                    template. See, for example, the [TagTemplate
@@ -2212,7 +2247,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
             google.cloud.datacatalog_v1beta1.types.TagTemplate:
                 A tag template defines a tag, which can have one or more typed fields.
                    The template is used to create and attach the tag to
-                   GCP resources. [Tag template
+                   Google Cloud resources. [Tag template
                    roles](\ https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
                    provide permissions to create, edit, and use the
                    template. See, for example, the [TagTemplate
@@ -2320,15 +2355,14 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                The field mask specifies the parts of the template to
-                overwrite.
+                Names of fields whose values to overwrite on a tag
+                template. Currently, only ``display_name`` can be
+                overwritten.
 
-                Allowed fields:
-
-                -  ``display_name``
-
-                If absent or empty, all of the allowed fields above will
-                be updated.
+                In general, if this parameter is absent or empty, all
+                modifiable fields are overwritten. If such fields are
+                non-required and omitted in the request body, their
+                values are emptied.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2343,7 +2377,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
             google.cloud.datacatalog_v1beta1.types.TagTemplate:
                 A tag template defines a tag, which can have one or more typed fields.
                    The template is used to create and attach the tag to
-                   GCP resources. [Tag template
+                   Google Cloud resources. [Tag template
                    roles](\ https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
                    provide permissions to create, edit, and use the
                    template. See, for example, the [TagTemplate
@@ -2719,21 +2753,24 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. The field mask specifies the parts of the
-                template to be updated. Allowed fields:
+                Optional. Names of fields whose values to overwrite on
+                an individual field of a tag template. The following
+                fields are modifiable:
 
                 -  ``display_name``
                 -  ``type.enum_type``
                 -  ``is_required``
 
-                If ``update_mask`` is not set or empty, all of the
-                allowed fields above will be updated.
+                If this parameter is absent or empty, all modifiable
+                fields are overwritten. If such fields are non-required
+                and omitted in the request body, their values are
+                emptied with one exception: when updating an enum type,
+                the provided values are merged with the existing values.
+                Therefore, enum values can only be added, existing enum
+                values cannot be deleted or renamed.
 
-                When updating an enum type, the provided values will be
-                merged with the existing values. Therefore, enum values
-                can only be added, existing enum values cannot be
-                deleted nor renamed. Updating a template field from
-                optional to required is NOT allowed.
+                Additionally, updating a template field from optional to
+                required is *not* allowed.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2901,6 +2938,127 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[
             self._transport.rename_tag_template_field
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def rename_tag_template_field_enum_value(
+        self,
+        request: Optional[
+            Union[datacatalog.RenameTagTemplateFieldEnumValueRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        new_enum_value_display_name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> tags.TagTemplateField:
+        r"""Renames an enum value in a tag template. The enum
+        values have to be unique within one enum field. Thus, an
+        enum value cannot be renamed with a name used in any
+        other enum value within the same enum field.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_rename_tag_template_field_enum_value():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.RenameTagTemplateFieldEnumValueRequest(
+                    name="name_value",
+                    new_enum_value_display_name="new_enum_value_display_name_value",
+                )
+
+                # Make the request
+                response = client.rename_tag_template_field_enum_value(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.datacatalog_v1beta1.types.RenameTagTemplateFieldEnumValueRequest, dict]):
+                The request object. Request message for
+                [RenameTagTemplateFieldEnumValue][google.cloud.datacatalog.v1.DataCatalog.RenameTagTemplateFieldEnumValue].
+            name (str):
+                Required. The name of the enum field value. Example:
+
+                -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}/enumValues/{enum_value_display_name}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            new_enum_value_display_name (str):
+                Required. The new display name of the enum value. For
+                example, ``my_new_enum_value``.
+
+                This corresponds to the ``new_enum_value_display_name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.datacatalog_v1beta1.types.TagTemplateField:
+                The template for an individual field
+                within a tag template.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, new_enum_value_display_name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a datacatalog.RenameTagTemplateFieldEnumValueRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, datacatalog.RenameTagTemplateFieldEnumValueRequest):
+            request = datacatalog.RenameTagTemplateFieldEnumValueRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if new_enum_value_display_name is not None:
+                request.new_enum_value_display_name = new_enum_value_display_name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.rename_tag_template_field_enum_value
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -3220,9 +3378,17 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                The fields to update on the Tag. If absent or empty, all
-                modifiable fields are updated. Currently the only
-                modifiable field is the field ``fields``.
+                Note: Currently, this parameter can only take
+                ``"fields"`` as value.
+
+                Names of fields whose values to overwrite on a tag.
+                Currently, a tag has the only modifiable field with the
+                name ``fields``.
+
+                In general, if this parameter is absent or empty, all
+                modifiable fields are overwritten. If such fields are
+                non-required and omitted in the request body, their
+                values are emptied.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3389,8 +3555,10 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTagsPager:
-        r"""Lists the tags on an
-        [Entry][google.cloud.datacatalog.v1beta1.Entry].
+        r"""Lists tags assigned to an
+        [Entry][google.cloud.datacatalog.v1beta1.Entry]. The
+        [columns][google.cloud.datacatalog.v1beta1.Tag.column] in the
+        response are lowercased.
 
         .. code-block:: python
 

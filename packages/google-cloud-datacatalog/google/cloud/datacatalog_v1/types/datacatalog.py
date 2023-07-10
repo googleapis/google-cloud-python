@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -94,8 +94,19 @@ __protobuf__ = proto.module(
 
 
 class EntryType(proto.Enum):
-    r"""The enum field that lists all the types of entry resources in Data
-    Catalog. For example, a BigQuery table entry has the ``TABLE`` type.
+    r"""Metadata automatically ingested from Google Cloud resources like
+    BigQuery tables or Pub/Sub topics always uses enum values from
+    ``EntryType`` as the type of entry.
+
+    Other sources of metadata like Hive or Oracle databases can identify
+    the type by either using one of the enum values from ``EntryType``
+    (for example, ``FILESET`` for a Cloud Storage fileset) or specifying
+    a custom value using the ```Entry`` <#resource:-entry>`__ field
+    ``user_specified_type``. For more information, see `Surface files
+    from Cloud Storage with fileset
+    entries </data-catalog/docs/how-to/filesets>`__ or `Create custom
+    entries for your data
+    sources </data-catalog/docs/how-to/custom-entries>`__.
 
     Values:
         ENTRY_TYPE_UNSPECIFIED (0):
@@ -104,10 +115,10 @@ class EntryType(proto.Enum):
             The entry type that has a GoogleSQL schema,
             including logical views.
         MODEL (5):
-            Output only. The type of models.
+            The type of models.
 
-            For more information, see [Supported models in BigQuery ML]
-            (https://cloud.google.com/bigquery-ml/docs/introduction#supported_models_in).
+            For more information, see `Supported models in BigQuery
+            ML </bigquery/docs/bqml-introduction#supported_models>`__.
         DATA_STREAM (3):
             An entry type for streaming entries. For
             example, a Pub/Sub topic.
@@ -120,11 +131,10 @@ class EntryType(proto.Enum):
         DATABASE (7):
             A database.
         DATA_SOURCE_CONNECTION (8):
-            Output only. Connection to a data source. For
-            example, a BigQuery connection.
+            Connection to a data source. For example, a
+            BigQuery connection.
         ROUTINE (9):
-            Output only. Routine, for example, a BigQuery
-            routine.
+            Routine, for example, a BigQuery routine.
         LAKE (10):
             A Dataplex lake.
         ZONE (11):
@@ -193,8 +203,8 @@ class SearchCatalogRequest(proto.Message):
             -  ``column:y``
             -  ``description:z``
         page_size (int):
-            Number of results to return in a single
-            search page.
+            Upper bound on the number of results you can
+            get in a single response.
             Can't be negative or 0, defaults to 10 in this
             case. The maximum number is 1000. If exceeded,
             throws an "invalid argument" exception.
@@ -217,6 +227,14 @@ class SearchCatalogRequest(proto.Message):
             -  ``last_modified_timestamp [asc|desc]`` with descending
                (``desc``) as default
             -  ``default`` that can only be descending
+
+            Search queries don't guarantee full recall. Results that
+            match your query might not be returned, even in subsequent
+            result pages. Additionally, returned (and not returned)
+            results can vary if you repeat search queries. If you are
+            experiencing recall issues and you don't have to fetch the
+            results in any specific order, consider setting this
+            parameter to ``default``.
 
             If this parameter is omitted, it defaults to the descending
             ``relevance``.
@@ -805,12 +823,9 @@ class Entry(proto.Message):
             creation, and read-only later. Can be used for search and
             lookup of the entries.
         type_ (google.cloud.datacatalog_v1.types.EntryType):
-            The type of the entry. Only used for entries with types
-            listed in the ``EntryType`` enum.
+            The type of the entry.
 
-            Currently, only ``FILESET`` enum value is allowed. All other
-            entries created in Data Catalog must use the
-            ``user_specified_type``.
+            For details, see ```EntryType`` <#entrytype>`__.
 
             This field is a member of `oneof`_ ``entry_type``.
         user_specified_type (str):

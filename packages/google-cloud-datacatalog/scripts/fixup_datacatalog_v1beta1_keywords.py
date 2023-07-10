@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -65,9 +65,10 @@ class datacatalogCallTransformer(cst.CSTTransformer):
         'list_entry_groups': ('parent', 'page_size', 'page_token', ),
         'list_policy_tags': ('parent', 'page_size', 'page_token', ),
         'list_tags': ('parent', 'page_size', 'page_token', ),
-        'list_taxonomies': ('parent', 'page_size', 'page_token', ),
+        'list_taxonomies': ('parent', 'page_size', 'page_token', 'filter', ),
         'lookup_entry': ('linked_resource', 'sql_resource', ),
         'rename_tag_template_field': ('name', 'new_tag_template_field_id', ),
+        'rename_tag_template_field_enum_value': ('name', 'new_enum_value_display_name', ),
         'search_catalog': ('scope', 'query', 'page_size', 'page_token', 'order_by', ),
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),

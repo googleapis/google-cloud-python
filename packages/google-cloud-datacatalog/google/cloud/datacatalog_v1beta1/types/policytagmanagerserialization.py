@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,6 +51,9 @@ class SerializedTaxonomy(proto.Message):
         policy_tags (MutableSequence[google.cloud.datacatalog_v1beta1.types.SerializedPolicyTag]):
             Top level policy tags associated with the
             taxonomy if any.
+        activated_policy_types (MutableSequence[google.cloud.datacatalog_v1beta1.types.Taxonomy.PolicyType]):
+            A list of policy types that are activated for
+            a taxonomy.
     """
 
     display_name: str = proto.Field(
@@ -66,6 +69,13 @@ class SerializedTaxonomy(proto.Message):
         number=3,
         message="SerializedPolicyTag",
     )
+    activated_policy_types: MutableSequence[
+        policytagmanager.Taxonomy.PolicyType
+    ] = proto.RepeatedField(
+        proto.ENUM,
+        number=4,
+        enum=policytagmanager.Taxonomy.PolicyType,
+    )
 
 
 class SerializedPolicyTag(proto.Message):
@@ -73,6 +83,10 @@ class SerializedPolicyTag(proto.Message):
     proto.
 
     Attributes:
+        policy_tag (str):
+            Resource name of the policy tag.
+            This field will be ignored when calling
+            ImportTaxonomies.
         display_name (str):
             Required. Display name of the policy tag. Max
             200 bytes when encoded in UTF-8.
@@ -85,6 +99,10 @@ class SerializedPolicyTag(proto.Message):
             Children of the policy tag if any.
     """
 
+    policy_tag: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     display_name: str = proto.Field(
         proto.STRING,
         number=2,
@@ -110,9 +128,10 @@ class ImportTaxonomiesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Resource name of project that the
-            newly created taxonomies will belong to.
+            imported taxonomies will belong to.
         inline_source (google.cloud.datacatalog_v1beta1.types.InlineSource):
-            Inline source used for taxonomies import
+            Inline source used for taxonomies to be
+            imported.
 
             This field is a member of `oneof`_ ``source``.
     """

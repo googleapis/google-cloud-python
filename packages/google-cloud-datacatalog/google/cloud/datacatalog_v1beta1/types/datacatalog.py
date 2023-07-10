@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ from google.cloud.datacatalog_v1beta1.types import common
 from google.cloud.datacatalog_v1beta1.types import schema as gcd_schema
 from google.cloud.datacatalog_v1beta1.types import search, table_spec
 from google.cloud.datacatalog_v1beta1.types import tags as gcd_tags
-from google.cloud.datacatalog_v1beta1.types import timestamps
+from google.cloud.datacatalog_v1beta1.types import timestamps, usage
 
 __protobuf__ = proto.module(
     package="google.cloud.datacatalog.v1beta1",
@@ -58,6 +58,7 @@ __protobuf__ = proto.module(
         "CreateTagTemplateFieldRequest",
         "UpdateTagTemplateFieldRequest",
         "RenameTagTemplateFieldRequest",
+        "RenameTagTemplateFieldEnumValueRequest",
         "DeleteTagTemplateFieldRequest",
         "ListTagsRequest",
         "ListTagsResponse",
@@ -106,10 +107,10 @@ class SearchCatalogRequest(proto.Message):
             false ``include_gcp_public_datasets`` is considered invalid.
             Data Catalog will return an error in such a case.
         query (str):
-            Required. The query string in search query syntax. The query
-            must be non-empty.
-
-            Query strings can be simple as "x" or more qualified as:
+            Optional. The query string in search query syntax. An empty
+            query string will result in all data assets (in the
+            specified scope) that the user has access to. Query strings
+            can be simple as "x" or more qualified as:
 
             -  name:x
             -  column:x
@@ -138,6 +139,7 @@ class SearchCatalogRequest(proto.Message):
             -  ``relevance``, only supports descending
             -  ``last_modified_timestamp [asc|desc]``, defaults to
                descending if not specified
+            -  ``default`` that can only be descending
 
             If not specified, defaults to ``relevance`` descending.
     """
@@ -158,10 +160,49 @@ class SearchCatalogRequest(proto.Message):
                 names/IDs/numbers, go to
                 https://cloud.google.com/docs/overview/#projects.
             include_gcp_public_datasets (bool):
-                If ``true``, include Google Cloud Platform (GCP) public
-                datasets in the search results. Info on GCP public datasets
-                is available at https://cloud.google.com/public-datasets/.
-                By default, GCP public datasets are excluded.
+                If ``true``, include Google Cloud public datasets in the
+                search results. Info on Google Cloud public datasets is
+                available at https://cloud.google.com/public-datasets/. By
+                default, Google Cloud public datasets are excluded.
+            restricted_locations (MutableSequence[str]):
+                Optional. The list of locations to search within.
+
+                1. If empty, search will be performed in all locations;
+                2. If any of the locations are NOT in the valid locations
+                   list, error will be returned;
+                3. Otherwise, search only the given locations for matching
+                   results. Typical usage is to leave this field empty. When
+                   a location is unreachable as returned in the
+                   ``SearchCatalogResponse.unreachable`` field, users can
+                   repeat the search request with this parameter set to get
+                   additional information on the error.
+
+                Valid locations:
+
+                -  asia-east1
+                -  asia-east2
+                -  asia-northeast1
+                -  asia-northeast2
+                -  asia-northeast3
+                -  asia-south1
+                -  asia-southeast1
+                -  australia-southeast1
+                -  eu
+                -  europe-north1
+                -  europe-west1
+                -  europe-west2
+                -  europe-west3
+                -  europe-west4
+                -  europe-west6
+                -  global
+                -  northamerica-northeast1
+                -  southamerica-east1
+                -  us
+                -  us-central1
+                -  us-east1
+                -  us-east4
+                -  us-west1
+                -  us-west2
         """
 
         include_org_ids: MutableSequence[str] = proto.RepeatedField(
@@ -175,6 +216,10 @@ class SearchCatalogRequest(proto.Message):
         include_gcp_public_datasets: bool = proto.Field(
             proto.BOOL,
             number=7,
+        )
+        restricted_locations: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=16,
         )
 
     scope: Scope = proto.Field(
@@ -207,9 +252,18 @@ class SearchCatalogResponse(proto.Message):
     Attributes:
         results (MutableSequence[google.cloud.datacatalog_v1beta1.types.SearchCatalogResult]):
             Search results.
+        total_size (int):
+            The approximate total number of entries
+            matched by the query.
         next_page_token (str):
             The token that can be used to retrieve the
             next page of results.
+        unreachable (MutableSequence[str]):
+            Unreachable locations. Search result does not include data
+            from those locations. Users can get additional information
+            on the error by repeating the search request with a more
+            restrictive parameter -- setting the value for
+            ``SearchDataCatalogRequest.scope.restricted_locations``.
     """
 
     @property
@@ -221,9 +275,17 @@ class SearchCatalogResponse(proto.Message):
         number=1,
         message=search.SearchCatalogResult,
     )
+    total_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
     next_page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
     )
 
 
@@ -275,9 +337,12 @@ class UpdateEntryGroupRequest(proto.Message):
             Required. The updated entry group. "name"
             field must be set.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The fields to update on the entry group. If
-            absent or empty, all modifiable fields are
-            updated.
+            Names of fields whose values to overwrite on
+            an entry group.
+            If this parameter is absent or empty, all
+            modifiable fields are overwritten. If such
+            fields are non-required and omitted in the
+            request body, their values are emptied.
     """
 
     entry_group: "EntryGroup" = proto.Field(
@@ -443,8 +508,11 @@ class UpdateEntryRequest(proto.Message):
             Required. The updated entry. The "name" field
             must be set.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The fields to update on the entry. If absent or empty, all
-            modifiable fields are updated.
+            Names of fields whose values to overwrite on an entry.
+
+            If this parameter is absent or empty, all modifiable fields
+            are overwritten. If such fields are non-required and omitted
+            in the request body, their values are emptied.
 
             The following fields are modifiable:
 
@@ -452,7 +520,7 @@ class UpdateEntryRequest(proto.Message):
 
                -  ``schema``
 
-            -  For entries with type ``FILESET``
+            -  For entries with type ``FILESET``:
 
                -  ``schema``
                -  ``display_name``
@@ -460,15 +528,15 @@ class UpdateEntryRequest(proto.Message):
                -  ``gcs_fileset_spec``
                -  ``gcs_fileset_spec.file_patterns``
 
-            -  For entries with ``user_specified_type``
+            -  For entries with ``user_specified_type``:
 
                -  ``schema``
                -  ``display_name``
                -  ``description``
-               -  user_specified_type
-               -  user_specified_system
-               -  linked_resource
-               -  source_system_timestamps
+               -  ``user_specified_type``
+               -  ``user_specified_system``
+               -  ``linked_resource``
+               -  ``source_system_timestamps``
     """
 
     entry: "Entry" = proto.Field(
@@ -552,7 +620,7 @@ class LookupEntryRequest(proto.Message):
             -  ``bigquery.dataset.project_id.dataset_id``
             -  ``datacatalog.entry.project_id.location_id.entry_group_id.entry_id``
 
-            ``*_id``\ s shoud satisfy the standard SQL rules for
+            ``*_id``\ s should satisfy the standard SQL rules for
             identifiers.
             https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical.
 
@@ -591,8 +659,8 @@ class Entry(proto.Message):
 
     Attributes:
         name (str):
-            The Data Catalog resource name of the entry in URL format.
-            Example:
+            Output only. The Data Catalog resource name of the entry in
+            URL format. Example:
 
             -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
 
@@ -685,6 +753,9 @@ class Entry(proto.Message):
             type in the EntryType enum. For entries with
             user_specified_type, this field is optional and defaults to
             an empty timestamp.
+        usage_signal (google.cloud.datacatalog_v1beta1.types.UsageSignal):
+            Output only. Statistics on the usage level of
+            the resource.
     """
 
     name: str = proto.Field(
@@ -752,6 +823,11 @@ class Entry(proto.Message):
         proto.MESSAGE,
         number=7,
         message=timestamps.SystemTimestamps,
+    )
+    usage_signal: usage.UsageSignal = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=usage.UsageSignal,
     )
 
 
@@ -861,15 +937,13 @@ class UpdateTagTemplateRequest(proto.Message):
             Required. The template to update. The "name"
             field must be set.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The field mask specifies the parts of the template to
-            overwrite.
+            Names of fields whose values to overwrite on a tag template.
+            Currently, only ``display_name`` can be overwritten.
 
-            Allowed fields:
-
-            -  ``display_name``
-
-            If absent or empty, all of the allowed fields above will be
-            updated.
+            In general, if this parameter is absent or empty, all
+            modifiable fields are overwritten. If such fields are
+            non-required and omitted in the request body, their values
+            are emptied.
     """
 
     tag_template: gcd_tags.TagTemplate = proto.Field(
@@ -947,9 +1021,17 @@ class UpdateTagRequest(proto.Message):
             Required. The updated tag. The "name" field
             must be set.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The fields to update on the Tag. If absent or empty, all
-            modifiable fields are updated. Currently the only modifiable
-            field is the field ``fields``.
+            Note: Currently, this parameter can only take ``"fields"``
+            as value.
+
+            Names of fields whose values to overwrite on a tag.
+            Currently, a tag has the only modifiable field with the name
+            ``fields``.
+
+            In general, if this parameter is absent or empty, all
+            modifiable fields are overwritten. If such fields are
+            non-required and omitted in the request body, their values
+            are emptied.
     """
 
     tag: gcd_tags.Tag = proto.Field(
@@ -1030,21 +1112,24 @@ class UpdateTagTemplateFieldRequest(proto.Message):
         tag_template_field (google.cloud.datacatalog_v1beta1.types.TagTemplateField):
             Required. The template to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. The field mask specifies the parts of the template
-            to be updated. Allowed fields:
+            Optional. Names of fields whose values to overwrite on an
+            individual field of a tag template. The following fields are
+            modifiable:
 
             -  ``display_name``
             -  ``type.enum_type``
             -  ``is_required``
 
-            If ``update_mask`` is not set or empty, all of the allowed
-            fields above will be updated.
+            If this parameter is absent or empty, all modifiable fields
+            are overwritten. If such fields are non-required and omitted
+            in the request body, their values are emptied with one
+            exception: when updating an enum type, the provided values
+            are merged with the existing values. Therefore, enum values
+            can only be added, existing enum values cannot be deleted or
+            renamed.
 
-            When updating an enum type, the provided values will be
-            merged with the existing values. Therefore, enum values can
-            only be added, existing enum values cannot be deleted nor
-            renamed. Updating a template field from optional to required
-            is NOT allowed.
+            Additionally, updating a template field from optional to
+            required is *not* allowed.
     """
 
     name: str = proto.Field(
@@ -1082,6 +1167,30 @@ class RenameTagTemplateFieldRequest(proto.Message):
         number=1,
     )
     new_tag_template_field_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class RenameTagTemplateFieldEnumValueRequest(proto.Message):
+    r"""Request message for
+    [RenameTagTemplateFieldEnumValue][google.cloud.datacatalog.v1.DataCatalog.RenameTagTemplateFieldEnumValue].
+
+    Attributes:
+        name (str):
+            Required. The name of the enum field value. Example:
+
+            -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}/enumValues/{enum_value_display_name}
+        new_enum_value_display_name (str):
+            Required. The new display name of the enum value. For
+            example, ``my_new_enum_value``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    new_enum_value_display_name: str = proto.Field(
         proto.STRING,
         number=2,
     )

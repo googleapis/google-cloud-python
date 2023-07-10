@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
@@ -249,7 +250,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         This is a custom method
         (https://cloud.google.com/apis/design/custom_methods) and does
         not return the complete resource, only the resource identifier
-        and high level fields. Clients can subsequentally call ``Get``
+        and high level fields. Clients can subsequently call ``Get``
         methods.
 
         Note that Data Catalog search queries do not guarantee full
@@ -832,6 +833,41 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["rename_tag_template_field"]
 
     @property
+    def rename_tag_template_field_enum_value(
+        self,
+    ) -> Callable[
+        [datacatalog.RenameTagTemplateFieldEnumValueRequest],
+        Awaitable[tags.TagTemplateField],
+    ]:
+        r"""Return a callable for the rename tag template field enum
+        value method over gRPC.
+
+        Renames an enum value in a tag template. The enum
+        values have to be unique within one enum field. Thus, an
+        enum value cannot be renamed with a name used in any
+        other enum value within the same enum field.
+
+        Returns:
+            Callable[[~.RenameTagTemplateFieldEnumValueRequest],
+                    Awaitable[~.TagTemplateField]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "rename_tag_template_field_enum_value" not in self._stubs:
+            self._stubs[
+                "rename_tag_template_field_enum_value"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.datacatalog.v1beta1.DataCatalog/RenameTagTemplateFieldEnumValue",
+                request_serializer=datacatalog.RenameTagTemplateFieldEnumValueRequest.serialize,
+                response_deserializer=tags.TagTemplateField.deserialize,
+            )
+        return self._stubs["rename_tag_template_field_enum_value"]
+
+    @property
     def delete_tag_template_field(
         self,
     ) -> Callable[
@@ -956,8 +992,10 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
     ]:
         r"""Return a callable for the list tags method over gRPC.
 
-        Lists the tags on an
-        [Entry][google.cloud.datacatalog.v1beta1.Entry].
+        Lists tags assigned to an
+        [Entry][google.cloud.datacatalog.v1beta1.Entry]. The
+        [columns][google.cloud.datacatalog.v1beta1.Tag.column] in the
+        response are lowercased.
 
         Returns:
             Callable[[~.ListTagsRequest],

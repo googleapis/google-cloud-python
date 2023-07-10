@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -79,6 +80,9 @@ class SearchCatalogResult(proto.Message):
             Example:
 
             -  ``//bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableId``
+        modify_time (google.protobuf.timestamp_pb2.Timestamp):
+            Last-modified timestamp of the entry from the
+            managing system.
     """
 
     search_result_type: "SearchResultType" = proto.Field(
@@ -97,6 +101,11 @@ class SearchCatalogResult(proto.Message):
     linked_resource: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    modify_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
     )
 
 

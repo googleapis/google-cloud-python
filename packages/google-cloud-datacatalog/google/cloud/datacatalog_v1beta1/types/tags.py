@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -208,8 +208,8 @@ class TagField(proto.Message):
 
 class TagTemplate(proto.Message):
     r"""A tag template defines a tag, which can have one or more typed
-    fields. The template is used to create and attach the tag to GCP
-    resources. `Tag template
+    fields. The template is used to create and attach the tag to Google
+    Cloud resources. `Tag template
     roles <https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles>`__
     provide permissions to create, edit, and use the template. See, for
     example, the `TagTemplate
@@ -279,6 +279,9 @@ class TagTemplateField(proto.Message):
         is_required (bool):
             Whether this is a required field. Defaults to
             false.
+        description (str):
+            The description for this field. Defaults to
+            an empty string.
         order (int):
             The order of this field with respect to other
             fields in this tag template.  A higher value
@@ -304,6 +307,10 @@ class TagTemplateField(proto.Message):
     is_required: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
     order: int = proto.Field(
         proto.INT32,
@@ -359,16 +366,7 @@ class FieldType(proto.Message):
 
         Attributes:
             allowed_values (MutableSequence[google.cloud.datacatalog_v1beta1.types.FieldType.EnumType.EnumValue]):
-                Required on create; optional on update. The
-                set of allowed values for this enum. This set
-                must not be empty, the display names of the
-                values in this set must not be empty and the
-                display names of the values must be
-                case-insensitively unique within this set.
-                Currently, enum values can only be added to the
-                list of allowed values. Deletion and renaming of
-                enum values are not supported. Can have up to
-                500 allowed values.
+
         """
 
         class EnumValue(proto.Message):
