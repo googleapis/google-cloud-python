@@ -254,8 +254,8 @@ class AdmissionRule(proto.Message):
                 pod creation.
             DRYRUN_AUDIT_LOG_ONLY (2):
                 Dryrun mode: Audit logging only.  This will
-                allow the pod creation as if the admission
-                request had specified break-glass.
+                allow the pod creation as if
+                the admission request had specified break-glass.
         """
         ENFORCEMENT_MODE_UNSPECIFIED = 0
         ENFORCED_BLOCK_AND_AUDIT_LOG = 1
