@@ -85,6 +85,7 @@ class DetectIntentRequest(proto.Message):
         query_input (google.cloud.dialogflow_v2beta1.types.QueryInput):
             Required. The input specification. It can be
             set to:
+
             1.  an audio config
                 which instructs the speech recognizer how to
             process the speech audio,
@@ -440,14 +441,15 @@ class QueryResult(proto.Message):
             -   MapKey value: parameter name
             -   MapValue type:
                 -   If parameter's entity type is a
-            composite entity: map     -   Else: depending on
-            parameter value type, could be one of string,
-            number, boolean, null, list or map
+              composite entity: map
+                -   Else: depending on parameter value type,
+              could be one of string,         number,
+              boolean, null, list or map
             -   MapValue value:
                 -   If parameter's entity type is a
-            composite entity:         map from composite
-            entity property names to property values     -
-            Else: parameter value
+              composite entity:         map from composite
+              entity property names to property values
+                -   Else: parameter value
         all_required_params_present (bool):
             This field is set to:
 
@@ -759,6 +761,7 @@ class StreamingDetectIntentRequest(proto.Message):
         query_input (google.cloud.dialogflow_v2beta1.types.QueryInput):
             Required. The input specification. It can be
             set to:
+
             1.  an audio config which instructs the speech
             recognizer how to process     the speech audio,
 
@@ -1311,14 +1314,15 @@ class EventInput(proto.Message):
             -   MapKey value: parameter name
             -   MapValue type:
                 -   If parameter's entity type is a
-            composite entity: map     -   Else: depending on
-            parameter value type, could be one of string,
-            number, boolean, null, list or map
+              composite entity: map
+                -   Else: depending on parameter value type,
+              could be one of string,         number,
+              boolean, null, list or map
             -   MapValue value:
                 -   If parameter's entity type is a
-            composite entity:         map from composite
-            entity property names to property values     -
-            Else: parameter value
+              composite entity:         map from composite
+              entity property names to property values
+                -   Else: parameter value
         language_code (str):
             Required. The language of this query. See `Language
             Support <https://cloud.google.com/dialogflow/docs/reference/language>`__

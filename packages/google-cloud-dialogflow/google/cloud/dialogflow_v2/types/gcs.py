@@ -35,8 +35,9 @@ class GcsSources(proto.Message):
         uris (MutableSequence[str]):
             Required. Google Cloud Storage URIs for the
             inputs. A URI is of the form:
-            gs://bucket/object-prefix-or-name Whether a
-            prefix or name is used depends on the use case.
+              gs://bucket/object-prefix-or-name
+            Whether a prefix or name is used depends on the
+            use case.
     """
 
     uris: MutableSequence[str] = proto.RepeatedField(

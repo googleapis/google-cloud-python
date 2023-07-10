@@ -322,6 +322,7 @@ class SessionsAsyncClient:
             query_input (:class:`google.cloud.dialogflow_v2beta1.types.QueryInput`):
                 Required. The input specification. It
                 can be set to:
+
                 1.  an audio config
                     which instructs the speech
                 recognizer how to process the speech

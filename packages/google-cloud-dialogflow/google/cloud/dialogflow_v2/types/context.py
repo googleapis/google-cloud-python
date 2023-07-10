@@ -94,14 +94,15 @@ class Context(proto.Message):
             -   MapKey value: parameter name
             -   MapValue type:
                 -   If parameter's entity type is a
-            composite entity: map     -   Else: depending on
-            parameter value type, could be one of string,
-            number, boolean, null, list or map
+              composite entity: map
+                -   Else: depending on parameter value type,
+              could be one of string,         number,
+              boolean, null, list or map
             -   MapValue value:
                 -   If parameter's entity type is a
-            composite entity:         map from composite
-            entity property names to property values     -
-            Else: parameter value
+              composite entity:         map from composite
+              entity property names to property values
+                -   Else: parameter value
     """
 
     name: str = proto.Field(
