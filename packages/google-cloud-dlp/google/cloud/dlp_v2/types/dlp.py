@@ -346,24 +346,25 @@ class MatchingType(proto.Enum):
         MATCHING_TYPE_FULL_MATCH (1):
             Full match.
             - Dictionary: join of Dictionary results matched
-            complete finding quote - Regex: all regex
-            matches fill a finding quote start to end -
-            Exclude info type: completely inside affecting
-            info types findings
+              complete finding quote
+            - Regex: all regex matches fill a finding quote
+              start to end
+            - Exclude info type: completely inside affecting
+              info types findings
         MATCHING_TYPE_PARTIAL_MATCH (2):
             Partial match.
             - Dictionary: at least one of the tokens in the
-            finding matches - Regex: substring of the
-            finding matches
+              finding matches
+            - Regex: substring of the finding matches
             - Exclude info type: intersects with affecting
-            info types findings
+              info types findings
         MATCHING_TYPE_INVERSE_MATCH (3):
             Inverse match.
             - Dictionary: no tokens in the finding match the
-            dictionary - Regex: finding doesn't match the
-            regex
+              dictionary
+            - Regex: finding doesn't match the regex
             - Exclude info type: no intersection with
-            affecting info types findings
+              affecting info types findings
     """
     MATCHING_TYPE_UNSPECIFIED = 0
     MATCHING_TYPE_FULL_MATCH = 1
@@ -1415,7 +1416,7 @@ class Container(proto.Message):
             name. Examples:
             - BigQuery: 'Project:DataSetId.TableId'
             - Cloud Storage:
-            'gs://Bucket/folders/filename.txt'
+              'gs://Bucket/folders/filename.txt'
         root_path (str):
             The root of the container. Examples:
 
