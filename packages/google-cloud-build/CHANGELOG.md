@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.18.0](https://github.com/googleapis/python-cloudbuild/compare/v3.17.1...v3.18.0) (2023-07-10)
+
+
+### Features
+
+* Added e2-medium machine type ([#415](https://github.com/googleapis/python-cloudbuild/issues/415)) ([9880460](https://github.com/googleapis/python-cloudbuild/commit/9880460c741a5209eed9791c50510a50741bfae5))
+
 ## [3.17.1](https://github.com/googleapis/python-cloudbuild/compare/v3.17.0...v3.17.1) (2023-07-04)
 
 
