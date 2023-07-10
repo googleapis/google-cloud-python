@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.11.3](https://github.com/googleapis/gapic-generator-python/compare/v1.11.2...v1.11.3) (2023-07-07)
+
+
+### Documentation
+
+* Fix formatting of docstring with lists ([#1687](https://github.com/googleapis/gapic-generator-python/issues/1687)) ([abe0f3f](https://github.com/googleapis/gapic-generator-python/commit/abe0f3f3dc444fd12faf017e8ad73c941608e120))
+
 ## [1.11.2](https://github.com/googleapis/gapic-generator-python/compare/v1.11.1...v1.11.2) (2023-07-06)
 
 
