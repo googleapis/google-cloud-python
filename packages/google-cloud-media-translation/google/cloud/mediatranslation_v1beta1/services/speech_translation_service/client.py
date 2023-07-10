@@ -433,8 +433,9 @@ class SpeechTranslationServiceClient(metaclass=SpeechTranslationServiceClientMet
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[media_translation.StreamingTranslateSpeechResponse]:
         r"""Performs bidirectional streaming speech translation:
-        receive results while sending audio. This method is only
-        available via the gRPC API (not REST).
+        receive results while
+        sending audio. This method is only available via the
+        gRPC API (not REST).
 
         .. code-block:: python
 

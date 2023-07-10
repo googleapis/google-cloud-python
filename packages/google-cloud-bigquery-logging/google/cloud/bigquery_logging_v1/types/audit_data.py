@@ -150,7 +150,8 @@ class AuditData(proto.Message):
             This field is a member of `oneof`_ ``response``.
         job_query_done_response (google.cloud.bigquery_logging_v1.types.JobQueryDoneResponse):
             Deprecated: Job query-done response. Use this
-            information for usage analysis.
+            information for usage
+            analysis.
 
             This field is a member of `oneof`_ ``response``.
         policy_response (google.iam.v1.policy_pb2.Policy):

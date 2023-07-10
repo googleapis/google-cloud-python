@@ -1563,8 +1563,8 @@ class FoldersClient(metaclass=FoldersClientMeta):
                 The request object. Request message for ``GetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
-                policy is being requested. See the
-                operation documentation for the
+                policy is being requested.
+                See the operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field
@@ -1729,8 +1729,8 @@ class FoldersClient(metaclass=FoldersClientMeta):
                 The request object. Request message for ``SetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
-                policy is being specified. See the
-                operation documentation for the
+                policy is being specified.
+                See the operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field
@@ -1897,8 +1897,8 @@ class FoldersClient(metaclass=FoldersClientMeta):
                 The request object. Request message for ``TestIamPermissions`` method.
             resource (str):
                 REQUIRED: The resource for which the
-                policy detail is being requested. See
-                the operation documentation for the
+                policy detail is being requested.
+                See the operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field

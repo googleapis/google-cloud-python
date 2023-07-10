@@ -32,12 +32,11 @@ __protobuf__ = proto.module(
 class UsageStats(proto.Message):
     r"""Detailed counts on the entry's usage.
     Caveats:
-
-    - Only BigQuery tables have usage stats
-    - The usage stats only include BigQuery query jobs
-    - The usage stats might be underestimated, e.g. wildcard table
-      references are not yet counted in usage computation
-      https://cloud.google.com/bigquery/docs/querying-wildcard-tables
+      - Only BigQuery tables have usage stats
+      - The usage stats only include BigQuery query jobs
+      - The usage stats might be underestimated, e.g. wildcard table
+      references     are not yet counted in usage computation
+    https://cloud.google.com/bigquery/docs/querying-wildcard-tables
 
     Attributes:
         total_completions (float):

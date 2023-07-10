@@ -813,7 +813,8 @@ class ListDeliveryPipelinesRequest(proto.Message):
             call that provided the page token.
         filter (str):
             Filter pipelines to be returned. See
-            https://google.aip.dev/160 for more details.
+            https://google.aip.dev/160 for more
+            details.
         order_by (str):
             Field to sort by. See
             https://google.aip.dev/132#ordering for more
@@ -1517,11 +1518,12 @@ class ListTargetsRequest(proto.Message):
             call that provided the page token.
         filter (str):
             Optional. Filter targets to be returned. See
-            https://google.aip.dev/160 for more details.
+            https://google.aip.dev/160 for
+            more details.
         order_by (str):
             Optional. Field to sort by. See
-            https://google.aip.dev/132#ordering for more
-            details.
+            https://google.aip.dev/132#ordering for
+            more details.
     """
 
     parent: str = proto.Field(
@@ -2344,11 +2346,12 @@ class ListReleasesRequest(proto.Message):
             call that provided the page token.
         filter (str):
             Optional. Filter releases to be returned. See
-            https://google.aip.dev/160 for more details.
+            https://google.aip.dev/160
+            for more details.
         order_by (str):
             Optional. Field to sort by. See
-            https://google.aip.dev/132#ordering for more
-            details.
+            https://google.aip.dev/132#ordering for
+            more details.
     """
 
     parent: str = proto.Field(
@@ -3106,11 +3109,12 @@ class ListRolloutsRequest(proto.Message):
             call that provided the page token.
         filter (str):
             Optional. Filter rollouts to be returned. See
-            https://google.aip.dev/160 for more details.
+            https://google.aip.dev/160
+            for more details.
         order_by (str):
             Optional. Field to sort by. See
-            https://google.aip.dev/132#ordering for more
-            details.
+            https://google.aip.dev/132#ordering for
+            more details.
     """
 
     parent: str = proto.Field(
@@ -3851,11 +3855,12 @@ class ListJobRunsRequest(proto.Message):
             call that provided the page token.
         filter (str):
             Optional. Filter results to be returned. See
-            https://google.aip.dev/160 for more details.
+            https://google.aip.dev/160 for
+            more details.
         order_by (str):
             Optional. Field to sort by. See
-            https://google.aip.dev/132#ordering for more
-            details.
+            https://google.aip.dev/132#ordering for
+            more details.
     """
 
     parent: str = proto.Field(

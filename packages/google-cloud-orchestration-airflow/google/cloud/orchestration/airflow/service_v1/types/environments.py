@@ -882,9 +882,9 @@ class EnvironmentConfig(proto.Message):
         master_authorized_networks_config (google.cloud.orchestration.airflow.service_v1.types.MasterAuthorizedNetworksConfig):
             Optional. The configuration options for GKE
             cluster master authorized networks. By default
-            master authorized networks feature is: - in case
-            of private environment: enabled with no external
-            networks allowlisted.
+            master authorized networks feature is:
+            - in case of private environment: enabled with
+              no external networks allowlisted.
             - in case of public environment: disabled.
         recovery_config (google.cloud.orchestration.airflow.service_v1.types.RecoveryConfig):
             Optional. The Recovery settings configuration of an

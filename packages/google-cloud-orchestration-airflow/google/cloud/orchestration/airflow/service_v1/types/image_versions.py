@@ -99,7 +99,8 @@ class ImageVersion(proto.Message):
     Attributes:
         image_version_id (str):
             The string identifier of the ImageVersion, in
-            the form: "composer-x.y.z-airflow-a.b.c".
+            the form:
+            "composer-x.y.z-airflow-a.b.c".
         is_default (bool):
             Whether this is the default ImageVersion used
             by Composer during environment creation if no
