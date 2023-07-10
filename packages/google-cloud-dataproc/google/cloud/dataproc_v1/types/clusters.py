@@ -1284,8 +1284,9 @@ class KerberosConfig(proto.Message):
     Attributes:
         enable_kerberos (bool):
             Optional. Flag to indicate whether to
-            Kerberize the cluster (default: false). Set this
-            field to true to enable Kerberos on a cluster.
+            Kerberize the cluster (default:
+            false). Set this field to true to enable
+            Kerberos on a cluster.
         root_principal_password_uri (str):
             Optional. The Cloud Storage URI of a KMS
             encrypted file containing the root principal
