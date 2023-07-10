@@ -1,0 +1,418 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.deploy_v1",
+  "protoPackage": "google.cloud.deploy.v1",
+  "schema": "1.0",
+  "services": {
+    "CloudDeploy": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "CloudDeployClient",
+          "rpcs": {
+            "AbandonRelease": {
+              "methods": [
+                "abandon_release"
+              ]
+            },
+            "AdvanceRollout": {
+              "methods": [
+                "advance_rollout"
+              ]
+            },
+            "ApproveRollout": {
+              "methods": [
+                "approve_rollout"
+              ]
+            },
+            "CancelRollout": {
+              "methods": [
+                "cancel_rollout"
+              ]
+            },
+            "CreateDeliveryPipeline": {
+              "methods": [
+                "create_delivery_pipeline"
+              ]
+            },
+            "CreateRelease": {
+              "methods": [
+                "create_release"
+              ]
+            },
+            "CreateRollout": {
+              "methods": [
+                "create_rollout"
+              ]
+            },
+            "CreateTarget": {
+              "methods": [
+                "create_target"
+              ]
+            },
+            "DeleteDeliveryPipeline": {
+              "methods": [
+                "delete_delivery_pipeline"
+              ]
+            },
+            "DeleteTarget": {
+              "methods": [
+                "delete_target"
+              ]
+            },
+            "GetConfig": {
+              "methods": [
+                "get_config"
+              ]
+            },
+            "GetDeliveryPipeline": {
+              "methods": [
+                "get_delivery_pipeline"
+              ]
+            },
+            "GetJobRun": {
+              "methods": [
+                "get_job_run"
+              ]
+            },
+            "GetRelease": {
+              "methods": [
+                "get_release"
+              ]
+            },
+            "GetRollout": {
+              "methods": [
+                "get_rollout"
+              ]
+            },
+            "GetTarget": {
+              "methods": [
+                "get_target"
+              ]
+            },
+            "IgnoreJob": {
+              "methods": [
+                "ignore_job"
+              ]
+            },
+            "ListDeliveryPipelines": {
+              "methods": [
+                "list_delivery_pipelines"
+              ]
+            },
+            "ListJobRuns": {
+              "methods": [
+                "list_job_runs"
+              ]
+            },
+            "ListReleases": {
+              "methods": [
+                "list_releases"
+              ]
+            },
+            "ListRollouts": {
+              "methods": [
+                "list_rollouts"
+              ]
+            },
+            "ListTargets": {
+              "methods": [
+                "list_targets"
+              ]
+            },
+            "RetryJob": {
+              "methods": [
+                "retry_job"
+              ]
+            },
+            "TerminateJobRun": {
+              "methods": [
+                "terminate_job_run"
+              ]
+            },
+            "UpdateDeliveryPipeline": {
+              "methods": [
+                "update_delivery_pipeline"
+              ]
+            },
+            "UpdateTarget": {
+              "methods": [
+                "update_target"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "CloudDeployAsyncClient",
+          "rpcs": {
+            "AbandonRelease": {
+              "methods": [
+                "abandon_release"
+              ]
+            },
+            "AdvanceRollout": {
+              "methods": [
+                "advance_rollout"
+              ]
+            },
+            "ApproveRollout": {
+              "methods": [
+                "approve_rollout"
+              ]
+            },
+            "CancelRollout": {
+              "methods": [
+                "cancel_rollout"
+              ]
+            },
+            "CreateDeliveryPipeline": {
+              "methods": [
+                "create_delivery_pipeline"
+              ]
+            },
+            "CreateRelease": {
+              "methods": [
+                "create_release"
+              ]
+            },
+            "CreateRollout": {
+              "methods": [
+                "create_rollout"
+              ]
+            },
+            "CreateTarget": {
+              "methods": [
+                "create_target"
+              ]
+            },
+            "DeleteDeliveryPipeline": {
+              "methods": [
+                "delete_delivery_pipeline"
+              ]
+            },
+            "DeleteTarget": {
+              "methods": [
+                "delete_target"
+              ]
+            },
+            "GetConfig": {
+              "methods": [
+                "get_config"
+              ]
+            },
+            "GetDeliveryPipeline": {
+              "methods": [
+                "get_delivery_pipeline"
+              ]
+            },
+            "GetJobRun": {
+              "methods": [
+                "get_job_run"
+              ]
+            },
+            "GetRelease": {
+              "methods": [
+                "get_release"
+              ]
+            },
+            "GetRollout": {
+              "methods": [
+                "get_rollout"
+              ]
+            },
+            "GetTarget": {
+              "methods": [
+                "get_target"
+              ]
+            },
+            "IgnoreJob": {
+              "methods": [
+                "ignore_job"
+              ]
+            },
+            "ListDeliveryPipelines": {
+              "methods": [
+                "list_delivery_pipelines"
+              ]
+            },
+            "ListJobRuns": {
+              "methods": [
+                "list_job_runs"
+              ]
+            },
+            "ListReleases": {
+              "methods": [
+                "list_releases"
+              ]
+            },
+            "ListRollouts": {
+              "methods": [
+                "list_rollouts"
+              ]
+            },
+            "ListTargets": {
+              "methods": [
+                "list_targets"
+              ]
+            },
+            "RetryJob": {
+              "methods": [
+                "retry_job"
+              ]
+            },
+            "TerminateJobRun": {
+              "methods": [
+                "terminate_job_run"
+              ]
+            },
+            "UpdateDeliveryPipeline": {
+              "methods": [
+                "update_delivery_pipeline"
+              ]
+            },
+            "UpdateTarget": {
+              "methods": [
+                "update_target"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "CloudDeployClient",
+          "rpcs": {
+            "AbandonRelease": {
+              "methods": [
+                "abandon_release"
+              ]
+            },
+            "AdvanceRollout": {
+              "methods": [
+                "advance_rollout"
+              ]
+            },
+            "ApproveRollout": {
+              "methods": [
+                "approve_rollout"
+              ]
+            },
+            "CancelRollout": {
+              "methods": [
+                "cancel_rollout"
+              ]
+            },
+            "CreateDeliveryPipeline": {
+              "methods": [
+                "create_delivery_pipeline"
+              ]
+            },
+            "CreateRelease": {
+              "methods": [
+                "create_release"
+              ]
+            },
+            "CreateRollout": {
+              "methods": [
+                "create_rollout"
+              ]
+            },
+            "CreateTarget": {
+              "methods": [
+                "create_target"
+              ]
+            },
+            "DeleteDeliveryPipeline": {
+              "methods": [
+                "delete_delivery_pipeline"
+              ]
+            },
+            "DeleteTarget": {
+              "methods": [
+                "delete_target"
+              ]
+            },
+            "GetConfig": {
+              "methods": [
+                "get_config"
+              ]
+            },
+            "GetDeliveryPipeline": {
+              "methods": [
+                "get_delivery_pipeline"
+              ]
+            },
+            "GetJobRun": {
+              "methods": [
+                "get_job_run"
+              ]
+            },
+            "GetRelease": {
+              "methods": [
+                "get_release"
+              ]
+            },
+            "GetRollout": {
+              "methods": [
+                "get_rollout"
+              ]
+            },
+            "GetTarget": {
+              "methods": [
+                "get_target"
+              ]
+            },
+            "IgnoreJob": {
+              "methods": [
+                "ignore_job"
+              ]
+            },
+            "ListDeliveryPipelines": {
+              "methods": [
+                "list_delivery_pipelines"
+              ]
+            },
+            "ListJobRuns": {
+              "methods": [
+                "list_job_runs"
+              ]
+            },
+            "ListReleases": {
+              "methods": [
+                "list_releases"
+              ]
+            },
+            "ListRollouts": {
+              "methods": [
+                "list_rollouts"
+              ]
+            },
+            "ListTargets": {
+              "methods": [
+                "list_targets"
+              ]
+            },
+            "RetryJob": {
+              "methods": [
+                "retry_job"
+              ]
+            },
+            "TerminateJobRun": {
+              "methods": [
+                "terminate_job_run"
+              ]
+            },
+            "UpdateDeliveryPipeline": {
+              "methods": [
+                "update_delivery_pipeline"
+              ]
+            },
+            "UpdateTarget": {
+              "methods": [
+                "update_target"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
