@@ -143,8 +143,8 @@ class Table(proto.Message):
         deletion_protection (bool):
             Set to true to make the table protected
             against data loss. i.e. deleting the following
-            resources through Admin APIs are prohibited:   -
-            The table.
+            resources through Admin APIs are prohibited:
+              - The table.
               - The column families in the table.
               - The instance containing the table.
             Note one can still delete the data stored in the

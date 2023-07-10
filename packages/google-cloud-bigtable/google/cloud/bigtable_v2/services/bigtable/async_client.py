@@ -1030,8 +1030,8 @@ class BigtableAsyncClient:
         Args:
             request (Optional[Union[google.cloud.bigtable_v2.types.GenerateInitialChangeStreamPartitionsRequest, dict]]):
                 The request object. NOTE: This API is intended to be used
-                by Apache Beam BigtableIO. Request
-                message for
+                by Apache Beam BigtableIO.
+                Request message for
                 Bigtable.GenerateInitialChangeStreamPartitions.
             table_name (:class:`str`):
                 Required. The unique name of the table from which to get
@@ -1061,8 +1061,8 @@ class BigtableAsyncClient:
         Returns:
             AsyncIterable[google.cloud.bigtable_v2.types.GenerateInitialChangeStreamPartitionsResponse]:
                 NOTE: This API is intended to be used
-                by Apache Beam BigtableIO. Response
-                message for
+                by Apache Beam BigtableIO.
+                Response message for
                 Bigtable.GenerateInitialChangeStreamPartitions.
 
         """
@@ -1123,15 +1123,17 @@ class BigtableAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[bigtable.ReadChangeStreamResponse]]:
         r"""NOTE: This API is intended to be used by Apache Beam
-        BigtableIO. Reads changes from a table's change stream.
-        Changes will reflect both user-initiated mutations and
-        mutations that are caused by garbage collection.
+        BigtableIO.
+        Reads changes from a table's change stream. Changes will
+        reflect both user-initiated mutations and mutations that
+        are caused by garbage collection.
 
         Args:
             request (Optional[Union[google.cloud.bigtable_v2.types.ReadChangeStreamRequest, dict]]):
                 The request object. NOTE: This API is intended to be used
-                by Apache Beam BigtableIO. Request
-                message for Bigtable.ReadChangeStream.
+                by Apache Beam BigtableIO.
+                Request message for
+                Bigtable.ReadChangeStream.
             table_name (:class:`str`):
                 Required. The unique name of the table from which to
                 read a change stream. Values are of the form
@@ -1160,8 +1162,9 @@ class BigtableAsyncClient:
         Returns:
             AsyncIterable[google.cloud.bigtable_v2.types.ReadChangeStreamResponse]:
                 NOTE: This API is intended to be used
-                by Apache Beam BigtableIO. Response
-                message for Bigtable.ReadChangeStream.
+                by Apache Beam BigtableIO.
+                Response message for
+                Bigtable.ReadChangeStream.
 
         """
         # Create or coerce a protobuf request object.

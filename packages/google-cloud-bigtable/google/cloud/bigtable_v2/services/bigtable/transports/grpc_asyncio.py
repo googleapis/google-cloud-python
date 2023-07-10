@@ -490,9 +490,10 @@ class BigtableGrpcAsyncIOTransport(BigtableTransport):
         r"""Return a callable for the read change stream method over gRPC.
 
         NOTE: This API is intended to be used by Apache Beam
-        BigtableIO. Reads changes from a table's change stream.
-        Changes will reflect both user-initiated mutations and
-        mutations that are caused by garbage collection.
+        BigtableIO.
+        Reads changes from a table's change stream. Changes will
+        reflect both user-initiated mutations and mutations that
+        are caused by garbage collection.
 
         Returns:
             Callable[[~.ReadChangeStreamRequest],
