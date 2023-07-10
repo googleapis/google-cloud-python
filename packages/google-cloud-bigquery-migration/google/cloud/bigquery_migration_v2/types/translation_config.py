@@ -360,7 +360,8 @@ class MySQLDialect(proto.Message):
 
 class ObjectNameMappingList(proto.Message):
     r"""Represents a map of name mappings using a list of key:value
-    proto messages of existing name to desired output name.
+    proto messages of
+    existing name to desired output name.
 
     Attributes:
         name_map (MutableSequence[google.cloud.bigquery_migration_v2.types.ObjectNameMapping]):

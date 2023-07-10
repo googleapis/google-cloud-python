@@ -43,8 +43,8 @@ class AssessmentTaskDetails(proto.Message):
             input path on the translation task)
         data_source (str):
             Required. The data source or data warehouse
-            type (eg: TERADATA/REDSHIFT) from which the
-            input data is extracted.
+            type (eg: TERADATA/REDSHIFT)
+            from which the input data is extracted.
     """
 
     input_path: str = proto.Field(
