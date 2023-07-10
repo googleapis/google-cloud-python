@@ -678,9 +678,10 @@ class S3CompatibleMetadata(proto.Message):
                 Perform requests using HTTPS.
             NETWORK_PROTOCOL_HTTP (2):
                 Not recommended: This sends data in
-                clear-text. This is only appropriate within a
-                closed network or for publicly available data.
-                Perform requests using HTTP.
+                clear-text. This is only
+                appropriate within a closed network or for
+                publicly available data. Perform requests using
+                HTTP.
         """
         NETWORK_PROTOCOL_UNSPECIFIED = 0
         NETWORK_PROTOCOL_HTTPS = 1
