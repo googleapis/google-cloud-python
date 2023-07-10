@@ -254,7 +254,8 @@ class SpeechGrpcTransport(SpeechTransport):
         r"""Return a callable for the recognize method over gRPC.
 
         Performs synchronous speech recognition: receive
-        results after all audio has been sent and processed.
+        results after all audio
+        has been sent and processed.
 
         Returns:
             Callable[[~.RecognizeRequest],
@@ -315,8 +316,9 @@ class SpeechGrpcTransport(SpeechTransport):
         r"""Return a callable for the streaming recognize method over gRPC.
 
         Performs bidirectional streaming speech recognition:
-        receive results while sending audio. This method is only
-        available via the gRPC API (not REST).
+        receive results while
+        sending audio. This method is only available via the
+        gRPC API (not REST).
 
         Returns:
             Callable[[~.StreamingRecognizeRequest],

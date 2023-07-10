@@ -978,7 +978,8 @@ class SpeechAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_speech.RecognizeResponse:
         r"""Performs synchronous Speech recognition: receive
-        results after all audio has been sent and processed.
+        results after all audio
+        has been sent and processed.
 
         .. code-block:: python
 
@@ -1159,8 +1160,9 @@ class SpeechAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[cloud_speech.StreamingRecognizeResponse]]:
         r"""Performs bidirectional streaming speech recognition:
-        receive results while sending audio. This method is only
-        available via the gRPC API (not REST).
+        receive results while
+        sending audio. This method is only available via the
+        gRPC API (not REST).
 
         .. code-block:: python
 
@@ -1328,9 +1330,10 @@ class SpeechAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Performs batch asynchronous speech recognition: send
-        a request with N audio files and receive a long running
-        operation that can be polled to see when the
-        transcriptions are finished.
+        a request with N
+        audio files and receive a long running operation that
+        can be polled to see when the transcriptions are
+        finished.
 
         .. code-block:: python
 
