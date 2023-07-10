@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.10.0](https://github.com/googleapis/python-oslogin/compare/v2.9.1...v2.10.0) (2023-07-10)
+
+
+### Features
+
+* Enable "rest" transport in Python for services supporting numeric enums ([#249](https://github.com/googleapis/python-oslogin/issues/249)) ([426d470](https://github.com/googleapis/python-oslogin/commit/426d4708051ce1bf6b72f4089de4f9493851e9a1))
+
 ## [2.9.1](https://github.com/googleapis/python-oslogin/compare/v2.9.0...v2.9.1) (2023-01-23)
 
 
