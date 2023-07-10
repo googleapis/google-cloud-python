@@ -2583,6 +2583,7 @@ def test_insert_rest(request_type):
         "name": "name_value",
         "nats": [
             {
+                "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
@@ -2927,6 +2928,7 @@ def test_insert_rest_bad_request(
         "name": "name_value",
         "nats": [
             {
+                "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
@@ -3143,6 +3145,7 @@ def test_insert_unary_rest(request_type):
         "name": "name_value",
         "nats": [
             {
+                "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
@@ -3465,6 +3468,7 @@ def test_insert_unary_rest_bad_request(
         "name": "name_value",
         "nats": [
             {
+                "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
@@ -4034,6 +4038,7 @@ def test_patch_rest(request_type):
         "name": "name_value",
         "nats": [
             {
+                "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
@@ -4383,6 +4388,7 @@ def test_patch_rest_bad_request(
         "name": "name_value",
         "nats": [
             {
+                "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
@@ -4605,6 +4611,7 @@ def test_patch_unary_rest(request_type):
         "name": "name_value",
         "nats": [
             {
+                "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
@@ -4932,6 +4939,7 @@ def test_patch_unary_rest_bad_request(
         "name": "name_value",
         "nats": [
             {
+                "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
@@ -5154,6 +5162,7 @@ def test_preview_rest(request_type):
         "name": "name_value",
         "nats": [
             {
+                "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
@@ -5458,6 +5467,7 @@ def test_preview_rest_bad_request(
         "name": "name_value",
         "nats": [
             {
+                "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
@@ -5680,6 +5690,7 @@ def test_update_rest(request_type):
         "name": "name_value",
         "nats": [
             {
+                "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
@@ -6029,6 +6040,7 @@ def test_update_rest_bad_request(
         "name": "name_value",
         "nats": [
             {
+                "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
@@ -6251,6 +6263,7 @@ def test_update_unary_rest(request_type):
         "name": "name_value",
         "nats": [
             {
+                "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
@@ -6578,6 +6591,7 @@ def test_update_unary_rest_bad_request(
         "name": "name_value",
         "nats": [
             {
+                "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,

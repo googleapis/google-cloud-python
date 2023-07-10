@@ -1181,6 +1181,7 @@ def test_get_rest(request_type):
             name="name_value",
             network="network_value",
             next_hop_gateway="next_hop_gateway_value",
+            next_hop_hub="next_hop_hub_value",
             next_hop_ilb="next_hop_ilb_value",
             next_hop_instance="next_hop_instance_value",
             next_hop_ip="next_hop_ip_value",
@@ -1214,6 +1215,7 @@ def test_get_rest(request_type):
     assert response.name == "name_value"
     assert response.network == "network_value"
     assert response.next_hop_gateway == "next_hop_gateway_value"
+    assert response.next_hop_hub == "next_hop_hub_value"
     assert response.next_hop_ilb == "next_hop_ilb_value"
     assert response.next_hop_instance == "next_hop_instance_value"
     assert response.next_hop_ip == "next_hop_ip_value"
@@ -1489,6 +1491,7 @@ def test_insert_rest(request_type):
         "name": "name_value",
         "network": "network_value",
         "next_hop_gateway": "next_hop_gateway_value",
+        "next_hop_hub": "next_hop_hub_value",
         "next_hop_ilb": "next_hop_ilb_value",
         "next_hop_instance": "next_hop_instance_value",
         "next_hop_ip": "next_hop_ip_value",
@@ -1742,6 +1745,7 @@ def test_insert_rest_bad_request(
         "name": "name_value",
         "network": "network_value",
         "next_hop_gateway": "next_hop_gateway_value",
+        "next_hop_hub": "next_hop_hub_value",
         "next_hop_ilb": "next_hop_ilb_value",
         "next_hop_instance": "next_hop_instance_value",
         "next_hop_ip": "next_hop_ip_value",
@@ -1869,6 +1873,7 @@ def test_insert_unary_rest(request_type):
         "name": "name_value",
         "network": "network_value",
         "next_hop_gateway": "next_hop_gateway_value",
+        "next_hop_hub": "next_hop_hub_value",
         "next_hop_ilb": "next_hop_ilb_value",
         "next_hop_instance": "next_hop_instance_value",
         "next_hop_ip": "next_hop_ip_value",
@@ -2100,6 +2105,7 @@ def test_insert_unary_rest_bad_request(
         "name": "name_value",
         "network": "network_value",
         "next_hop_gateway": "next_hop_gateway_value",
+        "next_hop_hub": "next_hop_hub_value",
         "next_hop_ilb": "next_hop_ilb_value",
         "next_hop_instance": "next_hop_instance_value",
         "next_hop_ip": "next_hop_ip_value",

@@ -591,6 +591,7 @@ __protobuf__ = proto.module(
         "InstanceGroupManagerActionsSummary",
         "InstanceGroupManagerAggregatedList",
         "InstanceGroupManagerAutoHealingPolicy",
+        "InstanceGroupManagerInstanceLifecyclePolicy",
         "InstanceGroupManagerList",
         "InstanceGroupManagerStatus",
         "InstanceGroupManagerStatusStateful",
@@ -13137,14 +13138,36 @@ class BackendService(proto.Message):
 
             This field is a member of `oneof`_ ``_network``.
         outlier_detection (google.cloud.compute_v1.types.OutlierDetection):
-            Settings controlling the eviction of unhealthy hosts from
-            the load balancing pool for the backend service. If not set,
-            this feature is considered disabled. This field is
-            applicable to either: - A regional backend service with the
-            service_protocol set to HTTP, HTTPS, HTTP2, or GRPC, and
-            load_balancing_scheme set to INTERNAL_MANAGED. - A global
-            backend service with the load_balancing_scheme set to
-            INTERNAL_SELF_MANAGED.
+            Settings controlling the ejection of unhealthy backend
+            endpoints from the load balancing pool of each individual
+            proxy instance that processes the traffic for the given
+            backend service. If not set, this feature is considered
+            disabled. Results of the outlier detection algorithm
+            (ejection of endpoints from the load balancing pool and
+            returning them back to the pool) are executed independently
+            by each proxy instance of the load balancer. In most cases,
+            more than one proxy instance handles the traffic received by
+            a backend service. Thus, it is possible that an unhealthy
+            endpoint is detected and ejected by only some of the
+            proxies, and while this happens, other proxies may continue
+            to send requests to the same unhealthy endpoint until they
+            detect and eject the unhealthy endpoint. Applicable backend
+            endpoints can be: - VM instances in an Instance Group -
+            Endpoints in a Zonal NEG (GCE_VM_IP, GCE_VM_IP_PORT) -
+            Endpoints in a Hybrid Connectivity NEG
+            (NON_GCP_PRIVATE_IP_PORT) - Serverless NEGs, that resolve to
+            Cloud Run, App Engine, or Cloud Functions Services - Private
+            Service Connect NEGs, that resolve to Google-managed
+            regional API endpoints or managed services published using
+            Private Service Connect Applicable backend service types can
+            be: - A global backend service with the loadBalancingScheme
+            set to INTERNAL_SELF_MANAGED or EXTERNAL_MANAGED. - A
+            regional backend service with the serviceProtocol set to
+            HTTP, HTTPS, or HTTP2, and loadBalancingScheme set to
+            INTERNAL_MANAGED or EXTERNAL_MANAGED. Not supported for
+            Serverless NEGs. Not supported when the backend service is
+            referenced by a URL map that is bound to target gRPC proxy
+            that has validateForProxyless field set to true.
 
             This field is a member of `oneof`_ ``_outlier_detection``.
         port (int):
@@ -26046,10 +26069,13 @@ class ForwardingRule(proto.Message):
         allow_global_access (bool):
             This field is used along with the backend_service field for
             internal load balancing or with the target field for
-            internal TargetInstance. If the field is set to TRUE,
-            clients can access ILB from all regions. Otherwise only
-            allows access from clients in the same region as the
-            internal load balancer.
+            internal TargetInstance. If set to true, clients can access
+            the Internal TCP/UDP Load Balancer, Internal HTTP(S) and TCP
+            Proxy Load Balancer from all regions. If false, only allows
+            access from the local region the load balancer is located
+            at. Note that for INTERNAL_MANAGED forwarding rules, this
+            field cannot be changed after the forwarding rule is
+            created.
 
             This field is a member of `oneof`_ ``_allow_global_access``.
         allow_psc_global_access (bool):
@@ -39622,6 +39648,11 @@ class InstanceGroupManager(proto.Message):
             [Output Only] The URL of the Instance Group resource.
 
             This field is a member of `oneof`_ ``_instance_group``.
+        instance_lifecycle_policy (google.cloud.compute_v1.types.InstanceGroupManagerInstanceLifecyclePolicy):
+            The repair policy for this managed instance
+            group.
+
+            This field is a member of `oneof`_ ``_instance_lifecycle_policy``.
         instance_template (str):
             The URL of the instance template that is
             specified for this managed instance group. The
@@ -39784,6 +39815,14 @@ class InstanceGroupManager(proto.Message):
         proto.STRING,
         number=81095253,
         optional=True,
+    )
+    instance_lifecycle_policy: "InstanceGroupManagerInstanceLifecyclePolicy" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=447961617,
+            optional=True,
+            message="InstanceGroupManagerInstanceLifecyclePolicy",
+        )
     )
     instance_template: str = proto.Field(
         proto.STRING,
@@ -40143,6 +40182,57 @@ class InstanceGroupManagerAutoHealingPolicy(proto.Message):
     initial_delay_sec: int = proto.Field(
         proto.INT32,
         number=263207002,
+        optional=True,
+    )
+
+
+class InstanceGroupManagerInstanceLifecyclePolicy(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        force_update_on_repair (str):
+            A bit indicating whether to forcefully apply
+            the group's latest configuration when repairing
+            a VM. Valid options are: - NO (default): If
+            configuration updates are available, they are
+            not forcefully applied during repair. Instead,
+            configuration updates are applied according to
+            the group's update policy. - YES: If
+            configuration updates are available, they are
+            applied during repair. Check the
+            ForceUpdateOnRepair enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_force_update_on_repair``.
+    """
+
+    class ForceUpdateOnRepair(proto.Enum):
+        r"""A bit indicating whether to forcefully apply the group's
+        latest configuration when repairing a VM. Valid options are: -
+        NO (default): If configuration updates are available, they are
+        not forcefully applied during repair. Instead, configuration
+        updates are applied according to the group's update policy. -
+        YES: If configuration updates are available, they are applied
+        during repair.
+
+        Values:
+            UNDEFINED_FORCE_UPDATE_ON_REPAIR (0):
+                A value indicating that the enum field is not
+                set.
+            NO (2497):
+                No description available.
+            YES (87751):
+                No description available.
+        """
+        UNDEFINED_FORCE_UPDATE_ON_REPAIR = 0
+        NO = 2497
+        YES = 87751
+
+    force_update_on_repair: str = proto.Field(
+        proto.STRING,
+        number=356302027,
         optional=True,
     )
 
@@ -44468,9 +44558,9 @@ class InterconnectCircuitInfo(proto.Message):
 
 
 class InterconnectDiagnostics(proto.Message):
-    r"""Diagnostics information about interconnect, contains detailed
-    and current technical information about Google's side of the
-    connection.
+    r"""Diagnostics information about the Interconnect connection,
+    which contains detailed and current technical information about
+    Google's side of the connection.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -66645,20 +66735,23 @@ class OutlierDetection(proto.Message):
 
     Attributes:
         base_ejection_time (google.cloud.compute_v1.types.Duration):
-            The base time that a host is ejected for. The
-            real ejection time is equal to the base ejection
-            time multiplied by the number of times the host
-            has been ejected. Defaults to 30000ms or 30s.
+            The base time that a backend endpoint is
+            ejected for. Defaults to 30000ms or 30s. After a
+            backend endpoint is returned back to the load
+            balancing pool, it can be ejected again in
+            another ejection analysis. Thus, the total
+            ejection time is equal to the base ejection time
+            multiplied by the number of times the backend
+            endpoint has been ejected. Defaults to 30000ms
+            or 30s.
 
             This field is a member of `oneof`_ ``_base_ejection_time``.
         consecutive_errors (int):
-            Number of errors before a host is ejected
-            from the connection pool. When the backend host
-            is accessed over HTTP, a 5xx return code
-            qualifies as an error. Defaults to 5. Not
-            supported when the backend service is referenced
-            by a URL map that is bound to target gRPC proxy
-            that has validateForProxyless field set to true.
+            Number of consecutive errors before a backend
+            endpoint is ejected from the load balancing
+            pool. When the backend endpoint is accessed over
+            HTTP, a 5xx return code qualifies as an error.
+            Defaults to 5.
 
             This field is a member of `oneof`_ ``_consecutive_errors``.
         consecutive_gateway_failure (int):
@@ -66666,72 +66759,75 @@ class OutlierDetection(proto.Message):
             (502, 503, 504 status or connection errors that
             are mapped to one of those status codes) before
             a consecutive gateway failure ejection occurs.
-            Defaults to 3. Not supported when the backend
-            service is referenced by a URL map that is bound
-            to target gRPC proxy that has
-            validateForProxyless field set to true.
+            Defaults to 3.
 
             This field is a member of `oneof`_ ``_consecutive_gateway_failure``.
         enforcing_consecutive_errors (int):
-            The percentage chance that a host will be
-            actually ejected when an outlier status is
+            The percentage chance that a backend endpoint
+            will be ejected when an outlier status is
             detected through consecutive 5xx. This setting
             can be used to disable ejection or to ramp it up
-            slowly. Defaults to 0. Not supported when the
-            backend service is referenced by a URL map that
-            is bound to target gRPC proxy that has
-            validateForProxyless field set to true.
+            slowly. Defaults to 0.
 
             This field is a member of `oneof`_ ``_enforcing_consecutive_errors``.
         enforcing_consecutive_gateway_failure (int):
-            The percentage chance that a host will be
-            actually ejected when an outlier status is
+            The percentage chance that a backend endpoint
+            will be ejected when an outlier status is
             detected through consecutive gateway failures.
             This setting can be used to disable ejection or
-            to ramp it up slowly. Defaults to 100. Not
-            supported when the backend service is referenced
-            by a URL map that is bound to target gRPC proxy
-            that has validateForProxyless field set to true.
+            to ramp it up slowly. Defaults to 100.
 
             This field is a member of `oneof`_ ``_enforcing_consecutive_gateway_failure``.
         enforcing_success_rate (int):
-            The percentage chance that a host will be
-            actually ejected when an outlier status is
+            The percentage chance that a backend endpoint
+            will be ejected when an outlier status is
             detected through success rate statistics. This
             setting can be used to disable ejection or to
-            ramp it up slowly. Defaults to 100.
+            ramp it up slowly. Defaults to 100. Not
+            supported when the backend service uses
+            Serverless NEG.
 
             This field is a member of `oneof`_ ``_enforcing_success_rate``.
         interval (google.cloud.compute_v1.types.Duration):
             Time interval between ejection analysis
-            sweeps. This can result in both new ejections as
-            well as hosts being returned to service.
-            Defaults to 1 second.
+            sweeps. This can result in both new ejections
+            and backend endpoints being returned to service.
+            The interval is equal to the number of seconds
+            as defined in outlierDetection.interval.seconds
+            plus the number of nanoseconds as defined in
+            outlierDetection.interval.nanos. Defaults to 1
+            second.
 
             This field is a member of `oneof`_ ``_interval``.
         max_ejection_percent (int):
-            Maximum percentage of hosts in the load
-            balancing pool for the backend service that can
-            be ejected. Defaults to 50%.
+            Maximum percentage of backend endpoints in
+            the load balancing pool for the backend service
+            that can be ejected if the ejection conditions
+            are met. Defaults to 50%.
 
             This field is a member of `oneof`_ ``_max_ejection_percent``.
         success_rate_minimum_hosts (int):
-            The number of hosts in a cluster that must
-            have enough request volume to detect success
-            rate outliers. If the number of hosts is less
-            than this setting, outlier detection via success
-            rate statistics is not performed for any host in
-            the cluster. Defaults to 5.
+            The number of backend endpoints in the load
+            balancing pool that must have enough request
+            volume to detect success rate outliers. If the
+            number of backend endpoints is fewer than this
+            setting, outlier detection via success rate
+            statistics is not performed for any backend
+            endpoint in the load balancing pool. Defaults to
+            5. Not supported when the backend service uses
+            Serverless NEG.
 
             This field is a member of `oneof`_ ``_success_rate_minimum_hosts``.
         success_rate_request_volume (int):
             The minimum number of total requests that
             must be collected in one interval (as defined by
             the interval duration above) to include this
-            host in success rate based outlier detection. If
-            the volume is lower than this setting, outlier
-            detection via success rate statistics is not
-            performed for that host. Defaults to 100.
+            backend endpoint in success rate based outlier
+            detection. If the volume is lower than this
+            setting, outlier detection via success rate
+            statistics is not performed for that backend
+            endpoint. Defaults to 100. Not supported when
+            the backend service uses Serverless NEG.
 
             This field is a member of `oneof`_ ``_success_rate_request_volume``.
         success_rate_stdev_factor (int):
@@ -66739,10 +66835,11 @@ class OutlierDetection(proto.Message):
             success rate outlier ejection. The ejection threshold is the
             difference between the mean success rate, and the product of
             this factor and the standard deviation of the mean success
-            rate: mean - (stdev \* success_rate_stdev_factor). This
-            factor is divided by a thousand to get a double. That is, if
-            the desired factor is 1.9, the runtime value should be 1900.
-            Defaults to 1900.
+            rate: mean - (stdev \* successRateStdevFactor). This factor
+            is divided by a thousand to get a double. That is, if the
+            desired factor is 1.9, the runtime value should be 1900.
+            Defaults to 1900. Not supported when the backend service
+            uses Serverless NEG.
 
             This field is a member of `oneof`_ ``_success_rate_stdev_factor``.
     """
@@ -71562,7 +71659,7 @@ class PublicDelegatedPrefix(proto.Message):
 
             This field is a member of `oneof`_ ``_id``.
         ip_cidr_range (str):
-            The IPv4 address range, in CIDR format,
+            The IP address range, in CIDR format,
             represented by this public delegated prefix.
 
             This field is a member of `oneof`_ ``_ip_cidr_range``.
@@ -71896,7 +71993,7 @@ class PublicDelegatedPrefixPublicDelegatedSubPrefix(proto.Message):
 
             This field is a member of `oneof`_ ``_description``.
         ip_cidr_range (str):
-            The IPv4 address range, in CIDR format,
+            The IP address range, in CIDR format,
             represented by this sub public delegated prefix.
 
             This field is a member of `oneof`_ ``_ip_cidr_range``.
@@ -77055,6 +77152,11 @@ class Route(proto.Message):
             project/global/gateways/default-internet-gateway
 
             This field is a member of `oneof`_ ``_next_hop_gateway``.
+        next_hop_hub (str):
+            [Output Only] The full resource name of the Network
+            Connectivity Center hub that will handle matching packets.
+
+            This field is a member of `oneof`_ ``_next_hop_hub``.
         next_hop_ilb (str):
             The URL to a forwarding rule of type
             loadBalancingScheme=INTERNAL that should handle
@@ -77229,6 +77331,11 @@ class Route(proto.Message):
     next_hop_gateway: str = proto.Field(
         proto.STRING,
         number=377175298,
+        optional=True,
+    )
+    next_hop_hub: str = proto.Field(
+        proto.STRING,
+        number=198679219,
         optional=True,
     )
     next_hop_ilb: str = proto.Field(
@@ -78527,6 +78634,14 @@ class RouterNat(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        auto_network_tier (str):
+            The network tier to use when automatically
+            reserving IP addresses. Must be one of: PREMIUM,
+            STANDARD. If not specified, PREMIUM tier will be
+            used. Check the AutoNetworkTier enum for the
+            list of possible values.
+
+            This field is a member of `oneof`_ ``_auto_network_tier``.
         drain_nat_ips (MutableSequence[str]):
             A list of URLs of the IP resources to be
             drained. These IPs must be valid static external
@@ -78653,6 +78768,33 @@ class RouterNat(proto.Message):
             This field is a member of `oneof`_ ``_udp_idle_timeout_sec``.
     """
 
+    class AutoNetworkTier(proto.Enum):
+        r"""The network tier to use when automatically reserving IP
+        addresses. Must be one of: PREMIUM, STANDARD. If not specified,
+        PREMIUM tier will be used.
+
+        Values:
+            UNDEFINED_AUTO_NETWORK_TIER (0):
+                A value indicating that the enum field is not
+                set.
+            FIXED_STANDARD (310464328):
+                Public internet quality with fixed bandwidth.
+            PREMIUM (399530551):
+                High quality, Google-grade network tier,
+                support for all networking products.
+            STANDARD (484642493):
+                Public internet quality, only limited support
+                for other networking products.
+            STANDARD_OVERRIDES_FIXED_STANDARD (465847234):
+                (Output only) Temporary tier for FIXED_STANDARD when fixed
+                standard tier is expired or not configured.
+        """
+        UNDEFINED_AUTO_NETWORK_TIER = 0
+        FIXED_STANDARD = 310464328
+        PREMIUM = 399530551
+        STANDARD = 484642493
+        STANDARD_OVERRIDES_FIXED_STANDARD = 465847234
+
     class EndpointTypes(proto.Enum):
         r"""
 
@@ -78726,6 +78868,11 @@ class RouterNat(proto.Message):
         ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES = 185573819
         LIST_OF_SUBNETWORKS = 517542270
 
+    auto_network_tier: str = proto.Field(
+        proto.STRING,
+        number=269770211,
+        optional=True,
+    )
     drain_nat_ips: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=504078535,
@@ -90929,6 +91076,19 @@ class TargetHttpProxy(proto.Message):
             TargetHttpProxy.
 
             This field is a member of `oneof`_ ``_fingerprint``.
+        http_keep_alive_timeout_sec (int):
+            Specifies how long to keep a connection open,
+            after completing a response, while there is no
+            matching traffic (in seconds). If an HTTP
+            keep-alive is not specified, a default value
+            (610 seconds) will be used. For Global external
+            HTTP(S) load balancer, the minimum allowed value
+            is 5 seconds and the maximum allowed value is
+            1200 seconds. For Global external HTTP(S) load
+            balancer (classic), this option is not available
+            publicly.
+
+            This field is a member of `oneof`_ ``_http_keep_alive_timeout_sec``.
         id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
@@ -90993,6 +91153,11 @@ class TargetHttpProxy(proto.Message):
     fingerprint: str = proto.Field(
         proto.STRING,
         number=234678500,
+        optional=True,
+    )
+    http_keep_alive_timeout_sec: int = proto.Field(
+        proto.INT32,
+        number=447326046,
         optional=True,
     )
     id: int = proto.Field(
@@ -91354,6 +91519,19 @@ class TargetHttpsProxy(proto.Message):
             TargetHttpsProxy.
 
             This field is a member of `oneof`_ ``_fingerprint``.
+        http_keep_alive_timeout_sec (int):
+            Specifies how long to keep a connection open,
+            after completing a response, while there is no
+            matching traffic (in seconds). If an HTTP
+            keep-alive is not specified, a default value
+            (610 seconds) will be used. For Global external
+            HTTP(S) load balancer, the minimum allowed value
+            is 5 seconds and the maximum allowed value is
+            1200 seconds. For Global external HTTP(S) load
+            balancer (classic), this option is not available
+            publicly.
+
+            This field is a member of `oneof`_ ``_http_keep_alive_timeout_sec``.
         id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
@@ -91510,6 +91688,11 @@ class TargetHttpsProxy(proto.Message):
     fingerprint: str = proto.Field(
         proto.STRING,
         number=234678500,
+        optional=True,
+    )
+    http_keep_alive_timeout_sec: int = proto.Field(
+        proto.INT32,
+        number=447326046,
         optional=True,
     )
     id: int = proto.Field(

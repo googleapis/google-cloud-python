@@ -1280,6 +1280,7 @@ def test_get_rest(request_type):
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             fingerprint="fingerprint_value",
+            http_keep_alive_timeout_sec=2868,
             id=205,
             kind="kind_value",
             name="name_value",
@@ -1304,6 +1305,7 @@ def test_get_rest(request_type):
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.fingerprint == "fingerprint_value"
+    assert response.http_keep_alive_timeout_sec == 2868
     assert response.id == 205
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -1588,6 +1590,7 @@ def test_insert_rest(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
+        "http_keep_alive_timeout_sec": 2868,
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
@@ -1833,6 +1836,7 @@ def test_insert_rest_bad_request(
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
+        "http_keep_alive_timeout_sec": 2868,
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
@@ -1944,6 +1948,7 @@ def test_insert_unary_rest(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
+        "http_keep_alive_timeout_sec": 2868,
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
@@ -2167,6 +2172,7 @@ def test_insert_unary_rest_bad_request(
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "fingerprint": "fingerprint_value",
+        "http_keep_alive_timeout_sec": 2868,
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",

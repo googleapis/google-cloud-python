@@ -5160,6 +5160,9 @@ def test_insert_rest(request_type):
         "fingerprint": "fingerprint_value",
         "id": 205,
         "instance_group": "instance_group_value",
+        "instance_lifecycle_policy": {
+            "force_update_on_repair": "force_update_on_repair_value"
+        },
         "instance_template": "instance_template_value",
         "kind": "kind_value",
         "list_managed_instances_results": "list_managed_instances_results_value",
@@ -5460,6 +5463,9 @@ def test_insert_rest_bad_request(
         "fingerprint": "fingerprint_value",
         "id": 205,
         "instance_group": "instance_group_value",
+        "instance_lifecycle_policy": {
+            "force_update_on_repair": "force_update_on_repair_value"
+        },
         "instance_template": "instance_template_value",
         "kind": "kind_value",
         "list_managed_instances_results": "list_managed_instances_results_value",
@@ -5633,6 +5639,9 @@ def test_insert_unary_rest(request_type):
         "fingerprint": "fingerprint_value",
         "id": 205,
         "instance_group": "instance_group_value",
+        "instance_lifecycle_policy": {
+            "force_update_on_repair": "force_update_on_repair_value"
+        },
         "instance_template": "instance_template_value",
         "kind": "kind_value",
         "list_managed_instances_results": "list_managed_instances_results_value",
@@ -5911,6 +5920,9 @@ def test_insert_unary_rest_bad_request(
         "fingerprint": "fingerprint_value",
         "id": 205,
         "instance_group": "instance_group_value",
+        "instance_lifecycle_policy": {
+            "force_update_on_repair": "force_update_on_repair_value"
+        },
         "instance_template": "instance_template_value",
         "kind": "kind_value",
         "list_managed_instances_results": "list_managed_instances_results_value",
@@ -7631,6 +7643,9 @@ def test_patch_rest(request_type):
         "fingerprint": "fingerprint_value",
         "id": 205,
         "instance_group": "instance_group_value",
+        "instance_lifecycle_policy": {
+            "force_update_on_repair": "force_update_on_repair_value"
+        },
         "instance_template": "instance_template_value",
         "kind": "kind_value",
         "list_managed_instances_results": "list_managed_instances_results_value",
@@ -7939,6 +7954,9 @@ def test_patch_rest_bad_request(
         "fingerprint": "fingerprint_value",
         "id": 205,
         "instance_group": "instance_group_value",
+        "instance_lifecycle_policy": {
+            "force_update_on_repair": "force_update_on_repair_value"
+        },
         "instance_template": "instance_template_value",
         "kind": "kind_value",
         "list_managed_instances_results": "list_managed_instances_results_value",
@@ -8122,6 +8140,9 @@ def test_patch_unary_rest(request_type):
         "fingerprint": "fingerprint_value",
         "id": 205,
         "instance_group": "instance_group_value",
+        "instance_lifecycle_policy": {
+            "force_update_on_repair": "force_update_on_repair_value"
+        },
         "instance_template": "instance_template_value",
         "kind": "kind_value",
         "list_managed_instances_results": "list_managed_instances_results_value",
@@ -8408,6 +8429,9 @@ def test_patch_unary_rest_bad_request(
         "fingerprint": "fingerprint_value",
         "id": 205,
         "instance_group": "instance_group_value",
+        "instance_lifecycle_policy": {
+            "force_update_on_repair": "force_update_on_repair_value"
+        },
         "instance_template": "instance_template_value",
         "kind": "kind_value",
         "list_managed_instances_results": "list_managed_instances_results_value",

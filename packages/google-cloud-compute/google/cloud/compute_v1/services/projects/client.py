@@ -2098,6 +2098,10 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         method might cause unexpected behavior. For more information,
         see the `known
         issue </compute/docs/troubleshooting/known-issues#moving_vms_or_disks_using_the_moveinstance_api_or_the_causes_unexpected_behavior>`__.
+        [Deprecated] This method is deprecated. See `moving instance
+        across
+        zones </compute/docs/instances/moving-instance-across-zones>`__
+        instead.
 
         .. code-block:: python
 
@@ -2211,6 +2215,10 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         method might cause unexpected behavior. For more information,
         see the `known
         issue </compute/docs/troubleshooting/known-issues#moving_vms_or_disks_using_the_moveinstance_api_or_the_causes_unexpected_behavior>`__.
+        [Deprecated] This method is deprecated. See `moving instance
+        across
+        zones </compute/docs/instances/moving-instance-across-zones>`__
+        instead.
 
         .. code-block:: python
 
