@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -403,7 +403,7 @@ class Node(proto.Message):
                 TPU node is being deleted.
             REPAIRING (6):
                 TPU node is being repaired and may be unusable. Details can
-                be found in the ``help_description`` field.
+                be found in the 'help_description' field.
             STOPPED (8):
                 TPU node is stopped.
             STOPPING (9):

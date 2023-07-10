@@ -182,6 +182,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-batch": {
+            "component": "google-cloud-batch",
+            "extra-files": [
+                "google/cloud/batch_v1/gapic_version.py",
+                "google/cloud/batch_v1alpha/gapic_version.py",
+                "google/cloud/batch/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.batch.v1alpha.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.batch.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-beyondcorp-appconnections": {
             "component": "google-cloud-beyondcorp-appconnections",
             "extra-files": [
@@ -803,6 +822,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-language": {
+            "component": "google-cloud-language",
+            "extra-files": [
+                "google/cloud/language/gapic_version.py",
+                "google/cloud/language_v1beta2/gapic_version.py",
+                "google/cloud/language_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.language.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.language.v1beta2.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-life-sciences": {
             "component": "google-cloud-life-sciences",
             "extra-files": [
@@ -1414,6 +1452,28 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.websecurityscanner.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-workflows": {
+            "component": "google-cloud-workflows",
+            "extra-files": [
+                "google/cloud/workflows/executions/gapic_version.py",
+                "google/cloud/workflows/gapic_version.py",
+                "google/cloud/workflows_v1/gapic_version.py",
+                "google/cloud/workflows_v1beta/gapic_version.py",
+                "google/cloud/workflows/executions_v1/gapic_version.py",
+                "google/cloud/workflows/executions_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.workflows.v1beta.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.workflows.v1.json",
                     "type": "json"
                 }
             ],
