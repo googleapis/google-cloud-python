@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.12.1...v1.13.0) (2023-07-10)
+
+
+### Features
+
+* Add cloud spanner connection properties - max_parallelism ([4d0c702](https://github.com/googleapis/python-bigquery-connection/commit/4d0c70242d2afe7be338d259cf5360f3b3de380f))
+* Add cloud spanner connection properties - use_data_boost ([4d0c702](https://github.com/googleapis/python-bigquery-connection/commit/4d0c70242d2afe7be338d259cf5360f3b3de380f))
+* Add support for Salesforce connections, which are usable only by allowlisted partners ([4d0c702](https://github.com/googleapis/python-bigquery-connection/commit/4d0c70242d2afe7be338d259cf5360f3b3de380f))
+
 ## [1.12.1](https://github.com/googleapis/python-bigquery-connection/compare/v1.12.0...v1.12.1) (2023-07-04)
 
 
