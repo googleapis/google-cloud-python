@@ -86,6 +86,46 @@
               ]
             }
           }
+        },
+        "rest": {
+          "libraryClient": "OsLoginServiceClient",
+          "rpcs": {
+            "CreateSshPublicKey": {
+              "methods": [
+                "create_ssh_public_key"
+              ]
+            },
+            "DeletePosixAccount": {
+              "methods": [
+                "delete_posix_account"
+              ]
+            },
+            "DeleteSshPublicKey": {
+              "methods": [
+                "delete_ssh_public_key"
+              ]
+            },
+            "GetLoginProfile": {
+              "methods": [
+                "get_login_profile"
+              ]
+            },
+            "GetSshPublicKey": {
+              "methods": [
+                "get_ssh_public_key"
+              ]
+            },
+            "ImportSshPublicKey": {
+              "methods": [
+                "import_ssh_public_key"
+              ]
+            },
+            "UpdateSshPublicKey": {
+              "methods": [
+                "update_ssh_public_key"
+              ]
+            }
+          }
         }
       }
     }

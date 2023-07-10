@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,12 +48,13 @@ except AttributeError:  # pragma: NO COVER
 
 from google.protobuf import field_mask_pb2  # type: ignore
 
-from google.cloud.oslogin_v1 import common  # type: ignore
+from google.cloud.oslogin_v1.common.types import common
 from google.cloud.oslogin_v1.types import oslogin
 
 from .transports.base import DEFAULT_CLIENT_INFO, OsLoginServiceTransport
 from .transports.grpc import OsLoginServiceGrpcTransport
 from .transports.grpc_asyncio import OsLoginServiceGrpcAsyncIOTransport
+from .transports.rest import OsLoginServiceRestTransport
 
 
 class OsLoginServiceClientMeta(type):
@@ -69,6 +70,7 @@ class OsLoginServiceClientMeta(type):
     )  # type: Dict[str, Type[OsLoginServiceTransport]]
     _transport_registry["grpc"] = OsLoginServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = OsLoginServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = OsLoginServiceRestTransport
 
     def get_transport_class(
         cls,
@@ -499,8 +501,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
         Args:
             request (Union[google.cloud.oslogin_v1.types.CreateSshPublicKeyRequest, dict]):
-                The request object. A request message for creating an
-                SSH public key.
+                The request object. A request message for creating an SSH
+                public key.
             parent (str):
                 Required. The unique ID for the user in format
                 ``users/{user}``.
@@ -508,7 +510,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ssh_public_key (google.cloud.oslogin_v1.common.SshPublicKey):
+            ssh_public_key (google.cloud.oslogin_v1.common.types.SshPublicKey):
                 Required. The SSH public key and
                 expiration time.
 
@@ -522,7 +524,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.oslogin_v1.common.SshPublicKey:
+            google.cloud.oslogin_v1.common.types.SshPublicKey:
                 The SSH public key information
                 associated with a Google account.
 
@@ -699,8 +701,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
         Args:
             request (Union[google.cloud.oslogin_v1.types.DeleteSshPublicKeyRequest, dict]):
-                The request object. A request message for deleting an
-                SSH public key.
+                The request object. A request message for deleting an SSH
+                public key.
             name (str):
                 Required. The fingerprint of the public key to update.
                 Public keys are identified by their SHA-256 fingerprint.
@@ -916,7 +918,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.oslogin_v1.common.SshPublicKey:
+            google.cloud.oslogin_v1.common.types.SshPublicKey:
                 The SSH public key information
                 associated with a Google account.
 
@@ -1016,7 +1018,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ssh_public_key (google.cloud.oslogin_v1.common.SshPublicKey):
+            ssh_public_key (google.cloud.oslogin_v1.common.types.SshPublicKey):
                 Optional. The SSH public key and
                 expiration time.
 
@@ -1130,8 +1132,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
         Args:
             request (Union[google.cloud.oslogin_v1.types.UpdateSshPublicKeyRequest, dict]):
-                The request object. A request message for updating an
-                SSH public key.
+                The request object. A request message for updating an SSH
+                public key.
             name (str):
                 Required. The fingerprint of the public key to update.
                 Public keys are identified by their SHA-256 fingerprint.
@@ -1141,7 +1143,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ssh_public_key (google.cloud.oslogin_v1.common.SshPublicKey):
+            ssh_public_key (google.cloud.oslogin_v1.common.types.SshPublicKey):
                 Required. The SSH public key and
                 expiration time.
 
@@ -1162,7 +1164,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.oslogin_v1.common.SshPublicKey:
+            google.cloud.oslogin_v1.common.types.SshPublicKey:
                 The SSH public key information
                 associated with a Google account.
 

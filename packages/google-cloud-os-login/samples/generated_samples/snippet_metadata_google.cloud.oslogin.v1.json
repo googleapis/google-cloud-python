@@ -39,7 +39,7 @@
           },
           {
             "name": "ssh_public_key",
-            "type": "google.cloud.oslogin.common.common_pb2.SshPublicKey"
+            "type": "google.cloud.oslogin.common.types.SshPublicKey"
           },
           {
             "name": "retry",
@@ -54,7 +54,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.oslogin.common.common_pb2.SshPublicKey",
+        "resultType": "google.cloud.oslogin.common.types.SshPublicKey",
         "shortName": "create_ssh_public_key"
       },
       "description": "Sample for CreateSshPublicKey",
@@ -123,7 +123,7 @@
           },
           {
             "name": "ssh_public_key",
-            "type": "google.cloud.oslogin.common.common_pb2.SshPublicKey"
+            "type": "google.cloud.oslogin.common.types.SshPublicKey"
           },
           {
             "name": "retry",
@@ -138,7 +138,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.oslogin.common.common_pb2.SshPublicKey",
+        "resultType": "google.cloud.oslogin.common.types.SshPublicKey",
         "shortName": "create_ssh_public_key"
       },
       "description": "Sample for CreateSshPublicKey",
@@ -690,7 +690,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.oslogin.common.common_pb2.SshPublicKey",
+        "resultType": "google.cloud.oslogin.common.types.SshPublicKey",
         "shortName": "get_ssh_public_key"
       },
       "description": "Sample for GetSshPublicKey",
@@ -770,7 +770,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.oslogin.common.common_pb2.SshPublicKey",
+        "resultType": "google.cloud.oslogin.common.types.SshPublicKey",
         "shortName": "get_ssh_public_key"
       },
       "description": "Sample for GetSshPublicKey",
@@ -840,7 +840,7 @@
           },
           {
             "name": "ssh_public_key",
-            "type": "google.cloud.oslogin.common.common_pb2.SshPublicKey"
+            "type": "google.cloud.oslogin.common.types.SshPublicKey"
           },
           {
             "name": "project_id",
@@ -928,7 +928,7 @@
           },
           {
             "name": "ssh_public_key",
-            "type": "google.cloud.oslogin.common.common_pb2.SshPublicKey"
+            "type": "google.cloud.oslogin.common.types.SshPublicKey"
           },
           {
             "name": "project_id",
@@ -1017,7 +1017,7 @@
           },
           {
             "name": "ssh_public_key",
-            "type": "google.cloud.oslogin.common.common_pb2.SshPublicKey"
+            "type": "google.cloud.oslogin.common.types.SshPublicKey"
           },
           {
             "name": "update_mask",
@@ -1036,7 +1036,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.oslogin.common.common_pb2.SshPublicKey",
+        "resultType": "google.cloud.oslogin.common.types.SshPublicKey",
         "shortName": "update_ssh_public_key"
       },
       "description": "Sample for UpdateSshPublicKey",
@@ -1105,7 +1105,7 @@
           },
           {
             "name": "ssh_public_key",
-            "type": "google.cloud.oslogin.common.common_pb2.SshPublicKey"
+            "type": "google.cloud.oslogin.common.types.SshPublicKey"
           },
           {
             "name": "update_mask",
@@ -1124,7 +1124,7 @@
             "type": "Sequence[Tuple[str, str]"
           }
         ],
-        "resultType": "google.cloud.oslogin.common.common_pb2.SshPublicKey",
+        "resultType": "google.cloud.oslogin.common.types.SshPublicKey",
         "shortName": "update_ssh_public_key"
       },
       "description": "Sample for UpdateSshPublicKey",
