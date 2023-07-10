@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-artifact-registry",
-    "version": "1.8.2"
+    "version": "0.1.0"
   },
   "snippets": [
     {
