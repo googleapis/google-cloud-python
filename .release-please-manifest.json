@@ -32,7 +32,7 @@
     "packages/google-cloud-contentwarehouse": "0.5.1",
     "packages/google-cloud-data-fusion": "1.8.2",
     "packages/google-cloud-data-qna": "0.10.3",
-    "packages/google-cloud-datacatalog": "3.13.1",
+    "packages/google-cloud-datacatalog": "3.14.0",
     "packages/google-cloud-datacatalog-lineage": "0.2.3",
     "packages/google-cloud-dataform": "0.5.2",
     "packages/google-cloud-datalabeling": "1.8.3",

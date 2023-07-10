@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.13.1...google-cloud-datacatalog-v3.14.0) (2023-07-10)
+
+
+### Features
+
+* added Entry.usage_signal ([b279092](https://github.com/googleapis/google-cloud-python/commit/b279092e52184a5e67bd817248ccae726fc10cae))
+* added rpc RenameTagTemplateFieldEnumValue ([b279092](https://github.com/googleapis/google-cloud-python/commit/b279092e52184a5e67bd817248ccae726fc10cae))
+* returning approximate total size for SearchCatalog ([b279092](https://github.com/googleapis/google-cloud-python/commit/b279092e52184a5e67bd817248ccae726fc10cae))
+* returning unreachable locations for SearchCatalog ([b279092](https://github.com/googleapis/google-cloud-python/commit/b279092e52184a5e67bd817248ccae726fc10cae))
+
+
+### Documentation
+
+* update docs of SearchCatalogRequest message ([b279092](https://github.com/googleapis/google-cloud-python/commit/b279092e52184a5e67bd817248ccae726fc10cae))
+
 ## [3.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.13.0...google-cloud-datacatalog-v3.13.1) (2023-07-05)
 
 
