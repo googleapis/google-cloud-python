@@ -8649,6 +8649,10 @@ def test_create_delivery_pipeline_rest(request_type):
                                         "http_route": "http_route_value",
                                         "service": "service_value",
                                         "deployment": "deployment_value",
+                                        "route_update_wait_time": {
+                                            "seconds": 751,
+                                            "nanos": 543,
+                                        },
                                     },
                                     "service_networking": {
                                         "service": "service_value",
@@ -8930,6 +8934,10 @@ def test_create_delivery_pipeline_rest_bad_request(
                                         "http_route": "http_route_value",
                                         "service": "service_value",
                                         "deployment": "deployment_value",
+                                        "route_update_wait_time": {
+                                            "seconds": 751,
+                                            "nanos": 543,
+                                        },
                                     },
                                     "service_networking": {
                                         "service": "service_value",
@@ -9097,6 +9105,10 @@ def test_update_delivery_pipeline_rest(request_type):
                                         "http_route": "http_route_value",
                                         "service": "service_value",
                                         "deployment": "deployment_value",
+                                        "route_update_wait_time": {
+                                            "seconds": 751,
+                                            "nanos": 543,
+                                        },
                                     },
                                     "service_networking": {
                                         "service": "service_value",
@@ -9363,6 +9375,10 @@ def test_update_delivery_pipeline_rest_bad_request(
                                         "http_route": "http_route_value",
                                         "service": "service_value",
                                         "deployment": "deployment_value",
+                                        "route_update_wait_time": {
+                                            "seconds": 751,
+                                            "nanos": 543,
+                                        },
                                     },
                                     "service_networking": {
                                         "service": "service_value",
@@ -12098,6 +12114,10 @@ def test_create_release_rest(request_type):
                                             "http_route": "http_route_value",
                                             "service": "service_value",
                                             "deployment": "deployment_value",
+                                            "route_update_wait_time": {
+                                                "seconds": 751,
+                                                "nanos": 543,
+                                            },
                                         },
                                         "service_networking": {
                                             "service": "service_value",
@@ -12183,7 +12203,7 @@ def test_create_release_rest(request_type):
                         "worker_pool": "worker_pool_value",
                         "service_account": "service_account_value",
                         "artifact_storage": "artifact_storage_value",
-                        "execution_timeout": {"seconds": 751, "nanos": 543},
+                        "execution_timeout": {},
                     }
                 ],
                 "deploy_parameters": {},
@@ -12452,6 +12472,10 @@ def test_create_release_rest_bad_request(
                                             "http_route": "http_route_value",
                                             "service": "service_value",
                                             "deployment": "deployment_value",
+                                            "route_update_wait_time": {
+                                                "seconds": 751,
+                                                "nanos": 543,
+                                            },
                                         },
                                         "service_networking": {
                                             "service": "service_value",
@@ -12537,7 +12561,7 @@ def test_create_release_rest_bad_request(
                         "worker_pool": "worker_pool_value",
                         "service_account": "service_account_value",
                         "artifact_storage": "artifact_storage_value",
-                        "execution_timeout": {"seconds": 751, "nanos": 543},
+                        "execution_timeout": {},
                     }
                 ],
                 "deploy_parameters": {},
