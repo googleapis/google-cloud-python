@@ -71,7 +71,7 @@ class Service(proto.Message):
             service.
             A valid name would be:
             -
-            projects/123/services/serviceusage.googleapis.com
+              projects/123/services/serviceusage.googleapis.com
         parent (str):
             The resource name of the consumer.
             A valid name would be:

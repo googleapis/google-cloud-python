@@ -1,2 +1,0 @@
-recursive-include google/cloud/talent *.py
-recursive-include google/cloud/talent_v4beta1 *.py
