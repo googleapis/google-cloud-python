@@ -686,7 +686,8 @@ class ShipmentModel(proto.Message):
             1970 (i.e. seconds: 0, nanos: 0) is used as default.
         global_end_time (google.protobuf.timestamp_pb2.Timestamp):
             If unset, 00:00:00 UTC, January 1, 1971 (i.e.
-            seconds: 31536000, nanos: 0) is used as default.
+            seconds: 31536000, nanos: 0)
+            is used as default.
         global_duration_cost_per_hour (float):
             The "global duration" of the overall plan is the difference
             between the earliest effective start time and the latest
@@ -1330,10 +1331,10 @@ class Shipment(proto.Message):
 
     class VisitRequest(proto.Message):
         r"""Request for a visit which can be done by a vehicle: it has a
-        geo-location (or two, see below), opening and closing times
-        represented by time windows, and a service duration time (time
-        spent by the vehicle once it has arrived to pickup or drop off
-        goods).
+        geo-location
+        (or two, see below), opening and closing times represented by
+        time windows, and a service duration time (time spent by the
+        vehicle once it has arrived to pickup or drop off goods).
 
         Attributes:
             arrival_location (google.type.latlng_pb2.LatLng):
