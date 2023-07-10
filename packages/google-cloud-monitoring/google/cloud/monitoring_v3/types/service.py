@@ -526,29 +526,31 @@ class BasicSli(proto.Message):
     Attributes:
         method (MutableSequence[str]):
             OPTIONAL: The set of RPCs to which this SLI
-            is relevant. Telemetry from other methods will
-            not be used to calculate performance for this
-            SLI. If omitted, this SLI applies to all the
-            Service's methods. For service types that don't
-            support breaking down by method, setting this
-            field will result in an error.
+            is relevant. Telemetry from
+            other methods will not be used to calculate
+            performance for this SLI. If omitted, this SLI
+            applies to all the Service's methods. For
+            service types that don't support breaking down
+            by method, setting this field will result in an
+            error.
         location (MutableSequence[str]):
             OPTIONAL: The set of locations to which this
-            SLI is relevant. Telemetry from other locations
-            will not be used to calculate performance for
-            this SLI. If omitted, this SLI applies to all
-            locations in which the Service has activity. For
-            service types that don't support breaking down
-            by location, setting this field will result in
-            an error.
+            SLI is relevant. Telemetry
+            from other locations will not be used to
+            calculate performance for this SLI. If omitted,
+            this SLI applies to all locations in which the
+            Service has activity. For service types that
+            don't support breaking down by location, setting
+            this field will result in an error.
         version (MutableSequence[str]):
             OPTIONAL: The set of API versions to which
-            this SLI is relevant. Telemetry from other API
-            versions will not be used to calculate
-            performance for this SLI. If omitted, this SLI
-            applies to all API versions. For service types
-            that don't support breaking down by version,
-            setting this field will result in an error.
+            this SLI is relevant. Telemetry
+            from other API versions will not be used to
+            calculate performance for this SLI. If omitted,
+            this SLI applies to all API versions. For
+            service types that don't support breaking down
+            by version, setting this field will result in an
+            error.
         availability (google.cloud.monitoring_v3.types.BasicSli.AvailabilityCriteria):
             Good service is defined to be the count of
             requests made to this service that return
