@@ -160,9 +160,11 @@ def test_GEOGRAPHY_ElementType_bad_extended():
 def test_GEOGRAPHY_ElementType():
     from sqlalchemy_bigquery import GEOGRAPHY, WKB
 
-    data = GEOGRAPHY.ElementType("data")
+    # The data argument here should be composed of hex characters:
+    # 1-0 and a-f
+    data = GEOGRAPHY.ElementType("123def")
     assert isinstance(data, WKB)
-    assert (data.data, data.srid, data.extended) == ("data", 4326, True)
+    assert (data.data, data.srid, data.extended) == ("123def", 4326, True)
 
 
 def test_calling_st_functions_that_dont_take_geographies(faux_conn, last_query):
