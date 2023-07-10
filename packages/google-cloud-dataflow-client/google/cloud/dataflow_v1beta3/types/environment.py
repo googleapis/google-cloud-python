@@ -56,12 +56,12 @@ class JobType(proto.Enum):
             unknown.
         JOB_TYPE_BATCH (1):
             A batch job with a well-defined end point:
-            data is read, data is processed, data is
-            written, and the job is done.
+            data is read, data is
+            processed, data is written, and the job is done.
         JOB_TYPE_STREAMING (2):
             A continuously streaming job with no end:
-            data is read, processed, and written
-            continuously.
+            data is read,
+            processed, and written continuously.
     """
     JOB_TYPE_UNKNOWN = 0
     JOB_TYPE_BATCH = 1
@@ -384,6 +384,7 @@ class Package(proto.Message):
         location (str):
             The resource to read the package from. The
             supported resource type is:
+
             Google Cloud Storage:
 
               storage.googleapis.com/{bucket}
