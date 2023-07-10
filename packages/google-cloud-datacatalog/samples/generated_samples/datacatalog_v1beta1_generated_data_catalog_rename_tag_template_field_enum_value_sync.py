@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ListPolicyTags
+# Snippet for RenameTagTemplateFieldEnumValue
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-datacatalog
 
 
-# [START datacatalog_v1_generated_PolicyTagManager_ListPolicyTags_sync]
+# [START datacatalog_v1beta1_generated_DataCatalog_RenameTagTemplateFieldEnumValue_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -31,23 +31,23 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import datacatalog_v1
+from google.cloud import datacatalog_v1beta1
 
 
-def sample_list_policy_tags():
+def sample_rename_tag_template_field_enum_value():
     # Create a client
-    client = datacatalog_v1.PolicyTagManagerClient()
+    client = datacatalog_v1beta1.DataCatalogClient()
 
     # Initialize request argument(s)
-    request = datacatalog_v1.ListPolicyTagsRequest(
-        parent="parent_value",
+    request = datacatalog_v1beta1.RenameTagTemplateFieldEnumValueRequest(
+        name="name_value",
+        new_enum_value_display_name="new_enum_value_display_name_value",
     )
 
     # Make the request
-    page_result = client.list_policy_tags(request=request)
+    response = client.rename_tag_template_field_enum_value(request=request)
 
     # Handle the response
-    for response in page_result:
-        print(response)
+    print(response)
 
-# [END datacatalog_v1_generated_PolicyTagManager_ListPolicyTags_sync]
+# [END datacatalog_v1beta1_generated_DataCatalog_RenameTagTemplateFieldEnumValue_sync]

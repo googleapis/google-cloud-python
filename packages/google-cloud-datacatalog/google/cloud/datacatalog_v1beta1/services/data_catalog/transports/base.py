@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2
 from google.oauth2 import service_account  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
@@ -142,32 +143,12 @@ class DataCatalogTransport(abc.ABC):
             ),
             self.get_entry_group: gapic_v1.method.wrap_method(
                 self.get_entry_group,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.delete_entry_group: gapic_v1.method.wrap_method(
                 self.delete_entry_group,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_entry_groups: gapic_v1.method.wrap_method(
@@ -187,47 +168,17 @@ class DataCatalogTransport(abc.ABC):
             ),
             self.delete_entry: gapic_v1.method.wrap_method(
                 self.delete_entry,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_entry: gapic_v1.method.wrap_method(
                 self.get_entry,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.lookup_entry: gapic_v1.method.wrap_method(
                 self.lookup_entry,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_entries: gapic_v1.method.wrap_method(
@@ -242,17 +193,7 @@ class DataCatalogTransport(abc.ABC):
             ),
             self.get_tag_template: gapic_v1.method.wrap_method(
                 self.get_tag_template,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.update_tag_template: gapic_v1.method.wrap_method(
@@ -262,17 +203,7 @@ class DataCatalogTransport(abc.ABC):
             ),
             self.delete_tag_template: gapic_v1.method.wrap_method(
                 self.delete_tag_template,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.create_tag_template_field: gapic_v1.method.wrap_method(
@@ -290,19 +221,14 @@ class DataCatalogTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.rename_tag_template_field_enum_value: gapic_v1.method.wrap_method(
+                self.rename_tag_template_field_enum_value,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_tag_template_field: gapic_v1.method.wrap_method(
                 self.delete_tag_template_field,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.create_tag: gapic_v1.method.wrap_method(
@@ -317,32 +243,12 @@ class DataCatalogTransport(abc.ABC):
             ),
             self.delete_tag: gapic_v1.method.wrap_method(
                 self.delete_tag,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_tags: gapic_v1.method.wrap_method(
                 self.list_tags,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
@@ -546,6 +452,15 @@ class DataCatalogTransport(abc.ABC):
         self,
     ) -> Callable[
         [datacatalog.RenameTagTemplateFieldRequest],
+        Union[tags.TagTemplateField, Awaitable[tags.TagTemplateField]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def rename_tag_template_field_enum_value(
+        self,
+    ) -> Callable[
+        [datacatalog.RenameTagTemplateFieldEnumValueRequest],
         Union[tags.TagTemplateField, Awaitable[tags.TagTemplateField]],
     ]:
         raise NotImplementedError()

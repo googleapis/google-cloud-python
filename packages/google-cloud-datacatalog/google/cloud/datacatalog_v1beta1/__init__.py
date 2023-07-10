@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ from .services.policy_tag_manager_serialization import (
     PolicyTagManagerSerializationAsyncClient,
     PolicyTagManagerSerializationClient,
 )
-from .types.common import IntegratedSystem
+from .types.common import IntegratedSystem, ManagingSystem
 from .types.datacatalog import (
     CreateEntryGroupRequest,
     CreateEntryRequest,
@@ -52,6 +52,7 @@ from .types.datacatalog import (
     ListTagsRequest,
     ListTagsResponse,
     LookupEntryRequest,
+    RenameTagTemplateFieldEnumValueRequest,
     RenameTagTemplateFieldRequest,
     SearchCatalogRequest,
     SearchCatalogResponse,
@@ -98,6 +99,7 @@ from .types.table_spec import (
 )
 from .types.tags import FieldType, Tag, TagField, TagTemplate, TagTemplateField
 from .types.timestamps import SystemTimestamps
+from .types.usage import UsageSignal, UsageStats
 
 __all__ = (
     "DataCatalogAsyncClient",
@@ -149,9 +151,11 @@ __all__ = (
     "ListTaxonomiesRequest",
     "ListTaxonomiesResponse",
     "LookupEntryRequest",
+    "ManagingSystem",
     "PolicyTag",
     "PolicyTagManagerClient",
     "PolicyTagManagerSerializationClient",
+    "RenameTagTemplateFieldEnumValueRequest",
     "RenameTagTemplateFieldRequest",
     "Schema",
     "SearchCatalogRequest",
@@ -175,5 +179,7 @@ __all__ = (
     "UpdateTagTemplateFieldRequest",
     "UpdateTagTemplateRequest",
     "UpdateTaxonomyRequest",
+    "UsageSignal",
+    "UsageStats",
     "ViewSpec",
 )

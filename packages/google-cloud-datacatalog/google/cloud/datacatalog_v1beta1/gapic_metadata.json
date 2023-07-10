@@ -105,6 +105,11 @@
                 "rename_tag_template_field"
               ]
             },
+            "RenameTagTemplateFieldEnumValue": {
+              "methods": [
+                "rename_tag_template_field_enum_value"
+              ]
+            },
             "SearchCatalog": {
               "methods": [
                 "search_catalog"
@@ -243,6 +248,11 @@
             "RenameTagTemplateField": {
               "methods": [
                 "rename_tag_template_field"
+              ]
+            },
+            "RenameTagTemplateFieldEnumValue": {
+              "methods": [
+                "rename_tag_template_field_enum_value"
               ]
             },
             "SearchCatalog": {

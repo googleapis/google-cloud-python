@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
+
+from google.cloud.datacatalog_v1beta1.types import common, timestamps
 
 __protobuf__ = proto.module(
     package="google.cloud.datacatalog.v1beta1",
@@ -59,6 +61,8 @@ class Taxonomy(proto.Message):
             underscores, dashes and spaces; not start or end
             with spaces; and be at most 200 bytes long when
             encoded in UTF-8.
+            The taxonomy display name must be unique within
+            an organization.
         description (str):
             Optional. Description of this taxonomy. It
             must: contain only unicode characters, tabs,
@@ -66,10 +70,21 @@ class Taxonomy(proto.Message):
             be at most 2000 bytes long when encoded in
             UTF-8. If not set, defaults to an empty
             description.
+        policy_tag_count (int):
+            Output only. Number of policy tags contained
+            in this taxonomy.
+        taxonomy_timestamps (google.cloud.datacatalog_v1beta1.types.SystemTimestamps):
+            Output only. Timestamps about this taxonomy. Only
+            create_time and update_time are used.
         activated_policy_types (MutableSequence[google.cloud.datacatalog_v1beta1.types.Taxonomy.PolicyType]):
             Optional. A list of policy types that are
             activated for this taxonomy. If not set,
             defaults to an empty list.
+        service (google.cloud.datacatalog_v1beta1.types.Taxonomy.Service):
+            Output only. Identity of the service which
+            owns the Taxonomy. This field is only populated
+            when the taxonomy is created by a Google Cloud
+            service. Currently only 'DATAPLEX' is supported.
     """
 
     class PolicyType(proto.Enum):
@@ -85,6 +100,26 @@ class Taxonomy(proto.Message):
         POLICY_TYPE_UNSPECIFIED = 0
         FINE_GRAINED_ACCESS_CONTROL = 1
 
+    class Service(proto.Message):
+        r"""The source system of the Taxonomy.
+
+        Attributes:
+            name (google.cloud.datacatalog_v1beta1.types.ManagingSystem):
+                The Google Cloud service name.
+            identity (str):
+                The service agent for the service.
+        """
+
+        name: common.ManagingSystem = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum=common.ManagingSystem,
+        )
+        identity: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -97,10 +132,24 @@ class Taxonomy(proto.Message):
         proto.STRING,
         number=3,
     )
+    policy_tag_count: int = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    taxonomy_timestamps: timestamps.SystemTimestamps = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamps.SystemTimestamps,
+    )
     activated_policy_types: MutableSequence[PolicyType] = proto.RepeatedField(
         proto.ENUM,
         number=6,
         enum=PolicyType,
+    )
+    service: Service = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=Service,
     )
 
 
@@ -249,6 +298,9 @@ class ListTaxonomiesRequest(proto.Message):
         page_token (str):
             The next_page_token value returned from a previous list
             request, if any. If not set, defaults to an empty string.
+        filter (str):
+            Supported field for filter is 'service' and
+            value is 'dataplex'. Eg: service=dataplex.
     """
 
     parent: str = proto.Field(
@@ -262,6 +314,10 @@ class ListTaxonomiesRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 

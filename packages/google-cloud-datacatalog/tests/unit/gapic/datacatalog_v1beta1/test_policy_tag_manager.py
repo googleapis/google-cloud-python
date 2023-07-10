@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,8 +33,10 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
@@ -48,7 +50,7 @@ from google.cloud.datacatalog_v1beta1.services.policy_tag_manager import (
     pagers,
     transports,
 )
-from google.cloud.datacatalog_v1beta1.types import policytagmanager
+from google.cloud.datacatalog_v1beta1.types import common, policytagmanager, timestamps
 
 
 def client_cert_source_callback():
@@ -724,6 +726,7 @@ def test_create_taxonomy(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
+            policy_tag_count=1715,
             activated_policy_types=[
                 policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
             ],
@@ -740,6 +743,7 @@ def test_create_taxonomy(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.policy_tag_count == 1715
     assert response.activated_policy_types == [
         policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
     ]
@@ -782,6 +786,7 @@ async def test_create_taxonomy_async(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                policy_tag_count=1715,
                 activated_policy_types=[
                     policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
                 ],
@@ -799,6 +804,7 @@ async def test_create_taxonomy_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.policy_tag_count == 1715
     assert response.activated_policy_types == [
         policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
     ]
@@ -1206,6 +1212,7 @@ def test_update_taxonomy(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
+            policy_tag_count=1715,
             activated_policy_types=[
                 policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
             ],
@@ -1222,6 +1229,7 @@ def test_update_taxonomy(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.policy_tag_count == 1715
     assert response.activated_policy_types == [
         policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
     ]
@@ -1264,6 +1272,7 @@ async def test_update_taxonomy_async(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                policy_tag_count=1715,
                 activated_policy_types=[
                     policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
                 ],
@@ -1281,6 +1290,7 @@ async def test_update_taxonomy_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.policy_tag_count == 1715
     assert response.activated_policy_types == [
         policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
     ]
@@ -1880,6 +1890,7 @@ def test_get_taxonomy(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
+            policy_tag_count=1715,
             activated_policy_types=[
                 policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
             ],
@@ -1896,6 +1907,7 @@ def test_get_taxonomy(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.policy_tag_count == 1715
     assert response.activated_policy_types == [
         policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
     ]
@@ -1938,6 +1950,7 @@ async def test_get_taxonomy_async(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                policy_tag_count=1715,
                 activated_policy_types=[
                     policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
                 ],
@@ -1955,6 +1968,7 @@ async def test_get_taxonomy_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.policy_tag_count == 1715
     assert response.activated_policy_types == [
         policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
     ]
