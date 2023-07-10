@@ -243,9 +243,10 @@ class StreamingVideoIntelligenceServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[video_intelligence.StreamingAnnotateVideoResponse]]:
         r"""Performs video annotation with bidirectional
-        streaming: emitting results while sending video/audio
-        bytes. This method is only available via the gRPC API
-        (not REST).
+        streaming: emitting results
+        while sending video/audio bytes.
+        This method is only available via the gRPC API (not
+        REST).
 
         .. code-block:: python
 
