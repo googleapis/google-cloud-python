@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.23.2](https://github.com/googleapis/python-dialogflow/compare/v2.23.1...v2.23.2) (2023-07-10)
+
+
+### Documentation
+
+* Added google.api.field_behavior for some fields in audio_config ([#647](https://github.com/googleapis/python-dialogflow/issues/647)) ([2adf50a](https://github.com/googleapis/python-dialogflow/commit/2adf50a5f96fd0aeed84837322dbf0d46c9bbdd7))
+
 ## [2.23.1](https://github.com/googleapis/python-dialogflow/compare/v2.23.0...v2.23.1) (2023-07-04)
 
 
