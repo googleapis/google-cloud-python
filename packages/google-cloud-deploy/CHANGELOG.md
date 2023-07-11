@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.10.1...google-cloud-deploy-v1.11.0) (2023-07-11)
+
+
+### Features
+
+* added support routeUpdateWaitTime field for Deployment Strategies ([#11478](https://github.com/googleapis/google-cloud-python/issues/11478)) ([c1ebd34](https://github.com/googleapis/google-cloud-python/commit/c1ebd34e3ed674ba1058e5aa01600814edbd0727))
+
 ## [1.10.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.10.0...google-cloud-deploy-v1.10.1) (2023-07-05)
 
 
