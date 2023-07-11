@@ -1290,7 +1290,9 @@ class TestCasesAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTestCaseResultsAsyncPager:
-        r"""Fetches a list of results for a given test case.
+        r"""Fetches the list of run results for the given test
+        case. A maximum of 100 results are kept for each test
+        case.
 
         .. code-block:: python
 

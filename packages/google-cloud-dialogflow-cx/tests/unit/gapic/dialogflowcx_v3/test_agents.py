@@ -3490,6 +3490,15 @@ def test_create_agent_rest(request_type):
                 "enable_interaction_logging": True,
             },
         },
+        "git_integration_settings": {
+            "github_settings": {
+                "display_name": "display_name_value",
+                "repository_uri": "repository_uri_value",
+                "tracking_branch": "tracking_branch_value",
+                "access_token": "access_token_value",
+                "branches": ["branches_value1", "branches_value2"],
+            }
+        },
         "text_to_speech_settings": {"synthesize_speech_configs": {}},
     }
     request = request_type(**request_init)
@@ -3716,6 +3725,15 @@ def test_create_agent_rest_bad_request(
                 "enable_interaction_logging": True,
             },
         },
+        "git_integration_settings": {
+            "github_settings": {
+                "display_name": "display_name_value",
+                "repository_uri": "repository_uri_value",
+                "tracking_branch": "tracking_branch_value",
+                "access_token": "access_token_value",
+                "branches": ["branches_value1", "branches_value2"],
+            }
+        },
         "text_to_speech_settings": {"synthesize_speech_configs": {}},
     }
     request = request_type(**request_init)
@@ -3835,6 +3853,15 @@ def test_update_agent_rest(request_type):
                 "enable_stackdriver_logging": True,
                 "enable_interaction_logging": True,
             },
+        },
+        "git_integration_settings": {
+            "github_settings": {
+                "display_name": "display_name_value",
+                "repository_uri": "repository_uri_value",
+                "tracking_branch": "tracking_branch_value",
+                "access_token": "access_token_value",
+                "branches": ["branches_value1", "branches_value2"],
+            }
         },
         "text_to_speech_settings": {"synthesize_speech_configs": {}},
     }
@@ -4052,6 +4079,15 @@ def test_update_agent_rest_bad_request(
                 "enable_stackdriver_logging": True,
                 "enable_interaction_logging": True,
             },
+        },
+        "git_integration_settings": {
+            "github_settings": {
+                "display_name": "display_name_value",
+                "repository_uri": "repository_uri_value",
+                "tracking_branch": "tracking_branch_value",
+                "access_token": "access_token_value",
+                "branches": ["branches_value1", "branches_value2"],
+            }
         },
         "text_to_speech_settings": {"synthesize_speech_configs": {}},
     }

@@ -130,8 +130,8 @@ class Webhook(proto.Message):
                 Optional. Maps the values extracted from
                 specific fields of the flexible webhook response
                 into session parameters.
-                 - Key: session parameter name
-                 - Value: field path in the webhook response
+                - Key: session parameter name
+                - Value: field path in the webhook response
         """
 
         class WebhookType(proto.Enum):
