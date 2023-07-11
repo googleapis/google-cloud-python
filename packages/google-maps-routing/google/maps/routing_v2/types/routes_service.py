@@ -589,8 +589,8 @@ class RouteMatrixElement(proto.Message):
             consideration.
         travel_advisory (google.maps.routing_v2.types.RouteTravelAdvisory):
             Additional information about the route. For
-            example: restriction information and toll
-            information
+            example: restriction
+            information and toll information
         fallback_info (google.maps.routing_v2.types.FallbackInfo):
             In some cases when the server is not able to
             compute the route with the given preferences for
