@@ -561,6 +561,11 @@ class KubernetesConfig(proto.Message):
                 Required. Name of the Kubernetes Deployment
                 whose traffic is managed by the specified
                 HTTPRoute and Service.
+            route_update_wait_time (google.protobuf.duration_pb2.Duration):
+                Optional. The time to wait for route updates
+                to propagate. The maximum configurable time is 3
+                hours, in seconds format. If unspecified, there
+                is no wait time.
         """
 
         http_route: str = proto.Field(
@@ -574,6 +579,11 @@ class KubernetesConfig(proto.Message):
         deployment: str = proto.Field(
             proto.STRING,
             number=3,
+        )
+        route_update_wait_time: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=duration_pb2.Duration,
         )
 
     class ServiceNetworking(proto.Message):
@@ -813,7 +823,8 @@ class ListDeliveryPipelinesRequest(proto.Message):
             call that provided the page token.
         filter (str):
             Filter pipelines to be returned. See
-            https://google.aip.dev/160 for more details.
+            https://google.aip.dev/160 for more
+            details.
         order_by (str):
             Field to sort by. See
             https://google.aip.dev/132#ordering for more
@@ -1138,20 +1149,23 @@ class Target(proto.Message):
             Output only. Most recent time at which the ``Target`` was
             updated.
         gke (google.cloud.deploy_v1.types.GkeCluster):
-            Information specifying a GKE Cluster.
+            Optional. Information specifying a GKE
+            Cluster.
 
             This field is a member of `oneof`_ ``deployment_target``.
         anthos_cluster (google.cloud.deploy_v1.types.AnthosCluster):
-            Information specifying an Anthos Cluster.
+            Optional. Information specifying an Anthos
+            Cluster.
 
             This field is a member of `oneof`_ ``deployment_target``.
         run (google.cloud.deploy_v1.types.CloudRunLocation):
-            Information specifying a Cloud Run deployment
-            target.
+            Optional. Information specifying a Cloud Run
+            deployment target.
 
             This field is a member of `oneof`_ ``deployment_target``.
         multi_target (google.cloud.deploy_v1.types.MultiTarget):
-            Information specifying a multiTarget.
+            Optional. Information specifying a
+            multiTarget.
 
             This field is a member of `oneof`_ ``deployment_target``.
         etag (str):
@@ -1517,11 +1531,12 @@ class ListTargetsRequest(proto.Message):
             call that provided the page token.
         filter (str):
             Optional. Filter targets to be returned. See
-            https://google.aip.dev/160 for more details.
+            https://google.aip.dev/160 for
+            more details.
         order_by (str):
             Optional. Field to sort by. See
-            https://google.aip.dev/132#ordering for more
-            details.
+            https://google.aip.dev/132#ordering for
+            more details.
     """
 
     parent: str = proto.Field(
@@ -2344,11 +2359,12 @@ class ListReleasesRequest(proto.Message):
             call that provided the page token.
         filter (str):
             Optional. Filter releases to be returned. See
-            https://google.aip.dev/160 for more details.
+            https://google.aip.dev/160
+            for more details.
         order_by (str):
             Optional. Field to sort by. See
-            https://google.aip.dev/132#ordering for more
-            details.
+            https://google.aip.dev/132#ordering for
+            more details.
     """
 
     parent: str = proto.Field(
@@ -3106,11 +3122,12 @@ class ListRolloutsRequest(proto.Message):
             call that provided the page token.
         filter (str):
             Optional. Filter rollouts to be returned. See
-            https://google.aip.dev/160 for more details.
+            https://google.aip.dev/160
+            for more details.
         order_by (str):
             Optional. Field to sort by. See
-            https://google.aip.dev/132#ordering for more
-            details.
+            https://google.aip.dev/132#ordering for
+            more details.
     """
 
     parent: str = proto.Field(
@@ -3851,11 +3868,12 @@ class ListJobRunsRequest(proto.Message):
             call that provided the page token.
         filter (str):
             Optional. Filter results to be returned. See
-            https://google.aip.dev/160 for more details.
+            https://google.aip.dev/160 for
+            more details.
         order_by (str):
             Optional. Field to sort by. See
-            https://google.aip.dev/132#ordering for more
-            details.
+            https://google.aip.dev/132#ordering for
+            more details.
     """
 
     parent: str = proto.Field(
