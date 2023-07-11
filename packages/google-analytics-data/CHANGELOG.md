@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.17.0](https://github.com/googleapis/python-analytics-data/compare/v0.16.3...v0.17.0) (2023-07-11)
+
+
+### Features
+
+* **v1alpha:** Add `AudienceList`, `AudienceRow`, `AudienceDimensionValue` types ([538cf45](https://github.com/googleapis/python-analytics-data/commit/538cf4586eb8883b0b4133a7fbdeb43bbdf97a81))
+* **v1alpha:** Add `CreateAudienceList`, `QueryAudienceList`,`GetAudienceList`,`ListAudienceLists` methods ([538cf45](https://github.com/googleapis/python-analytics-data/commit/538cf4586eb8883b0b4133a7fbdeb43bbdf97a81))
+* **v1alpha:** Add the `tokens_per_project_per_hour` field to the `PropertyQuota` type ([538cf45](https://github.com/googleapis/python-analytics-data/commit/538cf4586eb8883b0b4133a7fbdeb43bbdf97a81))
+
 ## [0.16.3](https://github.com/googleapis/python-analytics-data/compare/v0.16.2...v0.16.3) (2023-07-04)
 
 
