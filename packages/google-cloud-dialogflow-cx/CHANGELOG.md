@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.25.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.24.0...v1.25.0) (2023-07-11)
+
+
+### Features
+
+* **v3:** Added GitIntegrationSettings to the Agent ([#535](https://github.com/googleapis/python-dialogflow-cx/issues/535)) ([32b4a66](https://github.com/googleapis/python-dialogflow-cx/commit/32b4a668d5acd07b5f6f431e816fcfac9bb3053b))
+
 ## [1.24.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.23.1...v1.24.0) (2023-07-10)
 
 
