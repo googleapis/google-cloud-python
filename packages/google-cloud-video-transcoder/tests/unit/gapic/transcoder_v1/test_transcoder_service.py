@@ -763,6 +763,8 @@ def test_create_job(request_type, transport: str = "grpc"):
             state=resources.Job.ProcessingState.PENDING,
             ttl_after_completion_days=2670,
             mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
+            batch_mode_priority=2023,
+            optimization=resources.Job.OptimizationStrategy.AUTODETECT,
             template_id="template_id_value",
         )
         response = client.create_job(request)
@@ -780,6 +782,8 @@ def test_create_job(request_type, transport: str = "grpc"):
     assert response.state == resources.Job.ProcessingState.PENDING
     assert response.ttl_after_completion_days == 2670
     assert response.mode == resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE
+    assert response.batch_mode_priority == 2023
+    assert response.optimization == resources.Job.OptimizationStrategy.AUTODETECT
 
 
 def test_create_job_empty_call():
@@ -822,6 +826,8 @@ async def test_create_job_async(
                 state=resources.Job.ProcessingState.PENDING,
                 ttl_after_completion_days=2670,
                 mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
+                batch_mode_priority=2023,
+                optimization=resources.Job.OptimizationStrategy.AUTODETECT,
             )
         )
         response = await client.create_job(request)
@@ -839,6 +845,8 @@ async def test_create_job_async(
     assert response.state == resources.Job.ProcessingState.PENDING
     assert response.ttl_after_completion_days == 2670
     assert response.mode == resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE
+    assert response.batch_mode_priority == 2023
+    assert response.optimization == resources.Job.OptimizationStrategy.AUTODETECT
 
 
 @pytest.mark.asyncio
@@ -1448,6 +1456,8 @@ def test_get_job(request_type, transport: str = "grpc"):
             state=resources.Job.ProcessingState.PENDING,
             ttl_after_completion_days=2670,
             mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
+            batch_mode_priority=2023,
+            optimization=resources.Job.OptimizationStrategy.AUTODETECT,
             template_id="template_id_value",
         )
         response = client.get_job(request)
@@ -1465,6 +1475,8 @@ def test_get_job(request_type, transport: str = "grpc"):
     assert response.state == resources.Job.ProcessingState.PENDING
     assert response.ttl_after_completion_days == 2670
     assert response.mode == resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE
+    assert response.batch_mode_priority == 2023
+    assert response.optimization == resources.Job.OptimizationStrategy.AUTODETECT
 
 
 def test_get_job_empty_call():
@@ -1507,6 +1519,8 @@ async def test_get_job_async(
                 state=resources.Job.ProcessingState.PENDING,
                 ttl_after_completion_days=2670,
                 mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
+                batch_mode_priority=2023,
+                optimization=resources.Job.OptimizationStrategy.AUTODETECT,
             )
         )
         response = await client.get_job(request)
@@ -1524,6 +1538,8 @@ async def test_get_job_async(
     assert response.state == resources.Job.ProcessingState.PENDING
     assert response.ttl_after_completion_days == 2670
     assert response.mode == resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE
+    assert response.batch_mode_priority == 2023
+    assert response.optimization == resources.Job.OptimizationStrategy.AUTODETECT
 
 
 @pytest.mark.asyncio
@@ -3249,6 +3265,7 @@ def test_create_job_rest(request_type):
                         "segment_duration": {},
                         "individual_segments": True,
                     },
+                    "encryption_id": "encryption_id_value",
                 }
             ],
             "manifests": [
@@ -3256,6 +3273,7 @@ def test_create_job_rest(request_type):
                     "file_name": "file_name_value",
                     "type_": 1,
                     "mux_streams": ["mux_streams_value1", "mux_streams_value2"],
+                    "dash": {"segment_reference_scheme": 1},
                 }
             ],
             "output": {"uri": "uri_value"},
@@ -3297,6 +3315,23 @@ def test_create_job_rest(request_type):
                     ],
                 }
             ],
+            "encryptions": [
+                {
+                    "id": "id_value",
+                    "aes_128": {},
+                    "sample_aes": {},
+                    "mpeg_cenc": {"scheme": "scheme_value"},
+                    "secret_manager_key_source": {
+                        "secret_version": "secret_version_value"
+                    },
+                    "drm_systems": {
+                        "widevine": {},
+                        "fairplay": {},
+                        "playready": {},
+                        "clearkey": {},
+                    },
+                }
+            ],
         },
         "state": 1,
         "create_time": {"seconds": 751, "nanos": 543},
@@ -3315,6 +3350,8 @@ def test_create_job_rest(request_type):
             ],
         },
         "mode": 1,
+        "batch_mode_priority": 2023,
+        "optimization": 1,
     }
     request = request_type(**request_init)
 
@@ -3328,6 +3365,8 @@ def test_create_job_rest(request_type):
             state=resources.Job.ProcessingState.PENDING,
             ttl_after_completion_days=2670,
             mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
+            batch_mode_priority=2023,
+            optimization=resources.Job.OptimizationStrategy.AUTODETECT,
             template_id="template_id_value",
         )
 
@@ -3349,6 +3388,8 @@ def test_create_job_rest(request_type):
     assert response.state == resources.Job.ProcessingState.PENDING
     assert response.ttl_after_completion_days == 2670
     assert response.mode == resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE
+    assert response.batch_mode_priority == 2023
+    assert response.optimization == resources.Job.OptimizationStrategy.AUTODETECT
 
 
 def test_create_job_rest_required_fields(request_type=services.CreateJobRequest):
@@ -3671,6 +3712,7 @@ def test_create_job_rest_bad_request(
                         "segment_duration": {},
                         "individual_segments": True,
                     },
+                    "encryption_id": "encryption_id_value",
                 }
             ],
             "manifests": [
@@ -3678,6 +3720,7 @@ def test_create_job_rest_bad_request(
                     "file_name": "file_name_value",
                     "type_": 1,
                     "mux_streams": ["mux_streams_value1", "mux_streams_value2"],
+                    "dash": {"segment_reference_scheme": 1},
                 }
             ],
             "output": {"uri": "uri_value"},
@@ -3719,6 +3762,23 @@ def test_create_job_rest_bad_request(
                     ],
                 }
             ],
+            "encryptions": [
+                {
+                    "id": "id_value",
+                    "aes_128": {},
+                    "sample_aes": {},
+                    "mpeg_cenc": {"scheme": "scheme_value"},
+                    "secret_manager_key_source": {
+                        "secret_version": "secret_version_value"
+                    },
+                    "drm_systems": {
+                        "widevine": {},
+                        "fairplay": {},
+                        "playready": {},
+                        "clearkey": {},
+                    },
+                }
+            ],
         },
         "state": 1,
         "create_time": {"seconds": 751, "nanos": 543},
@@ -3737,6 +3797,8 @@ def test_create_job_rest_bad_request(
             ],
         },
         "mode": 1,
+        "batch_mode_priority": 2023,
+        "optimization": 1,
     }
     request = request_type(**request_init)
 
@@ -4181,6 +4243,8 @@ def test_get_job_rest(request_type):
             state=resources.Job.ProcessingState.PENDING,
             ttl_after_completion_days=2670,
             mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
+            batch_mode_priority=2023,
+            optimization=resources.Job.OptimizationStrategy.AUTODETECT,
             template_id="template_id_value",
         )
 
@@ -4202,6 +4266,8 @@ def test_get_job_rest(request_type):
     assert response.state == resources.Job.ProcessingState.PENDING
     assert response.ttl_after_completion_days == 2670
     assert response.mode == resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE
+    assert response.batch_mode_priority == 2023
+    assert response.optimization == resources.Job.OptimizationStrategy.AUTODETECT
 
 
 def test_get_job_rest_required_fields(request_type=services.GetJobRequest):
@@ -4852,6 +4918,7 @@ def test_create_job_template_rest(request_type):
                         "segment_duration": {},
                         "individual_segments": True,
                     },
+                    "encryption_id": "encryption_id_value",
                 }
             ],
             "manifests": [
@@ -4859,6 +4926,7 @@ def test_create_job_template_rest(request_type):
                     "file_name": "file_name_value",
                     "type_": 1,
                     "mux_streams": ["mux_streams_value1", "mux_streams_value2"],
+                    "dash": {"segment_reference_scheme": 1},
                 }
             ],
             "output": {"uri": "uri_value"},
@@ -4898,6 +4966,23 @@ def test_create_job_template_rest(request_type):
                             "animation_end": {"start_time_offset": {}},
                         }
                     ],
+                }
+            ],
+            "encryptions": [
+                {
+                    "id": "id_value",
+                    "aes_128": {},
+                    "sample_aes": {},
+                    "mpeg_cenc": {"scheme": "scheme_value"},
+                    "secret_manager_key_source": {
+                        "secret_version": "secret_version_value"
+                    },
+                    "drm_systems": {
+                        "widevine": {},
+                        "fairplay": {},
+                        "playready": {},
+                        "clearkey": {},
+                    },
                 }
             ],
         },
@@ -5266,6 +5351,7 @@ def test_create_job_template_rest_bad_request(
                         "segment_duration": {},
                         "individual_segments": True,
                     },
+                    "encryption_id": "encryption_id_value",
                 }
             ],
             "manifests": [
@@ -5273,6 +5359,7 @@ def test_create_job_template_rest_bad_request(
                     "file_name": "file_name_value",
                     "type_": 1,
                     "mux_streams": ["mux_streams_value1", "mux_streams_value2"],
+                    "dash": {"segment_reference_scheme": 1},
                 }
             ],
             "output": {"uri": "uri_value"},
@@ -5312,6 +5399,23 @@ def test_create_job_template_rest_bad_request(
                             "animation_end": {"start_time_offset": {}},
                         }
                     ],
+                }
+            ],
+            "encryptions": [
+                {
+                    "id": "id_value",
+                    "aes_128": {},
+                    "sample_aes": {},
+                    "mpeg_cenc": {"scheme": "scheme_value"},
+                    "secret_manager_key_source": {
+                        "secret_version": "secret_version_value"
+                    },
+                    "drm_systems": {
+                        "widevine": {},
+                        "fairplay": {},
+                        "playready": {},
+                        "clearkey": {},
+                    },
                 }
             ],
         },

@@ -43,6 +43,7 @@ __protobuf__ = proto.module(
         "AudioStream",
         "TextStream",
         "SegmentSettings",
+        "Encryption",
     },
 )
 
@@ -114,6 +115,15 @@ class Job(proto.Message):
         mode (google.cloud.video.transcoder_v1.types.Job.ProcessingMode):
             The processing mode of the job. The default is
             ``PROCESSING_MODE_INTERACTIVE``.
+        batch_mode_priority (int):
+            The processing priority of a batch job.
+            This field can only be set for batch mode jobs.
+            The default value is 0. This value cannot be
+            negative. Higher values correspond to higher
+            priorities for the job.
+        optimization (google.cloud.video.transcoder_v1.types.Job.OptimizationStrategy):
+            Optional. The optimization strategy of the job. The default
+            is ``AUTODETECT``.
     """
 
     class ProcessingState(proto.Enum):
@@ -156,6 +166,21 @@ class Job(proto.Message):
         PROCESSING_MODE_UNSPECIFIED = 0
         PROCESSING_MODE_INTERACTIVE = 1
         PROCESSING_MODE_BATCH = 2
+
+    class OptimizationStrategy(proto.Enum):
+        r"""The optimization strategy of the job. The default is ``AUTODETECT``.
+
+        Values:
+            OPTIMIZATION_STRATEGY_UNSPECIFIED (0):
+                The optimization strategy is not specified.
+            AUTODETECT (1):
+                Prioritize job processing speed.
+            DISABLED (2):
+                Disable all optimizations.
+        """
+        OPTIMIZATION_STRATEGY_UNSPECIFIED = 0
+        AUTODETECT = 1
+        DISABLED = 2
 
     name: str = proto.Field(
         proto.STRING,
@@ -218,6 +243,15 @@ class Job(proto.Message):
         proto.ENUM,
         number=20,
         enum=ProcessingMode,
+    )
+    batch_mode_priority: int = proto.Field(
+        proto.INT32,
+        number=21,
+    )
+    optimization: OptimizationStrategy = proto.Field(
+        proto.ENUM,
+        number=22,
+        enum=OptimizationStrategy,
     )
 
 
@@ -282,6 +316,12 @@ class JobConfig(proto.Message):
         overlays (MutableSequence[google.cloud.video.transcoder_v1.types.Overlay]):
             List of overlays on the output video, in
             descending Z-order.
+        encryptions (MutableSequence[google.cloud.video.transcoder_v1.types.Encryption]):
+            List of encryption configurations for the content. Each
+            configuration has an ID. Specify this ID in the
+            [MuxStream.encryption_id][google.cloud.video.transcoder.v1.MuxStream.encryption_id]
+            field to indicate the configuration to use for that
+            ``MuxStream`` output.
     """
 
     inputs: MutableSequence["Input"] = proto.RepeatedField(
@@ -333,6 +373,11 @@ class JobConfig(proto.Message):
         proto.MESSAGE,
         number=10,
         message="Overlay",
+    )
+    encryptions: MutableSequence["Encryption"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=11,
+        message="Encryption",
     )
 
 
@@ -531,6 +576,9 @@ class MuxStream(proto.Message):
             stream.
         segment_settings (google.cloud.video.transcoder_v1.types.SegmentSettings):
             Segment settings for ``ts``, ``fmp4`` and ``vtt``.
+        encryption_id (str):
+            Identifier of the encryption configuration to
+            use. If omitted, output will be unencrypted.
     """
 
     key: str = proto.Field(
@@ -554,10 +602,16 @@ class MuxStream(proto.Message):
         number=5,
         message="SegmentSettings",
     )
+    encryption_id: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class Manifest(proto.Message):
     r"""Manifest configuration.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         file_name (str):
@@ -565,7 +619,7 @@ class Manifest(proto.Message):
             with the extension suffix corresponding to the
             ``Manifest.type``.
         type_ (google.cloud.video.transcoder_v1.types.Manifest.ManifestType):
-            Required. Type of the manifest, can be ``HLS`` or ``DASH``.
+            Required. Type of the manifest.
         mux_streams (MutableSequence[str]):
             Required. List of user given ``MuxStream.key``\ s that
             should appear in this manifest.
@@ -573,24 +627,64 @@ class Manifest(proto.Message):
             When ``Manifest.type`` is ``HLS``, a media manifest with
             name ``MuxStream.key`` and ``.m3u8`` extension is generated
             for each element of the ``Manifest.mux_streams``.
+        dash (google.cloud.video.transcoder_v1.types.Manifest.DashConfig):
+            ``DASH`` manifest configuration.
+
+            This field is a member of `oneof`_ ``manifest_config``.
     """
 
     class ManifestType(proto.Enum):
-        r"""The manifest type can be either ``HLS`` or ``DASH``.
+        r"""The manifest type, which corresponds to the adaptive
+        streaming format used.
 
         Values:
             MANIFEST_TYPE_UNSPECIFIED (0):
                 The manifest type is not specified.
             HLS (1):
-                Create ``HLS`` manifest. The corresponding file extension is
+                Create an HLS manifest. The corresponding file extension is
                 ``.m3u8``.
             DASH (2):
-                Create ``DASH`` manifest. The corresponding file extension
-                is ``.mpd``.
+                Create an MPEG-DASH manifest. The corresponding file
+                extension is ``.mpd``.
         """
         MANIFEST_TYPE_UNSPECIFIED = 0
         HLS = 1
         DASH = 2
+
+    class DashConfig(proto.Message):
+        r"""``DASH`` manifest configuration.
+
+        Attributes:
+            segment_reference_scheme (google.cloud.video.transcoder_v1.types.Manifest.DashConfig.SegmentReferenceScheme):
+                The segment reference scheme for a ``DASH`` manifest. The
+                default is ``SEGMENT_LIST``.
+        """
+
+        class SegmentReferenceScheme(proto.Enum):
+            r"""The segment reference scheme for a ``DASH`` manifest.
+
+            Values:
+                SEGMENT_REFERENCE_SCHEME_UNSPECIFIED (0):
+                    The segment reference scheme is not
+                    specified.
+                SEGMENT_LIST (1):
+                    Lists the URLs of media files for each
+                    segment.
+                SEGMENT_TEMPLATE_NUMBER (2):
+                    Lists each segment from a template with
+                    $Number$ variable.
+            """
+            SEGMENT_REFERENCE_SCHEME_UNSPECIFIED = 0
+            SEGMENT_LIST = 1
+            SEGMENT_TEMPLATE_NUMBER = 2
+
+        segment_reference_scheme: "Manifest.DashConfig.SegmentReferenceScheme" = (
+            proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="Manifest.DashConfig.SegmentReferenceScheme",
+            )
+        )
 
     file_name: str = proto.Field(
         proto.STRING,
@@ -604,6 +698,12 @@ class Manifest(proto.Message):
     mux_streams: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+    dash: DashConfig = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="manifest_config",
+        message=DashConfig,
     )
 
 
@@ -2261,6 +2361,167 @@ class SegmentSettings(proto.Message):
     individual_segments: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+
+
+class Encryption(proto.Message):
+    r"""Encryption settings.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        id (str):
+            Required. Identifier for this set of
+            encryption options.
+        aes_128 (google.cloud.video.transcoder_v1.types.Encryption.Aes128Encryption):
+            Configuration for AES-128 encryption.
+
+            This field is a member of `oneof`_ ``encryption_mode``.
+        sample_aes (google.cloud.video.transcoder_v1.types.Encryption.SampleAesEncryption):
+            Configuration for SAMPLE-AES encryption.
+
+            This field is a member of `oneof`_ ``encryption_mode``.
+        mpeg_cenc (google.cloud.video.transcoder_v1.types.Encryption.MpegCommonEncryption):
+            Configuration for MPEG Common Encryption
+            (MPEG-CENC).
+
+            This field is a member of `oneof`_ ``encryption_mode``.
+        secret_manager_key_source (google.cloud.video.transcoder_v1.types.Encryption.SecretManagerSource):
+            Keys are stored in Google Secret Manager.
+
+            This field is a member of `oneof`_ ``secret_source``.
+        drm_systems (google.cloud.video.transcoder_v1.types.Encryption.DrmSystems):
+            Required. DRM system(s) to use; at least one
+            must be specified. If a DRM system is omitted,
+            it is considered disabled.
+    """
+
+    class Aes128Encryption(proto.Message):
+        r"""Configuration for AES-128 encryption."""
+
+    class SampleAesEncryption(proto.Message):
+        r"""Configuration for SAMPLE-AES encryption."""
+
+    class MpegCommonEncryption(proto.Message):
+        r"""Configuration for MPEG Common Encryption (MPEG-CENC).
+
+        Attributes:
+            scheme (str):
+                Required. Specify the encryption scheme.
+
+                Supported encryption schemes:
+
+                -  ``cenc``
+                -  ``cbcs``
+        """
+
+        scheme: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class SecretManagerSource(proto.Message):
+        r"""Configuration for secrets stored in Google Secret Manager.
+
+        Attributes:
+            secret_version (str):
+                Required. The name of the Secret Version containing the
+                encryption key in the following format:
+                ``projects/{project}/secrets/{secret_id}/versions/{version_number}``
+
+                Note that only numbered versions are supported. Aliases like
+                "latest" are not supported.
+        """
+
+        secret_version: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class Widevine(proto.Message):
+        r"""Widevine configuration."""
+
+    class Fairplay(proto.Message):
+        r"""Fairplay configuration."""
+
+    class Playready(proto.Message):
+        r"""Playready configuration."""
+
+    class Clearkey(proto.Message):
+        r"""Clearkey configuration."""
+
+    class DrmSystems(proto.Message):
+        r"""Defines configuration for DRM systems in use.
+
+        Attributes:
+            widevine (google.cloud.video.transcoder_v1.types.Encryption.Widevine):
+                Widevine configuration.
+            fairplay (google.cloud.video.transcoder_v1.types.Encryption.Fairplay):
+                Fairplay configuration.
+            playready (google.cloud.video.transcoder_v1.types.Encryption.Playready):
+                Playready configuration.
+            clearkey (google.cloud.video.transcoder_v1.types.Encryption.Clearkey):
+                Clearkey configuration.
+        """
+
+        widevine: "Encryption.Widevine" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Encryption.Widevine",
+        )
+        fairplay: "Encryption.Fairplay" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="Encryption.Fairplay",
+        )
+        playready: "Encryption.Playready" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="Encryption.Playready",
+        )
+        clearkey: "Encryption.Clearkey" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="Encryption.Clearkey",
+        )
+
+    id: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    aes_128: Aes128Encryption = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="encryption_mode",
+        message=Aes128Encryption,
+    )
+    sample_aes: SampleAesEncryption = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="encryption_mode",
+        message=SampleAesEncryption,
+    )
+    mpeg_cenc: MpegCommonEncryption = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="encryption_mode",
+        message=MpegCommonEncryption,
+    )
+    secret_manager_key_source: SecretManagerSource = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="secret_source",
+        message=SecretManagerSource,
+    )
+    drm_systems: DrmSystems = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=DrmSystems,
     )
 
 
