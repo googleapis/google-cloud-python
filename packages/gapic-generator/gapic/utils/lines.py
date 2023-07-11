@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import re
 import textwrap
 from typing import Iterable, Optional
 
@@ -77,6 +78,12 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
 
     # Break off the first line of the string to address non-zero offsets.
     first = text.split('\n')[0] + '\n'
+
+    # Ensure that there are 2 new lines after a colon, otherwise
+    # the sphinx docs build will fail.
+    if first.endswith(":\n"):
+        first += "\n"
+
     if len(first) > width - offset:
         # Ensure `break_on_hyphens` is set to `False` when using
         # `textwrap.wrap` to avoid breaking hyperlinks with hyphens.
@@ -95,6 +102,11 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
 
         # Save the new `first` line.
         first = f'{initial[0]}\n'
+
+    # Ensure that there are 2 new lines after a colon, otherwise
+    # the sphinx docs build will fail.
+    text = re.sub(r':\n([^\n])', r':\n\n\1', text)
+
     text = text[len(first):].strip()
     if not text:
         return first.strip()
@@ -109,7 +121,9 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
             tokens.append(token)
             token = ''
         token += line + '\n'
-        if len(line) < width * 0.75:
+
+        # Preserve line breaks for lines that are short or end with colon.
+        if len(line) < width * 0.75 or line.endswith(':'):
             tokens.append(token)
             token = ''
     if token:

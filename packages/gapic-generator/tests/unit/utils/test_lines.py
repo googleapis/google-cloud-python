@@ -102,11 +102,16 @@ Wales falls mainly on the snails."""
 
 
 def test_list_each_item_in_list_has_new_line():
-    s = """Type of weather:
+    input = """Type of weather:
 - Hail
 - Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain
 - Snow"""
-    assert lines.wrap(s, width=80) == s
+    expected = """Type of weather:
+
+- Hail
+- Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain
+- Snow"""
+    assert lines.wrap(input, width=80) == expected
 
 
 def test_list_items_are_indented():
@@ -126,7 +131,7 @@ Some types of weather:
     assert lines.wrap(input, width=60) == expected
 
 
-def test_list_new_line_preserved_after_colon():
+def test_list_items_short_text_before_list_with_new_line_preserved():
     input = """Today's forecast will have different types of weather:
 
 - A mix of hail and snow, followed by rain clouds, then finally clear sky
@@ -142,20 +147,33 @@ def test_list_new_line_preserved_after_colon():
     assert lines.wrap(input, width=60, indent=16) == expected
 
 
-def test_list_items_longer_text_before_list():
+def test_list_items_long_text_before_list_with_new_line_preserved():
     input = """Weather Weather Weather Weather Weather Weather Weather
-Weather Weather Weather Weather Weather Weather Weather
-Type of weather:
+Weather Weather Weather Weather Weather Weather Type of weather:
 
 - Hail
 - Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain
 - Snow"""
     expected = """Weather Weather Weather Weather Weather Weather Weather
-Weather Weather Weather Weather Weather Weather Weather Type
-of weather:
+Weather Weather Weather Weather Weather Weather Type of
+weather:
 
 - Hail
 - Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain Rain
   Rain
+- Snow"""
+    assert lines.wrap(input, width=60) == expected
+
+
+def test_new_line_added_short_text_before_list():
+    input = """Today's forecast will have different weather:
+- A mix of hail and snow, followed by rain clouds, then finally clear sky
+- Rain
+- Snow"""
+    expected = """Today's forecast will have different weather:
+
+- A mix of hail and snow, followed by rain clouds, then
+  finally clear sky
+- Rain
 - Snow"""
     assert lines.wrap(input, width=60) == expected

@@ -584,6 +584,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 exported. The asset feed must be created
                 within a project, organization, or
                 folder. Supported destinations are:
+
                 Pub/Sub topics.
 
         """
@@ -691,6 +692,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 exported. The asset feed must be created
                 within a project, organization, or
                 folder. Supported destinations are:
+
                 Pub/Sub topics.
 
         """
@@ -919,6 +921,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 exported. The asset feed must be created
                 within a project, organization, or
                 folder. Supported destinations are:
+
                 Pub/Sub topics.
 
         """
