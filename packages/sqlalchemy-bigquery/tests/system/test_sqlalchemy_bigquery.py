@@ -778,6 +778,54 @@ def test_unnest(engine, bigquery_dataset):
 
 @pytest.mark.skipif(
     packaging.version.parse(sqlalchemy.__version__) < packaging.version.parse("1.4"),
+    reason="unnest (and other table-valued-function) support required version 1.4",
+)
+def test_unnest_with_cte(engine, bigquery_dataset):
+    from sqlalchemy import select, func, String
+    from sqlalchemy_bigquery import ARRAY
+
+    conn = engine.connect()
+    metadata = MetaData()
+    table_name = "test_unnest_with_cte"
+    table = Table(
+        f"{bigquery_dataset}.{table_name}",
+        metadata,
+        Column("foo", String),
+        Column("bars", ARRAY(String)),
+    )
+    metadata.create_all(engine)
+    conn.execute(
+        table.insert(),
+        [dict(foo="first", bars=["a", "b", "c"]), dict(foo="second", bars=["x", "y"])],
+    )
+    selectable = select(table.c).select_from(table).cte("cte")
+    query = select(
+        [
+            selectable.c.foo,
+            func.unnest(selectable.c.bars).column_valued("unnest_bars"),
+        ]
+    ).select_from(selectable)
+    compiled = str(query.compile(engine))
+    assert " ".join(compiled.strip().split()) == (
+        f"WITH `cte` "
+        f"AS (SELECT `{bigquery_dataset}.{table_name}`.`foo` AS `foo`,"
+        f" `{bigquery_dataset}.{table_name}`.`bars` AS `bars`"
+        f" FROM `{bigquery_dataset}.{table_name}`) "
+        f"SELECT `cte`.`foo`, `unnest_bars` "
+        f"FROM `cte`, unnest(`cte`.`bars`) AS `unnest_bars`"
+    )
+
+    assert sorted(r for r in conn.execute(query)) == [
+        ("first", "a"),
+        ("first", "b"),
+        ("first", "c"),
+        ("second", "x"),
+        ("second", "y"),
+    ]
+
+
+@pytest.mark.skipif(
+    packaging.version.parse(sqlalchemy.__version__) < packaging.version.parse("1.4"),
     reason="regexp_match support requires version 1.4 or higher",
 )
 def test_regexp_match(session, table):

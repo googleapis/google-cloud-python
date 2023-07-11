@@ -261,6 +261,7 @@ class BigQueryCompiler(_struct.SQLCompiler, SQLCompiler):
             if isinstance(from_, Table):
                 known_tables.add(from_.name)
             elif isinstance(from_, CTE):
+                known_tables.add(from_.name)
                 for column in from_.original.selected_columns:
                     table = getattr(column, "table", None)
                     if table is not None:
