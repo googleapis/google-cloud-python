@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/python-video-transcoder/compare/v1.9.1...v1.10.0) (2023-07-11)
+
+
+### Features
+
+* Added support for batch mode priority ([1c4f0fe](https://github.com/googleapis/python-video-transcoder/commit/1c4f0fe0ffa08b404ca0cd8f5fda0920cacbd483))
+* Added support for content encryption (DRM) ([1c4f0fe](https://github.com/googleapis/python-video-transcoder/commit/1c4f0fe0ffa08b404ca0cd8f5fda0920cacbd483))
+* Added support for disabling job processing optimizations ([1c4f0fe](https://github.com/googleapis/python-video-transcoder/commit/1c4f0fe0ffa08b404ca0cd8f5fda0920cacbd483))
+* Added support for segment template manifest generation with DASH ([1c4f0fe](https://github.com/googleapis/python-video-transcoder/commit/1c4f0fe0ffa08b404ca0cd8f5fda0920cacbd483))
+
 ## [1.9.1](https://github.com/googleapis/python-video-transcoder/compare/v1.9.0...v1.9.1) (2023-07-04)
 
 
