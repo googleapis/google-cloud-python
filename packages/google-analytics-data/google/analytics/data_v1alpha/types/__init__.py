@@ -13,7 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .analytics_data_api import RunFunnelReportRequest, RunFunnelReportResponse
+from .analytics_data_api import (
+    AudienceDimension,
+    AudienceDimensionValue,
+    AudienceList,
+    AudienceListMetadata,
+    AudienceRow,
+    CreateAudienceListRequest,
+    GetAudienceListRequest,
+    ListAudienceListsRequest,
+    ListAudienceListsResponse,
+    QueryAudienceListRequest,
+    QueryAudienceListResponse,
+    RunFunnelReportRequest,
+    RunFunnelReportResponse,
+)
 from .data import (
     BetweenFilter,
     DateRange,
@@ -81,6 +95,17 @@ from .data import (
 )
 
 __all__ = (
+    "AudienceDimension",
+    "AudienceDimensionValue",
+    "AudienceList",
+    "AudienceListMetadata",
+    "AudienceRow",
+    "CreateAudienceListRequest",
+    "GetAudienceListRequest",
+    "ListAudienceListsRequest",
+    "ListAudienceListsResponse",
+    "QueryAudienceListRequest",
+    "QueryAudienceListResponse",
     "RunFunnelReportRequest",
     "RunFunnelReportResponse",
     "BetweenFilter",

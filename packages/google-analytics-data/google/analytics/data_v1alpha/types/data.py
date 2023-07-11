@@ -900,16 +900,16 @@ class PropertyQuota(proto.Message):
     Attributes:
         tokens_per_day (google.analytics.data_v1alpha.types.QuotaStatus):
             Standard Analytics Properties can use up to
-            25,000 tokens per day; Analytics 360 Properties
-            can use 250,000 tokens per day. Most requests
+            200,000 tokens per day; Analytics 360 Properties
+            can use 2,000,000 tokens per day. Most requests
             consume fewer than 10 tokens.
         tokens_per_hour (google.analytics.data_v1alpha.types.QuotaStatus):
             Standard Analytics Properties can use up to
-            5,000 tokens per hour; Analytics 360 Properties
-            can use 50,000 tokens per hour. An API request
+            40,000 tokens per hour; Analytics 360 Properties
+            can use 400,000 tokens per hour. An API request
             consumes a single number of tokens, and that
-            number is deducted from both the hourly and
-            daily quotas.
+            number is deducted from all of the hourly,
+            daily, and per project hourly quotas.
         concurrent_requests (google.analytics.data_v1alpha.types.QuotaStatus):
             Standard Analytics Properties can send up to
             10 concurrent requests; Analytics 360 Properties
@@ -927,6 +927,16 @@ class PropertyQuota(proto.Message):
             request is individually counted for this quota
             if the request contains potentially thresholded
             dimensions.
+        tokens_per_project_per_hour (google.analytics.data_v1alpha.types.QuotaStatus):
+            Analytics Properties can use up to 35% of
+            their tokens per project per hour. This amounts
+            to standard Analytics Properties can use up to
+            14,000 tokens per project per hour, and
+            Analytics 360 Properties can use 140,000 tokens
+            per project per hour. An API request consumes a
+            single number of tokens, and that number is
+            deducted from all of the hourly, daily, and per
+            project hourly quotas.
     """
 
     tokens_per_day: "QuotaStatus" = proto.Field(
@@ -952,6 +962,11 @@ class PropertyQuota(proto.Message):
     potentially_thresholded_requests_per_hour: "QuotaStatus" = proto.Field(
         proto.MESSAGE,
         number=5,
+        message="QuotaStatus",
+    )
+    tokens_per_project_per_hour: "QuotaStatus" = proto.Field(
+        proto.MESSAGE,
+        number=6,
         message="QuotaStatus",
     )
 
@@ -1096,8 +1111,8 @@ class FunnelStep(proto.Message):
     Attributes:
         name (str):
             The distinctive name for this step. If unspecified, steps
-            will be named by a 1 based indexed name (i.e. "0. ", "1. ",
-            etc.). This name defines string value returned by the
+            will be named by a 1 based indexed name (for example "0. ",
+            "1. ", etc.). This name defines string value returned by the
             ``funnelStepName`` dimension. For example, specifying
             ``name = Purchase`` in the request's third funnel step will
             produce ``3. Purchase`` in the funnel report response.
@@ -1654,8 +1669,8 @@ class Segment(proto.Message):
             named "Segment". This name defines string value returned by
             the ``segment`` dimension. The ``segment`` dimension
             prefixes segment names by the 1-based index number of the
-            segment in the request (i.e. "1. Segment", "2. Segment",
-            etc.).
+            segment in the request (for example "1. Segment", "2.
+            Segment", etc.).
         user_segment (google.analytics.data_v1alpha.types.UserSegment):
             User segments are subsets of users who
             engaged with your site or app.

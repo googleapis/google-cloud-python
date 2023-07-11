@@ -46,6 +46,11 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+
+from google.analytics.data_v1alpha.services.alpha_analytics_data import pagers
 from google.analytics.data_v1alpha.types import analytics_data_api, data
 
 from .transports.base import DEFAULT_CLIENT_INFO, AlphaAnalyticsDataTransport
@@ -175,6 +180,26 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def audience_list_path(
+        propertyId: str,
+        audienceListId: str,
+    ) -> str:
+        """Returns a fully-qualified audience_list string."""
+        return "properties/{propertyId}/audienceLists/{audienceListId}".format(
+            propertyId=propertyId,
+            audienceListId=audienceListId,
+        )
+
+    @staticmethod
+    def parse_audience_list_path(path: str) -> Dict[str, str]:
+        """Parses a audience_list path into its component segments."""
+        m = re.match(
+            r"^properties/(?P<propertyId>.+?)/audienceLists/(?P<audienceListId>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def common_billing_account_path(
@@ -443,6 +468,12 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         `GA4 Funnel
         Explorations <https://support.google.com/analytics/answer/9327974>`__.
 
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Data API Funnel Reporting
+        Feedback <https://docs.google.com/forms/d/e/1FAIpQLSdwOlQDJAUoBiIgUZZ3S_Lwi8gr7Bb0k1jhvc-DEg7Rol3UjA/viewform>`__.
+
         .. code-block:: python
 
             # This snippet has been automatically generated and should be regarded as a
@@ -508,6 +539,496 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
             request,
             retry=retry,
             timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_audience_list(
+        self,
+        request: Optional[
+            Union[analytics_data_api.CreateAudienceListRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        audience_list: Optional[analytics_data_api.AudienceList] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Creates an audience list for later retrieval. This method
+        quickly returns the audience list's resource name and initiates
+        a long running asynchronous request to form an audience list. To
+        list the users in an audience list, first create the audience
+        list through this method and then send the audience resource
+        name to the ``QueryAudienceList`` method.
+
+        An audience list is a snapshot of the users currently in the
+        audience at the time of audience list creation. Creating
+        audience lists for one audience on different days will return
+        different results as users enter and exit the audience.
+
+        Audiences in Google Analytics 4 allow you to segment your users
+        in the ways that are important to your business. To learn more,
+        see https://support.google.com/analytics/answer/9267572.
+        Audience lists contain the users in each audience.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import data_v1alpha
+
+            def sample_create_audience_list():
+                # Create a client
+                client = data_v1alpha.AlphaAnalyticsDataClient()
+
+                # Initialize request argument(s)
+                audience_list = data_v1alpha.AudienceList()
+                audience_list.audience = "audience_value"
+
+                request = data_v1alpha.CreateAudienceListRequest(
+                    parent="parent_value",
+                    audience_list=audience_list,
+                )
+
+                # Make the request
+                operation = client.create_audience_list(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.data_v1alpha.types.CreateAudienceListRequest, dict]):
+                The request object. A request to create a new audience
+                list.
+            parent (str):
+                Required. The parent resource where this audience list
+                will be created. Format: ``properties/{propertyId}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            audience_list (google.analytics.data_v1alpha.types.AudienceList):
+                Required. The audience list to
+                create.
+
+                This corresponds to the ``audience_list`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.analytics.data_v1alpha.types.AudienceList` An audience list is a list of users in an audience at the time of the list's
+                   creation. One audience may have multiple audience
+                   lists created for different days.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, audience_list])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_data_api.CreateAudienceListRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_data_api.CreateAudienceListRequest):
+            request = analytics_data_api.CreateAudienceListRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if audience_list is not None:
+                request.audience_list = audience_list
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_audience_list]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            analytics_data_api.AudienceList,
+            metadata_type=analytics_data_api.AudienceListMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def query_audience_list(
+        self,
+        request: Optional[
+            Union[analytics_data_api.QueryAudienceListRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_data_api.QueryAudienceListResponse:
+        r"""Retrieves an audience list of users. After creating an audience,
+        the users are not immediately available for listing. First, a
+        request to ``CreateAudienceList`` is necessary to create an
+        audience list of users, and then second, this method is used to
+        retrieve the users in the audience.
+
+        Audiences in Google Analytics 4 allow you to segment your users
+        in the ways that are important to your business. To learn more,
+        see https://support.google.com/analytics/answer/9267572.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import data_v1alpha
+
+            def sample_query_audience_list():
+                # Create a client
+                client = data_v1alpha.AlphaAnalyticsDataClient()
+
+                # Initialize request argument(s)
+                request = data_v1alpha.QueryAudienceListRequest(
+                )
+
+                # Make the request
+                response = client.query_audience_list(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.data_v1alpha.types.QueryAudienceListRequest, dict]):
+                The request object. A request to list users in an
+                audience list.
+            name (str):
+                The name of the audience list to retrieve users from.
+                Format:
+                ``properties/{propertyId}/audienceLists/{audienceListId}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.data_v1alpha.types.QueryAudienceListResponse:
+                A list of users in an audience list.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_data_api.QueryAudienceListRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_data_api.QueryAudienceListRequest):
+            request = analytics_data_api.QueryAudienceListRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.query_audience_list]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_audience_list(
+        self,
+        request: Optional[
+            Union[analytics_data_api.GetAudienceListRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_data_api.AudienceList:
+        r"""Gets configuration metadata about a specific audience
+        list. This method can be used to understand an audience
+        list after it has been created.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import data_v1alpha
+
+            def sample_get_audience_list():
+                # Create a client
+                client = data_v1alpha.AlphaAnalyticsDataClient()
+
+                # Initialize request argument(s)
+                request = data_v1alpha.GetAudienceListRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_audience_list(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.analytics.data_v1alpha.types.GetAudienceListRequest, dict]):
+                The request object. A request to retrieve configuration
+                metadata about a specific audience list.
+            name (str):
+                Required. The audience list resource name. Format:
+                ``properties/{propertyId}/audienceLists/{audienceListId}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.data_v1alpha.types.AudienceList:
+                An audience list is a list of users
+                in an audience at the time of the list's
+                creation. One audience may have multiple
+                audience lists created for different
+                days.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_data_api.GetAudienceListRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_data_api.GetAudienceListRequest):
+            request = analytics_data_api.GetAudienceListRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_audience_list]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_audience_lists(
+        self,
+        request: Optional[
+            Union[analytics_data_api.ListAudienceListsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListAudienceListsPager:
+        r"""Lists all audience lists for a property. This method
+        can be used for you to find and reuse existing audience
+        lists rather than creating unnecessary new audience
+        lists. The same audience can have multiple audience
+        lists that represent the list of users that were in an
+        audience on different days.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.analytics import data_v1alpha
+
+            def sample_list_audience_lists():
+                # Create a client
+                client = data_v1alpha.AlphaAnalyticsDataClient()
+
+                # Initialize request argument(s)
+                request = data_v1alpha.ListAudienceListsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_audience_lists(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.analytics.data_v1alpha.types.ListAudienceListsRequest, dict]):
+                The request object. A request to list all audience lists
+                for a property.
+            parent (str):
+                Required. All audience lists for this property will be
+                listed in the response. Format:
+                ``properties/{propertyId}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.data_v1alpha.services.alpha_analytics_data.pagers.ListAudienceListsPager:
+                A list of all audience lists for a
+                property.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_data_api.ListAudienceListsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_data_api.ListAudienceListsRequest):
+            request = analytics_data_api.ListAudienceListsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_audience_lists]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListAudienceListsPager(
+            method=rpc,
+            request=request,
+            response=response,
             metadata=metadata,
         )
 

@@ -18,10 +18,11 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.analytics.data_v1alpha import gapic_version as package_version
@@ -130,6 +131,26 @@ class AlphaAnalyticsDataTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.create_audience_list: gapic_v1.method.wrap_method(
+                self.create_audience_list,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.query_audience_list: gapic_v1.method.wrap_method(
+                self.query_audience_list,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_audience_list: gapic_v1.method.wrap_method(
+                self.get_audience_list,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_audience_lists: gapic_v1.method.wrap_method(
+                self.list_audience_lists,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -142,6 +163,11 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def operations_client(self):
+        """Return the client designed to process long-running operations."""
+        raise NotImplementedError()
+
+    @property
     def run_funnel_report(
         self,
     ) -> Callable[
@@ -149,6 +175,50 @@ class AlphaAnalyticsDataTransport(abc.ABC):
         Union[
             analytics_data_api.RunFunnelReportResponse,
             Awaitable[analytics_data_api.RunFunnelReportResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_audience_list(
+        self,
+    ) -> Callable[
+        [analytics_data_api.CreateAudienceListRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def query_audience_list(
+        self,
+    ) -> Callable[
+        [analytics_data_api.QueryAudienceListRequest],
+        Union[
+            analytics_data_api.QueryAudienceListResponse,
+            Awaitable[analytics_data_api.QueryAudienceListResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_audience_list(
+        self,
+    ) -> Callable[
+        [analytics_data_api.GetAudienceListRequest],
+        Union[
+            analytics_data_api.AudienceList, Awaitable[analytics_data_api.AudienceList]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_audience_lists(
+        self,
+    ) -> Callable[
+        [analytics_data_api.ListAudienceListsRequest],
+        Union[
+            analytics_data_api.ListAudienceListsResponse,
+            Awaitable[analytics_data_api.ListAudienceListsResponse],
         ],
     ]:
         raise NotImplementedError()

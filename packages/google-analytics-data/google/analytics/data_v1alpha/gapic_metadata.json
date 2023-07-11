@@ -10,6 +10,26 @@
         "grpc": {
           "libraryClient": "AlphaAnalyticsDataClient",
           "rpcs": {
+            "CreateAudienceList": {
+              "methods": [
+                "create_audience_list"
+              ]
+            },
+            "GetAudienceList": {
+              "methods": [
+                "get_audience_list"
+              ]
+            },
+            "ListAudienceLists": {
+              "methods": [
+                "list_audience_lists"
+              ]
+            },
+            "QueryAudienceList": {
+              "methods": [
+                "query_audience_list"
+              ]
+            },
             "RunFunnelReport": {
               "methods": [
                 "run_funnel_report"
@@ -20,6 +40,26 @@
         "grpc-async": {
           "libraryClient": "AlphaAnalyticsDataAsyncClient",
           "rpcs": {
+            "CreateAudienceList": {
+              "methods": [
+                "create_audience_list"
+              ]
+            },
+            "GetAudienceList": {
+              "methods": [
+                "get_audience_list"
+              ]
+            },
+            "ListAudienceLists": {
+              "methods": [
+                "list_audience_lists"
+              ]
+            },
+            "QueryAudienceList": {
+              "methods": [
+                "query_audience_list"
+              ]
+            },
             "RunFunnelReport": {
               "methods": [
                 "run_funnel_report"
@@ -30,6 +70,26 @@
         "rest": {
           "libraryClient": "AlphaAnalyticsDataClient",
           "rpcs": {
+            "CreateAudienceList": {
+              "methods": [
+                "create_audience_list"
+              ]
+            },
+            "GetAudienceList": {
+              "methods": [
+                "get_audience_list"
+              ]
+            },
+            "ListAudienceLists": {
+              "methods": [
+                "list_audience_lists"
+              ]
+            },
+            "QueryAudienceList": {
+              "methods": [
+                "query_audience_list"
+              ]
+            },
             "RunFunnelReport": {
               "methods": [
                 "run_funnel_report"

@@ -16,10 +16,11 @@
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 
 from google.analytics.data_v1alpha.types import analytics_data_api
@@ -110,6 +111,7 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client: Optional[operations_v1.OperationsClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -229,6 +231,20 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         return self._grpc_channel
 
     @property
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Quick check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+
+        # Return the client from cache.
+        return self._operations_client
+
+    @property
     def run_funnel_report(
         self,
     ) -> Callable[
@@ -250,6 +266,12 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         `GA4 Funnel
         Explorations <https://support.google.com/analytics/answer/9327974>`__.
 
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Data API Funnel Reporting
+        Feedback <https://docs.google.com/forms/d/e/1FAIpQLSdwOlQDJAUoBiIgUZZ3S_Lwi8gr7Bb0k1jhvc-DEg7Rol3UjA/viewform>`__.
+
         Returns:
             Callable[[~.RunFunnelReportRequest],
                     ~.RunFunnelReportResponse]:
@@ -267,6 +289,150 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
                 response_deserializer=analytics_data_api.RunFunnelReportResponse.deserialize,
             )
         return self._stubs["run_funnel_report"]
+
+    @property
+    def create_audience_list(
+        self,
+    ) -> Callable[
+        [analytics_data_api.CreateAudienceListRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the create audience list method over gRPC.
+
+        Creates an audience list for later retrieval. This method
+        quickly returns the audience list's resource name and initiates
+        a long running asynchronous request to form an audience list. To
+        list the users in an audience list, first create the audience
+        list through this method and then send the audience resource
+        name to the ``QueryAudienceList`` method.
+
+        An audience list is a snapshot of the users currently in the
+        audience at the time of audience list creation. Creating
+        audience lists for one audience on different days will return
+        different results as users enter and exit the audience.
+
+        Audiences in Google Analytics 4 allow you to segment your users
+        in the ways that are important to your business. To learn more,
+        see https://support.google.com/analytics/answer/9267572.
+        Audience lists contain the users in each audience.
+
+        Returns:
+            Callable[[~.CreateAudienceListRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_audience_list" not in self._stubs:
+            self._stubs["create_audience_list"] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/CreateAudienceList",
+                request_serializer=analytics_data_api.CreateAudienceListRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_audience_list"]
+
+    @property
+    def query_audience_list(
+        self,
+    ) -> Callable[
+        [analytics_data_api.QueryAudienceListRequest],
+        analytics_data_api.QueryAudienceListResponse,
+    ]:
+        r"""Return a callable for the query audience list method over gRPC.
+
+        Retrieves an audience list of users. After creating an audience,
+        the users are not immediately available for listing. First, a
+        request to ``CreateAudienceList`` is necessary to create an
+        audience list of users, and then second, this method is used to
+        retrieve the users in the audience.
+
+        Audiences in Google Analytics 4 allow you to segment your users
+        in the ways that are important to your business. To learn more,
+        see https://support.google.com/analytics/answer/9267572.
+
+        Returns:
+            Callable[[~.QueryAudienceListRequest],
+                    ~.QueryAudienceListResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_audience_list" not in self._stubs:
+            self._stubs["query_audience_list"] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/QueryAudienceList",
+                request_serializer=analytics_data_api.QueryAudienceListRequest.serialize,
+                response_deserializer=analytics_data_api.QueryAudienceListResponse.deserialize,
+            )
+        return self._stubs["query_audience_list"]
+
+    @property
+    def get_audience_list(
+        self,
+    ) -> Callable[
+        [analytics_data_api.GetAudienceListRequest], analytics_data_api.AudienceList
+    ]:
+        r"""Return a callable for the get audience list method over gRPC.
+
+        Gets configuration metadata about a specific audience
+        list. This method can be used to understand an audience
+        list after it has been created.
+
+        Returns:
+            Callable[[~.GetAudienceListRequest],
+                    ~.AudienceList]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_audience_list" not in self._stubs:
+            self._stubs["get_audience_list"] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetAudienceList",
+                request_serializer=analytics_data_api.GetAudienceListRequest.serialize,
+                response_deserializer=analytics_data_api.AudienceList.deserialize,
+            )
+        return self._stubs["get_audience_list"]
+
+    @property
+    def list_audience_lists(
+        self,
+    ) -> Callable[
+        [analytics_data_api.ListAudienceListsRequest],
+        analytics_data_api.ListAudienceListsResponse,
+    ]:
+        r"""Return a callable for the list audience lists method over gRPC.
+
+        Lists all audience lists for a property. This method
+        can be used for you to find and reuse existing audience
+        lists rather than creating unnecessary new audience
+        lists. The same audience can have multiple audience
+        lists that represent the list of users that were in an
+        audience on different days.
+
+        Returns:
+            Callable[[~.ListAudienceListsRequest],
+                    ~.ListAudienceListsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_audience_lists" not in self._stubs:
+            self._stubs["list_audience_lists"] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/ListAudienceLists",
+                request_serializer=analytics_data_api.ListAudienceListsRequest.serialize,
+                response_deserializer=analytics_data_api.ListAudienceListsResponse.deserialize,
+            )
+        return self._stubs["list_audience_lists"]
 
     def close(self):
         self.grpc_channel.close()
