@@ -14,6 +14,27 @@ Older versions of this project were distributed as [pybigquery][0].
 [2]: https://pypi.org/project/pybigquery/#history
 
 
+## [1.7.0](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.6.1...v1.7.0) (2023-07-11)
+
+
+### Features
+
+* Added regexp_match operator support for bigquery ([#511](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/511)) ([fd78093](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/fd780938ca4a0d32448ed666753360f05584d2ab))
+* Remove pyarrow and bqstorage as dependencies ([#847](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/847)) ([5d6b38c](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/5d6b38c94dfef0bd0dbf5037ad21a352d2bd8e4f))
+
+
+### Bug Fixes
+
+* Avoid aliasing known CTEs ([#839](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/839)) ([8a1f694](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/8a1f694e59f5bac5ce66d9f8a04066980d7f9893))
+* Ensure correct alter table alter column statement is generated on data type changes in alembic ([#845](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/845)) ([493430a](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/493430a58914dc89fa5c16ea2127e4bed58bd0bf))
+* Remove "future" dependency ([#542](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/542)) ([ba5e244](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/ba5e24487e798fd77e7db93321c374a9196293f4))
+* Remove type annotations from _struct.py ([#733](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/733)) ([27814df](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/27814dfbea8267d1b7abbc47fbbb56bb36f3585d))
+
+
+### Documentation
+
+* Pass credentials as python dictionary ([#737](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/737)) ([074321d](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/074321ddaa10001773e7e6044f4a0df1bb530331))
+
 ## [1.6.1](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.6.0...v1.6.1) (2023-02-01)
 
 
