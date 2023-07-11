@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.22.0](https://github.com/googleapis/google-auth-library-python/compare/v2.21.0...v2.22.0) (2023-07-06)
+
+
+### Features
+
+* Adding meta header for trust boundary ([#1334](https://github.com/googleapis/google-auth-library-python/issues/1334)) ([908c8d1](https://github.com/googleapis/google-auth-library-python/commit/908c8d1f3dd0053421a03a97d450cea7b87aa36d))
+* Introduce compatibility with native namespace packages ([#1205](https://github.com/googleapis/google-auth-library-python/issues/1205)) ([2f75922](https://github.com/googleapis/google-auth-library-python/commit/2f7592259ebcbcfe496dd3d1803d5a4e16aa0d20))
+
+
+### Bug Fixes
+
+* Deprecate UserAccessTokenCredentials ([#1344](https://github.com/googleapis/google-auth-library-python/issues/1344)) ([5f97fe9](https://github.com/googleapis/google-auth-library-python/commit/5f97fe9ddb164697d5b75aa539893f54721dcc92))
+
 ## [2.21.0](https://github.com/googleapis/google-auth-library-python/compare/v2.20.0...v2.21.0) (2023-06-26)
 
 
