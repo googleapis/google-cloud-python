@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/python-compute/compare/v1.12.1...v1.13.0) (2023-07-10)
+
+
+### Features
+
+* Update Compute Engine API to revision 20230701 ([#421](https://github.com/googleapis/python-compute/issues/421)) ([4e1b99e](https://github.com/googleapis/python-compute/commit/4e1b99e424b7fb728289aa32112498cfa79043b0))
+
 ## [1.12.1](https://github.com/googleapis/python-compute/compare/v1.12.0...v1.12.1) (2023-07-06)
 
 
