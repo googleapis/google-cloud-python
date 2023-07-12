@@ -402,7 +402,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
 
         For builds that specify ``StorageSource``:
 
-        -  If the original build pulled source from Google Cloud Storage
+        -  If the original build pulled source from Cloud Storage
            without specifying the generation of the object, the new
            build will use the current object, which may be different
            from the original build source.
@@ -620,6 +620,12 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         r"""Return a callable for the run build trigger method over gRPC.
 
         Runs a ``BuildTrigger`` at a particular source revision.
+
+        To run a regional or global trigger, use the POST request that
+        includes the location endpoint in the path (ex.
+        v1/projects/{projectId}/locations/{region}/triggers/{triggerId}:run).
+        The POST request that does not include the location endpoint in
+        the path can only be used when running global triggers.
 
         Returns:
             Callable[[~.RunBuildTriggerRequest],

@@ -842,7 +842,7 @@ class CloudBuildAsyncClient:
 
         For builds that specify ``StorageSource``:
 
-        -  If the original build pulled source from Google Cloud Storage
+        -  If the original build pulled source from Cloud Storage
            without specifying the generation of the object, the new
            build will use the current object, which may be different
            from the original build source.
@@ -1778,6 +1778,12 @@ class CloudBuildAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Runs a ``BuildTrigger`` at a particular source revision.
 
+        To run a regional or global trigger, use the POST request that
+        includes the location endpoint in the path (ex.
+        v1/projects/{projectId}/locations/{region}/triggers/{triggerId}:run).
+        The POST request that does not include the location endpoint in
+        the path can only be used when running global triggers.
+
         .. code-block:: python
 
             # This snippet has been automatically generated and should be regarded as a
@@ -1825,6 +1831,9 @@ class CloudBuildAsyncClient:
                 should not be set.
             source (:class:`google.cloud.devtools.cloudbuild_v1.types.RepoSource`):
                 Source to build against this trigger.
+                Branch and tag names cannot consist of
+                regular expressions.
+
                 This corresponds to the ``source`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

@@ -134,6 +134,8 @@ class RunBuildTriggerRequest(proto.Message):
             Required. ID of the trigger.
         source (google.cloud.devtools.cloudbuild_v1.types.RepoSource):
             Source to build against this trigger.
+            Branch and tag names cannot consist of regular
+            expressions.
     """
 
     name: str = proto.Field(
@@ -156,23 +158,21 @@ class RunBuildTriggerRequest(proto.Message):
 
 
 class StorageSource(proto.Message):
-    r"""Location of the source in an archive file in Google Cloud
-    Storage.
+    r"""Location of the source in an archive file in Cloud Storage.
 
     Attributes:
         bucket (str):
-            Google Cloud Storage bucket containing the source (see
-            `Bucket Name
+            Cloud Storage bucket containing the source (see `Bucket Name
             Requirements <https://cloud.google.com/storage/docs/bucket-naming#requirements>`__).
         object_ (str):
-            Google Cloud Storage object containing the source.
+            Cloud Storage object containing the source.
 
-            This object must be a gzipped archive file (``.tar.gz``)
-            containing source to build.
+            This object must be a zipped (``.zip``) or gzipped archive
+            file (``.tar.gz``) containing source to build.
         generation (int):
-            Google Cloud Storage generation for the
-            object. If the generation is omitted, the latest
-            generation will be used.
+            Cloud Storage generation for the object. If
+            the generation is omitted, the latest generation
+            will be used.
     """
 
     bucket: str = proto.Field(
@@ -321,23 +321,23 @@ class RepoSource(proto.Message):
 
 
 class StorageSourceManifest(proto.Message):
-    r"""Location of the source manifest in Google Cloud Storage. This
-    feature is in Preview; see description
+    r"""Location of the source manifest in Cloud Storage. This feature is in
+    Preview; see description
     `here <https://github.com/GoogleCloudPlatform/cloud-builders/tree/master/gcs-fetcher>`__.
 
     Attributes:
         bucket (str):
-            Google Cloud Storage bucket containing the source manifest
-            (see `Bucket Name
+            Cloud Storage bucket containing the source manifest (see
+            `Bucket Name
             Requirements <https://cloud.google.com/storage/docs/bucket-naming#requirements>`__).
         object_ (str):
-            Google Cloud Storage object containing the
-            source manifest.
+            Cloud Storage object containing the source
+            manifest.
             This object must be a JSON file.
         generation (int):
-            Google Cloud Storage generation for the
-            object. If the generation is omitted, the latest
-            generation will be used.
+            Cloud Storage generation for the object. If
+            the generation is omitted, the latest generation
+            will be used.
     """
 
     bucket: str = proto.Field(
@@ -367,7 +367,7 @@ class Source(proto.Message):
     Attributes:
         storage_source (google.cloud.devtools.cloudbuild_v1.types.StorageSource):
             If provided, get the source from this
-            location in Google Cloud Storage.
+            location in Cloud Storage.
 
             This field is a member of `oneof`_ ``source``.
         repo_source (google.cloud.devtools.cloudbuild_v1.types.RepoSource):
@@ -381,8 +381,8 @@ class Source(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         storage_source_manifest (google.cloud.devtools.cloudbuild_v1.types.StorageSourceManifest):
-            If provided, get the source from this manifest in Google
-            Cloud Storage. This feature is in Preview; see description
+            If provided, get the source from this manifest in Cloud
+            Storage. This feature is in Preview; see description
             `here <https://github.com/GoogleCloudPlatform/cloud-builders/tree/master/gcs-fetcher>`__.
 
             This field is a member of `oneof`_ ``source``.
@@ -842,8 +842,8 @@ class ArtifactResult(proto.Message):
 
     Attributes:
         location (str):
-            The path of an artifact in a Google Cloud Storage bucket,
-            with the generation number. For example,
+            The path of an artifact in a Cloud Storage bucket, with the
+            generation number. For example,
             ``gs://mybucket/path/to/output.jar#generation``.
         file_hash (MutableSequence[google.cloud.devtools.cloudbuild_v1.types.FileHashes]):
             The file hash of the artifact.
@@ -947,8 +947,8 @@ class Build(proto.Message):
             be uploaded upon successful completion of all
             build steps.
         logs_bucket (str):
-            Google Cloud Storage bucket where logs should be written
-            (see `Bucket Name
+            Cloud Storage bucket where logs should be written (see
+            `Bucket Name
             Requirements <https://cloud.google.com/storage/docs/bucket-naming#requirements>`__).
             Logs file names will be of the format
             ``${logs_bucket}/log-${build_id}.txt``.
@@ -2368,7 +2368,6 @@ class RepositoryEventConfig(proto.Message):
 class GitHubEventsConfig(proto.Message):
     r"""GitHubEventsConfig describes the configuration of a trigger
     that creates a build whenever a GitHub event is received.
-    This message is experimental.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -2859,7 +2858,7 @@ class BuildOptions(proto.Message):
             configuration file.
         log_streaming_option (google.cloud.devtools.cloudbuild_v1.types.BuildOptions.LogStreamingOption):
             Option to define build log streaming behavior
-            to Google Cloud Storage.
+            to Cloud Storage.
         worker_pool (str):
             This field deprecated; please use ``pool.name`` instead.
         pool (google.cloud.devtools.cloudbuild_v1.types.BuildOptions.PoolOption):
@@ -2904,8 +2903,18 @@ class BuildOptions(proto.Message):
     """
 
     class VerifyOption(proto.Enum):
-        r"""Specifies the manner in which the build should be verified,
-        if at all.
+        r"""Specifies the manner in which the build should be verified, if at
+        all.
+
+        If a verified build is requested, and any part of the process to
+        generate and upload provenance fails, the build will also fail.
+
+        If the build does not request verification then that process may
+        occur, but is not guaranteed to. If it does occur and fails, the
+        build will not fail.
+
+        For more information, see `Viewing Build
+        Provenance <https://cloud.google.com/build/docs/securing-builds/view-build-provenance>`__.
 
         Values:
             NOT_VERIFIED (0):
@@ -2959,20 +2968,20 @@ class BuildOptions(proto.Message):
         ALLOW_LOOSE = 1
 
     class LogStreamingOption(proto.Enum):
-        r"""Specifies the behavior when writing build logs to Google
-        Cloud Storage.
+        r"""Specifies the behavior when writing build logs to Cloud
+        Storage.
 
         Values:
             STREAM_DEFAULT (0):
                 Service may automatically determine build log
                 streaming behavior.
             STREAM_ON (1):
-                Build logs should be streamed to Google Cloud
+                Build logs should be streamed to Cloud
                 Storage.
             STREAM_OFF (2):
-                Build logs should not be streamed to Google
-                Cloud Storage; they will be written when the
-                build is completed.
+                Build logs should not be streamed to Cloud
+                Storage; they will be written when the build is
+                completed.
         """
         STREAM_DEFAULT = 0
         STREAM_ON = 1
@@ -3238,12 +3247,15 @@ class WorkerPool(proto.Message):
                 draining workers.
             DELETED (4):
                 ``WorkerPool`` is deleted.
+            UPDATING (5):
+                ``WorkerPool`` is being updated; new builds cannot be run.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         RUNNING = 2
         DELETING = 3
         DELETED = 4
+        UPDATING = 5
 
     name: str = proto.Field(
         proto.STRING,
@@ -3468,9 +3480,9 @@ class DeleteWorkerPoolRequest(proto.Message):
             Required. The name of the ``WorkerPool`` to delete. Format:
             ``projects/{project}/locations/{location}/workerPools/{workerPool}``.
         etag (str):
-            Optional. If this is provided, it must match
-            the server's etag on the workerpool for the
-            request to be processed.
+            Optional. If provided, it must match the
+            server's etag on the workerpool for the request
+            to be processed.
         allow_missing (bool):
             If set to true, and the ``WorkerPool`` is not found, the
             request will succeed but no action will be taken on the
