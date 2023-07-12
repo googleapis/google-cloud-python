@@ -5,6 +5,24 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.18.0](https://github.com/googleapis/python-pubsub/compare/v2.17.1...v2.18.0) (2023-07-12)
+
+
+### Features
+
+* Add push config wrapper fields ([#925](https://github.com/googleapis/python-pubsub/issues/925)) ([8e803cf](https://github.com/googleapis/python-pubsub/commit/8e803cf4ab136d606a0be459ab6d281b65560599))
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#944](https://github.com/googleapis/python-pubsub/issues/944)) ([a3b2061](https://github.com/googleapis/python-pubsub/commit/a3b2061c4edf42123335fcfee6fcc4a44e90a5eb))
+
+
+### Documentation
+
+* Tightened requirements on cloud storage subscription filename suffixes ([#938](https://github.com/googleapis/python-pubsub/issues/938)) ([f54dcd0](https://github.com/googleapis/python-pubsub/commit/f54dcd0e7324218d87c37c0266c441a62012866d))
+* Update Community section in README.rst ([#945](https://github.com/googleapis/python-pubsub/issues/945)) ([dea258c](https://github.com/googleapis/python-pubsub/commit/dea258cff3ad19ffba67659bb03a2edcc44889d9))
+
 ## [2.17.1](https://github.com/googleapis/python-pubsub/compare/v2.17.0...v2.17.1) (2023-05-23)
 
 
