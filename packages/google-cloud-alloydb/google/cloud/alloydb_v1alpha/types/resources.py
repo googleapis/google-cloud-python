@@ -142,7 +142,8 @@ class MigrationSource(proto.Message):
     Attributes:
         host_port (str):
             Output only. The host and port of the
-            on-premises instance in host:port format
+            on-premises instance in host:port
+            format
         reference_id (str):
             Output only. Place holder for the external
             source identifier(e.g DMS job name) that created
@@ -492,10 +493,11 @@ class ContinuousBackupConfig(proto.Message):
 
             This field is a member of `oneof`_ ``_enabled``.
         recovery_window_days (int):
-            The number of days backups and logs will be
-            retained, which determines the window of time
-            that data is recoverable for. If not set, it
-            defaults to 14 days.
+            The number of days that are eligible to
+            restore from using PITR. To support the entire
+            recovery window, backups and logs are retained
+            for one day more than the recovery window. If
+            not set, defaults to 14 days.
         encryption_config (google.cloud.alloydb_v1alpha.types.EncryptionConfig):
             The encryption config can be specified to
             encrypt the backups with a customer-managed
@@ -673,10 +675,11 @@ class Cluster(proto.Message):
             which RPC was used to create the cluster (i.e.
             ``CreateCluster`` vs. ``CreateSecondaryCluster``
         database_version (google.cloud.alloydb_v1alpha.types.DatabaseVersion):
-            Output only. The database engine major
-            version. This is an output-only field and it's
-            populated at the Cluster creation time. This
-            field cannot be changed after cluster creation.
+            Optional. The database engine major version.
+            This is an optional field and it is populated at
+            the Cluster creation time. If a database version
+            is not supplied at cluster creation time, then a
+            default database version will be used.
         network_config (google.cloud.alloydb_v1alpha.types.Cluster.NetworkConfig):
 
         network (str):
@@ -696,13 +699,13 @@ class Cluster(proto.Message):
             from labels. https://google.aip.dev/128
         reconciling (bool):
             Output only. Reconciling
-            (https://google.aip.dev/128#reconciliation). Set
-            to true if the current state of Cluster does not
-            match the user's intended state, and the service
-            is actively updating the resource to reconcile
-            them. This can happen due to user-triggered
-            updates or system actions like failover or
-            maintenance.
+            (https://google.aip.dev/128#reconciliation).
+            Set to true if the current state of Cluster does
+            not match the user's intended state, and the
+            service is actively updating the resource to
+            reconcile them. This can happen due to
+            user-triggered updates or system actions like
+            failover or maintenance.
         initial_user (google.cloud.alloydb_v1alpha.types.UserPassword):
             Input only. Initial user to setup during cluster creation.
             Required. If used in ``RestoreCluster`` this is ignored.
@@ -740,6 +743,8 @@ class Cluster(proto.Message):
         primary_config (google.cloud.alloydb_v1alpha.types.Cluster.PrimaryConfig):
             Output only. Cross Region replication config
             specific to PRIMARY cluster.
+        satisfies_pzs (bool):
+            Reserved for future use.
     """
 
     class State(proto.Enum):
@@ -999,6 +1004,10 @@ class Cluster(proto.Message):
         number=23,
         message=PrimaryConfig,
     )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=30,
+    )
 
 
 class Instance(proto.Message):
@@ -1095,10 +1104,10 @@ class Instance(proto.Message):
             application.
         reconciling (bool):
             Output only. Reconciling
-            (https://google.aip.dev/128#reconciliation). Set
-            to true if the current state of Instance does
-            not match the user's intended state, and the
-            service is actively updating the resource to
+            (https://google.aip.dev/128#reconciliation).
+            Set to true if the current state of Instance
+            does not match the user's intended state, and
+            the service is actively updating the resource to
             reconcile them. This can happen due to
             user-triggered updates or system actions like
             failover or maintenance.
@@ -1116,6 +1125,8 @@ class Instance(proto.Message):
             non-default update policy, you must
             specify explicitly specify the value in each
             update request.
+        satisfies_pzs (bool):
+            Reserved for future use.
     """
 
     class State(proto.Enum):
@@ -1190,9 +1201,9 @@ class Instance(proto.Message):
     class AvailabilityType(proto.Enum):
         r"""The Availability type of an instance. Potential values:
         - ZONAL: The instance serves data from only one zone. Outages in
-        that     zone affect instance availability.
+          that     zone affect instance availability.
         - REGIONAL: The instance can serve data from more than one zone
-        in a     region (it is highly available).
+          in a     region (it is highly available).
 
         Values:
             AVAILABILITY_TYPE_UNSPECIFIED (0):
@@ -1457,6 +1468,10 @@ class Instance(proto.Message):
         number=22,
         message=UpdatePolicy,
     )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=24,
+    )
 
 
 class ConnectionInfo(proto.Message):
@@ -1577,6 +1592,14 @@ class Backup(proto.Message):
             to be garbage collected. It is the duration specified by the
             backup's retention policy, added to the backup's
             create_time.
+        expiry_quantity (google.cloud.alloydb_v1alpha.types.Backup.QuantityBasedExpiry):
+            Output only. The QuantityBasedExpiry of the
+            backup, specified by the backup's retention
+            policy. Once the expiry quantity is over
+            retention, the backup is eligible to be garbage
+            collected.
+        satisfies_pzs (bool):
+            Reserved for future use.
     """
 
     class State(proto.Enum):
@@ -1622,6 +1645,41 @@ class Backup(proto.Message):
         ON_DEMAND = 1
         AUTOMATED = 2
         CONTINUOUS = 3
+
+    class QuantityBasedExpiry(proto.Message):
+        r"""A backup's position in a quantity-based retention queue, of backups
+        with the same source cluster and type, with length, retention,
+        specified by the backup's retention policy. Once the position is
+        greater than the retention, the backup is eligible to be garbage
+        collected.
+
+        Example: 5 backups from the same source cluster and type with a
+        quantity-based retention of 3 and denoted by backup_id (position,
+        retention).
+
+        Safe: backup_5 (1, 3), backup_4, (2, 3), backup_3 (3, 3). Awaiting
+        garbage collection: backup_2 (4, 3), backup_1 (5, 3)
+
+        Attributes:
+            retention_count (int):
+                Output only. The backup's position among its
+                backups with the same source cluster and type,
+                by descending chronological order create
+                time(i.e. newest first).
+            total_retention_count (int):
+                Output only. The length of the quantity-based
+                queue, specified by the backup's retention
+                policy.
+        """
+
+        retention_count: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        total_retention_count: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -1708,6 +1766,15 @@ class Backup(proto.Message):
         proto.MESSAGE,
         number=19,
         message=timestamp_pb2.Timestamp,
+    )
+    expiry_quantity: QuantityBasedExpiry = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        message=QuantityBasedExpiry,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=21,
     )
 
 
