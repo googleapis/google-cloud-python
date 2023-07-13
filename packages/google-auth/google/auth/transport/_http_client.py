@@ -14,12 +14,10 @@
 
 """Transport adapter for http.client, for internal use only."""
 
+import http.client as http_client
 import logging
 import socket
-
-import six
-from six.moves import http_client
-from six.moves import urllib
+import urllib
 
 from google.auth import exceptions
 from google.auth import transport
@@ -109,7 +107,7 @@ class Request(transport.Request):
 
         except (http_client.HTTPException, socket.error) as caught_exc:
             new_exc = exceptions.TransportError(caught_exc)
-            six.raise_from(new_exc, caught_exc)
+            raise new_exc from caught_exc
 
         finally:
             connection.close()

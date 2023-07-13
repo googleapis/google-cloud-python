@@ -24,11 +24,9 @@ For more information about the token endpoint, see
 """
 
 import datetime
+import http.client as http_client
 import json
-
-import six
-from six.moves import http_client
-from six.moves import urllib
+import urllib
 
 from google.auth import _exponential_backoff
 from google.auth import _helpers
@@ -61,7 +59,7 @@ def _handle_error_response(response_data, retryable_error):
 
     retryable_error = retryable_error if retryable_error else False
 
-    if isinstance(response_data, six.string_types):
+    if isinstance(response_data, str):
         raise exceptions.RefreshError(response_data, retryable=retryable_error)
     try:
         error_details = "{}: {}".format(
@@ -95,9 +93,7 @@ def _can_retry(status_code, response_data):
         error_desc = response_data.get("error_description") or ""
         error_code = response_data.get("error") or ""
 
-        if not isinstance(error_code, six.string_types) or not isinstance(
-            error_desc, six.string_types
-        ):
+        if not isinstance(error_code, str) or not isinstance(error_desc, str):
             return False
 
         # Per Oauth 2.0 RFC https://www.rfc-editor.org/rfc/rfc6749.html#section-4.1.2.1
@@ -325,7 +321,7 @@ def jwt_grant(request, token_uri, assertion, can_retry=True):
         new_exc = exceptions.RefreshError(
             "No access token in response.", response_data, retryable=False
         )
-        six.raise_from(new_exc, caught_exc)
+        raise new_exc from caught_exc
 
     expiry = _parse_expiry(response_data)
 
@@ -362,7 +358,7 @@ def call_iam_generate_id_token_endpoint(request, signer_email, audience, access_
         new_exc = exceptions.RefreshError(
             "No ID token in response.", response_data, retryable=False
         )
-        six.raise_from(new_exc, caught_exc)
+        raise new_exc from caught_exc
 
     payload = jwt.decode(id_token, verify=False)
     expiry = datetime.datetime.utcfromtimestamp(payload["exp"])
@@ -414,7 +410,7 @@ def id_token_jwt_grant(request, token_uri, assertion, can_retry=True):
         new_exc = exceptions.RefreshError(
             "No ID token in response.", response_data, retryable=False
         )
-        six.raise_from(new_exc, caught_exc)
+        raise new_exc from caught_exc
 
     payload = jwt.decode(id_token, verify=False)
     expiry = datetime.datetime.utcfromtimestamp(payload["exp"])
@@ -445,7 +441,7 @@ def _handle_refresh_grant_response(response_data, refresh_token):
         new_exc = exceptions.RefreshError(
             "No access token in response.", response_data, retryable=False
         )
-        six.raise_from(new_exc, caught_exc)
+        raise new_exc from caught_exc
 
     refresh_token = response_data.get("refresh_token", refresh_token)
     expiry = _parse_expiry(response_data)

@@ -50,8 +50,6 @@ Cloud services do not support this feature.
 
 import datetime
 
-import six
-
 from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
@@ -224,7 +222,7 @@ class AccessBoundaryRule(object):
         Raises:
             google.auth.exceptions.InvalidType: If the value is not a string.
         """
-        if not isinstance(value, six.string_types):
+        if not isinstance(value, str):
             raise exceptions.InvalidType(
                 "The provided available_resource is not a string."
             )
@@ -252,7 +250,7 @@ class AccessBoundaryRule(object):
             InvalidValue: If the value is not valid.
         """
         for available_permission in value:
-            if not isinstance(available_permission, six.string_types):
+            if not isinstance(available_permission, str):
                 raise exceptions.InvalidType(
                     "Provided available_permissions are not a list of strings."
                 )
@@ -355,7 +353,7 @@ class AvailabilityCondition(object):
         Raises:
             google.auth.exceptions.InvalidType: If the value is not of type string.
         """
-        if not isinstance(value, six.string_types):
+        if not isinstance(value, str):
             raise exceptions.InvalidType("The provided expression is not a string.")
         self._expression = value
 
@@ -378,7 +376,7 @@ class AvailabilityCondition(object):
         Raises:
             google.auth.exceptions.InvalidType: If the value is not of type string or None.
         """
-        if not isinstance(value, six.string_types) and value is not None:
+        if not isinstance(value, str) and value is not None:
             raise exceptions.InvalidType("The provided title is not a string or None.")
         self._title = value
 
@@ -401,7 +399,7 @@ class AvailabilityCondition(object):
         Raises:
             google.auth.exceptions.InvalidType: If the value is not of type string or None.
         """
-        if not isinstance(value, six.string_types) and value is not None:
+        if not isinstance(value, str) and value is not None:
             raise exceptions.InvalidType(
                 "The provided description is not a string or None."
             )

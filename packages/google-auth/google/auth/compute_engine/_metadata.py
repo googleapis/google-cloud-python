@@ -18,13 +18,11 @@ See https://cloud.google.com/compute/docs/metadata for more details.
 """
 
 import datetime
+import http.client as http_client
 import json
 import logging
 import os
-
-import six
-from six.moves import http_client
-from six.moves.urllib import parse as urlparse
+from urllib.parse import urljoin
 
 from google.auth import _helpers
 from google.auth import environment_vars
@@ -185,7 +183,7 @@ def get(
         google.auth.exceptions.TransportError: if an error occurred while
             retrieving metadata.
     """
-    base_url = urlparse.urljoin(root, path)
+    base_url = urljoin(root, path)
     query_params = {} if params is None else params
 
     headers_to_use = _METADATA_HEADERS.copy()
@@ -228,7 +226,7 @@ def get(
                     "Received invalid JSON from the Google Compute Engine "
                     "metadata service: {:.20}".format(content)
                 )
-                six.raise_from(new_exc, caught_exc)
+                raise new_exc from caught_exc
         else:
             return content
     else:

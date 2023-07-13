@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import http.client as http_client
 import os
 import sys
 
 import mock
 import OpenSSL
 import pytest  # type: ignore
-from six.moves import http_client
 import urllib3  # type: ignore
 
 from google.auth import environment_vars

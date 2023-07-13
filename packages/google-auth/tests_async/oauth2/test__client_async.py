@@ -13,13 +13,12 @@
 # limitations under the License.
 
 import datetime
+import http.client as http_client
 import json
+import urllib
 
 import mock
 import pytest  # type: ignore
-import six
-from six.moves import http_client
-from six.moves import urllib
 
 from google.auth import _helpers
 from google.auth import _jwt_async as jwt
@@ -202,7 +201,7 @@ def verify_request_params(request, params):
     request_body = request.call_args[1]["body"].decode("utf-8")
     request_params = urllib.parse.parse_qs(request_body)
 
-    for key, value in six.iteritems(params):
+    for key, value in params.items():
         assert request_params[key][0] == value
 
 

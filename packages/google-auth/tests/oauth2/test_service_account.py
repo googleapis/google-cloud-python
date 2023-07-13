@@ -18,7 +18,6 @@ import os
 
 import mock
 import pytest  # type: ignore
-import six
 
 from google.auth import _helpers
 from google.auth import crypt
@@ -525,7 +524,7 @@ class TestCredentials(object):
         credentials.refresh(mock.Mock())
 
         # Credentials token should be a JWT string.
-        assert isinstance(credentials.token, six.string_types)
+        assert isinstance(credentials.token, str)
         payload = jwt.decode(credentials.token, verify=False)
         assert payload["aud"] == "https://pubsub.googleapis.com"
 

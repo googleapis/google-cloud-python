@@ -20,7 +20,6 @@ import os
 import mock
 import pytest  # type: ignore
 import requests
-import six
 
 from google.auth import exceptions
 from google.auth import jwt
@@ -69,7 +68,7 @@ class TestServiceAccountCredentials(object):
         expected_iss_sub_value = (
             "system:serviceaccount:project_foo:service_identity_name"
         )
-        assert isinstance(jwt_token, six.text_type)
+        assert isinstance(jwt_token, str)
         assert header["alg"] == "ES256"
         assert header["kid"] == self.PRIVATE_KEY_ID
         assert payload["iss"] == expected_iss_sub_value

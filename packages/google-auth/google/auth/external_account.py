@@ -34,8 +34,6 @@ import io
 import json
 import re
 
-import six
-
 from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
@@ -56,11 +54,11 @@ _CLOUD_RESOURCE_MANAGER = "https://cloudresourcemanager.googleapis.com/v1/projec
 _DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
 
 
-@six.add_metaclass(abc.ABCMeta)
 class Credentials(
     credentials.Scoped,
     credentials.CredentialsWithQuotaProject,
     credentials.CredentialsWithTokenUri,
+    metaclass=abc.ABCMeta,
 ):
     """Base class for all external account credentials.
 

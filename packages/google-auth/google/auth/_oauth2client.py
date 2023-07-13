@@ -21,8 +21,6 @@
 
 from __future__ import absolute_import
 
-import six
-
 from google.auth import _helpers
 import google.auth.app_engine
 import google.auth.compute_engine
@@ -34,7 +32,7 @@ try:
     import oauth2client.contrib.gce  # type: ignore
     import oauth2client.service_account  # type: ignore
 except ImportError as caught_exc:
-    six.raise_from(ImportError("oauth2client is not installed."), caught_exc)
+    raise ImportError("oauth2client is not installed.") from caught_exc
 
 try:
     import oauth2client.contrib.appengine  # type: ignore
@@ -166,4 +164,4 @@ def convert(credentials):
         return _CLASS_CONVERSION_MAP[credentials_class](credentials)
     except KeyError as caught_exc:
         new_exc = ValueError(_CONVERT_ERROR_TMPL.format(credentials_class))
-        six.raise_from(new_exc, caught_exc)
+        raise new_exc from caught_exc

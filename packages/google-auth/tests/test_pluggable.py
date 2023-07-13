@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# import datetime
 import json
 import os
 import subprocess
@@ -20,16 +19,9 @@ import subprocess
 import mock
 import pytest  # type: ignore
 
-# from six.moves import http_client
-# from six.moves import urllib
-
-# from google.auth import _helpers
 from google.auth import exceptions
 from google.auth import pluggable
 from tests.test__default import WORKFORCE_AUDIENCE
-
-# from google.auth import transport
-
 
 CLIENT_ID = "username"
 CLIENT_SECRET = "password"

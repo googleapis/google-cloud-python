@@ -20,9 +20,8 @@ API`_'s auth-related functionality.
 """
 
 import base64
+import http.client as http_client
 import json
-
-from six.moves import http_client
 
 from google.auth import _helpers
 from google.auth import crypt

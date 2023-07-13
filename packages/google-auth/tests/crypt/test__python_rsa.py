@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import json
 import os
 
@@ -19,7 +20,6 @@ import mock
 from pyasn1_modules import pem  # type: ignore
 import pytest  # type: ignore
 import rsa  # type: ignore
-import six
 
 from google.auth import _helpers
 from google.auth.crypt import _python_rsa
@@ -141,7 +141,7 @@ class TestRSASigner(object):
     def test_from_string_pkcs8_extra_bytes(self):
         key_bytes = PKCS8_KEY_BYTES
         _, pem_bytes = pem.readPemBlocksFromFile(
-            six.StringIO(_helpers.from_bytes(key_bytes)), _python_rsa._PKCS8_MARKER
+            io.StringIO(_helpers.from_bytes(key_bytes)), _python_rsa._PKCS8_MARKER
         )
 
         key_info, remaining = None, "extra"

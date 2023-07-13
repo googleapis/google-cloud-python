@@ -24,7 +24,6 @@ import os
 import sys
 
 import cffi  # type: ignore
-import six
 
 from google.auth import exceptions
 
@@ -212,7 +211,7 @@ class CustomTlsSigner(object):
             new_exc = exceptions.MutualTLSChannelError(
                 "enterprise cert file is invalid", caught_exc
             )
-            six.raise_from(new_exc, caught_exc)
+            raise new_exc from caught_exc
         self._offload_lib = load_offload_lib(offload_library)
         self._signer_lib = load_signer_lib(signer_library)
 

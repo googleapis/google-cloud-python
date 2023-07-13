@@ -25,21 +25,14 @@ import time
 try:
     import requests
 except ImportError as caught_exc:  # pragma: NO COVER
-    import six
-
-    six.raise_from(
-        ImportError(
-            "The requests library is not installed, please install the "
-            "requests package to use the requests transport."
-        ),
-        caught_exc,
-    )
+    raise ImportError(
+        "The requests library is not installed from please install the requests package to use the requests transport."
+    ) from caught_exc
 import requests.adapters  # pylint: disable=ungrouped-imports
 import requests.exceptions  # pylint: disable=ungrouped-imports
 from requests.packages.urllib3.util.ssl_ import (  # type: ignore
     create_urllib3_context,
 )  # pylint: disable=ungrouped-imports
-import six  # pylint: disable=ungrouped-imports
 
 from google.auth import environment_vars
 from google.auth import exceptions
@@ -196,7 +189,7 @@ class Request(transport.Request):
             return _Response(response)
         except requests.exceptions.RequestException as caught_exc:
             new_exc = exceptions.TransportError(caught_exc)
-            six.raise_from(new_exc, caught_exc)
+            raise new_exc from caught_exc
 
 
 class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
@@ -465,7 +458,7 @@ class AuthorizedSession(requests.Session):
             import OpenSSL
         except ImportError as caught_exc:
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
-            six.raise_from(new_exc, caught_exc)
+            raise new_exc from caught_exc
 
         try:
             (
@@ -485,7 +478,7 @@ class AuthorizedSession(requests.Session):
             OpenSSL.crypto.Error,
         ) as caught_exc:
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
-            six.raise_from(new_exc, caught_exc)
+            raise new_exc from caught_exc
 
     def request(
         self,

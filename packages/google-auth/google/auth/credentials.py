@@ -18,15 +18,12 @@
 import abc
 import os
 
-import six
-
 from google.auth import _helpers, environment_vars
 from google.auth import exceptions
 from google.auth import metrics
 
 
-@six.add_metaclass(abc.ABCMeta)
-class Credentials(object):
+class Credentials(metaclass=abc.ABCMeta):
     """Base class for all credentials.
 
     All credentials have a :attr:`token` that is used for authentication and
@@ -232,8 +229,7 @@ class AnonymousCredentials(Credentials):
         """Anonymous credentials do nothing to the request."""
 
 
-@six.add_metaclass(abc.ABCMeta)
-class ReadOnlyScoped(object):
+class ReadOnlyScoped(metaclass=abc.ABCMeta):
     """Interface for credentials whose scopes can be queried.
 
     OAuth 2.0-based credentials allow limiting access using scopes as described
@@ -374,8 +370,7 @@ def with_scopes_if_required(credentials, scopes, default_scopes=None):
         return credentials
 
 
-@six.add_metaclass(abc.ABCMeta)
-class Signing(object):
+class Signing(metaclass=abc.ABCMeta):
     """Interface for credentials that can cryptographically sign messages."""
 
     @abc.abstractmethod

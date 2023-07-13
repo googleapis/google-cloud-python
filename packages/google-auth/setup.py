@@ -26,7 +26,6 @@ DEPENDENCIES = (
     # https://github.com/sybrenstuvel/python-rsa/issues/152#issuecomment-643470233
     "rsa>=3.1.4,<5",
     # install enum34 to support 2.7. enum34 only works up to python version 3.3.
-    "six>=1.9.0",
     "urllib3<2.0",
 )
 

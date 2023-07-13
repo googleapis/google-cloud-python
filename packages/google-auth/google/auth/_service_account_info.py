@@ -17,8 +17,6 @@
 import io
 import json
 
-import six
-
 from google.auth import crypt
 from google.auth import exceptions
 
@@ -46,7 +44,7 @@ def from_dict(data, require=None, use_rsa_signer=True):
     """
     keys_needed = set(require if require is not None else [])
 
-    missing = keys_needed.difference(six.iterkeys(data))
+    missing = keys_needed.difference(data.keys())
 
     if missing:
         raise exceptions.MalformedError(

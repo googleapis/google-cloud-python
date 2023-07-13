@@ -79,7 +79,6 @@ def mypy(session):
         "types-pyOpenSSL",
         "types-requests",
         "types-setuptools",
-        "types-six",
         "types-mock",
     )
     session.run("mypy", "-p", "google", "-p", "tests", "-p", "tests_async")

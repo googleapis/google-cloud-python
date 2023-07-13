@@ -21,8 +21,6 @@ Compute Engine using the Compute Engine metadata server.
 
 import datetime
 
-import six
-
 from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
@@ -118,7 +116,7 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
             )
         except exceptions.TransportError as caught_exc:
             new_exc = exceptions.RefreshError(caught_exc)
-            six.raise_from(new_exc, caught_exc)
+            raise new_exc from caught_exc
 
     @property
     def service_account_email(self):
@@ -386,7 +384,7 @@ class IDTokenCredentials(
             )
         except exceptions.TransportError as caught_exc:
             new_exc = exceptions.RefreshError(caught_exc)
-            six.raise_from(new_exc, caught_exc)
+            raise new_exc from caught_exc
 
         _, payload, _, _ = jwt._unverified_decode(id_token)
         return id_token, datetime.datetime.utcfromtimestamp(payload["exp"])

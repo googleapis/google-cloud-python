@@ -31,10 +31,9 @@ spec JSON response.
 .. _rfc8693 section 2.2.1: https://tools.ietf.org/html/rfc8693#section-2.2.1
 """
 
+import http.client as http_client
 import json
-
-from six.moves import http_client
-from six.moves import urllib
+import urllib
 
 from google.oauth2 import utils
 

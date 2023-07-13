@@ -48,10 +48,9 @@ except ImportError:  # pragma: NO COVER
 import copy
 import datetime
 import json
+import urllib
 
 import cachetools
-import six
-from six.moves import urllib
 
 from google.auth import _helpers
 from google.auth import _service_account_info
@@ -125,7 +124,7 @@ def _decode_jwt_segment(encoded_section):
         new_exc = exceptions.MalformedError(
             "Can't parse segment: {0}".format(section_bytes)
         )
-        six.raise_from(new_exc, caught_exc)
+        raise new_exc from caught_exc
 
 
 def _unverified_decode(token):
@@ -269,21 +268,15 @@ def decode(token, certs=None, verify=True, audience=None, clock_skew_in_seconds=
         verifier_cls = _ALGORITHM_TO_VERIFIER_CLASS[key_alg]
     except KeyError as exc:
         if key_alg in _CRYPTOGRAPHY_BASED_ALGORITHMS:
-            six.raise_from(
-                exceptions.InvalidValue(
-                    "The key algorithm {} requires the cryptography package "
-                    "to be installed.".format(key_alg)
-                ),
-                exc,
-            )
+            raise exceptions.InvalidValue(
+                "The key algorithm {} requires the cryptography package to be installed.".format(
+                    key_alg
+                )
+            ) from exc
         else:
-            six.raise_from(
-                exceptions.InvalidValue(
-                    "Unsupported signature algorithm {}".format(key_alg)
-                ),
-                exc,
-            )
-
+            raise exceptions.InvalidValue(
+                "Unsupported signature algorithm {}".format(key_alg)
+            ) from exc
     # If certs is specified as a dictionary of key IDs to certificates, then
     # use the certificate identified by the key ID in the token header.
     if isinstance(certs, Mapping):
