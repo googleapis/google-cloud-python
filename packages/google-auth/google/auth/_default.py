@@ -660,24 +660,25 @@ def default(scopes=None, request=None, quota_project_id=None, default_scopes=Non
                 credentials, scopes, default_scopes=default_scopes
             )
 
+            effective_project_id = explicit_project_id or project_id
+
             # For external account credentials, scopes are required to determine
             # the project ID. Try to get the project ID again if not yet
             # determined.
-            if not project_id and callable(
+            if not effective_project_id and callable(
                 getattr(credentials, "get_project_id", None)
             ):
                 if request is None:
                     import google.auth.transport.requests
 
                     request = google.auth.transport.requests.Request()
-                project_id = credentials.get_project_id(request=request)
+                effective_project_id = credentials.get_project_id(request=request)
 
             if quota_project_id and isinstance(
                 credentials, CredentialsWithQuotaProject
             ):
                 credentials = credentials.with_quota_project(quota_project_id)
 
-            effective_project_id = explicit_project_id or project_id
             if not effective_project_id:
                 _LOGGER.warning(
                     "No project ID could be determined. Consider running "

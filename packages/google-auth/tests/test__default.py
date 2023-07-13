@@ -1030,6 +1030,61 @@ def test_default_environ_external_credentials_identity_pool_impersonated(
     assert project_id is mock.sentinel.project_id
     assert credentials.scopes == ["https://www.google.com/calendar/feeds"]
 
+    # The credential.get_project_id should have been used in _get_external_account_credentials and default
+    assert get_project_id.call_count == 2
+
+
+@EXTERNAL_ACCOUNT_GET_PROJECT_ID_PATCH
+@mock.patch.dict(os.environ)
+def test_default_environ_external_credentials_project_from_env(
+    get_project_id, monkeypatch, tmpdir
+):
+    project_from_env = "project_from_env"
+    os.environ[environment_vars.PROJECT] = project_from_env
+
+    config_file = tmpdir.join("config.json")
+    config_file.write(json.dumps(IMPERSONATED_IDENTITY_POOL_DATA))
+    monkeypatch.setenv(environment_vars.CREDENTIALS, str(config_file))
+
+    credentials, project_id = _default.default(
+        scopes=["https://www.google.com/calendar/feeds"]
+    )
+
+    assert isinstance(credentials, identity_pool.Credentials)
+    assert not credentials.is_user
+    assert not credentials.is_workforce_pool
+    assert project_id == project_from_env
+    assert credentials.scopes == ["https://www.google.com/calendar/feeds"]
+
+    # The credential.get_project_id should have been used only in _get_external_account_credentials
+    assert get_project_id.call_count == 1
+
+
+@EXTERNAL_ACCOUNT_GET_PROJECT_ID_PATCH
+@mock.patch.dict(os.environ)
+def test_default_environ_external_credentials_legacy_project_from_env(
+    get_project_id, monkeypatch, tmpdir
+):
+    project_from_env = "project_from_env"
+    os.environ[environment_vars.LEGACY_PROJECT] = project_from_env
+
+    config_file = tmpdir.join("config.json")
+    config_file.write(json.dumps(IMPERSONATED_IDENTITY_POOL_DATA))
+    monkeypatch.setenv(environment_vars.CREDENTIALS, str(config_file))
+
+    credentials, project_id = _default.default(
+        scopes=["https://www.google.com/calendar/feeds"]
+    )
+
+    assert isinstance(credentials, identity_pool.Credentials)
+    assert not credentials.is_user
+    assert not credentials.is_workforce_pool
+    assert project_id == project_from_env
+    assert credentials.scopes == ["https://www.google.com/calendar/feeds"]
+
+    # The credential.get_project_id should have been used only in _get_external_account_credentials
+    assert get_project_id.call_count == 1
+
 
 @EXTERNAL_ACCOUNT_GET_PROJECT_ID_PATCH
 def test_default_environ_external_credentials_aws_impersonated(
