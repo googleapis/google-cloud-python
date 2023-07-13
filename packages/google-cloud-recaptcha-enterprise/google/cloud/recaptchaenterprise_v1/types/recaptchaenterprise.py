@@ -2074,6 +2074,7 @@ class SearchRelatedAccountGroupMembershipsRequest(proto.Message):
             Required. The name of the project to search
             related account group memberships from. Specify
             the project name in the following format:
+
             "projects/{project}".
         hashed_account_id (bytes):
             Optional. The unique stable hashed user identifier we should

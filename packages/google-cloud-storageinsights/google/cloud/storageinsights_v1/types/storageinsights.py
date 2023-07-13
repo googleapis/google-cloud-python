@@ -513,6 +513,7 @@ class OperationMetadata(proto.Message):
 
 class FrequencyOptions(proto.Message):
     r"""ReportConfig Resource:
+
     Options to setup frequency of report generation.
 
     Attributes:

@@ -807,6 +807,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 The request object. Request message for bulk findings
                 update.
                 Note:
+
                 1. If multiple bulk update requests
                 match the same resource, the order in
                 which they get executed is not defined.
