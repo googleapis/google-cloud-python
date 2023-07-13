@@ -56,6 +56,7 @@ class ProtectedResourcesSummary(proto.Message):
         name (str):
             The full name of the
             ProtectedResourcesSummary resource. Example:
+
             projects/test-project/locations/us/keyRings/test-keyring/cryptoKeys/test-key/protectedResourcesSummary
         resource_count (int):
             The total number of protected resources in
