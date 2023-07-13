@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.11.4](https://github.com/googleapis/gapic-generator-python/compare/v1.11.3...v1.11.4) (2023-07-11)
+
+
+### Documentation
+
+* Ensure new line after colon ([#1691](https://github.com/googleapis/gapic-generator-python/issues/1691)) ([e400fba](https://github.com/googleapis/gapic-generator-python/commit/e400fba0e75f3f8789e9b6ba00b949a012b17496))
+
 ## [1.11.3](https://github.com/googleapis/gapic-generator-python/compare/v1.11.2...v1.11.3) (2023-07-07)
 
 
