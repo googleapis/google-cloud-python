@@ -1358,8 +1358,6 @@ class TestBigQuery(unittest.TestCase):
         self.assertIn("Bharney Rhubble", got)
 
     def test_copy_table(self):
-        pytest.skip("b/210907595: copy fails for shakespeare table")
-
         # If we create a new table to copy from, the test won't work
         # because the new rows will be stored in the streaming buffer,
         # and copy jobs don't read the streaming buffer.
