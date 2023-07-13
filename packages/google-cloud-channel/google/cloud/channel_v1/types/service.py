@@ -1432,15 +1432,20 @@ class BillableSku(proto.Message):
     Attributes:
         sku (str):
             Resource name of Billable SKU. Format:
+
             billableSkus/{sku}.
             Example:
+
             billableSkus/6E1B-6634-470F".
         sku_display_name (str):
             Unique human readable name for the SKU.
         service (str):
             Resource name of Service which contains
-            Repricing SKU. Format: services/{service}.
+            Repricing SKU. Format:
+
+            services/{service}.
             Example:
+
             "services/B7D9-FDCB-15D8".
         service_display_name (str):
             Unique human readable name for the Service.

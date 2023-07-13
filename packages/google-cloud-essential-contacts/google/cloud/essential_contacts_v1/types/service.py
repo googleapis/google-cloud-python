@@ -230,8 +230,10 @@ class UpdateContactRequest(proto.Message):
     Attributes:
         contact (google.cloud.essential_contacts_v1.types.Contact):
             Required. The contact resource to replace the
-            existing saved contact. Note: the email address
-            of the contact cannot be modified.
+            existing saved contact. Note:
+
+            the email address of the contact cannot be
+            modified.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The update mask applied to the resource. For the
             ``FieldMask`` definition, see

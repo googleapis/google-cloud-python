@@ -1028,6 +1028,7 @@ class MysqlColumn(proto.Message):
         data_type (str):
             The MySQL data type. Full data types list can
             be found here:
+
             https://dev.mysql.com/doc/refman/8.0/en/data-types.html
         length (int):
             Column length.

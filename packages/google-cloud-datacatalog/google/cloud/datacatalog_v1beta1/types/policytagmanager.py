@@ -57,19 +57,19 @@ class Taxonomy(proto.Message):
             "projects/{project_number}/locations/{location_id}/taxonomies/{id}".
         display_name (str):
             Required. User defined name of this taxonomy.
-            It must: contain only unicode letters, numbers,
-            underscores, dashes and spaces; not start or end
-            with spaces; and be at most 200 bytes long when
-            encoded in UTF-8.
+            It must: contain only unicode
+            letters, numbers, underscores, dashes and
+            spaces; not start or end with spaces; and be at
+            most 200 bytes long when encoded in UTF-8.
             The taxonomy display name must be unique within
             an organization.
         description (str):
             Optional. Description of this taxonomy. It
-            must: contain only unicode characters, tabs,
-            newlines, carriage returns and page breaks; and
-            be at most 2000 bytes long when encoded in
-            UTF-8. If not set, defaults to an empty
-            description.
+            must: contain only unicode
+            characters, tabs, newlines, carriage returns and
+            page breaks; and be at most 2000 bytes long when
+            encoded in UTF-8. If not set, defaults to an
+            empty description.
         policy_tag_count (int):
             Output only. Number of policy tags contained
             in this taxonomy.
@@ -156,9 +156,11 @@ class Taxonomy(proto.Message):
 class PolicyTag(proto.Message):
     r"""Denotes one policy tag in a taxonomy (e.g. ssn). Policy Tags
     can be defined in a hierarchy. For example, consider the
-    following hierarchy: Geolocation -&gt; (LatLong, City, ZipCode).
-    PolicyTag "Geolocation" contains three child policy tags:
-    "LatLong", "City", and "ZipCode".
+    following hierarchy:
+
+    Geolocation -&gt; (LatLong, City, ZipCode). PolicyTag
+    "Geolocation" contains three child policy tags: "LatLong",
+    "City", and "ZipCode".
 
     Attributes:
         name (str):
@@ -167,18 +169,19 @@ class PolicyTag(proto.Message):
             "projects/{project_number}/locations/{location_id}/taxonomies/{taxonomy_id}/policyTags/{id}".
         display_name (str):
             Required. User defined name of this policy
-            tag. It must: be unique within the parent
-            taxonomy; contain only unicode letters, numbers,
-            underscores, dashes and spaces; not start or end
-            with spaces; and be at most 200 bytes long when
-            encoded in UTF-8.
+            tag. It must: be unique within
+            the parent taxonomy; contain only unicode
+            letters, numbers, underscores, dashes and
+            spaces; not start or end with spaces; and be at
+            most 200 bytes long when encoded in UTF-8.
         description (str):
             Description of this policy tag. It must:
-            contain only unicode characters, tabs, newlines,
-            carriage returns and page breaks; and be at most
-            2000 bytes long when encoded in UTF-8. If not
-            set, defaults to an empty description. If not
-            set, defaults to an empty description.
+            contain only unicode characters,
+            tabs, newlines, carriage returns and page
+            breaks; and be at most 2000 bytes long when
+            encoded in UTF-8. If not set, defaults to an
+            empty description. If not set, defaults to an
+            empty description.
         parent_policy_tag (str):
             Resource name of this policy tag's parent
             policy tag (e.g. for the "LatLong" policy tag in

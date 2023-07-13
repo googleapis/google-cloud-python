@@ -1096,6 +1096,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         r"""Starts a Managed Notebook Runtime.
         Perform "Start" on GPU instances; "Resume" on CPU
         instances See:
+
         https://cloud.google.com/compute/docs/instances/stop-start-instance
         https://cloud.google.com/compute/docs/instances/suspend-resume-instance
 
@@ -1217,6 +1218,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         r"""Stops a Managed Notebook Runtime.
         Perform "Stop" on GPU instances; "Suspend" on CPU
         instances See:
+
         https://cloud.google.com/compute/docs/instances/stop-start-instance
         https://cloud.google.com/compute/docs/instances/suspend-resume-instance
 

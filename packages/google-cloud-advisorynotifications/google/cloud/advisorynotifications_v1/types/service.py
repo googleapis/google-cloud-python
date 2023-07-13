@@ -68,12 +68,13 @@ class LocalizationState(proto.Enum):
         LOCALIZATION_STATE_NOT_APPLICABLE (1):
             Localization is not applicable for requested
             language. This can happen when:
+
             - The requested language was not supported by
-            Advisory Notifications at the time of
-            localization (including notifications created
-            before the localization feature was launched).
+              Advisory Notifications at the time of
+              localization (including notifications created
+              before the localization feature was launched).
             - The requested language is English, so only the
-            English text is returned.
+              English text is returned.
         LOCALIZATION_STATE_PENDING (2):
             Localization for requested language is in
             progress, and not ready yet.
@@ -111,6 +112,7 @@ class Notification(proto.Message):
         name (str):
             The resource name of the notification.
             Format:
+
             organizations/{organization}/locations/{location}/notifications/{notification}.
         subject (google.cloud.advisorynotifications_v1.types.Subject):
             The subject line of the notification.
@@ -405,6 +407,7 @@ class GetNotificationRequest(proto.Message):
         name (str):
             Required. A name of the notification to
             retrieve. Format:
+
             organizations/{organization}/locations/{location}/notifications/{notification}.
         language_code (str):
             ISO code for requested localization language.

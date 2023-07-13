@@ -293,8 +293,9 @@ class SynonymSetServiceAsyncClient:
             google.cloud.contentwarehouse_v1.types.SynonymSet:
                 Represents a list of synonyms for a
                 given context. For example a context
-                "sales" could contain: Synonym 1: sale,
-                invoice, bill, order
+                "sales" could contain:
+
+                Synonym 1: sale, invoice, bill, order
                 Synonym 2: money, credit, finance,
                 payment Synonym 3: shipping, freight,
                 transport
@@ -407,8 +408,9 @@ class SynonymSetServiceAsyncClient:
             google.cloud.contentwarehouse_v1.types.SynonymSet:
                 Represents a list of synonyms for a
                 given context. For example a context
-                "sales" could contain: Synonym 1: sale,
-                invoice, bill, order
+                "sales" could contain:
+
+                Synonym 1: sale, invoice, bill, order
                 Synonym 2: money, credit, finance,
                 payment Synonym 3: shipping, freight,
                 transport
@@ -539,8 +541,9 @@ class SynonymSetServiceAsyncClient:
             google.cloud.contentwarehouse_v1.types.SynonymSet:
                 Represents a list of synonyms for a
                 given context. For example a context
-                "sales" could contain: Synonym 1: sale,
-                invoice, bill, order
+                "sales" could contain:
+
+                Synonym 1: sale, invoice, bill, order
                 Synonym 2: money, credit, finance,
                 payment Synonym 3: shipping, freight,
                 transport

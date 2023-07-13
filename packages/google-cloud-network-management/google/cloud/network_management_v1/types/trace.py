@@ -199,26 +199,30 @@ class Step(proto.Message):
                 Unspecified state.
             START_FROM_INSTANCE (1):
                 Initial state: packet originating from a
-                Compute Engine instance. An InstanceInfo is
-                populated with starting instance information.
+                Compute Engine instance.
+                An InstanceInfo is populated with starting
+                instance information.
             START_FROM_INTERNET (2):
                 Initial state: packet originating from the
-                internet. The endpoint information is populated.
+                internet.
+                The endpoint information is populated.
             START_FROM_PRIVATE_NETWORK (3):
                 Initial state: packet originating from a VPC
-                or on-premises network with internal source IP.
+                or on-premises network
+                with internal source IP.
                 If the source is a VPC network visible to the
                 user, a NetworkInfo is populated with details of
                 the network.
             START_FROM_GKE_MASTER (21):
                 Initial state: packet originating from a
-                Google Kubernetes Engine cluster master. A
-                GKEMasterInfo is populated with starting
-                instance information.
+                Google Kubernetes Engine cluster
+                master. A GKEMasterInfo is populated with
+                starting instance information.
             START_FROM_CLOUD_SQL_INSTANCE (22):
                 Initial state: packet originating from a
-                Cloud SQL instance. A CloudSQLInstanceInfo is
-                populated with starting instance information.
+                Cloud SQL instance.
+                A CloudSQLInstanceInfo is populated with
+                starting instance information.
             APPLY_INGRESS_FIREWALL_RULE (4):
                 Config checking state: verify ingress
                 firewall rule.
@@ -231,7 +235,8 @@ class Step(proto.Message):
                 Config checking state: match forwarding rule.
             SPOOFING_APPROVED (8):
                 Config checking state: packet sent or
-                received under foreign IP address and allowed.
+                received under foreign IP
+                address and allowed.
             ARRIVE_AT_INSTANCE (9):
                 Forwarding state: arriving at a Compute
                 Engine instance.
@@ -251,21 +256,22 @@ class Step(proto.Message):
                 Transition state: packet header translated.
             PROXY_CONNECTION (15):
                 Transition state: original connection is
-                terminated and a new proxied connection is
-                initiated.
+                terminated and a new proxied
+                connection is initiated.
             DELIVER (16):
                 Final state: packet could be delivered.
             DROP (17):
                 Final state: packet could be dropped.
             FORWARD (18):
                 Final state: packet could be forwarded to a
-                network with an unknown configuration.
+                network with an unknown
+                configuration.
             ABORT (19):
                 Final state: analysis is aborted.
             VIEWER_PERMISSION_MISSING (20):
                 Special state: viewer of the test result does
-                not have permission to see the configuration in
-                this step.
+                not have permission to
+                see the configuration in this step.
         """
         STATE_UNSPECIFIED = 0
         START_FROM_INSTANCE = 1
@@ -1384,10 +1390,11 @@ class DropInfo(proto.Message):
                 hop is a blackhole.
             ROUTE_WRONG_NETWORK (6):
                 Packet is sent to a wrong (unintended)
-                network. Example: you trace a packet from
-                VM1:Network1 to VM2:Network2, however, the route
-                configured in Network1 sends the packet destined
-                for VM2's IP addresss to Network3.
+                network. Example: you trace a
+                packet from VM1:Network1 to VM2:Network2,
+                however, the route configured in Network1 sends
+                the packet destined for VM2's IP addresss to
+                Network3.
             PRIVATE_TRAFFIC_TO_INTERNET (7):
                 Packet with internal destination address sent
                 to the internet gateway.

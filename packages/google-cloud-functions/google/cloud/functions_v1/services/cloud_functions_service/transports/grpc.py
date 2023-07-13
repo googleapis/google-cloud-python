@@ -481,6 +481,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
         limited period and must be used within minutes after
         generation.
         For more information about the signed URL usage, see:
+
         https://cloud.google.com/storage/docs/access-control/signed-urls
 
         Returns:

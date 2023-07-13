@@ -187,6 +187,7 @@ class ReconConfig(proto.Message):
                 If true, separate clusters by their
                 geographic region (from geocoding). Uses the
                 following entity features:
+
                 - schema.org/addressLocality
                 - schema.org/addressRegion
                 - schema.org/addressCountry

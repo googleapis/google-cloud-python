@@ -80,6 +80,7 @@ class GetDatasetSchemaRequest(proto.Message):
         name (str):
             Required. The dataset schema resource name.
             Format:
+
             projects/{project}/locations/{location}/processors/{processor}/dataset/datasetSchema
         visible_fields_only (bool):
             If set, only returns the visible fields of
