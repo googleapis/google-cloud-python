@@ -261,6 +261,7 @@ class PercentageAdjustment(proto.Message):
         percentage (google.type.decimal_pb2.Decimal):
             The percentage of the bill to adjust.
             For example:
+
             Mark down by 1% => "-1.00"
             Mark up by 1%   => "1.00"
             Pass-Through    => "0.00".

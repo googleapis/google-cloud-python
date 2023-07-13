@@ -1232,18 +1232,21 @@ class Document(proto.Message):
             Attributes:
                 money_value (google.type.money_pb2.Money):
                     Money value. See also:
+
                     https://github.com/googleapis/googleapis/blob/master/google/type/money.proto
 
                     This field is a member of `oneof`_ ``structured_value``.
                 date_value (google.type.date_pb2.Date):
                     Date value. Includes year, month, day. See
                     also:
+
                     https://github.com/googleapis/googleapis/blob/master/google/type/date.proto
 
                     This field is a member of `oneof`_ ``structured_value``.
                 datetime_value (google.type.datetime_pb2.DateTime):
                     DateTime value. Includes date, time, and
                     timezone. See also:
+
                     https://github.com/googleapis/googleapis/blob/master/google/type/datetime.proto
 
                     This field is a member of `oneof`_ ``structured_value``.

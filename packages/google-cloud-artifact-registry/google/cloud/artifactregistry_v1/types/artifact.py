@@ -67,6 +67,7 @@ class DockerImage(proto.Message):
         uri (str):
             Required. URL to access the image.
             Example:
+
             us-west4-docker.pkg.dev/test-project/test-repo/nginx@sha256:e9954c1fc875017be1c3e36eca16be2d9e9bccc4bf072163515467d6a823c7cf
         tags (MutableSequence[str]):
             Tags attached to this image.
@@ -223,10 +224,12 @@ class MavenArtifact(proto.Message):
         pom_uri (str):
             Required. URL to access the pom file of the
             artifact. Example:
+
             us-west4-maven.pkg.dev/test-project/test-repo/com/google/guava/guava/31.0/guava-31.0.pom
         group_id (str):
             Group ID for the artifact.
             Example:
+
             com.google.guava
         artifact_id (str):
             Artifact ID for the artifact.

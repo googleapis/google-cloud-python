@@ -101,6 +101,7 @@ class Conversation(proto.Message):
         name (str):
             Immutable. The resource name of the
             conversation. Format:
+
             projects/{project}/locations/{location}/conversations/{conversation}
         data_source (google.cloud.contact_center_insights_v1.types.ConversationDataSource):
             The source of the audio and transcription for
@@ -149,6 +150,7 @@ class Conversation(proto.Message):
             Output only. All the matched Dialogflow
             intents in the call. The key corresponds to a
             Dialogflow intent, format:
+
             projects/{project}/agent/{agent}/intents/{intent}
         obfuscated_user_id (str):
             Obfuscated user ID which the customer sent to
@@ -451,6 +453,7 @@ class Analysis(proto.Message):
         name (str):
             Immutable. The resource name of the analysis.
             Format:
+
             projects/{project}/locations/{location}/conversations/{conversation}/analyses/{analysis}
         request_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the analysis
@@ -562,6 +565,7 @@ class DialogflowSource(proto.Message):
             Output only. The name of the Dialogflow
             conversation that this conversation resource is
             derived from. Format:
+
             projects/{project}/locations/{location}/conversations/{conversation}
         audio_uri (str):
             Cloud Storage URI that points to a file that
@@ -1683,6 +1687,7 @@ class Settings(proto.Message):
         name (str):
             Immutable. The resource name of the settings
             resource. Format:
+
             projects/{project}/locations/{location}/settings
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the settings
@@ -2267,6 +2272,7 @@ class ConversationParticipant(proto.Message):
         dialogflow_participant_name (str):
             The name of the participant provided by
             Dialogflow. Format:
+
             projects/{project}/locations/{location}/conversations/{conversation}/participants/{participant}
 
             This field is a member of `oneof`_ ``participant``.
@@ -2340,6 +2346,7 @@ class View(proto.Message):
         name (str):
             Immutable. The resource name of the view.
             Format:
+
             projects/{project}/locations/{location}/views/{view}
         display_name (str):
             The human-readable display name of the view.

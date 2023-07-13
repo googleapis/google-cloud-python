@@ -100,6 +100,7 @@ class HumanAnnotationConfig(proto.Message):
             will give them access to the question types in
             crowdcompute. Note that these emails must be
             registered in crowdcompute worker UI:
+
             https://crowd-compute.appspot.com/
         user_email_address (str):
             Email of the user who started the labeling
@@ -241,8 +242,9 @@ class SegmentationConfig(proto.Message):
 
 class VideoClassificationConfig(proto.Message):
     r"""Config for video classification human labeling task.
-    Currently two types of video classification are supported: 1.
-    Assign labels on the entire video.
+    Currently two types of video classification are supported:
+
+    1. Assign labels on the entire video.
     2. Split the video into multiple video clips based on camera
     shot, and assign labels on each video clip.
 

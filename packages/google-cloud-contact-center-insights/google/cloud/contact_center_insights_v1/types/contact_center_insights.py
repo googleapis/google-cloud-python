@@ -1003,6 +1003,7 @@ class ExportInsightsDataRequest(proto.Message):
         kms_key (str):
             A fully qualified KMS key name for BigQuery
             tables protected by CMEK. Format:
+
             projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{key}/cryptoKeyVersions/{version}
         write_disposition (google.cloud.contact_center_insights_v1.types.ExportInsightsDataRequest.WriteDisposition):
             Options for what to do if the destination

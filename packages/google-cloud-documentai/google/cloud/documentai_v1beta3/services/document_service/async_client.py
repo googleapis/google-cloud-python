@@ -403,6 +403,7 @@ class DocumentServiceAsyncClient:
             name (:class:`str`):
                 Required. The dataset schema resource
                 name. Format:
+
                 projects/{project}/locations/{location}/processors/{processor}/dataset/datasetSchema
 
                 This corresponds to the ``name`` field

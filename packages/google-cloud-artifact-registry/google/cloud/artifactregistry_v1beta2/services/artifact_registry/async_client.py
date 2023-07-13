@@ -1842,6 +1842,7 @@ class ArtifactRegistryAsyncClient:
             parent (:class:`str`):
                 The name of the repository whose
                 files will be listed. For example:
+
                 "projects/p1/locations/us-central1/repositories/repo1
 
                 This corresponds to the ``parent`` field

@@ -75,6 +75,7 @@ class File(proto.Message):
     Attributes:
         name (str):
             The name of the file, for example:
+
             "projects/p1/locations/us-central1/repositories/repo1/files/a%2Fb%2Fc.txt".
             If the file ID part contains slashes, they are
             escaped.
@@ -127,6 +128,7 @@ class ListFilesRequest(proto.Message):
         parent (str):
             The name of the repository whose files will
             be listed. For example:
+
             "projects/p1/locations/us-central1/repositories/repo1
         filter (str):
             An expression for filtering the results of the request.
