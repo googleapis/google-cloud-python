@@ -34,6 +34,7 @@ class ArrowSchema(proto.Message):
     r"""Arrow schema as specified in
     https://arrow.apache.org/docs/python/api/datatypes.html and
     serialized to bytes using IPC:
+
     https://arrow.apache.org/docs/format/Columnar.html#serialization-and-interprocess-communication-ipc
     See code samples on how this message can be deserialized.
 

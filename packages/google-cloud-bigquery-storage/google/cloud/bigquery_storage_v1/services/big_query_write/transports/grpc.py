@@ -35,6 +35,7 @@ class BigQueryWriteGrpcTransport(BigQueryWriteTransport):
     BigQuery Write API.
     The Write API can be used to write data to BigQuery.
     For supplementary information about the Write API, see:
+
     https://cloud.google.com/bigquery/docs/write-api
 
     This class defines the same methods as the primary client, so the
