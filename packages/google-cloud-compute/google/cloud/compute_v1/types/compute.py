@@ -40572,7 +40572,9 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
         across zones in the region. - NONE: For non-autoscaled groups,
         proactive redistribution is disabled. Additional supported
         values which may be not listed in the enum directly due to
-        technical reasons: NONE
+        technical reasons:
+
+        NONE
         PROACTIVE
 
         Values:
@@ -40596,6 +40598,7 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
         restarted, you can set the minimal action to RESTART in order to
         pick up metadata changes. Additional supported values which may
         be not listed in the enum directly due to technical reasons:
+
         NONE
         REFRESH
         REPLACE
@@ -40618,7 +40621,9 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
         action needed is more disruptive than most disruptive allowed
         action you specify it will not perform the update at all.
         Additional supported values which may be not listed in the enum
-        directly due to technical reasons: NONE
+        directly due to technical reasons:
+
+        NONE
         REFRESH
         REPLACE
         RESTART
@@ -40657,7 +40662,9 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
         update will be performed as part of other actions (for example,
         resizes or recreateInstances calls). Additional supported values
         which may be not listed in the enum directly due to technical
-        reasons: PROACTIVE
+        reasons:
+
+        PROACTIVE
 
         Values:
             UNDEFINED_TYPE (0):
@@ -40844,7 +40851,9 @@ class InstanceGroupManagersApplyUpdatesRequest(proto.Message):
         a more disruptive action than you set with this flag, the
         necessary action is performed to execute the update. Additional
         supported values which may be not listed in the enum directly
-        due to technical reasons: NONE
+        due to technical reasons:
+
+        NONE
         REFRESH
         REPLACE
         RESTART
@@ -40866,7 +40875,9 @@ class InstanceGroupManagersApplyUpdatesRequest(proto.Message):
         your update requires a more disruptive action than you set with
         this flag, the update request will fail. Additional supported
         values which may be not listed in the enum directly due to
-        technical reasons: NONE
+        technical reasons:
+
+        NONE
         REFRESH
         REPLACE
         RESTART
@@ -73561,7 +73572,9 @@ class RegionInstanceGroupManagersApplyUpdatesRequest(proto.Message):
         a more disruptive action than you set with this flag, the
         necessary action is performed to execute the update. Additional
         supported values which may be not listed in the enum directly
-        due to technical reasons: NONE
+        due to technical reasons:
+
+        NONE
         REFRESH
         REPLACE
         RESTART
@@ -73583,7 +73596,9 @@ class RegionInstanceGroupManagersApplyUpdatesRequest(proto.Message):
         your update requires a more disruptive action than you set with
         this flag, the update request will fail. Additional supported
         values which may be not listed in the enum directly due to
-        technical reasons: NONE
+        technical reasons:
+
+        NONE
         REFRESH
         REPLACE
         RESTART
