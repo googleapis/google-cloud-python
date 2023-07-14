@@ -64,6 +64,7 @@ class LoggingConfig(proto.Message):
             The per-package log levels for the driver.
             This may include "root" package name to
             configure rootLogger. Examples:
+
               'com.google = FATAL', 'root = INFO',
             'org.apache = DEBUG'
     """
@@ -129,6 +130,7 @@ class HadoopJob(proto.Message):
         main_jar_file_uri (str):
             The HCFS URI of the jar file containing the
             main class. Examples:
+
             'gs://foo-bucket/analytics-binaries/extract-useful-metrics-mr.jar'
             'hdfs:/tmp/test-samples/custom-wordcount.jar'
             'file:///home/usr/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar'
@@ -156,8 +158,9 @@ class HadoopJob(proto.Message):
         archive_uris (MutableSequence[str]):
             Optional. HCFS URIs of archives to be
             extracted in the working directory of Hadoop
-            drivers and tasks. Supported file types: .jar,
-            .tar, .tar.gz, .tgz, or .zip.
+            drivers and tasks. Supported file types:
+
+            .jar, .tar, .tar.gz, .tgz, or .zip.
         properties (MutableMapping[str, str]):
             Optional. A mapping of property names to values, used to
             configure Hadoop. Properties that conflict with values set
@@ -245,8 +248,9 @@ class SparkJob(proto.Message):
         archive_uris (MutableSequence[str]):
             Optional. HCFS URIs of archives to be
             extracted into the working directory of each
-            executor. Supported file types: .jar, .tar,
-            .tar.gz, .tgz, and .zip.
+            executor. Supported file types:
+
+            .jar, .tar, .tar.gz, .tgz, and .zip.
         properties (MutableMapping[str, str]):
             Optional. A mapping of property names to
             values, used to configure Spark. Properties that
@@ -325,8 +329,9 @@ class PySparkJob(proto.Message):
         archive_uris (MutableSequence[str]):
             Optional. HCFS URIs of archives to be
             extracted into the working directory of each
-            executor. Supported file types: .jar, .tar,
-            .tar.gz, .tgz, and .zip.
+            executor. Supported file types:
+
+            .jar, .tar, .tar.gz, .tgz, and .zip.
         properties (MutableMapping[str, str]):
             Optional. A mapping of property names to
             values, used to configure PySpark. Properties
@@ -648,8 +653,9 @@ class SparkRJob(proto.Message):
         archive_uris (MutableSequence[str]):
             Optional. HCFS URIs of archives to be
             extracted into the working directory of each
-            executor. Supported file types: .jar, .tar,
-            .tar.gz, .tgz, and .zip.
+            executor. Supported file types:
+
+            .jar, .tar, .tar.gz, .tgz, and .zip.
         properties (MutableMapping[str, str]):
             Optional. A mapping of property names to
             values, used to configure SparkR. Properties

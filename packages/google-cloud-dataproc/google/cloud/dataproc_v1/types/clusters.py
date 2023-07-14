@@ -1285,6 +1285,7 @@ class KerberosConfig(proto.Message):
         enable_kerberos (bool):
             Optional. Flag to indicate whether to
             Kerberize the cluster (default:
+
             false). Set this field to true to enable
             Kerberos on a cluster.
         root_principal_password_uri (str):
