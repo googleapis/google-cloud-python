@@ -652,6 +652,7 @@ class CloudResourceProperties(proto.Message):
             GCP.
 
             The account ID is in the form of:
+
             <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com
     """
 
@@ -717,6 +718,7 @@ class SparkProperties(proto.Message):
             service account is used to connect to the
             desired resources in Google Cloud.
             The account ID is in the form of:
+
             bqcx-<projectnumber>-<uniqueid>@gcp-sa-bigquery-consp.iam.gserviceaccount.com
         metastore_service_config (google.cloud.bigquery_connection_v1.types.MetastoreServiceConfig):
             Optional. Dataproc Metastore Service
