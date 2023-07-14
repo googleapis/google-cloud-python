@@ -94,6 +94,7 @@ class FileType(proto.Enum):
             storage scan.
         TEXT_FILE (2):
             Included file extensions:
+
             asc,asp, aspx, brf, c, cc,cfm, cgi, cpp, csv,
             cxx, c++, cs, css, dart,   dat, dot, eml,,
             epbub, ged, go, h, hh, hpp, hxx, h++, hs, html,
@@ -112,27 +113,34 @@ class FileType(proto.Enum):
         WORD (5):
             Word files >30 MB will be scanned as binary
             files. Included file extensions:
+
               docx, dotx, docm, dotm
         PDF (6):
             PDF files >30 MB will be scanned as binary
             files. Included file extensions:
+
               pdf
         AVRO (7):
             Included file extensions:
+
             avro
         CSV (8):
             Included file extensions:
+
             csv
         TSV (9):
             Included file extensions:
+
             tsv
         POWERPOINT (11):
             Powerpoint files >30 MB will be scanned as
             binary files. Included file extensions:
+
               pptx, pptm, potx, potm, pot
         EXCEL (12):
             Excel files >30 MB will be scanned as binary
             files. Included file extensions:
+
               xlsx, xlsm, xltx, xltm
     """
     FILE_TYPE_UNSPECIFIED = 0
@@ -626,6 +634,7 @@ class PartitionId(proto.Message):
     is always by project and namespace, however the namespace ID may
     be empty.
     A partition ID contains several dimensions:
+
     project ID and namespace ID.
 
     Attributes:

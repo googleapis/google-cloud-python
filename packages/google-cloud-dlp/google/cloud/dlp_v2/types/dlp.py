@@ -1414,6 +1414,7 @@ class Container(proto.Message):
         full_path (str):
             A string representation of the full container
             name. Examples:
+
             - BigQuery: 'Project:DataSetId.TableId'
             - Cloud Storage:
               'gs://Bucket/folders/filename.txt'
