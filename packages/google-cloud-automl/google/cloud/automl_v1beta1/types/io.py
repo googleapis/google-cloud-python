@@ -1007,7 +1007,9 @@ class ModelExportOutputConfig(proto.Message):
         gcr_destination (google.cloud.automl_v1beta1.types.GcrDestination):
             The GCR location where model image is to be
             pushed to. This location may only be set for the
-            following model formats:   "docker".
+            following model formats:
+
+              "docker".
 
             The model image will be created under the given
             URI.
