@@ -43,6 +43,7 @@ class GetTaskRequest(proto.Message):
         name (str):
             Required. The full name of the Task.
             Format:
+
             projects/{project}/locations/{location}/jobs/{job}/executions/{execution}/tasks/{task}
     """
 
@@ -62,6 +63,7 @@ class ListTasksRequest(proto.Message):
             Executions of a Job, use "-" instead of
             Execution name. To list all Tasks across Jobs,
             use "-" instead of Job name. Format:
+
             projects/{project}/locations/{location}/jobs/{job}/executions/{execution}
         page_size (int):
             Maximum number of Tasks to return in this

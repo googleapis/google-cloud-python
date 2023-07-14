@@ -602,6 +602,7 @@ class RevisionsClient(metaclass=RevisionsClientMeta):
             name (str):
                 Required. The full name of the
                 Revision. Format:
+
                 projects/{project}/locations/{location}/services/{service}/revisions/{revision}
 
                 This corresponds to the ``name`` field
@@ -720,6 +721,7 @@ class RevisionsClient(metaclass=RevisionsClientMeta):
                 Revisions should be listed. To list all
                 Revisions across Services, use "-"
                 instead of Service name. Format:
+
                 projects/{project}/locations/{location}/services/{service}
 
                 This corresponds to the ``parent`` field
@@ -850,6 +852,7 @@ class RevisionsClient(metaclass=RevisionsClientMeta):
             name (str):
                 Required. The name of the Revision to
                 delete. Format:
+
                 projects/{project}/locations/{location}/services/{service}/revisions/{revision}
 
                 This corresponds to the ``name`` field

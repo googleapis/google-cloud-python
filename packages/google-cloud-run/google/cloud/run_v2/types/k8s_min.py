@@ -505,6 +505,7 @@ class CloudSqlInstance(proto.Message):
             https://cloud.google.com/sql/docs/mysql/connect-run
             for more information on how to connect Cloud SQL
             and Cloud Run. Format:
+
             {project}:{location}:{instance}
     """
 

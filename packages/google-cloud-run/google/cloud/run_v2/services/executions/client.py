@@ -601,6 +601,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
             name (str):
                 Required. The full name of the
                 Execution. Format:
+
                 projects/{project}/locations/{location}/jobs/{job}/executions/{execution},
                 where {project} can be project id or
                 number.
@@ -833,6 +834,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
             name (str):
                 Required. The name of the Execution
                 to delete. Format:
+
                 projects/{project}/locations/{location}/jobs/{job}/executions/{execution},
                 where {project} can be project id or
                 number.

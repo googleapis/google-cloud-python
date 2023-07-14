@@ -270,6 +270,7 @@ class RevisionsAsyncClient:
             name (:class:`str`):
                 Required. The full name of the
                 Revision. Format:
+
                 projects/{project}/locations/{location}/services/{service}/revisions/{revision}
 
                 This corresponds to the ``name`` field
@@ -380,6 +381,7 @@ class RevisionsAsyncClient:
                 Revisions should be listed. To list all
                 Revisions across Services, use "-"
                 instead of Service name. Format:
+
                 projects/{project}/locations/{location}/services/{service}
 
                 This corresponds to the ``parent`` field
@@ -502,6 +504,7 @@ class RevisionsAsyncClient:
             name (:class:`str`):
                 Required. The name of the Revision to
                 delete. Format:
+
                 projects/{project}/locations/{location}/services/{service}/revisions/{revision}
 
                 This corresponds to the ``name`` field

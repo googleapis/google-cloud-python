@@ -43,6 +43,7 @@ class GetRevisionRequest(proto.Message):
         name (str):
             Required. The full name of the Revision.
             Format:
+
             projects/{project}/locations/{location}/services/{service}/revisions/{revision}
     """
 
@@ -61,6 +62,7 @@ class ListRevisionsRequest(proto.Message):
             Revisions should be listed. To list all
             Revisions across Services, use "-" instead of
             Service name. Format:
+
             projects/{project}/locations/{location}/services/{service}
         page_size (int):
             Maximum number of revisions to return in this
@@ -127,6 +129,7 @@ class DeleteRevisionRequest(proto.Message):
         name (str):
             Required. The name of the Revision to delete.
             Format:
+
             projects/{project}/locations/{location}/services/{service}/revisions/{revision}
         validate_only (bool):
             Indicates that the request should be

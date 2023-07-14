@@ -267,6 +267,7 @@ class Job(proto.Message):
         name (str):
             The fully qualified name of this Job.
             Format:
+
             projects/{project}/locations/{location}/jobs/{job}
         uid (str):
             Output only. Server assigned unique
