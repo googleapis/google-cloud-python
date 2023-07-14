@@ -1723,6 +1723,7 @@ class GetConnectionInfoRequest(proto.Message):
         parent (str):
             Required. The name of the parent resource.
             The required format is:
+
             projects/{project}/locations/{location}/clusters/{cluster}/instances/{instance}
         request_id (str):
             Optional. An optional request ID to identify

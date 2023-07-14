@@ -1660,6 +1660,11 @@ class GenerateClientCertificateRequest(proto.Message):
             an appropriate default duration.
         public_key (str):
             Optional. The public key from the client.
+        use_metadata_exchange (bool):
+            Optional. An optional hint to the endpoint to
+            generate a client ceritificate that can be used
+            by AlloyDB connectors to exchange additional
+            metadata with the server after TLS handshake.
     """
 
     parent: str = proto.Field(
@@ -1682,6 +1687,10 @@ class GenerateClientCertificateRequest(proto.Message):
     public_key: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    use_metadata_exchange: bool = proto.Field(
+        proto.BOOL,
+        number=6,
     )
 
 
@@ -1723,6 +1732,7 @@ class GetConnectionInfoRequest(proto.Message):
         parent (str):
             Required. The name of the parent resource.
             The required format is:
+
             projects/{project}/locations/{location}/clusters/{cluster}/instances/{instance}
         request_id (str):
             Optional. An optional request ID to identify
