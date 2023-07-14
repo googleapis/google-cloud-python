@@ -197,6 +197,7 @@ __protobuf__ = proto.module(
         "LoggingConfig",
         "LoggingComponentConfig",
         "MonitoringConfig",
+        "AdvancedDatapathObservabilityConfig",
         "NodePoolLoggingConfig",
         "LoggingVariantConfig",
         "MonitoringComponentConfig",
@@ -563,6 +564,7 @@ class NodeConfig(proto.Message):
             undefined and conflicts should be avoided.
             For more information, including usage and the
             valid values, see:
+
             https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
         local_ssd_count (int):
             The number of local SSD disks to be attached
@@ -570,6 +572,7 @@ class NodeConfig(proto.Message):
             The limit for this value is dependent upon the
             maximum number of disks available on a machine
             per zone. See:
+
             https://cloud.google.com/compute/docs/disks/local-ssd
             for more information.
         tags (MutableSequence[str]):
@@ -582,6 +585,7 @@ class NodeConfig(proto.Message):
         preemptible (bool):
             Whether the nodes are created as preemptible
             VM instances. See:
+
             https://cloud.google.com/compute/docs/instances/preemptible
             for more information about preemptible VM
             instances.
@@ -624,6 +628,7 @@ class NodeConfig(proto.Message):
             each node.
             For more information, including usage and the
             valid values, see:
+
             https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
         boot_disk_kms_key (str):
             The Customer Managed Encryption Key used to encrypt the boot
@@ -950,7 +955,7 @@ class NodeNetworkConfig(proto.Message):
             disabled.
         pod_ipv4_range_utilization (float):
             Output only. [Output only] The utilization of the IPv4 range
-            for pod. The ratio is Usage/[Total number of IPs in the
+            for the pod. The ratio is Usage/[Total number of IPs in the
             secondary range], Usage=numNodes\ *numZones*\ podIPsPerNode.
     """
 
@@ -1132,6 +1137,7 @@ class LocalNvmeSsdBlockConfig(proto.Message):
             The limit for this value is dependent upon the
             maximum number of disks available on a machine
             per zone. See:
+
             https://cloud.google.com/compute/docs/disks/local-ssd
             for more information.
     """
@@ -1155,6 +1161,7 @@ class EphemeralStorageLocalSsdConfig(proto.Message):
             for this value is dependent upon the maximum
             number of disks available on a machine per zone.
             See:
+
             https://cloud.google.com/compute/docs/disks/local-ssd
             for more information.
     """
@@ -1427,6 +1434,7 @@ class MasterAuth(proto.Message):
             will be removed in GKE control plane versions
             1.19 and newer. For a list of recommended
             authentication methods, see:
+
             https://cloud.google.com/kubernetes-engine/docs/how-to/api-server-authentication
         password (str):
             The password to use for HTTP basic
@@ -1440,6 +1448,7 @@ class MasterAuth(proto.Message):
             will be removed in GKE control plane versions
             1.19 and newer. For a list of recommended
             authentication methods, see:
+
             https://cloud.google.com/kubernetes-engine/docs/how-to/api-server-authentication
         client_certificate_config (google.cloud.container_v1beta1.types.ClientCertificateConfig):
             Configuration for client certificate
@@ -1520,6 +1529,7 @@ class AddonsConfig(proto.Message):
             Console to manage and monitor your Kubernetes
             clusters, workloads and applications. For more
             information, see:
+
             https://cloud.google.com/kubernetes-engine/docs/concepts/dashboards
         network_policy_config (google.cloud.container_v1beta1.types.NetworkPolicyConfig):
             Configuration for NetworkPolicy. This only
@@ -2261,8 +2271,8 @@ class IPAllocationPolicy(proto.Message):
             range is removed it will not show up in IPAllocationPolicy.
         default_pod_ipv4_range_utilization (float):
             Output only. [Output only] The utilization of the cluster
-            default IPv4 range for pod. The ratio is Usage/[Total number
-            of IPs in the secondary range],
+            default IPv4 range for the pod. The ratio is Usage/[Total
+            number of IPs in the secondary range],
             Usage=numNodes\ *numZones*\ podIPsPerNode.
     """
 
@@ -2758,13 +2768,16 @@ class Cluster(proto.Message):
             Users may specify either explicit versions
             offered by Kubernetes Engine or version aliases,
             which have the following behavior:
+
             - "latest": picks the highest valid Kubernetes
-            version - "1.X": picks the highest valid
-            patch+gke.N patch in the 1.X version - "1.X.Y":
-            picks the highest valid gke.N patch in the 1.X.Y
-            version - "1.X.Y-gke.N": picks an explicit
-            Kubernetes version - "","-": picks the default
-            Kubernetes version
+              version
+            - "1.X": picks the highest valid patch+gke.N
+              patch in the 1.X version
+            - "1.X.Y": picks the highest valid gke.N patch
+              in the 1.X.Y version
+            - "1.X.Y-gke.N": picks an explicit Kubernetes
+              version
+            - "","-": picks the default Kubernetes version
         current_master_version (str):
             [Output only] The current software version of the master
             endpoint.
@@ -3513,13 +3526,16 @@ class ClusterUpdate(proto.Message):
             Users may specify either explicit versions
             offered by Kubernetes Engine or version aliases,
             which have the following behavior:
+
             - "latest": picks the highest valid Kubernetes
-            version - "1.X": picks the highest valid
-            patch+gke.N patch in the 1.X version - "1.X.Y":
-            picks the highest valid gke.N patch in the 1.X.Y
-            version - "1.X.Y-gke.N": picks an explicit
-            Kubernetes version - "-": picks the Kubernetes
-            master version
+              version
+            - "1.X": picks the highest valid patch+gke.N
+              patch in the 1.X version
+            - "1.X.Y": picks the highest valid gke.N patch
+              in the 1.X.Y version
+            - "1.X.Y-gke.N": picks an explicit Kubernetes
+              version
+            - "-": picks the Kubernetes master version
         desired_monitoring_service (str):
             The monitoring service the cluster should use to write
             metrics. Currently available options:
@@ -3625,13 +3641,16 @@ class ClusterUpdate(proto.Message):
             Users may specify either explicit versions
             offered by Kubernetes Engine or version aliases,
             which have the following behavior:
+
             - "latest": picks the highest valid Kubernetes
-            version - "1.X": picks the highest valid
-            patch+gke.N patch in the 1.X version - "1.X.Y":
-            picks the highest valid gke.N patch in the 1.X.Y
-            version - "1.X.Y-gke.N": picks an explicit
-            Kubernetes version - "-": picks the default
-            Kubernetes version
+              version
+            - "1.X": picks the highest valid patch+gke.N
+              patch in the 1.X version
+            - "1.X.Y": picks the highest valid gke.N patch
+              in the 1.X.Y version
+            - "1.X.Y-gke.N": picks an explicit Kubernetes
+              version
+            - "-": picks the default Kubernetes version
         desired_gcfs_config (google.cloud.container_v1beta1.types.GcfsConfig):
             The desired GCFS config for the cluster.
         desired_database_encryption (google.cloud.container_v1beta1.types.DatabaseEncryption):
@@ -4606,13 +4625,16 @@ class UpdateNodePoolRequest(proto.Message):
             Users may specify either explicit versions
             offered by Kubernetes Engine or version aliases,
             which have the following behavior:
+
             - "latest": picks the highest valid Kubernetes
-            version - "1.X": picks the highest valid
-            patch+gke.N patch in the 1.X version - "1.X.Y":
-            picks the highest valid gke.N patch in the 1.X.Y
-            version - "1.X.Y-gke.N": picks an explicit
-            Kubernetes version - "-": picks the Kubernetes
-            master version
+              version
+            - "1.X": picks the highest valid patch+gke.N
+              patch in the 1.X version
+            - "1.X.Y": picks the highest valid gke.N patch
+              in the 1.X.Y version
+            - "1.X.Y-gke.N": picks an explicit Kubernetes
+              version
+            - "-": picks the Kubernetes master version
         image_type (str):
             Required. The desired image type for the node
             pool. Please see
@@ -5114,13 +5136,16 @@ class UpdateMasterRequest(proto.Message):
             Users may specify either explicit versions
             offered by Kubernetes Engine or version aliases,
             which have the following behavior:
+
             - "latest": picks the highest valid Kubernetes
-            version - "1.X": picks the highest valid
-            patch+gke.N patch in the 1.X version - "1.X.Y":
-            picks the highest valid gke.N patch in the 1.X.Y
-            version - "1.X.Y-gke.N": picks an explicit
-            Kubernetes version - "-": picks the default
-            Kubernetes version
+              version
+            - "1.X": picks the highest valid patch+gke.N
+              patch in the 1.X version
+            - "1.X.Y": picks the highest valid gke.N patch
+              in the 1.X.Y version
+            - "1.X.Y-gke.N": picks an explicit Kubernetes
+              version
+            - "-": picks the default Kubernetes version
         name (str):
             The name (project, location, cluster) of the cluster to
             update. Specified in the format
@@ -8411,7 +8436,7 @@ class DNSConfig(proto.Message):
             CLOUD_DNS (2):
                 Use CloudDNS for DNS resolution.
             KUBE_DNS (3):
-                Use KubeDNS for DNS resolution
+                Use KubeDNS for DNS resolution.
         """
         PROVIDER_UNSPECIFIED = 0
         PLATFORM_DEFAULT = 1
@@ -9502,6 +9527,9 @@ class MonitoringConfig(proto.Message):
         managed_prometheus_config (google.cloud.container_v1beta1.types.ManagedPrometheusConfig):
             Enable Google Cloud Managed Service for
             Prometheus in the cluster.
+        advanced_datapath_observability_config (google.cloud.container_v1beta1.types.AdvancedDatapathObservabilityConfig):
+            Configuration of Advanced Datapath
+            Observability features.
     """
 
     component_config: "MonitoringComponentConfig" = proto.Field(
@@ -9513,6 +9541,53 @@ class MonitoringConfig(proto.Message):
         proto.MESSAGE,
         number=2,
         message="ManagedPrometheusConfig",
+    )
+    advanced_datapath_observability_config: "AdvancedDatapathObservabilityConfig" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="AdvancedDatapathObservabilityConfig",
+        )
+    )
+
+
+class AdvancedDatapathObservabilityConfig(proto.Message):
+    r"""AdvancedDatapathObservabilityConfig specifies configuration
+    of observability features of advanced datapath.
+
+    Attributes:
+        enable_metrics (bool):
+            Expose flow metrics on nodes
+        relay_mode (google.cloud.container_v1beta1.types.AdvancedDatapathObservabilityConfig.RelayMode):
+            Method used to make Relay available
+    """
+
+    class RelayMode(proto.Enum):
+        r"""Supported Relay modes
+
+        Values:
+            RELAY_MODE_UNSPECIFIED (0):
+                Default value. This shouldn't be used.
+            DISABLED (1):
+                disabled
+            INTERNAL_VPC_LB (3):
+                exposed via internal load balancer
+            EXTERNAL_LB (4):
+                exposed via external load balancer
+        """
+        RELAY_MODE_UNSPECIFIED = 0
+        DISABLED = 1
+        INTERNAL_VPC_LB = 3
+        EXTERNAL_LB = 4
+
+    enable_metrics: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    relay_mode: RelayMode = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=RelayMode,
     )
 
 

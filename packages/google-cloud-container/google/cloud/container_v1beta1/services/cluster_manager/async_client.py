@@ -1654,14 +1654,17 @@ class ClusterManagerAsyncClient:
                 versions offered by Kubernetes Engine or
                 version aliases, which have the
                 following behavior:
+
                 - "latest": picks the highest valid
-                Kubernetes version - "1.X": picks the
-                highest valid patch+gke.N patch in the
-                1.X version - "1.X.Y": picks the highest
-                valid gke.N patch in the 1.X.Y version -
-                "1.X.Y-gke.N": picks an explicit
-                Kubernetes version - "-": picks the
-                default Kubernetes version
+                  Kubernetes version
+                - "1.X": picks the highest valid
+                  patch+gke.N patch in the 1.X version
+                - "1.X.Y": picks the highest valid gke.N
+                  patch in the 1.X.Y version
+                - "1.X.Y-gke.N": picks an explicit
+                  Kubernetes version
+                - "-": picks the default Kubernetes
+                  version
 
                 This corresponds to the ``master_version`` field
                 on the ``request`` instance; if ``request`` is provided, this
