@@ -1820,6 +1820,7 @@ def test_search_protected_resources_rest_required_fields(
             "crypto_key",
             "page_size",
             "page_token",
+            "resource_types",
         )
     )
     jsonified_request.update(unset_fields)
@@ -1890,6 +1891,7 @@ def test_search_protected_resources_rest_unset_required_fields():
                 "cryptoKey",
                 "pageSize",
                 "pageToken",
+                "resourceTypes",
             )
         )
         & set(
