@@ -640,6 +640,7 @@ class RowFilter(proto.Message):
             filters (MutableSequence[google.cloud.bigtable_v2.types.RowFilter]):
                 The elements of "filters" are chained
                 together to process the input row:
+
                 in row -> f(0) -> intermediate row -> f(1) ->
                 ... -> f(N) -> out row The full chain is
                 executed atomically.
