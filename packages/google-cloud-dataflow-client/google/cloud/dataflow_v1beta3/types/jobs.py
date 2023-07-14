@@ -199,6 +199,7 @@ class JobView(proto.Enum):
             information, and may contain additional information.
         JOB_VIEW_SUMMARY (1):
             Request summary information only:
+
             Project ID, Job ID, job name, job type, job
             status, start/end time, and Cloud SDK version
             details.

@@ -282,6 +282,7 @@ class FlexTemplateRuntimeEnvironment(proto.Message):
         kms_key_name (str):
             Name for the Cloud KMS key for the job.
             Key format is:
+
             projects/<project>/locations/<location>/keyRings/<keyring>/cryptoKeys/<key>
         ip_configuration (google.cloud.dataflow_v1beta3.types.WorkerIPAddressConfiguration):
             Configuration for VM IPs.
@@ -524,6 +525,7 @@ class RuntimeEnvironment(proto.Message):
         kms_key_name (str):
             Name for the Cloud KMS key for the job.
             Key format is:
+
             projects/<project>/locations/<location>/keyRings/<keyring>/cryptoKeys/<key>
         ip_configuration (google.cloud.dataflow_v1beta3.types.WorkerIPAddressConfiguration):
             Configuration for VM IPs.

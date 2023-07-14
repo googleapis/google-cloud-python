@@ -251,6 +251,7 @@ class Environment(proto.Message):
             The supported resource type is:
 
             Google BigQuery:
+
               bigquery.googleapis.com/{dataset}
         sdk_pipeline_options (google.protobuf.struct_pb2.Struct):
             The Cloud Dataflow SDK pipeline options
@@ -566,6 +567,7 @@ class TaskRunnerSettings(proto.Message):
             The supported resource type is:
 
             Google Cloud Storage:
+
               storage.googleapis.com/{bucket}/{object}
               bucket.storage.googleapis.com/{object}
         log_dir (str):
@@ -577,6 +579,7 @@ class TaskRunnerSettings(proto.Message):
             The supported resource type is:
 
             Google Cloud Storage:
+
               storage.googleapis.com/{bucket}/{object}
               bucket.storage.googleapis.com/{object}
         harness_command (str):
