@@ -260,6 +260,7 @@ class ImageVersionsAsyncClient:
             parent (:class:`str`):
                 List ImageVersions in the given
                 project and location, in the form:
+
                 "projects/{projectId}/locations/{locationId}"
 
                 This corresponds to the ``parent`` field

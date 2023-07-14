@@ -215,6 +215,7 @@ class Finding(proto.Message):
         module_name (str):
             Unique identifier of the module which
             generated the finding. Example:
+
             folders/598186756061/securityHealthAnalyticsSettings/customModules/56799441161885
         containers (MutableSequence[google.cloud.securitycenter_v1.types.Container]):
             Containers associated with the finding. This
@@ -265,6 +266,7 @@ class Finding(proto.Message):
                 doesn't write a severity value.
             CRITICAL (1):
                 Vulnerability:
+
                 A critical vulnerability is easily discoverable
                 by an external actor, exploitable, and results
                 in the direct ability to execute arbitrary code,
@@ -275,11 +277,13 @@ class Finding(proto.Message):
                 weak or no passwords.
 
                 Threat:
+
                 Indicates a threat that is able to access,
                 modify, or delete data or execute unauthorized
                 code within existing resources.
             HIGH (2):
                 Vulnerability:
+
                 A high risk vulnerability can be easily
                 discovered and exploited in combination with
                 other vulnerabilities in order to gain direct
@@ -292,12 +296,14 @@ class Finding(proto.Message):
                 easily be compromised by an actor that had
                 access to the internal network.
                 Threat:
+
                 Indicates a threat that is able to create new
                 computational resources in an environment but
                 not able to access data or execute code in
                 existing resources.
             MEDIUM (3):
                 Vulnerability:
+
                 A medium risk vulnerability could be used by an
                 actor to gain access to resources or privileges
                 that enable them to eventually (through multiple
@@ -310,11 +316,13 @@ class Finding(proto.Message):
                 manipulate a project the service account was not
                 intended to.
                 Threat:
+
                 Indicates a threat that is able to cause
                 operational impact but may not access data or
                 execute unauthorized code.
             LOW (4):
                 Vulnerability:
+
                 A low risk vulnerability hampers a security
                 organization's ability to detect vulnerabilities
                 or active threats in their deployment, or
@@ -323,6 +331,7 @@ class Finding(proto.Message):
                 logs being disabled for resource configurations
                 and access.
                 Threat:
+
                 Indicates a threat that has obtained minimal
                 access to an environment but is not able to
                 access data, execute code, or create resources.

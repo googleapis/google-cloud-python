@@ -70,10 +70,13 @@ class Service(proto.Message):
             The resource name of the consumer and
             service.
             A valid name would be:
-            - `projects/123/services/serviceusage.googleapis.com`
+
+            -
+              projects/123/services/serviceusage.googleapis.com
         parent (str):
             The resource name of the consumer.
             A valid name would be:
+
             - projects/123
         config (google.cloud.service_usage_v1.types.ServiceConfig):
             The service configuration of the available service. Some

@@ -469,6 +469,7 @@ class ImageVersionsClient(metaclass=ImageVersionsClientMeta):
             parent (str):
                 List ImageVersions in the given
                 project and location, in the form:
+
                 "projects/{projectId}/locations/{locationId}"
 
                 This corresponds to the ``parent`` field

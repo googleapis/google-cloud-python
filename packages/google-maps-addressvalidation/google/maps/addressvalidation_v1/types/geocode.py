@@ -101,6 +101,7 @@ class Geocode(proto.Message):
 class PlusCode(proto.Message):
     r"""Plus code (http://plus.codes) is a location reference with
     two formats:
+
     global code defining a 14mx14m (1/8000th of a degree) or smaller
     rectangle, and compound code, replacing the prefix with a
     reference location.

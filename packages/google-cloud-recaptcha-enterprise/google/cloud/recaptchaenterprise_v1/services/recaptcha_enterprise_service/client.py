@@ -1887,7 +1887,9 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
                 Required. The name of the project to
                 search related account group memberships
                 from. Specify the project name in the
-                following format: "projects/{project}".
+                following format:
+
+                "projects/{project}".
 
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
