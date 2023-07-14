@@ -50,6 +50,7 @@ class AdvancedSettings(proto.Message):
             Dialogflow to the configured Google Cloud
             Storage destination. Exposed at the following
             levels:
+
             - Agent level
             - Flow level
         logging_settings (google.cloud.dialogflowcx_v3beta1.types.AdvancedSettings.LoggingSettings):
@@ -57,6 +58,7 @@ class AdvancedSettings(proto.Message):
             Settings for Dialogflow History, Contact Center
             messages, StackDriver logs, and speech logging.
             Exposed at the following levels:
+
             - Agent level.
     """
 

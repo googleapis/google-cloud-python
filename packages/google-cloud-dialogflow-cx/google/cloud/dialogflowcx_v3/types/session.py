@@ -847,6 +847,7 @@ class QueryParameters(proto.Message):
 
 class QueryInput(proto.Message):
     r"""Represents the query input. It can contain one of:
+
     1.  A conversational query in the form of text.
 
     2.  An intent query that specifies which intent to trigger.

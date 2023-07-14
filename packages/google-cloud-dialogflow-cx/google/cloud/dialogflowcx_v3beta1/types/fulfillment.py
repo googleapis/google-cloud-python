@@ -65,6 +65,7 @@ class Fulfillment(proto.Message):
             streaming APIs. If a webhook is specified, it
             happens before Dialogflow invokes webhook.
             Warning:
+
             1) This flag only affects streaming API.
             Responses are still queued and returned once in
             non-streaming API.
