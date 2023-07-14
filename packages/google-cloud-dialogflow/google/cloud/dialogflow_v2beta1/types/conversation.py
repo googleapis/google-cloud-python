@@ -115,6 +115,7 @@ class Conversation(proto.Message):
     class ConversationStage(proto.Enum):
         r"""Enumeration of the different conversation stages a
         conversation can be in. Reference:
+
         https://cloud.google.com/dialogflow/priv/docs/contact-center/basics#stages
 
         Values:
@@ -568,6 +569,7 @@ class SuggestConversationSummaryResponse(proto.Message):
                 specific format for the key or value.
             answer_record (str):
                 The name of the answer record. Format:
+
                 "projects/<Project ID>/answerRecords/<Answer
                 Record ID>".
         """

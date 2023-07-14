@@ -816,6 +816,7 @@ class AnalyzeContentRequest(proto.Message):
             participant.
 
             Given two messages under the same participant:
+
              - If send time are different regardless of
               whether the content of the  messages are
               exactly the same, the conversation will regard

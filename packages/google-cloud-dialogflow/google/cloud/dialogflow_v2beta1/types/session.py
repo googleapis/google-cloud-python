@@ -333,6 +333,7 @@ class QueryParameters(proto.Message):
 
 class QueryInput(proto.Message):
     r"""Represents the query input. It can contain either:
+
     1.  An audio config which
         instructs the speech recognizer how to process the speech
     audio.
@@ -437,18 +438,23 @@ class QueryResult(proto.Message):
             symbol table, dictionary, or JSON object
             composed of a collection of (MapKey, MapValue)
             pairs:
+
             -   MapKey type: string
             -   MapKey value: parameter name
             -   MapValue type:
+
                 -   If parameter's entity type is a
               composite entity: map
                 -   Else: depending on parameter value type,
               could be one of string,         number,
               boolean, null, list or map
             -   MapValue value:
+
                 -   If parameter's entity type is a
-              composite entity:         map from composite
-              entity property names to property values
+              composite entity:
+
+                    map from composite entity property names
+            to property values
                 -   Else: parameter value
         all_required_params_present (bool):
             This field is set to:
@@ -1310,18 +1316,23 @@ class EventInput(proto.Message):
             symbol table, dictionary, or JSON object
             composed of a collection of (MapKey, MapValue)
             pairs:
+
             -   MapKey type: string
             -   MapKey value: parameter name
             -   MapValue type:
+
                 -   If parameter's entity type is a
               composite entity: map
                 -   Else: depending on parameter value type,
               could be one of string,         number,
               boolean, null, list or map
             -   MapValue value:
+
                 -   If parameter's entity type is a
-              composite entity:         map from composite
-              entity property names to property values
+              composite entity:
+
+                    map from composite entity property names
+            to property values
                 -   Else: parameter value
         language_code (str):
             Required. The language of this query. See `Language

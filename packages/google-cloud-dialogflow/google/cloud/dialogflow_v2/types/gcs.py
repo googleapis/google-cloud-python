@@ -35,6 +35,7 @@ class GcsSources(proto.Message):
         uris (MutableSequence[str]):
             Required. Google Cloud Storage URIs for the
             inputs. A URI is of the form:
+
               gs://bucket/object-prefix-or-name
             Whether a prefix or name is used depends on the
             use case.
@@ -53,6 +54,7 @@ class GcsDestination(proto.Message):
         uri (str):
             The Google Cloud Storage URIs for the output.
             A URI is of the form:
+
               gs://bucket/object-prefix-or-name
             Whether a prefix or name is used depends on the
             use case. The requesting user must have
