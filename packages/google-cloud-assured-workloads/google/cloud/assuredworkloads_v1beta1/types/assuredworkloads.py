@@ -347,6 +347,7 @@ class Workload(proto.Message):
         name (str):
             Optional. The resource name of the workload.
             Format:
+
             organizations/{organization}/locations/{location}/workloads/{workload}
             Read-only.
         display_name (str):

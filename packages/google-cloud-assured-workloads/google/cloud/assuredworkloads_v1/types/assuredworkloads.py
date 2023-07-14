@@ -219,6 +219,7 @@ class Workload(proto.Message):
         name (str):
             Optional. The resource name of the workload.
             Format:
+
             organizations/{organization}/locations/{location}/workloads/{workload}
             Read-only.
         display_name (str):
@@ -733,6 +734,7 @@ class AcknowledgeViolationRequest(proto.Message):
         name (str):
             Required. The resource name of the Violation
             to acknowledge. Format:
+
             organizations/{organization}/locations/{location}/workloads/{workload}/violations/{violation}
         comment (str):
             Required. Business justification explaining
@@ -864,6 +866,7 @@ class GetViolationRequest(proto.Message):
         name (str):
             Required. The resource name of the Violation
             to fetch (ie. Violation.name). Format:
+
             organizations/{organization}/locations/{location}/workloads/{workload}/violations/{violation}
     """
 
@@ -909,6 +912,7 @@ class Violation(proto.Message):
         audit_log_link (str):
             Output only. Immutable. Audit Log Link for
             violated resource Format:
+
             https://console.cloud.google.com/logs/query;query={logName}{protoPayload.resourceName}{timeRange}{folder}
         non_compliant_org_policy (str):
             Output only. Immutable. Name of the OrgPolicy which was
@@ -932,6 +936,7 @@ class Violation(proto.Message):
             Output only. Immutable. Audit Log link to
             find business justification provided for
             violation exception. Format:
+
             https://console.cloud.google.com/logs/query;query={logName}{protoPayload.resourceName}{protoPayload.methodName}{timeRange}{organization}
     """
 

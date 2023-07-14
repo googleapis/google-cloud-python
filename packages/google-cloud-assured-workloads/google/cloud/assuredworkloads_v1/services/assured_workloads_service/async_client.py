@@ -1043,6 +1043,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 Required. The resource name of the
                 Violation to fetch (ie. Violation.name).
                 Format:
+
                 organizations/{organization}/locations/{location}/workloads/{workload}/violations/{violation}
 
                 This corresponds to the ``name`` field
