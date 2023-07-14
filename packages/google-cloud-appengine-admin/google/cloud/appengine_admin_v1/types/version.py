@@ -297,6 +297,7 @@ class Version(proto.Message):
             Only returned in ``GET`` requests if ``view=FULL`` is set.
         version_url (str):
             Serving URL for this version. Example:
+
             "https://myversion-dot-myservice-dot-myapp.appspot.com"
             @OutputOnly
         endpoints_api_service (google.cloud.appengine_admin_v1.types.EndpointsApiService):
