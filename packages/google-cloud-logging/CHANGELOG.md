@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.6.0](https://github.com/googleapis/python-logging/compare/v3.5.0...v3.6.0) (2023-07-05)
+
+
+### Features
+
+* Add logic to convert severity string to uppercase  ([#744](https://github.com/googleapis/python-logging/issues/744)) ([c1c8ce1](https://github.com/googleapis/python-logging/commit/c1c8ce158f566150319c2d4fb2f068b10668d507))
+
+
+### Bug Fixes
+
+* Properly handle None from metadata server ([#718](https://github.com/googleapis/python-logging/issues/718)) ([dedaff9](https://github.com/googleapis/python-logging/commit/dedaff95b2e2ed178a26aa9a04cfafb9b803ec60))
+
+
+### Documentation
+
+* Fix formatting of request arg in docstring ([#734](https://github.com/googleapis/python-logging/issues/734)) ([dbb1794](https://github.com/googleapis/python-logging/commit/dbb179407f20beb0f8927570dbc1630c62b23268))
+
 ## [3.5.0](https://github.com/googleapis/python-logging/compare/v3.4.0...v3.5.0) (2023-01-24)
 
 
