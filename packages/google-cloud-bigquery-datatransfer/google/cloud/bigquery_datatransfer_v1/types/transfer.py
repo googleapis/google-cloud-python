@@ -192,6 +192,7 @@ class TransferConfig(proto.Message):
             data transfer is created. The full list of
             available data source IDs can be returned
             through an API call:
+
             https://cloud.google.com/bigquery-transfer/docs/reference/datatransfer/rest/v1/projects.locations.dataSources/list
         params (google.protobuf.struct_pb2.Struct):
             Parameters specific to each data source. For
@@ -199,6 +200,7 @@ class TransferConfig(proto.Message):
             up a data transfer' section for each data
             source. For example the parameters for Cloud
             Storage transfers are listed here:
+
             https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
         schedule (str):
             Data transfer schedule. If the data source does not support
@@ -376,6 +378,7 @@ class TransferRun(proto.Message):
             the 'Setting up a data transfer' section for
             each data source. For example the parameters for
             Cloud Storage transfers are listed here:
+
             https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
         destination_dataset_id (str):
             Output only. The BigQuery target dataset id.
